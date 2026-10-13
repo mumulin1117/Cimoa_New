@@ -15,7 +15,9 @@
       "empty": "rgba(255,255,255,0.72)",
       "transparent": "transparent",
       "skeleton": "#e2e9f3",
-      "shimmer": "rgba(255,255,255,0.65)"
+      "shimmer": "rgba(255,255,255,0.65)",
+      "photo_tag": "rgba(14,16,22,0.72)",
+      "photo_tag_border": "rgba(255,255,255,0.10)"
     },
     "text": {
       "title": "#0b1b3a",
@@ -67,6 +69,7 @@
       "info": "#4a7bf7",
       "danger": "#e5484d",
       "coin": "#a21caf",
+      "verified": "#1d9bf0",
       "locked": "#64748b",
       "connected_bg": "#dcfce7",
       "connected_ink": "#15803d",
@@ -82,12 +85,16 @@
     }
   },
   "gradients": {
+    "photo_scrim": "linear-gradient(to top,rgba(6,14,28,0.86) 0%,rgba(6,14,28,0.55) 42%,rgba(6,14,28,0) 100%)",
     "primary": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
     "tab": "linear-gradient(120deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
     "lightning": "linear-gradient(135deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
     "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)"
   },
   "shadows": {
+    "discover_profile": "0 11.45rpx 34.351rpx rgba(16,36,74,0.18)",
+    "discover_filter": "0 11.45rpx 34.351rpx rgba(16,36,74,0.12)",
+    "discover_photo": "0 34.351rpx 83.969rpx rgba(16,36,74,0.22)",
     "card": "0 15.267rpx 45.802rpx rgba(16,36,74,0.07)",
     "tab": "0 19.084rpx 57.252rpx rgba(16,36,74,0.12),0 3.817rpx 11.45rpx rgba(16,36,74,0.06)",
     "header": "0 11.45rpx 34.351rpx rgba(16,36,74,0.10)",

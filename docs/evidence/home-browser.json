@@ -1,7 +1,7 @@
 {
   "result": "passed",
   "runtime": "Chromium, fresh isolated profile, 393 x 852",
-  "server_pid": 47090,
+  "server_pid": 57967,
   "checks": [
     {
       "name": "three source tabs, capsule geometry, restored session has no skeleton",

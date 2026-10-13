@@ -10,6 +10,15 @@ export const user_by_id = (data, user_id) => {
 }
 export const balance = (data, owner = owner_id(data)) => data.coin_transactions.filter((row) => row.owner_user_id === owner && row.status === 'completed').reduce((sum, row) => sum + row.amount, 0)
 export const connected = (data, user_id, owner = owner_id(data)) => !!owner && visible(data, user_id) && [[owner, user_id], [user_id, owner]].every(([from, to]) => data.relationships.some((row) => row.from_user_id === from && row.to_user_id === to))
+export const introduction_blocker = (data, target, now = Date.now()) => {
+  const owner = owner_id(data)
+  if (!authenticated(data, now)) return 'Your session has expired. Please sign in again.'
+  if (data.users.find((row) => row.user_id === owner)?.verification_status !== 'verified') return 'Student verification is required.'
+  if (target === owner || !visible(data, target)) return 'This profile is unavailable.'
+  if (connected(data, target)) return 'You are already connected.'
+  if (data.requests.some((row) => row.status === 'pending' && [row.sender_id, row.recipient_id].includes(owner) && [row.sender_id, row.recipient_id].includes(target))) return 'A request is already pending.'
+  return ''
+}
 export const utc_date_key = (now) => new Date(now).toISOString().slice(0, 10)
 export const remaining_quota = (data, now = Date.now()) => Math.max(0, data.quota_policy.free_daily_limit - (data.match_quota.find((row) => row.owner_user_id === owner_id(data) && row.date_key === utc_date_key(now))?.used_count || 0))
 export const match_status = (row, now) => row.status === 'found' && row.expires_at <= now ? 'expired' : row.status

@@ -3,7 +3,7 @@ import { ref, onUnmounted } from 'vue'
 import { push_route, back_route, relaunch_route } from '@/utils/routeTransition.js'
 import { MOTION } from '@/config/navigation.js'
 
-defineProps({ home: Boolean })
+defineProps({ home: Boolean, duration: { type: Number, default: null } })
 const leaving = ref(false)
 let timer, settle, disposed = false
 const navigate_forward = (url) => push_route(url)
@@ -20,7 +20,7 @@ defineExpose({ navigate_forward, navigate_back, navigate_relaunch })
 </script>
 
 <template>
-  <view class="page-transition" :class="{ 'page-transition--leaving': leaving }" :style="{ '--page-duration': `${home ? MOTION.home : MOTION.page}ms`, '--back-duration': `${MOTION.back}ms` }"><slot /></view>
+  <view class="page-transition" :class="{ 'page-transition--leaving': leaving }" :style="{ '--page-duration': `${duration ?? (home ? MOTION.home : MOTION.page)}ms`, '--back-duration': `${MOTION.back}ms` }"><slot /></view>
 </template>
 
 <style scoped>

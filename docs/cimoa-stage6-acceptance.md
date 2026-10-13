@@ -1,5 +1,17 @@
 # Cimoa 整体验收状态
 
+## 当前状态：阶段五逐页推进中（2026-10-13）
+
+**整体验收仍未通过。** 阶段1–4的独立数据/主题/三Tab基础已落实，Home本页通过；本轮Discover本页通过，二者完整验收均待依赖与原生宿主，不标记verified。当前证据以 [阶段五总表](./cimoa-stage5-page-status.md)、[Home验收](./cimoa-stage5-home-acceptance.md) 和 [Discover验收](./cimoa-stage5-discover-acceptance.md) 为准。Events尚未开始还原。
+
+用户现已允许后续页面分段验收，并要求后续只做本地专项提交，不执行push。独立Vue/uni-app → H5 → 既有WKWebView链路不变；未提供宿主集成/模拟器实测证据，不宣称iOS工程已交付。
+
+本轮38项单元测试、Discover20项H5检查、Home22项回归通过；三项强制命令通过，不代表全App或全部目标页闭环通过。原型不参与运行，所有资源/代码来自独立项目。既有缺失服务成功路径、通知基础层、各依赖页及WKWebView验收保持未完成。
+
+## 历史记录：最初的来源审计阶段（不是当前进度）
+
+以下保留当时的检查范围和失败门槛，旧的“尚不能进入阶段五”“等待push授权”不再表示当前阻塞。
+
 **未通过整体验收。** 当前正按原 HTML 修正阶段 1；人物、免费文字介绍、等待接通模拟与 Home 分段验收已获用户确认。阶段 1–4 的其余门槛未关闭，尚不能进入阶段 5 或声明 Home 完成。三项命令通过只能证明代码可检查和构建，不是视觉、交互或 WKWebView 验收。
 
 交付链路保持独立 uni-app 源码 → H5 构建 → 已有 iOS WKWebView 宿主加载。本仓库不加入 Swift / Objective-C 工程，也不运行原 HTML。当前已配置 Git remote，旧文档“没有 Git remote”的描述已更正。

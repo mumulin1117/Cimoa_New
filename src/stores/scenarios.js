@@ -1,7 +1,7 @@
 // Test fixture factory, never selected from production URL parameters.
 import { create_seed, clone_data, TEST_USER_ID } from './seed.js'
 import { validate_data } from './selectors.js'
-export const SCENARIOS = ['default', 'home_empty', 'home_single', 'home_long', 'missing_avatar', 'zero_coins', 'quota_used', 'one_way', 'request_declined', 'request_accepted', 'blocked', 'session_expired', 'account_deleted', 'event_joined', 'event_past', 'three_chats', ...['searching', 'paused', 'found', 'waiting', 'connected', 'passed', 'expired', 'no_match', 'left'].map((status) => `match_${status}`)]
+export const SCENARIOS = ['default', 'home_empty', 'home_single', 'home_long', 'missing_avatar', 'discover_empty', 'discover_long', 'discover_no_photo', 'discover_unconnected', 'discover_unverified', 'discover_private', 'zero_coins', 'quota_used', 'one_way', 'request_declined', 'request_accepted', 'blocked', 'session_expired', 'account_deleted', 'event_joined', 'event_past', 'three_chats', ...['searching', 'paused', 'found', 'waiting', 'connected', 'passed', 'expired', 'no_match', 'left'].map((status) => `match_${status}`)]
 const connect = (data, other, index = 0) => {
   for (const [from, to] of [[TEST_USER_ID, other], [other, TEST_USER_ID]]) if (!data.relationships.some((row) => row.from_user_id === from && row.to_user_id === to)) data.relationships.push({ relationship_id: `rel_${from}_${to}`, from_user_id: from, to_user_id: to, created_at: data.updated_at })
   const conversation_id = `fixture_conversation_${index}`
@@ -21,6 +21,12 @@ export function create_scenario(name = 'default', now = Date.now()) {
     data.goals[0].label = 'New friends who love taking the longer, scenic route across campus together'
   }
   if (name === 'missing_avatar') data.users[1].avatar_url = ''
+  if (name === 'discover_empty') data.users.forEach((user) => { user.discoverable = false })
+  if (name === 'discover_long') Object.assign(data.users[1], { user_name: 'Chloe Alexandra Lin with a very long campus profile name', university: 'Hong Kong University of Science and Technology', major: 'International Business and Interdisciplinary Environmental Studies' })
+  if (name === 'discover_no_photo') data.users[1].photo_ids = []
+  if (name === 'discover_unconnected') { data.relationships = []; data.coin_transactions = [] }
+  if (name === 'discover_unverified') data.users[0].verification_status = 'pending'
+  if (name === 'discover_private') data.settings.push({ owner_user_id: 'user_chloe', privacy: { discover_visible: true, show_year: false, show_field: false } })
   if (name === 'zero_coins') data.coin_transactions = []
   if (name === 'quota_used') data.match_quota = [{ owner_user_id: TEST_USER_ID, date_key: new Date(now).toISOString().slice(0, 10), used_count: 3 }]
   if (name === 'one_way') data.relationships.pop()

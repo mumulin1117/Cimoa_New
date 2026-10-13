@@ -1,119 +1,133 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { computed, ref, watch } from 'vue'
 import { use_app_store } from '@/stores/store.js'
-import { back_route, push_route } from '@/utils/routeTransition.js'
-import { use_write_loading } from '@/composables/useWriteLoading.js'
+import { discover_destination, require_discover_destination_ready } from '@/utils/discoverNavigation.js'
 import MainTabFrame from '@/components/MainTabFrame.vue'
-import AppLoading from '@/components/AppLoading.vue'
-import ConfirmDialog from '@/components/ConfirmDialog.vue'
+import DiscoverHeroHeader from '@/components/DiscoverHeroHeader.vue'
+import ProfilePhoto from '@/components/ProfilePhoto.vue'
+import SourceIcon from '@/components/SourceIcon.vue'
 
-const store = use_app_store()
-const view = ref('list')
-const selected_user_id = ref('user_maya')
-const show_block = ref(false)
-const notice = ref('')
-const { is_loading, run_with_loading } = use_write_loading()
-const selected_user = computed(() => store.user_by_id(selected_user_id.value))
-const selected_relationship = computed(() => store.relationships.find((item) => item.to_user_id === selected_user_id.value))
-const open_profile = (user_id) => { selected_user_id.value = user_id; view.value = 'profile' }
-const open_chat = (user_id) => push_route(`/pages/messages/index?view=chat&user_id=${user_id}`)
-const request_connection = async () => { const result = await run_with_loading(() => store.toggle_relationship(selected_user_id.value)); notice.value = result.message || 'Choose an icebreaker question first.' }
-const open_icebreaker = () => { view.value = 'icebreaker' }
-const spend_voice = async () => { const result = await run_with_loading(() => store.spend_coins('voice', 'Voice icebreaker')); notice.value = result.message || 'Record a playable voice note first.' }
-const confirm_block = async () => { show_block.value = false; const result = await run_with_loading(() => store.block_user(selected_user_id.value)); if (result.success) view.value = 'list'; notice.value = result.success ? 'Account blocked.' : result.message }
-const like_post = (post_id, kind) => store.toggle_post_reaction(post_id, kind)
-onLoad((options) => { if (options?.view) view.value = options.view; if (options?.user_id) selected_user_id.value = options.user_id })
+const store = use_app_store(), frame = ref(null), navigation_error = ref(''), navigating = ref(false)
+const person = computed(() => store.discover_person)
+// Layout only: preserve the source's compact one-line tags, wrap expanded labels.
+const wrap_tags = computed(() => [person.value?.university, person.value?.major, person.value?.mbti].join('').length > 24)
+const target = (kind, id) => { try { return discover_destination(store, kind, id) } catch { return '' } }
+const navigate = async (kind, id) => {
+  if (navigating.value) return
+  navigating.value = true; navigation_error.value = ''; store.tick()
+  try { await frame.value.navigate_forward(require_discover_destination_ready(discover_destination(store, kind, id))) }
+  catch (error) { navigation_error.value = error.message }
+  finally { navigating.value = false }
+}
+watch(() => person.value?.user_id, () => { navigation_error.value = '' })
 </script>
 
 <template>
-  <MainTabFrame route="pages/discover/index">
-    <template #header>
-      <view class="legacy-tab-header" v-if="view === 'list'"><view class="cimoa-header"><view><text class="cimoa-eyebrow">Discover</text><text class="cimoa-title">People with a little spark.</text></view><view class="filter-button" role="button" @click="notice = 'Filters are ready for your next pass.'">Filter</view></view></view>
-    <view v-if="view !== 'list'" class="sub-header"><view class="back-button" role="button" aria-label="Back" @click="view = 'list'"><text>Back</text></view><text class="sub-header__title">{{ view === 'icebreaker' ? 'Icebreaker' : 'Profile' }}</text><view class="sub-header__space" /></view>
-    </template>
-    <view class="legacy-tab-content">
-      <template v-if="view === 'list'">
-        <view v-for="person in store.visible_people" :key="person.user_id" class="discover-card cimoa-card" role="button" @click="open_profile(person.user_id)"><image class="discover-card__image" :src="person.avatar_url" mode="aspectFill" /><view class="discover-card__body"><view class="discover-card__name-row"><text class="discover-card__name">{{ person.user_name }}</text><view class="online-dot" :class="{ online: person.online }" /></view><text class="discover-card__meta">{{ person.major }} · {{ person.distance }}</text><text class="discover-card__bio">{{ person.bio }}</text><view class="discover-card__footer"><text>Open profile</text><text class="discover-card__status">{{ person.online ? 'Online now' : 'Recently active' }}</text></view></view></view>
-        <view class="section-head"><view><text class="cimoa-eyebrow">Campus stories</text><text class="cimoa-section-title">Worth a reply</text></view></view>
-        <view v-for="post in store.posts" :key="post.post_id" class="post-card cimoa-card"><image class="post-card__image" :src="post.image_url" mode="aspectFill" /><view class="post-card__body"><text class="post-card__title">{{ post.title }}</text><text class="post-card__copy">{{ post.body }}</text><view class="post-card__actions"><text role="button" @click="like_post(post.post_id, 'liked')">{{ post.liked ? 'Liked' : 'Like' }}</text><text role="button" @click="like_post(post.post_id, 'saved')">{{ post.saved ? 'Saved' : 'Save' }}</text><text>{{ post.comment_count }} comments</text></view></view></view>
-      </template>
-      <template v-else-if="view === 'profile'">
-        <view class="profile-hero"><image class="profile-hero__image" :src="selected_user?.avatar_url" mode="aspectFill" /><text class="profile-hero__name">{{ selected_user?.user_name }}</text><text class="profile-hero__meta">{{ selected_user?.major }} · {{ selected_user?.distance }}</text><text class="profile-hero__bio">{{ selected_user?.bio }}</text></view>
-        <view class="profile-actions"><view class="cimoa-button" role="button" @click="request_connection">{{ selected_relationship?.status === 'mutual' ? 'Connected' : selected_relationship?.status === 'requested' ? 'Requested' : 'Connect' }}</view><view class="cimoa-button ghost" role="button" @click="open_chat(selected_user_id)">Message</view></view>
-        <view class="icebreaker-card cimoa-card"><text class="cimoa-eyebrow">A gentle opener</text><text class="icebreaker-card__question">What is on repeat for you this week?</text><view class="cimoa-button" role="button" @click="open_icebreaker">Answer with voice or text</view></view>
-        <view class="profile-link" role="button" @click="show_block = true">Safety and account actions</view>
-        <text v-if="notice" class="notice">{{ notice }}</text>
-      </template>
-      <template v-else>
-        <view class="icebreaker-card cimoa-card"><text class="cimoa-eyebrow">Question for {{ selected_user?.user_name }}</text><text class="icebreaker-card__question">What is on repeat for you this week?</text><textarea class="reply-input" placeholder="Write a thoughtful reply" /><view class="cimoa-button" role="button" @click="spend_voice">Send with 10 coins</view><view class="profile-link" role="button" @click="view = 'profile'">Back to profile</view><text v-if="notice" class="notice">{{ notice }}</text></view>
-      </template>
+  <MainTabFrame ref="frame" route="pages/discover/index" header-owns-safe-area>
+    <template #header><DiscoverHeroHeader :profile-target="target('profile')" :preferences-target="target('preferences')" @profile="navigate('profile')" @preferences="navigate('preferences')" /></template>
+    <view class="discover-content">
+      <view v-if="store.hydration_status === 'error'" class="discover-state discover-read-error" role="alert"><text>{{ store.hydration_error }}</text><view class="discover-retry" role="button" tabindex="0" @click="store.hydrate" @keydown.enter="store.hydrate">Retry</view></view>
+      <view v-else-if="store.hydration_status !== 'ready'" class="discover-state" role="status">Loading profiles…</view>
+      <view v-else-if="!store.session.is_authenticated" class="discover-state discover-session-error" role="alert">Your session has expired. Please sign in again.</view>
+      <view v-else-if="!person" class="discover-state discover-empty"><text>No profiles available right now.</text><text>Check back when more students are available.</text></view>
+      <view v-else :key="person.user_id" class="discover-photo-card" role="button" tabindex="0" :aria-label="`View ${person.user_name}’s profile`" :data-user-id="person.user_id" data-interaction="photo.expand.click.1" :data-target="target('detail', person.user_id)" @click="navigate('detail', person.user_id)" @keydown.enter.self="navigate('detail', person.user_id)" @keydown.space.self.prevent="navigate('detail', person.user_id)">
+        <ProfilePhoto :src="person.photo?.media_url || ''" :name="person.user_name" />
+        <view class="discover-photo-scrim" />
+        <view class="discover-info">
+          <view class="discover-name-row"><text class="discover-name">{{ person.user_name }}{{ person.age === null ? '' : `, ${person.age}` }}</text><view v-if="person.verified" class="discover-verified" aria-label="Verified student"><SourceIcon name="verified" /></view></view>
+          <view class="discover-tags" :class="{ 'discover-tags--wrap': wrap_tags }">
+            <view v-if="person.university" class="discover-tag"><view class="discover-tag-icon"><SourceIcon name="university" /></view><text>{{ person.university }}</text></view>
+            <view v-if="person.major" class="discover-tag"><view class="discover-tag-icon"><SourceIcon name="book" /></view><text>{{ person.major }}</text></view>
+            <view v-if="person.mbti" class="discover-tag"><view class="discover-tag-icon"><SourceIcon name="puzzle" /></view><text>{{ person.mbti }}</text></view>
+          </view>
+        </view>
+      </view>
     </view>
-    <template #overlays>
-    <AppLoading :visible="is_loading" label="Saving your choice..." />
-    <ConfirmDialog :visible="show_block" title="Block this account?" message="You will no longer see this account in Discover or Messages." confirm-label="Block account" danger @cancel="show_block = false" @confirm="confirm_block" />
+    <template #footer="{ ready }">
+      <view class="discover-footer">
+        <text v-if="navigation_error" class="discover-error" role="alert">{{ navigation_error }}</text>
+        <view class="discover-send" role="button" tabindex="0" :aria-disabled="!ready || !person" data-interaction="photo.sayHi.click.1" :data-target="person ? target('icebreaker', person.user_id) : ''" @click="ready && person && navigate('icebreaker', person.user_id)" @keydown.enter="ready && person && navigate('icebreaker', person.user_id)" @keydown.space.prevent="ready && person && navigate('icebreaker', person.user_id)">Send shot</view>
+      </view>
     </template>
   </MainTabFrame>
 </template>
 
 <style scoped>
-.sub-header { display: flex; align-items: center; justify-content: space-between; padding: 12rpx 32rpx 18rpx; }
-.back-button, .filter-button { color: var(--cimoa-secondary); font-size: 22rpx; }
-.sub-header__title { color: var(--cimoa-title); font-size: 25rpx; font-weight: 700; }
-.sub-header__space { width: 64rpx; }
-.discover-card { display: flex; overflow: hidden; margin-bottom: 16rpx; }
-.discover-card__image { width: 230rpx; height: 244rpx; }
-.discover-card__body { flex: 1; min-width: 0; padding: 22rpx; }
-.discover-card__name-row { display: flex; align-items: center; gap: 10rpx; }
-.discover-card__name { color: var(--cimoa-title); font-size: 27rpx; font-weight: 700; }
-.online-dot { width: 12rpx; height: 12rpx; border-radius: 50%; background: var(--cimoa-tertiary); }
-.online-dot.online { background: var(--cimoa-success); }
-.discover-card__meta, .discover-card__bio { display: block; margin-top: 8rpx; color: var(--cimoa-secondary); font-size: 19rpx; line-height: 30rpx; }
-.discover-card__bio { min-height: 62rpx; color: var(--cimoa-title); }
-.discover-card__footer {
+.discover-content { padding: 0 38.168rpx; }
+.discover-photo-card {
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  margin-top: 20rpx;
-  color: var(--cimoa-success);
-  font-size: 19rpx;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 1034.351rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 610.687rpx 41.985rpx 30.534rpx;
+  border-radius: 53.435rpx;
+  background: var(--cimoa-surface-deep);
+  box-shadow: var(--cimoa-shadow-discover-photo);
+  cursor: pointer;
+}
+.discover-photo-scrim {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 572.519rpx;
+  background: var(--cimoa-gradient-photo-scrim);
+  pointer-events: none;
+}
+.discover-info { position: relative; color: var(--cimoa-text-inverse); pointer-events: none; }
+.discover-name-row { display: flex; align-items: center; gap: 19.084rpx; }
+.discover-name { min-width: 0; font-size: 59.16rpx; font-weight: 800; letter-spacing: -0.03em; overflow-wrap: anywhere; }
+.discover-verified { flex: none; width: 49.618rpx; height: 49.618rpx; }
+.discover-tags { display: flex; flex-wrap: nowrap; gap: 13.359rpx; margin-top: 22.901rpx; }
+.discover-tags--wrap { flex-wrap: wrap; }
+.discover-tag {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 11.45rpx;
+  min-height: 68.702rpx;
+  max-width: 100%;
+  padding: 0 22.901rpx;
+  box-sizing: border-box;
+  border: 1px solid var(--cimoa-surface-photo-tag-border);
+  border-radius: 34.351rpx;
+  background: var(--cimoa-surface-photo-tag);
+  backdrop-filter: blur(15.267rpx);
+  font-size: 28.626rpx;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.discover-tag text { min-width: 0; padding: 7.634rpx 0; }
+.discover-tag-icon { flex: none; width: 30.534rpx; height: 30.534rpx; }
+.discover-footer { flex: none; padding: 30.534rpx 38.168rpx 3.817rpx; }
+.discover-send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 114.504rpx;
+  border-radius: 57.252rpx;
+  color: var(--cimoa-text-inverse);
+  background: var(--cimoa-gradient-primary);
+  box-shadow: var(--cimoa-shadow-primary);
+  font-size: 40.076rpx;
   font-weight: 700;
+  cursor: pointer;
 }
-.discover-card__status { color: var(--cimoa-secondary); font-weight: 400; }
-.section-head { display: flex; margin: 38rpx 0 18rpx; }
-.post-card { overflow: hidden; margin-bottom: 18rpx; }
-.post-card__image { width: 100%; height: 240rpx; }
-.post-card__body { padding: 22rpx; }
-.post-card__title { display: block; color: var(--cimoa-title); font-size: 25rpx; font-weight: 700; }
-.post-card__copy { display: block; margin-top: 8rpx; color: var(--cimoa-secondary); font-size: 21rpx; line-height: 32rpx; }
-.post-card__actions { display: flex; gap: 26rpx; margin-top: 18rpx; color: var(--cimoa-success); font-size: 19rpx; }
-.profile-hero { padding: 12rpx 0 30rpx; text-align: center; }
-.profile-hero__image { width: 310rpx; height: 330rpx; border-radius: 34rpx; }
-.profile-hero__name, .profile-hero__meta, .profile-hero__bio { display: block; }
-.profile-hero__name { margin-top: 22rpx; color: var(--cimoa-title); font-size: 36rpx; font-weight: 700; }
-.profile-hero__meta { margin-top: 8rpx; color: var(--cimoa-secondary); font-size: 21rpx; }
-.profile-hero__bio { margin: 18rpx auto 0; max-width: 560rpx; color: var(--cimoa-secondary); font-size: 22rpx; line-height: 34rpx; }
-.profile-actions { display: flex; gap: 14rpx; margin-bottom: 28rpx; }
-.profile-actions > view { flex: 1; min-height: 76rpx; }
-.icebreaker-card { padding: 28rpx; }
-.icebreaker-card__question {
-  display: block;
-  margin: 16rpx 0 24rpx;
-  color: var(--cimoa-title);
-  font-size: 30rpx;
-  font-weight: 700;
-  line-height: 42rpx;
+.discover-send[aria-disabled="true"] { opacity: 0.5; cursor: default; }
+.discover-error { display: block; margin-bottom: 19.084rpx; color: var(--cimoa-status-danger); font-size: 26.718rpx; line-height: 1.4; overflow-wrap: anywhere; }
+.discover-state {
+  display: flex;
+  flex-direction: column;
+  gap: 22.901rpx;
+  padding: 45.802rpx;
+  border-radius: 45.802rpx;
+  color: var(--cimoa-text-secondary);
+  background: var(--cimoa-surface-empty);
+  font-size: 30.534rpx;
+  line-height: 1.5;
 }
-.profile-link { margin-top: 26rpx; color: var(--cimoa-secondary); font-size: 22rpx; text-align: center; }
-.reply-input {
-  width: 100%;
-  height: 180rpx;
-  margin-bottom: 22rpx;
-  padding: 18rpx;
-  border: 1px solid var(--cimoa-outline);
-  border-radius: 18rpx;
-  color: var(--cimoa-title);
-  background: var(--cimoa-page);
-  font-size: 22rpx;
-}
-.notice { display: block; margin-top: 22rpx; color: var(--cimoa-success); font-size: 20rpx; text-align: center; }
+.discover-retry { color: var(--cimoa-text-link); font-weight: 700; cursor: pointer; }
 </style>

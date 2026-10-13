@@ -1,0 +1,157 @@
+{
+  "result": "passed",
+  "runtime": "Chromium, fresh isolated profile, 393 x 852",
+  "server_pid": 58144,
+  "checks": [
+    {
+      "name": "three source tabs, capsule geometry, restored session has no skeleton",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/home/index",
+        "depth": 1,
+        "active": "Home",
+        "bar": {
+          "x": 20,
+          "y": 762,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 750,
+          "height": 586.546875
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "two bidirectional cycles, same-tab double click, unchanged stack and fixed bar",
+      "result": "passed"
+    },
+    {
+      "name": "scroll does not move navigation or cover final content",
+      "result": "passed"
+    },
+    {
+      "name": "browser bridge injection owns top and bottom once (not native-device evidence)",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/events/index",
+        "depth": 1,
+        "active": "Events",
+        "bar": {
+          "x": 20,
+          "y": 728,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 716,
+          "height": 554.84375
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "real fixture login: each main tab consumes one skeleton; return consumes none",
+      "result": "passed"
+    },
+    {
+      "name": "refresh does not prepare another skeleton cycle",
+      "result": "passed"
+    },
+    {
+      "name": "real IndexedDB Blob survives page reload and is deleted cleanly",
+      "result": "passed"
+    },
+    {
+      "name": "Discover source photo/card/toolbar/CTA geometry, cRise260, canonical person and exact local image",
+      "result": "passed",
+      "detail": {
+        "card": {
+          "x": 20,
+          "y": 75.953125,
+          "width": 353,
+          "height": 541.984375,
+          "bottom": 617.9375
+        },
+        "tool": {
+          "x": 20,
+          "y": 5.984375,
+          "width": 53.984375,
+          "height": 53.984375,
+          "bottom": 59.96875
+        },
+        "send": {
+          "x": 20,
+          "y": 688,
+          "width": 353,
+          "height": 60,
+          "bottom": 748
+        },
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 393,
+          "height": 75.953125,
+          "bottom": 75.953125
+        },
+        "bar": {
+          "x": 20,
+          "y": 762,
+          "width": 353,
+          "height": 62,
+          "bottom": 824
+        }
+      }
+    },
+    {
+      "name": "profile/preferences/detail dependencies are explicit; default connected person cannot create another request or spend",
+      "result": "passed"
+    },
+    {
+      "name": "zero-coin unconnected user gets correct icebreaker intent; repeated entry never spends or fabricates a request",
+      "result": "passed"
+    },
+    {
+      "name": "unverified viewer and existing inbound request fail with specific eligibility errors",
+      "result": "passed"
+    },
+    {
+      "name": "empty state is not a fake profile, CTA disabled, refresh preserves source data",
+      "result": "passed"
+    },
+    {
+      "name": "no-photo and real request failure are distinct; retry loads original asset without opening profile",
+      "result": "passed"
+    },
+    {
+      "name": "slow photo shows loading then a retryable 10-second timeout; leaving cleans photo UI without writes",
+      "result": "passed"
+    },
+    {
+      "name": "real IndexedDB photo decodes after refresh/Tab return; removed Blob reports failure, never another image",
+      "result": "passed"
+    },
+    {
+      "name": "blocking synchronizes Home and Discover; field privacy and actual verification control displayed metadata",
+      "result": "passed"
+    },
+    {
+      "name": "corrupt storage retry never overwrites data; expired session does not leak profiles",
+      "result": "passed"
+    },
+    {
+      "name": "long name and tags remain readable; photo area scrolls on narrow screens without moving header/CTA/Tabbar",
+      "result": "passed"
+    },
+    {
+      "name": "header owns safe top once, Tabbar owns safe bottom once; 54/0 source geometry and 59/34 bridge tests, not native evidence",
+      "result": "passed"
+    },
+    {
+      "name": "no browser runtime exceptions",
+      "result": "passed"
+    }
+  ],
+  "cleaned_up": true
+}

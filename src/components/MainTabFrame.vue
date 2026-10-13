@@ -4,12 +4,13 @@ import { onShow, onHide } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { use_main_tab_skeleton } from '@/composables/useMainTabSkeleton.js'
 import { route_depth } from '@/utils/routeTransition.js'
+import { MOTION } from '@/config/navigation.js'
 import TopSafeArea from './TopSafeArea.vue'
 import CustomTabBar from './CustomTabBar.vue'
 import PageTransition from './PageTransition.vue'
 import MainTabSkeleton from './MainTabSkeleton.vue'
 
-const props = defineProps({ route: { type: String, required: true } })
+const props = defineProps({ route: { type: String, required: true }, headerOwnsSafeArea: Boolean })
 defineEmits(['scroll'])
 const store = use_app_store(), transition = ref(null)
 const skeleton = use_main_tab_skeleton(props.route)
@@ -24,13 +25,14 @@ defineExpose({ navigate_forward: (url) => transition.value.navigate_forward(url)
 
 <template>
   <view class="main-tab-frame" :data-page-depth="depth">
-    <TopSafeArea />
-    <PageTransition ref="transition" :home="route === 'pages/home/index'">
+    <TopSafeArea v-if="!headerOwnsSafeArea" />
+    <PageTransition ref="transition" :home="route === 'pages/home/index'" :duration="route === 'pages/discover/index' ? MOTION.discover : null">
       <view class="main-tab-header"><slot name="header" /></view>
       <scroll-view class="main-tab-scroll" scroll-y :show-scrollbar="false" @scroll="$emit('scroll')">
         <MainTabSkeleton v-if="skeleton" />
         <slot v-else />
       </scroll-view>
+      <slot name="footer" :ready="!skeleton" />
     </PageTransition>
     <CustomTabBar />
     <slot name="overlays" />

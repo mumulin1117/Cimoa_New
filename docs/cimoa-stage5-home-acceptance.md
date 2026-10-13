@@ -1,6 +1,6 @@
 # Cimoa Home 本页验收
 
-Home 已完成本页还原与浏览器验收，`local_acceptance: passed`；`full_acceptance: pending`。功能与验收提交已推送，页面按流程 5.2 恢复 `pending`（待依赖），未把任何页面或专属组件标为 verified。Discover 的依赖阻止完整验收，须先确认是否扩展分段例外。
+Home 已完成本页还原与浏览器验收，`local_acceptance: passed`；`full_acceptance: pending`。功能与验收提交已推送，页面按流程 5.2 恢复 `pending`（待依赖），未把任何页面或专属组件标为 verified。2026-10-13 用户已将分段验收扩展到后续各页，并要求后续仅本地提交；Discover 可以据此继续，不再重复请求相同决定。
 
 ## 本次实现
 
@@ -37,7 +37,7 @@ Home 已完成本页还原与浏览器验收，`local_acceptance: passed`；`ful
 | home.amCardGo.click.1 | /pages/auto-match/searching、paused、found、waiting；同一 match_id | 四态真实页面、状态操作、返回、持久化倒计时 |
 | home.exploreDiscover.click.1 / tab.* | Discover、Events 主路由 | 替换导航已通过；两个页面业务 UI/交互尚未还原 |
 
-Home完整验收还需既有WKWebView宿主、安全区/触摸/手势/返回实测；浏览器检查不替代这些项目。阶段五其他页面若依赖未齐，必须先请求是否扩展分段例外，不能沿用 Home 授权自行绕过。
+Home完整验收还需既有WKWebView宿主、安全区/触摸/手势/返回实测；浏览器检查不替代这些项目。后续页面依赖未齐时，按用户新增授权记录 local/full 和逐项 deferred，不视为 verified。
 
 ## 改动文件与发布状态
 
@@ -48,4 +48,4 @@ Home完整验收还需既有WKWebView宿主、安全区/触摸/手势/返回实�
 - 测试：`scripts/home.test.mjs`、`scripts/lib/home-browser.mjs`、`scripts/h5-browser.test.mjs`。
 - 记录与产物：本页验收、Home交互清单、阶段2字段、阶段5状态、页面清单、阶段1清单索引、`docs/evidence/home-*` 与 `dist/build/h5`。
 
-用户已确认 push 完成；`origin/main` 的 reflog 在 `2026-10-13T15:52:16+08:00` 记录 `29c15f9 update by push`，本地 HEAD 与远端跟踪分支完整 SHA 同为 `29c15f98199759ac91508f9e574dc080da6369c0`。此前 Home 发布阻塞已解除。本次 `git ls-remote` 在线查询仍遇到 GitHub 443 超时，因此推送核对依据为用户确认及本地推送记录，不宣称实时远端查询成功。后续提交仍须各自取得推送成功证据。
+此前用户已确认 push 完成；`origin/main` 的 reflog 在 `2026-10-13T15:52:16+08:00` 记录 `29c15f9 update by push`，当时本地 HEAD 与远端跟踪分支完整 SHA 同为 `29c15f98199759ac91508f9e574dc080da6369c0`。此前 Home 发布阻塞已解除。该次在线查询遇到 GitHub 443 超时，因此推送核对依据为用户确认及本地推送记录，不宣称实时远端查询成功。用户现已要求后续只做本地提交，不再执行 push。

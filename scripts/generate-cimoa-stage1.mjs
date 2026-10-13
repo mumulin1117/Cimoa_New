@@ -81,7 +81,7 @@ const records = read_catalog(source.catalog).flatMap((group) => group.screens.ma
     completion_navigation: completion_for(key),
     fixed_regions: component ? `宿主页 ${route} 保持；面板/遮罩常驻挂载` : key === 'photo' ? 'DiscoverHeroHeader; CustomTabBar; Send shot CTA' : is_tab ? 'TopSafeArea; 主功能栏和标题; CustomTabBar' : `TopSafeArea; SecondaryPageHeader; ${input_bar ? 'MessageComposer' : cta ? '底部 CTA' : 'BottomSafeArea'}`,
     scroll_region: component ? '面板内部唯一滚动区；不滚动背景' : input_bar ? 'Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0' : '固定区域之间唯一 scroll-view；flex:1; min-height:0',
-    top_safe_area_owner: key === 'photo' ? 'DiscoverHeroHeader（计划）' : 'TopSafeArea',
+    top_safe_area_owner: key === 'photo' ? 'DiscoverHeroHeader' : 'TopSafeArea',
     bottom_safe_area_owner: tab_keys.includes(key) ? 'CustomTabBar' : input_bar ? 'MessageComposer' : cta ? 'BottomCTA' : 'BottomSafeArea',
     interaction_ids: interactions.map((item) => item.interaction_id),
     entities: entities[route.split('/')[2]],
@@ -90,10 +90,10 @@ const records = read_catalog(source.catalog).flatMap((group) => group.screens.ma
       fonts: 'static/assets/fonts/source-fonts.css',
       dynamic_media: '以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用' },
     states: { ...state, required_checks: ['default', 'loading', 'empty', 'error', 'long-content', 'refresh', 'back'] }, status: prior?.status || 'pending',
-    ...(key === 'home' ? { local_acceptance: prior?.local_acceptance || 'pending', full_acceptance: prior?.full_acceptance || 'pending',
-      acceptance_policy: 'Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified' } : {}),
+    local_acceptance: prior?.local_acceptance || 'pending', full_acceptance: prior?.full_acceptance || 'pending',
+    acceptance_policy: '用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified',
     ...(key.startsWith('call') ? { implementation_override: '用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现' } : {}),
-    mapping_status: 'source-mapped; implementation pending; ten-field contract required before page work' }
+    mapping_status: prior?.local_acceptance === 'passed' ? 'source-mapped; local acceptance passed; full dependency acceptance pending' : 'source-mapped; implementation pending; ten-field contract required before page work' }
 }))
 const clean = (value) => String(value).replaceAll('|', '\\|').replaceAll('\n', ' ')
 const opening = fs.readFileSync('docs/cimoa-stage1-source-findings.md', 'utf8')

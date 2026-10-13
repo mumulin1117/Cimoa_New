@@ -33,6 +33,13 @@ export const use_app_store = defineStore('app', {
     user_by_id: (state) => (id) => ready(state) ? profile(state.data, id) : null,
     goals_for_user: (state) => (id) => ready(state) ? s.goals_for_user(state.data, id) : [],
     visible_people: (state) => ready(state) ? state.data.users.filter((row) => row.user_id !== s.owner_id(state.data) && row.discoverable && s.visible(state.data, row.user_id) && state.data.settings.find((settings) => settings.owner_user_id === row.user_id)?.privacy.discover_visible !== false).map((row) => profile(state.data, row.user_id)) : [],
+    discover_person() {
+      const user = this.visible_people[0]
+      if (!user) return null
+      const photos = this.data.profile_photos.filter((row) => row.user_id === user.user_id && user.photo_ids.includes(row.photo_id)).sort((a, b) => a.position - b.position)
+      return { ...user, photo: clone_data(photos[0] || null) }
+    },
+    introduction_blocker: (state) => (id) => state.hydration_status === 'ready' ? s.introduction_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
     home_connections: (state) => ready(state) ? s.home_cards(state.data, state.clock_ms) : [],
     home_match_card: (state) => ready(state) ? s.home_match_card(state.data, state.clock_ms) : null,
     request_by_id: (state) => (id) => ready(state) ? clone_data(state.data.requests.find((row) => row.request_id === id && [row.sender_id, row.recipient_id].includes(s.owner_id(state.data)) && s.visible(state.data, row.sender_id) && s.visible(state.data, row.recipient_id)) || null) : null,
@@ -165,9 +172,8 @@ export const use_app_store = defineStore('app', {
       const owner = s.owner_id(this.data)
       try { if (kind === 'voice') await check_media(this, audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
       return transact(this, operation(operation_id, 'introduction', [user_id, question_id, kind, text, audio_id]), (data, now) => {
-        require_student(data); require_target(data, user_id)
-        s.ensure(!s.connected(data, user_id), 'You are already connected.')
-        s.ensure(!data.requests.some((row) => row.status === 'pending' && [row.sender_id, row.recipient_id].includes(owner) && [row.sender_id, row.recipient_id].includes(user_id)), 'A request is already pending.')
+        const blocker = s.introduction_blocker(data, user_id, now)
+        s.ensure(!blocker, blocker)
         s.ensure(data.icebreakers.some((q) => q.question_id === question_id && q.user_id === user_id), 'Choose one of this person’s questions.')
         s.ensure(kind === 'text' ? typeof text === 'string' && text.trim() : kind === 'voice', 'Write an introduction or record a voice note.')
         const request_id = make_id('request')

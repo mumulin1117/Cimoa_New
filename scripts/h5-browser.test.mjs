@@ -5,10 +5,12 @@ import http from 'node:http'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { test_home } from './lib/home-browser.mjs'
+import { test_discover } from './lib/discover-browser.mjs'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const root = path.resolve('dist/build/h5'), evidence = path.resolve('docs/evidence')
 const home_mode = process.argv.includes('--home')
+const discover_mode = process.argv.includes('--discover')
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
 const server = http.createServer((req, res) => {
   const filename = path.resolve(root, '.' + decodeURIComponent(new URL(req.url, 'http://localhost').pathname === '/' ? '/index.html' : new URL(req.url, 'http://localhost').pathname))
@@ -82,6 +84,7 @@ try {
   check('real IndexedDB Blob survives page reload and is deleted cleanly')
   fs.mkdirSync(evidence, { recursive: true })
   if (home_mode) await test_home({ page, origin, evidence, check, context })
+  else if (discover_mode) await test_discover({ page, origin, evidence, check, context })
   else await page.screenshot({ path: path.join(evidence, 'stage4-foundation.png') })
   assert.deepEqual(errors, [])
   check('no browser runtime exceptions')
@@ -91,6 +94,6 @@ try {
   await new Promise((resolve) => server.close(resolve))
   report.cleaned_up = true
   fs.mkdirSync(evidence, { recursive: true })
-  fs.writeFileSync(path.join(evidence, home_mode ? 'home-browser.json' : 'stage4-browser.json'), JSON.stringify(report, null, 2) + '\n')
+  fs.writeFileSync(path.join(evidence, home_mode ? 'home-browser.json' : discover_mode ? 'discover-browser.json' : 'stage4-browser.json'), JSON.stringify(report, null, 2) + '\n')
   console.log('Temporary preview and browser closed.')
 }

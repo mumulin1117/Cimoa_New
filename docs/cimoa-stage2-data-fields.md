@@ -90,6 +90,8 @@ Home 状态文案由 `home_match_card` getter 从 active match 派生；waiting 
 
 ## Action 契约和账号隔离
 
+Discover 本页补充（2026-10-13）：`discover_person` 为只读 getter，从 `visible_people` 首位可见实体派生资料和 `photo`（其 `photo_ids` 内、同 `user_id`、按 position 排序的首张；缺失为 null）。不新增页面假用户、照片数组或存储键；姓名/大学/专业/MBTI/验证状态沿用详情实体及隐私过滤。`introduction_blocker(user_id)` 与 `send_introduction` 共用会话、学生认证、可见性、已连接和 pending 请求校验，导航不创建请求、不写余额；文字发送原有免费事务不变。
+
 | action 域 | 校验与成功结果 | 失败和重入 |
 | --- | --- | --- |
 | login / logout / delete_account | 固定 fixture 摘要校验；只有有效账号创建会话；退出清当前会话；删除验证本人密码 | 错误/过期/已删账号不登录；未配置真实服务不伪造成功 |

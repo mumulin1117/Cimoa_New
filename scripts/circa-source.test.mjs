@@ -34,7 +34,9 @@ test('inventory keeps all source states, full planned routes and no false verifi
     assert.ok(!entry.page_level.includes('随入口'))
     assert.ok(entry.allowed_origin_routes.length > 0)
     assert.ok(Array.isArray(entry.required_parameters))
-    if (entry.status === 'verified') assert.equal(entry.full_acceptance, 'passed')
+    assert.ok(['pending', 'passed', 'failed'].includes(entry.local_acceptance))
+    assert.ok(['pending', 'passed', 'failed'].includes(entry.full_acceptance))
+    if (entry.status === 'verified') { assert.equal(entry.local_acceptance, 'passed'); assert.equal(entry.full_acceptance, 'passed') }
     assert.match(entry.route, /^(\/pages\/[a-z0-9/-]+|component)$/)
   }
   assert.deepEqual([...new Set(inventory.filter((entry) => entry.page_level === '主 Tab').map((entry) => entry.route))].sort(),

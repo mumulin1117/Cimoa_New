@@ -55,6 +55,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -138,6 +141,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -187,6 +193,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -236,6 +245,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -305,6 +317,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -368,6 +383,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -441,6 +459,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -523,6 +544,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -598,6 +622,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -672,6 +699,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -735,6 +765,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -806,6 +839,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -870,6 +906,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -940,6 +979,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1006,6 +1048,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1078,6 +1123,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1149,6 +1197,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1218,6 +1269,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1296,6 +1350,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1374,6 +1431,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1448,6 +1508,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1517,6 +1580,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1586,6 +1652,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1680,6 +1749,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1775,6 +1847,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1853,6 +1928,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -1918,6 +1996,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -2061,8 +2142,8 @@
     "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
-    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Permissions / Photos / Pre-Permission",
@@ -2133,6 +2214,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -2203,6 +2287,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -2274,6 +2361,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -2352,6 +2442,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -2494,8 +2587,8 @@
     "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
-    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Discover / Profile / Photo",
@@ -2523,7 +2616,7 @@
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "DiscoverHeroHeader; CustomTabBar; Send shot CTA",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
-    "top_safe_area_owner": "DiscoverHeroHeader（计划）",
+    "top_safe_area_owner": "DiscoverHeroHeader",
     "bottom_safe_area_owner": "CustomTabBar",
     "interaction_ids": [
       "photo.openMe.click.1",
@@ -2587,8 +2680,11 @@
         "back"
       ]
     },
-    "status": "pending",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "status": "in_progress",
+    "local_acceptance": "passed",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Discover / Profile / Expanded",
@@ -2725,6 +2821,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -2855,6 +2954,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -2935,6 +3037,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3010,6 +3115,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3119,6 +3227,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3214,6 +3325,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3324,6 +3438,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3403,6 +3520,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3532,6 +3652,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3630,6 +3753,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3698,6 +3824,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3783,6 +3912,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -3887,6 +4019,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4030,6 +4165,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4116,6 +4254,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4259,6 +4400,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4363,6 +4507,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4466,6 +4613,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4570,6 +4720,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4666,6 +4819,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4738,6 +4894,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4811,6 +4970,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4883,6 +5045,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -4935,6 +5100,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -5078,6 +5246,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -5221,8 +5392,8 @@
     "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
-    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Home / Auto Match / Match Found",
@@ -5365,8 +5536,8 @@
     "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
-    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Home / Auto Match / Waiting",
@@ -5509,8 +5680,8 @@
     "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
-    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Home / Auto Match / Connected",
@@ -5653,8 +5824,8 @@
     "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
-    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Messages / Chat / Connected",
@@ -5745,6 +5916,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -5804,6 +5978,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
@@ -5910,6 +6087,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
@@ -5983,6 +6163,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
@@ -6114,6 +6297,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -6268,6 +6454,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -6423,6 +6612,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -6577,6 +6769,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -6641,6 +6836,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -6704,6 +6902,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -6833,6 +7034,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -6938,6 +7142,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7093,6 +7300,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7154,6 +7364,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7251,6 +7464,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7325,6 +7541,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7407,6 +7626,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7479,6 +7701,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7549,6 +7774,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7618,6 +7846,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7716,6 +7947,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7812,6 +8046,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -7955,6 +8192,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8014,6 +8254,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8082,6 +8325,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8146,6 +8392,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8214,6 +8463,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8275,6 +8527,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8340,6 +8595,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8454,6 +8712,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8567,6 +8828,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8756,6 +9020,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8822,6 +9089,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8880,6 +9150,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8932,6 +9205,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -8994,6 +9270,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9077,6 +9356,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9147,6 +9429,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9208,6 +9493,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9355,6 +9643,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9414,6 +9705,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9465,6 +9759,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9521,6 +9818,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9578,6 +9878,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9631,6 +9934,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9685,6 +9991,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9755,6 +10064,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9816,6 +10128,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -9964,6 +10279,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10015,6 +10333,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10077,6 +10398,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10129,6 +10453,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10194,6 +10521,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10244,6 +10574,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10302,6 +10635,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10392,6 +10728,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10455,6 +10794,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10545,6 +10887,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10601,6 +10946,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10687,6 +11035,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10748,6 +11099,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10806,6 +11160,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10851,6 +11208,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10922,6 +11282,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -10987,6 +11350,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -11130,8 +11496,8 @@
     "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
-    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Home / Connection Goals / Liam",
@@ -11274,8 +11640,8 @@
     "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
-    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Home / Connection Goals / Jordan",
@@ -11418,8 +11784,8 @@
     "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
-    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Coins / Spend / Text Confirmation",
@@ -11496,6 +11862,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -11592,6 +11961,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -11702,6 +12074,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -11797,6 +12172,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -11892,6 +12270,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -12027,6 +12408,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -12170,6 +12554,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -12273,6 +12660,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -12376,6 +12766,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -12479,6 +12872,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -12610,6 +13006,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -12764,6 +13163,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -12954,6 +13356,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -13144,6 +13549,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -13335,6 +13743,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -13525,6 +13936,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -13715,6 +14129,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -13905,6 +14322,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -14095,6 +14515,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -14285,6 +14708,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -14475,6 +14901,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -14665,6 +15094,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   },
   {
@@ -14855,6 +15287,9 @@
       ]
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
   }
 ]

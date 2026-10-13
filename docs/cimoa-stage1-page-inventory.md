@@ -104,7 +104,7 @@ Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码
 | Permissions / Microphone / Pre-Permission | route=permMic | 三级 | /pages/permissions/mic | pending |
 | Permissions / Notifications / Pre-Permission | route=permNotif | 三级 | /pages/permissions/notif | pending |
 | Home / People Met / Default | route=home | 主 Tab | /pages/home/index | pending |
-| Discover / Profile / Photo | route=photo | 主 Tab | /pages/discover/index | pending |
+| Discover / Profile / Photo | route=photo | 主 Tab | /pages/discover/index | in_progress |
 | Discover / Profile / Expanded | route=expanded | 二级 | /pages/discover/profile | pending |
 | Events / Explore / Default | route=events | 主 Tab | /pages/events/index | pending |
 | Discover / Icebreaker / Select Question | route=ibSelect | 二级 | /pages/discover/icebreaker/select | pending |
