@@ -34,6 +34,6 @@ Home 增加独立的 `local_acceptance` 和 `full_acceptance` 字段，均使用
 | Loading、空、错误、长内容、持久化 | 认证后单次骨架、空态、错误重试、长列表、头像 Blob 刷新、UTC 跨日通过 |
 | Tab 固定、骨架只消费一次 | Home 新布局回归通过，三 Tab 两轮往返栈深保持1 |
 | iOS WKWebView 安全区、手势、滚动 | 未执行，需要现有宿主 |
-| Home 专项 git commit / push | 本地专项提交见 Git 历史；本轮 Git 推送连接超时，未推送 |
+| Home 专项 git commit / push | 本地专项提交 cc59a36；本轮 Git 推送连接超时，未推送 |
 
 详细范围、改动文件、22 项 H5 结果与 deferred 清单见 [Home 本页验收](./cimoa-stage5-home-acceptance.md)。阶段五整体尚未完成。

@@ -41,6 +41,8 @@ Home完整验收还需既有WKWebView宿主、安全区/触摸/手势/返回实�
 
 ## 改动文件与发布状态
 
+本页功能、测试、截图与 H5 产物的本地专项提交：`cc59a36`（`feat(home): restore CIRCA Home and verify local acceptance`）。本记录补充提交不改变验收状态，也不表示已推送。
+
 - 页面与组件：`src/pages/home/index.vue`、`src/components/CimoaBrand.vue`、`ConnectionGoalsPopover.vue`、`UserAvatar.vue`。
 - 数据、主题、导航：`src/stores/seed.js`、`selectors.js`、`store.js`、`src/config/theme.json`、`src/utils/homeNavigation.js`。
 - 测试：`scripts/home.test.mjs`、`scripts/lib/home-browser.mjs`、`scripts/h5-browser.test.mjs`。
