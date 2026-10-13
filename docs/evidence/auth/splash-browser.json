@@ -1,0 +1,13 @@
+{
+  "phase": "splash",
+  "result": "passed",
+  "server_pid": 81954,
+  "checks": [
+    "fresh launch renders source brand/progress without authenticating or writing storage",
+    "unrestored Welcome is an explicit deferred failure, not a legacy replacement",
+    "saved session restores Home at stack one; double tap/timer cannot duplicate or prepare skeleton",
+    "corrupt snapshot is not overwritten and retry recovers repaired data"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

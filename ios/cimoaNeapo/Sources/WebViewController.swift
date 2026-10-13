@@ -63,7 +63,7 @@ final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDeleg
         }
     }
     private func loadContent() {
-        webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html#/pages/home/index")!))
+        webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html#/pages/auth/splash")!))
     }
     func publishSafeArea() {
         guard isViewLoaded, webView != nil, isTrustedURL(webView.url) else { return }

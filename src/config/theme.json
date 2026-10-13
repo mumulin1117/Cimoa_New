@@ -6,6 +6,7 @@
     },
     "surface": {
       "card": "#ffffff",
+      "splash_track": "rgba(11,27,58,0.08)",
       "deep": "#0b1b3a",
       "border": "#e6ebf2",
       "outline": "#d9e2ef",

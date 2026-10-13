@@ -1,5 +1,6 @@
 {
   "pages": [
+    { "path": "pages/auth/splash", "style": { "navigationStyle": "custom" } },
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/discover/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/events/index", "style": { "navigationStyle": "custom" } },
