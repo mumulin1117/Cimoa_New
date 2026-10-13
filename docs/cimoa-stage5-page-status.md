@@ -13,10 +13,12 @@
 
 ## 用户授权的分段验收
 
+唯一流程依据为 [开发流程阶段 5.2](../模板项目开发流程.md#52-home-分段验收用户已授权的唯一例外)。以下仅记录执行状态，不扩展到其他页面，也不因约定更新推进状态。
+
 Home 增加独立的 `local_acceptance` 和 `full_acceptance` 字段，均使用 pending / passed / failed。它们只表示验收结果，不改变页面的 pending / in_progress / verified 三态。
 
 1. Home 成为唯一 in_progress 页面，完成本页 UI、Popover、Store 派生、状态覆盖和导航参数检查。
-2. 本页通过后记录 `local_acceptance: passed`，列出依赖缺口；执行强制校验、专项提交和获授权的 push。等待依赖时将 Home 恢复 pending，不标记 verified。
+2. 本页通过后记录 `local_acceptance: passed`，按 interaction_id 列出 deferred 的目标、参数和未测步骤；执行强制校验、专项提交和获授权的 push。等待依赖时将 Home 恢复 pending，不标记 verified。
 3. 按 Home → Discover → Events 的主 Tab 顺序，再按入口依赖逐页推进。进入一个页面时，不保留另一个 in_progress 页面。
 4. 依赖补齐后，Home 再次成为唯一 in_progress 页面，执行真实目标页/返回、跨页同步、刷新恢复和 WKWebView 回归。
 5. `local_acceptance`、`full_acceptance` 都通过，且全部校验与提交推送有证据，才将 Home 标记 verified。

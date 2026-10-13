@@ -1,6 +1,6 @@
 # Cimoa Home 交互清单
 
-来源是内层模板 214–357 行及绑定逻辑，不是旧 Vue 首页。当前为待实现契约，不能作为验收通过记录。这里补充该页的操作映射，不修改两份强制约定。
+来源是内层模板 214–357 行及绑定逻辑，不是旧 Vue 首页。当前为待实现契约，不能作为验收通过记录。这里补充该页的操作映射，受开发约定、交互约定和开发流程约束；完成门槛统一见开发流程阶段 5。
 
 ## 页面骨架与数据入口
 
@@ -8,16 +8,16 @@
 - 固定区：TopSafeArea、品牌及左右功能入口、标题/副标题、CustomTabBar。原型整块滚动方式按开发约定第 15.1.2 节改为固定功能栏与单一内容滚动区。
 - 顶部安全区由 TopSafeArea 唯一占位；底部由 CustomTabBar 唯一接管。业务留白不能重复计算安全区。
 - 内容：联系人纵向列表、空状态、匹配状态卡。全部由同一 Store getter 派生；人数、连接标签、可聊天状态、每日配额和匹配倒计时不在页面重复保存。
-- ConnectionGoalsPopover 常驻挂载，受控显示；点击目标标签不冒泡到联系人卡片；滚动或关闭后不残留遮罩。目标图标按开发约定第 15.2 节处理，禁止直接写 Emoji。
+- ConnectionGoalsPopover 常驻挂载，受控显示；点击目标标签不冒泡到联系人卡片；滚动或关闭后不残留遮罩。按开发约定第 15.2 节保留原稿目标标签 Emoji；导航和操作图标仍用源 SVG，不以 Emoji 替代。
 - 只有成功登录/注册后消费本 Tab 的单次骨架资格；hydration、刷新、切 Tab、二级页返回不重新准备。
 
 ## 入口与验收契约
 
-同一行为的重复入口分别保留源码审计 ID；表中合并说明不合并实际 ID。所有导航失败均留在来源页并显示英文错误，业务实体不改变。
+同一行为的重复入口分别保留源码审计 ID；表中合并说明不合并实际 ID。所有导航失败均留在来源页并显示英文错误，业务实体不改变。表中的 Push 指真实页面栈入栈，动效统一为开发约定第 11 节的原型 cRise，不是 iOS 双页面联动。
 
 | interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| home.openMe.click.1 | Home / People Met | 点击左上个人图标 | 当前会话有效 | 立即 iOS Stack Push，无导航 Loading | `/pages/profile/index` 展示当前用户 | 会话失效走统一守卫；失败恢复 Home | none | 当前用户、个人中心 | 点击→核对用户→返回→Home 仍可见且滚动不丢失 |
+| home.openMe.click.1 | Home / People Met | 点击左上个人图标 | 当前会话有效 | 立即 Push，原型式入场，无导航 Loading | `/pages/profile/index` 展示当前用户 | 会话失效走统一守卫；失败恢复 Home | none | 当前用户、个人中心 | 点击→核对用户→返回→Home 仍可见且滚动不丢失 |
 | home.startAutoMatch.click.1 | Home / Header | 点击右上闪电 | 会话有效；配额来自 Store | 立即 Push，不扣次数 | `/pages/auto-match/index` | 失败保留配额、余额和状态 | none | Home 配额、Auto Match | 点击→返回→配额和金币未变化 |
 | home.startAutoMatch.click.2 | Home / Empty | 点击 Start Auto Match | 联系人列表为空 | 同上一入口 | 同一 Auto Match 入口 | 同上 | none | 同上 | 空列表下点击，不能额外创建假联系人 |
 | home.exploreDiscover.click.1 | Home / Empty | 点击 Explore People | 会话有效 | replace_route | `/pages/discover/index`，选中 Discover | Home 保持可见 | none | 三个主 Tab | 空页切 Discover→Home，栈深不增加，无重复骨架 |
@@ -45,4 +45,4 @@
 - `local_acceptance`：布局与资源、三个卡片详情资料一致、Popover、固定骨架、安全区所有权、Tabbar、一次骨架消费、默认/空/错误/长内容、Store 状态恢复，以及每个入口传递的正确实体 ID。依赖页内容和返回链路不能借此判为通过。
 - `full_acceptance`：Profile、Chat、Match Found、Received Request、Auto Match Entry 等目标页实现后，逐项执行上表完整 acceptance；补齐 WKWebView、安全区、手势、滚动、刷新和跨页同步证据。
 
-本页验收通过后可暂回 pending（待依赖），然后按既定顺序推进下一页；任一时刻仅一个页面 in_progress。本页阶段仍执行三项强制检查、专项提交及获授权的 push。只有两层验收与提交推送全部通过，Home 及其专属组件才能标记 verified。静态页面、旧错误目标页或构建成功都不是完整验收。
+状态推进严格按 [开发流程阶段 5.2](../模板项目开发流程.md#52-home-分段验收用户已授权的唯一例外)：本页通过后列明 deferred 的 interaction_id、目标与待测步骤，完成三项强制检查、专项提交及获授权的 push，才能暂回 pending（待依赖）并开始下一页；始终仅一页 in_progress。两层验收和提交推送齐备才能 verified。静态页面、旧错误目标页或构建成功都不是完整验收。
