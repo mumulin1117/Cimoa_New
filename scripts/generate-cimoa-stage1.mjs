@@ -1,70 +1,77 @@
 import fs from 'node:fs'
-import path from 'node:path'
-import zlib from 'node:zlib'
+import { read_circa_source, read_catalog } from './lib/circa-source.mjs'
 
-const root = process.cwd()
-const source = fs.readFileSync(path.join(root, 'CIRCA All Screens (interactive).html'), 'utf8')
-const readScript = (html, type) => {
-  const match = html.match(new RegExp(`<script type="${type}">([\\s\\S]*?)</script>`))
-  if (!match) throw new Error(`Missing ${type}`)
-  return JSON.parse(match[1])
+// Only generates planning documents; neither this module nor the source HTML is
+// imported into the application. Source route keys are not production routes.
+const source = read_circa_source()
+const audit = JSON.parse(fs.readFileSync('docs/circa-source-audit.json', 'utf8'))
+if (audit.source_sha256 !== source.source_hash) throw new Error('Run audit-circa-source.mjs first')
+const kebab = (value) => value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+const explicit = {
+  home: 'home/index', photo: 'discover/index', expanded: 'discover/profile', events: 'events/index',
+  profile: 'profile/index', profilePreview: 'profile/preview', settings: 'settings/index',
+  splash: 'auth/splash', welcome: 'auth/welcome', age: 'auth/age', agree: 'auth/community', signup: 'auth/signup', login: 'auth/login',
+  chat: 'messages/chat', msgList: 'messages/index', safetyReport: 'safety/report-user', blockedList: 'settings/blocked',
+  reportsSubmitted: 'safety/reports', reportDetail: 'safety/report-detail', verified: 'profile/verification', reverify: 'profile/reverify',
+  amEntry: 'auto-match/index', amPrefs: 'auto-match/preferences', coinStore: 'coins/index',
+  coinApple: 'coins/purchasing', editAll: 'profile/edit', setSupport: 'settings/support', logoutConfirm: 'settings/index',
 }
-const manifest = readScript(source, '__bundler/manifest')
-const standalone = zlib.gunzipSync(Buffer.from(manifest[Object.keys(manifest)[0]].data, 'base64')).toString('utf8')
-const template = readScript(source, '__bundler/template')
-const groups = []
-let current = null
-const groupSource = template.slice(template.indexOf('groups: ['), template.indexOf('];', template.indexOf('groups: [')))
-for (const line of groupSource.split('\n')) {
-  const title = line.match(/title:\s*"([^"]+)"/)
-  if (title) {
-    current = { title: title[1], screens: [] }
-    groups.push(current)
-  }
-  const screen = line.match(/s\("([^"]+)",\s*"([^"]+)"\)/)
-  if (screen && current) current.screens.push({ name: screen[1], route: screen[2].replace('route=', '') })
+const domains = { legal: 'legal', ver: 'auth/verification', fp: 'auth/reset', ob: 'onboarding', perm: 'permissions',
+  ib: 'discover/icebreaker', req: 'connections', am: 'auto-match', ev: 'events', coin: 'coins', edit: 'profile',
+  set: 'settings', del: 'settings/delete', sys: 'system', call: 'messages/call' }
+const plan_route = (key) => {
+  if (explicit[key]) return `/pages/${explicit[key]}`
+  const prefix = Object.keys(domains).find((candidate) => key.startsWith(candidate) && /^[A-Z]/.test(key.slice(candidate.length)))
+  if (!prefix) throw new Error(`Missing explicit route plan for ${key}`)
+  return `/pages/${domains[prefix]}/${kebab(key.slice(prefix.length))}`
 }
-const assetManifest = JSON.parse(fs.readFileSync(path.join(root, 'static/assets/manifest.json'), 'utf8'))
-const entities = {
-  'LAUNCH & AUTH': 'session, legal, verification', ONBOARDING: 'profile, preferences, media', PERMISSIONS: 'permission',
-  'MAIN LEVEL': 'user, connection, event', 'DISCOVER · ICEBREAKER': 'user, icebreaker, coin_transaction', CONNECTION: 'connection_request, user',
-  'AUTO MATCH': 'match_queue, match_preference, connection', 'MESSAGES & CALLS': 'conversation, message, call', EVENTS: 'event, participant, report',
-  COINS: 'wallet, coin_package, coin_transaction', PROFILE: 'profile, media, verification', SETTINGS: 'settings, blocked_user, permission', SAFETY: 'report, blocked_user',
-  'SYSTEM STATES': 'system_state, session', 'POPUPS & SHEETS': 'sheet, confirmation', 'EDIT PROFILE · PICKERS': 'profile, picker_option',
+const tab_keys = ['home', 'photo', 'events']
+const entities = { home: 'users; user_relationships; connection_requests; match_sessions; goals; blocked_users',
+  discover: 'users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions',
+  events: 'events; event_memberships; organizers; group_list; group_messages; reports',
+  auth: 'user_accounts; session; verification; agreements', legal: 'legal_documents; agreements',
+  onboarding: 'users; profile_drafts; profile_photos; interests; goals; icebreakers', permissions: 'permissions; media_files',
+  connections: 'connection_requests; user_relationships; dm_conversations; users',
+  'auto-match': 'match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions',
+  messages: 'users; dm_conversations; dm_messages; call_sessions; user_relationships; blocked_users',
+  coins: 'coin_packages; purchase_requests; coin_transactions', profile: 'users; profile_photos; interests; goals; icebreakers; profile_song',
+  settings: 'settings; user_accounts; session; permissions; blocked_users; support_requests',
+  safety: 'reports; blocked_users; users', system: 'session; service_state' }
+const component_name = (params) => {
+  if (params.pop) return 'ConnectionGoalsPopover'
+  if (params.ea) return 'ProfilePickerSheet'
+  if (!params.sheet) return null
+  const name = params.sheet[0].toUpperCase() + params.sheet.slice(1)
+  return /Confirm|Block|Leaving|Accepting|Boost|Cancel|Discard|logout|FoundLeave/.test(params.sheet)
+    ? `${name}ConfirmDialog` : `${name}Sheet`
 }
-const interactions = (group, route) => {
-  const ids = ['route_transition', 'back']
-  if (group.includes('AUTH')) ids.push('continue', 'create_account', 'log_in', 'verify_email')
-  if (group === 'ONBOARDING') ids.push('save_profile', 'select_option', 'upload_photo')
-  if (group === 'PERMISSIONS') ids.push('request_permission')
-  if (group.includes('ICEBREAKER')) ids.push('select_question', 'send_text', 'record_voice', 'spend_coins')
-  if (group === 'CONNECTION') ids.push('send_request', 'accept_request', 'decline_request')
-  if (group === 'AUTO MATCH') ids.push('set_preferences', 'join_queue', 'pause_queue', 'leave_queue', 'accept_match', 'pass_match')
-  if (group === 'MESSAGES & CALLS') ids.push('send_message', 'start_call', 'accept_call', 'end_call')
-  if (group === 'EVENTS') ids.push('filter_events', 'join_event', 'cancel_attendance', 'open_group_chat', 'report_event')
-  if (group === 'COINS') ids.push('select_package', 'purchase_coins', 'confirm_spend', 'open_transaction_detail')
-  if (group === 'PROFILE' || group.includes('EDIT PROFILE')) ids.push('edit_profile', 'save_profile', 'select_picker_option')
-  if (group === 'SETTINGS') ids.push('toggle_setting', 'manage_blocked_accounts', 'logout', 'delete_account')
-  if (group === 'SAFETY') ids.push('submit_report', 'block_user')
-  if (route.includes('sheet=')) ids.push('dismiss_sheet')
-  return ids.join(', ')
-}
-const pageLevel = (group, route) => group === 'SYSTEM STATES' ? 'system' : (group.includes('SHEET') || group.includes('PICKER') || route.includes('sheet=') || route.includes('pop=') ? 'sheet' : (group === 'MAIN LEVEL' ? 'main_tab' : 'secondary'))
-const assetText = (group) => group.includes('EVENT') ? 'static/assets/img/*' : (group.includes('PROFILE') || group.includes('MATCH') || group.includes('MESSAGES') ? 'static/assets/head/*; static/assets/songs/*' : (group.includes('COIN') ? 'static/assets/coins/*' : 'none'))
-const rows = groups.flatMap((group) => group.screens.map((screen) => `| ${screen.name} | ${pageLevel(group.title, screen.route)} | ${screen.route} | ${group.title.toLowerCase()} sibling state and tab/header actions | TopSafeArea; header; ${pageLevel(group.title, screen.route) === 'main_tab' ? 'CustomTabBar' : 'back control'} | one main scroll-view; fixed sheets where present | ${interactions(group.title, screen.route)} | ${entities[group.title] ?? 'unknown'} | ${assetText(group.title)} | ${screen.route.includes('sheet=') ? 'sheet_open' : 'default'} | pending |`))
-const output = [
-  '# Cimoa 阶段一：CIRCA 原型页面恢复清单', '',
-  '来源：CIRCA All Screens (interactive).html。本文件只描述 Vue/uni-app 的恢复目标，运行时不加载原 HTML。', '',
-  `- 屏幕状态：${rows.length}`, `- 业务分组：${groups.length}`, `- 本地资源：${assetManifest.assets.length}`,
-  '- 实现边界：颜色只来自 src/config/theme.json；业务写入归 Pinia Store；交互通过路由工具、Store action、Loading 和自定义确认组件完成。', '',
-  '## 分组摘要', '', '| group | screens | entities | status |', '|---|---:|---|---|',
-  ...groups.map((group) => `| ${group.title} | ${group.screens.length} | ${entities[group.title]} | pending |`), '',
-  '## 屏幕清单', '',
-  '| source_screen | page_level | route | entry_points | fixed_regions | scroll_region | interaction_ids | entities | assets | states | status |',
-  '|---|---|---|---|---|---|---|---|---|---|---|', ...rows, '',
-  '## 缺失或需适配的原型资源', '',
-  '原型使用内联 emoji 与颜色；这些不直接移植。已提取的 29 个图片资源见 static/assets/manifest.json，缺失的系统图标由 @element-plus/icons-vue 或现有图片资源承载。', '',
-].join('\n')
-fs.mkdirSync(path.join(root, 'docs'), { recursive: true })
-fs.writeFileSync(path.join(root, 'docs/cimoa-stage1-page-inventory.md'), output)
-console.log(`Generated ${rows.length} screen inventory rows.`)
+const records = read_catalog(source.catalog).flatMap((group) => group.screens.map((screen) => {
+  const { route: key, ...state } = screen.params
+  const route = plan_route(key)
+  const component = component_name(screen.params)
+  const is_tab = tab_keys.includes(key) && !component
+  const source_lines = audit.sections.filter((section) => section.route === key).map((section) => section.source_line)
+  return { source_screen: screen.source_screen, source_query: screen.source_query, source_lines,
+    page_level: component ? (component.endsWith('ConfirmDialog') ? '确认弹窗' : screen.params.pop ? 'Popover' : 'Sheet') : is_tab ? '主 Tab' : '二级/三级（随入口）',
+    route: component ? 'component' : route, component: component ? `src/components/${component}.vue` : null,
+    parent_route: component ? route : null,
+    entry_points: audit.transitions.filter((edge) => edge.target === JSON.stringify(key)).map((edge) => `${edge.handler}@${edge.source_line}`),
+    return_owner: component ? '关闭后恢复宿主页' : is_tab ? 'replace_route 切换，不 Push' : '普通返回本次来源实例；root 成功分支才清栈',
+    fixed_regions: key === 'photo' ? 'DiscoverHeroHeader 接管顶部安全区; CustomTabBar' : is_tab ? 'TopSafeArea; 主功能栏; CustomTabBar' : 'TopSafeArea; SecondaryPageHeader; 有输入/操作栏时固定在滚动区外',
+    scroll_region: component ? '面板内容滚动，背景不可交互' : '唯一 scroll-view; min-height: calc(100% + 2rpx)',
+    top_safe_area_owner: key === 'photo' ? 'DiscoverHeroHeader（计划）' : 'TopSafeArea',
+    bottom_safe_area_owner: tab_keys.includes(key) ? 'CustomTabBar' : 'BottomSafeArea',
+    interaction_ids: audit.interactions.filter((item) => item.route === key).map((item) => item.interaction_id),
+    entities: entities[route.split('/')[2]], assets: 'circa-source-audit.json resources（全部逐项，不用通配目录代替）',
+    states: state, status: 'pending', mapping_status: 'planned; requires per-entry contract review' }
+}))
+const clean = (value) => String(value).replaceAll('|', '\\|').replaceAll('\n', ' ')
+const opening = fs.readFileSync('docs/cimoa-stage1-source-findings.md', 'utf8')
+const output = [opening.trim(), '', '## 全量画板映射', '',
+  '下表为计划路由，不表示已注册或已实现。所有必填字段、安全区所有者、来源行号、interaction_ids 见 [结构化清单](./cimoa-page-inventory.json)。', '',
+  '| source_screen | 原型定位参数 | page_level | 计划 route 或 component | status |', '| --- | --- | --- | --- | --- |',
+  ...records.map((record) => `| ${clean(record.source_screen)} | ${clean(record.source_query)} | ${record.page_level} | ${record.component || record.route} | pending |`), '',
+  '生成方式：先运行 `node scripts/audit-circa-source.mjs`，再运行 `node scripts/generate-cimoa-stage1.mjs`。只做静态解析，不执行原型脚本。', '' ].join('\n')
+fs.writeFileSync('docs/cimoa-page-inventory.json', JSON.stringify(records, null, 2) + '\n')
+fs.writeFileSync('docs/cimoa-stage1-page-inventory.md', output)
+console.log(`Corrected ${records.length} source states; no restoration status was promoted.`)

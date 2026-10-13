@@ -1,43 +1,20 @@
-# Cimoa 阶段二：数据字段与关系
+# Cimoa 阶段二数据字段修正要求
 
-所有字段由 Pinia Store 读取和写入；页面不维护业务副本。持久化字段通过 Store action 调用 `uni` storage，媒体地址使用 `static/assets` 稳定 URL。
+**状态：pending，等待阶段 1 完成。** 旧字段表基于错误的页面结构和伪关系，不能用于本次还原。以下是重新设计时必须关闭的差异，不代表 Store 已重构。
 
-| entity | field_name | type | required | source_screen | relation | persistence | write_action |
-|---|---|---|---|---|---|---|---|
-| session | is_authenticated | boolean | yes | Auth / Log In | current_user_id -> user | local_storage_metadata | login / logout |
-| session | current_user_id | string | yes | Auth / Log In | user.user_id | local_storage_metadata | login / logout |
-| user | user_id | string | yes | all profile screens | primary key | store_seed | derived |
-| user | user_name | string | yes | Profile / Edit | current_user | local_storage_metadata | update_profile |
-| user | avatar_url | media URL | no | Profile / Personal | current_user | store_seed | update_profile |
-| user | major | string | no | Onboarding / Basic Info | current_user | local_storage_metadata | update_profile |
-| relationship | relationship_id | string | yes | Connection / Request | primary key | store_seed | derived |
-| relationship | from_user_id | string | yes | Connection | user.user_id | store_seed | derived |
-| relationship | to_user_id | string | yes | Discover / Profile | user.user_id | store_seed | toggle_relationship |
-| relationship | status | enum | yes | Connection | none/requested/mutual | local_storage_metadata | toggle_relationship |
-| event | event_id | string | yes | Events / Explore | primary key | store_seed | derived |
-| event | title | string | yes | Events / Detail | none | store_seed | derived |
-| event | image_url | media URL | no | Events / Explore | static asset | store_seed | derived |
-| event | joined | boolean | yes | Events / Join | current_user_id + event_id | local_storage_metadata | join_event / cancel_event |
-| post | post_id | string | yes | Discover / Stories | primary key | store_seed | derived |
-| post | liked | boolean | yes | Discover / Stories | current_user_id + post_id | local_storage_metadata | toggle_post_reaction |
-| post | saved | boolean | yes | Discover / Stories | current_user_id + post_id | local_storage_metadata | toggle_post_reaction |
-| post | comment_count | number | derived | Discover / Stories | comments.post_id | derived | derived |
-| comment | comment_id | string | yes | Post / Comments | primary key | local_storage_metadata | add_comment |
-| comment | post_id | string | yes | Post / Comments | post.post_id | local_storage_metadata | add_comment |
-| conversation | conversation_id | string | yes | Messages / List | primary key | store_seed | derived |
-| conversation | participant_id | string | yes | Messages / Chat | user.user_id | store_seed | derived |
-| message | message_id | string | yes | Messages / Chat | conversation_id | local_storage_metadata | send_message |
-| message | sender_id | string | yes | Messages / Chat | user.user_id | local_storage_metadata | send_message |
-| message | body | string | yes | Messages / Chat | conversation_id | local_storage_metadata | send_message |
-| coin_transaction | transaction_id | string | yes | Coins / History | primary key | local_storage_metadata | complete_purchase / spend_coins |
-| coin_transaction | amount | number | yes | Coins / History | wallet.current_user_id | local_storage_metadata | complete_purchase / spend_coins |
-| coin_transaction | balance_after | number | derived | Coins / History | ordered transaction list | derived | derived |
-| wallet | coin_balance | number | yes | Wallet / Coin Center | current_user_id | derived | complete_purchase / spend_coins |
-| match_queue | status | enum | yes | Auto Match | idle/searching/paused/connected/passed | local_storage_metadata | set_match_status |
-| match_preference | distance | string | yes | Auto Match / Preferences | current_user_id | local_storage_metadata | update_match_preferences |
-| blocked_user | user_id | string | yes | Safety / User Actions | user.user_id | local_storage_metadata | block_user / unblock_user |
-| report | report_id | string | yes | Safety / Report User | primary key | local_storage_metadata | report_user |
-| settings | notifications_enabled | boolean | yes | Settings / Notifications | current_user_id | local_storage_metadata | toggle_setting |
-| settings | show_online_status | boolean | yes | Settings / Privacy | current_user_id | local_storage_metadata | toggle_setting |
+| 当前错误 | 原型及约定要求 | 完成证据 |
+| --- | --- | --- |
+| Home 从 visible_people 任取三人 | 由联系人、真实关系、邀请和匹配实体派生，不混同 Discover 候选列表 | 每张卡可追溯 user_id、request_id 或 match_id |
+| relationship.status 保存 mutual | 两条定向关系派生互相关注，记录 follower_user_id / following_user_id | 每条 DM 会话可验证双方方向关系 |
+| 无统一 user_accounts | 登录、当前用户和个人资料均引用同一账号/用户集合 | 固定账号成功、错误密码、删除账号、注册冲突均有状态定义 |
+| coin_balance / balance_after 随 action 累加 | 余额与流水后余额按有效交易派生 | 充值在前、消费在后，退款和重复回调不破坏总额 |
+| events.joined 和 participant_count | 当前用户参与关系、活动容量、人数从统一成员实体派生 | 重复加入不重复计数、取消后释放名额、群聊权限同步 |
+| posts/comments 为原型新增内容 | 本 HTML 没有帖子信息流，不作为 Home / Discover 实体 | 旧持久化数据迁移保留用户创建内容，不静默删除 |
+| 单个全局 match 和候选 | 匹配会话含 owner、candidate、状态、基准时间、配额和历史 | Home / Found / Waiting 使用同一 match_id，刷新不重启计时 |
+| blocked_user_ids 无所有者 | 拉黑记录按 owner_user_id / user_id 隔离 | 统一过滤资料、邀请、消息、活动参与者与匹配 |
+| 页面 query 决定业务真假状态 | query 只传 ID 和返回归属；状态从 Store 派生 | 无 query 伪造连接、余额、参加状态 |
+| 无真正媒体引用 | 静态资源本地化；上传媒体 Blob 在 IndexedDB，Store 保存稳定地址 | 头像、语音、歌曲、图片刷新后可解析，缺失明确错误 |
 
-关系方向统一为当前用户 -> 目标用户；`visible_people` 和 `current_conversations` 由 `blocked_user_ids` 派生，评论数量由实际 comments 数组派生，金币余额由成功交易 action 更新。
+下一步逐字段补齐 `entity / field_name / type / required / source_screen / relation / persistence / write_action`；`persistence` 仅允许规定的四种值。不得在字段和计费/资料决策未定时进入全量 seed。
+
+用户信息以当前要求为准：品牌与标题 Cimoa，副标题 Cimoa: Campus Life & New Meet，固定测试账号 `cimoa@gmail.com` / `12341234`。App ID 未提供，不能将 `__UNI__CIMOA` 当作正式 iOS Bundle ID。当前代码尚未应用这些数据修正。

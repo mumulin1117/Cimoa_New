@@ -1,192 +1,207 @@
-# Cimoa 阶段一：CIRCA 原型页面恢复清单
+# Cimoa 阶段一原型核对与页面清单
 
-来源：CIRCA All Screens (interactive).html。本文件只描述 Vue/uni-app 的恢复目标，运行时不加载原 HTML。
+最终 UI 和交互依据为 `CIRCA All Screens (interactive).html`；品牌采用 Cimoa。运行时仅使用独立 Vue / uni-app 组件、Store、样式和本地资源，不加载原 HTML。
 
-- 屏幕状态：154
-- 业务分组：16
-- 本地资源：29
-- 实现边界：颜色只来自 src/config/theme.json；业务写入归 Pinia Store；交互通过路由工具、Store action、Loading 和自定义确认组件完成。
+**阶段状态：in_progress。** 旧清单中的四 Tab、伪路由和笼统交互已撤销。下列映射是规划，不是已实现的证明。阶段 1 的资料冲突、交互契约和服务边界未关闭前，不进入阶段 2–5。
 
-## 分组摘要
+原型 SHA-256：`6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060`。静态审计定位 154 个目录状态、104 个页面条件区块、539 个事件绑定、52 个包内资源和 356 处内联 SVG。事件绑定包括输入、遮罩关闭、冒泡控制，不等于 539 个业务按钮；154 个状态也不等于 154 个独立页面。
 
-| group | screens | entities | status |
-|---|---:|---|---|
-| LAUNCH & AUTH | 15 | session, legal, verification | pending |
-| ONBOARDING | 13 | profile, preferences, media | pending |
-| PERMISSIONS | 4 | permission | pending |
-| MAIN LEVEL | 4 | user, connection, event | pending |
-| DISCOVER · ICEBREAKER | 5 | user, icebreaker, coin_transaction | pending |
-| CONNECTION | 4 | connection_request, user | pending |
-| AUTO MATCH | 18 | match_queue, match_preference, connection | pending |
-| MESSAGES & CALLS | 4 | conversation, message, call | pending |
-| EVENTS | 10 | event, participant, report | pending |
-| COINS | 15 | wallet, coin_package, coin_transaction | pending |
-| PROFILE | 10 | profile, media, verification | pending |
-| SETTINGS | 14 | settings, blocked_user, permission | pending |
-| SAFETY | 5 | report, blocked_user | pending |
-| SYSTEM STATES | 7 | system_state, session | pending |
-| POPUPS & SHEETS | 15 | sheet, confirmation | pending |
-| EDIT PROFILE · PICKERS | 11 | profile, picker_option | pending |
+## 已确认的结构
 
-## 屏幕清单
+- 主 Tab 仅 Home、Discover、Events。依据内层模板 `showTabs`（5193 行）和内嵌 `TabBar.dc.html`，不是按 MAIN LEVEL 分组名称猜测。
+- Profile 从 Home 左上入口打开，是二级页；Discover / Profile / Expanded 也是二级资料页。
+- Home 标题为 People you’ve met，默认 Chloe Lin、Liam Park、Jordan Ellis 三张纵向卡片，分别进入聊天、匹配预览、收到邀请。没有旧实现的横排推荐、活动区或绿色宣传卡。
+- Home 三个 Connection Goals 为卡片锚定 Popover，不是底部 Sheet。匹配状态卡覆盖 searching、paused、found、waiting；空联系人有 Start Auto Match / Explore People 入口。
+- 393 × 852 是原型参考视口。设计尺寸按 `750 / 393` 转成 rpx；不复制状态栏和 Home Indicator，安全区与固定骨架服从开发约定第 15 节。
+- 原型 Tabbar 是白色圆角胶囊，三枚轮廓图标分别为房屋、搜索、日历；选中项为渐变圆形底。不显示文字标签，英文标签用于无障碍。
+- 原型主渐变为青、蓝、紫、粉；背景为浅蓝到浅紫。旧深绿/荧光黄/米白主题不属于此原型。
+- 原型没有帖子信息流；旧 Store 的 posts/comments 不能用来填补首页。
 
-| source_screen | page_level | route | entry_points | fixed_regions | scroll_region | interaction_ids | entities | assets | states | status |
-|---|---|---|---|---|---|---|---|---|---|---|
-| Launch / Splash / Default | secondary | splash | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Welcome / Default | secondary | welcome | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Legal / Terms of Service / Default | secondary | legalTerms | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Legal / Privacy Policy / Default | secondary | legalPrivacy | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Age Confirmation / Default | secondary | age | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Community Agreement / Default | secondary | agree | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Sign Up / Default | secondary | signup | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Log In / Default | secondary | login | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Email Verification / Enter Email | secondary | verEmail | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Email Verification / Code | secondary | verCode | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Email Verification / Success | secondary | verSuccess | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Email Verification / Unsupported | secondary | verUnsupported | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Forgot Password / Email | secondary | fpEmail | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Forgot Password / Code | secondary | fpCode | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Auth / Forgot Password / New Password | secondary | fpNew | launch & auth sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, continue, create_account, log_in, verify_email | session, legal, verification | none | default | pending |
-| Onboarding / Basic Info / Default | secondary | obBasic | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / University / Default | secondary | obUni | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / Major / Default | secondary | obMajor | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / Photos / Empty | secondary | obPhotos&photos=0 | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / Photos / Added | secondary | obPhotos&photos=3 | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / About / Default | secondary | obAbout | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / Interests / Default | secondary | obInterests | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / Connection Goal / Default | secondary | obGoal | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / Icebreakers / Empty | secondary | obIce | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / Icebreakers / Completed | secondary | obIce&ice=1 | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / Notifications / Pre-Permission | secondary | obNotif | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Onboarding / Complete / Default | secondary | obComplete | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Home / People Met / Empty | secondary | home&newUser=1 | onboarding sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, save_profile, select_option, upload_photo | profile, preferences, media | none | default | pending |
-| Permissions / Photos / Pre-Permission | secondary | permPhotos | permissions sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, request_permission | permission | none | default | pending |
-| Permissions / Camera / Pre-Permission | secondary | permCamera | permissions sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, request_permission | permission | none | default | pending |
-| Permissions / Microphone / Pre-Permission | secondary | permMic | permissions sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, request_permission | permission | none | default | pending |
-| Permissions / Notifications / Pre-Permission | secondary | permNotif | permissions sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, request_permission | permission | none | default | pending |
-| Home / People Met / Default | main_tab | home | main level sibling state and tab/header actions | TopSafeArea; header; CustomTabBar | one main scroll-view; fixed sheets where present | route_transition, back | user, connection, event | none | default | pending |
-| Discover / Profile / Photo | main_tab | photo | main level sibling state and tab/header actions | TopSafeArea; header; CustomTabBar | one main scroll-view; fixed sheets where present | route_transition, back | user, connection, event | none | default | pending |
-| Discover / Profile / Expanded | main_tab | expanded | main level sibling state and tab/header actions | TopSafeArea; header; CustomTabBar | one main scroll-view; fixed sheets where present | route_transition, back | user, connection, event | none | default | pending |
-| Events / Explore / Default | main_tab | events | main level sibling state and tab/header actions | TopSafeArea; header; CustomTabBar | one main scroll-view; fixed sheets where present | route_transition, back | user, connection, event | none | default | pending |
-| Discover / Icebreaker / Select Question | secondary | ibSelect | discover · icebreaker sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_question, send_text, record_voice, spend_coins | user, icebreaker, coin_transaction | none | default | pending |
-| Discover / Icebreaker / Text Reply | secondary | ibText | discover · icebreaker sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_question, send_text, record_voice, spend_coins | user, icebreaker, coin_transaction | none | default | pending |
-| Discover / Icebreaker Answer / Voice | secondary | ibVoice | discover · icebreaker sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_question, send_text, record_voice, spend_coins | user, icebreaker, coin_transaction | none | default | pending |
-| Discover / Icebreaker / Voice Preview | secondary | ibPreview | discover · icebreaker sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_question, send_text, record_voice, spend_coins | user, icebreaker, coin_transaction | none | default | pending |
-| Permissions / Microphone / Prompt | sheet | ibVoice&sheet=micPermission | discover · icebreaker sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_question, send_text, record_voice, spend_coins, dismiss_sheet | user, icebreaker, coin_transaction | none | sheet_open | pending |
-| Connection / Request / Sent | secondary | reqSent | connection sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, send_request, accept_request, decline_request | connection_request, user | none | default | pending |
-| Connections / Request Detail / Default | secondary | reqReceived | connection sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, send_request, accept_request, decline_request | connection_request, user | none | default | pending |
-| Connection / Request / Accepted | secondary | reqAccepted | connection sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, send_request, accept_request, decline_request | connection_request, user | none | default | pending |
-| Connection / Request / Declined | secondary | reqDeclined | connection sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, send_request, accept_request, decline_request | connection_request, user | none | default | pending |
-| Auto Match / Entry / Default | secondary | amEntry | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Preferences / Default | secondary | amPrefs | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Queue / Searching | secondary | amSearching&am=searching | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Queue / Paused | secondary | amPaused&am=paused | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Queue / Leaving | sheet | amSearching&am=searching&sheet=amLeaving | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match, dismiss_sheet | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | sheet_open | pending |
-| Auto Match / Found / Preview | secondary | amFound&am=found | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Found / Accepting | sheet | amFound&am=found&sheet=amAccepting | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match, dismiss_sheet | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | sheet_open | pending |
-| Auto Match / Found / Waiting | secondary | amWaiting&am=waiting | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Result / Connected | secondary | amConnected&am=connected | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Result / Passed | secondary | amPassed&am=passed | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Result / Expired | secondary | amExpired&am=expired | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Queue / No Match | secondary | amNoMatch&am=noMatch | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / History / Default | secondary | amHistory&am=connected | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Auto Match / Boost / Confirmation | sheet | amSearching&am=searching&sheet=amBoost | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match, dismiss_sheet | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | sheet_open | pending |
-| Home / Auto Match / Searching | secondary | home&am=searching | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Home / Auto Match / Match Found | secondary | home&am=found | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Home / Auto Match / Waiting | secondary | home&am=waiting | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Home / Auto Match / Connected | secondary | home&am=connected | auto match sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, set_preferences, join_queue, pause_queue, leave_queue, accept_match, pass_match | match_queue, match_preference, connection | static/assets/head/*; static/assets/songs/* | default | pending |
-| Messages / Chat / Connected | secondary | chat | messages & calls sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, send_message, start_call, accept_call, end_call | conversation, message, call | static/assets/head/*; static/assets/songs/* | default | pending |
-| Video Call / Incoming / Default | secondary | callIncoming | messages & calls sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, send_message, start_call, accept_call, end_call | conversation, message, call | static/assets/head/*; static/assets/songs/* | default | pending |
-| Video Call / Active / Default | secondary | callActive | messages & calls sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, send_message, start_call, accept_call, end_call | conversation, message, call | static/assets/head/*; static/assets/songs/* | default | pending |
-| Video Call / Ended / Default | secondary | callEnded | messages & calls sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, send_message, start_call, accept_call, end_call | conversation, message, call | static/assets/head/*; static/assets/songs/* | default | pending |
-| Events / Explore / Default | secondary | events | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event | event, participant, report | static/assets/img/* | default | pending |
-| Events / Detail / Available | secondary | evDetail | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event | event, participant, report | static/assets/img/* | default | pending |
-| Events / Detail / Joined | secondary | evDetail&joined=1 | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event | event, participant, report | static/assets/img/* | default | pending |
-| Events / Join / Confirmation | sheet | evDetail&sheet=evJoinConfirm | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event, dismiss_sheet | event, participant, report | static/assets/img/* | sheet_open | pending |
-| Events / Join / Success | secondary | evJoinSuccess&joined=1 | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event | event, participant, report | static/assets/img/* | default | pending |
-| Events / Participants / Default | secondary | evParticipants&joined=1 | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event | event, participant, report | static/assets/img/* | default | pending |
-| Events / Group Chat / Default | secondary | evGroup&joined=1 | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event | event, participant, report | static/assets/img/* | default | pending |
-| Events / My Events / Upcoming | secondary | evUpcoming&joined=1 | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event | event, participant, report | static/assets/img/* | default | pending |
-| Events / Attendance / Cancel | sheet | evDetail&joined=1&sheet=evCancel | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event, dismiss_sheet | event, participant, report | static/assets/img/* | sheet_open | pending |
-| Events / Report / Select Reason | secondary | evReport | events sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, filter_events, join_event, cancel_attendance, open_group_chat, report_event | event, participant, report | static/assets/img/* | default | pending |
-| Wallet / Coin Center / Default | secondary | coinStore | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / Store / Purchasing | secondary | coinPurchasing&pkg=1 | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / Purchase / Apple Confirmation | secondary | coinApple&pkg=1 | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / Purchase / Success | secondary | coinSuccess&pkg=1&coins=200 | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / Purchase / Failed | secondary | coinFailed&pkg=1 | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / Purchase / Cancelled | secondary | coinCancelled&pkg=1 | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / Balance / Insufficient | sheet | ibPreview&sheet=coinInsufficient&coins=5&ctx=voice | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail, dismiss_sheet | wallet, coin_package, coin_transaction | static/assets/coins/* | sheet_open | pending |
-| Coins / Spend / Voice Confirmation | sheet | ibPreview&sheet=coinVoice | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail, dismiss_sheet | wallet, coin_package, coin_transaction | static/assets/coins/* | sheet_open | pending |
-| Coins / Spend / Priority Match Confirmation | sheet | amSearching&am=searching&sheet=amBoost | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail, dismiss_sheet | wallet, coin_package, coin_transaction | static/assets/coins/* | sheet_open | pending |
-| Coins / Spend / Processing | secondary | coinProcessing | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / Spend / Failed | secondary | coinSpendFailed | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / History / Default | secondary | coinHistory | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / History / Purchase Detail | secondary | coinPurchaseDetail | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / History / Spending Detail | secondary | coinSpendDetail | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Coins / Help / Default | secondary | coinHelp | coins sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, select_package, purchase_coins, confirm_spend, open_transaction_detail | wallet, coin_package, coin_transaction | static/assets/coins/* | default | pending |
-| Profile / Personal / Default | secondary | profile | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Personal / Preview | secondary | profilePreview | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / All | secondary | editAll | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Basic Info | secondary | editBasic | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Interests | secondary | editInterests | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Connection Goals | secondary | editGoals | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Preferences | secondary | editPrefs | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Icebreakers | secondary | editIce | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Verification / Verified | secondary | verified | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Verification / Reverify | secondary | reverify | profile sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, media, verification | static/assets/head/*; static/assets/songs/* | default | pending |
-| Settings / Main / Default | secondary | settings | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Notifications / Default | secondary | setNotif | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Privacy / Default | secondary | setPrivacy | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Permissions / Default | secondary | setPerm | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Language / Default | secondary | setLang | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Blocked Accounts / Default | secondary | blockedList | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Blocked Accounts / Empty | secondary | blockedList&blocked=0 | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Support / Default | secondary | setSupport | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Legal / Default | secondary | setLegal | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Log Out / Confirmation | sheet | settings&sheet=logout | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account, dismiss_sheet | settings, blocked_user, permission | none | sheet_open | pending |
-| Settings / Delete Account / Information | secondary | delInfo | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Delete Account / Reason | secondary | delReason | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Delete Account / Final Confirmation | secondary | delFinal | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Settings / Delete Account / Success | secondary | delSuccess | settings sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, toggle_setting, manage_blocked_accounts, logout, delete_account | settings, blocked_user, permission | none | default | pending |
-| Safety / Reports / Submitted | secondary | reportsSubmitted | safety sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, submit_report, block_user | report, blocked_user | none | default | pending |
-| Safety / Report Detail / Default | secondary | reportDetail | safety sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, submit_report, block_user | report, blocked_user | none | default | pending |
-| Safety / User Actions / Default | sheet | chat&sheet=safetyActions | safety sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, submit_report, block_user, dismiss_sheet | report, blocked_user | none | sheet_open | pending |
-| Safety / Report User / Select Reason | secondary | safetyReport | safety sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, submit_report, block_user | report, blocked_user | none | default | pending |
-| Safety / Block User / Confirmation | sheet | chat&sheet=safetyBlock | safety sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, submit_report, block_user, dismiss_sheet | report, blocked_user | none | sheet_open | pending |
-| System / Loading / Default | system | sysLoading | system states sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | system_state, session | none | default | pending |
-| System / Offline / Default | system | sysOffline | system states sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | system_state, session | none | default | pending |
-| System / Error / Default | system | sysError | system states sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | system_state, session | none | default | pending |
-| System / Maintenance / Default | system | sysMaintenance | system states sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | system_state, session | none | default | pending |
-| System / Empty / Generic | system | sysEmpty | system states sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | system_state, session | none | default | pending |
-| System / Permission Denied / Default | system | sysPermDenied | system states sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | system_state, session | none | default | pending |
-| System / Session Expired / Default | system | sysSessionExpired | system states sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | system_state, session | none | default | pending |
-| Home / Connection Goals / Chloe | sheet | home&pop=Chloe | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | sheet, confirmation | none | default | pending |
-| Home / Connection Goals / Liam | sheet | home&pop=Liam | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | sheet, confirmation | none | default | pending |
-| Home / Connection Goals / Jordan | sheet | home&pop=Jordan | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back | sheet, confirmation | none | default | pending |
-| Coins / Spend / Text Confirmation | sheet | ibText&sheet=coinVoice&ctx=text | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Coins / Deduction / Confirmation | sheet | ibPreview&sheet=coinConfirm | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Discover / Icebreaker / Discard Recording | sheet | ibVoice&sheet=voiceDiscard | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Onboarding / Icebreakers / Library | sheet | obIce&sheet=iceLibrary | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Onboarding / Icebreakers / Write My Own | sheet | obIce&sheet=iceCustom | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Safety / User Actions / Profile Menu | sheet | expanded&sheet=safetyActionsMini | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Auto Match / Help / Explanation | sheet | amSearching&am=searching&sheet=amHelp | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Auto Match / Found / Leave | sheet | amFound&am=found&sheet=amFoundLeave | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Auto Match / Preferences / University | sheet | amPrefs&sheet=uniPicker | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Auto Match / Preferences / Interests | sheet | amPrefs&sheet=interestsPicker | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Events / Explore / Filters | sheet | events&sheet=evFilterSheet | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Events / More / Menu | sheet | evDetail&sheet=evMore | popups & sheets sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, dismiss_sheet | sheet, confirmation | none | sheet_open | pending |
-| Profile / Edit / Song Picker | sheet | editAll&ea=song | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Bio · Text | sheet | editAll&ea=bio | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Bio · Voice | sheet | editAll&ea=bio&bioTab=voice | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Height | sheet | editAll&ea=height | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Degree | sheet | editAll&ea=degree | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Country | sheet | editAll&ea=country | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Clubs | sheet | editAll&ea=clubs | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / MBTI | sheet | editAll&ea=mbti | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Religion | sheet | editAll&ea=religion | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Drinking | sheet | editAll&ea=drink | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
-| Profile / Edit / Smoking | sheet | editAll&ea=smoke | edit profile · pickers sibling state and tab/header actions | TopSafeArea; header; back control | one main scroll-view; fixed sheets where present | route_transition, back, edit_profile, save_profile, select_picker_option | profile, picker_option | static/assets/head/*; static/assets/songs/* | default | pending |
+## 来源证据和资源
 
-## 缺失或需适配的原型资源
+[静态审计](./circa-source-audit.json) 保存每个入口的条件、绑定函数源码、源码行号、导航边和资源清单，不被应用导入。行号均指从原包静态解出的内层模板，而不是外层压缩 HTML。
 
-原型使用内联 emoji 与颜色；这些不直接移植。已提取的 29 个图片资源见 static/assets/manifest.json，缺失的系统图标由 @element-plus/icons-vue 或现有图片资源承载。
+包内资源为 35 张图片、12 个 WOFF2 字体、2 个组件 HTML、3 个运行库脚本。原先只提取了 29 张命名图片；遗漏 6 张图片和全部字体。运行库及组件 HTML 不应加入 H5 运行产物；仅提取组件的 SVG、样式和结构并重写为 Vue。原型内联 Emoji 不直接移植，按第 15.2 节使用已有源资源或语义匹配图标，并登记差异。
+
+## 待关闭的业务矛盾
+
+| 项目 | 原型事实 | 处理状态 |
+| --- | --- | --- |
+| 同一用户大学不同 | Chloe 首页 Berkeley、其他页 HKUST；Liam 首页 Stanford、活动页 HKUST；Jordan 首页 UCLA、黑名单/活动页 HKUST | 统一资料来源已询问用户，待答复；不得保存页面级副本 |
+| 邀请串人 | Home 点 Jordan → reqReceived 写死 Lina → reqAccepted 写死 Chloe | 需用 request_id / user_id 贯通；最终人物随统一资料决策 |
+| 介绍费用矛盾 | `cost()` 文本 6 coins；`continueText` / `spend` 为 10；App 描述强调核心免费 | 需确认最终计费，不能默选某个演示分支 |
+| 配额和流水 | 每日免费 3 次，但无重置实现；初始余额 260 与演示流水不相等 | 需明确重置时区和有效流水规则，再设计字段 |
+| 通话约定冲突 | 原型有来电/接通/结束；开发约定第 12.5 节仅等待接通模拟通话 | 保留现有约定，还是另行修改约定，需用户选择；不得自行假接通 |
+| 缺失交互 | 相册、客服、语音等多处只显示 next phase；歌曲只有封面和动画，无音频 | 用户已授权补齐方案；没有音频/服务时明确英文错误、不假成功 |
+| 真实服务资料 | 原型验证任意六位码、Apple 登录直接跳转、客服仅 Toast | 不能声称真实校验/登录/提交成功；服务缺失路径需契约化 |
+| 联系方式 | 协议中为 privacy@circa.app | 不能自动视为 Cimoa 真实客服地址 |
+| 最终验收 | 普通浏览器非生产宿主 | 需要已有 iOS WKWebView 工程位置与可运行环境 |
+
+## Home 开工门槛
+
+[Home 交互清单](./cimoa-home-interactions.md) 固定全部入口及十字段契约。Home 尚未开始还原，仍为 pending。资料决策和全局阶段门槛通过后，才可成为唯一 in_progress 页面。
+
+阶段 5 的 Home 验收必须检查真实目标页和返回，不以能跳到旧错误页面为通过。Profile、Chat、Match Found、Received Request、Auto Match Entry 目前均未按原型验收；若严格要求 Home 完整闭环后才能开始其他页，则这些依赖必须先有用户确认的执行顺序，不能同时将多页置为 in_progress。
+
+## 全量画板映射
+
+下表为计划路由，不表示已注册或已实现。所有必填字段、安全区所有者、来源行号、interaction_ids 见 [结构化清单](./cimoa-page-inventory.json)。
+
+| source_screen | 原型定位参数 | page_level | 计划 route 或 component | status |
+| --- | --- | --- | --- | --- |
+| Launch / Splash / Default | route=splash | 二级/三级（随入口） | /pages/auth/splash | pending |
+| Auth / Welcome / Default | route=welcome | 二级/三级（随入口） | /pages/auth/welcome | pending |
+| Legal / Terms of Service / Default | route=legalTerms | 二级/三级（随入口） | /pages/legal/terms | pending |
+| Legal / Privacy Policy / Default | route=legalPrivacy | 二级/三级（随入口） | /pages/legal/privacy | pending |
+| Auth / Age Confirmation / Default | route=age | 二级/三级（随入口） | /pages/auth/age | pending |
+| Auth / Community Agreement / Default | route=agree | 二级/三级（随入口） | /pages/auth/community | pending |
+| Auth / Sign Up / Default | route=signup | 二级/三级（随入口） | /pages/auth/signup | pending |
+| Auth / Log In / Default | route=login | 二级/三级（随入口） | /pages/auth/login | pending |
+| Auth / Email Verification / Enter Email | route=verEmail | 二级/三级（随入口） | /pages/auth/verification/email | pending |
+| Auth / Email Verification / Code | route=verCode | 二级/三级（随入口） | /pages/auth/verification/code | pending |
+| Auth / Email Verification / Success | route=verSuccess | 二级/三级（随入口） | /pages/auth/verification/success | pending |
+| Auth / Email Verification / Unsupported | route=verUnsupported | 二级/三级（随入口） | /pages/auth/verification/unsupported | pending |
+| Auth / Forgot Password / Email | route=fpEmail | 二级/三级（随入口） | /pages/auth/reset/email | pending |
+| Auth / Forgot Password / Code | route=fpCode | 二级/三级（随入口） | /pages/auth/reset/code | pending |
+| Auth / Forgot Password / New Password | route=fpNew | 二级/三级（随入口） | /pages/auth/reset/new | pending |
+| Onboarding / Basic Info / Default | route=obBasic | 二级/三级（随入口） | /pages/onboarding/basic | pending |
+| Onboarding / University / Default | route=obUni | 二级/三级（随入口） | /pages/onboarding/uni | pending |
+| Onboarding / Major / Default | route=obMajor | 二级/三级（随入口） | /pages/onboarding/major | pending |
+| Onboarding / Photos / Empty | route=obPhotos&photos=0 | 二级/三级（随入口） | /pages/onboarding/photos | pending |
+| Onboarding / Photos / Added | route=obPhotos&photos=3 | 二级/三级（随入口） | /pages/onboarding/photos | pending |
+| Onboarding / About / Default | route=obAbout | 二级/三级（随入口） | /pages/onboarding/about | pending |
+| Onboarding / Interests / Default | route=obInterests | 二级/三级（随入口） | /pages/onboarding/interests | pending |
+| Onboarding / Connection Goal / Default | route=obGoal | 二级/三级（随入口） | /pages/onboarding/goal | pending |
+| Onboarding / Icebreakers / Empty | route=obIce | 二级/三级（随入口） | /pages/onboarding/ice | pending |
+| Onboarding / Icebreakers / Completed | route=obIce&ice=1 | 二级/三级（随入口） | /pages/onboarding/ice | pending |
+| Onboarding / Notifications / Pre-Permission | route=obNotif | 二级/三级（随入口） | /pages/onboarding/notif | pending |
+| Onboarding / Complete / Default | route=obComplete | 二级/三级（随入口） | /pages/onboarding/complete | pending |
+| Home / People Met / Empty | route=home&newUser=1 | 主 Tab | /pages/home/index | pending |
+| Permissions / Photos / Pre-Permission | route=permPhotos | 二级/三级（随入口） | /pages/permissions/photos | pending |
+| Permissions / Camera / Pre-Permission | route=permCamera | 二级/三级（随入口） | /pages/permissions/camera | pending |
+| Permissions / Microphone / Pre-Permission | route=permMic | 二级/三级（随入口） | /pages/permissions/mic | pending |
+| Permissions / Notifications / Pre-Permission | route=permNotif | 二级/三级（随入口） | /pages/permissions/notif | pending |
+| Home / People Met / Default | route=home | 主 Tab | /pages/home/index | pending |
+| Discover / Profile / Photo | route=photo | 主 Tab | /pages/discover/index | pending |
+| Discover / Profile / Expanded | route=expanded | 二级/三级（随入口） | /pages/discover/profile | pending |
+| Events / Explore / Default | route=events | 主 Tab | /pages/events/index | pending |
+| Discover / Icebreaker / Select Question | route=ibSelect | 二级/三级（随入口） | /pages/discover/icebreaker/select | pending |
+| Discover / Icebreaker / Text Reply | route=ibText | 二级/三级（随入口） | /pages/discover/icebreaker/text | pending |
+| Discover / Icebreaker Answer / Voice | route=ibVoice | 二级/三级（随入口） | /pages/discover/icebreaker/voice | pending |
+| Discover / Icebreaker / Voice Preview | route=ibPreview | 二级/三级（随入口） | /pages/discover/icebreaker/preview | pending |
+| Permissions / Microphone / Prompt | route=ibVoice&sheet=micPermission | Sheet | src/components/MicPermissionSheet.vue | pending |
+| Connection / Request / Sent | route=reqSent | 二级/三级（随入口） | /pages/connections/sent | pending |
+| Connections / Request Detail / Default | route=reqReceived | 二级/三级（随入口） | /pages/connections/received | pending |
+| Connection / Request / Accepted | route=reqAccepted | 二级/三级（随入口） | /pages/connections/accepted | pending |
+| Connection / Request / Declined | route=reqDeclined | 二级/三级（随入口） | /pages/connections/declined | pending |
+| Auto Match / Entry / Default | route=amEntry | 二级/三级（随入口） | /pages/auto-match/index | pending |
+| Auto Match / Preferences / Default | route=amPrefs | 二级/三级（随入口） | /pages/auto-match/preferences | pending |
+| Auto Match / Queue / Searching | route=amSearching&am=searching | 二级/三级（随入口） | /pages/auto-match/searching | pending |
+| Auto Match / Queue / Paused | route=amPaused&am=paused | 二级/三级（随入口） | /pages/auto-match/paused | pending |
+| Auto Match / Queue / Leaving | route=amSearching&am=searching&sheet=amLeaving | 确认弹窗 | src/components/AmLeavingConfirmDialog.vue | pending |
+| Auto Match / Found / Preview | route=amFound&am=found | 二级/三级（随入口） | /pages/auto-match/found | pending |
+| Auto Match / Found / Accepting | route=amFound&am=found&sheet=amAccepting | 确认弹窗 | src/components/AmAcceptingConfirmDialog.vue | pending |
+| Auto Match / Found / Waiting | route=amWaiting&am=waiting | 二级/三级（随入口） | /pages/auto-match/waiting | pending |
+| Auto Match / Result / Connected | route=amConnected&am=connected | 二级/三级（随入口） | /pages/auto-match/connected | pending |
+| Auto Match / Result / Passed | route=amPassed&am=passed | 二级/三级（随入口） | /pages/auto-match/passed | pending |
+| Auto Match / Result / Expired | route=amExpired&am=expired | 二级/三级（随入口） | /pages/auto-match/expired | pending |
+| Auto Match / Queue / No Match | route=amNoMatch&am=noMatch | 二级/三级（随入口） | /pages/auto-match/no-match | pending |
+| Auto Match / History / Default | route=amHistory&am=connected | 二级/三级（随入口） | /pages/auto-match/history | pending |
+| Auto Match / Boost / Confirmation | route=amSearching&am=searching&sheet=amBoost | 确认弹窗 | src/components/AmBoostConfirmDialog.vue | pending |
+| Home / Auto Match / Searching | route=home&am=searching | 主 Tab | /pages/home/index | pending |
+| Home / Auto Match / Match Found | route=home&am=found | 主 Tab | /pages/home/index | pending |
+| Home / Auto Match / Waiting | route=home&am=waiting | 主 Tab | /pages/home/index | pending |
+| Home / Auto Match / Connected | route=home&am=connected | 主 Tab | /pages/home/index | pending |
+| Messages / Chat / Connected | route=chat | 二级/三级（随入口） | /pages/messages/chat | pending |
+| Video Call / Incoming / Default | route=callIncoming | 二级/三级（随入口） | /pages/messages/call/incoming | pending |
+| Video Call / Active / Default | route=callActive | 二级/三级（随入口） | /pages/messages/call/active | pending |
+| Video Call / Ended / Default | route=callEnded | 二级/三级（随入口） | /pages/messages/call/ended | pending |
+| Events / Explore / Default | route=events | 主 Tab | /pages/events/index | pending |
+| Events / Detail / Available | route=evDetail | 二级/三级（随入口） | /pages/events/detail | pending |
+| Events / Detail / Joined | route=evDetail&joined=1 | 二级/三级（随入口） | /pages/events/detail | pending |
+| Events / Join / Confirmation | route=evDetail&sheet=evJoinConfirm | 确认弹窗 | src/components/EvJoinConfirmConfirmDialog.vue | pending |
+| Events / Join / Success | route=evJoinSuccess&joined=1 | 二级/三级（随入口） | /pages/events/join-success | pending |
+| Events / Participants / Default | route=evParticipants&joined=1 | 二级/三级（随入口） | /pages/events/participants | pending |
+| Events / Group Chat / Default | route=evGroup&joined=1 | 二级/三级（随入口） | /pages/events/group | pending |
+| Events / My Events / Upcoming | route=evUpcoming&joined=1 | 二级/三级（随入口） | /pages/events/upcoming | pending |
+| Events / Attendance / Cancel | route=evDetail&joined=1&sheet=evCancel | 确认弹窗 | src/components/EvCancelConfirmDialog.vue | pending |
+| Events / Report / Select Reason | route=evReport | 二级/三级（随入口） | /pages/events/report | pending |
+| Wallet / Coin Center / Default | route=coinStore | 二级/三级（随入口） | /pages/coins/index | pending |
+| Coins / Store / Purchasing | route=coinPurchasing&pkg=1 | 二级/三级（随入口） | /pages/coins/purchasing | pending |
+| Coins / Purchase / Apple Confirmation | route=coinApple&pkg=1 | 二级/三级（随入口） | /pages/coins/purchasing | pending |
+| Coins / Purchase / Success | route=coinSuccess&pkg=1&coins=200 | 二级/三级（随入口） | /pages/coins/success | pending |
+| Coins / Purchase / Failed | route=coinFailed&pkg=1 | 二级/三级（随入口） | /pages/coins/failed | pending |
+| Coins / Purchase / Cancelled | route=coinCancelled&pkg=1 | 二级/三级（随入口） | /pages/coins/cancelled | pending |
+| Coins / Balance / Insufficient | route=ibPreview&sheet=coinInsufficient&coins=5&ctx=voice | Sheet | src/components/CoinInsufficientSheet.vue | pending |
+| Coins / Spend / Voice Confirmation | route=ibPreview&sheet=coinVoice | Sheet | src/components/CoinVoiceSheet.vue | pending |
+| Coins / Spend / Priority Match Confirmation | route=amSearching&am=searching&sheet=amBoost | 确认弹窗 | src/components/AmBoostConfirmDialog.vue | pending |
+| Coins / Spend / Processing | route=coinProcessing | 二级/三级（随入口） | /pages/coins/processing | pending |
+| Coins / Spend / Failed | route=coinSpendFailed | 二级/三级（随入口） | /pages/coins/spend-failed | pending |
+| Coins / History / Default | route=coinHistory | 二级/三级（随入口） | /pages/coins/history | pending |
+| Coins / History / Purchase Detail | route=coinPurchaseDetail | 二级/三级（随入口） | /pages/coins/purchase-detail | pending |
+| Coins / History / Spending Detail | route=coinSpendDetail | 二级/三级（随入口） | /pages/coins/spend-detail | pending |
+| Coins / Help / Default | route=coinHelp | 二级/三级（随入口） | /pages/coins/help | pending |
+| Profile / Personal / Default | route=profile | 二级/三级（随入口） | /pages/profile/index | pending |
+| Profile / Personal / Preview | route=profilePreview | 二级/三级（随入口） | /pages/profile/preview | pending |
+| Profile / Edit / All | route=editAll | 二级/三级（随入口） | /pages/profile/edit | pending |
+| Profile / Edit / Basic Info | route=editBasic | 二级/三级（随入口） | /pages/profile/basic | pending |
+| Profile / Edit / Interests | route=editInterests | 二级/三级（随入口） | /pages/profile/interests | pending |
+| Profile / Edit / Connection Goals | route=editGoals | 二级/三级（随入口） | /pages/profile/goals | pending |
+| Profile / Edit / Preferences | route=editPrefs | 二级/三级（随入口） | /pages/profile/prefs | pending |
+| Profile / Edit / Icebreakers | route=editIce | 二级/三级（随入口） | /pages/profile/ice | pending |
+| Profile / Verification / Verified | route=verified | 二级/三级（随入口） | /pages/profile/verification | pending |
+| Profile / Verification / Reverify | route=reverify | 二级/三级（随入口） | /pages/profile/reverify | pending |
+| Settings / Main / Default | route=settings | 二级/三级（随入口） | /pages/settings/index | pending |
+| Settings / Notifications / Default | route=setNotif | 二级/三级（随入口） | /pages/settings/notif | pending |
+| Settings / Privacy / Default | route=setPrivacy | 二级/三级（随入口） | /pages/settings/privacy | pending |
+| Settings / Permissions / Default | route=setPerm | 二级/三级（随入口） | /pages/settings/perm | pending |
+| Settings / Language / Default | route=setLang | 二级/三级（随入口） | /pages/settings/lang | pending |
+| Settings / Blocked Accounts / Default | route=blockedList | 二级/三级（随入口） | /pages/settings/blocked | pending |
+| Settings / Blocked Accounts / Empty | route=blockedList&blocked=0 | 二级/三级（随入口） | /pages/settings/blocked | pending |
+| Settings / Support / Default | route=setSupport | 二级/三级（随入口） | /pages/settings/support | pending |
+| Settings / Legal / Default | route=setLegal | 二级/三级（随入口） | /pages/settings/legal | pending |
+| Settings / Log Out / Confirmation | route=settings&sheet=logout | 确认弹窗 | src/components/LogoutConfirmDialog.vue | pending |
+| Settings / Delete Account / Information | route=delInfo | 二级/三级（随入口） | /pages/settings/delete/info | pending |
+| Settings / Delete Account / Reason | route=delReason | 二级/三级（随入口） | /pages/settings/delete/reason | pending |
+| Settings / Delete Account / Final Confirmation | route=delFinal | 二级/三级（随入口） | /pages/settings/delete/final | pending |
+| Settings / Delete Account / Success | route=delSuccess | 二级/三级（随入口） | /pages/settings/delete/success | pending |
+| Safety / Reports / Submitted | route=reportsSubmitted | 二级/三级（随入口） | /pages/safety/reports | pending |
+| Safety / Report Detail / Default | route=reportDetail | 二级/三级（随入口） | /pages/safety/report-detail | pending |
+| Safety / User Actions / Default | route=chat&sheet=safetyActions | Sheet | src/components/SafetyActionsSheet.vue | pending |
+| Safety / Report User / Select Reason | route=safetyReport | 二级/三级（随入口） | /pages/safety/report-user | pending |
+| Safety / Block User / Confirmation | route=chat&sheet=safetyBlock | 确认弹窗 | src/components/SafetyBlockConfirmDialog.vue | pending |
+| System / Loading / Default | route=sysLoading | 二级/三级（随入口） | /pages/system/loading | pending |
+| System / Offline / Default | route=sysOffline | 二级/三级（随入口） | /pages/system/offline | pending |
+| System / Error / Default | route=sysError | 二级/三级（随入口） | /pages/system/error | pending |
+| System / Maintenance / Default | route=sysMaintenance | 二级/三级（随入口） | /pages/system/maintenance | pending |
+| System / Empty / Generic | route=sysEmpty | 二级/三级（随入口） | /pages/system/empty | pending |
+| System / Permission Denied / Default | route=sysPermDenied | 二级/三级（随入口） | /pages/system/perm-denied | pending |
+| System / Session Expired / Default | route=sysSessionExpired | 二级/三级（随入口） | /pages/system/session-expired | pending |
+| Home / Connection Goals / Chloe | route=home&pop=Chloe | Popover | src/components/ConnectionGoalsPopover.vue | pending |
+| Home / Connection Goals / Liam | route=home&pop=Liam | Popover | src/components/ConnectionGoalsPopover.vue | pending |
+| Home / Connection Goals / Jordan | route=home&pop=Jordan | Popover | src/components/ConnectionGoalsPopover.vue | pending |
+| Coins / Spend / Text Confirmation | route=ibText&sheet=coinVoice&ctx=text | Sheet | src/components/CoinVoiceSheet.vue | pending |
+| Coins / Deduction / Confirmation | route=ibPreview&sheet=coinConfirm | 确认弹窗 | src/components/CoinConfirmConfirmDialog.vue | pending |
+| Discover / Icebreaker / Discard Recording | route=ibVoice&sheet=voiceDiscard | 确认弹窗 | src/components/VoiceDiscardConfirmDialog.vue | pending |
+| Onboarding / Icebreakers / Library | route=obIce&sheet=iceLibrary | Sheet | src/components/IceLibrarySheet.vue | pending |
+| Onboarding / Icebreakers / Write My Own | route=obIce&sheet=iceCustom | Sheet | src/components/IceCustomSheet.vue | pending |
+| Safety / User Actions / Profile Menu | route=expanded&sheet=safetyActionsMini | Sheet | src/components/SafetyActionsMiniSheet.vue | pending |
+| Auto Match / Help / Explanation | route=amSearching&am=searching&sheet=amHelp | Sheet | src/components/AmHelpSheet.vue | pending |
+| Auto Match / Found / Leave | route=amFound&am=found&sheet=amFoundLeave | 确认弹窗 | src/components/AmFoundLeaveConfirmDialog.vue | pending |
+| Auto Match / Preferences / University | route=amPrefs&sheet=uniPicker | Sheet | src/components/UniPickerSheet.vue | pending |
+| Auto Match / Preferences / Interests | route=amPrefs&sheet=interestsPicker | Sheet | src/components/InterestsPickerSheet.vue | pending |
+| Events / Explore / Filters | route=events&sheet=evFilterSheet | Sheet | src/components/EvFilterSheetSheet.vue | pending |
+| Events / More / Menu | route=evDetail&sheet=evMore | Sheet | src/components/EvMoreSheet.vue | pending |
+| Profile / Edit / Song Picker | route=editAll&ea=song | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / Bio · Text | route=editAll&ea=bio | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / Bio · Voice | route=editAll&ea=bio&bioTab=voice | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / Height | route=editAll&ea=height | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / Degree | route=editAll&ea=degree | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / Country | route=editAll&ea=country | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / Clubs | route=editAll&ea=clubs | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / MBTI | route=editAll&ea=mbti | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / Religion | route=editAll&ea=religion | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / Drinking | route=editAll&ea=drink | Sheet | src/components/ProfilePickerSheet.vue | pending |
+| Profile / Edit / Smoking | route=editAll&ea=smoke | Sheet | src/components/ProfilePickerSheet.vue | pending |
+
+生成方式：先运行 `node scripts/audit-circa-source.mjs`，再运行 `node scripts/generate-cimoa-stage1.mjs`。只做静态解析，不执行原型脚本。
