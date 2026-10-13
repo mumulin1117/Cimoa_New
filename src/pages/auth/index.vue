@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
-import { replace_route } from '@/utils/routeTransition.js'
+import { relaunch_route } from '@/utils/routeTransition.js'
+import { prepare_main_tab_skeleton } from '@/utils/mainTabSkeleton.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import TopSafeArea from '@/components/TopSafeArea.vue'
 import AppLoading from '@/components/AppLoading.vue'
@@ -18,14 +19,15 @@ const { is_loading, run_with_loading } = use_write_loading()
 const go = (next) => { view.value = next; error.value = '' }
 const login = async () => {
   if (!email.value || !password.value) { error.value = 'Enter your email and password.'; return }
-  if (email.value.toLowerCase() !== 'hottix@gmail.com' || password.value !== '123456') { error.value = 'That email or password is not recognised.'; return }
-  await run_with_loading(() => { store.session = { is_authenticated: true, current_user_id: store.current_user.user_id, email: email.value }; store.persist(); return { success: true } })
-  await replace_route('/pages/home/index')
+  const result = await run_with_loading(() => store.login(email.value, password.value))
+  if (!result.success) { error.value = result.message || 'Sign in was cancelled.'; return }
+  prepare_main_tab_skeleton()
+  try { await relaunch_route('/pages/home/index') } catch (cause) { error.value = cause.message }
 }
 const signup = async () => {
   if (!name.value.trim() || !email.value.trim() || !password.value.trim() || !accepted.value) { error.value = 'Complete the fields and accept the community agreement.'; return }
-  await run_with_loading(() => { store.update_profile({ user_name: name.value.trim(), email: email.value.trim() }); store.session = { is_authenticated: true, current_user_id: store.current_user.user_id, email: email.value.trim() }; store.persist(); return { success: true } })
-  await replace_route('/pages/home/index')
+  const result = await run_with_loading(() => store.create_account({ email: email.value.trim() }))
+  error.value = result.message || 'Student email verification is unavailable.'
 }
 onLoad((options) => { if (options?.view) view.value = options.view })
 </script>
@@ -35,5 +37,58 @@ onLoad((options) => { if (options?.view) view.value = options.view })
 </template>
 
 <style scoped>
-.auth-page { min-height: 100vh; }.auth-scroll { height: 100vh; padding: 70rpx 48rpx 60rpx; }.brand-mark { width: 78rpx; height: 78rpx; margin-bottom: 70rpx; border-radius: 24rpx; background: var(--cimoa-primary); }.brand-mark image { width: 100%; height: 100%; border-radius: 24rpx; }.auth-eyebrow { display: block; color: var(--cimoa-success); font-size: 20rpx; font-weight: 700; letter-spacing: 3rpx; text-transform: uppercase; }.auth-title { display: block; margin-top: 16rpx; color: var(--cimoa-title); font-size: 45rpx; font-weight: 700; line-height: 56rpx; }.auth-copy { display: block; margin: 18rpx 0 36rpx; color: var(--cimoa-secondary); font-size: 23rpx; line-height: 35rpx; }.auth-secondary { margin-top: 14rpx; }.legal-link { margin-top: 24rpx; color: var(--cimoa-secondary); font-size: 20rpx; text-align: center; }.legal-copy { display: block; margin: 24rpx 0 34rpx; color: var(--cimoa-secondary); font-size: 22rpx; line-height: 36rpx; }.auth-input { display: block; width: 100%; height: 82rpx; margin-top: 16rpx; padding: 0 22rpx; border: 1px solid var(--cimoa-outline); border-radius: 18rpx; background: var(--cimoa-card); color: var(--cimoa-title); font-size: 22rpx; }.agreement { display: flex; align-items: center; gap: 10rpx; margin: 22rpx 0; color: var(--cimoa-secondary); font-size: 19rpx; }.check { width: 28rpx; height: 28rpx; border: 1px solid var(--cimoa-outline); border-radius: 8rpx; }.check.checked { border-color: var(--cimoa-primary); background: var(--cimoa-primary); }.auth-error { display: block; margin-top: 20rpx; color: var(--cimoa-danger); font-size: 20rpx; line-height: 30rpx; text-align: center; }
+.auth-page { min-height: 100vh; }
+.auth-scroll { height: 100vh; padding: 70rpx 48rpx 60rpx; }
+.brand-mark { width: 78rpx; height: 78rpx; margin-bottom: 70rpx; border-radius: 24rpx; background: var(--cimoa-primary); }
+.brand-mark image { width: 100%; height: 100%; border-radius: 24rpx; }
+.auth-eyebrow {
+  display: block;
+  color: var(--cimoa-success);
+  font-size: 20rpx;
+  font-weight: 700;
+  letter-spacing: 3rpx;
+  text-transform: uppercase;
+}
+.auth-title {
+  display: block;
+  margin-top: 16rpx;
+  color: var(--cimoa-title);
+  font-size: 45rpx;
+  font-weight: 700;
+  line-height: 56rpx;
+}
+.auth-copy { display: block; margin: 18rpx 0 36rpx; color: var(--cimoa-secondary); font-size: 23rpx; line-height: 35rpx; }
+.auth-secondary { margin-top: 14rpx; }
+.legal-link { margin-top: 24rpx; color: var(--cimoa-secondary); font-size: 20rpx; text-align: center; }
+.legal-copy { display: block; margin: 24rpx 0 34rpx; color: var(--cimoa-secondary); font-size: 22rpx; line-height: 36rpx; }
+.auth-input {
+  display: block;
+  width: 100%;
+  height: 82rpx;
+  margin-top: 16rpx;
+  padding: 0 22rpx;
+  border: 1px solid var(--cimoa-outline);
+  border-radius: 18rpx;
+  background: var(--cimoa-card);
+  color: var(--cimoa-title);
+  font-size: 22rpx;
+}
+.agreement {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin: 22rpx 0;
+  color: var(--cimoa-secondary);
+  font-size: 19rpx;
+}
+.check { width: 28rpx; height: 28rpx; border: 1px solid var(--cimoa-outline); border-radius: 8rpx; }
+.check.checked { border-color: var(--cimoa-primary); background: var(--cimoa-primary); }
+.auth-error {
+  display: block;
+  margin-top: 20rpx;
+  color: var(--cimoa-danger);
+  font-size: 20rpx;
+  line-height: 30rpx;
+  text-align: center;
+}
 </style>

@@ -25,7 +25,7 @@ const send_message = async () => { const body = message_draft.value.trim(); if (
 const start_call = () => { view.value = 'call'; call_state.value = 'incoming' }
 const accept_call = () => { call_state.value = 'active' }
 const end_call = () => { call_state.value = 'ended' }
-const confirm_block = async () => { show_safety.value = false; await run_with_loading(() => store.block_user(user_id.value)); view.value = 'list'; notice.value = 'Account blocked.' }
+const confirm_block = async () => { show_safety.value = false; const result = await run_with_loading(() => store.block_user(user_id.value)); if (result.success) view.value = 'list'; notice.value = result.success ? 'Account blocked.' : result.message }
 onLoad((options) => { if (options?.view) view.value = options.view; if (options?.user_id) user_id.value = options.user_id; if (options?.event_id) event_id.value = options.event_id })
 </script>
 
@@ -50,5 +50,89 @@ onLoad((options) => { if (options?.view) view.value = options.view; if (options?
 </template>
 
 <style scoped>
-.messages-page { min-height: 100vh; }.page-header { padding: 24rpx 32rpx 0; }.list-scroll { height: calc(100vh - 190rpx); }.conversation { display: flex; align-items: center; margin: 0 32rpx 14rpx; padding: 20rpx; }.conversation__avatar, .chat-header__avatar { width: 74rpx; height: 74rpx; border-radius: 50%; }.conversation__body { flex: 1; min-width: 0; margin-left: 16rpx; }.conversation__heading { display: flex; justify-content: space-between; }.conversation__name { color: var(--cimoa-title); font-size: 24rpx; font-weight: 700; }.conversation__time { color: var(--cimoa-tertiary); font-size: 17rpx; }.conversation__preview { display: block; overflow: hidden; margin-top: 8rpx; color: var(--cimoa-secondary); font-size: 19rpx; text-overflow: ellipsis; white-space: nowrap; }.unread { width: 34rpx; height: 34rpx; border-radius: 50%; background: var(--cimoa-primary); color: var(--cimoa-primary-text); font-size: 18rpx; line-height: 34rpx; text-align: center; }.call-banner { margin: 26rpx 32rpx; padding: 24rpx; }.call-banner__title, .call-banner__meta { display: block; }.call-banner__title { margin-top: 10rpx; color: var(--cimoa-title); font-size: 26rpx; font-weight: 700; }.call-banner__meta { margin-top: 8rpx; color: var(--cimoa-secondary); font-size: 20rpx; }.chat-header { display: flex; align-items: center; padding: 14rpx 32rpx 18rpx; }.back-button, .chat-header__call { color: var(--cimoa-secondary); font-size: 21rpx; }.chat-header__person { display: flex; flex: 1; align-items: center; justify-content: center; gap: 12rpx; }.chat-header__name, .chat-header__status { display: block; text-align: center; }.chat-header__name { color: var(--cimoa-title); font-size: 23rpx; font-weight: 700; }.chat-header__status { margin-top: 4rpx; color: var(--cimoa-success); font-size: 17rpx; }.chat-header__avatar { width: 54rpx; height: 54rpx; }.chat-scroll { height: calc(100vh - 270rpx); padding: 20rpx 32rpx 130rpx; }.message-row { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 18rpx; }.message-row.mine { align-items: flex-end; }.message-bubble { max-width: 78%; padding: 16rpx 20rpx; border-radius: 22rpx 22rpx 22rpx 6rpx; background: var(--cimoa-card); color: var(--cimoa-title); font-size: 22rpx; line-height: 32rpx; }.message-row.mine .message-bubble { border-radius: 22rpx 22rpx 6rpx 22rpx; background: var(--cimoa-deep); color: var(--cimoa-card); }.message-time { margin-top: 6rpx; color: var(--cimoa-tertiary); font-size: 16rpx; }.composer { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; display: flex; align-items: flex-end; gap: 10rpx; padding: 16rpx 24rpx max(env(safe-area-inset-bottom, 0px), var(--native-safe-area-bottom, 0px)); border-top: 1px solid var(--cimoa-border); background: var(--cimoa-page); }.composer__input { flex: 1; height: 72rpx; padding: 16rpx; border: 1px solid var(--cimoa-outline); border-radius: 20rpx; background: var(--cimoa-card); color: var(--cimoa-title); font-size: 21rpx; }.composer__send, .composer__safety { padding: 18rpx 12rpx; color: var(--cimoa-success); font-size: 19rpx; font-weight: 700; }.composer__safety { color: var(--cimoa-secondary); }.call-page { display: flex; flex-direction: column; align-items: center; padding: 160rpx 32rpx 0; }.call-page__avatar { width: 240rpx; height: 240rpx; border-radius: 50%; }.call-page__name { margin-top: 28rpx; color: var(--cimoa-title); font-size: 34rpx; font-weight: 700; }.call-page__state { margin-top: 10rpx; color: var(--cimoa-secondary); font-size: 21rpx; }.call-page__actions { display: flex; gap: 14rpx; width: 100%; margin-top: 50rpx; }.call-page__actions > view { flex: 1; }.notice { display: block; margin-top: 14rpx; color: var(--cimoa-success); font-size: 18rpx; text-align: center; }
+.messages-page { min-height: 100vh; }
+.page-header { padding: 24rpx 32rpx 0; }
+.list-scroll { height: calc(100vh - 190rpx); }
+.conversation { display: flex; align-items: center; margin: 0 32rpx 14rpx; padding: 20rpx; }
+.conversation__avatar, .chat-header__avatar { width: 74rpx; height: 74rpx; border-radius: 50%; }
+.conversation__body { flex: 1; min-width: 0; margin-left: 16rpx; }
+.conversation__heading { display: flex; justify-content: space-between; }
+.conversation__name { color: var(--cimoa-title); font-size: 24rpx; font-weight: 700; }
+.conversation__time { color: var(--cimoa-tertiary); font-size: 17rpx; }
+.conversation__preview {
+  display: block;
+  overflow: hidden;
+  margin-top: 8rpx;
+  color: var(--cimoa-secondary);
+  font-size: 19rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.unread {
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  background: var(--cimoa-primary);
+  color: var(--cimoa-primary-text);
+  font-size: 18rpx;
+  line-height: 34rpx;
+  text-align: center;
+}
+.call-banner { margin: 26rpx 32rpx; padding: 24rpx; }
+.call-banner__title, .call-banner__meta { display: block; }
+.call-banner__title { margin-top: 10rpx; color: var(--cimoa-title); font-size: 26rpx; font-weight: 700; }
+.call-banner__meta { margin-top: 8rpx; color: var(--cimoa-secondary); font-size: 20rpx; }
+.chat-header { display: flex; align-items: center; padding: 14rpx 32rpx 18rpx; }
+.back-button, .chat-header__call { color: var(--cimoa-secondary); font-size: 21rpx; }
+.chat-header__person { display: flex; flex: 1; align-items: center; justify-content: center; gap: 12rpx; }
+.chat-header__name, .chat-header__status { display: block; text-align: center; }
+.chat-header__name { color: var(--cimoa-title); font-size: 23rpx; font-weight: 700; }
+.chat-header__status { margin-top: 4rpx; color: var(--cimoa-success); font-size: 17rpx; }
+.chat-header__avatar { width: 54rpx; height: 54rpx; }
+.chat-scroll { height: calc(100vh - 270rpx); padding: 20rpx 32rpx 130rpx; }
+.message-row { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 18rpx; }
+.message-row.mine { align-items: flex-end; }
+.message-bubble {
+  max-width: 78%;
+  padding: 16rpx 20rpx;
+  border-radius: 22rpx 22rpx 22rpx 6rpx;
+  background: var(--cimoa-card);
+  color: var(--cimoa-title);
+  font-size: 22rpx;
+  line-height: 32rpx;
+}
+.message-row.mine .message-bubble { border-radius: 22rpx 22rpx 6rpx 22rpx; background: var(--cimoa-deep); color: var(--cimoa-card); }
+.message-time { margin-top: 6rpx; color: var(--cimoa-tertiary); font-size: 16rpx; }
+.composer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 15;
+  display: flex;
+  align-items: flex-end;
+  gap: 10rpx;
+  padding: 16rpx 24rpx max(env(safe-area-inset-bottom, 0px), var(--native-safe-area-bottom, 0px));
+  border-top: 1px solid var(--cimoa-border);
+  background: var(--cimoa-page);
+}
+.composer__input {
+  flex: 1;
+  height: 72rpx;
+  padding: 16rpx;
+  border: 1px solid var(--cimoa-outline);
+  border-radius: 20rpx;
+  background: var(--cimoa-card);
+  color: var(--cimoa-title);
+  font-size: 21rpx;
+}
+.composer__send, .composer__safety { padding: 18rpx 12rpx; color: var(--cimoa-success); font-size: 19rpx; font-weight: 700; }
+.composer__safety { color: var(--cimoa-secondary); }
+.call-page { display: flex; flex-direction: column; align-items: center; padding: 160rpx 32rpx 0; }
+.call-page__avatar { width: 240rpx; height: 240rpx; border-radius: 50%; }
+.call-page__name { margin-top: 28rpx; color: var(--cimoa-title); font-size: 34rpx; font-weight: 700; }
+.call-page__state { margin-top: 10rpx; color: var(--cimoa-secondary); font-size: 21rpx; }
+.call-page__actions { display: flex; gap: 14rpx; width: 100%; margin-top: 50rpx; }
+.call-page__actions > view { flex: 1; }
+.notice { display: block; margin-top: 14rpx; color: var(--cimoa-success); font-size: 18rpx; text-align: center; }
 </style>

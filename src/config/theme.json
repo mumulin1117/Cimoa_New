@@ -1,13 +1,96 @@
 {
   "colors": {
-    "page": { "background": "#f7f5f0" },
-    "surface": { "card": "#ffffff", "deep": "#1f2924", "border": "#e4e2da", "outline": "#d0cec5", "scrim_soft": "rgba(31,41,36,0.08)", "accent_lavender": "#ded5ee", "tinted": "#ece9df" },
-    "text": { "title": "#1f2924", "secondary": "#6f766f", "tertiary": "#989d96" },
-    "button": { "primary": "#d7ef73", "text": "#1f2924", "ghost": { "border": "#d0cec5", "text": "#1f2924" } },
-    "button_change": { "active": { "background": "#1f2924", "text": "#ffffff" }, "default": { "background": "#ebe9e1", "text": "#6f766f" } },
-    "dialog": { "background": "#ffffff", "confirm": { "background": "#d7ef73", "text": "#1f2924" }, "cancel": { "border": "#d0cec5", "text": "#6f766f" }, "danger": { "background": "#e36d5f", "text": "#ffffff" } },
-    "icon": { "primary": "#1f2924" },
-    "status": { "success": "#4b9b78", "info": "#7797c7", "danger": "#e36d5f", "coin": "#dca84b", "locked": "#989d96" },
-    "avatar": { "rose": "#d9b3a8", "sage": "#acc5a6", "lilac": "#c6b7d6" }
+    "page": {
+      "background": "#eaf0fd",
+      "gradient": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+    },
+    "surface": {
+      "card": "#ffffff",
+      "deep": "#0b1b3a",
+      "border": "#e6ebf2",
+      "outline": "#d9e2ef",
+      "scrim_soft": "rgba(16,36,74,0.35)",
+      "accent_lavender": "#f2ecfb",
+      "tinted": "#f4f7fb",
+      "empty": "rgba(255,255,255,0.72)",
+      "transparent": "transparent",
+      "skeleton": "#e2e9f3",
+      "shimmer": "rgba(255,255,255,0.65)"
+    },
+    "text": {
+      "title": "#0b1b3a",
+      "secondary": "#5b6b85",
+      "tertiary": "#64748b",
+      "tagline": "#64748b",
+      "inverse": "#ffffff",
+      "link": "#4a7bf7",
+      "badge": "#a21caf"
+    },
+    "button": {
+      "primary": "#4a7bf7",
+      "text": "#ffffff",
+      "ghost": {
+        "border": "#d9e2ef",
+        "text": "#0b1b3a"
+      }
+    },
+    "button_change": {
+      "active": {
+        "background": "#4a7bf7",
+        "text": "#ffffff"
+      },
+      "default": {
+        "background": "#f4f7fb",
+        "text": "#5b6b85"
+      }
+    },
+    "dialog": {
+      "background": "#ffffff",
+      "confirm": {
+        "background": "#4a7bf7",
+        "text": "#ffffff"
+      },
+      "cancel": {
+        "border": "#d9e2ef",
+        "text": "#5b6b85"
+      },
+      "danger": {
+        "background": "#e5484d",
+        "text": "#ffffff"
+      }
+    },
+    "icon": {
+      "primary": "#0b1b3a"
+    },
+    "status": {
+      "success": "#15803d",
+      "info": "#4a7bf7",
+      "danger": "#e5484d",
+      "coin": "#a21caf",
+      "locked": "#64748b",
+      "connected_bg": "#dcfce7",
+      "connected_ink": "#15803d",
+      "invite_bg": "#e2e9fb",
+      "invite_ink": "#1e3a8a"
+    },
+    "brand": {
+      "cyan": "#1ec8f5",
+      "blue": "#4a7bf7",
+      "purple": "#a855f7",
+      "pink": "#f81ce5",
+      "arc_mid": "#6366f1"
+    }
+  },
+  "gradients": {
+    "primary": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+    "tab": "linear-gradient(120deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
+    "lightning": "linear-gradient(135deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)"
+  },
+  "shadows": {
+    "card": "0 15.267rpx 45.802rpx rgba(16,36,74,0.07)",
+    "tab": "0 19.084rpx 57.252rpx rgba(16,36,74,0.12),0 3.817rpx 11.45rpx rgba(16,36,74,0.06)",
+    "header": "0 11.45rpx 34.351rpx rgba(16,36,74,0.08)",
+    "popover": "0 34.351rpx 83.969rpx rgba(16,36,74,0.20)",
+    "primary": "0 22.901rpx 53.435rpx rgba(168,85,247,0.32)"
   }
 }

@@ -1,0 +1,71 @@
+{
+  "runtime": "Chromium, fresh isolated profile, 393 x 852",
+  "server_pid": 40202,
+  "checks": [
+    {
+      "name": "three source tabs, capsule geometry, restored session has no skeleton",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/home/index",
+        "depth": 1,
+        "active": "Home",
+        "bar": {
+          "x": 20,
+          "y": 762,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 750,
+          "height": 678.234375
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "two bidirectional cycles, same-tab double click, unchanged stack and fixed bar",
+      "result": "passed"
+    },
+    {
+      "name": "scroll does not move navigation or cover final content",
+      "result": "passed"
+    },
+    {
+      "name": "browser bridge injection owns top and bottom once (not native-device evidence)",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/events/index",
+        "depth": 1,
+        "active": "Events",
+        "bar": {
+          "x": 20,
+          "y": 728,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 716,
+          "height": 554.84375
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "real fixture login: each main tab consumes one skeleton; return consumes none",
+      "result": "passed"
+    },
+    {
+      "name": "refresh does not prepare another skeleton cycle",
+      "result": "passed"
+    },
+    {
+      "name": "real IndexedDB Blob survives page reload and is deleted cleanly",
+      "result": "passed"
+    },
+    {
+      "name": "no browser runtime exceptions",
+      "result": "passed"
+    }
+  ],
+  "cleaned_up": true
+}

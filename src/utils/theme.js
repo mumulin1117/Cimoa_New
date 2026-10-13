@@ -1,7 +1,12 @@
 import theme from '@/config/theme.json'
 
+const flatten = (object, prefix = '') => Object.entries(object).flatMap(([key, value]) => typeof value === 'object' ? flatten(value, `${prefix}${key}-`) : [[`--cimoa-${prefix}${key.replaceAll('_', '-')}`, value]])
+const scale = (value) => String(value).replace(/([\d.]+)rpx/g, (_, number) => `${typeof uni !== 'undefined' ? uni.upx2px(Number(number)) : Number(number) / 2}px`)
 export const theme_style = () => ({
-  '--cimoa-page': theme.colors.page.background,
+  ...Object.fromEntries(flatten(theme.colors)),
+  ...Object.fromEntries(flatten(theme.gradients, 'gradient-')),
+  ...Object.fromEntries(flatten(theme.shadows, 'shadow-').map(([key, value]) => [key, scale(value)])),
+  '--cimoa-page': theme.colors.page.gradient,
   '--cimoa-card': theme.colors.surface.card,
   '--cimoa-deep': theme.colors.surface.deep,
   '--cimoa-border': theme.colors.surface.border,

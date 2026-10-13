@@ -1,31 +1,50 @@
 <script setup>
 import { ref } from 'vue'
-import { switch_tab_route } from '@/utils/routeTransition.js'
+import { onShow } from '@dcloudio/uni-app'
+import { MAIN_TABS } from '@/config/navigation.js'
+import { current_route, switch_tab_route } from '@/utils/routeTransition.js'
+import SourceIcon from './SourceIcon.vue'
 
-const props = defineProps({ active: { type: String, default: 'home' } })
-const busy = ref(false)
-const tabs = [
-  { id: 'home', label: 'Home', route: '/pages/home/index', icon: '/static/assets/head/me.png' },
-  { id: 'discover', label: 'Discover', route: '/pages/discover/index', icon: '/static/assets/icons/ic-connect.png' },
-  { id: 'events', label: 'Events', route: '/pages/events/index', icon: '/static/assets/img/event-picnic.png' },
-  { id: 'profile', label: 'Profile', route: '/pages/profile/index', icon: '/static/assets/head/g1.png' },
-]
+const active = ref(current_route()), busy = ref(false), error = ref('')
+onShow(() => { active.value = current_route() })
 const go_tab = async (tab) => {
-  if (busy.value || tab.id === props.active) return
-  busy.value = true
-  try { await switch_tab_route(tab.route) } finally { busy.value = false }
+  if (busy.value || current_route() === tab.path) return
+  busy.value = true; error.value = ''
+  try { await switch_tab_route(`/${tab.path}`) } catch (cause) { error.value = cause.message } finally { busy.value = false; active.value = current_route() }
 }
 </script>
 
 <template>
-  <view class="tabbar" role="navigation" aria-label="Primary navigation">
-    <view v-for="tab in tabs" :key="tab.id" class="tab" :class="{ active: active === tab.id }" role="button" :aria-label="tab.label" @click="go_tab(tab)">
-      <image class="tab__icon" :src="tab.icon" mode="aspectFill" /><text class="tab__label">{{ tab.label }}</text>
+  <view class="tabbar-area">
+    <text v-if="error" class="tabbar-error" role="alert">{{ error }}</text>
+    <view class="tabbar" role="navigation" aria-label="Primary navigation">
+      <view v-for="tab in MAIN_TABS" :key="tab.id" class="tab" :class="{ active: active === tab.path }" role="button" :aria-label="tab.label" :aria-current="active === tab.path ? 'page' : undefined" :aria-disabled="busy" @click="go_tab(tab)">
+        <view class="tab__circle"><view class="tab__icon"><SourceIcon :name="tab.icon" /></view></view>
+      </view>
     </view>
   </view>
 </template>
 
 <style scoped>
-.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; justify-content: space-around; padding: 16rpx 18rpx max(env(safe-area-inset-bottom, 0px), var(--native-safe-area-bottom, 0px)); background: var(--cimoa-card); border-top: 1px solid var(--cimoa-border); }
-.tab { display: flex; flex-direction: column; align-items: center; gap: 6rpx; min-width: 112rpx; color: var(--cimoa-tertiary); }.tab.active { color: var(--cimoa-title); }.tab__icon { width: 42rpx; height: 42rpx; border-radius: 50%; opacity: .42; }.tab.active .tab__icon { opacity: 1; }.tab__label { font-size: 20rpx; }
+.tabbar-area { position: relative; z-index: 20; flex: none; height: var(--app-main-tab-bar-height); padding: 22.901rpx 38.168rpx calc(53.435rpx + var(--app-safe-bottom)); }
+.tabbar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 118.321rpx;
+  border-radius: 59.16rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-tab);
+}
+.tab { display: flex; justify-content: center; align-items: center; color: var(--cimoa-text-title); }
+.tab__circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 99.237rpx;
+  height: 99.237rpx;
+  border-radius: 50%;
+}
+.tab.active .tab__circle { background: var(--cimoa-gradient-tab); color: var(--cimoa-text-inverse); }
+.tab__icon { width: 49.618rpx; height: 49.618rpx; }
+.tabbar-error { position: absolute; bottom: 100%; left: 38.168rpx; right: 38.168rpx; color: var(--cimoa-status-danger); }
 </style>

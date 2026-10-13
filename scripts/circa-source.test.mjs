@@ -30,7 +30,11 @@ test('inventory keeps all source states, full planned routes and no false verifi
       'top_safe_area_owner', 'bottom_safe_area_owner', 'status']) {
       assert.ok(Object.hasOwn(entry, field), `${entry.source_screen}: missing ${field}`)
     }
-    assert.equal(entry.status, 'pending')
+    assert.ok(['pending', 'in_progress', 'verified'].includes(entry.status))
+    assert.ok(!entry.page_level.includes('随入口'))
+    assert.ok(entry.allowed_origin_routes.length > 0)
+    assert.ok(Array.isArray(entry.required_parameters))
+    if (entry.status === 'verified') assert.equal(entry.full_acceptance, 'passed')
     assert.match(entry.route, /^(\/pages\/[a-z0-9/-]+|component)$/)
   }
   assert.deepEqual([...new Set(inventory.filter((entry) => entry.page_level === '主 Tab').map((entry) => entry.route))].sort(),
@@ -72,8 +76,17 @@ test('every extracted media file is byte-identical to its source and has a conte
 test('Home local acceptance cannot be mistaken for completed page verification', () => {
   const home = inventory.filter((entry) => new URLSearchParams(entry.source_query).get('route') === 'home')
   assert.ok(home.length > 0)
-  assert.ok(home.every((entry) => entry.local_acceptance === 'pending' && entry.full_acceptance === 'pending'))
+  assert.ok(home.every((entry) => entry.status !== 'verified' || (entry.local_acceptance === 'passed' && entry.full_acceptance === 'passed')))
+  assert.ok(new Set(inventory.filter((entry) => entry.status === 'in_progress').map((entry) => entry.route === 'component' ? entry.parent_route : entry.route)).size <= 1)
   const calls = inventory.filter((entry) => new URLSearchParams(entry.source_query).get('route')?.startsWith('call'))
   assert.equal(calls.length, 3)
   assert.ok(calls.every((entry) => entry.implementation_override.includes('仅等待接通模拟')))
+})
+
+test('all 539 bindings have explicit owners; only the prototype catalog is excluded', () => {
+  const owners = JSON.parse(fs.readFileSync('docs/cimoa-interaction-owners.json', 'utf8'))
+  assert.deepEqual(owners.map((row) => row.interaction_id), audit.interactions.map((row) => row.interaction_id))
+  assert.equal(owners.filter((row) => row.owner_routes.length === 0).length, 1)
+  assert.equal(owners.find((row) => !row.owner_routes.length).scope, 'prototype-catalog-only; excluded from app')
+  assert.ok(owners.filter((row) => row.owner_routes.length).every((row) => row.owner_routes.every((route) => inventory.some((page) => page.route === route || page.parent_route === route))))
 })
