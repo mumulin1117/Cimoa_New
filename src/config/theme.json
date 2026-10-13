@@ -25,6 +25,11 @@
       "profile_icon": "#eef2f8"
     },
     "text": {
+      "welcome_brand": "#14124a",
+      "welcome_title": "#120e4a",
+      "welcome_copy": "#7478a8",
+      "auth_muted": "#6b7a93",
+      "auth_legal": "#44536b",
       "title": "#0b1b3a",
       "secondary": "#5b6b85",
       "tertiary": "#64748b",
@@ -96,6 +101,7 @@
     }
   },
   "gradients": {
+    "welcome_mask": "linear-gradient(to bottom,#000 0%,#000 70%,transparent 100%)",
     "card_fill": "linear-gradient(#ffffff,#ffffff)",
     "photo_scrim": "linear-gradient(to top,rgba(6,14,28,0.86) 0%,rgba(6,14,28,0.55) 42%,rgba(6,14,28,0) 100%)",
     "primary": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
@@ -104,6 +110,8 @@
     "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)"
   },
   "shadows": {
+    "auth_action": "0 22.901rpx 49.618rpx rgba(168,85,247,0.24)",
+    "auth_secondary": "0 15.267rpx 41.985rpx rgba(16,36,74,0.07)",
     "profile_avatar": "0 22.901rpx 53.435rpx rgba(16,36,74,0.14)",
     "profile_tag": "0 7.634rpx 22.901rpx rgba(16,36,74,0.07)",
     "event_card": "0 22.901rpx 57.252rpx rgba(16,36,74,0.09)",

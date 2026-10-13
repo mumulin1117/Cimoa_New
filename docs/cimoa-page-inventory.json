@@ -59,9 +59,9 @@
     "page_level": "认证根页",
     "route": "/pages/auth/welcome",
     "component": null,
-    "parent_route": "/pages/auth/welcome",
+    "parent_route": null,
     "allowed_origin_routes": [
-      "/pages/auth/welcome"
+      "/pages/auth/splash"
     ],
     "required_parameters": [],
     "entry_points": [
@@ -72,9 +72,9 @@
       "closeUnder@5603",
       "logOut@5635"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auth/welcome）；无历史实例时 replace /pages/auth/welcome，不创建伪造实体",
+    "return_owner": "authentication root; no fake back target",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+    "fixed_regions": "TopSafeArea; fixed Create Account/Log In/legal footer; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -91,26 +91,6 @@
           "source_id": "d94783de-a46b-442f-9163-27afd548eacd",
           "local_path": "static/assets/img/welcome-campus.png",
           "mime": "image/png"
-        },
-        {
-          "source_id": "a4",
-          "local_path": "static/assets/songs/training-season.jpg",
-          "mime": "image/jpeg"
-        },
-        {
-          "source_id": "a7",
-          "local_path": "static/assets/songs/stupid-song.jpg",
-          "mime": "image/jpeg"
-        },
-        {
-          "source_id": "a8",
-          "local_path": "static/assets/songs/stateside.jpg",
-          "mime": "image/jpeg"
-        },
-        {
-          "source_id": "a9",
-          "local_path": "static/assets/songs/beauty-beat.jpg",
-          "mime": "image/jpeg"
         }
       ],
       "svg_source_lines": [
@@ -131,10 +111,11 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work",
+    "acceptance_notes": "8 isolated browser checks passed; 4 dependency routes deferred; see cimoa-auth-interactions.md. Not verified."
   },
   {
     "source_screen": "Legal / Terms of Service / Default",

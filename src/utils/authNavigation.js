@@ -1,4 +1,4 @@
-const available_auth_routes = new Set(['/pages/auth/splash'])
+const available_auth_routes = new Set(['/pages/auth/splash', '/pages/auth/welcome'])
 export const auth_destination = target => {
   if (!available_auth_routes.has(target)) throw new Error('This step has not been restored yet. Your account data has not changed.')
   return target

@@ -1,0 +1,17 @@
+{
+  "phase": "welcome",
+  "result": "passed",
+  "server_pid": 83162,
+  "checks": [
+    "fresh launch renders source brand/progress without authenticating or writing storage",
+    "source automatic launch reaches actual Welcome once without a session write",
+    "Welcome uses extracted campus image, source copy and 360/60/56 geometry",
+    "all four deferred dependencies fail explicitly without wrong routing or state mutation",
+    "image 404 is visible and retry actually reloads the original local image",
+    "small viewport scrolls content while footer stays fixed and state remains untouched",
+    "saved session restores Home at stack one; double tap/timer cannot duplicate or prepare skeleton",
+    "corrupt snapshot is not overwritten and retry recovers repaired data"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

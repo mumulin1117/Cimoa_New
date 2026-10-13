@@ -10,6 +10,7 @@ defineProps({ name: { type: String, required: true }, strokeWidth: { type: Numbe
     <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" :stroke-width="strokeWidth || 2" stroke-linecap="round" stroke-linejoin="round">
       <template v-if="name === 'settings'"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" /><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.4-2-3.4-2.3.7a7.6 7.6 0 0 0-1.7-1L15 3h-6l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.3-.7-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.4 2 3.4 2.3-.7a7.6 7.6 0 0 0 1.7 1L9 21h6l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.3.7 2-3.4z" /></template>
       <template v-else-if="name === 'edit'"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4" /></template>
+      <template v-else-if="name === 'arrow-right'"><path d="M5 12h14M13 6l6 6-6 6" /></template>
       <template v-else-if="name === 'home'"><path d="M3 10.5 12 3.5l9 7V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" /></template>
       <template v-else-if="name === 'discover'"><circle cx="11" cy="11" r="7" /><path d="M16.2 16.2 21 21" /></template>
       <template v-else-if="name === 'events' || name === 'my-events'"><rect x="3" y="5" width="18" height="16" rx="3" /><path d="M8 3v3M16 3v3M3 10h18" /><path v-if="name === 'my-events'" d="m9 15 2 2 4-4" /></template>
