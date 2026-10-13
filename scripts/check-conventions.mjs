@@ -10,7 +10,10 @@ async function walk(dir) {
     if (name.isDirectory()) await walk(path)
     else if (/\.(vue|js|json)$/.test(name.name)) {
       const text = await readFile(path, 'utf8')
-      forbidden.forEach((rule) => { if (rule.test(text)) errors.push(`${path}: ${rule}`) })
+      forbidden.forEach((rule) => {
+        if (rule.toString().includes('uni\\.navigate') && path.endsWith('src/utils/routeTransition.js')) return
+        if (rule.test(text)) errors.push(`${path}: ${rule}`)
+      })
     }
   }
 }

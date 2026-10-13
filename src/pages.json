@@ -1,4 +1,13 @@
 {
-  "pages": [{ "path": "pages/home/index", "style": { "navigationStyle": "custom" } }],
-  "globalStyle": { "navigationBarTitleText": "Cimoa" }
+  "pages": [
+    { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/discover/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/events/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/messages/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/auto-match/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/auth/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/system/index", "style": { "navigationStyle": "custom" } }
+  ],
+  "globalStyle": { "navigationBarTitleText": "Cimoa", "navigationStyle": "custom" }
 }
