@@ -64,11 +64,13 @@ walk_html(source.html, (node, ancestors) => {
   }
 })
 const asset_manifest = JSON.parse(fs.readFileSync('static/assets/manifest.json', 'utf8'))
-const extracted_ids = new Set(asset_manifest.assets.map((asset) => asset.id))
+const extracted_by_bundle = new Map(asset_manifest.assets.map((asset) => [asset.bundle_id || source.external.find((entry) => entry.id === asset.id)?.uuid, asset]))
 const resources = Object.entries(source.manifest).map(([uuid, resource]) => {
   const entry = source.external.find((candidate) => candidate.uuid === uuid)
+  const local = extracted_by_bundle.get(uuid)
   return { source_id: entry?.id || uuid, bundle_id: uuid, mime: resource?.mime,
-    extracted: extracted_ids.has(entry?.id), bytes: resource?.data ? Buffer.byteLength(resource.data, 'base64') : 0 }
+    extracted: !!local && fs.existsSync(local.target), local_path: local?.target || null,
+    bytes: resource?.data ? Buffer.byteLength(resource.data, 'base64') : 0 }
 })
 const data = { source: source.filename, source_sha256: source.source_hash,
   note: 'Static analysis only. No source scripts are executed. Located does not mean implemented or verified.',

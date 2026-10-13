@@ -14175,20 +14175,23 @@
       "bundle_id": "c448edd0-f94d-466e-bc08-4899beb0854a",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/head/maya-av.png",
       "bytes": 35386
     },
     {
       "source_id": "a9831494-dfeb-464f-8617-1e3468ad74f0",
       "bundle_id": "a9831494-dfeb-464f-8617-1e3468ad74f0",
       "mime": "image/png",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/coins/home-coin-badge.png",
       "bytes": 42279
     },
     {
       "source_id": "e8bd8155-5a13-4ecb-a022-bcadf12ae5f6",
       "bundle_id": "e8bd8155-5a13-4ecb-a022-bcadf12ae5f6",
       "mime": "image/jpeg",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/head/participant-e8bd8155.jpg",
       "bytes": 124949
     },
     {
@@ -14196,6 +14199,7 @@
       "bundle_id": "b8e65a72-456c-4c6d-ac60-b015015a3ac4",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/img/event-picnic.png",
       "bytes": 263553
     },
     {
@@ -14203,6 +14207,7 @@
       "bundle_id": "6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/head/me.png",
       "bytes": 97422
     },
     {
@@ -14210,13 +14215,15 @@
       "bundle_id": "ceafb32c-3d48-4ad1-a03e-d45b4d907d80",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/head/g1.png",
       "bytes": 676931
     },
     {
       "source_id": "38b22b41-ac8f-43cc-8bf0-37a8b75c93b4",
       "bundle_id": "38b22b41-ac8f-43cc-8bf0-37a8b75c93b4",
       "mime": "image/png",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/head/participant-38b22b41.png",
       "bytes": 713766
     },
     {
@@ -14224,13 +14231,15 @@
       "bundle_id": "ccb60bc3-7dec-4660-b8f0-dbdd63bf808c",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/head/liam-av.png",
       "bytes": 879913
     },
     {
       "source_id": "501d6dc6-cd53-4ee4-b9ae-e49c37deca54",
       "bundle_id": "501d6dc6-cd53-4ee4-b9ae-e49c37deca54",
       "mime": "image/png",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/coins/store-coin-hero.png",
       "bytes": 273495
     },
     {
@@ -14238,6 +14247,7 @@
       "bundle_id": "c835ba92-45a1-48e0-9991-4ee3f871069b",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/head/jordan-av.png",
       "bytes": 876184
     },
     {
@@ -14245,13 +14255,15 @@
       "bundle_id": "7c94b5fa-a030-4722-860f-0d79d6dcfc3f",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/head/maya-card.png",
       "bytes": 895627
     },
     {
       "source_id": "92ddcb8c-721c-4960-a8e8-51926692ee27",
       "bundle_id": "92ddcb8c-721c-4960-a8e8-51926692ee27",
       "mime": "image/png",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/head/participant-92ddcb8c.png",
       "bytes": 821710
     },
     {
@@ -14259,13 +14271,15 @@
       "bundle_id": "be199ee7-6704-4324-98d1-52394676c49a",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/head/maya-full.png",
       "bytes": 1879678
     },
     {
       "source_id": "d94783de-a46b-442f-9163-27afd548eacd",
       "bundle_id": "d94783de-a46b-442f-9163-27afd548eacd",
       "mime": "image/png",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/img/welcome-campus.png",
       "bytes": 1392448
     },
     {
@@ -14273,6 +14287,7 @@
       "bundle_id": "2bc15290-af24-4f53-ac95-86785dd11404",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/beautiful-things.jpg",
       "bytes": 227533
     },
     {
@@ -14280,6 +14295,7 @@
       "bundle_id": "c540ffa8-6f8c-4149-8a02-c0b48c332694",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/good-luck-babe.jpg",
       "bytes": 172206
     },
     {
@@ -14287,6 +14303,7 @@
       "bundle_id": "c8f38cd5-f94d-4afc-ae0d-dcb80a231e64",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/icons/ic-connect.png",
       "bytes": 41453
     },
     {
@@ -14294,6 +14311,7 @@
       "bundle_id": "6c913b35-8926-4e39-a6e6-343bbae80286",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/icons/ic-rewind.png",
       "bytes": 48412
     },
     {
@@ -14301,6 +14319,7 @@
       "bundle_id": "e51fa8ad-bd77-4f49-a9df-333dc52f6e53",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/icons/ic-boost.png",
       "bytes": 41301
     },
     {
@@ -14308,6 +14327,7 @@
       "bundle_id": "14cbdb93-306d-4bc6-b0fb-682b0e734254",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/birds.jpg",
       "bytes": 123844
     },
     {
@@ -14315,6 +14335,7 @@
       "bundle_id": "ef8bcb14-d913-4d1a-89fa-de7fe1831cc0",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/coins/coins-60.png",
       "bytes": 75128
     },
     {
@@ -14322,6 +14343,7 @@
       "bundle_id": "2cbe89bb-f85f-42c2-b64a-8e72a1f90bcc",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/espresso.jpg",
       "bytes": 294235
     },
     {
@@ -14329,6 +14351,7 @@
       "bundle_id": "b8a0b4da-5299-40de-b2cd-2beec315198b",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/coins/coins-300.png",
       "bytes": 76259
     },
     {
@@ -14336,6 +14359,7 @@
       "bundle_id": "a963c6fb-520d-4882-9de9-f386c633dde4",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/training-season.jpg",
       "bytes": 198967
     },
     {
@@ -14343,6 +14367,7 @@
       "bundle_id": "0fd55bd4-0727-4554-a021-c901afab48a1",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/love-me-not.jpg",
       "bytes": 172293
     },
     {
@@ -14350,6 +14375,7 @@
       "bundle_id": "35e31c51-1321-4c21-a604-3391f9b759fe",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/coins/coins-680.png",
       "bytes": 105880
     },
     {
@@ -14357,6 +14383,7 @@
       "bundle_id": "1fb4ad01-c3d4-47a8-b311-69d58e640314",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/risk-it-all.jpg",
       "bytes": 370570
     },
     {
@@ -14364,6 +14391,7 @@
       "bundle_id": "0f37423a-52bd-4ac1-b0d7-0d63057b909b",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/img/ev-boat.jpg",
       "bytes": 107651
     },
     {
@@ -14371,6 +14399,7 @@
       "bundle_id": "5aad83b6-0e68-484c-9498-093fac473532",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/stupid-song.jpg",
       "bytes": 254710
     },
     {
@@ -14378,6 +14407,7 @@
       "bundle_id": "6ed4bff2-5d5d-45ad-8a73-5cdde7961cfd",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/stateside.jpg",
       "bytes": 327842
     },
     {
@@ -14385,6 +14415,7 @@
       "bundle_id": "a6735a36-9d89-4906-822b-bc9e0793dab6",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/img/ev-forest.jpg",
       "bytes": 82960
     },
     {
@@ -14392,6 +14423,7 @@
       "bundle_id": "36a81bd1-c78c-4988-82a8-57bb1585f35b",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/songs/beauty-beat.jpg",
       "bytes": 352302
     },
     {
@@ -14399,6 +14431,7 @@
       "bundle_id": "f505a1ed-f13f-4b85-bfb5-0982f9b3402d",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/img/ev-bike.jpg",
       "bytes": 156701
     },
     {
@@ -14406,6 +14439,7 @@
       "bundle_id": "4ec95bce-b04a-4536-bc0d-1fcef78d7756",
       "mime": "image/jpeg",
       "extracted": true,
+      "local_path": "static/assets/img/ev-camp.jpg",
       "bytes": 239019
     },
     {
@@ -14413,6 +14447,7 @@
       "bundle_id": "7ac4dd71-1d70-4072-9ff2-b4b186c56286",
       "mime": "image/png",
       "extracted": true,
+      "local_path": "static/assets/img/ev-hike.png",
       "bytes": 914630
     },
     {
@@ -14420,6 +14455,7 @@
       "bundle_id": "cc13a6fb-45d5-4542-830f-161107036032",
       "mime": "text/javascript",
       "extracted": false,
+      "local_path": null,
       "bytes": 19109
     },
     {
@@ -14427,6 +14463,7 @@
       "bundle_id": "d4cb88bb-8d1b-430d-acbd-7c403bdd9b0f",
       "mime": "text/html",
       "extracted": false,
+      "local_path": null,
       "bytes": 805
     },
     {
@@ -14434,6 +14471,7 @@
       "bundle_id": "1863a059-2f6c-41b9-9cfd-8005f135b754",
       "mime": "text/html",
       "extracted": false,
+      "local_path": null,
       "bytes": 1113
     },
     {
@@ -14441,6 +14479,7 @@
       "bundle_id": "2d21cf86-7077-4db0-88b6-d3e1773a6de3",
       "mime": "text/javascript",
       "extracted": false,
+      "local_path": null,
       "bytes": 4269
     },
     {
@@ -14448,90 +14487,103 @@
       "bundle_id": "bd08be89-89f8-409b-b095-bb1481271fcc",
       "mime": "text/javascript",
       "extracted": false,
+      "local_path": null,
       "bytes": 43121
     },
     {
       "source_id": "c45dc80d-a308-443b-a04e-160acb1aacb6",
       "bundle_id": "c45dc80d-a308-443b-a04e-160acb1aacb6",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/c45dc80d-a308-443b-a04e-160acb1aacb6.woff2",
       "bytes": 8680
     },
     {
       "source_id": "3fce8f63-a0cb-4038-9e76-9d27825944d8",
       "bundle_id": "3fce8f63-a0cb-4038-9e76-9d27825944d8",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/3fce8f63-a0cb-4038-9e76-9d27825944d8.woff2",
       "bytes": 31356
     },
     {
       "source_id": "e384f657-5844-471e-bb43-9961e1fd1f20",
       "bundle_id": "e384f657-5844-471e-bb43-9961e1fd1f20",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/e384f657-5844-471e-bb43-9961e1fd1f20.woff2",
       "bytes": 18612
     },
     {
       "source_id": "0113f2b2-23eb-4100-baa3-e2e3a3df43d8",
       "bundle_id": "0113f2b2-23eb-4100-baa3-e2e3a3df43d8",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/0113f2b2-23eb-4100-baa3-e2e3a3df43d8.woff2",
       "bytes": 42856
     },
     {
       "source_id": "631e1a4c-0eae-4582-826b-536c5def58d3",
       "bundle_id": "631e1a4c-0eae-4582-826b-536c5def58d3",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/631e1a4c-0eae-4582-826b-536c5def58d3.woff2",
       "bytes": 77216
     },
     {
       "source_id": "53b577a8-636a-4565-a134-1c08a62fa4ec",
       "bundle_id": "53b577a8-636a-4565-a134-1c08a62fa4ec",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/53b577a8-636a-4565-a134-1c08a62fa4ec.woff2",
       "bytes": 29472
     },
     {
       "source_id": "66b0bd6c-e5cc-49ba-9396-78a01d710d85",
       "bundle_id": "66b0bd6c-e5cc-49ba-9396-78a01d710d85",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/66b0bd6c-e5cc-49ba-9396-78a01d710d85.woff2",
       "bytes": 74932
     },
     {
       "source_id": "56ac1e90-0b80-4cb8-a82f-59cf81760371",
       "bundle_id": "56ac1e90-0b80-4cb8-a82f-59cf81760371",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/56ac1e90-0b80-4cb8-a82f-59cf81760371.woff2",
       "bytes": 29564
     },
     {
       "source_id": "6331ba1a-6400-4815-ac0a-69510f961a77",
       "bundle_id": "6331ba1a-6400-4815-ac0a-69510f961a77",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/6331ba1a-6400-4815-ac0a-69510f961a77.woff2",
       "bytes": 12224
     },
     {
       "source_id": "81d61863-e3ad-4303-951e-65126210cb5a",
       "bundle_id": "81d61863-e3ad-4303-951e-65126210cb5a",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/81d61863-e3ad-4303-951e-65126210cb5a.woff2",
       "bytes": 5672
     },
     {
       "source_id": "78f79fc4-e1ca-483f-a6b9-45572b168ed1",
       "bundle_id": "78f79fc4-e1ca-483f-a6b9-45572b168ed1",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/78f79fc4-e1ca-483f-a6b9-45572b168ed1.woff2",
       "bytes": 12880
     },
     {
       "source_id": "1319a1ef-b3fd-4679-80e0-ee8aecf30769",
       "bundle_id": "1319a1ef-b3fd-4679-80e0-ee8aecf30769",
       "mime": "font/woff2",
-      "extracted": false,
+      "extracted": true,
+      "local_path": "static/assets/fonts/1319a1ef-b3fd-4679-80e0-ee8aecf30769.woff2",
       "bytes": 23228
     }
   ],

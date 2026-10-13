@@ -23,10 +23,10 @@
 | home.exploreDiscover.click.1 | Home / Empty | 点击 Explore People | 会话有效 | replace_route | `/pages/discover/index`，选中 Discover | Home 保持可见 | none | 三个主 Tab | 空页切 Discover→Home，栈深不增加，无重复骨架 |
 | home.openMaya.click.1 | Home / Connected Chloe | 点击 Chloe 卡片 | 两条有效方向关系、未拉黑、真实会话存在 | 立即 Push，无 Loading | `/pages/messages/chat?conversation_id=...`，参与者为 Chloe | 不允许私聊时不创建假会话，不改变关系 | none（已读由聊天页 action 管理） | Home、关系、DM | 进入→核对参与者→发送并刷新→返回；拉黑后入口消失 |
 | home.openLiam.click.1 | Home / Auto Match Liam | 点击 Liam 卡片 | 有该候选对应 match_id，未拉黑 | 立即 Push | `/pages/auto-match/found?match_id=...`，候选为 Liam | 候选失效明确报错，不替换为 Chloe | none | Home、匹配、候选用户 | 进入 Liam→返回；不能把全局候选偷偷改为另一个人 |
-| home.openJordan.click.1 | Home / Invite Jordan | 点击 Jordan 卡片 | 存在来自 Jordan 的待处理 request_id | 立即 Push | `/pages/connections/received?request_id=...`，全过程仍为 Jordan | 失效请求不可接受，原状态不变 | none（接受由目标页 action 写入） | Home、邀请、关系、会话 | 进入→核对身份→接受/拒绝分别验证→刷新后 Home 同步；禁止出现 Lina/Chloe 串人 |
-| home.popMaya.click.1 | Home / Chloe goals | 点击目标标签 | Chloe 可见 | Popover 入场，不打开 Chat | 展示 Chloe 的三项目标 | 无目标显示英文空状态，不借用别人目标 | none | 用户 goals getter | 点击→外部关闭→再次打开→不触发卡片导航 |
+| home.openJordan.click.1 | Home / Invite（原稿 Jordan，详情 Lina） | 点击 Lina 邀请卡片 | 存在来自 Lina 的待处理 request_id | 立即 Push | `/pages/connections/received?request_id=...`，全过程为详情中的 Lina | 失效请求不可接受，原状态不变 | none（接受由目标页 action 写入） | Home、邀请、关系、会话 | 进入→核对 Lina / HKU→接受/拒绝分别验证→刷新后 Home 同步；不能显示 Jordan 或接受结果 Chloe |
+| home.popMaya.click.1 | Home / Chloe goals | 点击目标标签 | Chloe 可见 | Popover 入场，不打开 Chat | 展示 Chloe 详情实体中的全部目标；卡片预览前三项 | 无目标显示英文空状态，不借用别人目标 | none | 用户 goals getter | 点击→外部关闭→再次打开→不触发卡片导航；与 Expanded 详情目标一致 |
 | home.popLiam.click.1 | Home / Liam goals | 点击目标标签 | Liam 可见 | 同上 | Activity Buddies / Music & Gigs / Food Explorers | 同上 | none | 同上 | 连续从 Chloe 切 Liam，内容只显示当前人 |
-| home.popJordan.click.1 | Home / Jordan goals | 点击目标标签 | Jordan 可见 | 同上 | Meaningful Conversations / Language Exchange / Travel Buddies | 同上 | none | 同上 | 长目标名正常换行、不超出视口 |
+| home.popJordan.click.1 | Home / Lina goals（源码 ID 保留） | 点击目标标签 | Lina 可见 | 同上 | 展示 Lina 邀请详情实体中的全部目标，不再使用 Jordan 目标 | 同上 | none | 同上 | 长目标名正常换行、不超出视口；不能混用 Chloe/Jordan 的独立数据副本 |
 | home.closeGoalPop.click.1 | Home / Goals mask | 点击弹层外部 | 有已打开 Popover | 完整离场 | 遮罩清除、Home 可点 | none | none | 仅瞬时 UI | 打开→点外部→点同卡片，导航正常 |
 | home.stopTap.click.1 / .2 / .3 | Home / Goals panel | 点击面板内容 | Popover 打开 | 阻止冒泡，不伪装按钮 | 面板保留，不导航 | none | none | 仅瞬时 UI | 点击目标文字不能打开聊天或关闭自身 |
 | home.amCardGo.click.1 | Home / Auto Match status | 点击状态卡 | 真实 match_session 为 searching/paused/found/waiting | 无导航 Loading | 分别进入 searching/paused/found/waiting 路由，传同一 match_id | 失效状态刷新 getter，不重启计时 | none | 匹配状态、配额、Home | 四态逐一进入/返回/刷新，结束时间不重置 |
@@ -40,4 +40,9 @@
 
 ## 完成门槛
 
-目前无视觉对比、浏览器闭环或 WKWebView 证据。以上所有入口通过后，依次执行三项强制检查，提交并 push，再把 Home 及其专属组件标记 verified。只修静态首页、只接旧目标页或只成功构建均不满足条件。
+用户已授权先验收 Home 本页，再逐页补齐依赖。验收分为两层，当前均为 pending：
+
+- `local_acceptance`：布局与资源、三个卡片详情资料一致、Popover、固定骨架、安全区所有权、Tabbar、一次骨架消费、默认/空/错误/长内容、Store 状态恢复，以及每个入口传递的正确实体 ID。依赖页内容和返回链路不能借此判为通过。
+- `full_acceptance`：Profile、Chat、Match Found、Received Request、Auto Match Entry 等目标页实现后，逐项执行上表完整 acceptance；补齐 WKWebView、安全区、手势、滚动、刷新和跨页同步证据。
+
+本页验收通过后可暂回 pending（待依赖），然后按既定顺序推进下一页；任一时刻仅一个页面 in_progress。本页阶段仍执行三项强制检查、专项提交及获授权的 push。只有两层验收与提交推送全部通过，Home 及其专属组件才能标记 verified。静态页面、旧错误目标页或构建成功都不是完整验收。

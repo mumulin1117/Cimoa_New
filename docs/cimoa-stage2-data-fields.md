@@ -15,6 +15,14 @@
 | 页面 query 决定业务真假状态 | query 只传 ID 和返回归属；状态从 Store 派生 | 无 query 伪造连接、余额、参加状态 |
 | 无真正媒体引用 | 静态资源本地化；上传媒体 Blob 在 IndexedDB，Store 保存稳定地址 | 头像、语音、歌曲、图片刷新后可解析，缺失明确错误 |
 
-下一步逐字段补齐 `entity / field_name / type / required / source_screen / relation / persistence / write_action`；`persistence` 仅允许规定的四种值。不得在字段和计费/资料决策未定时进入全量 seed。
+下一步逐字段补齐 `entity / field_name / type / required / source_screen / relation / persistence / write_action`；`persistence` 仅允许规定的四种值。资料和计费决策已确认，字段表完成前仍不得进入全量 seed。
+
+## 已确认的数据约束
+
+- 人物资料唯一基准是对应详情：Chloe / HKUST、Liam / Stanford、Lina / HKU。Home 第三个入口沿用源码 `home.openJordan.click.1` 审计编号，但业务实体是 Lina；Jordan 保留为独立安全/历史人物。
+- Home 只持有用户、邀请、匹配和会话引用；名字、年龄、大学、头像、目标从同一用户 getter 派生。接受邀请不复制另一人的资料，不新建页面级用户。
+- `introduction_cost('text')` 为派生的 0，任何发送路径都不能新增文本扣币流水；语音 10、优先匹配 20。文本仍需要合法正文和目标用户，不因为免费跳过 Loading、持久化和失败回滚。
+- 模拟通话只需要参与者引用、等待开始/结束和结束原因。省略号是临时 UI；不创建“已接通”的虚假远端会话、时长或媒体数据。
+- Home 本页验收状态仅属于开发验收清单，不属于业务 Store，不得作为绕过互相关注、余额、媒体存在或请求有效性的运行时开关。
 
 用户信息以当前要求为准：品牌与标题 Cimoa，副标题 Cimoa: Campus Life & New Meet，固定测试账号 `cimoa@gmail.com` / `12341234`。App ID 未提供，不能将 `__UNI__CIMOA` 当作正式 iOS Bundle ID。当前代码尚未应用这些数据修正。

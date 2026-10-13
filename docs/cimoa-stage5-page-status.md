@@ -1,15 +1,27 @@
 # Cimoa 阶段五页面还原状态
 
-阶段 5 尚未开始。旧文档把“存在路由、可以构建”误标为全部 verified，现已撤销。全部页面恢复为 pending；当前没有 in_progress 页面。阶段 1–4 的完成门槛通过前，不开始 Home。
+阶段 5 尚未开始。旧文档把“存在路由、可以构建”误标为全部 verified，现已撤销。全部页面为 pending；当前没有 in_progress 页面。人物、费用和通话决策已确认，阶段 1–4 的其余完成门槛通过前，不开始 Home。
 
 | 顺序 | 页面 | 状态 | 原因 |
 | --- | --- | --- | --- |
-| 1 | Home | pending | 旧首页结构与原型不同；依赖页面闭环、资料统一、路由/骨架/安全区未验收 |
+| 1 | Home | pending | 已允许本页先验收；旧首页仍需重建，局部验收和完整依赖验收均未通过 |
 | 2 | Discover | pending | 应为个人照片浏览，而非旧推荐/帖子拼合页 |
 | 3 | Events | pending | 等待前两页及基础数据完成 |
 | 后续 | Profile、Messages、Auto Match、Connection、Auth、Settings、Coins、Safety、System | pending | 按入口依赖逐页进行，不能以业务域 mega-page 代替全部独立页面 |
 
-完整状态以 [页面清单](./cimoa-page-inventory.json) 为准。Popover/Sheet 随首个使用页面完成，常驻挂载。任一时间最多一个页面 in_progress；验收、三项检查、提交和 push 全部完成后才能开始下一页。
+完整状态以 [页面清单](./cimoa-page-inventory.json) 为准。Popover/Sheet 随首个使用页面完成，常驻挂载。任一时间最多一个页面 in_progress。
+
+## 用户授权的分段验收
+
+Home 增加独立的 `local_acceptance` 和 `full_acceptance` 字段，均使用 pending / passed / failed。它们只表示验收结果，不改变页面的 pending / in_progress / verified 三态。
+
+1. Home 成为唯一 in_progress 页面，完成本页 UI、Popover、Store 派生、状态覆盖和导航参数检查。
+2. 本页通过后记录 `local_acceptance: passed`，列出依赖缺口；执行强制校验、专项提交和获授权的 push。等待依赖时将 Home 恢复 pending，不标记 verified。
+3. 按 Home → Discover → Events 的主 Tab 顺序，再按入口依赖逐页推进。进入一个页面时，不保留另一个 in_progress 页面。
+4. 依赖补齐后，Home 再次成为唯一 in_progress 页面，执行真实目标页/返回、跨页同步、刷新恢复和 WKWebView 回归。
+5. `local_acceptance`、`full_acceptance` 都通过，且全部校验与提交推送有证据，才将 Home 标记 verified。
+
+该授权不允许空目标页、Toast 假成功、页面级业务副本，也不取消阶段 1–4。当前两个验收字段均为 pending。
 
 ## Home 验收证据
 

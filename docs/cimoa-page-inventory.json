@@ -872,6 +872,9 @@
       "newUser": "1"
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -1036,6 +1039,9 @@
     "assets": "circa-source-audit.json resources（全部逐项，不用通配目录代替）",
     "states": {},
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -1984,6 +1990,9 @@
       "am": "searching"
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -2035,6 +2044,9 @@
       "am": "found"
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -2086,6 +2098,9 @@
       "am": "waiting"
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -2137,6 +2152,9 @@
       "am": "connected"
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -2203,6 +2221,7 @@
     "assets": "circa-source-audit.json resources（全部逐项，不用通配目录代替）",
     "states": {},
     "status": "pending",
+    "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -2236,6 +2255,7 @@
     "assets": "circa-source-audit.json resources（全部逐项，不用通配目录代替）",
     "states": {},
     "status": "pending",
+    "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -2265,6 +2285,7 @@
     "assets": "circa-source-audit.json resources（全部逐项，不用通配目录代替）",
     "states": {},
     "status": "pending",
+    "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -4314,6 +4335,9 @@
       "pop": "Chloe"
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -4365,6 +4389,9 @@
       "pop": "Liam"
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {
@@ -4416,6 +4443,9 @@
       "pop": "Jordan"
     },
     "status": "pending",
+    "local_acceptance": "pending",
+    "full_acceptance": "pending",
+    "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "planned; requires per-entry contract review"
   },
   {

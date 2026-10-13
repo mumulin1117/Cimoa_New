@@ -63,7 +63,11 @@ const records = read_catalog(source.catalog).flatMap((group) => group.screens.ma
     bottom_safe_area_owner: tab_keys.includes(key) ? 'CustomTabBar' : 'BottomSafeArea',
     interaction_ids: audit.interactions.filter((item) => item.route === key).map((item) => item.interaction_id),
     entities: entities[route.split('/')[2]], assets: 'circa-source-audit.json resources（全部逐项，不用通配目录代替）',
-    states: state, status: 'pending', mapping_status: 'planned; requires per-entry contract review' }
+    states: state, status: 'pending',
+    ...(key === 'home' ? { local_acceptance: 'pending', full_acceptance: 'pending',
+      acceptance_policy: 'Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified' } : {}),
+    ...(key.startsWith('call') ? { implementation_override: '用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现' } : {}),
+    mapping_status: 'planned; requires per-entry contract review' }
 }))
 const clean = (value) => String(value).replaceAll('|', '\\|').replaceAll('\n', ' ')
 const opening = fs.readFileSync('docs/cimoa-stage1-source-findings.md', 'utf8')

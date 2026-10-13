@@ -2,7 +2,7 @@
 
 最终 UI 和交互依据为 `CIRCA All Screens (interactive).html`；品牌采用 Cimoa。运行时仅使用独立 Vue / uni-app 组件、Store、样式和本地资源，不加载原 HTML。
 
-**阶段状态：in_progress。** 旧清单中的四 Tab、伪路由和笼统交互已撤销。下列映射是规划，不是已实现的证明。阶段 1 的资料冲突、交互契约和服务边界未关闭前，不进入阶段 2–5。
+**阶段状态：in_progress。** 人物资料、文字介绍费用、模拟通话和 Home 分段验收的选择已由用户确认，不再列为待答复。下列映射仍是规划，不是已实现的证明；其余入口契约和服务失败边界完成后，才能进入后续阶段。
 
 原型 SHA-256：`6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060`。静态审计定位 154 个目录状态、104 个页面条件区块、539 个事件绑定、52 个包内资源和 356 处内联 SVG。事件绑定包括输入、遮罩关闭、冒泡控制，不等于 539 个业务按钮；154 个状态也不等于 154 个独立页面。
 
@@ -10,7 +10,7 @@
 
 - 主 Tab 仅 Home、Discover、Events。依据内层模板 `showTabs`（5193 行）和内嵌 `TabBar.dc.html`，不是按 MAIN LEVEL 分组名称猜测。
 - Profile 从 Home 左上入口打开，是二级页；Discover / Profile / Expanded 也是二级资料页。
-- Home 标题为 People you’ve met，默认 Chloe Lin、Liam Park、Jordan Ellis 三张纵向卡片，分别进入聊天、匹配预览、收到邀请。没有旧实现的横排推荐、活动区或绿色宣传卡。
+- Home 标题为 People you’ve met，源稿为 Chloe Lin、Liam Park、Jordan Ellis 三张纵向卡片，分别进入聊天、匹配预览、收到邀请。按用户最新决定，实际资料以对应详情为准：Chloe / HKUST、Liam / Stanford、Lina / HKU；第三张卡不能继续显示 Jordan 却打开 Lina。没有旧实现的横排推荐、活动区或绿色宣传卡。
 - Home 三个 Connection Goals 为卡片锚定 Popover，不是底部 Sheet。匹配状态卡覆盖 searching、paused、found、waiting；空联系人有 Start Auto Match / Explore People 入口。
 - 393 × 852 是原型参考视口。设计尺寸按 `750 / 393` 转成 rpx；不复制状态栏和 Home Indicator，安全区与固定骨架服从开发约定第 15 节。
 - 原型 Tabbar 是白色圆角胶囊，三枚轮廓图标分别为房屋、搜索、日历；选中项为渐变圆形底。不显示文字标签，英文标签用于无障碍。
@@ -21,17 +21,31 @@
 
 [静态审计](./circa-source-audit.json) 保存每个入口的条件、绑定函数源码、源码行号、导航边和资源清单，不被应用导入。行号均指从原包静态解出的内层模板，而不是外层压缩 HTML。
 
-包内资源为 35 张图片、12 个 WOFF2 字体、2 个组件 HTML、3 个运行库脚本。原先只提取了 29 张命名图片；遗漏 6 张图片和全部字体。运行库及组件 HTML 不应加入 H5 运行产物；仅提取组件的 SVG、样式和结构并重写为 Vue。原型内联 Emoji 不直接移植，按第 15.2 节使用已有源资源或语义匹配图标，并登记差异。
+包内资源为 35 张图片、12 个 WOFF2 字体、2 个组件 HTML、3 个运行库脚本。35 张图片和 12 个字体现已全部提取至 `static/assets`，保留原有 29 张图片不变；清单记录 bundle_id、路径、字节数和 SHA-256。字体声明使用本地相对 URL，不依赖原 HTML 或在线字体服务。运行库及组件 HTML 不加入 H5 运行产物；后续仅提取组件的 SVG、样式和结构并重写为 Vue。原型内联 Emoji 不直接移植，按第 15.2 节使用已有源资源或语义匹配图标，并登记差异。
 
-## 待关闭的业务矛盾
+## 用户已确认的业务决定
+
+2026 年 10 月 13 日确认：人物资料以详情页为准；文字介绍免费；通话只模拟等待接通；允许先验收 Home 本页，再逐页补齐依赖并完成完整验收。
+
+| 决定 | 实现边界 | 回归要求 |
+| --- | --- | --- |
+| 详情页是人物资料唯一基准 | Chloe 使用 Expanded 详情；Liam 使用 `amWho === 'liam'` 匹配详情；收到邀请使用 reqReceived 中的 Lina。详情未提供的字段才沿用无冲突的原型资料，不凭空补值 | Home、详情、邀请结果、聊天通过同一个 user_id 查询；稳定源码 interaction_id 保留原名用于追溯，不作为显示姓名 |
+| 文字介绍免费 | 文本发送成本固定为 0；不显示扣币确认或余额不足，不写消费流水；仍执行校验、重复提交锁、自定义发送 Loading 和持久化 | 零余额也可发有效文本；成功只新增介绍/请求，金币流水和余额不变；失败保留草稿且不创建请求 |
+| 语音和优先匹配维持原型计费 | 语音介绍 10 coins、Priority Match 20 coins；仅有真实可用录音时允许发送语音 | 没有音频明确英文错误，不扣币、不伪造成功；同一次成功操作不重复扣费 |
+| 通话沿用现有等待接通模拟 | 开发约定第 12.5 节优先；450ms 更新等待省略号，8–12 秒随机结束，手动/自动共用清理与返回 | 不显示真实接通、通话时长或假远端画面；离开后无定时器，无真实 WebRTC |
+| Home 分段验收 | 将 Home 本页验收和完整闭环验收分开；本页通过不等于 verified | 本页通过后可将其恢复 pending（待依赖），再按主 Tab 顺序及入口依赖开始下一页，始终最多一页 in_progress；各阶段提交要求不取消 |
+
+Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码 `openJordan` 指向 `reqReceived`，该详情明确显示 Lina, 21。安全/黑名单中的 Jordan 仍是独立人物，不全局替换成 Lina。头像、专业、目标等同样从对应详情实体读取，不能只改名字。
+
+## 其余业务边界
 
 | 项目 | 原型事实 | 处理状态 |
 | --- | --- | --- |
-| 同一用户大学不同 | Chloe 首页 Berkeley、其他页 HKUST；Liam 首页 Stanford、活动页 HKUST；Jordan 首页 UCLA、黑名单/活动页 HKUST | 统一资料来源已询问用户，待答复；不得保存页面级副本 |
-| 邀请串人 | Home 点 Jordan → reqReceived 写死 Lina → reqAccepted 写死 Chloe | 需用 request_id / user_id 贯通；最终人物随统一资料决策 |
-| 介绍费用矛盾 | `cost()` 文本 6 coins；`continueText` / `spend` 为 10；App 描述强调核心免费 | 需确认最终计费，不能默选某个演示分支 |
+| 同一用户大学不同 | Chloe 首页 Berkeley、其他页 HKUST；Liam 首页 Stanford、活动页 HKUST | 已确认以人物详情为准；首页和其他列表不保存资料副本 |
+| 邀请串人 | Home 点 Jordan → reqReceived 写死 Lina → reqAccepted 写死 Chloe | 已确认以 reqReceived 的 Lina 为准；同一 request_id 的接受/拒绝/聊天均引用 Lina |
+| 介绍费用矛盾 | `cost()` 文本 6 coins；`continueText` / `spend` 为 10 | 已确认文本免费；不移植任一文本扣费分支 |
 | 配额和流水 | 每日免费 3 次，但无重置实现；初始余额 260 与演示流水不相等 | 需明确重置时区和有效流水规则，再设计字段 |
-| 通话约定冲突 | 原型有来电/接通/结束；开发约定第 12.5 节仅等待接通模拟通话 | 保留现有约定，还是另行修改约定，需用户选择；不得自行假接通 |
+| 通话约定冲突 | 原型有来电/接通/结束；开发约定第 12.5 节仅等待接通模拟通话 | 已确认遵循现有约定；原型这三种状态仅保留为来源证据，不注册三种假接通产品状态 |
 | 缺失交互 | 相册、客服、语音等多处只显示 next phase；歌曲只有封面和动画，无音频 | 用户已授权补齐方案；没有音频/服务时明确英文错误、不假成功 |
 | 真实服务资料 | 原型验证任意六位码、Apple 登录直接跳转、客服仅 Toast | 不能声称真实校验/登录/提交成功；服务缺失路径需契约化 |
 | 联系方式 | 协议中为 privacy@circa.app | 不能自动视为 Cimoa 真实客服地址 |
@@ -39,6 +53,6 @@
 
 ## Home 开工门槛
 
-[Home 交互清单](./cimoa-home-interactions.md) 固定全部入口及十字段契约。Home 尚未开始还原，仍为 pending。资料决策和全局阶段门槛通过后，才可成为唯一 in_progress 页面。
+[Home 交互清单](./cimoa-home-interactions.md) 固定全部入口及十字段契约。Home 尚未开始还原，仍为 pending。资料决策已关闭；阶段 1–4 的其余门槛通过后，才可成为唯一 in_progress 页面。
 
-阶段 5 的 Home 验收必须检查真实目标页和返回，不以能跳到旧错误页面为通过。Profile、Chat、Match Found、Received Request、Auto Match Entry 目前均未按原型验收；若严格要求 Home 完整闭环后才能开始其他页，则这些依赖必须先有用户确认的执行顺序，不能同时将多页置为 in_progress。
+用户已允许两段验收：先完成 Home 结构、资源、局部交互、Store 派生、状态覆盖与导航参数检查，再逐页补齐 Profile、Chat、Match Found、Received Request、Auto Match Entry 等依赖并回归真实返回闭环。两段分别记录结果；旧错误目标页不计为依赖通过，Home 不能提前标记 verified。只有完整验收、强制校验、提交及获授权的推送完成后才能标记 verified。

@@ -1,208 +1,430 @@
 {
   "source": "CIRCA All Screens (interactive).html",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
   "assets": [
     {
       "source": "assets/jordan-av.png",
       "id": "a10",
+      "bundle_id": "c835ba92-45a1-48e0-9991-4ee3f871069b",
       "target": "static/assets/head/jordan-av.png",
       "mime": "image/png",
-      "bytes": 876184
+      "bytes": 876184,
+      "sha256": "2cfb11dab0593fda819070c0a912750c88279efd024237d9dfd57402d7ad1829"
     },
     {
       "source": "assets/maya-full.png",
       "id": "a11",
+      "bundle_id": "be199ee7-6704-4324-98d1-52394676c49a",
       "target": "static/assets/head/maya-full.png",
       "mime": "image/png",
-      "bytes": 1879678
+      "bytes": 1879678,
+      "sha256": "59433c0bcb9d9768e37c174b891c0f5d8f50bb5dbcdd4b892f5649f9c528f3b0"
     },
     {
       "source": "assets/maya-card.png",
       "id": "a12",
+      "bundle_id": "7c94b5fa-a030-4722-860f-0d79d6dcfc3f",
       "target": "static/assets/head/maya-card.png",
       "mime": "image/png",
-      "bytes": 895627
+      "bytes": 895627,
+      "sha256": "32a32a4f2e03064ed475393faaaa6dff1214a179965be53e5f6faa793e79cc8d"
     },
     {
       "source": "assets/maya-av.png",
       "id": "a13",
+      "bundle_id": "c448edd0-f94d-466e-bc08-4899beb0854a",
       "target": "static/assets/head/maya-av.png",
       "mime": "image/png",
-      "bytes": 35386
+      "bytes": 35386,
+      "sha256": "f6739a48d139e24611ecafb40ba4605af223c6a6b10765ef0c0b7aae838351f4"
     },
     {
       "source": "assets/liam-av.png",
       "id": "a14",
+      "bundle_id": "ccb60bc3-7dec-4660-b8f0-dbdd63bf808c",
       "target": "static/assets/head/liam-av.png",
       "mime": "image/png",
-      "bytes": 879913
+      "bytes": 879913,
+      "sha256": "6c268cdd7e5f0d2388c00fb7b8360da212c9f31375ed4f49c87acfd3a8073e93"
     },
     {
       "source": "assets/me.png",
       "id": "a15",
+      "bundle_id": "6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30",
       "target": "static/assets/head/me.png",
       "mime": "image/jpeg",
-      "bytes": 97422
+      "bytes": 97422,
+      "sha256": "368d4a447ceaeb0dfa58452b79b88af839040fed18fb35a938f025c96245c144"
     },
     {
       "source": "assets/g1.png",
       "id": "a23",
+      "bundle_id": "ceafb32c-3d48-4ad1-a03e-d45b4d907d80",
       "target": "static/assets/head/g1.png",
       "mime": "image/png",
-      "bytes": 676931
+      "bytes": 676931,
+      "sha256": "b6f0ed50c90f61bc579753ea8d53ddfcc97d6120180add0572132e7b5b09da9d"
     },
     {
       "source": "assets/event-picnic.png",
       "id": "a16",
+      "bundle_id": "b8e65a72-456c-4c6d-ac60-b015015a3ac4",
       "target": "static/assets/img/event-picnic.png",
       "mime": "image/jpeg",
-      "bytes": 263553
+      "bytes": 263553,
+      "sha256": "87d51e8d07fed1344ea666fb46581aa8dfb5ad75db54c08ba0909bab7e961514"
     },
     {
       "source": "assets/ev-forest.jpg",
       "id": "a24",
+      "bundle_id": "a6735a36-9d89-4906-822b-bc9e0793dab6",
       "target": "static/assets/img/ev-forest.jpg",
       "mime": "image/jpeg",
-      "bytes": 82960
+      "bytes": 82960,
+      "sha256": "6cbec9c92f0633586fd12b0a9c5f39144d23e7e290c7d71c845502992cc2cd72"
     },
     {
       "source": "assets/ev-boat.jpg",
       "id": "a25",
+      "bundle_id": "0f37423a-52bd-4ac1-b0d7-0d63057b909b",
       "target": "static/assets/img/ev-boat.jpg",
       "mime": "image/jpeg",
-      "bytes": 107651
+      "bytes": 107651,
+      "sha256": "fe61e1a439124289fddd0380a9b317977135b8d0672be23ee1bfcd220fe0cf9d"
     },
     {
       "source": "assets/ev-camp.jpg",
       "id": "a26",
+      "bundle_id": "4ec95bce-b04a-4536-bc0d-1fcef78d7756",
       "target": "static/assets/img/ev-camp.jpg",
       "mime": "image/jpeg",
-      "bytes": 239019
+      "bytes": 239019,
+      "sha256": "596c5302b761dc1b0a0c12e3e724687a26af3ee4e48931462539ab4f70414243"
     },
     {
       "source": "assets/ev-bike.jpg",
       "id": "a27",
+      "bundle_id": "f505a1ed-f13f-4b85-bfb5-0982f9b3402d",
       "target": "static/assets/img/ev-bike.jpg",
       "mime": "image/jpeg",
-      "bytes": 156701
+      "bytes": 156701,
+      "sha256": "f90db4e7c2db27bdd34c6e0a39dd1577d36403853ad6c69cb51595a7ac685782"
     },
     {
       "source": "assets/ev-hike.jpg",
       "id": "a28",
+      "bundle_id": "7ac4dd71-1d70-4072-9ff2-b4b186c56286",
       "target": "static/assets/img/ev-hike.png",
       "mime": "image/png",
-      "bytes": 914630
+      "bytes": 914630,
+      "sha256": "298b1797ec1aa25a004b424c69eaf10a0dc6524a13c9eb80b36533d5e910280e"
     },
     {
       "source": "assets/ic-connect.png",
       "id": "a17",
+      "bundle_id": "c8f38cd5-f94d-4afc-ae0d-dcb80a231e64",
       "target": "static/assets/icons/ic-connect.png",
       "mime": "image/png",
-      "bytes": 41453
+      "bytes": 41453,
+      "sha256": "463bca348de26050b443ff3093a8cf9a18e2201237d0e80c72d2006eca35c69a"
     },
     {
       "source": "assets/ic-boost.png",
       "id": "a18",
+      "bundle_id": "e51fa8ad-bd77-4f49-a9df-333dc52f6e53",
       "target": "static/assets/icons/ic-boost.png",
       "mime": "image/png",
-      "bytes": 41301
+      "bytes": 41301,
+      "sha256": "8d46ff1634f12e7afcdb13720f606c3007ca3b47e33d17bb281f4c63e2ddb5a2"
     },
     {
       "source": "assets/ic-rewind.png",
       "id": "a19",
+      "bundle_id": "6c913b35-8926-4e39-a6e6-343bbae80286",
       "target": "static/assets/icons/ic-rewind.png",
       "mime": "image/png",
-      "bytes": 48412
+      "bytes": 48412,
+      "sha256": "6b182e28aabdb996ea8547eb86980af96438ef125c4da0884bd427097b55d5b2"
     },
     {
       "source": "assets/coins-60.png",
       "id": "a20",
+      "bundle_id": "ef8bcb14-d913-4d1a-89fa-de7fe1831cc0",
       "target": "static/assets/coins/coins-60.png",
       "mime": "image/png",
-      "bytes": 75128
+      "bytes": 75128,
+      "sha256": "ddc8276b1f4a3834971a42cf9ea6c62840e60393ba3346fbfa7ed2b1bae9876f"
     },
     {
       "source": "assets/coins-300.png",
       "id": "a21",
+      "bundle_id": "b8a0b4da-5299-40de-b2cd-2beec315198b",
       "target": "static/assets/coins/coins-300.png",
       "mime": "image/png",
-      "bytes": 76259
+      "bytes": 76259,
+      "sha256": "228f003f43450988c6175c1814a89c724aae6bf204d3a8b1bb9cf0262f1ebeaf"
     },
     {
       "source": "assets/coins-680.png",
       "id": "a22",
+      "bundle_id": "35e31c51-1321-4c21-a604-3391f9b759fe",
       "target": "static/assets/coins/coins-680.png",
       "mime": "image/png",
-      "bytes": 105880
+      "bytes": 105880,
+      "sha256": "467f7371c8ba6ecb7cdb7b80e1857922b07b3a9fd0c36cb1f401313923598f3e"
     },
     {
       "source": "assets/songs/beautiful-things.jpg",
       "id": "a0",
+      "bundle_id": "2bc15290-af24-4f53-ac95-86785dd11404",
       "target": "static/assets/songs/beautiful-things.jpg",
       "mime": "image/jpeg",
-      "bytes": 227533
+      "bytes": 227533,
+      "sha256": "38bce9b8e38166932a8aca6c62050145d787fb470ec15cd45b49a97510431546"
     },
     {
       "source": "assets/songs/espresso.jpg",
       "id": "a1",
+      "bundle_id": "2cbe89bb-f85f-42c2-b64a-8e72a1f90bcc",
       "target": "static/assets/songs/espresso.jpg",
       "mime": "image/jpeg",
-      "bytes": 294235
+      "bytes": 294235,
+      "sha256": "11608608bf7f079822ace0e0fdd69e02ac2ab4f0f7a64ca1f991c8ed09438ab2"
     },
     {
       "source": "assets/songs/birds.jpg",
       "id": "a2",
+      "bundle_id": "14cbdb93-306d-4bc6-b0fb-682b0e734254",
       "target": "static/assets/songs/birds.jpg",
       "mime": "image/jpeg",
-      "bytes": 123844
+      "bytes": 123844,
+      "sha256": "3d4d09bb0e1036fbe2b425a7baf9d304d7d9d2206cb7c8dbb9407c7c331994a1"
     },
     {
       "source": "assets/songs/good-luck-babe.jpg",
       "id": "a3",
+      "bundle_id": "c540ffa8-6f8c-4149-8a02-c0b48c332694",
       "target": "static/assets/songs/good-luck-babe.jpg",
       "mime": "image/jpeg",
-      "bytes": 172206
+      "bytes": 172206,
+      "sha256": "ba0508288bbfb6f13acaed41e88e590b85cc8ab40dec7a350095ec3dcdce1f69"
     },
     {
       "source": "assets/songs/training-season.jpg",
       "id": "a4",
+      "bundle_id": "a963c6fb-520d-4882-9de9-f386c633dde4",
       "target": "static/assets/songs/training-season.jpg",
       "mime": "image/jpeg",
-      "bytes": 198967
+      "bytes": 198967,
+      "sha256": "b38f685b53c9c66e85d5c9d52190967f358fd91e2f6f1aafedba1790db514b4d"
     },
     {
       "source": "assets/songs/risk-it-all.jpg",
       "id": "a5",
+      "bundle_id": "1fb4ad01-c3d4-47a8-b311-69d58e640314",
       "target": "static/assets/songs/risk-it-all.jpg",
       "mime": "image/jpeg",
-      "bytes": 370570
+      "bytes": 370570,
+      "sha256": "b330f7ac881e002f7dfb4f1e07edfdc543d92fe8a31f2765a6757773c5c24fb6"
     },
     {
       "source": "assets/songs/love-me-not.jpg",
       "id": "a6",
+      "bundle_id": "0fd55bd4-0727-4554-a021-c901afab48a1",
       "target": "static/assets/songs/love-me-not.jpg",
       "mime": "image/jpeg",
-      "bytes": 172293
+      "bytes": 172293,
+      "sha256": "9fd11071fb91caba8bb4ff22ab1019be68695dd20b1da1c6e090838890317e45"
     },
     {
       "source": "assets/songs/stupid-song.jpg",
       "id": "a7",
+      "bundle_id": "5aad83b6-0e68-484c-9498-093fac473532",
       "target": "static/assets/songs/stupid-song.jpg",
       "mime": "image/jpeg",
-      "bytes": 254710
+      "bytes": 254710,
+      "sha256": "5462d8d5fda5b10404a4c2623cde026d6c241ac16c0890e3847278005772fbc8"
     },
     {
       "source": "assets/songs/stateside.jpg",
       "id": "a8",
+      "bundle_id": "6ed4bff2-5d5d-45ad-8a73-5cdde7961cfd",
       "target": "static/assets/songs/stateside.jpg",
       "mime": "image/jpeg",
-      "bytes": 327842
+      "bytes": 327842,
+      "sha256": "8a76748ec6e2fb401b165fab493a7c71701dd40eb14242dae60e36287d6f4f34"
     },
     {
       "source": "assets/songs/beauty-beat.jpg",
       "id": "a9",
+      "bundle_id": "36a81bd1-c78c-4988-82a8-57bb1585f35b",
       "target": "static/assets/songs/beauty-beat.jpg",
       "mime": "image/jpeg",
-      "bytes": 352302
+      "bytes": 352302,
+      "sha256": "fc0cc1961d887e8547a6af277355e349d6116e847561c01aab535b58295cfb15"
+    },
+    {
+      "source": "bundle:a9831494-dfeb-464f-8617-1e3468ad74f0",
+      "id": "a9831494-dfeb-464f-8617-1e3468ad74f0",
+      "bundle_id": "a9831494-dfeb-464f-8617-1e3468ad74f0",
+      "target": "static/assets/coins/home-coin-badge.png",
+      "mime": "image/png",
+      "bytes": 42279,
+      "sha256": "c46cf9d434bb7eed4aea0b085e68b90fd90c0917a8f14009ba0e9cf571568ad7"
+    },
+    {
+      "source": "bundle:e8bd8155-5a13-4ecb-a022-bcadf12ae5f6",
+      "id": "e8bd8155-5a13-4ecb-a022-bcadf12ae5f6",
+      "bundle_id": "e8bd8155-5a13-4ecb-a022-bcadf12ae5f6",
+      "target": "static/assets/head/participant-e8bd8155.jpg",
+      "mime": "image/jpeg",
+      "bytes": 124949,
+      "sha256": "b07382580b3f64e86047a08baee80cf37743549cf96fc7133c5cd9691a549787"
+    },
+    {
+      "source": "bundle:38b22b41-ac8f-43cc-8bf0-37a8b75c93b4",
+      "id": "38b22b41-ac8f-43cc-8bf0-37a8b75c93b4",
+      "bundle_id": "38b22b41-ac8f-43cc-8bf0-37a8b75c93b4",
+      "target": "static/assets/head/participant-38b22b41.png",
+      "mime": "image/png",
+      "bytes": 713766,
+      "sha256": "a471a493d51b3ca3bf739a4fb368ed1894506d0f612dd018c9368e7f53eaff59"
+    },
+    {
+      "source": "bundle:501d6dc6-cd53-4ee4-b9ae-e49c37deca54",
+      "id": "501d6dc6-cd53-4ee4-b9ae-e49c37deca54",
+      "bundle_id": "501d6dc6-cd53-4ee4-b9ae-e49c37deca54",
+      "target": "static/assets/coins/store-coin-hero.png",
+      "mime": "image/png",
+      "bytes": 273495,
+      "sha256": "59047176a138ad0cce9f885f2c0919f6c1a9f3155631dc4771821f62589d6a7f"
+    },
+    {
+      "source": "bundle:92ddcb8c-721c-4960-a8e8-51926692ee27",
+      "id": "92ddcb8c-721c-4960-a8e8-51926692ee27",
+      "bundle_id": "92ddcb8c-721c-4960-a8e8-51926692ee27",
+      "target": "static/assets/head/participant-92ddcb8c.png",
+      "mime": "image/png",
+      "bytes": 821710,
+      "sha256": "f7451eb280f04092f48951ddc035f6d8125eeef06bb57dbc4aad977fa7c3e80e"
+    },
+    {
+      "source": "bundle:d94783de-a46b-442f-9163-27afd548eacd",
+      "id": "d94783de-a46b-442f-9163-27afd548eacd",
+      "bundle_id": "d94783de-a46b-442f-9163-27afd548eacd",
+      "target": "static/assets/img/welcome-campus.png",
+      "mime": "image/png",
+      "bytes": 1392448,
+      "sha256": "c4350a2be9d94721c915b93b2c4d09754194a3a3a6357665692d226ad3bf0896"
+    },
+    {
+      "source": "bundle:c45dc80d-a308-443b-a04e-160acb1aacb6",
+      "id": "c45dc80d-a308-443b-a04e-160acb1aacb6",
+      "bundle_id": "c45dc80d-a308-443b-a04e-160acb1aacb6",
+      "target": "static/assets/fonts/c45dc80d-a308-443b-a04e-160acb1aacb6.woff2",
+      "mime": "font/woff2",
+      "bytes": 8680,
+      "sha256": "82cc85bd416dc825c05b4264a8a58e189e528fed8a05fbd471b5493e010d623b"
+    },
+    {
+      "source": "bundle:3fce8f63-a0cb-4038-9e76-9d27825944d8",
+      "id": "3fce8f63-a0cb-4038-9e76-9d27825944d8",
+      "bundle_id": "3fce8f63-a0cb-4038-9e76-9d27825944d8",
+      "target": "static/assets/fonts/3fce8f63-a0cb-4038-9e76-9d27825944d8.woff2",
+      "mime": "font/woff2",
+      "bytes": 31356,
+      "sha256": "0d17b7880f389deeb6663a52fa4eadc6d9116bdda725f0aa1f3d404fbb7d3d59"
+    },
+    {
+      "source": "bundle:e384f657-5844-471e-bb43-9961e1fd1f20",
+      "id": "e384f657-5844-471e-bb43-9961e1fd1f20",
+      "bundle_id": "e384f657-5844-471e-bb43-9961e1fd1f20",
+      "target": "static/assets/fonts/e384f657-5844-471e-bb43-9961e1fd1f20.woff2",
+      "mime": "font/woff2",
+      "bytes": 18612,
+      "sha256": "d0fa07ff63dd60cbc0e2f58e29c802dca2a5ae0276c999f59c6111ab7bbaec3b"
+    },
+    {
+      "source": "bundle:0113f2b2-23eb-4100-baa3-e2e3a3df43d8",
+      "id": "0113f2b2-23eb-4100-baa3-e2e3a3df43d8",
+      "bundle_id": "0113f2b2-23eb-4100-baa3-e2e3a3df43d8",
+      "target": "static/assets/fonts/0113f2b2-23eb-4100-baa3-e2e3a3df43d8.woff2",
+      "mime": "font/woff2",
+      "bytes": 42856,
+      "sha256": "4956ec7b19798cb8418f2e44349e90c0ab7310594350c4b9c2998dc092122d5a"
+    },
+    {
+      "source": "bundle:631e1a4c-0eae-4582-826b-536c5def58d3",
+      "id": "631e1a4c-0eae-4582-826b-536c5def58d3",
+      "bundle_id": "631e1a4c-0eae-4582-826b-536c5def58d3",
+      "target": "static/assets/fonts/631e1a4c-0eae-4582-826b-536c5def58d3.woff2",
+      "mime": "font/woff2",
+      "bytes": 77216,
+      "sha256": "6276a2f5a5554c16b422f00f114773a8d4013a81df18a338f7c216d80103c9af"
+    },
+    {
+      "source": "bundle:53b577a8-636a-4565-a134-1c08a62fa4ec",
+      "id": "53b577a8-636a-4565-a134-1c08a62fa4ec",
+      "bundle_id": "53b577a8-636a-4565-a134-1c08a62fa4ec",
+      "target": "static/assets/fonts/53b577a8-636a-4565-a134-1c08a62fa4ec.woff2",
+      "mime": "font/woff2",
+      "bytes": 29472,
+      "sha256": "f626b95c1efa95cf6b7c9b043d3bbe8862b6abbe5f55a082102f33f7de2fd4f9"
+    },
+    {
+      "source": "bundle:66b0bd6c-e5cc-49ba-9396-78a01d710d85",
+      "id": "66b0bd6c-e5cc-49ba-9396-78a01d710d85",
+      "bundle_id": "66b0bd6c-e5cc-49ba-9396-78a01d710d85",
+      "target": "static/assets/fonts/66b0bd6c-e5cc-49ba-9396-78a01d710d85.woff2",
+      "mime": "font/woff2",
+      "bytes": 74932,
+      "sha256": "891951df5e8b5b0f0bc760d31375405e795c666b5add70437de12d4a6482b33f"
+    },
+    {
+      "source": "bundle:56ac1e90-0b80-4cb8-a82f-59cf81760371",
+      "id": "56ac1e90-0b80-4cb8-a82f-59cf81760371",
+      "bundle_id": "56ac1e90-0b80-4cb8-a82f-59cf81760371",
+      "target": "static/assets/fonts/56ac1e90-0b80-4cb8-a82f-59cf81760371.woff2",
+      "mime": "font/woff2",
+      "bytes": 29564,
+      "sha256": "4884fec2c73aa52a2461073c1b87d1ceb80f400520391b43f97ca7d3c39eeb24"
+    },
+    {
+      "source": "bundle:6331ba1a-6400-4815-ac0a-69510f961a77",
+      "id": "6331ba1a-6400-4815-ac0a-69510f961a77",
+      "bundle_id": "6331ba1a-6400-4815-ac0a-69510f961a77",
+      "target": "static/assets/fonts/6331ba1a-6400-4815-ac0a-69510f961a77.woff2",
+      "mime": "font/woff2",
+      "bytes": 12224,
+      "sha256": "6106d72e36626a3a77914192ac8f89f0e737d9aea78387238bd6df50d2ce1a2c"
+    },
+    {
+      "source": "bundle:81d61863-e3ad-4303-951e-65126210cb5a",
+      "id": "81d61863-e3ad-4303-951e-65126210cb5a",
+      "bundle_id": "81d61863-e3ad-4303-951e-65126210cb5a",
+      "target": "static/assets/fonts/81d61863-e3ad-4303-951e-65126210cb5a.woff2",
+      "mime": "font/woff2",
+      "bytes": 5672,
+      "sha256": "fdfc3667172fc08a812935ab31a4096841115da99e4334eebed65d992075aff3"
+    },
+    {
+      "source": "bundle:78f79fc4-e1ca-483f-a6b9-45572b168ed1",
+      "id": "78f79fc4-e1ca-483f-a6b9-45572b168ed1",
+      "bundle_id": "78f79fc4-e1ca-483f-a6b9-45572b168ed1",
+      "target": "static/assets/fonts/78f79fc4-e1ca-483f-a6b9-45572b168ed1.woff2",
+      "mime": "font/woff2",
+      "bytes": 12880,
+      "sha256": "cf968562375eceed83b66f2b5445aa4ecdc4d5300de94930da06433877a975a1"
+    },
+    {
+      "source": "bundle:1319a1ef-b3fd-4679-80e0-ee8aecf30769",
+      "id": "1319a1ef-b3fd-4679-80e0-ee8aecf30769",
+      "bundle_id": "1319a1ef-b3fd-4679-80e0-ee8aecf30769",
+      "target": "static/assets/fonts/1319a1ef-b3fd-4679-80e0-ee8aecf30769.woff2",
+      "mime": "font/woff2",
+      "bytes": 23228,
+      "sha256": "5d2286941a6b02a29387efa94809a064f8917598eafa67b938261cf13bb887cd"
     }
-  ]
+  ],
+  "font_stylesheet": "static/assets/fonts/source-fonts.css"
 }
