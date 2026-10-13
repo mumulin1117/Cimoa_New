@@ -23,7 +23,7 @@ export function home_destination(store, kind, id) {
 
 // Stage 5.2: no fake target screen or old mega-page can satisfy a deferred dependency.
 export const HOME_DEFERRED_ROUTES = Object.freeze([
-  '/pages/profile/index', '/pages/messages/chat', '/pages/connections/received',
+  '/pages/messages/chat', '/pages/connections/received',
   '/pages/auto-match/index', '/pages/auto-match/searching', '/pages/auto-match/paused', '/pages/auto-match/found', '/pages/auto-match/waiting',
 ])
 export function require_home_destination_ready(url) {

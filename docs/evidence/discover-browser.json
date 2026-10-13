@@ -1,7 +1,7 @@
 {
   "result": "passed",
   "runtime": "Chromium, fresh isolated profile, 393 x 852",
-  "server_pid": 66951,
+  "server_pid": 72659,
   "checks": [
     {
       "name": "three source tabs, capsule geometry, restored session has no skeleton",
@@ -105,7 +105,7 @@
       }
     },
     {
-      "name": "profile/preferences/detail dependencies are explicit; default connected person cannot create another request or spend",
+      "name": "Profile push/pop works; preferences/detail remain deferred; connected person cannot create another request or spend",
       "result": "passed"
     },
     {

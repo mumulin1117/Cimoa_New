@@ -2,6 +2,8 @@
 
 **状态：completed（主题与离线资源基础，不代表页面视觉通过）。** `src/config/theme.json` 已替换旧深绿、荧光黄、米白；语义颜色/渐变/阴影统一由 theme 工具映射 CSS 变量。App 引入提取的本地字体 CSS，SourceIcon 保存源 SVG 路径。47 项图片/字体资源均经字节与 SHA256 核对；Home 以原型系统字体栈为主，原型其他字体可离线使用。
 
+Profile（2026-10-13）新增源token：profile_icon底#eef2f8、bio文字#26364f、预览图标#44536b、箭头#94a3b8、头像/标签阴影与白色渐变填充；仅在theme.json定义。Caveat使用已提取字体；SourceIcon新增设置/编辑原SVG路径，可指定源描边，不改其他页面默认描边。
+
 | 语义 | HTML 源值 | 位置 |
 | --- | --- | --- |
 | 页面渐变背景 | 168deg，#e4f4fb → #eaf0fd 44% → #f2ecfb | 原型主画布 |

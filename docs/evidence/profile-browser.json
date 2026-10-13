@@ -1,0 +1,179 @@
+{
+  "result": "passed",
+  "runtime": "Chromium, fresh isolated profile, 393 x 852",
+  "server_pid": 72518,
+  "checks": [
+    {
+      "name": "three source tabs, capsule geometry, restored session has no skeleton",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/home/index",
+        "depth": 1,
+        "active": "Home",
+        "bar": {
+          "x": 20,
+          "y": 762,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 750,
+          "height": 586.546875
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "two bidirectional cycles, same-tab double click, unchanged stack and fixed bar",
+      "result": "passed"
+    },
+    {
+      "name": "Events horizontal carousel or truthful empty state preserves fixed navigation",
+      "result": "passed"
+    },
+    {
+      "name": "browser bridge injection owns top and bottom once (not native-device evidence)",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/events/index",
+        "depth": 1,
+        "active": "Events",
+        "bar": {
+          "x": 20,
+          "y": 728,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 716,
+          "height": 431.546875
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "real fixture login: each main tab consumes one skeleton; return consumes none",
+      "result": "passed"
+    },
+    {
+      "name": "refresh does not prepare another skeleton cycle",
+      "result": "passed"
+    },
+    {
+      "name": "real IndexedDB Blob survives page reload and is deleted cleanly",
+      "result": "passed"
+    },
+    {
+      "name": "Profile source structure, canonical data, local images/Caveat, 120 avatar/48 toolbar/48 edit and no Tabbar",
+      "result": "passed",
+      "detail": {
+        "avatar": {
+          "x": 136.5,
+          "y": 63.984375,
+          "width": 120,
+          "height": 120,
+          "bottom": 183.984375
+        },
+        "toolbar": {
+          "x": 20,
+          "y": 4,
+          "width": 353,
+          "height": 47.984375,
+          "bottom": 51.984375
+        },
+        "edit": {
+          "x": 111.03125,
+          "y": 289.984375,
+          "width": 170.921875,
+          "height": 47.984375,
+          "bottom": 337.96875
+        },
+        "card": {
+          "x": 20,
+          "y": 359.96875,
+          "width": 353,
+          "height": 171.203125,
+          "bottom": 531.171875
+        }
+      }
+    },
+    {
+      "name": "all four exact child routes remain honest deferred failures with no writes or native navigation Loading",
+      "result": "passed"
+    },
+    {
+      "name": "direct Profile has no fake history and replaces Home on Back",
+      "result": "passed"
+    },
+    {
+      "name": "Home/Discover/Events push+pop twice, double clicks stay stack2→1 and preserve scroll/filter/storage/skeleton consumption",
+      "result": "passed"
+    },
+    {
+      "name": "refresh on pushed Profile restores data; absent in-memory origin safely falls back to Home",
+      "result": "passed"
+    },
+    {
+      "name": "empty fields, unverified and zero balance stay honest across refresh with no seed reset",
+      "result": "passed"
+    },
+    {
+      "name": "long data/17 interests and 320×568 scroll to last entry; header and both safe-area owners remain fixed",
+      "result": "passed",
+      "detail": {
+        "header": {
+          "x": 0,
+          "y": 59,
+          "width": 320,
+          "height": 52.09375,
+          "bottom": 111.09375
+        },
+        "scroll": {
+          "top": 1102,
+          "width": 320,
+          "fullWidth": 320,
+          "height": 390
+        },
+        "last": {
+          "x": 16.28125,
+          "y": 410.328125,
+          "width": 287.4375,
+          "height": 58.59375,
+          "bottom": 468.921875
+        },
+        "viewport": {
+          "x": 0,
+          "y": 111.09375,
+          "width": 320,
+          "height": 390.34375,
+          "bottom": 501.4375
+        }
+      }
+    },
+    {
+      "name": "avatar request error is readable and retries the same entity without writing or opening another page",
+      "result": "passed"
+    },
+    {
+      "name": "real pending image shows content-only Loading, times out at10s and leaving removes media UI/timer",
+      "result": "passed"
+    },
+    {
+      "name": "real IndexedDB portrait decodes after refresh; missing Blob is a truthful error not a replacement image",
+      "result": "passed"
+    },
+    {
+      "name": "expired session hides current-user business data and blocks child navigation",
+      "result": "passed"
+    },
+    {
+      "name": "corrupt snapshot is preserved, Retry rehydrates repaired data without fake empty success",
+      "result": "passed"
+    },
+    {
+      "name": "no browser runtime exceptions",
+      "result": "passed"
+    }
+  ],
+  "cleaned_up": true
+}

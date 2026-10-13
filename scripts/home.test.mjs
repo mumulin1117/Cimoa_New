@@ -20,7 +20,8 @@ test('Home destinations use canonical entity IDs, have no write or balance effec
 })
 test('deferred dependencies cannot navigate into wrong legacy screens or appear successful', () => {
   const store = make()
-  for (const [kind, id] of [['profile'], ['match'], ['card', 'user_chloe'], ['card', 'user_liam'], ['card', 'user_lina']]) assert.throws(() => require_home_destination_ready(home_destination(store, kind, id)), /not been restored/)
+  for (const [kind, id] of [['match'], ['card', 'user_chloe'], ['card', 'user_liam'], ['card', 'user_lina']]) assert.throws(() => require_home_destination_ready(home_destination(store, kind, id)), /not been restored/)
+  assert.equal(require_home_destination_ready(home_destination(store, 'profile')), '/pages/profile/index')
   assert.equal(require_home_destination_ready(home_destination(store, 'discover')), '/pages/discover/index')
 })
 test('Home rejects blocked, expired, declined, one-way and logged-out navigation', () => {

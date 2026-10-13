@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onUnmounted } from 'vue'
-import { push_route, back_route, relaunch_route } from '@/utils/routeTransition.js'
+import { push_route, back_route, relaunch_route, replace_route } from '@/utils/routeTransition.js'
 import { MOTION } from '@/config/navigation.js'
 
 defineProps({ home: Boolean, duration: { type: Number, default: null } })
@@ -8,6 +8,7 @@ const leaving = ref(false)
 let timer, settle, disposed = false
 const navigate_forward = (url) => push_route(url)
 const navigate_relaunch = (url) => relaunch_route(url)
+const navigate_replace = (url) => replace_route(url)
 const navigate_back = async (delta = 1) => {
   if (leaving.value) return
   leaving.value = true
@@ -16,7 +17,7 @@ const navigate_back = async (delta = 1) => {
   try { await back_route(delta) } finally { leaving.value = false }
 }
 onUnmounted(() => { disposed = true; clearTimeout(timer); settle?.(false); settle = null })
-defineExpose({ navigate_forward, navigate_back, navigate_relaunch })
+defineExpose({ navigate_forward, navigate_back, navigate_relaunch, navigate_replace })
 </script>
 
 <template>
@@ -27,8 +28,9 @@ defineExpose({ navigate_forward, navigate_back, navigate_relaunch })
 .page-transition { display: flex; flex: 1; flex-direction: column; min-height: 0; animation: page-rise var(--page-duration) ease both; }
 .page-transition--leaving { animation: page-leave var(--back-duration) ease both; pointer-events: none; }
 @keyframes page-rise {
-  from { opacity: 0; transform: translateY(26.718rpx); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(26.718rpx); pointer-events: none; }
+  99.99% { pointer-events: none; }
+  to { opacity: 1; transform: translateY(0); pointer-events: auto; }
 }
 @keyframes page-leave {
   from { opacity: 1; transform: translateY(0); }

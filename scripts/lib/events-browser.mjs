@@ -35,11 +35,15 @@ export async function test_events({ page, origin, evidence, check }) {
 
   const before = await storage()
   for (const [id, target] of [['events.openMe.click.1', '/pages/profile/index'], ['events.openMyEvents.click.1', '/pages/events/upcoming'], ['events.openParticipants.click.1', '/pages/events/participants?event_id=event_picnic']]) {
-    assert.equal(await entry(id).getAttribute('data-target'), target); await entry(id).click(); assert.match(await page.locator('.events-feedback').textContent(), /not been restored/)
+    assert.equal(await entry(id).getAttribute('data-target'), target); await entry(id).click()
+    if (id === 'events.openMe.click.1') {
+      await page.locator('.profile-name').waitFor(); assert.equal(await page.locator('.secondary-page-frame:visible').getAttribute('data-page-depth'), '2')
+      await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor()
+    } else assert.match(await page.locator('.events-feedback').textContent(), /not been restored/)
   }
   await entry('events.openEvent.click.1').click(); assert.match(await page.locator('.events-feedback').textContent(), /not been restored/)
   await entry('events.openEvent.click.2').click(); assert.equal(await storage(), before)
-  check('profile/My Events/detail/participants gates preserve entity IDs and do not autojoin')
+  check('Profile push/pop works; My Events/detail/participants gates preserve entity IDs and do not autojoin')
 
   await entry('events.evJoinTap.click.1').click(); await open_settled()
   const panel = await rect('.event-dialog:visible .event-dialog-panel')

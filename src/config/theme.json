@@ -20,7 +20,8 @@
       "photo_tag_border": "rgba(255,255,255,0.10)",
       "event_scrim": "rgba(8,16,31,0.42)",
       "event_handle": "#dfe5ee",
-      "event_divider": "#eef1f6"
+      "event_divider": "#eef1f6",
+      "profile_icon": "#eef2f8"
     },
     "text": {
       "title": "#0b1b3a",
@@ -31,7 +32,10 @@
       "link": "#4a7bf7",
       "badge": "#a21caf",
       "event_link": "#2563eb",
-      "event_cancel": "#6b7a93"
+      "event_cancel": "#6b7a93",
+      "profile_bio": "#26364f",
+      "profile_icon": "#44536b",
+      "profile_chevron": "#94a3b8"
     },
     "button": {
       "primary": "#4a7bf7",
@@ -91,6 +95,7 @@
     }
   },
   "gradients": {
+    "card_fill": "linear-gradient(#ffffff,#ffffff)",
     "photo_scrim": "linear-gradient(to top,rgba(6,14,28,0.86) 0%,rgba(6,14,28,0.55) 42%,rgba(6,14,28,0) 100%)",
     "primary": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
     "tab": "linear-gradient(120deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
@@ -98,6 +103,8 @@
     "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)"
   },
   "shadows": {
+    "profile_avatar": "0 22.901rpx 53.435rpx rgba(16,36,74,0.14)",
+    "profile_tag": "0 7.634rpx 22.901rpx rgba(16,36,74,0.07)",
     "event_card": "0 22.901rpx 57.252rpx rgba(16,36,74,0.09)",
     "event_chip": "0 11.45rpx 34.351rpx rgba(16,36,74,0.08)",
     "event_sheet": "0 -26.718rpx 76.336rpx rgba(8,16,31,0.22)",

@@ -38,13 +38,17 @@ export async function test_discover({ page, origin, evidence, check }) {
   for (const [id, target] of [['photo.openMe.click.1','/pages/profile/index'], ['photo.openDiscoverFilters.click.1','/pages/auto-match/preferences'], ['photo.expand.click.1','/pages/discover/profile?user_id=user_chloe']]) {
     const entry = page.locator(`[data-interaction="${id}"]`)
     assert.equal(await entry.getAttribute('data-target'), target)
-    await entry.click(); assert.match(await page.locator('.discover-error').textContent(), /not been restored/)
+    await entry.click()
+    if (id === 'photo.openMe.click.1') {
+      await page.locator('.profile-name').waitFor(); assert.equal(await page.locator('.secondary-page-frame:visible').getAttribute('data-page-depth'), '2')
+      await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.discover-header:visible').waitFor()
+    } else assert.match(await page.locator('.discover-error').textContent(), /not been restored/)
     assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1')
   }
   await page.getByRole('button', { name: 'Send shot', exact: true }).click()
   assert.match(await page.locator('.discover-error').textContent(), /already connected/)
   assert.equal(await storage(), before)
-  check('profile/preferences/detail dependencies are explicit; default connected person cannot create another request or spend')
+  check('Profile push/pop works; preferences/detail remain deferred; connected person cannot create another request or spend')
 
   await load('discover_unconnected'); const free_before = await storage()
   assert.equal(await page.locator('.discover-send').getAttribute('data-target'), '/pages/discover/icebreaker/select?user_id=user_chloe')

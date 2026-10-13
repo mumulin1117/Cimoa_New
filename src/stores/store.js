@@ -31,6 +31,7 @@ export const use_app_store = defineStore('app', {
     session: (state) => ({ ...state.data.session, is_authenticated: ready(state) }),
     current_user: (state) => ready(state) ? { ...profile(state.data, s.owner_id(state.data)), email: state.data.accounts.find((row) => row.account_id === state.data.session.account_id)?.email, coin_balance: s.balance(state.data) } : { user_name: '', interests: [], coin_balance: 0 },
     current_user_profile() { return this.current_user },
+    current_interests: (state) => ready(state) ? clone_data((s.user_by_id(state.data, s.owner_id(state.data))?.interest_ids || []).map(id => state.data.interests.find(row => row.item_id === id)).filter(Boolean)) : [],
     user_by_id: (state) => (id) => ready(state) ? profile(state.data, id) : null,
     goals_for_user: (state) => (id) => ready(state) ? s.goals_for_user(state.data, id) : [],
     visible_people: (state) => ready(state) ? state.data.users.filter((row) => row.user_id !== s.owner_id(state.data) && row.discoverable && s.visible(state.data, row.user_id) && state.data.settings.find((settings) => settings.owner_user_id === row.user_id)?.privacy.discover_visible !== false).map((row) => profile(state.data, row.user_id)) : [],

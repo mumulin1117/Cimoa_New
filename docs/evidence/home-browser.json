@@ -1,7 +1,7 @@
 {
   "result": "passed",
   "runtime": "Chromium, fresh isolated profile, 393 x 852",
-  "server_pid": 66320,
+  "server_pid": 72121,
   "checks": [
     {
       "name": "three source tabs, capsule geometry, restored session has no skeleton",
@@ -102,7 +102,7 @@
       "result": "passed"
     },
     {
-      "name": "five deferred dependencies validate exact entity destinations and fail explicitly; no fake navigation or writes",
+      "name": "Profile really pushes and pops; four remaining dependencies fail explicitly without writes",
       "result": "passed"
     },
     {

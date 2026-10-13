@@ -46,11 +46,15 @@ export async function test_home({ page, origin, evidence, check, context }) {
   for (const [id, url] of Object.entries(destinations)) {
     const entry = page.locator(`[data-interaction="${id}"]`)
     assert.equal(await entry.getAttribute('data-target'), url)
-    await entry.click(); assert.match(await page.locator('.home-error').textContent(), /not been restored/)
+    await entry.click()
+    if (id === 'home.openMe.click.1') {
+      await page.locator('.profile-name').waitFor(); assert.equal(await page.locator('.secondary-page-frame:visible').getAttribute('data-page-depth'), '2')
+      await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.home-header:visible').waitFor()
+    } else assert.match(await page.locator('.home-error').textContent(), /not been restored/)
     assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1')
     assert.equal(await storage(), before)
   }
-  check('five deferred dependencies validate exact entity destinations and fail explicitly; no fake navigation or writes')
+  check('Profile really pushes and pops; four remaining dependencies fail explicitly without writes')
   await load('home_empty')
   assert.match(await page.locator('.home-empty').textContent(), /Your new connections will appear here/)
   await page.getByRole('button', { name: 'Explore People', exact: true }).click()

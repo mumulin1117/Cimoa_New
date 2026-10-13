@@ -90,6 +90,8 @@ Home 状态文案由 `home_match_card` getter 从 active match 派生；waiting 
 
 ## Action 契约和账号隔离
 
+Profile 本页补充（2026-10-13）：`current_interests` 只读当前账号 `interest_ids` 对应的有序兴趣实体克隆，包含 item_id/emoji/label，读取错误或无有效会话返回空数组；本页资料统一读取 current_user，余额读 coin_balance。没有新存储键或seed覆盖。Profile导航不写数据，设置/编辑/充值/预览分别留给独立页面任务，不沿用旧页内局部view切换。
+
 Discover 本页补充（2026-10-13）：`discover_person` 为只读 getter，从 `visible_people` 首位可见实体派生资料和 `photo`（其 `photo_ids` 内、同 `user_id`、按 position 排序的首张；缺失为 null）。不新增页面假用户、照片数组或存储键；姓名/大学/专业/MBTI/验证状态沿用详情实体及隐私过滤。`introduction_blocker(user_id)` 与 `send_introduction` 共用会话、学生认证、可见性、已连接和 pending 请求校验，导航不创建请求、不写余额；文字发送原有免费事务不变。
 
 | action 域 | 校验与成功结果 | 失败和重入 |

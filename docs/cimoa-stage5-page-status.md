@@ -1,6 +1,6 @@
 # Cimoa 阶段五页面还原状态
 
-2026-10-13：Events 本页与首用确认弹窗已通过检查，功能/测试/产物已本地提交 `36274d7`，现恢复 pending（待依赖）。当前没有 in_progress 页面，不标记任何新页面/专属组件 verified。
+2026-10-13：Events 已本地提交并恢复 pending（待依赖）。当前仅 Profile 为 in_progress，按 [交互契约](./cimoa-profile-interactions.md) 还原；不标记任何新页面/专属组件 verified。
 
 用户最新决定：**后续仅本地 Git 提交，不执行 push；各页允许分段验收，依赖补齐并完整回归后才 verified。** 已同步至 [流程阶段5](../模板项目开发流程.md#阶段-5一个页面一个页面还原)。两份强制约定中的旧 Home-only / 推送门槛由该用户决定覆盖，技术与业务要求不变。
 
@@ -9,7 +9,8 @@
 | 1 | Home | pending | passed | pending | Profile/Chat/Auto Match/Request真实入口返回与宿主回归 |
 | 2 | Discover | pending | passed | pending | 已本地提交；Profile/Preferences/Expanded/Icebreaker/通知与宿主待补齐 |
 | 3 | Events | pending | passed | pending | 已本地提交；详情/参与者/群聊/成功页/宿主后续补齐 |
-| 后续 | Profile、Messages、Auto Match、Connection、Auth、Settings、Coins、Safety、System | pending | pending | pending | 主Tab之后按入口依赖逐页推进 |
+| 4 | Profile | in_progress | passed | pending | 本页通过，待本地专项提交；下级依赖和宿主待验 |
+| 后续 | Messages、Auto Match、Connection、Auth、Settings、Coins、Safety、System | pending | pending | pending | 主Tab之后按入口依赖逐页推进 |
 
 完整映射以 [页面清单](./cimoa-page-inventory.json) 为准。主Tab顺序 Home → Discover → Events。Popover/Sheet/确认弹窗随首个使用页面完成，常驻挂载；专属组件不另开页面任务。任一时刻最多一个页面in_progress。
 
@@ -23,6 +24,8 @@
 
 ## 已有证据
 
+- Profile：[本页验收](./cimoa-stage5-profile-acceptance.md)、[交互契约](./cimoa-profile-interactions.md)。51项单元、Profile20项H5、Home22/Discover20/Events19项回归通过；三Tab进入Profile与返回已真实执行，不再是readiness拒绝。其余子页和原生完整验收仍pending。
+
 - Home：[本页验收](./cimoa-stage5-home-acceptance.md)。功能提交 `cc59a36`、验收提交 `29c15f9` 已由用户推送；`origin/main` reflog 在2026-10-13T15:52:16+08:00记录 update by push。后续本地记录 `e839615` 不要求推送。本轮Home22项浏览器回归通过。
 - Discover：[交互契约](./cimoa-discover-interactions.md)、[本页验收与deferred清单](./cimoa-stage5-discover-acceptance.md)。38项单元测试、20项H5检查通过。原型图片、卡片/按钮尺寸、长内容、空/错误、图片重试/Blob恢复、安全区注入均有证据；不是iOS模拟器实测。
 - 首用组件：CimoaBrand、ConnectionGoalsPopover、UserAvatar随Home；DiscoverHeroHeader、ProfilePhoto随Discover。本页覆盖通过不提前赋予verified。
@@ -30,4 +33,4 @@
 - Git：本轮功能/测试/产物本地提交 `bf902b0`（feat(discover): restore CIRCA photo page and verify local acceptance）；本记录随后另行本地提交，不执行push。
 - Git：Events 功能/测试/产物本地提交 `36274d7`（feat(events): restore CIRCA carousel and verify local acceptance）；恢复待依赖状态及回归截图另作本地记录提交，不执行push。
 
-阶段五整体未完成。三个主 Tab 已完成本页检查，但均待完整依赖验收。下一页从 Home 的 Profile 入口开始，按入口依赖逐页推进；当前未开启下一页面。
+阶段五整体未完成。三个主 Tab 已完成本页检查，但均待完整依赖验收。当前从 Home 的 Profile 入口推进，其他页面不同时开启。

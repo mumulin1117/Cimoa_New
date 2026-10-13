@@ -1,155 +1,237 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
-import { use_app_store, make_operation_id } from '@/stores/store.js'
-import theme from '@/config/theme.json'
-import { back_route, push_route, replace_route } from '@/utils/routeTransition.js'
-import { request_purchase } from '@/utils/iapBridge.js'
-import { use_write_loading } from '@/composables/useWriteLoading.js'
-import TopSafeArea from '@/components/TopSafeArea.vue'
-import AppLoading from '@/components/AppLoading.vue'
-import ConfirmDialog from '@/components/ConfirmDialog.vue'
+import { onHide } from '@dcloudio/uni-app'
+import { use_app_store } from '@/stores/store.js'
+import { profile_destination, require_profile_destination_ready } from '@/utils/profileNavigation.js'
+import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
+import SourceIcon from '@/components/SourceIcon.vue'
+import ProfilePhoto from '@/components/ProfilePhoto.vue'
 
-const store = use_app_store()
-const view = ref('profile')
-const show_logout = ref(false)
-const notice = ref('')
-const edit_name = ref('')
-const edit_bio = ref('')
-const { is_loading, run_with_loading } = use_write_loading()
-const switch_color = theme.colors.button.primary
-const current_user = computed(() => store.current_user)
-const open_view = (next) => { view.value = next; notice.value = ''; if (next === 'edit') { edit_name.value = current_user.value.user_name; edit_bio.value = current_user.value.bio } }
-const save_profile = async () => { const result = await run_with_loading(() => store.update_profile({ user_name: edit_name.value.trim(), bio: edit_bio.value.trim() })); if (result.success) { notice.value = 'Profile updated.'; view.value = 'profile' } }
-const purchase = async (package_id) => {
-  const result = await run_with_loading(async () => {
-    const started = store.begin_purchase(package_id, make_operation_id())
-    if (!started.success) return started
-    const pack = store.coin_packages.find((row) => row.package_id === package_id)
-    const response = await request_purchase({ request_id: started.data, package_id, owner_user_id: store.current_user.user_id, product_id: pack.product_id })
-    const settled = await store.settle_purchase(started.data, response)
-    return { ...settled, success: settled.success && settled.data?.status === 'success', reason: response.status }
-  }, 450)
-  notice.value = result.success ? 'Coins added to your wallet.' : result.reason === 'timeout' ? 'The App Store request timed out. Your balance is unchanged.' : 'Purchase was not completed.'
+const store = use_app_store(), frame = ref(null), navigating = ref(false), navigation_error = ref('')
+const user = computed(() => store.current_user)
+const target = kind => { try { return profile_destination(store, kind) } catch { return '' } }
+const navigate = async kind => {
+  if (navigating.value) return
+  navigating.value = true; navigation_error.value = ''
+  try {
+    if (kind === 'back') await frame.value.navigate_back()
+    else await frame.value.navigate_forward(require_profile_destination_ready(profile_destination(store, kind)))
+  } catch (error) { navigation_error.value = error.message } finally { navigating.value = false }
 }
-const logout = async () => { show_logout.value = false; const result = await run_with_loading(() => store.logout()); if (result.success) await replace_route('/pages/auth/index'); else notice.value = result.message }
-const toggle_setting = async (key) => { const result = await run_with_loading(() => store.toggle_setting(key)); if (!result.success) notice.value = result.message }
-onLoad((options) => { if (options?.view) view.value = options.view })
+onHide(() => { navigation_error.value = '' })
 </script>
 
 <template>
-  <view class="cimoa-page profile-page">
-    <TopSafeArea />
-    <view class="sub-header"><view v-if="view !== 'profile'" class="back-button" role="button" @click="view = 'profile'">Back</view><view v-else class="back-placeholder" /><text class="sub-header__title">{{ view === 'profile' ? 'Profile' : view === 'coins' ? 'Coin center' : 'Settings' }}</text><view class="back-placeholder" /></view>
-    <scroll-view class="cimoa-scroll" scroll-y :show-scrollbar="false">
-      <template v-if="view === 'profile'">
-        <view class="profile-intro"><view class="large-avatar cimoa-avatar"><image :src="current_user.avatar_url" mode="aspectFill" /></view><text class="profile-intro__name">{{ current_user.user_name }}</text><text class="profile-intro__meta">{{ current_user.major }} · {{ current_user.university }}</text><text class="profile-intro__bio">{{ current_user.bio }}</text></view>
-        <view class="stats-row"><view><text class="stats-row__value">{{ store.event_count }}</text><text class="stats-row__label">Events</text></view><view><text class="stats-row__value">{{ store.unread_count }}</text><text class="stats-row__label">Unread</text></view><view><text class="stats-row__value">{{ current_user.coin_balance }}</text><text class="stats-row__label">Coins</text></view></view>
-        <view class="menu-list"><view class="menu-item" role="button" @click="open_view('coins')"><view><text class="menu-item__title">Coin center</text><text class="menu-item__meta">{{ current_user.coin_balance }} coins available</text></view><text class="menu-item__action">Open</text></view><view class="menu-item" role="button" @click="push_route('/pages/messages/index')"><view><text class="menu-item__title">Messages</text><text class="menu-item__meta">Three connected conversations</text></view><text class="menu-item__action">Open</text></view><view class="menu-item" role="button" @click="open_view('settings')"><view><text class="menu-item__title">Settings</text><text class="menu-item__meta">Notifications, privacy, blocked accounts</text></view><text class="menu-item__action">Open</text></view></view><view class="profile-actions"><view class="cimoa-button" role="button" @click="open_view('edit')">Edit profile</view><view class="cimoa-button ghost" role="button" @click="show_logout = true">Log out</view></view>
-      </template>
-      <template v-else-if="view === 'edit'"><text class="cimoa-section-title section-title">Edit profile</text><input v-model="edit_name" class="edit-input" placeholder="Your name" /><textarea v-model="edit_bio" class="edit-textarea" placeholder="A short bio" /><view class="cimoa-button" role="button" @click="save_profile">Save profile</view><view class="history-link" role="button" @click="view = 'profile'">Cancel</view></template>
-      <template v-else-if="view === 'coins'">
-        <view class="wallet-card"><text class="cimoa-eyebrow">Your balance</text><text class="wallet-card__balance">{{ current_user.coin_balance }}</text><text class="wallet-card__label">coins</text></view><text class="cimoa-section-title section-title">Choose a coin pack</text><view v-for="pack in store.coin_packages" :key="pack.package_id" class="pack-card cimoa-card" role="button" @click="purchase(pack.package_id)"><image class="pack-card__image" :src="pack.image_url" mode="aspectFit" /><view class="pack-card__copy"><text class="pack-card__coins">{{ pack.coins }} coins</text><text v-if="pack.badge" class="pack-card__badge">{{ pack.badge }}</text></view><text class="pack-card__price">{{ pack.price }}</text></view><view class="history-link" role="button" @click="notice = 'Your recharge and spending history is up to date.'">View transaction history</view><text v-if="notice" class="notice">{{ notice }}</text>
-      </template>
+  <SecondaryPageFrame ref="frame">
+    <template #header>
+      <view class="profile-header">
+        <view class="profile-toolbar">
+          <view class="profile-tool" role="button" aria-label="Back" :aria-disabled="navigating" data-interaction="profile.goBack.click.1" @click="navigate('back')"><view class="profile-back-icon"><SourceIcon name="back" /></view></view>
+          <text class="profile-title">My profile</text>
+          <view class="profile-tool" role="button" aria-label="Open settings" :aria-disabled="navigating" data-interaction="profile.openAppSettings.click.1" :data-target="target('settings')" @click="navigate('settings')"><view class="profile-settings-icon"><SourceIcon name="settings" /></view></view>
+        </view>
+        <text v-if="navigation_error" class="profile-feedback" role="alert">{{ navigation_error }}</text>
+      </view>
+    </template>
+    <view class="profile-content">
+      <view v-if="store.hydration_status === 'loading' || store.hydration_status === 'idle'" class="profile-state" role="status">Loading your profile…</view>
+      <view v-else-if="store.hydration_status === 'error'" class="profile-state" role="alert"><text>Your profile couldn’t be loaded.</text><text>{{ store.hydration_error }}</text><view class="profile-retry" role="button" data-interaction="profile.retry.click.1" @click="store.hydrate()">Retry</view></view>
+      <view v-else-if="!store.session.is_authenticated" class="profile-state"><text>Your session has expired.</text><text>Please sign in again to view your profile.</text></view>
       <template v-else>
-        <text class="cimoa-section-title section-title">Settings</text><view class="setting-card cimoa-card"><view class="setting-row"><view><text class="setting-row__title">Notifications</text><text class="setting-row__meta">Event reminders and connection updates</text></view><switch :checked="store.settings.notifications_enabled" :color="switch_color" @change="toggle_setting('notifications_enabled')" /></view><view class="setting-row"><view><text class="setting-row__title">Show online status</text><text class="setting-row__meta">Let mutual connections see when you are active</text></view><switch :checked="store.settings.show_online_status" :color="switch_color" @change="toggle_setting('show_online_status')" /></view><view class="setting-row"><view><text class="setting-row__title">Location access</text><text class="setting-row__meta">Used to sort nearby people and events</text></view><switch :checked="store.settings.location_enabled" :color="switch_color" @change="toggle_setting('location_enabled')" /></view></view><view class="menu-item cimoa-card" role="button" @click="notice = 'Blocked accounts are managed from Safety actions.'"><view><text class="menu-item__title">Blocked accounts</text><text class="menu-item__meta">{{ store.blocked_user_ids.length }} blocked</text></view><text class="menu-item__action">Open</text></view><text v-if="notice" class="notice">{{ notice }}</text>
+        <view class="profile-intro">
+          <view class="profile-avatar"><ProfilePhoto :src="user.avatar_url" :name="user.user_name" portrait retry-interaction="profile.retryPhoto.click.1" /></view>
+          <view class="profile-name-row"><text class="profile-name">{{ user.user_name }}{{ user.age ? `, ${user.age}` : '' }}</text><view v-if="user.verified" class="profile-verified" role="img" aria-label="Verified student"><SourceIcon name="verified" :stroke-width="2.6" /></view></view>
+          <view class="profile-tags">
+            <view class="profile-tag"><view class="profile-tag-icon"><SourceIcon name="university" :stroke-width="2" /></view><text>{{ user.university || 'University not shared' }}</text></view>
+            <view class="profile-tag"><view class="profile-tag-icon"><SourceIcon name="book" :stroke-width="2" /></view><text>{{ user.major || 'Major not shared' }}</text></view>
+            <view class="profile-tag"><view class="profile-tag-icon"><SourceIcon name="puzzle" :stroke-width="2" /></view><text>{{ user.mbti || 'MBTI not shared' }}</text></view>
+          </view>
+          <view class="profile-edit" role="button" :aria-disabled="navigating" data-interaction="profile.openEditBasic.click.1" :data-target="target('edit')" @click="navigate('edit')"><view class="profile-edit-icon"><SourceIcon name="edit" :stroke-width="2.2" /></view><text>Edit Profile</text></view>
+        </view>
+        <view class="profile-card profile-about"><text class="profile-section-title">About me</text><text v-if="user.bio" class="profile-bio">{{ user.bio }}</text><text v-else class="profile-empty">No introduction yet.</text></view>
+        <view class="profile-card"><text class="profile-section-title">Interests</text><view v-if="store.current_interests.length" class="profile-interests"><view v-for="interest in store.current_interests" :key="interest.item_id" class="profile-interest"><view class="interest-icon">{{ interest.emoji }}</view><text class="interest-label">{{ interest.label }}</text></view></view><text v-else class="profile-empty">No interests selected yet.</text></view>
+        <view class="profile-card profile-link" role="button" :aria-disabled="navigating" data-interaction="profile.openStore.click.1" :data-target="target('coins')" @click="navigate('coins')"><image class="profile-coin" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><text class="profile-balance">{{ store.coin_balance.toLocaleString('en-US') }} coins</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
+        <view class="profile-card profile-link" role="button" :aria-disabled="navigating" data-interaction="profile.openProfilePreview.click.1" :data-target="target('preview')" @click="navigate('preview')"><view class="profile-preview-icon"><view><SourceIcon name="person" :stroke-width="1.9" /></view></view><text class="profile-preview-label">Preview my profile</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
       </template>
-    </scroll-view>
-    <AppLoading :visible="is_loading" label="Waiting for App Store..." />
-    <ConfirmDialog :visible="show_logout" title="Log out of Cimoa?" message="Your local profile and messages will remain on this device." confirm-label="Log out" @cancel="show_logout = false" @confirm="logout" />
-  </view>
+    </view>
+    <template #footer><view class="profile-bottom-space" aria-hidden="true" /></template>
+  </SecondaryPageFrame>
 </template>
 
 <style scoped>
-.profile-page { padding-bottom: 148rpx; }
-.sub-header { display: flex; align-items: center; justify-content: space-between; padding: 12rpx 32rpx 18rpx; }
-.sub-header__title { color: var(--cimoa-title); font-size: 25rpx; font-weight: 700; }
-.back-button { color: var(--cimoa-secondary); font-size: 22rpx; }
-.back-placeholder { width: 48rpx; }
-.profile-intro { text-align: center; }
-.large-avatar { width: 190rpx; height: 190rpx; margin: 6rpx auto 18rpx; }
-.profile-intro__name, .profile-intro__meta, .profile-intro__bio { display: block; }
-.profile-intro__name { color: var(--cimoa-title); font-size: 34rpx; font-weight: 700; }
-.profile-intro__meta { margin-top: 8rpx; color: var(--cimoa-secondary); font-size: 21rpx; }
-.profile-intro__bio { margin: 18rpx auto 0; max-width: 600rpx; color: var(--cimoa-secondary); font-size: 21rpx; line-height: 32rpx; }
-.stats-row {
+.profile-header { padding: 7.634rpx 38.168rpx 22.901rpx; }
+.profile-toolbar { position: relative; height: 91.603rpx; display: flex; align-items: center; justify-content: space-between; }
+.profile-tool {
+  width: 87.786rpx;
+  height: 87.786rpx;
+  border-radius: 43.893rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-header);
   display: flex;
-  justify-content: space-around;
-  margin: 34rpx 0;
-  padding: 22rpx 0;
-  border-top: 1px solid var(--cimoa-border);
-  border-bottom: 1px solid var(--cimoa-border);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: none;
+}
+.profile-back-icon { width: 41.985rpx; height: 41.985rpx; }
+.profile-settings-icon { width: 40.076rpx; height: 40.076rpx; }
+.profile-title {
+  position: absolute;
+  inset: 0 110.687rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 40.076rpx;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  pointer-events: none;
+}
+.profile-feedback {
+  display: block;
+  margin-top: 15.267rpx;
+  font-size: 26.718rpx;
+  line-height: 1.4;
+  color: var(--cimoa-status-danger);
+  overflow-wrap: anywhere;
+}
+.profile-content { padding: 0 38.168rpx 76.336rpx; }
+.profile-intro { display: flex; flex-direction: column; align-items: center; gap: 19.084rpx; }
+.profile-avatar {
+  position: relative;
+  width: 229.008rpx;
+  height: 229.008rpx;
+  border-radius: 114.504rpx;
+  overflow: hidden;
+  border: 3px solid var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-profile-avatar);
+  flex: none;
+}
+.profile-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13.359rpx;
+  margin-top: 7.634rpx;
+  max-width: 100%;
+}
+.profile-name {
+  font-size: 51.527rpx;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  min-width: 0;
+  overflow-wrap: anywhere;
   text-align: center;
 }
-.stats-row__value, .stats-row__label { display: block; }
-.stats-row__value { color: var(--cimoa-title); font-size: 28rpx; font-weight: 700; }
-.stats-row__label { margin-top: 6rpx; color: var(--cimoa-secondary); font-size: 18rpx; }
-.menu-list { display: flex; flex-direction: column; gap: 12rpx; }
-.menu-item { display: flex; align-items: center; justify-content: space-between; padding: 22rpx; }
-.menu-item.cimoa-card { margin-top: 16rpx; }
-.menu-item__title, .menu-item__meta { display: block; }
-.menu-item__title { color: var(--cimoa-title); font-size: 23rpx; font-weight: 700; }
-.menu-item__meta { margin-top: 6rpx; color: var(--cimoa-secondary); font-size: 18rpx; }
-.menu-item__action { color: var(--cimoa-success); font-size: 19rpx; }
-.profile-actions { display: flex; gap: 14rpx; margin-top: 24rpx; }
-.profile-actions > view { flex: 1; min-height: 76rpx; }
-.edit-input {
-  display: block;
-  width: 100%;
-  height: 82rpx;
-  margin-bottom: 16rpx;
-  padding: 0 20rpx;
-  border: 1px solid var(--cimoa-outline);
-  border-radius: 18rpx;
-  color: var(--cimoa-title);
-  background: var(--cimoa-card);
-  font-size: 22rpx;
+.profile-verified { width: 38.168rpx; height: 38.168rpx; flex: none; }
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 11.45rpx;
+  max-width: 100%;
+  padding: 0 30.534rpx;
 }
-.edit-textarea {
-  display: block;
-  width: 100%;
-  height: 180rpx;
-  margin-bottom: 20rpx;
-  padding: 18rpx;
-  border: 1px solid var(--cimoa-outline);
-  border-radius: 18rpx;
-  color: var(--cimoa-title);
-  background: var(--cimoa-card);
-  font-size: 22rpx;
+.profile-tag {
+  display: flex;
+  align-items: center;
+  gap: 7.634rpx;
+  min-height: 57.252rpx;
+  padding: 7.634rpx 19.084rpx;
+  border-radius: 28.626rpx;
+  min-width: 0;
+  max-width: 100%;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-profile-tag);
 }
-.wallet-card { padding: 28rpx; border-radius: 28rpx; background: var(--cimoa-deep); color: var(--cimoa-card); }
-.wallet-card__balance { display: block; margin-top: 16rpx; color: var(--cimoa-primary); font-size: 66rpx; font-weight: 700; }
-.wallet-card__label { display: block; margin-top: -8rpx; color: var(--cimoa-tertiary); font-size: 20rpx; }
-.section-title { margin: 34rpx 0 18rpx; }
-.pack-card { display: flex; align-items: center; margin-bottom: 14rpx; padding: 16rpx; }
-.pack-card__image { width: 82rpx; height: 82rpx; }
-.pack-card__copy { flex: 1; margin-left: 14rpx; }
-.pack-card__coins, .pack-card__badge { display: block; }
-.pack-card__coins { color: var(--cimoa-title); font-size: 24rpx; font-weight: 700; }
-.pack-card__badge {
-  display: inline-block;
-  margin-top: 6rpx;
-  padding: 4rpx 10rpx;
-  border-radius: 100rpx;
-  background: var(--cimoa-lavender);
-  color: var(--cimoa-title);
-  font-size: 16rpx;
+.profile-tag-icon { width: 24.809rpx; height: 24.809rpx; flex: none; }
+.profile-tag text { font-size: 24.809rpx; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; min-width: 0; }
+.profile-edit {
+  min-height: 91.603rpx;
+  padding: 0 49.618rpx;
+  border-radius: 45.802rpx;
+  background: var(--cimoa-gradient-card-fill) padding-box, var(--cimoa-gradient-primary) border-box;
+  border: 2px solid var(--cimoa-surface-transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 19.084rpx;
+  gap: 15.267rpx;
 }
-.pack-card__price { color: var(--cimoa-success); font-size: 22rpx; font-weight: 700; }
-.history-link { margin-top: 24rpx; color: var(--cimoa-secondary); font-size: 21rpx; text-align: center; }
-.setting-card { margin-top: 22rpx; padding: 0 22rpx; }
-.setting-row { display: flex; align-items: center; justify-content: space-between; padding: 22rpx 0; border-bottom: 1px solid var(--cimoa-border); }
-.setting-row:last-child { border-bottom: 0; }
-.setting-row > view { flex: 1; }
-.setting-row__title, .setting-row__meta { display: block; }
-.setting-row__title { color: var(--cimoa-title); font-size: 22rpx; font-weight: 700; }
-.setting-row__meta { margin-top: 6rpx; color: var(--cimoa-secondary); font-size: 18rpx; line-height: 26rpx; }
-.notice {
+.profile-edit-icon { width: 34.351rpx; height: 34.351rpx; color: var(--cimoa-text-link); }
+.profile-edit text {
+  font-size: 32.443rpx;
+  font-weight: 700;
+  background: var(--cimoa-gradient-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: var(--cimoa-surface-transparent);
+}
+.profile-card { margin-top: 30.534rpx; padding: 34.351rpx; background: var(--cimoa-surface-card); border-radius: 45.802rpx; box-shadow: var(--cimoa-shadow-card); }
+.profile-about { margin-top: 41.985rpx; }
+.profile-section-title { display: block; font-size: 41.985rpx; font-weight: 800; letter-spacing: -0.02em; }
+.profile-bio {
   display: block;
-  margin-top: 22rpx;
-  color: var(--cimoa-success);
-  font-size: 19rpx;
-  line-height: 28rpx;
+  font-family: 'Caveat', cursive;
+  font-size: 51.527rpx;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--cimoa-text-profile-bio);
+  margin-top: 15.267rpx;
   text-align: center;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
 }
+.profile-interests { display: flex; flex-wrap: wrap; gap: 34.351rpx; margin-top: 26.718rpx; }
+.profile-interest { display: flex; flex-direction: column; align-items: center; gap: 15.267rpx; width: 141.221rpx; }
+.interest-icon {
+  width: 106.87rpx;
+  height: 106.87rpx;
+  border-radius: 53.435rpx;
+  background: var(--cimoa-surface-profile-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 45.802rpx;
+}
+.interest-label { font-size: 27.672rpx; font-weight: 600; text-align: center; overflow-wrap: normal; max-width: 100%; }
+.profile-link { display: flex; align-items: center; gap: 26.718rpx; padding: 30.534rpx 34.351rpx; cursor: pointer; }
+.profile-coin { width: 76.336rpx; height: 76.336rpx; flex: none; }
+.profile-balance {
+  flex: 1;
+  min-width: 0;
+  font-size: 36.26rpx;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.profile-chevron { width: 30.534rpx; height: 30.534rpx; color: var(--cimoa-text-profile-chevron); flex: none; }
+.profile-preview-icon {
+  width: 76.336rpx;
+  height: 76.336rpx;
+  border-radius: 38.168rpx;
+  background: var(--cimoa-surface-profile-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cimoa-text-profile-icon);
+  flex: none;
+}
+.profile-preview-icon > view { width: 36.26rpx; height: 36.26rpx; }
+.profile-preview-label { flex: 1; min-width: 0; font-size: 32.443rpx; font-weight: 700; overflow-wrap: anywhere; }
+.profile-bottom-space { flex: none; height: 76.336rpx; }
+.profile-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22.901rpx;
+  margin: 38.168rpx 0;
+  color: var(--cimoa-text-secondary);
+  text-align: center;
+  font-size: 30.534rpx;
+}
+.profile-empty { display: block; margin-top: 22.901rpx; color: var(--cimoa-text-secondary); font-size: 28.626rpx; }
+.profile-retry { padding: 19.084rpx 38.168rpx; border-radius: 45.802rpx; color: var(--cimoa-text-inverse); background: var(--cimoa-button-primary); cursor: pointer; }
 </style>

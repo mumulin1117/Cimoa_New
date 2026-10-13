@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onUnmounted } from 'vue'
 import { media_cache } from '@/utils/mediaRepository.js'
-const props = defineProps({ src: { type: String, default: '' }, name: { type: String, required: true }, eventCover: Boolean })
+const props = defineProps({ src: { type: String, default: '' }, name: { type: String, required: true }, eventCover: Boolean, portrait: Boolean, retryInteraction: { type: String, default: '' } })
 const resolved = ref(''), status = ref('loading')
 let generation = 0, lease = null, timer
 const release = () => { clearTimeout(timer); lease?.release(); lease = null }
@@ -23,11 +23,11 @@ onUnmounted(() => { generation++; release() })
 </script>
 
 <template>
-  <view class="profile-photo" :class="{ 'profile-photo--event': eventCover }" :data-media-status="status" role="img" :aria-label="`${name}: ${status === 'ready' ? eventCover ? 'event cover' : 'profile photo' : status === 'empty' ? 'no photos' : status === 'error' ? 'photo unavailable' : 'loading photo'}`">
+  <view class="profile-photo" :class="{ 'profile-photo--event': eventCover, 'profile-photo--portrait': portrait }" :data-media-status="status" role="img" :aria-label="`${name}: ${status === 'ready' ? eventCover ? 'event cover' : 'profile photo' : status === 'empty' ? 'no photos' : status === 'error' ? 'photo unavailable' : 'loading photo'}`">
     <image v-if="resolved" :key="resolved" :src="resolved" mode="aspectFill" @load="loaded" @error="fail" />
     <view v-if="status !== 'ready'" class="profile-photo-status" aria-live="polite">
-      <text>{{ status === 'loading' ? 'Loading photo…' : status === 'empty' ? 'No photos yet' : 'Photo could not be loaded.' }}</text>
-      <view v-if="status === 'error'" class="photo-retry" role="button" tabindex="0" aria-label="Retry photo" @click.stop="load" @keydown.enter.stop="load" @keydown.space.stop.prevent="load">Retry photo</view>
+      <text>{{ status === 'loading' ? 'Loading photo…' : status === 'empty' ? 'No photos yet' : portrait ? 'Photo unavailable' : 'Photo could not be loaded.' }}</text>
+      <view v-if="status === 'error'" class="photo-retry" role="button" tabindex="0" aria-label="Retry photo" :data-interaction="retryInteraction || undefined" @click.stop="load" @keydown.enter.stop="load" @keydown.space.stop.prevent="load">Retry photo</view>
     </view>
   </view>
 </template>
@@ -37,8 +37,8 @@ onUnmounted(() => { generation++; release() })
 .profile-photo image { display: block; width: 100%; height: 100%; }
 .profile-photo :deep(img) { object-fit: cover; object-position: 50% 22%; }
 .profile-photo :deep(uni-image > div) { background-position: 50% 22% !important; }
-.profile-photo--event :deep(img) { object-position: center; }
-.profile-photo--event :deep(uni-image > div) { background-position: center !important; }
+.profile-photo--event :deep(img), .profile-photo--portrait :deep(img) { object-position: center; }
+.profile-photo--event :deep(uni-image > div), .profile-photo--portrait :deep(uni-image > div) { background-position: center !important; }
 .profile-photo-status {
   position: absolute;
   top: 25%;
@@ -57,4 +57,15 @@ onUnmounted(() => { generation++; release() })
   background: var(--cimoa-surface-photo-tag);
   cursor: pointer;
 }
+.profile-photo--portrait { background: var(--cimoa-surface-tinted); }
+.profile-photo--portrait .profile-photo-status {
+  top: 50%;
+  right: 15.267rpx;
+  left: 15.267rpx;
+  transform: translateY(-50%);
+  color: var(--cimoa-text-secondary);
+  font-size: 22.901rpx;
+  line-height: 1.2;
+}
+.profile-photo--portrait .photo-retry { margin-top: 7.634rpx; padding: 11.45rpx 15.267rpx; background: var(--cimoa-surface-card); color: var(--cimoa-text-link); }
 </style>

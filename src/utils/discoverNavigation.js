@@ -15,7 +15,7 @@ export function discover_destination(store, kind, id) {
 
 // Remove individual guards only after the corresponding Stage 5 page is restored.
 export const DISCOVER_DEFERRED_ROUTES = Object.freeze([
-  '/pages/profile/index', '/pages/auto-match/preferences',
+  '/pages/auto-match/preferences',
   '/pages/discover/profile', '/pages/discover/icebreaker/select',
 ])
 export function require_discover_destination_ready(url) {
