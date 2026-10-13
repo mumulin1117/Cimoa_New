@@ -1,6 +1,6 @@
 # Cimoa Home 本页验收
 
-Home 已完成本页还原与浏览器验收，`local_acceptance: passed`；`full_acceptance: pending`。页面保持唯一 `in_progress`：本轮向可信远端推送连接 GitHub 443 超时，未进入 Discover，未把任何页面或专属组件标为 verified。
+Home 已完成本页还原与浏览器验收，`local_acceptance: passed`；`full_acceptance: pending`。功能与验收提交已推送，页面按流程 5.2 恢复 `pending`（待依赖），未把任何页面或专属组件标为 verified。Discover 的依赖阻止完整验收，须先确认是否扩展分段例外。
 
 ## 本次实现
 
@@ -41,11 +41,11 @@ Home完整验收还需既有WKWebView宿主、安全区/触摸/手势/返回实�
 
 ## 改动文件与发布状态
 
-本页功能、测试、截图与 H5 产物的本地专项提交：`cc59a36`（`feat(home): restore CIRCA Home and verify local acceptance`）。本记录补充提交不改变验收状态，也不表示已推送。
+本页功能、测试、截图与 H5 产物专项提交：`cc59a36`（`feat(home): restore CIRCA Home and verify local acceptance`），验收记录提交 `29c15f9`；两者均已推送。本次仅更新推送事实及待依赖状态，不新增功能验收结论。
 
 - 页面与组件：`src/pages/home/index.vue`、`src/components/CimoaBrand.vue`、`ConnectionGoalsPopover.vue`、`UserAvatar.vue`。
 - 数据、主题、导航：`src/stores/seed.js`、`selectors.js`、`store.js`、`src/config/theme.json`、`src/utils/homeNavigation.js`。
 - 测试：`scripts/home.test.mjs`、`scripts/lib/home-browser.mjs`、`scripts/h5-browser.test.mjs`。
 - 记录与产物：本页验收、Home交互清单、阶段2字段、阶段5状态、页面清单、阶段1清单索引、`docs/evidence/home-*` 与 `dist/build/h5`。
 
-本轮继续指令下的前置发布重试失败：`Failed to connect to github.com port 443 after 75021 ms`。仓库可信确认与推送授权已具备，不再重复索取授权；未换远端或通道绕过。安全的 Home 本页工作完成后停在发布门槛，专项本地提交不等于远端已发布。成功推送后才能将 Home 暂回 pending（待依赖）并进入 Discover。
+用户已确认 push 完成；`origin/main` 的 reflog 在 `2026-10-13T15:52:16+08:00` 记录 `29c15f9 update by push`，本地 HEAD 与远端跟踪分支完整 SHA 同为 `29c15f98199759ac91508f9e574dc080da6369c0`。此前 Home 发布阻塞已解除。本次 `git ls-remote` 在线查询仍遇到 GitHub 443 超时，因此推送核对依据为用户确认及本地推送记录，不宣称实时远端查询成功。后续提交仍须各自取得推送成功证据。

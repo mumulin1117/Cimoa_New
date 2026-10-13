@@ -41,7 +41,7 @@
 
 ## 完成门槛
 
-用户已授权先验收 Home 本页，再逐页补齐依赖。当前 local_acceptance 为 passed，full_acceptance 为 pending；页面仍为 in_progress，等待本页提交的发布门槛恢复：
+用户已授权先验收 Home 本页，再逐页补齐依赖。当前 local_acceptance 为 passed，full_acceptance 为 pending；功能 cc59a36 及验收记录 29c15f9 已推送，页面按流程暂回 pending（待依赖）：
 
 - `local_acceptance`：布局与资源、三个卡片详情资料一致、Popover、固定骨架、安全区所有权、Tabbar、一次骨架消费、默认/空/错误/长内容、Store 状态恢复，以及每个入口传递的正确实体 ID。依赖页内容和返回链路不能借此判为通过。
 - `full_acceptance`：Profile、Chat、Match Found、Received Request、Auto Match Entry 等目标页实现后，逐项执行上表完整 acceptance；补齐 WKWebView、安全区、手势、滚动、刷新和跨页同步证据。

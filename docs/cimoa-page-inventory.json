@@ -2058,7 +2058,7 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
@@ -2491,7 +2491,7 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
@@ -5218,7 +5218,7 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
@@ -5362,7 +5362,7 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
@@ -5506,7 +5506,7 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
@@ -5650,7 +5650,7 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
@@ -11127,7 +11127,7 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
@@ -11271,7 +11271,7 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
@@ -11415,7 +11415,7 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
