@@ -1,6 +1,6 @@
 # Discover 本页验收
 
-Discover 已完成本页还原与浏览器验收，`local_acceptance: passed`，`full_acceptance: pending`。当前仍是唯一 in_progress 页面，待本地专项提交后恢复 pending（待依赖）。Discover、DiscoverHeroHeader、ProfilePhoto 不标记 verified；完整条件分支与原生宿主未测项见下文。
+Discover 已完成本页还原与浏览器验收，`local_acceptance: passed`，`full_acceptance: pending`。本地专项提交 `bf902b0` 已完成，现恢复 pending（待依赖）；当前没有 in_progress 页面。Discover、DiscoverHeroHeader、ProfilePhoto 不标记 verified；完整条件分支与原生宿主未测项见下文。
 
 用户最新决定已登记到开发流程：分段验收适用于后续各页；后续只做本地 Git 提交，不执行 push。两份开发/交互约定和原始 HTML 未修改，其他技术与业务门槛保持。
 
@@ -56,4 +56,4 @@ Discover 已完成本页还原与浏览器验收，`local_acceptance: passed`，
 - 文档：开发流程、Discover交互及本验收、阶段1清单/JSON、阶段2字段、阶段3夹具、Home验收决策补记、阶段5总表、阶段6当前进度。
 - 证据与产物：`docs/evidence/discover-*`、Home回归JSON和 `dist/build/h5`。静态资源原文件未修改；哈希改名的旧构建chunk由构建器替换，可从Git历史恢复。
 
-本地提交SHA在后续状态登记提交记录，不改写自身历史；无需push。
+功能/测试/证据/H5产物本地专项提交：`bf902b0`（feat(discover): restore CIRCA photo page and verify local acceptance）。本状态登记另行本地提交，不改写功能历史；未执行push。
