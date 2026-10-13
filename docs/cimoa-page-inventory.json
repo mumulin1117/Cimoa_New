@@ -2848,8 +2848,8 @@
     ],
     "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
-    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+    "fixed_regions": "TopSafeArea; 工具栏/标题/三筛选项; CustomTabBar",
+    "scroll_region": "固定Header/筛选与Tab之间唯一纵向scroll-view；内部横向吸附活动轮播",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "CustomTabBar",
     "interaction_ids": [
@@ -2868,7 +2868,13 @@
       "events.m.join.click.1",
       "showTabs.selectTab.select.1",
       "hasNotif.openNotif.click.1",
-      "hasNotif.dismissNotif.click.1"
+      "hasNotif.dismissNotif.click.1",
+      "sheetEvJoin.closeSheet.click.1",
+      "sheetEvJoin.confirmJoin.click.1",
+      "sheetEvJoin.closeSheet.click.2",
+      "sheetEvCancel.closeSheet.click.1",
+      "sheetEvCancel.keepSpot.click.1",
+      "sheetEvCancel.cancelAttendance.click.1"
     ],
     "entities": "events; event_memberships; organizers; group_list; group_messages; reports",
     "assets": {
@@ -2953,11 +2959,11 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Discover / Icebreaker / Select Question",
@@ -6191,8 +6197,8 @@
     ],
     "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
-    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+    "fixed_regions": "TopSafeArea; 工具栏/标题/三筛选项; CustomTabBar",
+    "scroll_region": "固定Header/筛选与Tab之间唯一纵向scroll-view；内部横向吸附活动轮播",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "CustomTabBar",
     "interaction_ids": [
@@ -6211,7 +6217,13 @@
       "events.m.join.click.1",
       "showTabs.selectTab.select.1",
       "hasNotif.openNotif.click.1",
-      "hasNotif.dismissNotif.click.1"
+      "hasNotif.dismissNotif.click.1",
+      "sheetEvJoin.closeSheet.click.1",
+      "sheetEvJoin.confirmJoin.click.1",
+      "sheetEvJoin.closeSheet.click.2",
+      "sheetEvCancel.closeSheet.click.1",
+      "sheetEvCancel.keepSpot.click.1",
+      "sheetEvCancel.cancelAttendance.click.1"
     ],
     "entities": "events; event_memberships; organizers; group_list; group_messages; reports",
     "assets": {
@@ -6296,11 +6308,11 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Events / Detail / Available",
@@ -6626,8 +6638,9 @@
     "page_level": "确认弹窗",
     "route": "component",
     "component": "src/components/EvJoinConfirmDialog.vue",
-    "parent_route": "/pages/events/detail",
+    "parent_route": "/pages/events/index",
     "allowed_origin_routes": [
+      "/pages/events/index",
       "/pages/events/detail"
     ],
     "required_parameters": [
@@ -6650,12 +6663,12 @@
       "openSecond@6381",
       "openThird@6382"
     ],
-    "return_owner": "关闭后恢复 /pages/events/detail 的原实体和滚动位置",
+    "return_owner": "关闭后恢复 origin_route（/pages/events/index、/pages/events/detail）的原实体和滚动位置",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "宿主页 /pages/events/detail 保持；面板/遮罩常驻挂载",
+    "fixed_regions": "宿主页 /pages/events/index / /pages/events/detail 保持；面板/遮罩常驻挂载",
     "scroll_region": "面板内部唯一滚动区；不滚动背景",
     "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "BottomCTA",
+    "bottom_safe_area_owner": "消费 origin_route 的底部所有者；Events 为 CustomTabBar",
     "interaction_ids": [
       "evDetail.goBack.click.1",
       "evDetail.openEventMore.click.1",
@@ -6768,11 +6781,11 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Events / Join / Success",
@@ -6783,8 +6796,9 @@
     "page_level": "流程状态页",
     "route": "/pages/events/join-success",
     "component": null,
-    "parent_route": "/pages/events/detail",
+    "parent_route": "/pages/events/index",
     "allowed_origin_routes": [
+      "/pages/events/index",
       "/pages/events/detail"
     ],
     "required_parameters": [
@@ -6793,7 +6807,7 @@
     "entry_points": [
       "confirmJoin@6256"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/events/detail）；无历史实例时 replace /pages/events/detail，不创建伪造实体",
+    "return_owner": "pop origin_route（允许来源：/pages/events/index、/pages/events/detail）；无历史实例时 replace /pages/events/index，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -6850,8 +6864,9 @@
     "page_level": "三级",
     "route": "/pages/events/participants",
     "component": null,
-    "parent_route": "/pages/events/detail",
+    "parent_route": "/pages/events/index",
     "allowed_origin_routes": [
+      "/pages/events/index",
       "/pages/events/detail",
       "/pages/events/group"
     ],
@@ -6862,7 +6877,7 @@
       "openParticipantsList@6264",
       "openParticipants@6380"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/events/detail、/pages/events/group）；无历史实例时 replace /pages/events/detail，不创建伪造实体",
+    "return_owner": "pop origin_route（允许来源：/pages/events/index、/pages/events/detail、/pages/events/group）；无历史实例时 replace /pages/events/index，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -6916,8 +6931,9 @@
     "page_level": "三级",
     "route": "/pages/events/group",
     "component": null,
-    "parent_route": "/pages/events/detail",
+    "parent_route": "/pages/events/index",
     "allowed_origin_routes": [
+      "/pages/events/index",
       "/pages/events/detail",
       "/pages/events/upcoming",
       "/pages/events/join-success"
@@ -6930,7 +6946,7 @@
       "openGroup@6260",
       "openGroupStop@6267"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/events/detail、/pages/events/upcoming、/pages/events/join-success）；无历史实例时 replace /pages/events/detail，不创建伪造实体",
+    "return_owner": "pop origin_route（允许来源：/pages/events/index、/pages/events/detail、/pages/events/upcoming、/pages/events/join-success）；无历史实例时 replace /pages/events/index，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; MessageComposer",
     "scroll_region": "Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0",
@@ -7156,8 +7172,9 @@
     "page_level": "确认弹窗",
     "route": "component",
     "component": "src/components/EvCancelConfirmDialog.vue",
-    "parent_route": "/pages/events/detail",
+    "parent_route": "/pages/events/index",
     "allowed_origin_routes": [
+      "/pages/events/index",
       "/pages/events/detail"
     ],
     "required_parameters": [
@@ -7180,12 +7197,12 @@
       "openSecond@6381",
       "openThird@6382"
     ],
-    "return_owner": "关闭后恢复 /pages/events/detail 的原实体和滚动位置",
+    "return_owner": "关闭后恢复 origin_route（/pages/events/index、/pages/events/detail）的原实体和滚动位置",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "宿主页 /pages/events/detail 保持；面板/遮罩常驻挂载",
+    "fixed_regions": "宿主页 /pages/events/index / /pages/events/detail 保持；面板/遮罩常驻挂载",
     "scroll_region": "面板内部唯一滚动区；不滚动背景",
     "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "BottomCTA",
+    "bottom_safe_area_owner": "消费 origin_route 的底部所有者；Events 为 CustomTabBar",
     "interaction_ids": [
       "evDetail.goBack.click.1",
       "evDetail.openEventMore.click.1",
@@ -7299,11 +7316,11 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
   },
   {
     "source_screen": "Events / Report / Select Reason",
@@ -8611,14 +8628,16 @@
     "component": null,
     "parent_route": "/pages/home/index",
     "allowed_origin_routes": [
-      "/pages/home/index"
+      "/pages/home/index",
+      "/pages/discover/index",
+      "/pages/events/index"
     ],
     "required_parameters": [],
     "entry_points": [
       "openMe@5238",
       "openProfile@5381"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/home/index）；无历史实例时 replace /pages/home/index，不创建伪造实体",
+    "return_owner": "pop origin_route（允许来源：/pages/home/index、/pages/discover/index、/pages/events/index）；无历史实例时 replace /pages/home/index，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -12919,7 +12938,13 @@
       "events.m.join.click.1",
       "showTabs.selectTab.select.1",
       "hasNotif.openNotif.click.1",
-      "hasNotif.dismissNotif.click.1"
+      "hasNotif.dismissNotif.click.1",
+      "sheetEvJoin.closeSheet.click.1",
+      "sheetEvJoin.confirmJoin.click.1",
+      "sheetEvJoin.closeSheet.click.2",
+      "sheetEvCancel.closeSheet.click.1",
+      "sheetEvCancel.keepSpot.click.1",
+      "sheetEvCancel.cancelAttendance.click.1"
     ],
     "entities": "events; event_memberships; organizers; group_list; group_messages; reports",
     "assets": {
@@ -13009,7 +13034,7 @@
     "local_acceptance": "pending",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-catalog-only; no template UI or entry; source/explicit design approval needed; not locally accepted"
   },
   {
     "source_screen": "Events / More / Menu",

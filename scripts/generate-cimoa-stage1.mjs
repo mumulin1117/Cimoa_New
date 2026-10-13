@@ -60,6 +60,8 @@ const records = read_catalog(source.catalog).flatMap((group) => group.screens.ma
   const { route: key, ...state } = screen.params
   const route = plan_route(key)
   const component = component_name(screen.params)
+  const event_confirm = ['evJoinConfirm', 'evCancel'].includes(screen.params.sheet)
+  const component_origins = event_confirm ? ['/pages/events/index', '/pages/events/detail'] : [route]
   const is_tab = tab_keys.includes(key) && !component
   const source_lines = audit.sections.filter((section) => section.route === key).map((section) => section.source_line)
   const contract = page_contracts[key]
@@ -73,16 +75,16 @@ const records = read_catalog(source.catalog).flatMap((group) => group.screens.ma
   return { source_screen: screen.source_screen, source_query: screen.source_query, source_lines,
     page_level: component ? (component.endsWith('ConfirmDialog') ? '确认弹窗' : screen.params.pop ? 'Popover' : 'Sheet') : level_labels[contract.level],
     route: component ? 'component' : route, component: component ? `src/components/${component}.vue` : null,
-    parent_route: component ? route : parent_routes[0],
-    allowed_origin_routes: component ? [route] : parent_routes,
+    parent_route: component ? component_origins[0] : parent_routes[0],
+    allowed_origin_routes: component ? component_origins : parent_routes,
     required_parameters: parameters_for(key),
     entry_points: audit.transitions.filter((edge) => edge.target === JSON.stringify(key)).map((edge) => `${edge.handler}@${edge.source_line}`),
-    return_owner: component ? `关闭后恢复 ${route} 的原实体和滚动位置` : is_tab ? 'replace_route 在 Home/Discover/Events 间切换，不 Push' : `pop origin_route（允许来源：${parent_routes.join('、')}）；无历史实例时 replace ${parent_routes[0]}，不创建伪造实体`,
+    return_owner: component ? event_confirm ? `关闭后恢复 origin_route（${component_origins.join('、')}）的原实体和滚动位置` : `关闭后恢复 ${route} 的原实体和滚动位置` : is_tab ? 'replace_route 在 Home/Discover/Events 间切换，不 Push' : `pop origin_route（允许来源：${parent_routes.join('、')}）；无历史实例时 replace ${parent_routes[0]}，不创建伪造实体`,
     completion_navigation: completion_for(key),
-    fixed_regions: component ? `宿主页 ${route} 保持；面板/遮罩常驻挂载` : key === 'photo' ? 'DiscoverHeroHeader; CustomTabBar; Send shot CTA' : is_tab ? 'TopSafeArea; 主功能栏和标题; CustomTabBar' : `TopSafeArea; SecondaryPageHeader; ${input_bar ? 'MessageComposer' : cta ? '底部 CTA' : 'BottomSafeArea'}`,
-    scroll_region: component ? '面板内部唯一滚动区；不滚动背景' : input_bar ? 'Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0' : '固定区域之间唯一 scroll-view；flex:1; min-height:0',
+    fixed_regions: component ? `宿主页 ${component_origins.join(' / ')} 保持；面板/遮罩常驻挂载` : key === 'photo' ? 'DiscoverHeroHeader; CustomTabBar; Send shot CTA' : key === 'events' ? 'TopSafeArea; 工具栏/标题/三筛选项; CustomTabBar' : is_tab ? 'TopSafeArea; 主功能栏和标题; CustomTabBar' : `TopSafeArea; SecondaryPageHeader; ${input_bar ? 'MessageComposer' : cta ? '底部 CTA' : 'BottomSafeArea'}`,
+    scroll_region: component ? '面板内部唯一滚动区；不滚动背景' : key === 'events' ? '固定Header/筛选与Tab之间唯一纵向scroll-view；内部横向吸附活动轮播' : input_bar ? 'Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0' : '固定区域之间唯一 scroll-view；flex:1; min-height:0',
     top_safe_area_owner: key === 'photo' ? 'DiscoverHeroHeader' : 'TopSafeArea',
-    bottom_safe_area_owner: tab_keys.includes(key) ? 'CustomTabBar' : input_bar ? 'MessageComposer' : cta ? 'BottomCTA' : 'BottomSafeArea',
+    bottom_safe_area_owner: event_confirm ? '消费 origin_route 的底部所有者；Events 为 CustomTabBar' : tab_keys.includes(key) ? 'CustomTabBar' : input_bar ? 'MessageComposer' : cta ? 'BottomCTA' : 'BottomSafeArea',
     interaction_ids: interactions.map((item) => item.interaction_id),
     entities: entities[route.split('/')[2]],
     assets: { media: audit.resources.filter((resource) => asset_text.includes(resource.source_id) || asset_text.includes(resource.bundle_id)).map(({ source_id, local_path, mime }) => ({ source_id, local_path, mime })),
@@ -93,7 +95,7 @@ const records = read_catalog(source.catalog).flatMap((group) => group.screens.ma
     local_acceptance: prior?.local_acceptance || 'pending', full_acceptance: prior?.full_acceptance || 'pending',
     acceptance_policy: '用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified',
     ...(key.startsWith('call') ? { implementation_override: '用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现' } : {}),
-    mapping_status: prior?.local_acceptance === 'passed' ? 'source-mapped; local acceptance passed; full dependency acceptance pending' : 'source-mapped; implementation pending; ten-field contract required before page work' }
+    mapping_status: screen.params.sheet === 'evFilterSheet' ? 'source-catalog-only; no template UI or entry; source/explicit design approval needed; not locally accepted' : prior?.local_acceptance === 'passed' ? 'source-mapped; local acceptance passed; full dependency acceptance pending' : 'source-mapped; implementation pending; ten-field contract required before page work' }
 }))
 const clean = (value) => String(value).replaceAll('|', '\\|').replaceAll('\n', ' ')
 const opening = fs.readFileSync('docs/cimoa-stage1-source-findings.md', 'utf8')

@@ -6,11 +6,13 @@ import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { test_home } from './lib/home-browser.mjs'
 import { test_discover } from './lib/discover-browser.mjs'
+import { test_events } from './lib/events-browser.mjs'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const root = path.resolve('dist/build/h5'), evidence = path.resolve('docs/evidence')
 const home_mode = process.argv.includes('--home')
 const discover_mode = process.argv.includes('--discover')
+const events_mode = process.argv.includes('--events')
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
 const server = http.createServer((req, res) => {
   const filename = path.resolve(root, '.' + decodeURIComponent(new URL(req.url, 'http://localhost').pathname === '/' ? '/index.html' : new URL(req.url, 'http://localhost').pathname))
@@ -55,10 +57,12 @@ try {
   check('two bidirectional cycles, same-tab double click, unchanged stack and fixed bar')
   await page.getByRole('button', { name: 'Events', exact: true }).click()
   await page.locator('.page-transition').evaluate((element) => Promise.all(element.getAnimations().map((animation) => animation.finished)))
-  const scrolled = await page.locator('.main-tab-scroll .uni-scroll-view-scrollbar-hidden').first().evaluate((element) => { element.scrollTop = element.scrollHeight; return element.scrollTop > 0 })
-  assert.equal(scrolled, true)
+  if (await page.locator('.events-carousel').count()) {
+    const scrolled = await page.locator('.events-carousel .uni-scroll-view-scrollbar-hidden').evaluate(element => { element.scrollLeft = element.scrollWidth; return { offset: element.scrollLeft, needed: element.scrollWidth > element.clientWidth } })
+    if (scrolled.needed) assert.ok(scrolled.offset > 0)
+  } else await page.locator('.events-empty').waitFor()
   assert.deepEqual((await read()).bar, baseline.bar)
-  check('scroll does not move navigation or cover final content')
+  check('Events horizontal carousel or truthful empty state preserves fixed navigation')
   await page.evaluate(() => window.CommonTemplateSafeAreaBridge.update({ top: 59, bottom: 34 }))
   const safe = await read(); assert.ok(Math.abs(safe.bar.y - baseline.bar.y + 34) < 1)
   assert.equal(await page.locator('.safe-area').first().evaluate((element) => element.getBoundingClientRect().height), 59)
@@ -85,6 +89,7 @@ try {
   fs.mkdirSync(evidence, { recursive: true })
   if (home_mode) await test_home({ page, origin, evidence, check, context })
   else if (discover_mode) await test_discover({ page, origin, evidence, check, context })
+  else if (events_mode) await test_events({ page, origin, evidence, check, context })
   else await page.screenshot({ path: path.join(evidence, 'stage4-foundation.png') })
   assert.deepEqual(errors, [])
   check('no browser runtime exceptions')
@@ -94,6 +99,6 @@ try {
   await new Promise((resolve) => server.close(resolve))
   report.cleaned_up = true
   fs.mkdirSync(evidence, { recursive: true })
-  fs.writeFileSync(path.join(evidence, home_mode ? 'home-browser.json' : discover_mode ? 'discover-browser.json' : 'stage4-browser.json'), JSON.stringify(report, null, 2) + '\n')
+  fs.writeFileSync(path.join(evidence, home_mode ? 'home-browser.json' : discover_mode ? 'discover-browser.json' : events_mode ? 'events-browser.json' : 'stage4-browser.json'), JSON.stringify(report, null, 2) + '\n')
   console.log('Temporary preview and browser closed.')
 }

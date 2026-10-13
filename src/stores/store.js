@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { create_seed, clone_data } from './seed.js'
 import { migrate_legacy } from './migration.js'
 import * as s from './selectors.js'
+import * as ev from './eventSelectors.js'
 import { STATE_KEY, LEGACY_KEY } from '../utils/statePersistence.js'
 import { get_runtime, transact, operation, make_id, failure, unavailable, require_target, require_student, password_hash, add_transaction, connect_users } from './transactions.js'
 export { configure_store_runtime, make_id as make_operation_id } from './transactions.js'
@@ -64,7 +65,12 @@ export const use_app_store = defineStore('app', {
     }) : [],
     conversations() { return this.current_conversations },
     unread_count() { return this.current_conversations.reduce((sum, row) => sum + row.unread_count, 0) },
-    events: (state) => ready(state) ? state.data.events.map((event) => ({ ...clone_data(event), joined: s.joined(state.data, event.event_id), participant_count: s.members(state.data, event.event_id).filter((row) => s.visible(state.data, row.user_id)).length, available_count: event.capacity - s.members(state.data, event.event_id).length, date_label: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'UTC' }).format(event.starts_at) + ' UTC' })) : [],
+    events: (state) => ready(state) ? state.data.events.map(event => ev.event_card(state.data, event, state.clock_ms)) : [],
+    event_tabs: () => ev.EVENT_TABS,
+    active_event_tab: (state) => ready(state) ? ev.active_event_tab(state.data) : 'Today',
+    event_feed: (state) => ready(state) ? ev.event_feed(state.data, state.clock_ms) : [],
+    event_by_id() { return id => clone_data(this.events.find(row => row.event_id === id) || null) },
+    event_join_blocker: (state) => id => state.hydration_status === 'ready' ? ev.event_join_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
     event_participants: (state) => (id) => ready(state) ? s.members(state.data, id).filter((row) => s.visible(state.data, row.user_id)).map((row) => profile(state.data, row.user_id)) : [],
     my_events() { return this.events.filter((row) => row.joined) },
     event_count() { return this.my_events.length },
@@ -236,9 +242,8 @@ export const use_app_store = defineStore('app', {
     update_match_preferences(patch) { return transact(this, null, (data) => { const row = data.match_preferences.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(row && Object.keys(patch).every((key) => key !== 'owner_user_id' && key in row), 'Invalid matching preference.'); Object.assign(row, clone_data(patch)); s.ensure(row.age_min >= 18 && row.age_min <= row.age_max && row.age_max <= 100 && row.height_min <= row.height_max && row.distance_max > 0 && row.interest_ids.every((id) => data.interests.some((item) => item.item_id === id)), 'Check your matching preferences.') }) },
     join_event(id) {
       return transact(this, null, (data, now) => {
-        require_student(data)
-        const event = data.events.find((row) => row.event_id === id)
-        s.ensure(event && event.ends_at > now && !s.joined(data, id) && s.members(data, id).length < event.capacity, 'This event is full, ended, or already joined.')
+        const blocker = ev.event_join_blocker(data, id, now)
+        s.ensure(!blocker, blocker)
         let row = data.memberships.find((entry) => entry.event_id === id && entry.user_id === s.owner_id(data))
         if (!row) { row = { membership_id: make_id('member'), event_id: id, user_id: s.owner_id(data) }; data.memberships.push(row) }
         Object.assign(row, { status: 'joined', joined_at: now })
@@ -249,6 +254,14 @@ export const use_app_store = defineStore('app', {
     },
     leave_event(id) { return transact(this, null, (data) => { const row = data.memberships.find((entry) => entry.event_id === id && entry.user_id === s.owner_id(data) && entry.status === 'joined'); s.ensure(row, 'You have not joined this event.'); row.status = 'left' }) },
     cancel_event(id) { return this.leave_event(id) },
+    select_event_tab(label) {
+      return transact(this, null, data => {
+        s.ensure(ev.EVENT_TABS.some(tab => tab.label === label), 'Invalid event filter.')
+        let row = data.event_preferences.find(entry => entry.owner_user_id === s.owner_id(data))
+        if (!row) { row = { owner_user_id: s.owner_id(data), filters: {}, saved_event_ids: [], reminder_by_event: {} }; data.event_preferences.push(row) }
+        row.active_tab = label
+      })
+    },
     toggle_event_saved(id) { return transact(this, null, (data) => { s.ensure(data.events.some((row) => row.event_id === id), 'Event unavailable.'); const row = data.event_preferences.find((entry) => entry.owner_user_id === s.owner_id(data)); row.saved_event_ids = row.saved_event_ids.includes(id) ? row.saved_event_ids.filter((entry) => entry !== id) : [...row.saved_event_ids, id] }) },
     update_event_preferences(patch) { return transact(this, null, (data) => { s.ensure(Object.keys(patch).every((key) => ['filters', 'reminder_by_event'].includes(key)), 'Invalid event preference.'); Object.assign(data.event_preferences.find((row) => row.owner_user_id === s.owner_id(data)), clone_data(patch)) }) },
     async send_message(conversation_id, body, operation_id = make_id(), media_id = null) {

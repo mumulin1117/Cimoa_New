@@ -107,6 +107,8 @@ Discover 本页补充（2026-10-13）：`discover_person` 为只读 getter，从
 
 ## 迁移与恢复
 
+Events 本页补充（2026-10-13）：新增可选 `events.time_zone`（新 HKUST fixture 为 Asia/Hong_Kong，旧记录缺失回退 UTC）、`featured_tab` / `feed_order`（先真实筛选，再源编排排序）、owner 范围 `event_preferences.active_tab`（缺失只读回退 Today）。`event_feed`、`event_by_id`、`event_join_blocker` 共用日期、成员和资格；`select_event_tab` 单事务保存，绝不覆盖旧高级 filters、收藏或提醒。Today 当日、This week 周一至周日、My campus 按当前账号大学，均排除结束活动。`event_card` 头像/人数只含可见成员，余位按所有报名计算；取消撤销群权限。字段和十字段入口契约见 [Events](./cimoa-events-interactions.md)。旧 v2 时间、图片与用户自定义文本完整保留，不因新 fixture 自动重置。
+
 v2 使用新存储键，原 v1 键不删除。首次读取保留完整 legacy_archive（所有旧用户、帖子、消息与未知字段），只在一次成功业务写入后连同 v2 一次落盘。首次 hydration 本身不写磁盘、不显示虚假加载流程。
 
 旧模板默认值不覆盖详情基准。当前用户相对 v1 默认值的明确资料改动复制到同一固定测试账号（姓名、简介、大学、专业、头像）；旧账号邮箱不替换固定登录邮箱。新增旧账本交易按原金额转换为 migration 记录并保留原记录 ID，不伪造 IAP 收据；缺有效金额/余额不一致则拒绝迁移并保留旧存储，不能自行归零。非当前人的旧记录及被移除产品域保持在只读恢复 getter 中，不自动合并到 Chloe/Liam/Lina。

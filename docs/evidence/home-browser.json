@@ -1,7 +1,7 @@
 {
   "result": "passed",
   "runtime": "Chromium, fresh isolated profile, 393 x 852",
-  "server_pid": 57967,
+  "server_pid": 66320,
   "checks": [
     {
       "name": "three source tabs, capsule geometry, restored session has no skeleton",
@@ -28,7 +28,7 @@
       "result": "passed"
     },
     {
-      "name": "scroll does not move navigation or cover final content",
+      "name": "Events horizontal carousel or truthful empty state preserves fixed navigation",
       "result": "passed"
     },
     {
@@ -46,7 +46,7 @@
         },
         "scroll": {
           "bottom": 716,
-          "height": 554.84375
+          "height": 431.546875
         },
         "skeleton": false
       }

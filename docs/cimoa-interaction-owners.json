@@ -4263,6 +4263,7 @@
     "interaction_id": "sheetEvJoin.closeSheet.click.1",
     "source_line": 4557,
     "owner_routes": [
+      "/pages/events/index",
       "/pages/events/detail"
     ],
     "scope": "overlay"
@@ -4271,6 +4272,7 @@
     "interaction_id": "sheetEvJoin.confirmJoin.click.1",
     "source_line": 4576,
     "owner_routes": [
+      "/pages/events/index",
       "/pages/events/detail"
     ],
     "scope": "overlay"
@@ -4279,6 +4281,7 @@
     "interaction_id": "sheetEvJoin.closeSheet.click.2",
     "source_line": 4577,
     "owner_routes": [
+      "/pages/events/index",
       "/pages/events/detail"
     ],
     "scope": "overlay"
@@ -4287,6 +4290,7 @@
     "interaction_id": "sheetEvCancel.closeSheet.click.1",
     "source_line": 4584,
     "owner_routes": [
+      "/pages/events/index",
       "/pages/events/detail"
     ],
     "scope": "overlay"
@@ -4295,6 +4299,7 @@
     "interaction_id": "sheetEvCancel.keepSpot.click.1",
     "source_line": 4589,
     "owner_routes": [
+      "/pages/events/index",
       "/pages/events/detail"
     ],
     "scope": "overlay"
@@ -4303,6 +4308,7 @@
     "interaction_id": "sheetEvCancel.cancelAttendance.click.1",
     "source_line": 4590,
     "owner_routes": [
+      "/pages/events/index",
       "/pages/events/detail"
     ],
     "scope": "overlay"

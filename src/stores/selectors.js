@@ -85,7 +85,13 @@ export function validate_data(data) {
   ensure(data.quota_policy.timezone === 'UTC', 'The quota timezone must be UTC.')
   ensure(unique(data.match_quota, (row) => `${row.owner_user_id}:${row.date_key}`), 'Duplicate daily quota.')
   for (const row of data.match_quota) ensure(has('users', row.owner_user_id) && /^\d{4}-\d{2}-\d{2}$/.test(row.date_key) && Number.isInteger(row.used_count) && row.used_count >= 0 && row.used_count <= 3, 'Invalid daily quota.')
-  for (const row of data.events) ensure(has('organizers', row.organizer_id) && Number.isInteger(row.capacity) && row.capacity >= members(data, row.event_id).length && row.ends_at > row.starts_at, 'Invalid event.')
+  for (const row of data.events) {
+    ensure(has('organizers', row.organizer_id) && Number.isInteger(row.capacity) && row.capacity >= members(data, row.event_id).length && Number.isFinite(row.starts_at) && Number.isFinite(row.ends_at) && row.ends_at > row.starts_at, 'Invalid event.')
+    if (row.time_zone !== undefined) { ensure(typeof row.time_zone === 'string', 'Invalid event timezone.'); new Intl.DateTimeFormat('en-US', { timeZone: row.time_zone }) }
+    ensure(row.feed_order === undefined || Number.isFinite(row.feed_order), 'Invalid event order.')
+  }
+  ensure(unique(data.event_preferences, row => row.owner_user_id), 'Duplicate event preferences.')
+  for (const row of data.event_preferences) ensure(row.active_tab === undefined || ['Today', 'This week', 'My campus'].includes(row.active_tab), 'Invalid event tab.')
   for (const row of data.memberships) ensure(has('users', row.user_id) && has('events', row.event_id) && ['joined', 'left'].includes(row.status), 'Invalid member.')
   ensure(unique(data.memberships, (row) => `${row.event_id}:${row.user_id}`), 'Duplicate member.')
   for (const row of data.conversations) ensure(row.kind === 'group' ? has('events', row.event_id) : row.kind === 'direct' && row.participant_ids.length === 2 && new Set(row.participant_ids).size === 2 && row.participant_ids.every((id) => has('users', id)), 'Invalid conversation.')

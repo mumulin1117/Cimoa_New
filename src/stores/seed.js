@@ -94,11 +94,25 @@ export function create_seed(now = Date.now()) {
     ['robotics', 'Robotics Demo Day', 'Academic Bldg', 'Tech'], ['jazz', 'Jazz on the Piazza', 'Piazza', 'Music'],
     ['volunteer', 'Volunteer Beach Clean', 'Clear Water Bay', 'Volunteering'], ['chess', 'Chess Club Meetup', 'Room 2404', 'Social'],
   ]
-  const events = event_rows.map(([key, title, location, category], index) => ({ event_id: `event_${key}`, title, location, category,
-    organizer_id: 'organizer_hkust', description: '', image_url: key === 'picnic' ? '/static/assets/img/event-picnic.png' : '',
-    starts_at: now + (index + 1) * 86400000, ends_at: now + (index + 1) * 86400000 + 7200000,
-    capacity: key === 'badminton' ? 2 : 40, university: 'HKUST', price: 0, address: location,
-    latitude: null, longitude: null, schedule: [], notes: '', accessibility: '', weather_plan: '' }))
+  // Concrete fixture dates in the source campus timezone. Existing saves are never reseeded.
+  const campus_midnight = Math.floor((now + 8 * 3600000) / 86400000) * 86400000 - 8 * 3600000
+  const source_times = { picnic: [0, 17.5], mic: [0, 20], yoga: [0, 18.5], sketch: [1, 14] }
+  const weekdays = { badminton: 5, language: 5, games: 6, hike: 0, film: 4, dumpling: 3, photowalk: 5, karaoke: 5, startup: 4, football: 6, market: 6, study: 1, run: 2, 'food-fair': 0, robotics: 3, jazz: 3, volunteer: 6, chess: 4 }
+  const hours = { film: 20, dumpling: 19, photowalk: 16.5, market: 18, 'food-fair': 12, robotics: 15 }
+  const image_names = ['ev-forest.jpg', 'ev-boat.jpg', 'ev-camp.jpg', 'ev-bike.jpg', 'ev-hike.png']
+  const source_image_indices = { mic: 0, yoga: 1, sketch: 2, badminton: 3, language: 4, dumpling: 0, karaoke: 4, startup: 5, football: 6, 'food-fair': 0, robotics: 1, study: 2, run: 3, jazz: 4, volunteer: 5, chess: 6 }
+  // Shared events use the first source detail lookup; badminton retains the existing full-capacity fixture.
+  const capacities = { picnic: 20, mic: 34, yoga: 20, sketch: 20, badminton: 2, language: 30, games: 37, hike: 44, film: 46, dumpling: 26, photowalk: 29, karaoke: 30, startup: 37, football: 44, market: 72, study: 20, run: 23, 'food-fair': 120, robotics: 55, jazz: 30, volunteer: 37, chess: 44 }
+  const events = event_rows.map(([key, title, location, category], index) => {
+    const [offset, hour] = source_times[key] || [(weekdays[key] - new Date(campus_midnight + 8 * 3600000).getUTCDay() + 7) % 7, hours[key] || 17]
+    const starts_at = campus_midnight + offset * 86400000 + hour * 3600000
+    const cover = ['picnic', 'film', 'market'].includes(key) ? 'event-picnic.png' : /hik/i.test(title) ? 'ev-hike.png' : /walk|photo|bike/i.test(title) ? 'ev-bike.jpg' : /camp|board|game/i.test(title) ? 'ev-camp.jpg' : image_names[source_image_indices[key] % image_names.length]
+    return { event_id: `event_${key}`, title, location, category, organizer_id: 'organizer_hkust', description: '', image_url: `/static/assets/img/${cover}`,
+      starts_at, ends_at: starts_at + 7200000, time_zone: 'Asia/Hong_Kong', feed_order: key === 'mic' ? 1 : key === 'yoga' ? 2 : index + 3,
+      featured_tab: key === 'picnic' ? 'Today' : key === 'film' ? 'This week' : key === 'market' ? 'My campus' : null,
+      capacity: capacities[key], university: 'HKUST', price: 0, address: location,
+      latitude: null, longitude: null, schedule: [], notes: '', accessibility: '', weather_plan: '' }
+  })
   Object.assign(events[0], { description: 'Bring a snack, meet someone new, and watch the sunset together.',
     schedule: [{ label: 'Meet & mingle', offset_minutes: 0, description: 'Grab a spot on the lawn and say hi' }, { label: 'Icebreaker games', offset_minutes: 30, description: 'Small groups of 4–5, mixed faculties' }, { label: 'Sunset', offset_minutes: 65, description: 'Golden hour over Clear Water Bay' }],
     notes: 'Free to join. Bring a picnic mat. English & Cantonese.', accessibility: 'Step-free access', weather_plan: 'Moves indoors if it rains' })

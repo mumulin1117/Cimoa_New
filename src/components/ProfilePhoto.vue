@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onUnmounted } from 'vue'
 import { media_cache } from '@/utils/mediaRepository.js'
-const props = defineProps({ src: { type: String, default: '' }, name: { type: String, required: true } })
+const props = defineProps({ src: { type: String, default: '' }, name: { type: String, required: true }, eventCover: Boolean })
 const resolved = ref(''), status = ref('loading')
 let generation = 0, lease = null, timer
 const release = () => { clearTimeout(timer); lease?.release(); lease = null }
@@ -23,7 +23,7 @@ onUnmounted(() => { generation++; release() })
 </script>
 
 <template>
-  <view class="profile-photo" :data-media-status="status" role="img" :aria-label="`${name}: ${status === 'ready' ? 'profile photo' : status === 'empty' ? 'no photos' : status === 'error' ? 'photo unavailable' : 'loading photo'}`">
+  <view class="profile-photo" :class="{ 'profile-photo--event': eventCover }" :data-media-status="status" role="img" :aria-label="`${name}: ${status === 'ready' ? eventCover ? 'event cover' : 'profile photo' : status === 'empty' ? 'no photos' : status === 'error' ? 'photo unavailable' : 'loading photo'}`">
     <image v-if="resolved" :key="resolved" :src="resolved" mode="aspectFill" @load="loaded" @error="fail" />
     <view v-if="status !== 'ready'" class="profile-photo-status" aria-live="polite">
       <text>{{ status === 'loading' ? 'Loading photo…' : status === 'empty' ? 'No photos yet' : 'Photo could not be loaded.' }}</text>
@@ -37,6 +37,8 @@ onUnmounted(() => { generation++; release() })
 .profile-photo image { display: block; width: 100%; height: 100%; }
 .profile-photo :deep(img) { object-fit: cover; object-position: 50% 22%; }
 .profile-photo :deep(uni-image > div) { background-position: 50% 22% !important; }
+.profile-photo--event :deep(img) { object-position: center; }
+.profile-photo--event :deep(uni-image > div) { background-position: center !important; }
 .profile-photo-status {
   position: absolute;
   top: 25%;

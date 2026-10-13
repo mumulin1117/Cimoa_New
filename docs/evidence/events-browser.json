@@ -1,0 +1,181 @@
+{
+  "result": "passed",
+  "runtime": "Chromium, fresh isolated profile, 393 x 852",
+  "server_pid": 66643,
+  "checks": [
+    {
+      "name": "three source tabs, capsule geometry, restored session has no skeleton",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/home/index",
+        "depth": 1,
+        "active": "Home",
+        "bar": {
+          "x": 20,
+          "y": 762,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 750,
+          "height": 586.546875
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "two bidirectional cycles, same-tab double click, unchanged stack and fixed bar",
+      "result": "passed"
+    },
+    {
+      "name": "Events horizontal carousel or truthful empty state preserves fixed navigation",
+      "result": "passed"
+    },
+    {
+      "name": "browser bridge injection owns top and bottom once (not native-device evidence)",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/events/index",
+        "depth": 1,
+        "active": "Events",
+        "bar": {
+          "x": 20,
+          "y": 728,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 716,
+          "height": 431.546875
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "real fixture login: each main tab consumes one skeleton; return consumes none",
+      "result": "passed"
+    },
+    {
+      "name": "refresh does not prepare another skeleton cycle",
+      "result": "passed"
+    },
+    {
+      "name": "real IndexedDB Blob survives page reload and is deleted cleanly",
+      "result": "passed"
+    },
+    {
+      "name": "Events source carousel geometry, 260ms transition, actual participants and local covers",
+      "result": "passed",
+      "detail": {
+        "card": {
+          "x": 20,
+          "y": 229.453125,
+          "width": 309,
+          "height": 439.953125,
+          "bottom": 669.40625
+        },
+        "cover": {
+          "x": 20,
+          "y": 229.453125,
+          "width": 309,
+          "height": 214,
+          "bottom": 443.453125
+        },
+        "chip": {
+          "x": 20,
+          "y": 159.453125,
+          "width": 89.03125,
+          "height": 52,
+          "bottom": 211.453125
+        },
+        "bar": {
+          "x": 20,
+          "y": 762,
+          "width": 353,
+          "height": 62,
+          "bottom": 824
+        }
+      }
+    },
+    {
+      "name": "profile/My Events/detail/participants gates preserve entity IDs and do not autojoin",
+      "result": "passed"
+    },
+    {
+      "name": "join confirmation repeats, 500ms pre-write Loading, unique membership, refresh and honest deferred success page",
+      "result": "passed",
+      "detail": {
+        "panel": {
+          "x": 0,
+          "y": 277.125,
+          "width": 393,
+          "height": 472.875,
+          "bottom": 750
+        }
+      }
+    },
+    {
+      "name": "keep spot is read-only; cancel restores capacity and group access state through refresh",
+      "result": "passed"
+    },
+    {
+      "name": "three persisted real filters, horizontal snap/fixed navigation and exact second-card join intent",
+      "result": "passed"
+    },
+    {
+      "name": "storage failures preserve membership, filter and retryable dialog without false success",
+      "result": "passed"
+    },
+    {
+      "name": "real empty/ended, capacity and unverified/session errors never open a false success flow",
+      "result": "passed"
+    },
+    {
+      "name": "missing/failed cover is honest; retry loads the same entity photo without navigation or storage writes",
+      "result": "passed"
+    },
+    {
+      "name": "corrupt storage is not overwritten; Retry rehydrates a repaired snapshot",
+      "result": "passed"
+    },
+    {
+      "name": "long content/narrow viewport scrolls once; fixed header/tabbar and Sheet respect safe-area injection (not native evidence)",
+      "result": "passed",
+      "detail": {
+        "vertical": {
+          "offset": 308,
+          "width": 320,
+          "full": 320
+        },
+        "long_panel": {
+          "x": 0,
+          "y": 72.078125,
+          "width": 320,
+          "height": 450.875,
+          "bottom": 522.953125
+        },
+        "inner_scroll": {
+          "offset": 86,
+          "height": 383,
+          "full": 469
+        },
+        "cancel_button": {
+          "x": 17.90625,
+          "y": 448.859375,
+          "width": 284.1875,
+          "height": 45.59375,
+          "bottom": 494.453125
+        }
+      }
+    },
+    {
+      "name": "navigation/unmount cancels delayed writes and removes Loading before mutation",
+      "result": "passed"
+    },
+    {
+      "name": "no browser runtime exceptions",
+      "result": "passed"
+    }
+  ],
+  "cleaned_up": true
+}

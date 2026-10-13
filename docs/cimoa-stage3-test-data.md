@@ -17,6 +17,8 @@
 
 ## 实测证据
 
+Events 补充夹具（2026-10-13）：从源活动转写新实体的本地图片及校园时区具体日期，保留真实三位 Picnic 成员，不伪造原稿显示的 12 人。专项脚本固定时钟为 2026-10-13 09:00 香港，覆盖日期/周边界、同校园、账号隔离、默认旧存档、容量/结束/验证/付费不可用、加入取消、群权限、失败回滚。H5 测试独立注入默认、长文、空、写失败、读损坏、资源失败/重试、窄屏安全区，不新增生产 query 后门。证据以本轮 [Events 验收记录](./cimoa-stage5-events-acceptance.md) 为准，未完成的成功页/详情/群聊导航不计通过。
+
 Discover 补充夹具（2026-10-13）：`discover_empty`、`discover_long`、`discover_no_photo`、`discover_unconnected`（0金币）、`discover_unverified`、`discover_private`。沿用默认已连接 Chloe，不为了让按钮显得成功篡改种子关系；未连接入口另用夹具验证。照片真实请求失败/重试、IndexedDB 原图刷新/丢失、过期会话、拉黑、长内容和损坏存储由独立浏览器测试注入，不暴露到生产页面参数。专项测试见 `scripts/discover.test.mjs` 与 `scripts/lib/discover-browser.mjs`。
 
 `node --test scripts/data.test.mjs scripts/circa-source.test.mjs` 验证全部 154 个来源状态的实体关联、人物详情基准、测试账号、过期/删除、文字零消费、请求方向、匹配状态机、UTC 零点、账本和退款幂等、事件容量/群聊权限、拉黑过滤、迁移及失败回滚。媒体通过注入适配器测试保存/恢复、元数据失败补偿、解码失败和 URL 引用释放；浏览器 IndexedDB 实际运行检查随公共骨架集成另记。
