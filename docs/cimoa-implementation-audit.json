@@ -3,8 +3,8 @@
   "meaning": "154 source states are not 154 pages. Registration/file existence does not establish fidelity or runtime acceptance.",
   "source_states": 154,
   "planned_routes": 103,
-  "registered_routes": 11,
-  "registered_planned_routes": 8,
+  "registered_routes": 13,
+  "registered_planned_routes": 10,
   "missing_routes": [
     "/pages/legal/terms",
     "/pages/legal/privacy",
@@ -12,8 +12,6 @@
     "/pages/auth/community",
     "/pages/auth/signup",
     "/pages/auth/verification/email",
-    "/pages/auth/verification/code",
-    "/pages/auth/verification/success",
     "/pages/auth/verification/unsupported",
     "/pages/auth/reset/email",
     "/pages/auth/reset/code",
@@ -263,7 +261,7 @@
       "file_exists": true,
       "local_acceptance": "pending",
       "full_acceptance": "pending",
-      "status": "in_progress"
+      "status": "pending"
     },
     {
       "source_screen": "Auth / Email Verification / Enter Email",
@@ -288,16 +286,16 @@
       "source_query": "route=verCode",
       "route": "/pages/auth/verification/code",
       "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/auth/verification/email）；无历史实例时 replace /pages/auth/verification/email，不创建伪造实体",
+      "return_owner": "previous auth page; direct entry falls back to Login",
       "interaction_ids": [
         "verCode.goBack.click.1",
         "verCode.changeEmail.click.1",
         "verCode.goVerSuccess.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -311,9 +309,9 @@
         "verSuccess.goObBasic.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },

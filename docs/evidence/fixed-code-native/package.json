@@ -1,0 +1,11 @@
+{
+  "result": "passed",
+  "archive": "artifacts/cimoaNeapo-ios.zip",
+  "zip_entries": 155,
+  "h5_files": 122,
+  "h5_manifest_sha256": "fe13c5a974f0220ebcecb1cd5f1a8955a90af45e260bfb4d7f69b806d0132c7f",
+  "archive_sha256": "3e4c5c45a54ac196b18bfd03ee2201a5fdddf5b48cb94914ee076d3831d02901",
+  "matches_native_test_build": true,
+  "includes_updated_tests": true,
+  "no_prototype_or_derived_data": true
+}

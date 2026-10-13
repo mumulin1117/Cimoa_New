@@ -25,7 +25,8 @@
       "profile_icon": "#eef2f8",
       "auth_divider": "#dbe3ee",
       "auth_error": "#fee2e2",
-      "verification_shield_border": "#e2e8f0"
+      "verification_shield_border": "#e2e8f0",
+      "verification_pill": "#e8f1fd"
     },
     "text": {
       "welcome_brand": "#14124a",
@@ -46,7 +47,8 @@
       "event_cancel": "#6b7a93",
       "profile_bio": "#26364f",
       "profile_icon": "#44536b",
-      "profile_chevron": "#94a3b8"
+      "profile_chevron": "#94a3b8",
+      "verification_pill": "#1e4b8f"
     },
     "button": {
       "primary": "#4a7bf7",
@@ -116,6 +118,7 @@
     "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)"
   },
   "shadows": {
+    "verification_success": "0 26.718rpx 57.252rpx rgba(168,85,247,0.28)",
     "verification_cell": "0 15.267rpx 38.168rpx rgba(16,36,74,0.08)",
     "verification_shield": "0 15.267rpx 30.534rpx rgba(16,36,74,0.14)",
     "auth_action": "0 22.901rpx 49.618rpx rgba(168,85,247,0.24)",

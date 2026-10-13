@@ -1,0 +1,56 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "3417B4E3-676F-4E45-8115-66D2FC290418.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView Home with measured insets_0_043C4587-EEF5-40F1-BCC6-D7A7DBDA1FB6.png",
+        "timestamp" : 1791893096.526
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "C6E5CDC3-1112-4FBD-B9AC-7BAF3C611AE1.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Native safe area and H5 geometry_0_A935C6B8-9533-4FA1-8161-56B0BF9202DE.txt",
+        "timestamp" : 1791893096.435
+      }
+    ],
+    "testIdentifier" : "HostTests/testBundledH5AndMeasuredSafeAreas()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testBundledH5AndMeasuredSafeAreas"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "AF1591B8-7754-4ABE-BC8C-449F0AE5EA40.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView fixed local code success_0_705C5A13-8EF3-4983-B68D-6DFC2196F922.png",
+        "timestamp" : 1791893098.34
+      }
+    ],
+    "testIdentifier" : "HostTests/testFixedLocalVerificationAndRefresh()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testFixedLocalVerificationAndRefresh"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "7B977983-D3A5-4FE2-A66D-1A5A0E4D8B87.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Fresh WKWebView Welcome_0_608D13AB-6AC7-493E-B7A6-E7D1C8A8D80A.png",
+        "timestamp" : 1791893101.176
+      }
+    ],
+    "testIdentifier" : "HostTests/testFreshEntryAndRealLocalLogin()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testFreshEntryAndRealLocalLogin"
+  }
+]

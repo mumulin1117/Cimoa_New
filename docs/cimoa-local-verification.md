@@ -1,6 +1,6 @@
 # 固定本地验证码
 
-用户明确验证码为`009789`，本轮按该新请求优先实施固定验证码。Login既有TEST STATES视觉决策仍pending，不并行施工、不升级验收；Code已完成本页检查并恢复pending（待依赖），Success随Code本地提交后顺序实施。
+用户明确验证码为`009789`，本轮按该新请求优先实施固定验证码。Login既有TEST STATES视觉决策仍pending，不并行施工、不升级验收；Code本地提交10c2154后才开始Success。两页本页检查已通过，均恢复pending（待依赖），无页面in_progress，不升级verified。
 
 ## 字段与边界
 
@@ -21,10 +21,25 @@ Code来源2735–2774，路由`/pages/auth/verification/code`；源46返回/16�
 | verCode.login（缺账号补齐） | Code空态 | Log In | 无有效账号 | 纯路由 | Login | 原地错误 | none | session | 访客/过期/删除无账号信息泄漏 |
 | verSuccess.goObBasic.click.1 | Success2790 | Continue Profile Setup | 本地验证成功且资料页就绪 | 纯路由 | 正确onboarding/basic | 缺依赖明确提示；验证结果保留 | none | account/profile | 不跳错误旧页、不伪造资料完成 |
 
-Success来源2778–2791，路由`/pages/auth/verification/success`；96渐变圆/44源check、30标题、说明胶囊、底部60按钮。仅Store结果为verified时展示“Local verification complete”，不把直接打开成功URL算作通过。Code目标未就绪时显示已保存的本地结果并保留后续deferred记录；Success完成后再补真实跨页回归。
+Success来源2778–2791，路由`/pages/auth/verification/success`；96渐变圆/44源check、30标题、说明胶囊、底部60按钮。仅Store结果为verified时展示“Local verification complete”，不把直接打开成功URL算作通过。Code到Success已接通并回归；Change email和Continue Profile Setup依赖仍deferred。源top196减去原系统占位54后的内容间距转rpx，由实际TopSafeArea占位，不绘制假系统栏。
 
 ## 验收状态
 
 Code：62项单元测试通过；9项一次性Chrome检查通过，见[evidence](evidence/auth/verification-code-browser.json)。含无宿主/无账号、源6格44×60尺寸、格式/错码零写入、Change email明确失败、存储失败原子回滚、500ms前不写、双击单次提交、刷新恢复、取消和本地登录导向、320小屏62/34安全区/滚动/返回。已检查默认和小屏截图。
 
-第13节三项检查通过，无约定警告。测试PID89306及其隔离浏览器在finally关闭。首次误用单元测试通配符包含浏览器脚本，因缺默认playwright模块失败；改用明确单元清单及预装Chrome驱动后上述测试通过，没有安装依赖或留下服务。全App及注册/Email/Success/资料依赖仍未完成，不标记verified。本次仅本地提交，不推送。
+最终Code/Success联合[14项浏览器检查](evidence/auth/verification-success-browser.json)全部通过，新增成功页数据守卫/96圆尺寸、小屏长标题与错误滚动、验证前后真实登录导向和三Tab仅消费登录的一次骨架、长邮箱换行。既有[Login13项](evidence/auth/login-browser.json)回归通过，浏览器脚本异常0；截图默认/小屏已人工复核。PID91223、91222及隔离浏览器由finally关闭。
+
+iPhone17Pro/iOS26.5，[FixedCodeAcceptance-2原生结果](evidence/fixed-code-native/acceptance.json)6/6通过，0失败/跳过；含新增真实WKWebView错误码不写、正确码本地结果、学生身份/会话/余额不变、刷新、缺资料依赖明确失败，及既有五项宿主检查。[截图/附件](evidence/fixed-code-native/manifest.json)已检查。首轮增量构建只发现原有5项，改用全新FixedCodeDerivedData后确认6项均被执行，不将5项通过误报为新测试通过。
+
+第13节三项检查通过，无约定警告。测试早期出现脚本问题：单元测试通配符误含浏览器入口导致缺playwright；浏览器抢在uni-input值、rpx尺寸和页面动画更新前断言，以及误用了另一页按钮文本。已用明确单元清单、实际UI就绪条件及正确标签修复，全部原始断言保留，无跳过。中间失败截图移到本地build目录，不作为通过证据。
+
+全App及注册/Email/资料依赖仍未完成，不标记verified。本次只本地提交，不推送；没有真实邮箱发送、学生验证或重置密码。两份约定依create-rule技能仅改用户授权认证条款；验收记录依write-page技能区分实测与待完成项，全部保留在仓库，无外部页面。
+
+最终重新执行第13节三项并导出`artifacts/cimoaNeapo-ios.zip`，155条目/122个H5文件逐个哈希及ZIP完整性检查通过；新HostTests源码与包内副本一致，原生实际测试构建manifest与最终H5一致，见[导出报告](evidence/fixed-code-native/package.json)。没有原型、DerivedData或用户Xcode配置进入ZIP。中间失败截图只移入本地`ios/cimoaNeapo/build/verification-browser-diagnostic.png`保留，不删除用户数据。
+
+## 本轮文件范围
+
+- `src/config/local-auth.js`、`src/utils/localVerification.js`、`src/stores/store.js`/`selectors.js`：精确常量、账号上下文与原子持久化。
+- `src/pages/auth/verification/code.vue`/`success.vue`、`src/components/VerificationEmblem.vue`、`src/pages/auth/login.vue`、`src/utils/authNavigation.js`、`src/pages.json`、`src/config/theme.json`：独立Vue页面、原型SVG/主题、真实路由、复用Loading/安全区/过渡。
+- `scripts/auth.test.mjs`、`scripts/verification-browser.test.mjs`、`ios/cimoaNeapo/Tests/HostTests.swift`：数据、普通浏览器、WKWebView检查。
+- 两份约定、阶段2字段、认证/页面/阶段5/6与差距审计、`docs/evidence/auth`及`fixed-code-native`：范围与证据；`dist/build/h5`为对应独立构建产物，iOS离线Resources/导出ZIP同步更新。

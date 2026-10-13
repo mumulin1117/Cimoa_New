@@ -34,6 +34,52 @@ final class HostTests: XCTestCase {
         _ = try await script(host, "await new Promise(r=>setTimeout(r,300)); const fields=document.querySelectorAll('.login-page input'); for(const [i,value] of ['cimoa@gmail.com','12341234'].entries()){fields[i].value=value; fields[i].dispatchEvent(new Event('input',{bubbles:true}))} await Promise.resolve();document.querySelector('[data-interaction=\"login.loginNow.click.1\"]').click(); return true")
         try await waitFor(host, ".home-header")
     }
+    func testFixedLocalVerificationAndRefresh() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationProbe=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        do {
+            // Alter only the isolated test snapshot, not a production fixture or
+            // a public Store bypass. Restore the user's exact bytes afterward.
+            _ = try await script(host, "const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2'));const account=envelope.data.accounts.find(a=>a.account_id===envelope.data.session.account_id);delete account.local_verification;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationProbe=code#/pages/auth/verification/code")!))
+            try await waitFor(host, ".verification-input input")
+            _ = try await script(host, "await Promise.all(document.querySelector('.page-transition').getAnimations().map(a=>a.finished));window.__verificationBefore=localStorage.getItem('cimoa_app_state_v2');const input=document.querySelector('.verification-input input');input.value='000000';input.dispatchEvent(new Event('input',{bubbles:true}));await Promise.resolve();document.querySelector('.verification-submit').click();return true")
+            try await waitFor(host, ".loading")
+            let unchangedDuringLoading = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===window.__verificationBefore")
+            XCTAssertEqual(unchangedDuringLoading as? Bool, true)
+            try await waitFor(host, ".verification-page [role=alert]")
+            let wrong = try await script(host, "return {error:document.querySelector('.verification-page [role=alert]').textContent,unchanged:localStorage.getItem('cimoa_app_state_v2')===window.__verificationBefore}") as! [String: Any]
+            XCTAssertTrue((wrong["error"] as! String).contains("incorrect")); XCTAssertEqual(wrong["unchanged"] as? Bool, true)
+            _ = try await script(host, "const input=document.querySelector('.verification-input input');input.value='009789';input.dispatchEvent(new Event('input',{bubbles:true}));await Promise.resolve();document.querySelector('.verification-submit').click();return true")
+            try await waitFor(host, ".verification-success-icon")
+            let verified = try await script(host, "await Promise.all(document.querySelector('.verification-success-page .page-transition').getAnimations().map(a=>a.finished));await document.fonts.ready;const a=JSON.parse(window.__verificationBefore).data,b=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return {verified:b.accounts.find(a=>a.account_id===b.session.account_id).local_verification.status,users:JSON.stringify(a.users)===JSON.stringify(b.users),session:JSON.stringify(a.session)===JSON.stringify(b.session),coins:JSON.stringify(a.coin_transactions)===JSON.stringify(b.coin_transactions),caption:document.querySelector('.verification-success-heading').textContent}") as! [String: Any]
+            XCTAssertEqual(verified["verified"] as? String, "verified")
+            XCTAssertEqual(verified["users"] as? Bool, true); XCTAssertEqual(verified["session"] as? Bool, true); XCTAssertEqual(verified["coins"] as? Bool, true)
+            XCTAssertEqual(verified["caption"] as? String, "Local verification complete")
+            let attachment = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
+            attachment.name = "WKWebView fixed local code success"; attachment.lifetime = .keepAlways; add(attachment)
+            let committed = try await script(host, "window.__verificationOldDocument=true;return localStorage.getItem('cimoa_app_state_v2')") as! String
+            host.webView.reload()
+            var restored = false
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__verificationOldDocument && !!document.querySelector('.verification-success-icon')")) as? Bool == true { restored = true; break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            XCTAssertTrue(restored)
+            let afterRefresh = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            XCTAssertEqual(afterRefresh, committed)
+            _ = try await script(host, "await new Promise(r=>setTimeout(r,300));document.querySelector('[data-interaction=\"verSuccess.goObBasic.click.1\"]').click();return true")
+            try await waitFor(host, ".verification-success-page [role=alert]")
+            let deferred = try await script(host, "return document.querySelector('.verification-success-page [role=alert]').textContent") as! String
+            XCTAssertTrue(deferred.contains("not been restored"))
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testFreshEntryAndRealLocalLogin() async throws {
         let host = try await host()
         let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]

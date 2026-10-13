@@ -1,7 +1,7 @@
 {
   "phase": "login",
   "result": "passed",
-  "server_pid": 85727,
+  "server_pid": 91222,
   "checks": [
     "fresh launch renders source brand/progress without authenticating or writing storage",
     "source automatic launch reaches actual Welcome once without a session write",

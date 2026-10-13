@@ -1,6 +1,6 @@
 # Login 当前检查与未完成项
 
-2026-10-13。运行检查通过，页面还原仍in_progress，local/full均pending；未verified。来源2659–2705及交互十字段见[认证契约](./cimoa-auth-interactions.md)。
+2026-10-13。运行检查通过，页面还原pending（用户优先要求固定验证码，暂停Login视觉决策），local/full均pending；未verified。来源2659–2705及交互十字段见[认证契约](./cimoa-auth-interactions.md)。
 
 ## 已实现
 
@@ -21,7 +21,7 @@
 ## 必须保持未完成
 
 1. HTML含TEST STATES/Wrong password/Unverified account。当前草稿未显示该调试区，已询问用户是否从正式App移除；未获决定前不能认定UI与原型一致。真实错误/未验证状态已有Store和自动化覆盖，不用静态按钮伪造业务结果。
-2. 年龄、社区、注册UI及协议/重置依赖未还原。本地注册只有数据接口和单测，不能声称新用户注册页面已可用。验证码由用户另定，未做演示码。
+2. 年龄、社区、注册UI及协议/重置依赖未还原。本地注册只有数据接口和单测，不能声称新用户注册页面已可用。用户随后明确固定009789，Code/Success单独实施，见[最新记录](./cimoa-local-verification.md)；不变更本页其他未决范围。
 3. 全页面实体同步、所有返回归属、系统触摸/键盘/权限硬件与完整生产链路仍待补齐；发布法律信息与正式签名也未配置。
 
 ## 本页任务文件
@@ -31,6 +31,6 @@
 - `scripts/auth-browser.test.mjs`、`auth.test.mjs`、`circa-source.test.mjs`、`h5-browser.test.mjs`；源清单测试修正Splash根页应没有假父路由。
 - `ios/cimoaNeapo/Tests/HostTests.swift`、`README.md`；认证契约、清单/差距审计、阶段五/六记录与上述截图报告；`dist/build/h5`对应构建产物。
 
-只做本地提交，不推送。提交用于保存本页已实现代码和实测证据，不表示页面已通过最终验收。下一页必须等当前差异处理后再开始。
+只做本地提交，不推送。提交用于保存本页已实现代码和实测证据，不表示页面已通过最终验收。原计划等待当前差异再开始下一页；随后用户明确固定验证码009789，按最新要求先完成该独立增量，Login视觉差异仍pending，不视为已获移除授权。
 
 最后按顺序执行`corepack pnpm check:conventions`、`git diff --check`、`corepack pnpm build:h5`，全部通过，无约定警告。H5 117文件同步到宿主；[当前导出校验](./evidence/ios-entry/package.json)确认150个ZIP条目及全部H5哈希一致，无原型/DerivedData/xcuserdata。导出包是开发中快照，不是完整还原交付。所有记录的临时服务PID及隔离浏览器进程复查均已退出，未停止用户原4173服务。

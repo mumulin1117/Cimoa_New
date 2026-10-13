@@ -1,0 +1,19 @@
+{
+  "result_bundle": "ios/cimoaNeapo/build/FixedCodeAcceptance-2.xcresult",
+  "result": "Passed",
+  "totalTestCount": 6,
+  "passedTests": 6,
+  "failedTests": 0,
+  "skippedTests": 0,
+  "startTime": 1791893081.56,
+  "finishTime": 1791893108.317,
+  "device": {
+    "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "deviceName": "iPhone 17 Pro",
+    "osVersion": "26.5",
+    "osBuildNumber": "23F77",
+    "platform": "iOS Simulator"
+  },
+  "new_case": "HostTests/testFixedLocalVerificationAndRefresh()",
+  "scope": "Real bundled WKWebView DOM verification, wrong-code no-write, Loading, correct code, unchanged student identity/session/coins, refresh, honest deferred onboarding, prior five host regressions. Not full-app or system keyboard/touch acceptance."
+}

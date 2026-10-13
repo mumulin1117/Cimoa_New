@@ -1,0 +1,23 @@
+{
+  "phase": "verification-success",
+  "result": "passed",
+  "server_pid": 91223,
+  "checks": [
+    "direct guest Code exposes no account data and opens the real Login",
+    "source six 44x60 cells and local-only copy render without a native host",
+    "empty, short, long, non-ASCII and wrong six-digit values fail with zero writes",
+    "deferred Change email and failed persistence never mutate the account or lose the input",
+    "009789 writes once after 500ms despite double tap; session, student identity, coins and relationships are untouched",
+    "refresh restores the same account result without another write or skeleton",
+    "Success uses persisted local result and 96px source circle; unavailable profile setup fails truthfully",
+    "Success long heading/error remains scrollable above its fixed CTA on a 320px viewport",
+    "opening Success URL directly cannot invent a verified account",
+    "leaving Code during Loading cancels verification instead of committing on a hidden page",
+    "local unverified login routes to Code, not a false student-verified Home",
+    "small-screen error content scrolls; fixed CTA respects 62/34 safe areas and direct Back returns Login",
+    "verified local session reaches Home; delayed verification neither resets nor duplicates login-only Tab skeletons",
+    "long account email wraps in the scroll region without widening the page or moving the CTA"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

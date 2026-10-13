@@ -1,6 +1,14 @@
 # Cimoa 整体验收状态
 
-## 最新增量：本地认证入口（2026-10-13）
+## 最新增量：固定本地验证码009789（2026-10-13）
+
+Code/Success已按HTML结构与用户本地认证决定实现，结果只保存当前账号local_verification；不发送邮件、不把学生认证改成verified。62项单元、两页14项浏览器、Login13项回归通过；iPhone17Pro/iOS26.5全新构建FixedCodeAcceptance-2.xcresult完成6/6，0失败/跳过，含新增验证码及刷新用例。证据与文件范围见[本地验证码](./cimoa-local-verification.md)、[原生摘要](./evidence/fixed-code-native/acceptance.json)、[附件](./evidence/fixed-code-native/manifest.json)。
+
+整体验收仍未通过，verified=0。两页local passed/full pending；Change email、资料设置、注册UI等依赖未齐，Login原型TEST STATES决定仍pending，当前无in_progress。当前13个注册路由中10个匹配103个计划路由，93个未注册。第13节三项通过，无约定警告；只本地提交，不推送。H5现122文件，包与原生实际测试资源哈希见[本轮导出报告](./evidence/fixed-code-native/package.json)。
+
+以下认证入口及更早记录均为历史版本的证据，不覆盖本次用户验证码决定或当前产物统计。
+
+## 历史增量：本地认证入口（2026-10-13）
 
 整体验收仍未通过，0个verified。首次安装已从自动Home改为Splash→Welcome；真实本地登录可进入Home，旧合并auth页已替换为兼容跳转。本地注册数据层已完成，年龄/社区/注册UI未完成，验证码方案由用户另定。Login仍in_progress：源TEST STATES生产保留/移除待用户决策，不能擅自标记视觉还原完成；其余95条计划路由尚未注册。
 

@@ -638,7 +638,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source + authorized fixed local code implemented; 9 browser checks passed; Email/Success/onboarding dependencies pending; contract docs/cimoa-local-verification.md"
+    "mapping_status": "source + authorized fixed local code implemented; initial 9 browser checks and final 14-check Code/Success flow passed; Email/onboarding dependencies pending; contract docs/cimoa-local-verification.md"
   },
   {
     "source_screen": "Auth / Email Verification / Success",
@@ -653,15 +653,13 @@
     "allowed_origin_routes": [
       "/pages/auth/verification/code"
     ],
-    "required_parameters": [
-      "auth_flow_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "goVerSuccess@5567"
     ],
     "return_owner": "pop origin_route（允许来源：/pages/auth/verification/code）；无历史实例时 replace /pages/auth/verification/code，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+    "fixed_regions": "TopSafeArea; source fixed Continue Profile Setup CTA; BottomSafeArea; no source header",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -670,18 +668,7 @@
     ],
     "entities": "user_accounts; session; verification; agreements",
     "assets": {
-      "media": [
-        {
-          "source_id": "a7",
-          "local_path": "static/assets/songs/stupid-song.jpg",
-          "mime": "image/jpeg"
-        },
-        {
-          "source_id": "a8",
-          "local_path": "static/assets/songs/stateside.jpg",
-          "mime": "image/jpeg"
-        }
-      ],
+      "media": [],
       "svg_source_lines": [
         2782,
         2786
@@ -701,10 +688,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source + authorized local-only copy implemented; 14 browser flow checks + native fixed-code check passed; onboarding/basic missing; contract docs/cimoa-local-verification.md"
   },
   {
     "source_screen": "Auth / Email Verification / Unsupported",

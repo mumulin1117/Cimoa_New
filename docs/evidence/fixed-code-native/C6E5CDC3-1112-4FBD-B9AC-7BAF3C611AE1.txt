@@ -1,0 +1,1 @@
+{"barBottom":811.34375,"bottom":34,"height":874,"images":true,"origin":"http:\/\/127.0.0.1:18765","secure":true,"title":"Cimoa","top":62}
