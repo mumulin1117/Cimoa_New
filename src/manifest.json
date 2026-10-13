@@ -1,0 +1,8 @@
+{
+  "name": "Cimoa",
+  "appid": "__UNI__CIMOA",
+  "description": "A thoughtful campus life companion.",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "h5": { "title": "Cimoa", "router": { "mode": "hash" } }
+}

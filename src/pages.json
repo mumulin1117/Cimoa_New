@@ -1,0 +1,4 @@
+{
+  "pages": [{ "path": "pages/home/index", "style": { "navigationStyle": "custom" } }],
+  "globalStyle": { "navigationBarTitleText": "Cimoa" }
+}

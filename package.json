@@ -1,0 +1,24 @@
+{
+  "name": "cimoa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:h5": "uni -p h5",
+    "build:h5": "uni build -p h5",
+    "check:conventions": "node scripts/check-conventions.mjs"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "^3.0.0-4060620250516001",
+    "@dcloudio/uni-components": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-h5": "^3.0.0-4060620250516001",
+    "@dcloudio/uni-ui": "^1.5.0",
+    "@vue/devtools-api": "^6.6.4",
+    "pinia": "^3.0.1",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5030120260930001",
+    "vite": "^6.1.0"
+  }
+}
