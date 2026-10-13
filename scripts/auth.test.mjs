@@ -66,3 +66,8 @@ test('deleted emails remain reserved; verification and reset remain unavailable'
   assert.equal((await store.register_local_account(form('cimoa@gmail.com'))).reason, 'email_exists')
   assert.equal(store.apply_verification().success, false); assert.equal(store.reset_password().success, false)
 })
+test('cancelled credential verification never commits a session', async () => {
+  const { store, writes } = fixture(), before = clone_data(store.data)
+  const result = await store.login('cimoa@gmail.com', '12341234', { is_current: () => false })
+  assert.equal(result.reason, 'cancelled'); assert.deepEqual(clone_data(store.data), before); assert.equal(writes(), 0)
+})

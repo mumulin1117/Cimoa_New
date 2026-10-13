@@ -13,7 +13,7 @@ export function create_write_operation({ set_loading = () => {}, timers = global
       return new Promise((resolve) => {
         pending = { resolve, timer: timers.setTimeout(async () => {
           let result
-          try { result = await action() } catch (error) { result = { success: false, reason: 'operation_failed', message: error.message || 'Please retry.' } }
+          try { result = await action({ is_current: () => token === generation }) } catch (error) { result = { success: false, reason: 'operation_failed', message: error.message || 'Please retry.' } }
           if (token !== generation) return
           pending = null; set_loading(false); resolve(result)
         }, Math.max(400, Math.min(600, duration))) }

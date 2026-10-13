@@ -32,7 +32,10 @@ test('inventory keeps all source states, full planned routes and no false verifi
     }
     assert.ok(['pending', 'in_progress', 'verified'].includes(entry.status))
     assert.ok(!entry.page_level.includes('随入口'))
-    assert.ok(entry.allowed_origin_routes.length > 0)
+    if (entry.route === '/pages/auth/splash') {
+      assert.equal(entry.parent_route, null); assert.deepEqual(entry.allowed_origin_routes, [])
+      assert.ok(entry.entry_points.includes('H5 root / native launch'))
+    } else assert.ok(entry.allowed_origin_routes.length > 0)
     assert.ok(Array.isArray(entry.required_parameters))
     assert.ok(['pending', 'passed', 'failed'].includes(entry.local_acceptance))
     assert.ok(['pending', 'passed', 'failed'].includes(entry.full_acceptance))

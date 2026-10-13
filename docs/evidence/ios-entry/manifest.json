@@ -1,0 +1,41 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "D6E27824-8797-4431-B83D-F9ABFBB3A46D.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView Home with measured insets_0_3BF0F9E5-19FF-4768-8FC1-B4875EE47F33.png",
+        "timestamp" : 1791891297.352
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "A55656F8-790C-480A-BA2B-6FB843F0310A.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Native safe area and H5 geometry_0_71B59B34-CD51-4BC9-B438-1DC5C2664D13.txt",
+        "timestamp" : 1791891297.262
+      }
+    ],
+    "testIdentifier" : "HostTests/testBundledH5AndMeasuredSafeAreas()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testBundledH5AndMeasuredSafeAreas"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "4339124F-6C09-46DC-9D06-432541C4D71D.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Fresh WKWebView Welcome_0_8EE97FA0-4D3E-40E1-9275-E0A74FA1D7CA.png",
+        "timestamp" : 1791891299.422
+      }
+    ],
+    "testIdentifier" : "HostTests/testFreshEntryAndRealLocalLogin()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testFreshEntryAndRealLocalLogin"
+  }
+]

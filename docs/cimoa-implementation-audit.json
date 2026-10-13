@@ -3,17 +3,14 @@
   "meaning": "154 source states are not 154 pages. Registration/file existence does not establish fidelity or runtime acceptance.",
   "source_states": 154,
   "planned_routes": 103,
-  "registered_routes": 8,
-  "registered_planned_routes": 5,
+  "registered_routes": 11,
+  "registered_planned_routes": 8,
   "missing_routes": [
-    "/pages/auth/splash",
-    "/pages/auth/welcome",
     "/pages/legal/terms",
     "/pages/legal/privacy",
     "/pages/auth/age",
     "/pages/auth/community",
     "/pages/auth/signup",
-    "/pages/auth/login",
     "/pages/auth/verification/email",
     "/pages/auth/verification/code",
     "/pages/auth/verification/success",
@@ -118,14 +115,14 @@
       "source_query": "route=splash",
       "route": "/pages/auth/splash",
       "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/auth/welcome）；无历史实例时 replace /pages/auth/welcome，不创建伪造实体",
+      "return_owner": "root; no fake parent or back navigation",
       "interaction_ids": [
         "splash.goWelcome.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -134,7 +131,7 @@
       "source_query": "route=welcome",
       "route": "/pages/auth/welcome",
       "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/auth/welcome）；无历史实例时 replace /pages/auth/welcome，不创建伪造实体",
+      "return_owner": "authentication root; no fake back target",
       "interaction_ids": [
         "welcome.goAge.click.1",
         "welcome.goLogin.click.1",
@@ -142,9 +139,9 @@
         "welcome.openPrivacy.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -248,7 +245,7 @@
       "source_query": "route=login",
       "route": "/pages/auth/login",
       "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/auth/welcome）；无历史实例时 replace /pages/auth/welcome，不创建伪造实体",
+      "return_owner": "previous auth page; direct entry falls back to Welcome",
       "interaction_ids": [
         "login.goBack.click.1",
         "login.appleAuth.click.1",
@@ -262,11 +259,11 @@
         "login.goAge.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
-      "file_exists": false,
+      "registered": true,
+      "file_exists": true,
       "local_acceptance": "pending",
       "full_acceptance": "pending",
-      "status": "pending"
+      "status": "in_progress"
     },
     {
       "source_screen": "Auth / Email Verification / Enter Email",

@@ -446,7 +446,8 @@
     "component": null,
     "parent_route": "/pages/auth/welcome",
     "allowed_origin_routes": [
-      "/pages/auth/welcome"
+      "/pages/auth/welcome",
+      "/pages/auth/signup"
     ],
     "required_parameters": [],
     "entry_points": [
@@ -454,9 +455,9 @@
       "goLogin@5564",
       "finishReset@5599"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auth/welcome）；无历史实例时 replace /pages/auth/welcome，不创建伪造实体",
+    "return_owner": "previous auth page; direct entry falls back to Welcome",
     "completion_navigation": "认证持久化成功 → 准备三 Tab 单次骨架 → reLaunch /pages/home/index",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+    "fixed_regions": "TopSafeArea; source header; fixed Log In / Create account footer; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -474,28 +475,7 @@
     ],
     "entities": "user_accounts; session; verification; agreements",
     "assets": {
-      "media": [
-        {
-          "source_id": "a6",
-          "local_path": "static/assets/songs/love-me-not.jpg",
-          "mime": "image/jpeg"
-        },
-        {
-          "source_id": "a7",
-          "local_path": "static/assets/songs/stupid-song.jpg",
-          "mime": "image/jpeg"
-        },
-        {
-          "source_id": "a8",
-          "local_path": "static/assets/songs/stateside.jpg",
-          "mime": "image/jpeg"
-        },
-        {
-          "source_id": "a9",
-          "local_path": "static/assets/songs/beauty-beat.jpg",
-          "mime": "image/jpeg"
-        }
-      ],
+      "media": [],
       "svg_source_lines": [
         2663,
         2670
@@ -514,11 +494,12 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "in_progress",
     "local_acceptance": "pending",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work",
+    "acceptance_notes": "13 browser checks and native entry checks passed. Source TEST STATES production treatment awaits user decision; signup/reset dependencies incomplete. Sole in_progress, not verified; see cimoa-stage5-login-acceptance.md."
   },
   {
     "source_screen": "Auth / Email Verification / Enter Email",

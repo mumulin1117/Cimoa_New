@@ -1,0 +1,9 @@
+{
+  "archive": "artifacts/cimoaNeapo-ios.zip",
+  "entries": 150,
+  "h5_files": 117,
+  "sha256": "6fc477c8f4d48380932227022c241ebd733fdff30e755dfc6729477c749f18b6",
+  "manifest_sha256": "eadbef99100fd967cdd53b776c249dbcb83bd6534f7efe0f500f098b96d90441",
+  "result": "passed",
+  "scope": "Incremental development snapshot; not full app acceptance"
+}

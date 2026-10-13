@@ -1,6 +1,6 @@
 # Cimoa 阶段五页面还原状态
 
-2026-10-13：按用户新增要求回到 HTML 启动入口逐页补齐。Splash 与 Welcome 本页已通过，恢复 pending（待依赖）；Profile 本页提交 `bc7bdfd` 同样待完整依赖。当前没有 in_progress 页面，没有页面升级 verified。首次安装已改为访客，不再自动登录测试账号。新认证入口尚待完整原生回归；此前4项iPhone17Pro宿主测试仅证明旧版本宿主局部集成，见[阶段六记录](./cimoa-stage6-acceptance.md)。
+2026-10-13：按用户新增要求回到 HTML 启动入口逐页补齐。Splash 与 Welcome 本页已通过，恢复 pending（待依赖）；Profile 本页提交 `bc7bdfd` 同样待完整依赖。当前仅 Login in_progress：真实本地登录通过浏览器/原生检查，但原型TEST STATES是否移除尚待用户决策，不宣告视觉验收完成，不开始下一页。没有页面升级 verified。首次安装已改为访客。最新五项iPhone17Pro测试覆盖新认证入口和宿主局部集成，不是全App验收，见[阶段六记录](./cimoa-stage6-acceptance.md)。
 
 用户最新决定：**后续仅本地 Git 提交，不执行 push；各页允许分段验收，依赖补齐并完整回归后才 verified。** 已同步至 [流程阶段5](../模板项目开发流程.md#阶段-5一个页面一个页面还原)。两份强制约定中的旧 Home-only / 推送门槛由该用户决定覆盖，技术与业务要求不变。
 
@@ -12,6 +12,7 @@
 | 4 | Profile | pending | passed | pending | 本地提交bc7bdfd；Settings/Edit/Coins/Preview依赖与完整原生验收 |
 | 后续 | Messages、Auto Match、Connection、Auth、Settings、Coins、Safety、System | pending | pending | pending | 主Tab之后按入口依赖逐页推进 |
 | 新入口优先 | Splash、Welcome | pending | passed | pending | 登录/注册/协议依赖、原生入口回归；见认证交互契约 |
+| 当前唯一 | Login | in_progress | pending | pending | 功能13项H5通过；源调试区的生产处理待确认，注册/重置依赖未齐 |
 
 完整映射以 [页面清单](./cimoa-page-inventory.json) 为准。主Tab顺序 Home → Discover → Events。Popover/Sheet/确认弹窗随首个使用页面完成，常驻挂载；专属组件不另开页面任务。任一时刻最多一个页面in_progress。
 

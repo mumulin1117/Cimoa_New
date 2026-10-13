@@ -1,6 +1,6 @@
 # Cimoa 认证入口逐页交互契约
 
-Splash本页已本地提交e1af81a，Welcome本页通过后同样pending待完整依赖；当前没有in_progress页面。每页依次补来源契约、实施、测试、三项校验、本地提交；完成本页后回pending待完整依赖，不并行留下半页。
+Splash本页已本地提交e1af81a，Welcome本页提交50d140c，同样pending待完整依赖；当前只有Login in_progress。每页依次补来源契约、实施、测试、三项校验、本地提交；完成本页后回pending待完整依赖，不并行留下半页。
 
 ## Splash
 
@@ -29,3 +29,20 @@ Welcome首次未还原时以deferred显示明确错误；现在已由下方Welco
 | welcome.media.retry（技术补齐） | Welcome image | Retry photo | 本地图片失败 | 内容区真实重载 | 显示相同校园图片 | 继续明确错误，不换图 | none | source resource | 注入404→重试、恢复资源→正确加载 |
 
 Welcome 本页8项浏览器检查通过：[报告](./evidence/auth/welcome-browser.json)、[393默认](./evidence/auth/welcome.png)、[320小屏安全区](./evidence/auth/welcome-small.png)。已检查实际Splash自动进入Welcome、原图与360/60/56尺寸、四个依赖入口真实失败边界、图片404与重试、小屏唯一滚动/固定footer、有效会话与损坏快照恢复。PID83162的服务/隔离浏览器已关闭。local passed / full pending；协议和认证目标缺失不算闭环，原生尚待本轮回归，不标记verified。
+
+## Login
+
+来源2659–2705，/pages/auth/login；复用SecondaryPageFrame/routeTransition，源46返回、48标题栏、33 Welcome back、56 Apple/输入、60固定登录。返回前一认证页，直达fallback Welcome。密码只保留内存，隐藏/卸载清除。真实认证数据仅Store。验证码、重置、Apple仍不可用；原型TEST STATES不是业务数据，是否在生产移除已询问用户，未决时不标完整验收。
+
+| interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| login.goBack.click.1 | Login2662 | Back | 非提交 | cRise反向180ms | 来源页/直达Welcome | 原页错误 | none | navigation | 不黑屏、隐藏时取消未执行写入 |
+| login.onEmail.change.1 / login.onPw.change.1 | Login2679/2685 | input | none | 字段变化 | 仅内存表单 | 不写业务状态 | none | none | 输入/刷新无明文存储 |
+| login.togglePw.click.1 | Login2685 | Show/Hide | none | 真正切换password属性 | 可见状态切换不丢值 | none | none | none | 默认隐藏、切换后仍可提交 |
+| login.loginNow.click.1 | Login2701 | Log In | 格式/非空/Store可读 | AuthActionLoading500ms后Store.login | 会话写入成功才prepare三个Tab资格、reLaunch Home | 无会话写入、错误保留表单；离开取消 | session only | all tabs/profile | 错误凭据/存储失败/成功/刷新/连点/三Tab单次骨架 |
+| login.appleAuth.click.1 | Login2669 | Apple | 未配置服务 | 明确英文不可用 | 不伪造授权 | 保持原页与数据 | none | none | 普通浏览器/宿主同样真实失败 |
+| login.goFpEmail.click.1 | Login2691 | Forgot password | 目标需还原且服务未配置 | 导航或明确缺依赖 | 后续按真实重置结果 | 不发送邮件/不改密码 | none | account | 当前deferred；验证码方案另定 |
+| login.goAge.click.1 | Login2702 | Create account | Age就绪 | 立即push，无Loading | 注册年龄流程 | 未还原明确错误 | none | auth_flow | Age补齐后验入口与返回 |
+| login.loginWrong.click.1 / login.loginUnverified.click.1 | Login2695/2696 | 原型TEST STATES | 原型调试用途待确认 | 不编造认证结果 | 真实失败/未验证由Store数据测试覆盖 | 不强造已认证账号 | none | test only | 不将静态测试按钮算认证成功 |
+
+运行检查已通过但不是页面完整验收：[Login检查记录](./cimoa-stage5-login-acceptance.md)。普通浏览器13项、Welcome更新回归8项、iPhone17Pro入口/宿主5项均通过。当前实现未显示源TEST STATES两个调试按钮；已向用户询问是否在正式App移除，未获答复前不将此差异自行定为完成。Login仍唯一in_progress，local/full pending，不进入注册下一页。注册仅Store接口已实现，年龄/社区/注册UI和验证码流程均未完成；验证码方案不擅定。

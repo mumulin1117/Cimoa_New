@@ -1,5 +1,13 @@
 # Cimoa 整体验收状态
 
+## 最新增量：本地认证入口（2026-10-13）
+
+整体验收仍未通过，0个verified。首次安装已从自动Home改为Splash→Welcome；真实本地登录可进入Home，旧合并auth页已替换为兼容跳转。本地注册数据层已完成，年龄/社区/注册UI未完成，验证码方案由用户另定。Login仍in_progress：源TEST STATES生产保留/移除待用户决策，不能擅自标记视觉还原完成；其余95条计划路由尚未注册。
+
+当前证据：[Login检查与文件清单](./cimoa-stage5-login-acceptance.md)、[本轮原生结果](./evidence/ios-entry/acceptance.json)、[最终原生附件](./evidence/ios-entry/final/manifest.json)。59项单元、Welcome8/Login13、Home22/Discover20/Events19/Profile20浏览器项通过；EntryAcceptance-3.xcresult在iPhone17Pro/iOS26.5完成5/5原生局部项，0失败/跳过。真实新文档访客启动、Welcome滚动/固定footer、本地登录/单次骨架已追加覆盖；不能代替完整App或系统触摸/键盘验收。
+
+H5构建当前117文件，自动同步到原生Resources/H5；不打包或实时加载原HTML。当前开发中导出包`artifacts/cimoaNeapo-ios.zip`含150条目，全部117文件哈希核验通过，见[当前包报告](./evidence/ios-entry/package.json)。最后三项强制命令通过、无约定警告，临时服务和隔离浏览器已退出。仅本地提交，不推送。以下101文件/4项测试/哈希及导出包说明属于此前宿主版本的历史证据，不代表当前增量产物。
+
 ## 当前状态：阶段五逐页推进；原生宿主交付准备（2026-10-13）
 
 **整体验收仍未通过。** 阶段1–4的独立数据/主题/三Tab基础已落实；Home、Discover、Events、Profile均通过本页检查，完整验收待子页依赖，不标记verified。当前证据以 [阶段五总表](./cimoa-stage5-page-status.md)、[Home验收](./cimoa-stage5-home-acceptance.md)、[Discover验收](./cimoa-stage5-discover-acceptance.md)、[Events验收](./cimoa-stage5-events-acceptance.md) 和 [Profile验收](./cimoa-stage5-profile-acceptance.md) 为准。

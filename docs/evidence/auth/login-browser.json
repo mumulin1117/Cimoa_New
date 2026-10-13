@@ -1,0 +1,22 @@
+{
+  "phase": "login",
+  "result": "passed",
+  "server_pid": 85727,
+  "checks": [
+    "fresh launch renders source brand/progress without authenticating or writing storage",
+    "source automatic launch reaches actual Welcome once without a session write",
+    "Welcome pushes source Login once; 46px Back returns to the original Welcome",
+    "invalid form skips Loading; wrong credentials show real failure, retain form and never create session",
+    "Apple and reset cannot fabricate authorization or email delivery in a normal browser",
+    "storage failure is atomic and leaves login retryable without a partial session",
+    "only successful delayed commit signs in; all three Tabs consume a single skeleton and never grow the stack",
+    "refresh restores the committed session without preparing skeletons or storing plaintext password",
+    "leaving during the 500ms Loading cancels the pending session write",
+    "direct-entry Back falls back to Welcome; long input/error and fixed footer respect 62/34 small-screen safe areas",
+    "old authentication URL redirects to the source Login, never renders the former merged template",
+    "saved session restores Home at stack one; double tap/timer cannot duplicate or prepare skeleton",
+    "corrupt snapshot is not overwritten and retry recovers repaired data"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

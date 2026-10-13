@@ -98,12 +98,13 @@ export const use_app_store = defineStore('app', {
         return failure('storage_read_failed', this.hydration_error)
       }
     },
-    async login(email, password) {
+    async login(email, password, { is_current = () => true } = {}) {
       const email_key = String(email || '').trim().toLowerCase()
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_key) || !password) return failure('invalid_form', 'Enter a valid email and password.')
       try {
         const expected = this.data.accounts.find(row => row.email === email_key && row.status === 'active')
         const valid = expected?.auth_provider === 'local' ? await verify_local_credential(expected, password) : expected?.auth_provider === 'fixture' && expected.credential_hash === await password_hash(password)
+        if (!is_current()) return failure('cancelled', 'Sign in was cancelled.')
         return transact(this, null, (data, now) => {
           const account = data.accounts.find(row => row.account_id === expected?.account_id && row.status === 'active' && row.credential_hash === expected.credential_hash)
           s.ensure(valid && account, 'Email or password is incorrect.')

@@ -73,10 +73,11 @@ try {
   assert.equal(await page.locator('.safe-area').first().evaluate((element) => element.getBoundingClientRect().height), 59)
   check('browser bridge injection owns top and bottom once (not native-device evidence)', safe)
   await page.reload({ waitUntil: 'networkidle' }); assert.equal((await read()).skeleton, false)
-  await page.goto(origin + '/#/pages/auth/index?view=login', { waitUntil: 'networkidle' })
+  await page.evaluate(() => { const snapshot = JSON.parse(localStorage.getItem('cimoa_app_state_v2')); snapshot.data.session = { account_id: null, current_user_id: null, expires_at: null }; localStorage.setItem('cimoa_app_state_v2', JSON.stringify(snapshot)) })
+  await page.goto(origin + '/#/pages/auth/login', { waitUntil: 'networkidle' }); await page.reload({ waitUntil: 'networkidle' })
   await page.locator('input').nth(0).fill('cimoa@gmail.com')
   await page.locator('input').nth(1).fill('12341234')
-  await page.getByRole('button', { name: 'Log in', exact: true }).click()
+  await page.getByRole('button', { name: 'Log In', exact: true }).click()
   page.on('console', (message) => { if (message.type() === 'error') console.log('Browser:', message.text()) })
   await page.locator('.main-skeleton').waitFor({ state: 'visible' }); await page.locator('.main-skeleton').waitFor({ state: 'hidden' })
   for (const name of ['Discover', 'Events']) { await page.getByRole('button', { name, exact: true }).click(); await page.locator('.main-skeleton').waitFor({ state: 'visible' }); await page.locator('.main-skeleton').waitFor({ state: 'hidden' }) }

@@ -11,6 +11,8 @@ final class HostTests: XCTestCase {
                 // by the initial document navigation, before Vue can mount.
                 let ready = try? await script(host, "return !!document.querySelector('.home-header,.profile-header,.discover-header,.events-header')")
                 if ready as? Bool == true { return host }
+                let welcome = try? await script(host, "return !!document.querySelector('.welcome-page')")
+                if welcome as? Bool == true { try await signIn(host); return host }
             }
             try await Task.sleep(nanoseconds: 100_000_000)
         }
@@ -18,6 +20,46 @@ final class HostTests: XCTestCase {
     }
     private func script(_ host: WebViewController, _ body: String) async throws -> Any {
         try await host.webView.callAsyncJavaScript(body, arguments: [:], in: nil, contentWorld: .page) ?? NSNull()
+    }
+    private func waitFor(_ host: WebViewController, _ selector: String) async throws {
+        for _ in 0..<100 {
+            if (try? await script(host, "return !!document.querySelector('\(selector)')")) as? Bool == true { return }
+            try await Task.sleep(nanoseconds: 100_000_000)
+        }
+        throw NSError(domain: "CimoaTests", code: 2, userInfo: [NSLocalizedDescriptionKey: "Missing \(selector)"])
+    }
+    private func signIn(_ host: WebViewController) async throws {
+        _ = try await script(host, "document.querySelector('.welcome-login').click(); return true")
+        try await waitFor(host, ".login-page input")
+        _ = try await script(host, "await new Promise(r=>setTimeout(r,300)); const fields=document.querySelectorAll('.login-page input'); for(const [i,value] of ['cimoa@gmail.com','12341234'].entries()){fields[i].value=value; fields[i].dispatchEvent(new Event('input',{bubbles:true}))} await Promise.resolve();document.querySelector('[data-interaction=\"login.loginNow.click.1\"]').click(); return true")
+        try await waitFor(host, ".home-header")
+    }
+    func testFreshEntryAndRealLocalLogin() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html#/pages/auth/splash")!))
+        }
+        do {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');return true")
+            // A hash-only request preserves the existing Pinia session. A query
+            // forces a new document, as an actual cold launch would.
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?entryProbe=guest#/pages/auth/splash")!))
+            try await waitFor(host, ".welcome-page")
+            _ = try await script(host, "await Promise.all(document.querySelector('.welcome-page .page-transition').getAnimations().map(a=>a.finished));await document.fonts.ready;return true")
+            let guest = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===null && !document.querySelector('.tabbar')")
+            XCTAssertEqual(guest as? Bool, true)
+            let image = try await host.webView.takeSnapshot(configuration: nil)
+            let attachment = XCTAttachment(image: image); attachment.name = "Fresh WKWebView Welcome"; attachment.lifetime = .keepAlways; add(attachment)
+            let scroll = try await script(host, "const footer=document.querySelector('.welcome-footer'),before=footer.getBoundingClientRect().top; const areas=document.querySelectorAll('.welcome-page .uni-scroll-view');const area=areas[areas.length-1];area.scrollTop=area.scrollHeight;await new Promise(r=>requestAnimationFrame(r));return {fixed:Math.abs(before-footer.getBoundingClientRect().top)<1,descriptionVisible:document.querySelector('.welcome-description').getBoundingClientRect().bottom<=before+1}") as! [String: Any]
+            XCTAssertEqual(scroll["fixed"] as? Bool, true); XCTAssertEqual(scroll["descriptionVisible"] as? Bool, true)
+            try await signIn(host)
+            let signedIn = try await script(host, "const saved=JSON.parse(localStorage.getItem('cimoa_app_state_v2'));return {user:saved.data.session.current_user_id,depth:document.querySelector('.main-tab-frame').dataset.pageDepth,skeleton:!!document.querySelector('.main-skeleton'),plaintext:JSON.stringify(saved).includes('12341234')}") as! [String: Any]
+            XCTAssertEqual(signedIn["user"] as? String, "user_cimoa"); XCTAssertEqual(signedIn["depth"] as? String, "1")
+            XCTAssertEqual(signedIn["skeleton"] as? Bool, true); XCTAssertEqual(signedIn["plaintext"] as? Bool, false)
+            try await restore()
+        } catch { try? await restore(); throw error }
     }
     private func home(_ host: WebViewController) async throws {
         _ = try await script(host, "location.hash = '#/pages/home/index'; await new Promise((resolve,reject) => { let tries=0; const t=setInterval(() => { const el=document.querySelector('.home-header'); if(el && el.getBoundingClientRect().height>0) {clearInterval(t);resolve(true)} else if(++tries>100) {clearInterval(t);reject(Error('Home unavailable'))}},50)}); return true")
