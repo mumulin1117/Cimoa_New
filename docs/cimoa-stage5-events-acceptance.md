@@ -1,6 +1,6 @@
 # Events 阶段五本页验收
 
-2026-10-13：**local_acceptance: passed，full_acceptance: pending**。本轮只还原 Events 及首次使用的确认弹窗，不标记 verified；本地专项提交后恢复 pending（待依赖）。后续不 push。
+2026-10-13：**local_acceptance: passed，full_acceptance: pending，status: pending（待依赖）**。本轮只还原 Events 及首次使用的确认弹窗，不标记 verified。功能/测试/构建产物已本地提交 `36274d7`；状态与补充回归截图随后单独本地提交，不 push。
 
 ## 已通过的范围
 
@@ -49,7 +49,7 @@
 - 首用组件：`src/components/EventConfirmDialog.vue`、`EvJoinConfirmDialog.vue`、`EvCancelConfirmDialog.vue`、`EventActionLoading.vue`；共享复用调整：同目录 `MainTabFrame.vue`、`ProfilePhoto.vue`、`SourceIcon.vue`。
 - 数据/路由：`src/stores/eventSelectors.js`、`seed.js`、`selectors.js`、`store.js`；`src/utils/eventsNavigation.js`；`src/config/navigation.js`、`theme.json`。
 - 计划/契约：`scripts/lib/page-contracts.mjs`、`scripts/generate-cimoa-stage1.mjs`；`docs/cimoa-page-inventory.json`、`cimoa-interaction-owners.json`、`cimoa-stage1-page-inventory.md`、`cimoa-stage2-data-fields.md`、`cimoa-stage3-test-data.md`、`cimoa-events-interactions.md`、本记录与 `cimoa-stage5-page-status.md`。
-- 测试：`scripts/events.test.mjs`、`scripts/lib/events-browser.mjs`、`scripts/h5-browser.test.mjs`；`docs/evidence/events-*.png` 与 Events/Home/Discover 三份浏览器报告。
+- 测试：`scripts/events.test.mjs`、`scripts/lib/events-browser.mjs`、`scripts/h5-browser.test.mjs`；`docs/evidence/events-*.png` 与 Events/Home/Discover 三份浏览器报告；回归重录的 `docs/evidence/discover-default.png`、`discover-dependency-error.png`、`discover-source-insets.png`。
 - 构建：`dist/build/h5/index.html` 及本轮生成/替换的 `dist/build/h5/assets/*` 分块。
 
 未改 `DEVELOPMENT_CONVENTIONS.md`、`INTERACTION_CONVENTIONS.md`、原 HTML、用户存档、仓库远端配置；没有 push，也不把本页通过升级成 verified。验收记录按文档技能将已验证事实、源缺口和后续依赖分开。

@@ -106,7 +106,7 @@ Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码
 | Home / People Met / Default | route=home | 主 Tab | /pages/home/index | pending |
 | Discover / Profile / Photo | route=photo | 主 Tab | /pages/discover/index | pending |
 | Discover / Profile / Expanded | route=expanded | 二级 | /pages/discover/profile | pending |
-| Events / Explore / Default | route=events | 主 Tab | /pages/events/index | in_progress |
+| Events / Explore / Default | route=events | 主 Tab | /pages/events/index | pending |
 | Discover / Icebreaker / Select Question | route=ibSelect | 二级 | /pages/discover/icebreaker/select | pending |
 | Discover / Icebreaker / Text Reply | route=ibText | 三级 | /pages/discover/icebreaker/text | pending |
 | Discover / Icebreaker Answer / Voice | route=ibVoice | 三级 | /pages/discover/icebreaker/voice | pending |
@@ -138,15 +138,15 @@ Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码
 | Video Call / Incoming / Default | route=callIncoming | 三级 | /pages/messages/call/waiting | pending |
 | Video Call / Active / Default | route=callActive | 三级 | /pages/messages/call/waiting | pending |
 | Video Call / Ended / Default | route=callEnded | 三级 | /pages/messages/call/waiting | pending |
-| Events / Explore / Default | route=events | 主 Tab | /pages/events/index | in_progress |
+| Events / Explore / Default | route=events | 主 Tab | /pages/events/index | pending |
 | Events / Detail / Available | route=evDetail | 二级 | /pages/events/detail | pending |
 | Events / Detail / Joined | route=evDetail&joined=1 | 二级 | /pages/events/detail | pending |
-| Events / Join / Confirmation | route=evDetail&sheet=evJoinConfirm | 确认弹窗 | src/components/EvJoinConfirmDialog.vue | in_progress |
+| Events / Join / Confirmation | route=evDetail&sheet=evJoinConfirm | 确认弹窗 | src/components/EvJoinConfirmDialog.vue | pending |
 | Events / Join / Success | route=evJoinSuccess&joined=1 | 流程状态页 | /pages/events/join-success | pending |
 | Events / Participants / Default | route=evParticipants&joined=1 | 三级 | /pages/events/participants | pending |
 | Events / Group Chat / Default | route=evGroup&joined=1 | 三级 | /pages/events/group | pending |
 | Events / My Events / Upcoming | route=evUpcoming&joined=1 | 二级 | /pages/events/upcoming | pending |
-| Events / Attendance / Cancel | route=evDetail&joined=1&sheet=evCancel | 确认弹窗 | src/components/EvCancelConfirmDialog.vue | in_progress |
+| Events / Attendance / Cancel | route=evDetail&joined=1&sheet=evCancel | 确认弹窗 | src/components/EvCancelConfirmDialog.vue | pending |
 | Events / Report / Select Reason | route=evReport | 三级 | /pages/events/report | pending |
 | Wallet / Coin Center / Default | route=coinStore | 三级 | /pages/coins/index | pending |
 | Coins / Store / Purchasing | route=coinPurchasing&pkg=1 | 流程状态页 | /pages/coins/purchasing | pending |

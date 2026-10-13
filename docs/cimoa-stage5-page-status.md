@@ -1,6 +1,6 @@
 # Cimoa 阶段五页面还原状态
 
-2026-10-13：Events 为唯一 in_progress 页面，本页及首次使用的加入/取消确认弹窗已通过检查，正在完成本地提交。Home、Discover 保持 pending（待依赖），不标记任何新页面/专属组件 verified。
+2026-10-13：Events 本页与首用确认弹窗已通过检查，功能/测试/产物已本地提交 `36274d7`，现恢复 pending（待依赖）。当前没有 in_progress 页面，不标记任何新页面/专属组件 verified。
 
 用户最新决定：**后续仅本地 Git 提交，不执行 push；各页允许分段验收，依赖补齐并完整回归后才 verified。** 已同步至 [流程阶段5](../模板项目开发流程.md#阶段-5一个页面一个页面还原)。两份强制约定中的旧 Home-only / 推送门槛由该用户决定覆盖，技术与业务要求不变。
 
@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- | --- |
 | 1 | Home | pending | passed | pending | Profile/Chat/Auto Match/Request真实入口返回与宿主回归 |
 | 2 | Discover | pending | passed | pending | 已本地提交；Profile/Preferences/Expanded/Icebreaker/通知与宿主待补齐 |
-| 3 | Events | in_progress | passed | pending | 本地提交；详情/参与者/群聊/成功页/宿主后续补齐 |
+| 3 | Events | pending | passed | pending | 已本地提交；详情/参与者/群聊/成功页/宿主后续补齐 |
 | 后续 | Profile、Messages、Auto Match、Connection、Auth、Settings、Coins、Safety、System | pending | pending | pending | 主Tab之后按入口依赖逐页推进 |
 
 完整映射以 [页面清单](./cimoa-page-inventory.json) 为准。主Tab顺序 Home → Discover → Events。Popover/Sheet/确认弹窗随首个使用页面完成，常驻挂载；专属组件不另开页面任务。任一时刻最多一个页面in_progress。
@@ -28,5 +28,6 @@
 - 首用组件：CimoaBrand、ConnectionGoalsPopover、UserAvatar随Home；DiscoverHeroHeader、ProfilePhoto随Discover。本页覆盖通过不提前赋予verified。
 - Events：[交互契约](./cimoa-events-interactions.md)、[本页验收及完整文件清单](./cimoa-stage5-events-acceptance.md)。46项单元测试、19项Events H5检查通过；Home22项、Discover20项回归通过。EventConfirmDialog、EvJoinConfirmDialog、EvCancelConfirmDialog、EventActionLoading 首用覆盖通过。高级 Filter Sheet 缺原型UI/入口，仍pending，不计本页通过。
 - Git：本轮功能/测试/产物本地提交 `bf902b0`（feat(discover): restore CIRCA photo page and verify local acceptance）；本记录随后另行本地提交，不执行push。
+- Git：Events 功能/测试/产物本地提交 `36274d7`（feat(events): restore CIRCA carousel and verify local acceptance）；恢复待依赖状态及回归截图另作本地记录提交，不执行push。
 
-阶段五整体未完成。当前只施工 Events；其依赖页尚未进入施工。
+阶段五整体未完成。三个主 Tab 已完成本页检查，但均待完整依赖验收。下一页从 Home 的 Profile 入口开始，按入口依赖逐页推进；当前未开启下一页面。
