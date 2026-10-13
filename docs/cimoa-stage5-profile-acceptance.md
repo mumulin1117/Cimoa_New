@@ -1,6 +1,6 @@
 # Profile 本页验收
 
-2026-10-13：本页还原与 H5 本地检查通过；完整验收待依赖。当前先记录 local_acceptance: passed / full_acceptance: pending，专项本地提交后恢复 status: pending，不标记 verified。
+2026-10-13：本页还原与 H5 本地检查通过，专项本地提交 `bc7bdfd`；完整验收待依赖。local_acceptance: passed / full_acceptance: pending，现恢复 status: pending，不标记 verified。
 
 ## 已还原与实测范围
 

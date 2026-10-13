@@ -163,7 +163,7 @@ Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码
 | Coins / History / Purchase Detail | route=coinPurchaseDetail | 三级 | /pages/coins/purchase-detail | pending |
 | Coins / History / Spending Detail | route=coinSpendDetail | 三级 | /pages/coins/spend-detail | pending |
 | Coins / Help / Default | route=coinHelp | 三级 | /pages/coins/help | pending |
-| Profile / Personal / Default | route=profile | 二级 | /pages/profile/index | in_progress |
+| Profile / Personal / Default | route=profile | 二级 | /pages/profile/index | pending |
 | Profile / Personal / Preview | route=profilePreview | 三级 | /pages/profile/preview | pending |
 | Profile / Edit / All | route=editAll | 三级 | /pages/profile/edit | pending |
 | Profile / Edit / Basic Info | route=editBasic | 三级 | /pages/profile/basic | pending |
