@@ -1,0 +1,1 @@
+import{o as s,a,i as o}from"./index-CSjUNeVF.js";const r=(s,a)=>{const o=s.__vccOpts||s;for(const[r,t]of a)o[r]=t;return o};const t=r({},[["render",function(r,t){const n=o;return s(),a(n,{class:"safe-area","aria-hidden":"true"})}],["__scopeId","data-v-c6f96b55"]]);export{t as T,r as _};

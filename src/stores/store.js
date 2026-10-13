@@ -17,7 +17,7 @@ const seed = {
     { relationship_id: 'rel_liam', from_user_id: 'user_hottix', to_user_id: 'user_liam', status: 'mutual' },
     { relationship_id: 'rel_chloe', from_user_id: 'user_hottix', to_user_id: 'user_chloe', status: 'none' },
   ],
-  blocked_user_ids: [], people: [],
+  blocked_user_ids: [],
   events: [
     { event_id: 'event_picnic', title: 'Sunset Picnic & Polaroids', description: 'A low-pressure evening for photos, snacks, and new faces.', date_label: 'Today · 6:30 PM', location: 'Lakeside lawn', image_url: '/static/assets/img/event-picnic.png', joined: true, participant_count: 24, category: 'Social' },
     { event_id: 'event_forest', title: 'Forest Walk Club', description: 'A gentle weekend walk with a shared playlist.', date_label: 'Sat · 9:00 AM', location: 'North trail gate', image_url: '/static/assets/img/ev-forest.jpg', joined: false, participant_count: 12, category: 'Outdoors' },
@@ -67,7 +67,6 @@ export const use_app_store = defineStore('app', {
   actions: {
     hydrate() {
       try { const saved = uni.getStorageSync('cimoa_app_state'); if (saved?.current_user) Object.assign(this.$state, saved) } catch { /* Web storage can be unavailable on first launch. */ }
-      this.people = this.visible_people
       return this.current_user
     },
     persist() { try { uni.setStorageSync('cimoa_app_state', clone(this.$state)) } catch { /* Best effort in restricted browser contexts. */ } },

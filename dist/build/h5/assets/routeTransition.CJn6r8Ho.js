@@ -1,1 +1,0 @@
-import{y as n,z as a}from"./index-DMjsJhel.js";const i=a=>new Promise((i,s)=>{n({url:a,animationType:"none",animationDuration:0,success:i,fail:s})}),s=n=>new Promise((i,s)=>{a({url:n,animationType:"none",animationDuration:0,success:i,fail:s})}),o=n=>new Promise((i,s)=>{a({url:n,animationType:"none",animationDuration:0,success:i,fail:s})});export{i as p,s as r,o as s};
