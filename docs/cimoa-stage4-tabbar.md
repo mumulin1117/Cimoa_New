@@ -32,3 +32,11 @@
 - 无页面运行时异常。临时预览 PID 40202 与本次 Chrome 子进程已正常关闭，测试未留下服务。
 
 机器结果：[stage4-browser.json](./evidence/stage4-browser.json)；骨架截图：[stage4-foundation.png](./evidence/stage4-foundation.png)。截图中的旧 Home 业务内容不属于本阶段验收，也不代表目标首页。三项强制检查通过，无 conventions 警告；构建仅有 uni统计信息提示。
+
+## 提交与发布门槛
+
+基础修正已提交：`adb4e92`。用户明确确认 `mumulin1117/Cimoa_New` 可信并授权推送，授权项已解决。
+
+本轮两次 `git push origin main`（第二次只对同一远端重试）均失败：`Failed to connect to github.com port 443`，分别在75183ms、75032ms后退出。中间同仓库 HTTPS 网页只读检查返回200，但不能据此声称 Git 传输成功。未换远端、协议或工具通道绕过，未强推。
+
+本地检查通过不等于发布通过；阶段五 Home 尚未开始，待 Git 连接恢复并成功推送后继续。所有本次预览、Chrome 测试及 Git 推送进程均已退出。
