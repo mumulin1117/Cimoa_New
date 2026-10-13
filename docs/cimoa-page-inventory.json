@@ -494,12 +494,12 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "pending",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work",
-    "acceptance_notes": "13 browser checks and native entry checks passed. Source TEST STATES production treatment awaits user decision; signup/reset dependencies incomplete. Sole in_progress, not verified; see cimoa-stage5-login-acceptance.md."
+    "acceptance_notes": "User-prioritized fixed-code verification; prior TEST STATES visual decision still pending, not verified."
   },
   {
     "source_screen": "Auth / Email Verification / Enter Email",
@@ -590,17 +590,17 @@
     "component": null,
     "parent_route": "/pages/auth/verification/email",
     "allowed_origin_routes": [
+      "/pages/auth/login",
+      "/pages/auth/signup",
       "/pages/auth/verification/email"
     ],
-    "required_parameters": [
-      "auth_flow_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "goVerCode@5566"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auth/verification/email）；无历史实例时 replace /pages/auth/verification/email，不创建伪造实体",
+    "return_owner": "previous auth page; direct entry falls back to Login",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+    "fixed_regions": "TopSafeArea; source compact header; fixed verify CTA; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -611,23 +611,7 @@
     ],
     "entities": "user_accounts; session; verification; agreements",
     "assets": {
-      "media": [
-        {
-          "source_id": "a7",
-          "local_path": "static/assets/songs/stupid-song.jpg",
-          "mime": "image/jpeg"
-        },
-        {
-          "source_id": "a8",
-          "local_path": "static/assets/songs/stateside.jpg",
-          "mime": "image/jpeg"
-        },
-        {
-          "source_id": "a9",
-          "local_path": "static/assets/songs/beauty-beat.jpg",
-          "mime": "image/jpeg"
-        }
-      ],
+      "media": [],
       "svg_source_lines": [
         2739,
         2747,
@@ -651,10 +635,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source + authorized fixed local code implemented; 9 browser checks passed; Email/Success/onboarding dependencies pending; contract docs/cimoa-local-verification.md"
   },
   {
     "source_screen": "Auth / Email Verification / Success",

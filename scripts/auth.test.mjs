@@ -33,7 +33,7 @@ test('local registration checks valid dates, exact 18th birthday, password, agre
 test('registration saves salted credentials with no fake certification, session or coins and supports local login', async () => {
   const { store, disk } = fixture(), input = form(' Student@Campus.edu ')
   const result = await store.register_local_account(input)
-  assert.equal(result.success, true); assert.equal(result.data.next_step, 'verification_undecided')
+  assert.equal(result.success, true); assert.equal(result.data.next_step, 'local_verification')
   assert.equal(store.session.is_authenticated, false)
   const account = store.data.accounts.find(row => row.account_id === result.data.account_id)
   assert.equal(account.email, 'student@campus.edu'); assert.equal(account.auth_provider, 'local')
@@ -59,12 +59,55 @@ test('concurrent registration cannot duplicate an account; write failures leave 
   assert.equal((await next.store.register_local_account(form())).success, false)
   assert.deepEqual(clone_data(next.store.data), before)
 })
-test('deleted emails remain reserved; verification and reset remain unavailable', async () => {
+test('deleted emails remain reserved; missing-code verification fails and reset stays unavailable', async () => {
   const data = create_seed(now); data.session = { account_id: null, current_user_id: null, expires_at: null }
   data.accounts[0].status = 'deleted'; data.users[0].deleted = true
   const { store } = fixture(data)
   assert.equal((await store.register_local_account(form('cimoa@gmail.com'))).reason, 'email_exists')
   assert.equal(store.apply_verification().success, false); assert.equal(store.reset_password().success, false)
+})
+test('fixed local code is exact, preserves leading zeroes, never promotes student identity, and is idempotent', async () => {
+  const { store, disk, writes } = fixture()
+  const account = (await store.register_local_account(form())).data.account_id
+  const before = clone_data(store.data), count = writes()
+  for (const code of [null, undefined, 9789, '9789', '000000', '123456', '0097890', ' 009789', '009789 ', '００９７８９', {}, ['009789']]) {
+    assert.equal(store.apply_verification(code, account).success, false); assert.deepEqual(clone_data(store.data), before)
+  }
+  assert.equal(writes(), count); assert.equal(store.local_verification_code, '009789')
+  assert.equal(store.apply_verification('009789', account).success, true)
+  assert.equal(store.local_verification.verified, true); assert.equal(store.session.is_authenticated, false)
+  assert.deepEqual(store.data.users, before.users); assert.deepEqual(store.data.relationships, before.relationships); assert.deepEqual(store.data.coin_transactions, before.coin_transactions)
+  const saved = clone_data(store.data), after = writes()
+  assert.equal(store.apply_verification('009789', account).repeated, true); assert.equal(writes(), after)
+  assert.deepEqual(clone_data(store.data), saved)
+  const restored = fixture(disk.get(STATE_KEY)).store
+  assert.equal(restored.local_verification.verified, true)
+  assert.equal((await restored.login('student@campus.edu', 'localpass123')).success, true)
+  assert.equal(restored.requires_local_verification, false); assert.equal(restored.current_user.verified, false)
+})
+test('local verification cannot change another, deleted, expired or logged-out account', async () => {
+  const { store } = fixture()
+  const first = (await store.register_local_account(form('first@campus.edu'))).data.account_id
+  const second = (await store.register_local_account(form('second@campus.edu'))).data.account_id
+  const before = clone_data(store.data)
+  assert.equal(store.apply_verification('009789', first).success, false); assert.deepEqual(clone_data(store.data), before)
+  await store.login('first@campus.edu', 'localpass123')
+  assert.equal(store.requires_local_verification, true)
+  assert.equal(store.apply_verification('009789', second).success, false)
+  store.logout(); assert.equal(store.local_verification, null); assert.equal(store.apply_verification('009789', first).success, false)
+  await store.login('first@campus.edu', 'localpass123')
+  const snapshot = clone_data(store.data); snapshot.session.expires_at = now - 1
+  const expired = fixture(snapshot).store
+  assert.equal(expired.local_verification, null); assert.equal(expired.apply_verification('009789', first).success, false)
+  await store.delete_account('localpass123'); assert.equal(store.apply_verification('009789', first).success, false)
+})
+test('failed verification persistence rolls back completely; old snapshots have no invented local verification', async () => {
+  const { store, persistence } = fixture(create_seed(now))
+  assert.equal(store.local_verification.verified, false)
+  const before = clone_data(store.data), id = store.local_verification.account_id
+  configure_store_runtime(store, { persistence: { ...persistence, write() { throw Error('Storage full') } } })
+  assert.equal(store.apply_verification('009789', id).success, false); assert.deepEqual(clone_data(store.data), before)
+  configure_store_runtime(store, { persistence }); assert.equal(store.apply_verification('009789', id).success, true)
 })
 test('cancelled credential verification never commits a session', async () => {
   const { store, writes } = fixture(), before = clone_data(store.data)

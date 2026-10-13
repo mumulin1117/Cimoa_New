@@ -3,7 +3,7 @@ import { ref, onUnmounted } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { valid_email } from '@/utils/localAuth.js'
-import { auth_destination } from '@/utils/authNavigation.js'
+import { auth_destination, authenticated_destination } from '@/utils/authNavigation.js'
 import { relaunch_route } from '@/utils/routeTransition.js'
 import { prepare_main_tab_skeleton } from '@/utils/mainTabSkeleton.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
@@ -23,13 +23,13 @@ const login = async () => {
   if (is_loading.value) return
   error.value = ''
   if (store.hydration_status !== 'ready') { error.value = store.hydration_error || 'Saved data is unavailable.'; return }
-  if (store.session.is_authenticated) { try { await relaunch_route('/pages/home/index') } catch (cause) { error.value = cause.message }; return }
+  if (store.session.is_authenticated) { try { await relaunch_route(authenticated_destination(store)) } catch (cause) { error.value = cause.message }; return }
   if (!valid_email(email.value) || !password.value) { error.value = 'Enter a valid email and password.'; return }
   const result = await run_with_loading(context => store.login(email.value, password.value, context))
   if (!active || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message || 'Sign in failed. Please retry.'; return }
   password.value = ''; prepare_main_tab_skeleton()
-  try { await relaunch_route('/pages/home/index') } catch (cause) { error.value = cause.message }
+  try { await relaunch_route(authenticated_destination(store)) } catch (cause) { error.value = cause.message }
 }
 </script>
 <template>
@@ -42,7 +42,7 @@ const login = async () => {
     <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
     <view class="auth-link auth-forgot" role="button" tabindex="0" data-interaction="login.goFpEmail.click.1" @click="go('/pages/auth/reset/email')" @keydown.enter="go('/pages/auth/reset/email')">Forgot password?</view>
     <text class="auth-local-note">Local accounts are stored on this device. Signing in does not verify your student status.</text>
-    <template #footer><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="login.loginNow.click.1" @click="login" @keydown.enter="login">{{ store.session.is_authenticated ? 'Continue to Home' : 'Log In' }}</view><view class="auth-secondary" role="button" tabindex="0" data-interaction="login.goAge.click.1" @click="go('/pages/auth/age')" @keydown.enter="go('/pages/auth/age')">New here? Create an account</view></template>
+    <template #footer><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="login.loginNow.click.1" @click="login" @keydown.enter="login">{{ store.session.is_authenticated ? (store.requires_local_verification ? 'Continue verification' : 'Continue to Home') : 'Log In' }}</view><view class="auth-secondary" role="button" tabindex="0" data-interaction="login.goAge.click.1" @click="go('/pages/auth/age')" @keydown.enter="go('/pages/auth/age')">New here? Create an account</view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" /></template>
   </AuthPageFrame>
 </template>

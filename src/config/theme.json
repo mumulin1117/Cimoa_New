@@ -24,7 +24,8 @@
       "event_divider": "#eef1f6",
       "profile_icon": "#eef2f8",
       "auth_divider": "#dbe3ee",
-      "auth_error": "#fee2e2"
+      "auth_error": "#fee2e2",
+      "verification_shield_border": "#e2e8f0"
     },
     "text": {
       "welcome_brand": "#14124a",
@@ -105,6 +106,7 @@
     }
   },
   "gradients": {
+    "verification_glow": "radial-gradient(circle,rgba(30,200,245,0.35),rgba(248,28,229,0.28) 60%,transparent 75%)",
     "welcome_mask": "linear-gradient(to bottom,#000 0%,#000 70%,transparent 100%)",
     "card_fill": "linear-gradient(#ffffff,#ffffff)",
     "photo_scrim": "linear-gradient(to top,rgba(6,14,28,0.86) 0%,rgba(6,14,28,0.55) 42%,rgba(6,14,28,0) 100%)",
@@ -114,6 +116,8 @@
     "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)"
   },
   "shadows": {
+    "verification_cell": "0 15.267rpx 38.168rpx rgba(16,36,74,0.08)",
+    "verification_shield": "0 15.267rpx 30.534rpx rgba(16,36,74,0.14)",
     "auth_action": "0 22.901rpx 49.618rpx rgba(168,85,247,0.24)",
     "auth_secondary": "0 15.267rpx 41.985rpx rgba(16,36,74,0.07)",
     "auth_input": "0 15.267rpx 41.985rpx rgba(16,36,74,0.06)",

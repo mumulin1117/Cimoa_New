@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 import { create_seed, clone_data } from './seed.js'
 import { migrate_legacy } from './migration.js'
 import { normalize_email, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
+import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
+import { local_verification_context, valid_local_code } from '../utils/localVerification.js'
 import * as s from './selectors.js'
 import * as ev from './eventSelectors.js'
 import { STATE_KEY, LEGACY_KEY } from '../utils/statePersistence.js'
@@ -30,6 +32,9 @@ export const use_app_store = defineStore('app', {
   state: () => ({ data: create_seed(), hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
   getters: {
     auth_draft: state => clone_data(state.data.auth_flow),
+    local_verification: state => state.hydration_status === 'ready' ? local_verification_context(state.data, state.clock_ms) : null,
+    local_verification_code: () => LOCAL_VERIFICATION_CODE,
+    requires_local_verification() { return this.session.is_authenticated && this.data.accounts.find(row => row.account_id === this.data.session.account_id)?.auth_provider === 'local' && !this.local_verification?.verified },
     session: (state) => ({ ...state.data.session, is_authenticated: ready(state) }),
     current_user: (state) => ready(state) ? { ...profile(state.data, s.owner_id(state.data)), email: state.data.accounts.find((row) => row.account_id === state.data.session.account_id)?.email, coin_balance: s.balance(state.data) } : { user_name: '', interests: [], coin_balance: 0 },
     current_user_profile() { return this.current_user },
@@ -112,7 +117,7 @@ export const use_app_store = defineStore('app', {
         }, { public: true })
       } catch { return unavailable('Secure authentication') }
     },
-    logout() { return transact(this, null, (data) => { data.session = { current_user_id: null, account_id: null, expires_at: null } }, { public: true }) },
+    logout() { return transact(this, null, (data) => { data.session = { current_user_id: null, account_id: null, expires_at: null }; data.auth_flow.pending_registration_account_id = null }, { public: true }) },
     async delete_account(password) {
       const owner = s.owner_id(this.data), expected = this.data.accounts.find(row => row.account_id === this.data.session.account_id)
       const valid = await (expected?.auth_provider === 'local' ? verify_local_credential(expected, password) : password_hash(password).then(hash => hash === expected?.credential_hash)).catch(() => false)
@@ -137,14 +142,27 @@ export const use_app_store = defineStore('app', {
           const user_id = make_id('user'), account_id = make_id('account')
           data.accounts.push({ account_id, user_id, email, status: 'active', ...credential, date_of_birth: input.date_of_birth, agreements: clone_data(input.agreements), created_at: timestamp })
           data.users.push({ user_id, user_name: 'New member', age: age_from_date(input.date_of_birth, timestamp), avatar_url: '', university: '', major: '', mbti: '', bio: '', bio_font: 'system', country: '', goal_ids: [], interest_ids: [], photo_ids: [], icebreaker_ids: [], song_id: null, verification_status: 'pending', onboarding_status: 'not_started', discoverable: false, deleted: false })
-          data.auth_flow = { ...data.auth_flow, step: 'registered', email, verification_request_id: null, profile_draft: {}, agreements: { ...clone_data(input.agreements), age: true, student: false } }
-          return { account_id, user_id, next_step: 'verification_undecided' }
+          data.auth_flow = { ...data.auth_flow, step: 'registered', email, verification_request_id: null, pending_registration_account_id: account_id, profile_draft: {}, agreements: { ...clone_data(input.agreements), age: true, student: false } }
+          return { account_id, user_id, next_step: 'local_verification' }
         }, { public: true })
       } catch { return unavailable('Secure local authentication') }
     },
     create_account({ email } = {}) { return this.data.accounts.some(row => row.email === normalize_email(email)) ? failure('email_exists', 'This email is already registered.') : failure('registration_form_required', 'Complete the local registration form first.') },
     reset_password() { return unavailable('Password reset') },
-    apply_verification() { return unavailable('Student verification') },
+    apply_verification(code, expected_account_id) {
+      if (!valid_local_code(code)) return failure('invalid_code', 'That code is incorrect. Enter the six-digit local verification code.')
+      if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Saved data is unavailable. Please retry loading it.')
+      const context = local_verification_context(this.data, get_runtime(this).clock())
+      if (!context || context.account_id !== expected_account_id) return failure('account_changed', 'Log in to the same local account and try again.')
+      if (context.verified) return { success: true, repeated: true, data: context }
+      return transact(this, null, (data, now) => {
+        const current = local_verification_context(data, now)
+        s.ensure(current?.account_id === expected_account_id, 'The account changed. Please retry.')
+        data.accounts.find(row => row.account_id === current.account_id).local_verification = { method: 'fixed_code', status: 'verified', verified_at: now }
+        if (data.auth_flow.pending_registration_account_id === current.account_id) data.auth_flow.step = 'local_verified'
+        return local_verification_context(data, now)
+      }, { public: true })
+    },
     submit_support() { return unavailable('Support delivery') },
     update_profile(patch) {
       return transact(this, null, (data) => {

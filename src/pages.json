@@ -3,6 +3,7 @@
     { "path": "pages/auth/splash", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/welcome", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/login", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/auth/verification/code", "style": { "navigationStyle": "custom" } },
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/discover/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/events/index", "style": { "navigationStyle": "custom" } },

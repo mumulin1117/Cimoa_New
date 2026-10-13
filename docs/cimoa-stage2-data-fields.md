@@ -4,7 +4,7 @@
 
 ## 持久化与公共字段
 
-本轮入口复核补充：首次安装session为空（hydration只读、不落盘）；有效旧会话原样恢复。新增本地accounts凭据字段credential_algorithm、credential_iterations、credential_salt、credential_hash；date_of_birth和agreements仅存在账号私有元数据。register_local_account校验18+、三项协议、邮箱与8–128位含数字且一致的密码，原子写accounts/users，不自动登录、不加币、不创建关系。新users.verification_status=pending、onboarding_status=not_started、discoverable=false；下一步verification_undecided。密码和确认密码不进草稿或storage。固定fixture摘要兼容；普通本地账号用随机盐PBKDF2，login/delete_account均验证对应算法。验证码/重置方案没有被自动补成演示成功。
+本轮入口复核补充：首次安装session为空（hydration只读、不落盘）；有效旧会话原样恢复。新增本地accounts凭据字段credential_algorithm、credential_iterations、credential_salt、credential_hash；date_of_birth和agreements仅存在账号私有元数据。register_local_account校验18+、三项协议、邮箱与8–128位含数字且一致的密码，原子写accounts/users，不自动登录、不加币、不创建关系。新users.verification_status=pending、onboarding_status=not_started、discoverable=false；下一步local_verification。密码和确认密码不进草稿或storage。固定fixture摘要兼容；普通本地账号用随机盐PBKDF2，login/delete_account均验证对应算法。固定验证码009789是用户新增决定，字段与边界见[本地验证码](./cimoa-local-verification.md)，不扩大重置/真实学生认证权限。
 
 所有集合是 Store state；轻量记录持久化类型为 local_storage_metadata，默认枚举/选项为 store_seed；媒体二进制为 indexed_db_blob，getter/统计为 derived。schema_version 为整数，revision 为递增整数，updated_at 为毫秒时间戳；单次业务操作克隆 next state，验证后一次保存再发布，失败保持旧 revision。
 
@@ -18,6 +18,8 @@
 | accounts | email | string / 必填 / 唯一小写 | login, signup | none | local_storage_metadata | create_account |
 | accounts | credential_hash | string / 必填 / 测试身份摘要 | login, delFinal | account_id | local_storage_metadata | create_account, reset_password |
 | accounts | status | active/deleted / active | login, delSuccess | none | local_storage_metadata | delete_account |
+| accounts | local_verification | nullable object / 缺失为未本地验证；method=fixed_code,status=verified,verified_at=timestamp | verCode/verSuccess | account_id | local_storage_metadata | apply_verification |
+| auth_flow | pending_registration_account_id | nullable string / 默认缺失 | signup/verCode | accounts.account_id | local_storage_metadata | register_local_account,logout |
 | accounts | auth_provider | fixture/service / fixture | login, signup | none | store_seed | create_account |
 | session | current_user_id, account_id | string/null / null | 全部受保护页面 | users, accounts | local_storage_metadata | login, logout |
 | session | expires_at | number/null / null | sysSessionExpired | none | local_storage_metadata | login, logout |
@@ -28,7 +30,7 @@
 | users | bio, bio_font, bio_audio_id | string/string/nullable ID | editAll, expanded | media_files | local_storage_metadata | update_profile |
 | users | avatar_url, photo_ids | string/ID[] / 本地资源与照片表 | profile, photo, editPhotos | profile_photos | local_storage_metadata | save_profile_photos |
 | users | goal_ids, interest_ids, icebreaker_ids, song_id | ID[]/nullable ID | profile, expanded, ibSelect | 对应选项/问题/歌曲表 | local_storage_metadata | update_profile |
-| users | verification_status | verified/required/expired/deleted | verified, reverify | accounts | local_storage_metadata | apply_verification |
+| users | verification_status | verified/pending/required/expired/deleted | verified, reverify | accounts | local_storage_metadata | 真实学生认证服务（本地apply_verification不修改） |
 | goals / interests | item_id, label, emoji | string / 必填 | 原型目标/兴趣标签 | users 的 ID 数组 | store_seed | derived |
 | icebreakers | question_id, user_id, text, position | string/string/string/number | ibSelect, editIce | users | local_storage_metadata | save_icebreakers |
 | profile_photos | photo_id, user_id, media_url, position | ID/ID/string/number | photo, editPhotos | users, media_files | local_storage_metadata | save_profile_photos |

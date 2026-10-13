@@ -67,6 +67,8 @@ export function validate_data(data) {
   for (const [table, key] of Object.entries(tables)) ensure(Array.isArray(data[table]) && data[table].every((row) => typeof row[key] === 'string' && row[key]) && unique(data[table], (row) => row[key]), `Invalid ${table} identifiers.`)
   ensure(unique(data.accounts, (row) => row.email.toLowerCase()), 'Duplicate account email.')
   for (const row of data.accounts) ensure(has('users', row.user_id) && ['active', 'deleted'].includes(row.status), 'Invalid account.')
+  for (const row of data.accounts) if (row.local_verification != null) ensure(row.local_verification.method === 'fixed_code' && row.local_verification.status === 'verified' && Number.isFinite(row.local_verification.verified_at), 'Invalid local verification.')
+  if (data.auth_flow.pending_registration_account_id != null) ensure(has('accounts', data.auth_flow.pending_registration_account_id), 'Invalid registration account.')
   if (owner_id(data)) ensure(data.accounts.some((row) => row.account_id === data.session.account_id && row.user_id === owner_id(data)) && Number.isFinite(data.session.expires_at), 'Invalid session.')
   for (const row of data.users) {
     ensure(typeof row.user_name === 'string' && row.user_name && (row.age === null || Number.isInteger(row.age) && row.age >= 18), 'Invalid profile.')

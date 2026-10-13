@@ -1,0 +1,18 @@
+{
+  "phase": "verification-code",
+  "result": "passed",
+  "server_pid": 89306,
+  "checks": [
+    "direct guest Code exposes no account data and opens the real Login",
+    "source six 44x60 cells and local-only copy render without a native host",
+    "empty, short, long, non-ASCII and wrong six-digit values fail with zero writes",
+    "deferred Change email and failed persistence never mutate the account or lose the input",
+    "009789 writes once after 500ms despite double tap; session, student identity, coins and relationships are untouched",
+    "refresh restores the same account result without another write or skeleton",
+    "leaving Code during Loading cancels verification instead of committing on a hidden page",
+    "local unverified login routes to Code, not a false student-verified Home",
+    "small-screen error content scrolls; fixed CTA respects 62/34 safe areas and direct Back returns Login"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}
