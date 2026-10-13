@@ -1,115 +1,263 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, getCurrentInstance, onUnmounted } from 'vue'
+import { onHide, onResize } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
-import { push_route } from '@/utils/routeTransition.js'
+import { switch_tab_route } from '@/utils/routeTransition.js'
+import { home_destination, require_home_destination_ready } from '@/utils/homeNavigation.js'
 import MainTabFrame from '@/components/MainTabFrame.vue'
+import SourceIcon from '@/components/SourceIcon.vue'
+import UserAvatar from '@/components/UserAvatar.vue'
+import CimoaBrand from '@/components/CimoaBrand.vue'
+import ConnectionGoalsPopover from '@/components/ConnectionGoalsPopover.vue'
 
-const store = use_app_store()
-const greeting = computed(() => `Good morning, ${store.current_user.user_name}`)
-const people = computed(() => store.visible_people.slice(0, 3))
-const upcoming = computed(() => store.events.filter((event) => event.joined))
-const open_discover = () => push_route('/pages/discover/index')
-const open_events = () => push_route('/pages/events/index')
-const open_profile = () => push_route('/pages/profile/index')
-const open_person = (user_id) => push_route(`/pages/discover/index?view=profile&user_id=${user_id}`)
-const open_event = (event_id) => push_route(`/pages/events/index?view=detail&event_id=${event_id}`)
-const open_match = () => push_route('/pages/auto-match/index')
-const save_event = (event_id) => store.toggle_event_saved(event_id)
+const store = use_app_store(), instance = getCurrentInstance(), frame = ref(null)
+const goal_user_id = ref(''), anchor = ref(null), navigation_error = ref(''), navigating = ref(false)
+const cards = computed(() => store.home_connections)
+const match_card = computed(() => store.home_match_card)
+let selection = 0
+const close_goals = () => { selection++; goal_user_id.value = ''; anchor.value = null }
+const open_goals = (user_id) => {
+  if (goal_user_id.value === user_id) { close_goals(); return }
+  const token = ++selection
+  uni.createSelectorQuery().in(instance.proxy).select(`#connection-${user_id}`).boundingClientRect().select('.home-header').boundingClientRect().select('.home-content').boundingClientRect().exec((rects) => {
+    if (selection !== token || !store.user_by_id(user_id) || !rects[0]) return
+    const info = uni.getWindowInfo()
+    // Bottom boundary is the shared scroll viewport, not a second safe-area padding.
+    uni.createSelectorQuery().select('.main-tab-scroll').boundingClientRect((scroll) => {
+      if (selection !== token) return
+      anchor.value = { ...rects[0], limit_top: rects[1]?.bottom || 0, limit_bottom: scroll?.bottom || info.windowHeight }
+      goal_user_id.value = user_id
+    }).exec()
+  })
+}
+const target = (kind, id) => { try { return home_destination(store, kind, id) } catch { return '' } }
+const navigate = async (kind, id) => {
+  if (navigating.value) return
+  close_goals(); navigation_error.value = ''; navigating.value = true
+  try {
+    const url = require_home_destination_ready(home_destination(store, kind, id))
+    if (kind === 'discover') await switch_tab_route(url)
+    else await frame.value.navigate_forward(url)
+  } catch (error) { navigation_error.value = error.message } finally { navigating.value = false }
+}
+const card_id = (card) => card.kind === 'connected' ? 'home.openMaya.click.1' : card.kind === 'auto_match' ? 'home.openLiam.click.1' : 'home.openJordan.click.1'
+const goal_id = (card) => card.kind === 'connected' ? 'home.popMaya.click.1' : card.kind === 'auto_match' ? 'home.popLiam.click.1' : 'home.popJordan.click.1'
+const status_label = (kind) => ({ connected: 'Connected', auto_match: 'Auto Match', invite: 'Invite' })[kind]
+onHide(close_goals)
+onResize(close_goals)
+onUnmounted(close_goals)
 </script>
 
 <template>
-  <MainTabFrame route="pages/home/index">
+  <MainTabFrame ref="frame" route="pages/home/index" @scroll="close_goals">
     <template #header>
-      <view class="legacy-tab-header"><view class="cimoa-header"><view><text class="cimoa-eyebrow">Cimoa · Campus life</text><text class="cimoa-title">{{ greeting }}</text></view><view class="cimoa-avatar" role="button" aria-label="Open profile" @click="open_profile"><image :src="store.current_user.avatar_url" mode="aspectFill" /></view></view></view>
+      <view class="home-header">
+        <view class="home-toolbar">
+          <view class="home-profile" role="button" aria-label="Open profile" :aria-disabled="navigating" data-interaction="home.openMe.click.1" :data-target="target('profile')" @click="navigate('profile')"><view class="profile-icon"><SourceIcon name="person" /></view></view>
+          <CimoaBrand />
+          <view class="home-match" role="button" aria-label="Start Auto Match" :aria-disabled="navigating" data-interaction="home.startAutoMatch.click.1" :data-target="target('match')" @click="navigate('match')">
+            <view class="flash-icon"><SourceIcon name="lightning" /></view>
+            <text v-if="store.free_matches_remaining > 0" class="quota-badge" :aria-label="`${store.free_matches_remaining} free matches remaining`">{{ store.free_matches_remaining }}</text>
+            <image v-else-if="store.session.is_authenticated" class="coin-badge" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" aria-label="Paid matching after daily free quota" />
+          </view>
+        </view>
+        <text class="home-title">People you’ve met</text>
+        <text class="home-subtitle">Keep in touch and see what’s next.</text>
+        <text v-if="navigation_error" class="home-error" role="alert">{{ navigation_error }}</text>
+      </view>
     </template>
-    <view class="legacy-tab-content">
-      <view class="hero-card"><view class="hero-card__copy"><text class="cimoa-eyebrow hero-card__eyebrow">Your week, curated</text><text class="hero-card__title">Make room for a little more life.</text><text class="hero-card__body">Find people, places, and plans that feel like you.</text><view class="cimoa-button hero-card__button" role="button" @click="open_discover">Explore nearby</view></view><image class="hero-card__image" src="/static/assets/head/maya-full.png" mode="aspectFill" /></view>
-      <view class="section-head"><view><text class="cimoa-eyebrow">For you</text><text class="cimoa-section-title">People worth meeting</text></view><text class="section-link" role="button" @click="open_discover">See all</text></view>
-      <view class="people-list"><view v-for="person in people" :key="person.user_id" class="person-card cimoa-card" role="button" @click="open_person(person.user_id)"><view class="person-card__avatar cimoa-avatar"><image :src="person.avatar_url" mode="aspectFill" /></view><text class="person-card__name">{{ person.user_name }}</text><text class="person-card__detail">{{ person.major }} · {{ person.distance }}</text><view class="person-card__action">View profile <text class="person-card__plus">+</text></view></view></view>
-      <view class="section-head events-head"><view><text class="cimoa-eyebrow">On your radar</text><text class="cimoa-section-title">Upcoming events</text></view><text class="section-link" role="button" @click="open_events">Browse</text></view>
-      <view v-for="event in upcoming" :key="event.event_id" class="event-card cimoa-card" role="button" @click="open_event(event.event_id)"><image class="event-card__image" :src="event.image_url" mode="aspectFill" /><view class="event-card__info"><text class="event-card__title">{{ event.title }}</text><text class="event-card__meta">{{ event.date_label }} · {{ event.location }}</text></view><view class="event-card__save" :class="{ saved: event.saved }" role="button" aria-label="Save event" @click.stop="save_event(event.event_id)">{{ event.saved ? 'Saved' : 'Save' }}</view></view>
-      <view class="quote-card"><text class="quote-card__copy">The best plans are the ones you almost did not make.</text><text class="quote-card__byline">A little nudge from Cimoa</text></view>
-      <view class="match-link cimoa-card" role="button" @click="open_match"><view><text class="cimoa-eyebrow">Auto match</text><text class="match-link__title">Try one intentional connection.</text></view><text class="match-link__action">Open</text></view>
+    <view class="home-content">
+      <view v-if="store.hydration_status === 'error'" class="home-empty home-read-error">
+        <text class="empty-title">Your connections couldn’t be loaded.</text><text class="empty-copy">{{ store.hydration_error }}</text>
+        <view class="home-secondary" role="button" data-interaction="home.retry.click.1" @click="store.hydrate()">Retry</view>
+      </view>
+      <view v-else-if="!store.session.is_authenticated" class="home-empty"><text class="empty-title">Your session has expired.</text><text class="empty-copy">Please sign in again to view your connections.</text></view>
+      <template v-else>
+        <template v-if="!cards.length">
+          <view class="home-empty"><text class="empty-title">Your new connections will appear here.</text><text class="empty-copy">Join the matching pool or browse people on your campus to get started.</text></view>
+          <view class="empty-actions">
+            <view class="home-primary" role="button" :aria-disabled="navigating" data-interaction="home.startAutoMatch.click.2" :data-target="target('match')" @click="navigate('match')"><view class="empty-flash"><SourceIcon name="lightning" /></view><text>Start Auto Match</text></view>
+            <view class="home-secondary" role="button" data-interaction="home.exploreDiscover.click.1" :data-target="target('discover')" @click="navigate('discover')">Explore People</view>
+          </view>
+        </template>
+        <view v-else class="connections">
+          <view v-for="card in cards" :id="`connection-${card.user_id}`" :key="card.user_id" class="connection" role="button" :aria-disabled="navigating" :data-interaction="card_id(card)" :data-target="target('card', card.user_id)" @click="navigate('card', card.user_id)">
+            <view class="connection-portrait"><view class="connection-avatar"><UserAvatar :src="card.user.avatar_url" :name="card.user.user_name" /></view><text class="connection-status" :class="`connection-status--${card.kind}`">{{ status_label(card.kind) }}</text></view>
+            <view class="connection-info">
+              <view class="connection-heading"><text class="connection-name">{{ card.user.user_name }}{{ card.user.age ? `, ${card.user.age}` : '' }}</text><view class="connection-chevron"><SourceIcon name="chevron" /></view></view>
+              <view class="connection-tags">
+                <view class="university-tag"><view class="tag-icon"><SourceIcon name="university" /></view><text>{{ card.user.university || 'University not shared' }}</text></view>
+                <view class="goals-tag" role="button" :aria-label="`View ${card.user.user_name}’s connection goals`" :aria-expanded="goal_user_id === card.user_id" :data-interaction="goal_id(card)" @click.stop="open_goals(card.user_id)"><view class="tag-icon"><SourceIcon name="goal-search" /></view><text>{{ card.goals.slice(0, 3).map(goal => goal.emoji).join('') || 'Goals' }}</text></view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view v-if="match_card" class="match-status" role="button" data-interaction="home.amCardGo.click.1" :data-target="target('status')" @click="navigate('status')"><view class="match-status-icon"><view><SourceIcon name="lightning" /></view></view><view class="match-status-copy"><text class="match-status-title">{{ match_card.title }}</text><text class="match-status-subtitle">{{ match_card.subtitle }}</text></view><text class="match-status-action">{{ match_card.action }}</text></view>
+      </template>
     </view>
+    <template #overlays><ConnectionGoalsPopover :user-id="goal_user_id" :anchor="anchor" @close="close_goals" /></template>
   </MainTabFrame>
 </template>
 
 <style scoped>
-.hero-card {
+.home-header { padding: 11.45rpx 38.168rpx 0; }
+.home-toolbar { display: flex; align-items: flex-start; justify-content: space-between; }
+.home-profile, .home-match {
   position: relative;
-  min-height: 360rpx;
-  overflow: hidden;
-  margin-bottom: 46rpx;
-  padding: 34rpx;
-  border-radius: 32rpx;
-  background: var(--cimoa-deep);
-  color: var(--cimoa-card);
-}
-.hero-card__copy { position: relative; z-index: 1; width: 62%; }
-.hero-card__eyebrow { color: var(--cimoa-primary); }
-.hero-card__title { display: block; margin: 20rpx 0 12rpx; font-size: 42rpx; font-weight: 700; line-height: 52rpx; }
-.hero-card__body { display: block; color: var(--cimoa-tertiary); font-size: 23rpx; line-height: 34rpx; }
-.hero-card__button { width: 250rpx; min-height: 70rpx; margin-top: 26rpx; font-size: 22rpx; }
-.hero-card__image {
-  position: absolute;
-  right: -34rpx;
-  bottom: -10rpx;
-  width: 310rpx;
-  height: 390rpx;
-  opacity: .75;
-}
-.section-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 22rpx; }
-.section-link { padding-bottom: 6rpx; color: var(--cimoa-secondary); font-size: 22rpx; }
-.people-list { display: flex; gap: 16rpx; overflow: hidden; }
-.person-card { flex: 1; min-width: 0; padding: 20rpx; }
-.person-card__avatar { width: 86rpx; height: 86rpx; margin-bottom: 16rpx; }
-.person-card__name {
-  display: block;
-  overflow: hidden;
-  color: var(--cimoa-title);
-  font-size: 24rpx;
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.person-card__detail {
-  display: block;
-  margin-top: 6rpx;
-  overflow: hidden;
-  color: var(--cimoa-secondary);
-  font-size: 18rpx;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.person-card__action {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20rpx;
-  color: var(--cimoa-success);
-  font-size: 19rpx;
-  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 103.053rpx;
+  height: 103.053rpx;
+  border-radius: 50%;
 }
-.person-card__plus { color: var(--cimoa-title); font-size: 26rpx; }
-.events-head { margin-top: 46rpx; }
-.event-card { display: flex; align-items: center; margin-bottom: 14rpx; padding: 18rpx; }
-.event-card__image { width: 82rpx; height: 82rpx; border-radius: 18rpx; }
-.event-card__info { flex: 1; min-width: 0; margin-left: 18rpx; }
-.event-card__title {
+.home-profile { background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-header); }
+.profile-icon { width: 49.618rpx; height: 49.618rpx; }
+.home-match { background: var(--cimoa-gradient-lightning); box-shadow: var(--cimoa-shadow-lightning); color: var(--cimoa-text-inverse); }
+.flash-icon { width: 38.168rpx; height: 53.435rpx; }
+.quota-badge {
+  position: absolute;
+  top: -7.634rpx;
+  right: -7.634rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 45.802rpx;
+  height: 45.802rpx;
+  padding: 0 11.45rpx;
+  border-radius: 22.901rpx;
+  background: var(--cimoa-surface-card);
+  color: var(--cimoa-text-badge);
+  box-shadow: var(--cimoa-shadow-badge);
+  font-size: 24.809rpx;
+  font-weight: 800;
+}
+.coin-badge {
+  position: absolute;
+  top: -7.634rpx;
+  right: -7.634rpx;
+  width: 45.802rpx;
+  height: 45.802rpx;
+  filter: drop-shadow(var(--cimoa-shadow-coin));
+}
+.home-title {
   display: block;
-  overflow: hidden;
-  color: var(--cimoa-title);
-  font-size: 24rpx;
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-top: 49.618rpx;
+  font-size: 72.519rpx;
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -.035em;
 }
-.event-card__meta { display: block; margin-top: 8rpx; color: var(--cimoa-secondary); font-size: 18rpx; }
-.event-card__save { padding: 12rpx 4rpx 12rpx 12rpx; color: var(--cimoa-secondary); font-size: 18rpx; }
-.event-card__save.saved { color: var(--cimoa-success); }
-.quote-card { margin-top: 34rpx; padding: 30rpx; border-radius: 26rpx; background: var(--cimoa-tinted); }
-.quote-card__copy { display: block; color: var(--cimoa-title); font-size: 27rpx; font-weight: 650; line-height: 38rpx; }
-.quote-card__byline { display: block; margin-top: 16rpx; color: var(--cimoa-secondary); font-size: 18rpx; }
-.match-link { display: flex; align-items: center; justify-content: space-between; margin-top: 16rpx; padding: 22rpx; }
-.match-link__title { display: block; margin-top: 8rpx; color: var(--cimoa-title); font-size: 23rpx; font-weight: 700; }
-.match-link__action { color: var(--cimoa-success); font-size: 19rpx; font-weight: 700; }
+.home-subtitle { display: block; margin-top: 15.267rpx; font-size: 34.351rpx; color: var(--cimoa-text-secondary); letter-spacing: -.015em; }
+.home-content { padding: 0 38.168rpx 38.168rpx; }
+.connections { display: flex; flex-direction: column; gap: 26.718rpx; padding-top: 41.985rpx; }
+.connection {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 26.718rpx;
+  padding: 30.534rpx;
+  border-radius: 49.618rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-card);
+}
+.connection-portrait { position: relative; flex: none; width: 148.855rpx; padding-bottom: 19.084rpx; }
+.connection-avatar { width: 148.855rpx; height: 148.855rpx; border-radius: 50%; }
+.connection-status {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  height: 45.802rpx;
+  padding: 0 17.176rpx;
+  border-radius: 22.901rpx;
+  border: 2px solid var(--cimoa-surface-card);
+  font-size: 22.901rpx;
+  font-weight: 700;
+}
+.connection-status--connected { background: var(--cimoa-status-connected-bg); color: var(--cimoa-status-connected-ink); }
+.connection-status--auto_match { background: var(--cimoa-gradient-match-badge); color: var(--cimoa-text-inverse); }
+.connection-status--invite { background: var(--cimoa-status-invite-bg); color: var(--cimoa-status-invite-ink); }
+.connection-info { flex: 1; min-width: 0; }
+.connection-heading { display: flex; align-items: center; gap: 15.267rpx; }
+.connection-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 38.168rpx;
+  font-weight: 800;
+  letter-spacing: -.025em;
+  overflow-wrap: anywhere;
+}
+.connection-chevron { flex: none; width: 34.351rpx; height: 34.351rpx; }
+.connection-tags { display: flex; flex-wrap: wrap; gap: 11.45rpx; margin-top: 19.084rpx; }
+.university-tag, .goals-tag {
+  display: flex;
+  align-items: center;
+  gap: 11.45rpx;
+  min-height: 72.519rpx;
+  padding: 0 19.084rpx;
+  border-radius: 36.26rpx;
+  background: var(--cimoa-surface-tinted);
+}
+.university-tag { font-size: 28.626rpx; font-weight: 600; overflow-wrap: anywhere; max-width: 100%; }
+.goals-tag { font-size: 32.443rpx; letter-spacing: 1.908rpx; }
+.tag-icon { flex: none; width: 32.443rpx; height: 32.443rpx; }
+.home-empty { margin-top: 64.885rpx; padding: 57.252rpx 41.985rpx; border-radius: 49.618rpx; background: var(--cimoa-surface-empty); text-align: center; }
+.empty-title { display: block; font-size: 38.168rpx; font-weight: 700; }
+.empty-copy { display: block; margin-top: 19.084rpx; font-size: 31.489rpx; line-height: 1.5; color: var(--cimoa-text-secondary); }
+.empty-actions { margin-top: 41.985rpx; }
+.home-primary, .home-secondary { display: flex; align-items: center; justify-content: center; }
+.home-primary {
+  min-height: 118.321rpx;
+  border-radius: 59.16rpx;
+  gap: 26.718rpx;
+  background: var(--cimoa-gradient-primary);
+  color: var(--cimoa-text-inverse);
+  box-shadow: var(--cimoa-shadow-primary);
+  font-size: 40.076rpx;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.empty-flash { width: 38.168rpx; height: 49.618rpx; }
+.home-secondary {
+  min-height: 106.87rpx;
+  margin-top: 22.901rpx;
+  border-radius: 53.435rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-explore);
+  font-size: 34.351rpx;
+  font-weight: 600;
+}
+.home-error { display: block; margin-top: 15.267rpx; color: var(--cimoa-status-danger); font-size: 26.718rpx; line-height: 1.4; }
+.match-status {
+  display: flex;
+  align-items: center;
+  gap: 26.718rpx;
+  margin-top: 45.802rpx;
+  padding: 34.351rpx;
+  border-radius: 45.802rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-match-card);
+}
+.match-status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 99.237rpx;
+  height: 99.237rpx;
+  border-radius: 50%;
+  background: var(--cimoa-gradient-primary);
+  color: var(--cimoa-text-inverse);
+}
+.match-status-icon > view { width: 32.443rpx; height: 41.985rpx; }
+.match-status-copy { flex: 1; min-width: 0; }
+.match-status-title { display: block; font-size: 34.351rpx; font-weight: 800; letter-spacing: -.02em; }
+.match-status-subtitle { display: block; margin-top: 3.817rpx; font-size: 27.672rpx; color: var(--cimoa-text-secondary); }
+.match-status-action { flex: none; max-width: 110.687rpx; font-size: 28.626rpx; font-weight: 700; color: var(--cimoa-text-link); }
 </style>

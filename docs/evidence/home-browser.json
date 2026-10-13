@@ -1,0 +1,158 @@
+{
+  "result": "passed",
+  "runtime": "Chromium, fresh isolated profile, 393 x 852",
+  "server_pid": 47090,
+  "checks": [
+    {
+      "name": "three source tabs, capsule geometry, restored session has no skeleton",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/home/index",
+        "depth": 1,
+        "active": "Home",
+        "bar": {
+          "x": 20,
+          "y": 762,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 750,
+          "height": 586.546875
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "two bidirectional cycles, same-tab double click, unchanged stack and fixed bar",
+      "result": "passed"
+    },
+    {
+      "name": "scroll does not move navigation or cover final content",
+      "result": "passed"
+    },
+    {
+      "name": "browser bridge injection owns top and bottom once (not native-device evidence)",
+      "result": "passed",
+      "detail": {
+        "route": "#/pages/events/index",
+        "depth": 1,
+        "active": "Events",
+        "bar": {
+          "x": 20,
+          "y": 728,
+          "width": 353,
+          "height": 62
+        },
+        "scroll": {
+          "bottom": 716,
+          "height": 554.84375
+        },
+        "skeleton": false
+      }
+    },
+    {
+      "name": "real fixture login: each main tab consumes one skeleton; return consumes none",
+      "result": "passed"
+    },
+    {
+      "name": "refresh does not prepare another skeleton cycle",
+      "result": "passed"
+    },
+    {
+      "name": "real IndexedDB Blob survives page reload and is deleted cleanly",
+      "result": "passed"
+    },
+    {
+      "name": "Home canonical cards, original structure, 78 avatar, 353 card, 38 title and quota badge",
+      "result": "passed",
+      "detail": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 393,
+          "height": 163.453125,
+          "bottom": 163.453125
+        },
+        "card": {
+          "x": 20,
+          "y": 185.453125,
+          "width": 353,
+          "height": 119.96875,
+          "bottom": 305.421875
+        },
+        "avatar": {
+          "x": 35.984375,
+          "y": 201.4375,
+          "width": 78,
+          "height": 78,
+          "bottom": 279.4375
+        },
+        "bar": {
+          "x": 20,
+          "y": 762,
+          "width": 353,
+          "height": 62,
+          "bottom": 824
+        }
+      }
+    },
+    {
+      "name": "all goals are Store-backed; first/repeated popovers, no bubbling, outside close, bounds and no writes",
+      "result": "passed"
+    },
+    {
+      "name": "five deferred dependencies validate exact entity destinations and fail explicitly; no fake navigation or writes",
+      "result": "passed"
+    },
+    {
+      "name": "empty CTA really replaces Discover; returning preserves empty data and consumes no skeleton",
+      "result": "passed"
+    },
+    {
+      "name": "long names and goals wrap; long list scrolls, closes popover and keeps fixed header and tabbar",
+      "result": "passed"
+    },
+    {
+      "name": "missing avatar uses neutral source icon, not another person",
+      "result": "passed"
+    },
+    {
+      "name": "real saved avatar Blob resolves to a decoded object URL again after refresh",
+      "result": "passed"
+    },
+    {
+      "name": "exhausted quota uses local coin image and survives refresh",
+      "result": "passed"
+    },
+    {
+      "name": "four real matching states use the same match ID and preserve persisted deadlines on refresh",
+      "result": "passed"
+    },
+    {
+      "name": "accepted request and blocked-user fixtures synchronize Home through shared selectors",
+      "result": "passed"
+    },
+    {
+      "name": "corrupt storage shows retryable error, never empty success or overwrite",
+      "result": "passed"
+    },
+    {
+      "name": "320 x 568 long-goal panel stays in viewport and closes on viewport change",
+      "result": "passed"
+    },
+    {
+      "name": "Home badge resets across UTC midnight without navigation, balance changes or quota-history writes",
+      "result": "passed"
+    },
+    {
+      "name": "safe area browser injection screenshot recorded; native WKWebView remains deferred",
+      "result": "passed"
+    },
+    {
+      "name": "no browser runtime exceptions",
+      "result": "passed"
+    }
+  ],
+  "cleaned_up": true
+}

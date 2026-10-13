@@ -112,7 +112,7 @@ export function create_seed(now = Date.now()) {
     profile_photos, icebreakers, media_files: [],
     relationships: [[me, 'user_chloe'], ['user_chloe', me]].map(([from_user_id, to_user_id], index) => ({ relationship_id: `rel_seed_${index}`, from_user_id, to_user_id, created_at: now })),
     requests: [{ request_id: 'request_lina', sender_id: 'user_lina', recipient_id: me, question_id: `${me}_q_0`, kind: 'voice', text: '', audio_id: null, status: 'pending', fixture_media_unavailable: true, created_at: now - 3600000, resolved_at: null }],
-    match_sessions: [{ match_id: 'match_liam', owner_user_id: me, candidate_id: 'user_liam', status: 'found', created_at: now, started_at: now, expires_at: now + 45000, priority_until: null, paused_at: null, self_accepted: false, peer_accepted: false, fixture: true }],
+    match_sessions: [{ match_id: 'match_liam', owner_user_id: me, candidate_id: 'user_liam', status: 'found', created_at: now, started_at: now, expires_at: now + 45000, priority_until: null, paused_at: null, self_accepted: false, peer_accepted: false, queue_position: null, estimated_wait_seconds: null, fixture: true }],
     match_preferences: [{ owner_user_id: me, age_min: 18, age_max: 30, height_min: 150, height_max: 190, distance_max: 100, university: 'All', major: 'All', interest_ids: ['kpop'], mbti: 'All', religion: 'All', drinking: 'All', gender: 'Everyone', language: 'English', goal_id: 'friends' }],
     quota_policy: QUOTA_POLICY, match_quota: [],
     events, memberships, organizers: [{ organizer_id: 'organizer_hkust', name: 'HKUST Student Union', avatar_url: '', description: '', update_text: '' }],

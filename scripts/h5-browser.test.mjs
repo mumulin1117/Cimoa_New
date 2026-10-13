@@ -4,10 +4,11 @@ import path from 'node:path'
 import http from 'node:http'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
-import { create_seed } from '../src/stores/seed.js'
+import { test_home } from './lib/home-browser.mjs'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const root = path.resolve('dist/build/h5'), evidence = path.resolve('docs/evidence')
+const home_mode = process.argv.includes('--home')
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
 const server = http.createServer((req, res) => {
   const filename = path.resolve(root, '.' + decodeURIComponent(new URL(req.url, 'http://localhost').pathname === '/' ? '/index.html' : new URL(req.url, 'http://localhost').pathname))
@@ -15,7 +16,7 @@ const server = http.createServer((req, res) => {
   res.setHeader('Content-Type', mime[path.extname(filename)] || 'application/octet-stream'); fs.createReadStream(filename).pipe(res)
 })
 let browser
-const errors = [], report = { runtime: 'Chromium, fresh isolated profile, 393 x 852', server_pid: process.pid, checks: [] }
+const errors = [], report = { result: 'failed', runtime: 'Chromium, fresh isolated profile, 393 x 852', server_pid: process.pid, checks: [] }
 const check = (name, detail) => { report.checks.push({ name, result: 'passed', detail }); console.log(`PASS ${name}`) }
 try {
   await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve) })
@@ -80,14 +81,16 @@ try {
   assert.deepEqual(media_result, { value: 'persisted across reload', deleted: true })
   check('real IndexedDB Blob survives page reload and is deleted cleanly')
   fs.mkdirSync(evidence, { recursive: true })
-  await page.screenshot({ path: path.join(evidence, 'stage4-foundation.png') })
+  if (home_mode) await test_home({ page, origin, evidence, check, context })
+  else await page.screenshot({ path: path.join(evidence, 'stage4-foundation.png') })
   assert.deepEqual(errors, [])
   check('no browser runtime exceptions')
+  report.result = 'passed'
 } finally {
   await browser?.close()
   await new Promise((resolve) => server.close(resolve))
   report.cleaned_up = true
   fs.mkdirSync(evidence, { recursive: true })
-  fs.writeFileSync(path.join(evidence, 'stage4-browser.json'), JSON.stringify(report, null, 2) + '\n')
+  fs.writeFileSync(path.join(evidence, home_mode ? 'home-browser.json' : 'stage4-browser.json'), JSON.stringify(report, null, 2) + '\n')
   console.log('Temporary preview and browser closed.')
 }

@@ -1,0 +1,1 @@
+import{a as s,c as a,d as r}from"./index-Bqn_YvsA.js";const t=(s,a)=>{const r=s.__vccOpts||s;for(const[t,e]of a)r[t]=e;return r};const e=t({},[["render",function(t,e){const n=r;return s(),a(n,{class:"safe-area","aria-hidden":"true"})}],["__scopeId","data-v-219b79be"]]);export{e as T,t as _};

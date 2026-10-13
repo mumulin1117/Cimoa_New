@@ -98,12 +98,12 @@ Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码
 | Onboarding / Icebreakers / Completed | route=obIce&ice=1 | 三级 | /pages/onboarding/ice | pending |
 | Onboarding / Notifications / Pre-Permission | route=obNotif | 三级 | /pages/onboarding/notif | pending |
 | Onboarding / Complete / Default | route=obComplete | 流程状态页 | /pages/onboarding/complete | pending |
-| Home / People Met / Empty | route=home&newUser=1 | 主 Tab | /pages/home/index | pending |
+| Home / People Met / Empty | route=home&newUser=1 | 主 Tab | /pages/home/index | in_progress |
 | Permissions / Photos / Pre-Permission | route=permPhotos | 三级 | /pages/permissions/photos | pending |
 | Permissions / Camera / Pre-Permission | route=permCamera | 三级 | /pages/permissions/camera | pending |
 | Permissions / Microphone / Pre-Permission | route=permMic | 三级 | /pages/permissions/mic | pending |
 | Permissions / Notifications / Pre-Permission | route=permNotif | 三级 | /pages/permissions/notif | pending |
-| Home / People Met / Default | route=home | 主 Tab | /pages/home/index | pending |
+| Home / People Met / Default | route=home | 主 Tab | /pages/home/index | in_progress |
 | Discover / Profile / Photo | route=photo | 主 Tab | /pages/discover/index | pending |
 | Discover / Profile / Expanded | route=expanded | 二级 | /pages/discover/profile | pending |
 | Events / Explore / Default | route=events | 主 Tab | /pages/events/index | pending |
@@ -130,10 +130,10 @@ Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码
 | Auto Match / Queue / No Match | route=amNoMatch&am=noMatch | 流程状态页 | /pages/auto-match/no-match | pending |
 | Auto Match / History / Default | route=amHistory&am=connected | 三级 | /pages/auto-match/history | pending |
 | Auto Match / Boost / Confirmation | route=amSearching&am=searching&sheet=amBoost | 确认弹窗 | src/components/AmBoostConfirmDialog.vue | pending |
-| Home / Auto Match / Searching | route=home&am=searching | 主 Tab | /pages/home/index | pending |
-| Home / Auto Match / Match Found | route=home&am=found | 主 Tab | /pages/home/index | pending |
-| Home / Auto Match / Waiting | route=home&am=waiting | 主 Tab | /pages/home/index | pending |
-| Home / Auto Match / Connected | route=home&am=connected | 主 Tab | /pages/home/index | pending |
+| Home / Auto Match / Searching | route=home&am=searching | 主 Tab | /pages/home/index | in_progress |
+| Home / Auto Match / Match Found | route=home&am=found | 主 Tab | /pages/home/index | in_progress |
+| Home / Auto Match / Waiting | route=home&am=waiting | 主 Tab | /pages/home/index | in_progress |
+| Home / Auto Match / Connected | route=home&am=connected | 主 Tab | /pages/home/index | in_progress |
 | Messages / Chat / Connected | route=chat | 二级 | /pages/messages/chat | pending |
 | Video Call / Incoming / Default | route=callIncoming | 三级 | /pages/messages/call/waiting | pending |
 | Video Call / Active / Default | route=callActive | 三级 | /pages/messages/call/waiting | pending |
@@ -199,9 +199,9 @@ Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码
 | System / Empty / Generic | route=sysEmpty | 流程状态页 | /pages/system/empty | pending |
 | System / Permission Denied / Default | route=sysPermDenied | 流程状态页 | /pages/system/perm-denied | pending |
 | System / Session Expired / Default | route=sysSessionExpired | 流程状态页 | /pages/system/session-expired | pending |
-| Home / Connection Goals / Chloe | route=home&pop=Chloe | Popover | src/components/ConnectionGoalsPopover.vue | pending |
-| Home / Connection Goals / Liam | route=home&pop=Liam | Popover | src/components/ConnectionGoalsPopover.vue | pending |
-| Home / Connection Goals / Jordan | route=home&pop=Jordan | Popover | src/components/ConnectionGoalsPopover.vue | pending |
+| Home / Connection Goals / Chloe | route=home&pop=Chloe | Popover | src/components/ConnectionGoalsPopover.vue | in_progress |
+| Home / Connection Goals / Liam | route=home&pop=Liam | Popover | src/components/ConnectionGoalsPopover.vue | in_progress |
+| Home / Connection Goals / Jordan | route=home&pop=Jordan | Popover | src/components/ConnectionGoalsPopover.vue | in_progress |
 | Coins / Spend / Text Confirmation | route=ibText&sheet=coinVoice&ctx=text | 确认弹窗 | src/components/CoinVoiceConfirmDialog.vue | pending |
 | Coins / Deduction / Confirmation | route=ibPreview&sheet=coinConfirm | 确认弹窗 | src/components/CoinConfirmDialog.vue | pending |
 | Discover / Icebreaker / Discard Recording | route=ibVoice&sheet=voiceDiscard | 确认弹窗 | src/components/VoiceDiscardConfirmDialog.vue | pending |

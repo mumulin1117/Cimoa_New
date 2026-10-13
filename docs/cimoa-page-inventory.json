@@ -2058,8 +2058,8 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
@@ -2491,8 +2491,8 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
@@ -5218,8 +5218,8 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
@@ -5362,8 +5362,8 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
@@ -5506,8 +5506,8 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
@@ -5650,8 +5650,8 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
@@ -11127,8 +11127,8 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
@@ -11271,8 +11271,8 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
@@ -11415,8 +11415,8 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
+    "status": "in_progress",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "Home 本页可先验收；待依赖时回 pending；完整闭环与推送完成后才 verified",
     "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"

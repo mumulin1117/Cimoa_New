@@ -33,7 +33,8 @@ export const use_app_store = defineStore('app', {
     user_by_id: (state) => (id) => ready(state) ? profile(state.data, id) : null,
     goals_for_user: (state) => (id) => ready(state) ? s.goals_for_user(state.data, id) : [],
     visible_people: (state) => ready(state) ? state.data.users.filter((row) => row.user_id !== s.owner_id(state.data) && row.discoverable && s.visible(state.data, row.user_id) && state.data.settings.find((settings) => settings.owner_user_id === row.user_id)?.privacy.discover_visible !== false).map((row) => profile(state.data, row.user_id)) : [],
-    home_connections: (state) => ready(state) ? s.home_cards(state.data) : [],
+    home_connections: (state) => ready(state) ? s.home_cards(state.data, state.clock_ms) : [],
+    home_match_card: (state) => ready(state) ? s.home_match_card(state.data, state.clock_ms) : null,
     request_by_id: (state) => (id) => ready(state) ? clone_data(state.data.requests.find((row) => row.request_id === id && [row.sender_id, row.recipient_id].includes(s.owner_id(state.data)) && s.visible(state.data, row.sender_id) && s.visible(state.data, row.recipient_id)) || null) : null,
     match_by_id: (state) => (id) => ready(state) ? s.owned_matches(state.data, state.clock_ms).find((row) => row.match_id === id) || null : null,
     active_match: (state) => ready(state) ? s.active_match(state.data, state.clock_ms) : null,
@@ -196,7 +197,7 @@ export const use_app_store = defineStore('app', {
         if (!quota) { quota = { owner_user_id: s.owner_id(data), date_key, used_count: 0 }; data.match_quota.push(quota) }
         if (quota.used_count < 3) quota.used_count += 1
         else add_transaction(data, -10, `match:${match_id}`, 'spend', match_id, now)
-        data.match_sessions.push({ match_id, owner_user_id: s.owner_id(data), candidate_id: null, status: 'searching', created_at: now, started_at: now, paused_at: null, expires_at: null, priority_until: null, self_accepted: false, peer_accepted: false, fixture: false }); return match_id
+        data.match_sessions.push({ match_id, owner_user_id: s.owner_id(data), candidate_id: null, status: 'searching', created_at: now, started_at: now, paused_at: null, expires_at: null, priority_until: null, self_accepted: false, peer_accepted: false, queue_position: null, estimated_wait_seconds: null, fixture: false }); return match_id
       })
     },
     transition_match(id, status) {
@@ -216,7 +217,11 @@ export const use_app_store = defineStore('app', {
       if (!valid) return unavailable('Verified matching events')
       return transact(this, operation(event.event_id, 'match-event', event), (data, now) => {
         const row = require_owned(data, data.match_sessions, 'match_id', event.match_id)
-        if (event.type === 'found') { s.ensure(row.status === 'searching', 'The queue is not searching.'); require_target(data, event.user_id); row.candidate_id = event.user_id; row.status = 'found'; row.expires_at = now + 45000 }
+        if (event.type === 'queue') {
+          s.ensure(row.status === 'searching' && Number.isInteger(event.queue_position) && event.queue_position > 0 && (event.estimated_wait_seconds == null || Number.isFinite(event.estimated_wait_seconds) && event.estimated_wait_seconds >= 0), 'Invalid queue update.')
+          row.queue_position = event.queue_position; row.estimated_wait_seconds = event.estimated_wait_seconds ?? null
+        }
+        else if (event.type === 'found') { s.ensure(row.status === 'searching', 'The queue is not searching.'); require_target(data, event.user_id); row.candidate_id = event.user_id; row.status = 'found'; row.expires_at = now + 45000 }
         else if (event.type === 'accepted') { s.ensure(row.status === 'waiting' && row.self_accepted && row.candidate_id === event.user_id, 'The candidate does not match.'); require_target(data, event.user_id); row.peer_accepted = true; row.status = 'connected'; connect_users(data, event.user_id, now) }
         else { s.ensure(event.type === 'no_match' && row.status === 'searching', 'Invalid queue event.'); row.status = 'no_match' }
       }, { expected_owner: owner })

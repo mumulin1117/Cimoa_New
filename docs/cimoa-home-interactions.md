@@ -1,6 +1,6 @@
 # Cimoa Home 交互清单
 
-来源是内层模板 214–357 行及绑定逻辑，不是旧 Vue 首页。当前为待实现契约，不能作为验收通过记录。这里补充该页的操作映射，受开发约定、交互约定和开发流程约束；完成门槛统一见开发流程阶段 5。
+来源是内层模板 214–357 行及绑定逻辑，不是旧 Vue 首页。本页实现与实测见 [Home 本页验收](./cimoa-stage5-home-acceptance.md)；下表仍保留完整依赖契约，不能把 deferred 项当成通过。完成门槛统一见开发流程阶段 5。
 
 ## 页面骨架与数据入口
 
@@ -31,6 +31,7 @@
 | home.stopTap.click.1 / .2 / .3 | Home / Goals panel | 点击面板内容 | Popover 打开 | 阻止冒泡，不伪装按钮 | 面板保留，不导航 | none | none | 仅瞬时 UI | 点击目标文字不能打开聊天或关闭自身 |
 | home.amCardGo.click.1 | Home / Auto Match status | 点击状态卡 | 真实 match_session 为 searching/paused/found/waiting | 无导航 Loading | 分别进入 searching/paused/found/waiting 路由，传同一 match_id | 失效状态刷新 getter，不重启计时 | none | 匹配状态、配额、Home | 四态逐一进入/返回/刷新，结束时间不重置 |
 | tab.home / tab.discover / tab.events | TabBar.dc.html | 点击三枚 Tab 图标 | 与当前路径不同；无未结束切换 | replace_route，重复点击锁定 | 只替换当前主页面，当前态准确 | 原 Tab 和内容仍可交互 | none | 主 Tab 与骨架消费集合 | Home→Discover→Events→Home 两轮；栈深不变、Tab 固定 |
+| home.retry.click.1（错误态技术补齐，非源码新增绑定） | Home / storage error | 点击 Retry | hydration_status 为 error | 只重试 Store 读取，不加写操作 Loading | 校验有效数据并恢复联系人 | 保留可读错误和原存储，不当空态成功 | none | Home、全局 Store | 损坏元数据→Retry→仍错误且原缓存未被覆盖；修复适配器后再读可恢复 |
 
 ## 必测状态
 
@@ -40,7 +41,7 @@
 
 ## 完成门槛
 
-用户已授权先验收 Home 本页，再逐页补齐依赖。验收分为两层，当前均为 pending：
+用户已授权先验收 Home 本页，再逐页补齐依赖。当前 local_acceptance 为 passed，full_acceptance 为 pending；页面仍为 in_progress，等待本页提交的发布门槛恢复：
 
 - `local_acceptance`：布局与资源、三个卡片详情资料一致、Popover、固定骨架、安全区所有权、Tabbar、一次骨架消费、默认/空/错误/长内容、Store 状态恢复，以及每个入口传递的正确实体 ID。依赖页内容和返回链路不能借此判为通过。
 - `full_acceptance`：Profile、Chat、Match Found、Received Request、Auto Match Entry 等目标页实现后，逐项执行上表完整 acceptance；补齐 WKWebView、安全区、手势、滚动、刷新和跨页同步证据。

@@ -1,1 +1,0 @@
-import{o as s,a,i as o}from"./index-DlDNyuGH.js";const r=(s,a)=>{const o=s.__vccOpts||s;for(const[r,t]of a)o[r]=t;return o};const t=r({},[["render",function(r,t){const e=o;return s(),a(e,{class:"safe-area","aria-hidden":"true"})}],["__scopeId","data-v-219b79be"]]);export{t as T,r as _};

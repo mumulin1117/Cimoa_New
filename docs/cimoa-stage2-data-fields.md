@@ -40,7 +40,8 @@
 | match_sessions | match_id, owner_user_id, candidate_id | string/string/nullable ID | Home, amFound, amHistory | users | local_storage_metadata | start_match, apply_match_event |
 | match_sessions | status | searching/paused/found/waiting/connected/passed/expired/no_match/left | Auto Match 全流程 | none | local_storage_metadata | transition_match |
 | match_sessions | started_at, expires_at, paused_at, priority_until, created_at | number/nullable number | 倒计时、优先匹配 | none | local_storage_metadata | start_match, transition_match, boost_match |
-| match_sessions | self_accepted, peer_accepted, queue_position | boolean/boolean/number | amWaiting, amConnected | candidate_id | local_storage_metadata | apply_match_event |
+| match_sessions | self_accepted, peer_accepted | boolean/boolean | amWaiting, amConnected | candidate_id | local_storage_metadata | apply_match_event |
+| match_sessions | queue_position, estimated_wait_seconds | nullable positive integer / nullable nonnegative number（默认 null；旧 v2 缺失视为 null） | Home searching 状态卡、amSearching | match_id | local_storage_metadata | apply_match_event 的可信 queue 事件 |
 | match_preferences | owner_user_id, age_min, age_max, height_min, height_max, distance_max | string/number | amPrefs | users | local_storage_metadata | update_match_preferences |
 | match_preferences | university, major, gender, religion, drinking, mbti, language, goal_id, interest_ids | string/ID[] | amPrefs | users, goals, interests | local_storage_metadata | update_match_preferences |
 | match_quota | owner_user_id, date_key, used_count | string/YYYY-MM-DD/nonnegative integer | Home 配额, amEntry | users | local_storage_metadata | start_match |
@@ -73,6 +74,8 @@
 current_user、visible_people、home_connections、goals_for_user、request_by_id、match_by_id、active_match、free_matches_remaining、coin_balance、can_chat、current_conversations、messages_for_conversation、visible_events、event_participants、joined_count、my_events、blocked_accounts、current_reports。所有统计按有效记录派生，不额外持久化副本。
 
 Home 关系卡优先由真实双方关系与会话派生，其次邀请和匹配记录，按用户去重；Lina 仅待接收，Liam 是匹配候选，不能为填充聊天列表同时设为朋友。Home 卡片持 user_id、request_id/match_id/conversation_id，不持姓名副本。
+
+Home 状态文案由 `home_match_card` getter 从 active match 派生；waiting 使用候选的真实姓名，不能写死 Chloe。队列位置/预计耗时若没有服务值，显示 `Waiting for a queue update`，不虚构在线人数或排队时间。Home 卡片和状态使用同一个 Store clock；纯导航与查看目标均不写业务数据。
 
 ## 状态迁移与失败
 

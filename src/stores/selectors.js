@@ -20,14 +20,14 @@ export const joined = (data, event_id, user_id = owner_id(data)) => members(data
 export const can_open_conversation = (data, conversation) => !!conversation && (conversation.kind === 'group' ? joined(data, conversation.event_id) : conversation.participant_ids.includes(owner_id(data)) && connected(data, conversation.participant_ids.find((id) => id !== owner_id(data))))
 export const goals_for_user = (data, user_id) => (user_by_id(data, user_id)?.goal_ids || []).map((id) => data.goals.find((row) => row.item_id === id)).filter(Boolean)
 export const messages_for = (data, conversation_id) => can_open_conversation(data, data.conversations.find((row) => row.conversation_id === conversation_id)) ? data.messages.filter((row) => row.conversation_id === conversation_id && visible(data, row.sender_id)).sort((a, b) => a.sent_at - b.sent_at) : []
-export const home_cards = (data) => {
+export const home_cards = (data, now = Date.now()) => {
   const cards = new Map()
   for (const row of data.conversations) {
     if (row.kind !== 'direct' || !can_open_conversation(data, row)) continue
     const user_id = row.participant_ids.find((id) => id !== owner_id(data))
     cards.set(user_id, { user_id, kind: 'connected', conversation_id: row.conversation_id })
   }
-  for (const row of owned_matches(data)) {
+  for (const row of owned_matches(data, now)) {
     if (!row.candidate_id || cards.has(row.candidate_id) || ['passed', 'left', 'no_match'].includes(row.status)) continue
     cards.set(row.candidate_id, { user_id: row.candidate_id, kind: 'auto_match', match_id: row.match_id })
   }
@@ -36,6 +36,18 @@ export const home_cards = (data) => {
     cards.set(row.sender_id, { user_id: row.sender_id, kind: 'invite', request_id: row.request_id })
   }
   return [...cards.values()].map((row) => ({ ...row, user: user_by_id(data, row.user_id), goals: goals_for_user(data, row.user_id) }))
+}
+export const home_match_card = (data, now) => {
+  const row = active_match(data, now)
+  if (!row) return null
+  const name = row.candidate_id ? user_by_id(data, row.candidate_id)?.user_name : null
+  const content = {
+    searching: ['Finding your match', row.queue_position ? `Queue position ${row.queue_position}${row.estimated_wait_seconds ? ` · about ${Math.ceil(row.estimated_wait_seconds / 60)} min` : ''}` : 'Waiting for a queue update', 'View Status'],
+    paused: ['Matching paused', 'Resume whenever you’re ready', 'Resume'],
+    found: ['Your match is ready', 'View before it expires', 'View match'],
+    waiting: [`Waiting for ${name || 'your match'}`, 'Waiting for their response', 'View status'],
+  }[row.status]
+  return { match_id: row.match_id, status: row.status, title: content[0], subtitle: content[1], action: content[2] }
 }
 export const ensure = (condition, message) => { if (!condition) throw new Error(message) }
 export function validate_data(data) {
@@ -60,6 +72,7 @@ export function validate_data(data) {
   ensure(unique(data.relationships, (row) => `${row.from_user_id}:${row.to_user_id}`), 'Duplicate relationship.')
   for (const row of data.requests) ensure(has('users', row.sender_id) && has('users', row.recipient_id) && row.sender_id !== row.recipient_id && data.icebreakers.some((q) => q.question_id === row.question_id && q.user_id === row.recipient_id) && ['pending', 'accepted', 'declined', 'cancelled'].includes(row.status) && ['text', 'voice'].includes(row.kind) && (row.kind === 'text' ? !!row.text.trim() : has('media_files', row.audio_id) || row.fixture_media_unavailable === true), 'Invalid request.')
   for (const row of data.match_sessions) ensure(has('users', row.owner_user_id) && (!row.candidate_id || has('users', row.candidate_id)) && ['searching', 'paused', 'found', 'waiting', 'connected', 'passed', 'expired', 'no_match', 'left'].includes(row.status) && (row.status !== 'connected' || row.self_accepted && row.peer_accepted), 'Invalid match.')
+  for (const row of data.match_sessions) ensure((row.queue_position == null || Number.isInteger(row.queue_position) && row.queue_position > 0) && (row.estimated_wait_seconds == null || Number.isFinite(row.estimated_wait_seconds) && row.estimated_wait_seconds >= 0), 'Invalid queue details.')
   ensure(data.quota_policy.timezone === 'UTC', 'The quota timezone must be UTC.')
   ensure(unique(data.match_quota, (row) => `${row.owner_user_id}:${row.date_key}`), 'Duplicate daily quota.')
   for (const row of data.match_quota) ensure(has('users', row.owner_user_id) && /^\d{4}-\d{2}-\d{2}$/.test(row.date_key) && Number.isInteger(row.used_count) && row.used_count >= 0 && row.used_count <= 3, 'Invalid daily quota.')

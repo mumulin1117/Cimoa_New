@@ -84,12 +84,18 @@
   "gradients": {
     "primary": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
     "tab": "linear-gradient(120deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
-    "lightning": "linear-gradient(135deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)"
+    "lightning": "linear-gradient(135deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
+    "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)"
   },
   "shadows": {
     "card": "0 15.267rpx 45.802rpx rgba(16,36,74,0.07)",
     "tab": "0 19.084rpx 57.252rpx rgba(16,36,74,0.12),0 3.817rpx 11.45rpx rgba(16,36,74,0.06)",
-    "header": "0 11.45rpx 34.351rpx rgba(16,36,74,0.08)",
+    "header": "0 11.45rpx 34.351rpx rgba(16,36,74,0.10)",
+    "lightning": "0 15.267rpx 38.168rpx rgba(168,85,247,0.32)",
+    "badge": "0 5.725rpx 15.267rpx rgba(16,36,74,0.18)",
+    "coin": "0 3.817rpx 7.634rpx rgba(16,36,74,0.2)",
+    "match_card": "0 19.084rpx 49.618rpx rgba(16,36,74,0.09)",
+    "explore": "0 15.267rpx 41.985rpx rgba(16,36,74,0.07)",
     "popover": "0 34.351rpx 83.969rpx rgba(16,36,74,0.20)",
     "primary": "0 22.901rpx 53.435rpx rgba(168,85,247,0.32)"
   }
