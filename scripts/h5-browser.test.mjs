@@ -8,6 +8,7 @@ import { test_home } from './lib/home-browser.mjs'
 import { test_discover } from './lib/discover-browser.mjs'
 import { test_events } from './lib/events-browser.mjs'
 import { test_profile } from './lib/profile-browser.mjs'
+import { create_scenario } from '../src/stores/scenarios.js'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const root = path.resolve('dist/build/h5'), evidence = path.resolve('docs/evidence')
@@ -30,6 +31,8 @@ try {
   console.log(`Temporary H5 preview PID ${process.pid}, ${origin}`)
   browser = await chromium.launch({ headless: true, ...(process.env.CIMOA_BROWSER_CHANNEL ? { channel: process.env.CIMOA_BROWSER_CHANNEL } : {}) })
   const context = await browser.newContext({ viewport: { width: 393, height: 852 }, deviceScaleFactor: 1 })
+  // Explicit test session, not production auto-login on first install.
+  await context.addInitScript(data => { if (localStorage.getItem('cimoa_app_state_v2') == null) localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })) }, create_scenario('default'))
   const page = await context.newPage()
   page.setDefaultTimeout(10000)
   page.on('pageerror', (error) => errors.push(error.message))

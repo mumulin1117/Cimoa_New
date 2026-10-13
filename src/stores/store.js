@@ -2,6 +2,7 @@ import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { create_seed, clone_data } from './seed.js'
 import { migrate_legacy } from './migration.js'
+import { normalize_email, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
 import * as s from './selectors.js'
 import * as ev from './eventSelectors.js'
 import { STATE_KEY, LEGACY_KEY } from '../utils/statePersistence.js'
@@ -28,6 +29,7 @@ const check_media = async (store, id, kind) => {
 export const use_app_store = defineStore('app', {
   state: () => ({ data: create_seed(), hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
   getters: {
+    auth_draft: state => clone_data(state.data.auth_flow),
     session: (state) => ({ ...state.data.session, is_authenticated: ready(state) }),
     current_user: (state) => ready(state) ? { ...profile(state.data, s.owner_id(state.data)), email: state.data.accounts.find((row) => row.account_id === state.data.session.account_id)?.email, coin_balance: s.balance(state.data) } : { user_name: '', interests: [], coin_balance: 0 },
     current_user_profile() { return this.current_user },
@@ -100,25 +102,46 @@ export const use_app_store = defineStore('app', {
       const email_key = String(email || '').trim().toLowerCase()
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_key) || !password) return failure('invalid_form', 'Enter a valid email and password.')
       try {
-        const hash = await password_hash(password)
+        const expected = this.data.accounts.find(row => row.email === email_key && row.status === 'active')
+        const valid = expected?.auth_provider === 'local' ? await verify_local_credential(expected, password) : expected?.auth_provider === 'fixture' && expected.credential_hash === await password_hash(password)
         return transact(this, null, (data, now) => {
-          const account = data.accounts.find((row) => row.email === email_key && row.status === 'active' && row.auth_provider === 'fixture' && row.credential_hash === hash)
-          s.ensure(account, 'Email or password is incorrect.')
+          const account = data.accounts.find(row => row.account_id === expected?.account_id && row.status === 'active' && row.credential_hash === expected.credential_hash)
+          s.ensure(valid && account, 'Email or password is incorrect.')
           data.session = { account_id: account.account_id, current_user_id: account.user_id, expires_at: now + 30 * 86400000 }; return account.user_id
         }, { public: true })
       } catch { return unavailable('Secure authentication') }
     },
     logout() { return transact(this, null, (data) => { data.session = { current_user_id: null, account_id: null, expires_at: null } }, { public: true }) },
     async delete_account(password) {
-      const owner = s.owner_id(this.data), hash = await password_hash(password).catch(() => null)
+      const owner = s.owner_id(this.data), expected = this.data.accounts.find(row => row.account_id === this.data.session.account_id)
+      const valid = await (expected?.auth_provider === 'local' ? verify_local_credential(expected, password) : password_hash(password).then(hash => hash === expected?.credential_hash)).catch(() => false)
       return transact(this, null, (data) => {
         const account = data.accounts.find((row) => row.account_id === data.session.account_id)
-        s.ensure(hash && account.credential_hash === hash, 'Password is incorrect.')
+        s.ensure(valid && account?.credential_hash === expected?.credential_hash, 'Password is incorrect.')
         account.status = 'deleted'; data.users.find((row) => row.user_id === owner).deleted = true
         data.session = { current_user_id: null, account_id: null, expires_at: null }
       }, { expected_owner: owner })
     },
-    create_account({ email } = {}) { return this.data.accounts.some((row) => row.email === String(email || '').trim().toLowerCase()) ? failure('email_exists', 'This email is already registered.') : unavailable('Student email verification') },
+    async register_local_account(input) {
+      const email = normalize_email(input?.email), now = get_runtime(this).clock()
+      const error = signup_error(input, now)
+      if (error) return failure('invalid_form', error)
+      if (this.session.is_authenticated) return failure('already_authenticated', 'Log out before creating another account.')
+      if (this.data.accounts.some(row => row.email === email)) return failure('email_exists', 'This email is already registered. Log in instead.')
+      try {
+        const credential = await create_local_credential(input.password)
+        return transact(this, null, (data, timestamp) => {
+          s.ensure(!s.authenticated(data, timestamp), 'The account changed. Please retry.')
+          s.ensure(!data.accounts.some(row => row.email === email), 'This email is already registered. Log in instead.')
+          const user_id = make_id('user'), account_id = make_id('account')
+          data.accounts.push({ account_id, user_id, email, status: 'active', ...credential, date_of_birth: input.date_of_birth, agreements: clone_data(input.agreements), created_at: timestamp })
+          data.users.push({ user_id, user_name: 'New member', age: age_from_date(input.date_of_birth, timestamp), avatar_url: '', university: '', major: '', mbti: '', bio: '', bio_font: 'system', country: '', goal_ids: [], interest_ids: [], photo_ids: [], icebreaker_ids: [], song_id: null, verification_status: 'pending', onboarding_status: 'not_started', discoverable: false, deleted: false })
+          data.auth_flow = { ...data.auth_flow, step: 'registered', email, verification_request_id: null, profile_draft: {}, agreements: { ...clone_data(input.agreements), age: true, student: false } }
+          return { account_id, user_id, next_step: 'verification_undecided' }
+        }, { public: true })
+      } catch { return unavailable('Secure local authentication') }
+    },
+    create_account({ email } = {}) { return this.data.accounts.some(row => row.email === normalize_email(email)) ? failure('email_exists', 'This email is already registered.') : failure('registration_form_required', 'Complete the local registration form first.') },
     reset_password() { return unavailable('Password reset') },
     apply_verification() { return unavailable('Student verification') },
     submit_support() { return unavailable('Support delivery') },

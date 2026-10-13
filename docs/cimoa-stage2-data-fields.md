@@ -4,6 +4,8 @@
 
 ## 持久化与公共字段
 
+本轮入口复核补充：首次安装session为空（hydration只读、不落盘）；有效旧会话原样恢复。新增本地accounts凭据字段credential_algorithm、credential_iterations、credential_salt、credential_hash；date_of_birth和agreements仅存在账号私有元数据。register_local_account校验18+、三项协议、邮箱与8–128位含数字且一致的密码，原子写accounts/users，不自动登录、不加币、不创建关系。新users.verification_status=pending、onboarding_status=not_started、discoverable=false；下一步verification_undecided。密码和确认密码不进草稿或storage。固定fixture摘要兼容；普通本地账号用随机盐PBKDF2，login/delete_account均验证对应算法。验证码/重置方案没有被自动补成演示成功。
+
 所有集合是 Store state；轻量记录持久化类型为 local_storage_metadata，默认枚举/选项为 store_seed；媒体二进制为 indexed_db_blob，getter/统计为 derived。schema_version 为整数，revision 为递增整数，updated_at 为毫秒时间戳；单次业务操作克隆 next state，验证后一次保存再发布，失败保持旧 revision。
 
 每个记录必填唯一 ID 和必要 owner_user_id；created_at/updated_at 使用毫秒数。账号不能共享关系、草稿、账本、配额和安全记录。以下 nullable 字段没有有效资源/结果时为 null，不用假的成功值。

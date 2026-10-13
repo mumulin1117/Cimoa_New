@@ -2,7 +2,11 @@ import { create_seed, clone_data, TEST_USER_ID } from './seed.js'
 import { ensure, validate_data } from './selectors.js'
 export function migrate_legacy(legacy, now) {
   const data = create_seed(now)
-  if (legacy == null) return data
+  if (legacy == null) {
+    // A seeded test identity is not an authenticated first-install session.
+    data.session = { account_id: null, current_user_id: null, expires_at: null }
+    return data
+  }
   ensure(legacy && typeof legacy === 'object' && legacy.current_user?.user_id, 'Legacy data needs recovery. It has not been overwritten.')
   data.legacy_archive = { owner_user_id: TEST_USER_ID, snapshot: clone_data(legacy), captured_at: now }
   const defaults = { user_name: 'Hottix', major: 'Product Design', university: 'Cimoa University', bio: 'Making room for good conversations, small adventures, and better campus days.', avatar_url: '/static/assets/head/me.png' }
