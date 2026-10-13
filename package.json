@@ -6,7 +6,9 @@
   "scripts": {
     "dev:h5": "uni -p h5",
     "build:h5": "uni build -p h5",
-    "postbuild:h5": "node scripts/copy-h5-assets.mjs",
+    "postbuild:h5": "node scripts/copy-h5-assets.mjs && node scripts/package-ios.mjs",
+    "prepare:ios": "node scripts/package-ios.mjs",
+    "archive:ios": "node scripts/archive-ios.mjs",
     "check:conventions": "node scripts/check-conventions.mjs"
   },
   "dependencies": {

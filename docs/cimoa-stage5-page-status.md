@@ -1,6 +1,6 @@
 # Cimoa 阶段五页面还原状态
 
-2026-10-13：Profile 本页还原与真实三Tab入口/返回已通过，本地专项提交 `bc7bdfd`；现恢复 pending（待依赖）。当前没有 in_progress 页面，不标记任何新页面/专属组件 verified。下一独立任务为用户已授权的 cimoaNeapo 原生宿主交付准备，不是全App验收完成。
+2026-10-13：Profile 本页还原与真实三Tab入口/返回已通过，本地专项提交 `bc7bdfd`；现恢复 pending（待依赖）。当前没有 in_progress 页面，不标记任何新页面/专属组件 verified。用户授权的 cimoaNeapo 原生宿主已构建且通过4项iPhone17Pro局部集成测试，见[阶段六记录](./cimoa-stage6-acceptance.md)，不是全App验收完成。
 
 用户最新决定：**后续仅本地 Git 提交，不执行 push；各页允许分段验收，依赖补齐并完整回归后才 verified。** 已同步至 [流程阶段5](../模板项目开发流程.md#阶段-5一个页面一个页面还原)。两份强制约定中的旧 Home-only / 推送门槛由该用户决定覆盖，技术与业务要求不变。
 

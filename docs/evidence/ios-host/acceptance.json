@@ -1,0 +1,21 @@
+{
+  "result": "Passed",
+  "source": "xcrun xcresulttool get test-results summary --path ios/cimoaNeapo/build/NativeAcceptance-5.xcresult",
+  "device": {
+    "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "deviceName": "iPhone 17 Pro",
+    "osVersion": "26.5",
+    "osBuildNumber": "23F77",
+    "architecture": "arm64",
+    "platform": "iOS Simulator"
+  },
+  "startTime": 1791889070.438,
+  "finishTime": 1791889083.962,
+  "totalTestCount": 4,
+  "passedTests": 4,
+  "failedTests": 0,
+  "skippedTests": 0,
+  "testFailures": [],
+  "h5ManifestSHA256": "a0c76f26a0b6b1be4318c484905748fab3d364a5839ca192aca783282f912db6",
+  "scope": "Native host integration only; complete page and app acceptance remains pending."
+}

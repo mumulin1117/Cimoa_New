@@ -12,8 +12,13 @@
 
 ## 平台范围
 
-- 固定交付链路：独立 uni-app H5 源码 → `corepack pnpm build:h5` → H5 静态产物 → 已有 iOS `WKWebView` 宿主加载。普通浏览器仅作开发调试、冒烟和无宿主失败路径检查；最终生产验收在 WKWebView 中完成。
-- 本仓库维护 H5 和 Web 桥接层，不新建或编译 Swift/Objective-C 宿主、不构建 uni-app App、Android、App-Plus 或小程序。需要宿主工程集成时，先确认已有工程位置和能力协议，在获授权范围内操作。
+- 固定交付链路：独立 uni-app H5 源码 → `corepack pnpm build:h5` → H5 静态产物 → iOS `WKWebView` 宿主加载。普通浏览器仅作开发调试、冒烟和无宿主失败路径检查；最终生产验收在 WKWebView 中完成。
+- 2026-10-13 用户授权扩大平台范围：在本仓库 `ios/cimoaNeapo` 创建、构建同名 UIKit / WKWebView 宿主，接入原生与 JS 桥接，并使用可用的 iPhone 17 Pro 模拟器验证。该决定替代旧的“只接入已有宿主、不新建或编译原生工程”限制；不构建 uni-app App、Android、App-Plus 或小程序。
+- 宿主只负责加载、系统安全区、生命周期、系统权限与明确的桥接协议，不复制 Vue 业务页面/Store。H5 层仍使用 Vue3/uni-app/rpx；宿主适配代码使用 Swift/UIKit 和系统逻辑点，不把网页组件规范误用于原生 API。原生正常背景与错误显示颜色从打包的同一 theme.json 获取；仅主题资源本身缺失时，原生错误容器使用系统可读性回退。
+- 包内 H5 必须离线可运行，不依赖开发电脑或 dev server。允许应用进程内仅绑定 `127.0.0.1` 的只读静态资源适配器，以保留 H5 的标准资源路径、模块、Web Crypto 和持久化 origin；这不是开发预览服务，不开放到局域网。限制资源根目录/请求方法/Host，生命周期关闭连接，不提供文件写入或任意执行入口。
+- JS 桥只接受白名单主框架、固定 origin 和版本化方法；校验请求 ID 与结果，使用结构化参数回传。无服务/无产品 ID 明确失败，不提供假支付、假验证、任意 URL 或任意原生代码执行。临时模拟器 Bundle Identifier 须经用户确认，正式 App ID、签名和产品 ID 不编造。
+- 宿主构建/启动与局部原生冒烟可作为阶段六交付准备提前执行；不等于进入全 App 完整验收，不改变“全部页面依赖补齐后才 verified”门槛。仅本地提交，不推送。
+- 用户已确认本地模拟器临时 Bundle Identifier 为 `com.cimoa.neapo.dev`；不是正式App Store ID，也没有签名/商店注册或上传授权。
 - HTML 仅作为离线来源。将结构重写为 Vue 组件、逻辑重写为 Store/action 与 JS、样式提取为项目 CSS、媒体提取为本地资源；不得 iframe、WebView、fetch、动态执行或实时依赖原 HTML、包内组件 HTML 和原型运行库。
 - 原型可以保留在仓库作审计依据，但不得复制进 H5 运行产物。应用与构建不依赖该原型文件可用，后续只修改 Vue 项目即可。
 - 标准 Web、uni-app H5 API 和宿主适配接口通过既有封装使用；页面不得散写 `window.webkit.messageHandlers` 或调用 `plus.*`。

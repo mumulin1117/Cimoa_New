@@ -1,0 +1,6 @@
+Resources/H5/
+Resources/theme.json
+Resources/build-manifest.json
+build/
+*.xcuserstate
+xcuserdata/

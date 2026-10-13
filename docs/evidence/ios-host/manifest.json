@@ -1,0 +1,26 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "2D08D8DD-4281-4261-ACA6-668C0BF152B1.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView Home with measured insets_0_75FB842C-6489-451B-AEC6-0EA0230F86ED.png",
+        "timestamp" : 1791889079.705
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "A12F0A19-388F-4428-81BE-E1316FDB76C1.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Native safe area and H5 geometry_0_FA36AA6C-8D78-4A9A-B805-720C5BF490D2.txt",
+        "timestamp" : 1791889079.628
+      }
+    ],
+    "testIdentifier" : "HostTests/testBundledH5AndMeasuredSafeAreas()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testBundledH5AndMeasuredSafeAreas"
+  }
+]

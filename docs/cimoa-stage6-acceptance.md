@@ -1,12 +1,37 @@
 # Cimoa 整体验收状态
 
-## 当前状态：阶段五逐页推进中（2026-10-13）
+## 当前状态：阶段五逐页推进；原生宿主交付准备（2026-10-13）
 
-**整体验收仍未通过。** 阶段1–4的独立数据/主题/三Tab基础已落实，Home本页通过；本轮Discover本页通过，二者完整验收均待依赖与原生宿主，不标记verified。当前证据以 [阶段五总表](./cimoa-stage5-page-status.md)、[Home验收](./cimoa-stage5-home-acceptance.md) 和 [Discover验收](./cimoa-stage5-discover-acceptance.md) 为准。Events尚未开始还原。
+**整体验收仍未通过。** 阶段1–4的独立数据/主题/三Tab基础已落实；Home、Discover、Events、Profile均通过本页检查，完整验收待子页依赖，不标记verified。当前证据以 [阶段五总表](./cimoa-stage5-page-status.md)、[Home验收](./cimoa-stage5-home-acceptance.md)、[Discover验收](./cimoa-stage5-discover-acceptance.md)、[Events验收](./cimoa-stage5-events-acceptance.md) 和 [Profile验收](./cimoa-stage5-profile-acceptance.md) 为准。
 
-用户现已允许后续页面分段验收，并要求后续只做本地专项提交，不执行push。独立Vue/uni-app → H5 → 既有WKWebView链路不变；未提供宿主集成/模拟器实测证据，不宣称iOS工程已交付。
+用户允许页面分段验收、只做本地专项提交、不执行push；另行明确授权新建 `ios/cimoaNeapo` 并使用临时模拟器 Bundle Identifier `com.cimoa.neapo.dev`。现为独立Vue/uni-app → H5 → 新建UIKit/WKWebView宿主，已同步平台范围，不运行原HTML。宿主的局部原生测试不是全App阶段六通过。
 
-本轮38项单元测试、Discover20项H5检查、Home22项回归通过；三项强制命令通过，不代表全App或全部目标页闭环通过。原型不参与运行，所有资源/代码来自独立项目。既有缺失服务成功路径、通知基础层、各依赖页及WKWebView验收保持未完成。
+本轮53项单元测试通过；Profile20项H5复测通过，临时服务PID76891与隔离浏览器已关闭。此前同轮Home22、Discover20、Events19项回归通过。三项强制命令按顺序通过，无约定警告。
+
+## cimoaNeapo 原生交付范围
+
+- 工程、运行及桥协议见 [宿主接入说明](./ios-wkwebview-host-integration.md)；`corepack pnpm build:h5` 自动打包同一份101文件H5与唯一主题；`corepack pnpm archive:ios` 输出 `artifacts/cimoaNeapo-ios.zip`，不包含原型、DerivedData或用户Xcode状态。
+- Xcode26.6，iPhone17Pro模拟器，iOS26.5 / 23F77，设备ID `D9B138D2-1B08-4646-B8D0-8A2242AECD7D`。iOS部署目标17.0，不将“17Pro”误写成系统版本。
+- 真实WKWebView测试：包内本地资源、标题与安全区；白名单JS请求/回复及非法版本/方法拒绝；未配置内购真实failure且不加币；三Tab与Profile真实DOM入口/栈返回；localStorage/IndexedDB Blob刷新保持及探针清理；静态适配器拒绝POST和未知文件。
+- 初轮发现Network监听端口重复指定，已修复；首次导航的JS等待被新文档销毁、测试数据库删除未等待造成的测试时序问题已修正。没有跳过测试或降低断言。
+- 实际触摸手势、键盘、系统相机/麦克风硬件、全部依赖页/服务成功路径、后台恢复和完整横屏仍待逐页验收。原生WKWebView侧滑已关闭，以免与H5返回竞争；DOM导航测试不冒称系统触摸验收。
+- 正式Bundle ID/签名团队/App Store ID/IAP产品及验证服务均未提供，未注册、上传或伪造。用户原4173服务和旧iOS App保持不动；仅保留用户要求查看的新模拟器App。
+
+### 原生通过证据
+
+最终 `NativeAcceptance-5.xcresult`：4/4通过、0失败、0跳过；前一轮4/4亦通过。结果包保存在 `ios/cimoaNeapo/build/`（本地、不提交大型DerivedData）。[验收摘要](./evidence/ios-host/acceptance.json)、[WebView截图](./evidence/ios-host/2D08D8DD-4281-4261-ACA6-668C0BF152B1.png)、[系统安全区/网页布局原始数据](./evidence/ios-host/A12F0A19-388F-4428-81BE-E1316FDB76C1.txt)、[Xcode导出附件清单](./evidence/ios-host/manifest.json)随仓库留存。
+
+系统实测顶部62、底部34逻辑点，与H5消费值逐项比较通过；viewport高874，Tabbar底边811.34375，没有侵入底部安全区。截图人工复核：Home人物图片、标题、渐变、胶囊Tabbar显示正常。WKWebView截图不包含系统状态栏；[最终模拟器整屏截图（Events）](./evidence/ios-host/simulator-events.png)来自独立正常App构建。
+
+H5逐文件清单SHA256：`a0c76f26a0b6b1be4318c484905748fab3d364a5839ca192aca783282f912db6`。它对应测试构建中的101个文件；打包脚本只复制独立H5与主题，不包含原HTML。
+
+导出包 `artifacts/cimoaNeapo-ios.zip` 已执行解压完整性测试，并将101个H5文件逐个与清单SHA256比较通过；共134个ZIP条目，包含共享scheme、Swift、配置和离线资源，不含原型、DerivedData、xcuserdata或Mac附属元数据。当前包SHA256：`21d74c4790f50d8f4214cc7108860d13d57883b5a4c16ddf282e31cc3a32041e`。另用独立RunDerivedData构建正常App（不注入XCTest）供模拟器查看。
+
+预览进程清理：本轮记录的71175、71475、72006、72121、72518、72659、73038、76891及其子进程，最终精确PID/PPID检查均无残留。启动失败的诊断截图移至本地build目录保留，不作为通过证据。
+
+正常App已安装并启动，PID78513；`lsof`确认只监听127.0.0.1:18765。实际HTTP入口SHA256与dist/build/h5/index.html均为 `c7aefb6ac07152d8755daae7e912ff41344aad6f2de2d1654c2204035a91bc3c`，不依赖用户原4173服务。
+
+以下历史记录仅用于追溯，不覆盖本节当前进度。
 
 ## 历史记录：最初的来源审计阶段（不是当前进度）
 

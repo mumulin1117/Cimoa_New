@@ -3,10 +3,12 @@ import { onLaunch, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { apply_theme } from '@/utils/theme.js'
 import { install_safe_area_bridge, request_safe_area } from '@/utils/safeArea.js'
+import { install_host_bridge } from '@/utils/hostBridge.js'
+import { install_purchase_bridge } from '@/utils/iapBridge.js'
 
 const refresh_environment = () => { apply_theme(); request_safe_area() }
 const hydrate = () => {
-  apply_theme(); install_safe_area_bridge(); request_safe_area(); use_app_store().hydrate()
+  apply_theme(); install_safe_area_bridge(); install_host_bridge(); install_purchase_bridge(); request_safe_area(); use_app_store().hydrate()
   if (typeof window !== 'undefined') {
     window.addEventListener('resize', refresh_environment)
     window.addEventListener('orientationchange', refresh_environment)

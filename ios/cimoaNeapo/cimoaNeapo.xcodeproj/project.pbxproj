@@ -1,0 +1,49 @@
+// !$*UTF8*$!
+{
+archiveVersion = 1;
+classes = {};
+objectVersion = 56;
+objects = {
+00000000000000000000000A = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/AppDelegate.swift"; sourceTree = "<group>";};
+000000000000000000000014 = {isa = PBXBuildFile; fileRef = 00000000000000000000000A;};
+00000000000000000000000B = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/BundleHTTPServer.swift"; sourceTree = "<group>";};
+000000000000000000000015 = {isa = PBXBuildFile; fileRef = 00000000000000000000000B;};
+00000000000000000000000C = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sources/WebViewController.swift"; sourceTree = "<group>";};
+000000000000000000000016 = {isa = PBXBuildFile; fileRef = 00000000000000000000000C;};
+00000000000000000000000D = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tests/HostTests.swift"; sourceTree = "<group>";};
+000000000000000000000017 = {isa = PBXBuildFile; fileRef = 00000000000000000000000D;};
+00000000000000000000000E = {isa = PBXFileReference; lastKnownFileType = folder; path = "Resources/H5"; sourceTree = "<group>";};
+000000000000000000000018 = {isa = PBXBuildFile; fileRef = 00000000000000000000000E;};
+00000000000000000000000F = {isa = PBXFileReference; lastKnownFileType = text.json; path = "Resources/theme.json"; sourceTree = "<group>";};
+000000000000000000000019 = {isa = PBXBuildFile; fileRef = 00000000000000000000000F;};
+000000000000000000000010 = {isa = PBXFileReference; lastKnownFileType = text.json; path = "Resources/build-manifest.json"; sourceTree = "<group>";};
+00000000000000000000001A = {isa = PBXBuildFile; fileRef = 000000000000000000000010;};
+000000000000000000000011 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Config/Info.plist"; sourceTree = "<group>";};
+000000000000000000000012 = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config/Local.xcconfig"; sourceTree = "<group>";};
+00000000000000000000001E = {isa = PBXFileReference; explicitFileType = wrapper.application; path = cimoaNeapo.app; sourceTree = BUILT_PRODUCTS_DIR;};
+00000000000000000000001F = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = cimoaNeapoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR;};
+000000000000000000000002 = {isa = PBXGroup; children = (00000000000000000000000A,00000000000000000000000B,00000000000000000000000C,00000000000000000000000D,00000000000000000000000E,00000000000000000000000F,000000000000000000000010,000000000000000000000011,000000000000000000000012,000000000000000000000003); sourceTree = "<group>";};
+000000000000000000000003 = {isa = PBXGroup; children = (00000000000000000000001E,00000000000000000000001F); name = Products; sourceTree = "<group>";};
+000000000000000000000028 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000014,000000000000000000000015,000000000000000000000016); runOnlyForDeploymentPostprocessing = 0;};
+000000000000000000000029 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000018,000000000000000000000019,00000000000000000000001A); runOnlyForDeploymentPostprocessing = 0;};
+00000000000000000000002A = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+00000000000000000000002B = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000017); runOnlyForDeploymentPostprocessing = 0;};
+00000000000000000000002C = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+00000000000000000000002D = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+000000000000000000000032 = {isa = PBXNativeTarget; buildConfigurationList = 000000000000000000000047; buildPhases = (000000000000000000000028,00000000000000000000002A,000000000000000000000029); buildRules = (); dependencies = (); name = cimoaNeapo; productName = cimoaNeapo; productReference = 00000000000000000000001E; productType = "com.apple.product-type.application";};
+000000000000000000000033 = {isa = PBXNativeTarget; buildConfigurationList = 000000000000000000000048; buildPhases = (00000000000000000000002B,00000000000000000000002C,00000000000000000000002D); buildRules = (); dependencies = (000000000000000000000035); name = cimoaNeapoTests; productName = cimoaNeapoTests; productReference = 00000000000000000000001F; productType = "com.apple.product-type.bundle.unit-test";};
+000000000000000000000034 = {isa = PBXContainerItemProxy; containerPortal = 000000000000000000000001; proxyType = 1; remoteGlobalIDString = 000000000000000000000032; remoteInfo = cimoaNeapo;};
+000000000000000000000035 = {isa = PBXTargetDependency; target = 000000000000000000000032; targetProxy = 000000000000000000000034;};
+00000000000000000000003C = {isa = XCBuildConfiguration; name = Debug; buildSettings = {CLANG_ENABLE_MODULES = YES; SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SWIFT_VERSION = 5.0; DEBUG_INFORMATION_FORMAT = dwarf; ENABLE_TESTABILITY = YES; GCC_OPTIMIZATION_LEVEL = 0; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; };};
+00000000000000000000003D = {isa = XCBuildConfiguration; name = Release; buildSettings = {CLANG_ENABLE_MODULES = YES; SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SWIFT_VERSION = 5.0; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_OPTIMIZATION_LEVEL = "-O"; };};
+00000000000000000000003E = {isa = XCBuildConfiguration; name = Debug; baseConfigurationReference = 000000000000000000000012; buildSettings = {LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks"); };};
+00000000000000000000003F = {isa = XCBuildConfiguration; name = Release; baseConfigurationReference = 000000000000000000000012; buildSettings = {LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks"); };};
+000000000000000000000040 = {isa = XCBuildConfiguration; name = Debug; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = com.cimoa.neapo.dev.tests; PRODUCT_NAME = "$(TARGET_NAME)"; GENERATE_INFOPLIST_FILE = YES; TARGETED_DEVICE_FAMILY = 1; CODE_SIGN_STYLE = Automatic; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/cimoaNeapo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/cimoaNeapo"; BUNDLE_LOADER = "$(TEST_HOST)"; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks","@loader_path/Frameworks"); };};
+000000000000000000000041 = {isa = XCBuildConfiguration; name = Release; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = com.cimoa.neapo.dev.tests; PRODUCT_NAME = "$(TARGET_NAME)"; GENERATE_INFOPLIST_FILE = YES; TARGETED_DEVICE_FAMILY = 1; CODE_SIGN_STYLE = Automatic; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/cimoaNeapo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/cimoaNeapo"; BUNDLE_LOADER = "$(TEST_HOST)"; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)","@executable_path/Frameworks","@loader_path/Frameworks"); };};
+000000000000000000000046 = {isa = XCConfigurationList; buildConfigurations = (00000000000000000000003C,00000000000000000000003D); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+000000000000000000000047 = {isa = XCConfigurationList; buildConfigurations = (00000000000000000000003E,00000000000000000000003F); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+000000000000000000000048 = {isa = XCConfigurationList; buildConfigurations = (000000000000000000000040,000000000000000000000041); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+000000000000000000000001 = {isa = PBXProject; attributes = {LastUpgradeCheck = 2600; TargetAttributes = {000000000000000000000032 = {CreatedOnToolsVersion = 26.6;}; 000000000000000000000033 = {CreatedOnToolsVersion = 26.6; TestTargetID = 000000000000000000000032;};};}; buildConfigurationList = 000000000000000000000046; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en,Base); mainGroup = 000000000000000000000002; productRefGroup = 000000000000000000000003; projectDirPath = ""; projectRoot = ""; targets = (000000000000000000000032,000000000000000000000033);};
+};
+rootObject = 000000000000000000000001;
+}

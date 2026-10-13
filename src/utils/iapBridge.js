@@ -29,4 +29,7 @@ const bridge = create_purchase_bridge()
 export const request_purchase = (payload) => bridge.request(typeof payload === 'string' ? { request_id: `iap_${globalThis.crypto?.randomUUID?.() || Date.now()}`, package_id: payload, owner_user_id: null, product_id: null } : payload)
 export const resolve_purchase = bridge.resolve
 export const cancel_purchase_request = bridge.cancel
+export function install_purchase_bridge() {
+  if (typeof window !== 'undefined') window.CimoaPurchaseBridge = Object.freeze({ resolve: (request_id, result) => result && typeof result === 'object' ? bridge.resolve(request_id, result) : false })
+}
 export { callback_timeout_ms }
