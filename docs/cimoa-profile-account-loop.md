@@ -39,4 +39,6 @@ Edit All 本页通过，恢复 pending 等待子页与原生回归，full pendin
 
 ## 验收记录
 
+Basic info：原稿输入/代词/年级/专业、大学生日不可改、缺客服依赖已落实；Chrome9组（含前页8组）通过，空姓名在Loading前拒绝，取消无写入，刷新与无历史返回正确。见[basic验收](./evidence/profile-edit/basic-acceptance.json)。三项检查通过；local passed/full pending。本页提交后继续 Interests。
+
 Edit All：4项新增 Store 单元、5项 Profile 既有单元通过；Chrome8组覆盖真实照片选择/IndexedDB/主图、草稿取消、500ms写时序、存储失败回滚、原稿尺寸、长/空/会话失效、小屏固定区与无音源失败。见[浏览器记录](./evidence/profile-edit/edit-acceptance.json)和[截图](./evidence/profile-edit/edit-default.png)。三项强制命令通过无警告。原型文件浏览器访问受策略限制，来源通过本地静态源码核对，未声称原型浏览器视觉对照通过。完整原生与子页仍 pending；不推送。

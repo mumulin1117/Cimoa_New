@@ -63,6 +63,17 @@ try {
   }
   await page.evaluate(data=>localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data})),preserved); await page.reload()
   check('Empty/long/expired Store scenarios stay readable; expired session hides profile data and Save')
+  if (phase !== 'edit') {
+    await click('profileEdit.basic.click.1'); await page.locator('.profile-basic-page').waitFor(); const before = await state()
+    await field('Display name').fill(''); await click('editBasic.save.click.1'); await page.getByRole('alert').waitFor(); assert.deepEqual(await state(),before); assert.equal(await page.locator('.loading').count(),0)
+    await field('Display name').fill('Morgan Campus'); await button('they / them').click(); await button('Year 2').click(); await field('Field of study').fill('Collaborative Design'); await shot('basic')
+    await click('editBasic.save.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await state(),before); await page.locator('.profile-edit-page:visible').waitFor()
+    assert.equal((await state()).users[0].user_name,'Morgan Campus'); assert.equal((await state()).users[0].university,'HKUST')
+    await click('profileEdit.basic.click.1'); await field('Display name').fill('Cancel this name'); await button('Back').click(); assert.equal((await state()).users[0].user_name,'Morgan Campus')
+    await goto('/pages/profile/basic'); await page.reload(); await page.locator('.profile-basic-page').waitFor(); assert.equal(await field('Display name').inputValue(),'Morgan Campus'); await button('Contact support').click(); assert.match(await page.getByRole('alert').innerText(),/not been restored/)
+    await button('Back').click(); await page.locator('.profile-edit-page').waitFor()
+    check('Basic validates before Loading; name/pronouns/year/major save, cancel, refresh and correct fallback return; support remains deferred')
+  }
   assert.deepEqual(report.errors,[]); report.result='passed'
 } catch(error) { report.failure=String(error.stack||error); console.error(report.failure); process.exitCode=1 }
 finally { await browser?.close(); await new Promise(resolve=>server.close(resolve)); fs.writeFileSync(path.join(output,`${phase}-acceptance.json`),JSON.stringify(report,null,2)+'\n'); console.log('Temporary profile server and isolated browser closed.') }

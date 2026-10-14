@@ -27,6 +27,7 @@
     { "path": "pages/messages/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/edit", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/profile/basic", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auto-match/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/system/index", "style": { "navigationStyle": "custom" } }

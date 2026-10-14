@@ -46,6 +46,7 @@ const write_patch = (data, section, patch) => {
   }
 }
 export const profile_edit_actions = {
+  profile_validation_error(section, patch) { try { validate_profile_patch(section, patch); return '' } catch (error) { return error.message } },
   save_profile_section(section, patch, expected_account_id) {
     return transact(this, null, (data) => {
       ensure(data.session.account_id === expected_account_id, 'The account changed. Please reopen the editor.')
