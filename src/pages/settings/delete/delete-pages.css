@@ -65,3 +65,34 @@
   box-shadow: var(--cimoa-shadow-card);
   font-weight: 600;
 }
+.delete-reason-page .editor-body { padding-bottom: 38.168rpx; }
+.delete-reason-intro {
+  display: block;
+  color: var(--cimoa-text-secondary);
+  font-size: 30.534rpx;
+  line-height: 1.5;
+}
+.delete-reason-list {
+  display: flex;
+  flex-direction: column;
+  gap: 19.084rpx;
+  margin-top: 26.718rpx;
+}
+.delete-reason-choice {
+  min-height: 106.87rpx;
+  padding: 28.626rpx 34.351rpx;
+  border: 2px solid var(--cimoa-surface-onboarding-border);
+  border-radius: 38.168rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-card);
+  color: var(--cimoa-text-title);
+  font-size: 31.489rpx;
+  font-weight: 600;
+  line-height: 1.35;
+  cursor: pointer;
+}
+.delete-reason-choice.selected {
+  border: 2px solid transparent;
+  background: var(--cimoa-gradient-card-fill) padding-box, var(--cimoa-gradient-primary) border-box;
+  font-weight: 700;
+}

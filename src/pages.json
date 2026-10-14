@@ -49,6 +49,7 @@
     { "path": "pages/settings/support", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/legal", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/delete/info", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/settings/delete/reason", "style": { "navigationStyle": "custom" } },
     { "path": "pages/safety/report-user", "style": { "navigationStyle": "custom" } },
     { "path": "pages/safety/reports", "style": { "navigationStyle": "custom" } },
     { "path": "pages/safety/report-detail", "style": { "navigationStyle": "custom" } },

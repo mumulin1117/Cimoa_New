@@ -24,9 +24,10 @@ const impacts = computed(() => [
 ])
 const recover = async () => { try { await relaunch_route(startup_destination(store)) } catch (cause) { error.value = cause.message } }
 const back = async () => { try { await frame.value.navigate_back('/pages/settings/index') } catch (cause) { error.value = cause.message } }
-const continue_deletion = () => {
+const continue_deletion = async () => {
   if (access_error.value) return
-  error.value = 'The reason step is being restored next. Your account has not changed.'
+  error.value = ''
+  try { await frame.value.navigate_forward('/pages/settings/delete/reason') } catch (cause) { error.value = cause.message }
 }
 </script>
 
