@@ -44,6 +44,7 @@
     { "path": "pages/settings/perm", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/lang", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/blocked", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/settings/support", "style": { "navigationStyle": "custom" } },
     { "path": "pages/safety/report-user", "style": { "navigationStyle": "custom" } },
     { "path": "pages/safety/reports", "style": { "navigationStyle": "custom" } },
     { "path": "pages/safety/report-detail", "style": { "navigationStyle": "custom" } },

@@ -30,9 +30,10 @@ const back = async () => {
   navigating.value = true; error.value = ''
   try { await frame.value.navigate_back('/pages/safety/reports') } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
-const support = () => {
+const support = async () => {
   if (navigating.value || access_error.value) return
-  error.value = 'Help & Support has not been restored yet. No support request was created.'
+  navigating.value = true; error.value = ''
+  try { await frame.value.navigate_forward(`/pages/settings/support?context_type=report&context_id=${encodeURIComponent(report_id.value)}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
 </script>
 

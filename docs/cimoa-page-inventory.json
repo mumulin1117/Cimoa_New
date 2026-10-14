@@ -9945,10 +9945,12 @@
     ],
     "page_level": "三级",
     "route": "/pages/settings/support",
-    "component": null,
+    "component": "src/pages/settings/support.vue",
     "parent_route": "/pages/settings/index",
     "allowed_origin_routes": [
-      "/pages/settings/index"
+      "/pages/settings/index",
+      "/pages/profile/basic",
+      "/pages/safety/report-detail"
     ],
     "required_parameters": [],
     "entry_points": [
@@ -9956,7 +9958,7 @@
       "supportUni@5634",
       "openSupport@6018"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
+    "return_owner": "pop origin_route（允许来源：/pages/settings/index、/pages/profile/basic、/pages/safety/report-detail）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -10005,10 +10007,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; local-only draft and unavailable-delivery acceptance passed; final cross-flow acceptance pending"
   },
   {
     "source_screen": "Settings / Legal / Default",
@@ -10579,7 +10581,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; Help and Support dependency pending before full acceptance"
+    "mapping_status": "source-mapped; local acceptance passed with Help and Support dependency; full cross-flow acceptance pending"
   },
   {
     "source_screen": "Safety / User Actions / Default",
