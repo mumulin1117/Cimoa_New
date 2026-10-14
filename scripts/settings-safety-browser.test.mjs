@@ -383,6 +383,56 @@ try {
     check('Invalid event identifiers expose no report controls and cannot create a forged report')
   }
 
+  if (phase === 'reports-list') {
+    await goto('/pages/settings/index')
+    await click('settings.openReportsSubmitted.click.1')
+    await page.locator('.safety-reports-page').waitFor()
+    await page.getByText('No reports submitted', { exact: true }).waitFor()
+    assert.match(await page.locator('.reports-local-note').innerText(), /not been sent to or reviewed/)
+    assert.equal(await page.locator('.report-row').count(), 0)
+    await shot('reports-empty')
+    await click('reportsSubmitted.goBack.click.1')
+    await page.locator('.settings-page').waitFor()
+    check('Settings opens the Store-backed Submitted Reports empty state and Back restores Settings')
+
+    const populated = create_scenario('default', Date.now())
+    const now = Date.now()
+    populated.reports.push(
+      { report_id: 'fixture_report_user', owner_user_id: populated.session.current_user_id, target_type: 'user', target_id: 'user_chloe', reason: 'Harassment', description: 'Repeated messages.', context_id: 'conversation_chloe', status: 'local_saved', created_at: now - 3600000 },
+      { report_id: 'fixture_report_event', owner_user_id: populated.session.current_user_id, target_type: 'event', target_id: 'event_picnic', reason: 'Unsafe activity', description: '', context_id: null, status: 'local_saved', created_at: now },
+    )
+    populated.blocked_users.push({ block_id: 'fixture_report_block', owner_user_id: populated.session.current_user_id, user_id: 'user_chloe', created_at: now })
+    populated.users.find(row => row.user_id === 'user_chloe').user_name = 'Chloe Lin with a deliberately long archived report subject name for compact screens'
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), populated)
+    await page.goto(`${origin}/?phase=${phase}&state=populated#/pages/safety/reports`)
+    await page.locator('.report-row').first().waitFor()
+    assert.equal(await page.locator('.report-row').count(), 2)
+    assert.match(await page.locator('.report-row').first().innerText(), /Sunset Picnic/)
+    assert.match(await page.locator('.report-row').nth(1).innerText(), /Chloe Lin with a deliberately long/)
+    assert.equal(await page.getByText('Saved locally', { exact: true }).count(), 2)
+    await page.setViewportSize({ width: 320, height: 568 })
+    assert.equal(await page.locator('.report-row').nth(1).evaluate(element => element.scrollWidth <= element.clientWidth), true)
+    await shot('reports-populated')
+    await page.setViewportSize({ width: 393, height: 852 })
+    check('Report rows are newest-first, retain raw subjects after blocking, wrap long content and never claim moderation status')
+
+    await page.locator('.report-row').first().click()
+    assert.match(await page.getByRole('alert').innerText(), /next page in this restoration flow/)
+    assert.match(page.url(), /#\/pages\/safety\/reports$/)
+    assert.equal((await state()).reports.length, 2)
+    await page.reload()
+    await page.locator('.report-row').first().waitFor()
+    assert.equal(await page.locator('.report-row').count(), 2)
+    check('Pending report-detail dependency fails explicitly without changing local records, and the list restores after refresh')
+
+    const expired = create_scenario('session_expired', Date.now())
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), expired)
+    await page.goto(`${origin}/?phase=${phase}&state=expired#/pages/safety/reports`)
+    await page.getByRole('alert').waitFor()
+    assert.equal(await page.locator('.report-row').count(), 0)
+    check('Expired sessions expose no private report rows and offer account-entry recovery')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {
