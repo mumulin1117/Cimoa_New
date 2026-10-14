@@ -593,6 +593,48 @@ try {
     check('Expired sessions expose no support form or drafts and offer account-entry recovery')
   }
 
+  if (phase === 'legal-landing') {
+    await goto('/pages/settings/index')
+    const before = await state()
+    await click('settings.openSetLegal.click.1')
+    await page.locator('.settings-legal-page').waitFor()
+    assert.equal(await page.locator('.legal-row').count(), 4)
+    assert.match(await page.locator('.legal-local-note').innerText(), /not published production terms/)
+    await shot('legal-landing')
+    check('Settings opens the source four-row Legal page with an explicit local-build disclosure')
+
+    await click('setLegal.openTerms.click.1')
+    assert.match(await page.getByRole('alert').innerText(), /next independent legal page/)
+    await click('setLegal.openPrivacy.click.1')
+    assert.match(await page.getByRole('alert').innerText(), /next independent legal page/)
+    assert.deepEqual(await state(), before)
+    check('Pending Terms and Privacy dependencies fail explicitly without opening external pages or changing account data')
+
+    await click('setLegal.openAgreeInfo.click.1')
+    await page.getByRole('dialog', { name: 'Community Guidelines' }).waitFor()
+    assert.match(await page.getByRole('dialog').innerText(), /Be respectful/)
+    await page.getByRole('dialog').getByRole('button', { name: 'Close' }).click()
+    await page.getByRole('dialog').waitFor({ state: 'hidden' })
+    await click('setLegal.openCoinHelp.click.1')
+    assert.match(await page.getByRole('alert').innerText(), /has not been restored yet/)
+    assert.deepEqual(await state(), before)
+    check('Community Guidelines uses the shared local agreement Sheet; pending coin information starts no purchase')
+
+    await page.setViewportSize({ width: 320, height: 400 })
+    assert.equal(await page.locator('.secondary-page-scroll .uni-scroll-view').last().evaluate(element => element.scrollHeight > element.clientHeight), true)
+    await page.setViewportSize({ width: 393, height: 852 })
+    await click('setLegal.goBack.click.1')
+    await page.locator('.settings-page').waitFor()
+    check('Legal rows scroll inside the safe-area frame and Back restores Settings')
+
+    const expired = create_scenario('session_expired', Date.now())
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), expired)
+    await page.goto(`${origin}/?phase=${phase}&expired=1#/pages/settings/legal`)
+    await page.getByRole('alert').waitFor()
+    assert.equal(await page.locator('.legal-row').count(), 0)
+    check('Expired sessions expose no Legal navigation and offer account-entry recovery')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {
