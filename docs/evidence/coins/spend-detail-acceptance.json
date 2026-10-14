@@ -1,0 +1,13 @@
+{
+  "phase": "spend-detail",
+  "result": "passed",
+  "server_pid": 49258,
+  "checks": [
+    "Spending Detail discloses fixture provenance and does not invent a linked feature",
+    "Unrestored Coin Help fails visibly without mutating coin activity",
+    "Spending Detail refresh restores the canonical transaction",
+    "Spending Detail Back restores History",
+    "Spending Detail rejects a purchase transaction without fallback data or writes"
+  ],
+  "errors": []
+}

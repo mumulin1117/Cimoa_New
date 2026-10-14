@@ -8417,7 +8417,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/coins/spend-detail",
-    "component": null,
+    "component": "src/pages/coins/spend-detail.vue; src/utils/coinHistory.js",
     "parent_route": "/pages/coins/history",
     "allowed_origin_routes": [
       "/pages/coins/history"
@@ -8468,10 +8468,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented with owned negative-spend validation, explicit unknown feature for unlinked fixture rows, no fabricated business association, refresh restoration, support dependency gate and History return ownership"
   },
   {
     "source_screen": "Coins / Help / Default",

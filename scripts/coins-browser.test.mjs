@@ -300,6 +300,41 @@ try {
     check('Purchase Detail rejects an unknown transaction ID without fallback data or writes')
   }
 
+  if (phase === 'spend-detail') {
+    await page.goto(`${origin}/?phase=coin-spend-detail#/pages/coins/history`)
+    const before = await state()
+    await page.locator('[data-record-type="transaction"]').filter({ hasText: 'Coins used' }).first().click()
+    await page.locator('.coin-spend-detail-page').waitFor()
+    assert.match(await page.locator('.spend-hero').innerText(), /−10 Coins\s*Local demo ledger entry/)
+    assert.match(await page.locator('.spend-card').innerText(), /Feature\s*Unavailable in demo ledger/)
+    assert.match(await page.locator('.spend-note').innerText(), /not evidence that a named feature was used/)
+    await page.waitForTimeout(400)
+    await page.screenshot({ path: path.join(output, 'spend-detail-fixture.png') })
+    check('Spending Detail discloses fixture provenance and does not invent a linked feature')
+
+    await page.locator('[data-interaction="coinSpendDetail.openSupport.click.1"]').click()
+    assert.match(await page.getByRole('alert').innerText(), /still being restored/)
+    assert.deepEqual(await state(), before)
+    check('Unrestored Coin Help fails visibly without mutating coin activity')
+
+    const detail_url = page.url()
+    await page.reload()
+    await page.locator('.coin-spend-detail-page').waitFor()
+    assert.equal(page.url(), detail_url)
+    assert.match(await page.locator('.spend-card').innerText(), /Completed · Local demo/)
+    check('Spending Detail refresh restores the canonical transaction')
+
+    await page.locator('[data-interaction="coinSpendDetail.goBack.click.1"]').click()
+    await page.locator('.coin-history-page').waitFor()
+    assert.equal(await page.locator('.history-row').count(), 4)
+    check('Spending Detail Back restores History')
+
+    await page.goto(`${origin}/?phase=coin-spend-detail-invalid#/pages/coins/spend-detail?transaction_id=txn_seed_0`)
+    assert.match(await page.getByRole('alert').innerText(), /not a completed coin spend/)
+    assert.deepEqual(await state(), before)
+    check('Spending Detail rejects a purchase transaction without fallback data or writes')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {
