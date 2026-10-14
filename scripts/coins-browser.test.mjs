@@ -390,6 +390,42 @@ try {
     check('Settings Legal opens Coin Help and Back restores the legal landing page')
   }
 
+  if (phase === 'success') {
+    await page.goto(`${origin}/?phase=coin-success-guard#/pages/coins/index`)
+    await page.locator('[data-interaction="coinStore.continuePurchase.click.1"]').click()
+    await page.locator('.coin-purchasing-page').waitFor()
+    await page.locator('[data-interaction="coinPurchasing.backToStore.click.1"]').click()
+    await page.locator('.coin-cancelled-page').waitFor()
+    const before = await state()
+    const request_id = before.purchase_requests[0].request_id
+    await page.goto(`${origin}/?phase=coin-success-invalid#/pages/coins/success?purchase_request_id=${encodeURIComponent(request_id)}`)
+    await page.locator('.coin-success-page').waitFor()
+    assert.match(await page.getByRole('alert').innerText(), /no verified StoreKit success/)
+    assert.equal(await page.locator('[data-interaction="coinSuccess.purchaseDone.click.1"]').count(), 0)
+    assert.equal(await page.locator('[data-interaction="coinSuccess.viewTxn.click.1"]').count(), 0)
+    assert.deepEqual(await state(), before)
+    await page.waitForTimeout(400)
+    await page.screenshot({ path: path.join(output, 'success-unavailable.png') })
+    check('Success rejects a real cancelled request and renders no success actions or coin mutation')
+
+    const invalid_url = page.url()
+    await page.reload()
+    await page.locator('.coin-success-page').waitFor()
+    assert.equal(page.url(), invalid_url)
+    assert.deepEqual(await state(), before)
+    check('Refreshing invalid Success remains fail-closed and does not mint coins')
+
+    await page.locator('.success-footer [data-interaction="coinSuccess.backToStore.click.1"]').click()
+    await page.locator('.coin-center-page').waitFor()
+    assert.equal(await page.locator('.coin-balance').innerText(), '260')
+    check('Invalid Success returns to Coin Center with the original balance')
+
+    await page.goto(`${origin}/?phase=coin-success-missing#/pages/coins/success`)
+    assert.match(await page.getByRole('alert').innerText(), /verified purchase request is required/)
+    assert.deepEqual(await state(), before)
+    check('Success rejects a missing request ID without creating fallback entities')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {

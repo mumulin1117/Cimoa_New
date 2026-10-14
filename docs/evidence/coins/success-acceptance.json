@@ -1,0 +1,12 @@
+{
+  "phase": "success",
+  "result": "passed",
+  "server_pid": 50493,
+  "checks": [
+    "Success rejects a real cancelled request and renders no success actions or coin mutation",
+    "Refreshing invalid Success remains fail-closed and does not mint coins",
+    "Invalid Success returns to Coin Center with the original balance",
+    "Success rejects a missing request ID without creating fallback entities"
+  ],
+  "errors": []
+}
