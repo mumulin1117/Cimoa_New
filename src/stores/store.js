@@ -132,7 +132,15 @@ export const use_app_store = defineStore('app', {
         }, { public: true })
       } catch { return unavailable('Secure authentication') }
     },
-    logout() { return transact(this, null, (data) => { data.session = { current_user_id: null, account_id: null, expires_at: null }; data.auth_flow.pending_registration_account_id = null }, { public: true }) },
+    logout(expected_account_id) {
+      return transact(this, null, (data, now) => {
+        if (expected_account_id !== undefined) s.ensure(s.authenticated(data, now) && data.session.account_id === expected_account_id, 'The account changed or the session expired. Reopen Settings before logging out.')
+        data.session = { current_user_id: null, account_id: null, expires_at: null }
+        // Keep accounts, onboarding, public profile, media and relationships.
+        // Only discard entry-form details that must not leak to the next account.
+        data.auth_flow = { flow_id: make_id('auth_flow'), step: 'welcome', email: '', verification_request_id: null, pending_registration_account_id: null, agreements: { age: false, student: false, terms: false, privacy: false, community: false }, profile_draft: {} }
+      }, { public: true })
+    },
     async delete_account(password) {
       const owner = s.owner_id(this.data), expected = this.data.accounts.find(row => row.account_id === this.data.session.account_id)
       const valid = await (expected?.auth_provider === 'local' ? verify_local_credential(expected, password) : password_hash(password).then(hash => hash === expected?.credential_hash)).catch(() => false)

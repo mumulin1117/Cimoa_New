@@ -14,6 +14,15 @@ defineProps({ name: { type: String, required: true }, strokeWidth: { type: Numbe
       <template v-else-if="name === 'height'"><path d="M8 2v20M16 2v20M8 6h4M8 12h4M8 18h4" /></template>
       <template v-else-if="name === 'people'"><circle cx="9" cy="8" r="3.4" /><path d="M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4" /></template>
       <template v-else-if="name === 'sparkle'"><path d="M12 3l1.6 4.8L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.2z" /></template>
+      <template v-else-if="name === 'bell'"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6M10 20a2.4 2.4 0 0 0 4 0" /></template>
+      <template v-else-if="name === 'shield'"><path d="M12 3l7 3v5c0 5-3.2 7.8-7 9-3.8-1.2-7-4-7-9V6zM9 12l2 2 4-4" /></template>
+      <template v-else-if="name === 'globe'"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18" /></template>
+      <template v-else-if="name === 'blocked'"><circle cx="12" cy="12" r="9" /><path d="M6 6l12 12" /></template>
+      <template v-else-if="name === 'flag'"><path d="M5 21V4h13l-2.5 4L18 12H5" /></template>
+      <template v-else-if="name === 'support'"><path d="M12 3.8c4.8 0 8.5 3.3 8.5 7.6s-3.7 7.6-8.5 7.6c-1.1 0-2.2-.2-3.2-.5-.4-.1-.8-.1-1.2.1l-2.4 1.2c-.6.3-1.2-.2-1-.8l.6-2c.1-.4 0-.8-.2-1.1C3.9 14.6 3.5 13 3.5 11.4 3.5 7.1 7.2 3.8 12 3.8z" /></template>
+      <template v-else-if="name === 'legal'"><path d="M6 4h9l3 3v13H6zM9 9h6M9 13h6M9 17h4" /></template>
+      <template v-else-if="name === 'logout'"><path d="M9 3H5a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h4M15 16l4-4-4-4M19 12H9" /></template>
+      <template v-else-if="name === 'delete'"><path d="M4 7h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M7 7l1 13a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-13" /></template>
       <template v-else-if="name === 'arrow-right'"><path d="M5 12h14M13 6l6 6-6 6" /></template>
       <template v-else-if="name === 'home'"><path d="M3 10.5 12 3.5l9 7V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" /></template>
       <template v-else-if="name === 'discover'"><circle cx="11" cy="11" r="7" /><path d="M16.2 16.2 21 21" /></template>

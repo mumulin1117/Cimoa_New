@@ -4,7 +4,7 @@
 
 ## 当前执行
 
-Edit All 本页通过，恢复 pending 等待子页与原生回归，full pending。其余目标页 pending，当前无 in_progress。完整验收和 verified 均待实际回归，不以路由存在代替完成。
+Edit All、Basic Info、Interests、Connection Goals、Icebreakers、Preview、Settings 主页面与退出弹层均通过本轮浏览器局部闭环；status pending、local passed、full pending，当前无 in_progress。原生回归正在执行，完整验收和 verified 不以路由存在代替完成。
 
 ## 阶段一与交互契约
 
@@ -38,6 +38,8 @@ Edit All 本页通过，恢复 pending 等待子页与原生回归，full pendin
 主题沿用唯一 theme.json，原稿393宽换算rpx。共用 SecondaryPageFrame、PageTransition、真实相册选择/解码、照片展示和自定义弹层；不新增主 Tab。
 
 ## 验收记录
+
+Settings / Logout：Chrome16组累计回归通过；79项全量单元通过。设置头像/余额、Account返回、社区规则、退出取消/失败/500ms写时序、清栈Welcome、访客主Tab守卫、错误密码、同账号重登、三Tab单次骨架和刷新保持通过。见[完整浏览器记录](./evidence/profile-edit/settings-acceptance.json)。其余设置子页明确 deferred，不标记成功。三项检查通过；local passed/full pending。
 
 Preview：Chrome13组通过，同一资料/照片顺序、预览发起编辑后保存返回、Profile即时同步、刷新和小屏固定按钮已验证；缺少音源明确报错。见[preview验收](./evidence/profile-edit/preview-acceptance.json)。三项检查通过；local passed/full pending。
 

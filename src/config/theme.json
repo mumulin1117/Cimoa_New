@@ -5,6 +5,10 @@
       "gradient": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
     },
     "surface": {
+      "settings_pink": "#fbe3ef",
+      "settings_purple": "#efe9fb",
+      "settings_blue": "#e5f0ff",
+      "settings_danger": "#fdeaea",
       "profile_song": "rgba(8,16,31,0.55)",
       "profile_dot_inactive": "rgba(255,255,255,0.4)",
       "profile_goal_icon": "#efe9fb",
@@ -37,6 +41,10 @@
       "verification_pill": "#e8f1fd"
     },
     "text": {
+      "settings_pink": "#db2777",
+      "settings_purple": "#7c3aed",
+      "settings_blue": "#2563eb",
+      "settings_danger": "#dc2626",
       "profile_goal_icon": "#7c3aed",
       "profile_interest_icon": "#2563eb",
       "profile_song_artist": "rgba(255,255,255,0.8)",

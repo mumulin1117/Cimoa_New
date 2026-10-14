@@ -6,6 +6,7 @@ import { createRequire } from 'node:module'
 import { create_scenario } from '../src/stores/scenarios.js'
 const require = createRequire(import.meta.url), { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const phase = process.argv.find(arg => arg.startsWith('--phase='))?.slice(8) || 'edit'
+const settings_only = process.argv.includes('--settings-only')
 const root = path.resolve('dist/build/h5'), output = path.resolve('docs/evidence/profile-edit')
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' }
 const server = http.createServer((req,res) => { const file = path.resolve(root, '.' + new URL(req.url, 'http://localhost').pathname.replace(/^\/$/, '/index.html')); if (!file.startsWith(root + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { res.writeHead(404); res.end(); return } res.setHeader('Content-Type', mime[path.extname(file)] || 'application/octet-stream'); fs.createReadStream(file).pipe(res) })
@@ -21,7 +22,13 @@ try {
   const click = id => page.locator(`[data-interaction="${id}"]`).click(), button = name => page.getByRole('button',{ name,exact:true })
   const field = label => page.locator(`uni-input[aria-label="${label}"] input, uni-textarea[aria-label="${label}"] textarea`)
   const settle = () => page.locator('.page-transition').last().evaluate(el => Promise.all(el.getAnimations().map(a => a.finished)))
-  const shot = async name => { await settle(); await page.screenshot({ path:path.join(output, `${name}.png`) }) }
+  const shot = async name => {
+    await settle()
+    await page.waitForFunction(()=>[...document.querySelectorAll('.event-dialog')].filter(el=>el.offsetHeight>0).every(el=>el.classList.contains('event-dialog--open')))
+    await page.locator('.event-dialog:visible').evaluateAll(els=>Promise.all(els.flatMap(el=>el.getAnimations({subtree:true}).map(animation=>animation.finished))))
+    await page.screenshot({ path:path.join(output, `${name}.png`) })
+  }
+  if (!settings_only) {
   await goto('/pages/profile/index'); await click('profile.openEditBasic.click.1'); await page.locator('.profile-edit-page').waitFor(); await shot('edit-default')
   const card = await page.locator('.score-card').boundingBox(), icon = await page.locator('.editor-icon').first().boundingBox()
   assert.ok(Math.abs(card.width - 353) < 1); assert.ok(Math.abs(icon.width - 20) < 1); assert.equal(await page.locator('.score-card').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(255, 255, 255)')
@@ -113,6 +120,28 @@ try {
     await page.setViewportSize({width:320,height:568}); await shot('preview-small'); const footer=await page.locator('.editor-footer').boundingBox(); assert.ok(footer.y+footer.height<=568); await page.setViewportSize({width:393,height:852})
     check('Preview reads saved entities and real photo order, edits return to the originating preview, Profile/refresh synchronize, small-screen footer stays fixed')
   }
+  }
+  if (settings_only) { await page.evaluate(()=>{const e=JSON.parse(localStorage.getItem('cimoa_app_state_v2'));e.data.users[0].user_name='Morgan Campus';localStorage.setItem('cimoa_app_state_v2',JSON.stringify(e))}); await goto('/pages/profile/preview'); await page.locator('.profile-preview-page').waitFor() }
+  if (phase === 'settings') {
+    await click('profilePreview.goBack.click.1'); await page.locator('.profile-title').waitFor(); await click('profile.openAppSettings.click.1'); await page.locator('.settings-page').waitFor(); await page.locator('.settings-avatar .profile-photo[data-media-status="ready"]').waitFor(); await shot('settings')
+    const before = await state(); await click('settings.openEditBasic.click.1'); await page.locator('.profile-edit-page:visible').waitFor(); await click('editAll.eaSave.click.1'); await page.locator('.settings-page:visible').waitFor(); assert.equal((await state()).users[0].user_name,before.users[0].user_name)
+    for (const id of ['openStore','openSetNotif','openSetPrivacy','openSetPerm','openSetLang','openBlockedList','openReportsSubmitted','openSetSupport','openSetLegal','openDelInfo']) { await click(`settings.${id}.click.1`); assert.match(await page.locator('.editor-error:visible').innerText(),/not been restored/) }
+    await click('settings.openAgreeInfo.click.1'); await page.getByRole('dialog',{name:'Community Guidelines'}).waitFor(); assert.match(await page.getByRole('dialog').innerText(),/Respect boundaries/); await button('Close').click(); await page.getByRole('dialog').waitFor({state:'hidden'})
+    check('Settings restores source sections, canonical avatar/balance and Account return; guidelines open; missing children fail without fake navigation')
+    const saved = await state(); await click('settings.openLogoutConfirm.click.1'); await page.getByRole('dialog',{name:'Log out of Cimoa?'}).waitFor(); await shot('logout'); await click('sheetLogout.closeSheet.click.2'); await page.getByRole('dialog').waitFor({state:'hidden'}); assert.deepEqual(await state(),saved)
+    await click('settings.openLogoutConfirm.click.1'); await page.getByRole('dialog',{name:'Log out of Cimoa?'}).waitFor(); await page.evaluate(()=>{window.__originalWrite=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw Error('Storage full');return window.__originalWrite.call(this,key,value)}})
+    await click('sheetLogout.logOut2.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await state(),saved); await page.locator('.loading').waitFor({state:'detached'}); assert.match(await page.getByRole('dialog').innerText(),/Storage full/); assert.deepEqual(await state(),saved)
+    await page.evaluate(()=>{Storage.prototype.setItem=window.__originalWrite;delete window.__originalWrite}); await click('sheetLogout.logOut2.click.1'); await page.locator('.welcome-page').waitFor(); assert.equal((await state()).session.account_id,null)
+    for (const key of ['users','accounts','profile_photos','media_files','icebreakers','relationships','coin_transactions','settings']) assert.deepEqual((await state())[key],saved[key])
+    await page.reload(); await page.locator('.welcome-page').waitFor(); await goto('/pages/home/index'); await page.locator('.welcome-page').waitFor(); assert.equal(await page.locator('.tabbar').count(),0)
+    check('Logout cancel and failed storage preserve session; confirmed logout waits before writing, keeps all account entities, clears stack and survives refresh/guard')
+    await click('welcome.goLogin.click.1'); await page.locator('.login-page').waitFor(); await field('Email').fill('cimoa@gmail.com'); await field('Password').fill('wrong-password'); await click('login.loginNow.click.1'); await page.locator('.login-page [role="alert"]').waitFor(); assert.equal((await state()).session.account_id,null)
+    await field('Password').fill('12341234'); await click('login.loginNow.click.1'); await page.locator('.main-skeleton').waitFor(); await page.locator('.main-skeleton').waitFor({state:'hidden'}); assert.equal((await state()).session.account_id,saved.session.account_id)
+    for (const name of ['Discover','Events']) { await button(name).click(); await page.locator('.main-skeleton').waitFor(); await page.locator('.main-skeleton').waitFor({state:'hidden'}) }
+    await button('Home').click(); await page.locator('.home-header').waitFor(); assert.equal(await page.locator('.main-skeleton').count(),0); await click('home.openMe.click.1'); await page.locator('.profile-title').waitFor(); assert.match(await page.locator('.profile-name').innerText(),/Morgan Campus/); await page.locator('.profile-avatar .profile-photo[data-media-status="ready"]').waitFor(); await page.reload(); await page.locator('.profile-avatar .profile-photo[data-media-status="ready"]').waitFor()
+    for (const key of ['users','profile_photos','media_files','icebreakers','relationships','coin_transactions','settings']) assert.deepEqual((await state())[key],saved[key])
+    check('Wrong password fails; real relogin restores edited profile/photos/questions, consumes one skeleton per Tab and reload keeps every entity')
+  }
   assert.deepEqual(report.errors,[]); report.result='passed'
-} catch(error) { report.failure=String(error.stack||error); console.error(report.failure); process.exitCode=1 }
+} catch(error) { report.failure=String(error.stack||error); report.visible_failure=await page?.evaluate(()=>({route:location.hash,text:document.body.innerText.slice(-2500),loading:!!document.querySelector('.loading')})).catch(()=>null); console.error(report.failure,report.visible_failure); process.exitCode=1 }
 finally { await browser?.close(); await new Promise(resolve=>server.close(resolve)); fs.writeFileSync(path.join(output,`${phase}-acceptance.json`),JSON.stringify(report,null,2)+'\n'); console.log('Temporary profile server and isolated browser closed.') }

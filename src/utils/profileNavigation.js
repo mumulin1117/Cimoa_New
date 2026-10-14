@@ -6,7 +6,7 @@ export function profile_destination(store, kind) {
   if (!route) throw new Error('This page is unavailable.')
   return route
 }
-export const PROFILE_DEFERRED_ROUTES = Object.freeze(['/pages/settings/index', '/pages/coins/index', '/pages/profile/verification', '/pages/settings/support'])
+export const PROFILE_DEFERRED_ROUTES = Object.freeze(['/pages/coins/index', '/pages/profile/verification', '/pages/settings/support', '/pages/settings/notif', '/pages/settings/privacy', '/pages/settings/perm', '/pages/settings/lang', '/pages/settings/blocked', '/pages/safety/reports', '/pages/settings/legal', '/pages/settings/delete/info'])
 export function require_profile_destination_ready(url) {
   if (PROFILE_DEFERRED_ROUTES.includes(url.split('?')[0])) throw new Error('This destination has not been restored yet. Your profile and coins have not changed.')
   return url

@@ -32,6 +32,7 @@
     { "path": "pages/profile/goals", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/ice", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/preview", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/settings/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auto-match/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/system/index", "style": { "navigationStyle": "custom" } }

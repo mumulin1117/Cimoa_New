@@ -4,7 +4,7 @@ import { onShow, onHide } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { use_main_tab_skeleton } from '@/composables/useMainTabSkeleton.js'
 import { route_depth, relaunch_route } from '@/utils/routeTransition.js'
-import { authenticated_destination } from '@/utils/authNavigation.js'
+import { startup_destination } from '@/utils/authNavigation.js'
 import { MOTION } from '@/config/navigation.js'
 import TopSafeArea from './TopSafeArea.vue'
 import CustomTabBar from './CustomTabBar.vue'
@@ -16,9 +16,9 @@ defineEmits(['scroll'])
 const store = use_app_store(), transition = ref(null)
 const skeleton = use_main_tab_skeleton(props.route)
 const depth = ref(route_depth())
-const setup_required = computed(() => store.session.is_authenticated && (store.requires_local_verification || store.onboarding && !store.onboarding.completed))
+const setup_required = computed(() => store.hydration_status === 'ready' && (!store.session.account_id || !store.session.current_user_id || store.session.is_authenticated && (store.requires_local_verification || store.onboarding && !store.onboarding.completed)))
 const guard_error = ref('')
-const continue_setup = async () => { try { await relaunch_route(authenticated_destination(store)) } catch (cause) { guard_error.value = cause.message } }
+const continue_setup = async () => { try { await relaunch_route(startup_destination(store)) } catch (cause) { guard_error.value = cause.message } }
 let clock_timer
 const stop_clock = () => { clearInterval(clock_timer); clock_timer = null }
 onShow(() => { depth.value = route_depth(); stop_clock(); store.tick(); clock_timer = setInterval(() => store.tick(), 1000); if (setup_required.value) continue_setup() })
