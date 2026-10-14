@@ -190,6 +190,25 @@ export const use_app_store = defineStore('app', {
     },
     discard_draft(id) { return transact(this, null, (data) => { require_owned(data, data.drafts, 'draft_id', id); data.drafts = data.drafts.filter((row) => row.draft_id !== id) }) },
     save_auth_draft(patch) { return transact(this, null, (data) => { s.ensure(Object.keys(patch).every((key) => ['step', 'email', 'agreements', 'profile_draft'].includes(key)) && !/"(?:password|pw|code|credential_hash)"|data:[^;]+;base64/.test(JSON.stringify(patch)), 'Unsupported signup field.'); Object.assign(data.auth_flow, clone_data(patch)) }, { public: true }) },
+    save_registration_age(date_of_birth) {
+      return transact(this, null, (data, now) => {
+        s.ensure(!s.authenticated(data, now) && !data.auth_flow.pending_registration_account_id, 'Please finish your existing account setup or log out first.')
+        const age = age_from_date(date_of_birth, now)
+        s.ensure(age != null && age >= 18, 'Enter a valid date of birth. You must be 18 or older.')
+        data.auth_flow.profile_draft = { date_of_birth }
+        data.auth_flow.agreements.age = true
+        data.auth_flow.step = 'community'
+      }, { public: true })
+    },
+    save_registration_agreements(agreements) {
+      return transact(this, null, (data, now) => {
+        s.ensure(!s.authenticated(data, now) && !data.auth_flow.pending_registration_account_id, 'Please finish your existing account setup or log out first.')
+        s.ensure(age_from_date(data.auth_flow.profile_draft.date_of_birth, now) >= 18, 'Complete the age check first.')
+        s.ensure(['terms', 'privacy', 'community'].every(key => agreements?.[key] === true), 'Please confirm all three community agreements.')
+        data.auth_flow.agreements = { age: true, student: false, terms: true, privacy: true, community: true }
+        data.auth_flow.step = 'signup'
+      }, { public: true })
+    },
     async save_media(blob, kind, duration_ms = 0) {
       const owner = s.owner_id(this.data), media_id = make_id('media'), rt = get_runtime(this)
       try {

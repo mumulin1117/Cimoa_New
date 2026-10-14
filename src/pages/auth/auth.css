@@ -14,3 +14,6 @@
 .auth-local-note { display: block; margin-top: 41.985rpx; color: var(--cimoa-text-auth-muted); font-size: 27.672rpx; line-height: 1.4; }
 .auth-primary { display: flex; align-items: center; justify-content: center; height: 114.504rpx; border-radius: 57.252rpx; background: var(--cimoa-gradient-primary); color: var(--cimoa-text-inverse); box-shadow: var(--cimoa-shadow-auth-action); font-size: 36.26rpx; font-weight: 700; }
 .auth-secondary { display: flex; align-items: center; justify-content: center; height: 87.786rpx; font-size: 30.534rpx; font-weight: 600; color: var(--cimoa-text-auth-muted); }
+.auth-description { display: block; margin-top: 19.084rpx; font-size: 32.443rpx; color: var(--cimoa-text-secondary); line-height: 1.45; }
+.auth-card { padding: 34.351rpx; background: var(--cimoa-surface-card); border-radius: 45.802rpx; box-shadow: var(--cimoa-shadow-card); }
+.auth-primary.is-disabled { background: var(--cimoa-surface-event-handle); color: var(--cimoa-text-profile-chevron); }
