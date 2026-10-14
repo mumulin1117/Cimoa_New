@@ -1,4 +1,4 @@
-const methods = new Set(['getEnvironment', 'getSafeArea', 'openSettings', 'getNotificationPermission', 'requestNotifications'])
+const methods = new Set(['getEnvironment', 'getSafeArea', 'openSettings', 'getNotificationPermission', 'getPermissions', 'requestNotifications'])
 export function create_host_bridge({ timers = globalThis, send = payload => globalThis.window?.webkit?.messageHandlers?.CimoaHost?.postMessage(payload), timeout_ms = 8000 } = {}) {
   let sequence = 0
   return {

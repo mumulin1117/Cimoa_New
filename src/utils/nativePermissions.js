@@ -17,3 +17,17 @@ export const notification_permission = async (request = false, env = globalThis)
   const value = request ? await env.Notification.requestPermission() : env.Notification.permission
   return permission_status(value === 'default' ? 'not_requested' : value)
 }
+
+const permission_keys = ['camera', 'microphone', 'photos', 'notifications', 'location']
+const normalized_permission = value => {
+  if (value === 'unknown') return 'not_requested'
+  if (!['granted', 'denied', 'not_requested', 'unavailable'].includes(value)) throw new Error('The system returned an unknown permission state. Please retry.')
+  return value
+}
+export const permission_statuses = async (env = globalThis) => {
+  const source = env.window?.webkit?.messageHandlers?.CimoaHost
+    ? await env.window.CimoaNativeBridge.request('getPermissions')
+    : await read_permissions(env.navigator)
+  return Object.fromEntries(permission_keys.map(key => [key, normalized_permission(source[key] || 'unavailable')]))
+}
+import { read_permissions } from './mediaCapabilities.js'

@@ -1,6 +1,9 @@
 import UIKit
 import WebKit
 import UserNotifications
+import AVFoundation
+import Photos
+import CoreLocation
 
 final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     private(set) var webView: WKWebView!
@@ -93,6 +96,47 @@ final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDeleg
               let method = payload["method"] as? String else { reply(nil, "Invalid or untrusted native bridge request."); return }
         let result: [String: Any]
         switch method {
+        case "getPermissions":
+            let authorizationStatus: (AVAuthorizationStatus) -> String = { status in
+                switch status {
+                case .authorized: return "granted"
+                case .denied, .restricted: return "denied"
+                case .notDetermined: return "not_requested"
+                @unknown default: return "unavailable"
+                }
+            }
+            let photoStatus: String
+            switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
+            case .authorized, .limited: photoStatus = "granted"
+            case .denied, .restricted: photoStatus = "denied"
+            case .notDetermined: photoStatus = "not_requested"
+            @unknown default: photoStatus = "unavailable"
+            }
+            let locationStatus: String
+            switch CLLocationManager().authorizationStatus {
+            case .authorizedAlways, .authorizedWhenInUse: locationStatus = "granted"
+            case .denied, .restricted: locationStatus = "denied"
+            case .notDetermined: locationStatus = "not_requested"
+            @unknown default: locationStatus = "unavailable"
+            }
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                let notificationStatus: String
+                switch settings.authorizationStatus {
+                case .authorized, .provisional, .ephemeral: notificationStatus = "granted"
+                case .denied: notificationStatus = "denied"
+                case .notDetermined: notificationStatus = "not_requested"
+                @unknown default: notificationStatus = "unavailable"
+                }
+                let statuses: [String: Any] = [
+                    "camera": authorizationStatus(AVCaptureDevice.authorizationStatus(for: .video)),
+                    "microphone": authorizationStatus(AVCaptureDevice.authorizationStatus(for: .audio)),
+                    "photos": photoStatus,
+                    "notifications": notificationStatus,
+                    "location": locationStatus
+                ]
+                DispatchQueue.main.async { reply(["version": 1, "request_id": id, "success": true, "result": statuses], nil) }
+            }
+            return
         case "getNotificationPermission", "requestNotifications":
             let center = UNUserNotificationCenter.current()
             let respond = {

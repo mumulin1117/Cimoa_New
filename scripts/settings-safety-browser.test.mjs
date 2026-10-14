@@ -93,6 +93,35 @@ try {
     check('Expired session hides private controls and offers account-entry recovery')
   }
 
+  if (phase === 'permissions') {
+    await goto('/pages/settings/index')
+    const before = await state()
+    await click('settings.openSetPerm.click.1')
+    await page.locator('.settings-permissions-page').waitFor()
+    const names = ['Camera', 'Microphone', 'Photos', 'Notifications', 'Location']
+    for (const name of names) {
+      const row = page.getByRole('button', { name: new RegExp(`^${name}`) })
+      await row.waitFor()
+      assert.match(await row.innerText(), /Allowed|Denied|Not Requested|Unavailable/)
+    }
+    assert.deepEqual(await state(), before)
+    await shot('permissions-browser')
+    check('Permissions page reads five browser statuses without changing account data')
+
+    await page.getByRole('button', { name: /^Camera/ }).click()
+    assert.match(await page.getByRole('alert').innerText(), /unavailable in this browser/)
+    assert.deepEqual(await state(), before)
+    check('Browser fallback reports that native Settings are unavailable and never fakes a grant')
+
+    await page.reload()
+    await page.locator('.settings-permissions-page').waitFor()
+    for (const name of names) assert.match(await page.getByRole('button', { name: new RegExp(`^${name}`) }).innerText(), /Allowed|Denied|Not Requested|Unavailable/)
+    await click('setPerm.goBack.click.1')
+    await page.locator('.settings-page').waitFor()
+    assert.deepEqual(await state(), before)
+    check('Permission statuses refresh from the environment and Back returns to Settings with no writes')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {

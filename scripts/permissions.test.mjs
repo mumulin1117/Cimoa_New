@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { notification_permission, open_app_settings } from '../src/utils/nativePermissions.js'
+import { notification_permission, open_app_settings, permission_statuses } from '../src/utils/nativePermissions.js'
 test('ordinary browser permission reads/request only real API results and reports unavailable', async () => {
   assert.equal(await notification_permission(false, {}), 'unavailable')
   const env = { isSecureContext: true, Notification: { permission: 'default', requestPermission: async () => 'denied' } }
@@ -15,4 +15,13 @@ test('native permission uses correlated bridge whitelist and rejects unavailable
   assert.equal(await notification_permission(false, env), 'denied'); assert.equal(await notification_permission(true, env), 'denied')
   assert.deepEqual(methods, ['getNotificationPermission', 'requestNotifications'])
   env.window.CimoaNativeBridge.request = async () => { throw Error('Host timeout') }; await assert.rejects(notification_permission(true, env), /timeout/)
+})
+test('permission overview reads all real native statuses and normalizes browser prompts', async () => {
+  const native = { camera: 'granted', microphone: 'denied', photos: 'not_requested', notifications: 'unavailable', location: 'granted' }
+  const env = { window: { webkit: { messageHandlers: { CimoaHost: {} } }, CimoaNativeBridge: { request: async method => { assert.equal(method, 'getPermissions'); return native } } } }
+  assert.deepEqual(await permission_statuses(env), native)
+  const browser = { navigator: { permissions: { query: async ({ name }) => ({ state: name === 'camera' ? 'granted' : name === 'microphone' ? 'denied' : 'prompt' }) } } }
+  assert.deepEqual(await permission_statuses(browser), { camera: 'granted', microphone: 'denied', photos: 'not_requested', notifications: 'not_requested', location: 'not_requested' })
+  env.window.CimoaNativeBridge.request = async () => ({ ...native, camera: 'pretend' })
+  await assert.rejects(permission_statuses(env), /unknown/)
 })

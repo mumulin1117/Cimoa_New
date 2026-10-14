@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-14",
+  "device": "iPhone 17 Pro",
+  "device_id": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+  "host": "cimoaNeapo",
+  "bundle_id": "com.cimoa.neapo.dev",
+  "test": "cimoaNeapoTests.HostTests/testNativeRequestReplyAndFailureBoundaries",
+  "result": "passed",
+  "checks": [
+    "getPermissions returns camera, microphone, photos, notifications and location",
+    "every returned state is granted, denied, not_requested or unavailable",
+    "unsupported and malformed bridge calls are rejected",
+    "purchase bridge remains failure-only without StoreKit configuration"
+  ],
+  "xcresult": "/tmp/CimoaPermissionAcceptance-20261014.xcresult"
+}
