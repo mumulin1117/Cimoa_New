@@ -42,7 +42,9 @@
       "auth_divider": "#dbe3ee",
       "auth_error": "#fee2e2",
       "verification_shield_border": "#e2e8f0",
-      "verification_pill": "#e8f1fd"
+      "verification_pill": "#e8f1fd",
+      "coin_hero_orb_primary": "rgba(255,255,255,0.12)",
+      "coin_hero_orb_secondary": "rgba(255,255,255,0.10)"
     },
     "text": {
       "event_people": "#b6249e",
@@ -142,7 +144,8 @@
     "primary": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
     "tab": "linear-gradient(120deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
     "lightning": "linear-gradient(135deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
-    "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)"
+    "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)",
+    "coin_hero": "linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%)"
   },
   "shadows": {
     "event_group_header": "0 1px 0 rgba(16,36,74,0.06)",
@@ -174,6 +177,8 @@
     "match_card": "0 19.084rpx 49.618rpx rgba(16,36,74,0.09)",
     "explore": "0 15.267rpx 41.985rpx rgba(16,36,74,0.07)",
     "popover": "0 34.351rpx 83.969rpx rgba(16,36,74,0.20)",
-    "primary": "0 22.901rpx 53.435rpx rgba(168,85,247,0.32)"
+    "primary": "0 22.901rpx 53.435rpx rgba(168,85,247,0.32)",
+    "coin_hero": "0 26.718rpx 57.252rpx rgba(120,110,245,0.22)",
+    "coin_selected": "0 19.084rpx 49.618rpx rgba(168,85,247,0.18)"
   }
 }

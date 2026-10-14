@@ -40,6 +40,7 @@
     { "path": "pages/profile/goals", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/ice", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/preview", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/coins/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/notif", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/privacy", "style": { "navigationStyle": "custom" } },

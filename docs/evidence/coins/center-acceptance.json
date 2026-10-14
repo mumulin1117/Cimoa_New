@@ -1,0 +1,12 @@
+{
+  "phase": "center",
+  "result": "passed",
+  "server_pid": 42658,
+  "checks": [
+    "Profile opens Coin Center with Store-derived balance and all six source packages",
+    "Package selection is transient UI state and does not change the ledger or purchase requests",
+    "Unrestored purchasing and history dependencies fail visibly without writes or fake success",
+    "Coin Center scrolls in a small viewport and Back restores the Profile instance"
+  ],
+  "errors": []
+}
