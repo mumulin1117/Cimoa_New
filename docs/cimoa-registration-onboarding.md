@@ -33,7 +33,7 @@
 
 ## 当前执行
 
-Basic本页已通过：13项单元、累计6组H5检查与截图核对。恢复pending待University页，PID75940关闭。下面Basic阶段2/3段落的in_progress为实施起点历史，不代表仍在进行。
+Basic功能首轮：13项单元、累计6组H5检查通过，PID75940关闭。截图复核发现slot内容未消费共享auth.css，输入框和说明字号不正确；重新打开本页修复，并新增56高输入框/17字号的自动断言。最新PID76741复测通过，当前basic.png已重新视觉核对；三项强制校验通过无警告。当前恢复pending待依赖，首轮截图不作为视觉证据。
 
 Basic当前唯一in_progress。阶段2/3增量：`account.onboarding.step/completed_steps/notification_permission/completed_at`保存账号级进度；用户实体直接保存已提交字段，DOB归account；`onboarding`和`onboarding_catalog`为唯一页面读口。Success明确点击并500msLoading后，仅为当前已固定码验证的待注册账号建立本地会话，不授予学生认证。重新登录未完成账号恢复步骤；完整账户仍Home。源大学Verified/HKUST改为后续用户自填、自报而非自动确认；流程总数配置10，避免原稿7/8/9矛盾。
 

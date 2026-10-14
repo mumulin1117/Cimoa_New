@@ -1,3 +1,4 @@
+@import '../auth/auth.css';
 .onboarding-title { display: block; font-size: 59.16rpx; font-weight: 800; letter-spacing: -.035em; line-height: 1.1; }
 .onboarding-section { margin-top: 41.985rpx; }
 .onboarding-label-row { display: flex; align-items: center; justify-content: space-between; gap: 19.084rpx; margin-bottom: 13.359rpx; }

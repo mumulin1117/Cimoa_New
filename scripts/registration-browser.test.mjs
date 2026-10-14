@@ -95,6 +95,8 @@ try {
     assert.equal(await field('Date of birth').inputValue(), '2000-01-01')
     await click('obBasic.goObUni.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /display name/)
     await fill('Display name', 'Morgan'); await page.getByRole('button', { name: 'Non-binary', exact: true }).click(); await page.getByRole('button', { name: 'they / them', exact: true }).click()
+    assert.ok(Math.abs((await page.locator('.auth-input-box').first().boundingBox()).height - 56) < 1)
+    assert.ok(Math.abs(await page.locator('.auth-description').evaluate(el => parseFloat(getComputedStyle(el).fontSize)) - 17) < .02)
     await shot('basic'); await click('obBasic.goObUni.click.1'); await page.locator('.loading').waitFor({ state: 'detached' })
     await page.waitForFunction(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.users.some(row => row.user_name === 'Morgan'))
     const data = await snapshot(); const account = data.accounts.find(row => row.account_id === data.session.account_id)

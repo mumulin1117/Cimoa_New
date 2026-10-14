@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { use_onboarding } from '@/composables/useOnboarding.js'
 import OnboardingFrame from '@/components/OnboardingFrame.vue'
 const frame = ref(null), flow = use_onboarding('basic', frame)
@@ -8,6 +8,7 @@ const profile = context.value?.profile || {}, form = reactive({ user_name: profi
 const gender = ref(catalog.value.genders.includes(form.gender) ? form.gender : form.gender ? 'Self-describe' : ''), pronouns = ref(catalog.value.pronouns.includes(form.pronouns) ? form.pronouns : form.pronouns ? 'Add your own' : '')
 const select_gender = value => { gender.value = value; form.gender = value === 'Self-describe' ? '' : value }
 const select_pronouns = value => { pronouns.value = value; form.pronouns = value === 'Add your own' ? '' : value }
+watch(form, () => { error.value = '' })
 </script>
 <template>
   <OnboardingFrame ref="frame" step="basic" :busy="is_loading" :error="error" :access-error="access_error" interaction="obBasic.goObUni.click.1" @back="back" @recover="recover" @continue="save({ ...form })">
