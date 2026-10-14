@@ -1,0 +1,67 @@
+.delete-page-body {
+  padding: 0 38.168rpx 45.802rpx;
+  overflow-wrap: anywhere;
+}
+.delete-page-title {
+  display: block;
+  font-size: 49.618rpx;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.16;
+}
+.delete-page-copy {
+  display: block;
+  margin-top: 19.084rpx;
+  color: var(--cimoa-text-secondary);
+  font-size: 30.534rpx;
+  line-height: 1.5;
+}
+.delete-impact-card {
+  display: flex;
+  flex-direction: column;
+  gap: 17.176rpx;
+  margin-top: 30.534rpx;
+  padding: 34.351rpx;
+  border-radius: 45.802rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-card);
+}
+.delete-impact-card text {
+  color: var(--cimoa-text-profile-bio);
+  font-size: 31.489rpx;
+  line-height: 1.35;
+}
+.delete-page-disclosure {
+  display: block;
+  margin-top: 30.534rpx;
+  padding: 26.718rpx 30.534rpx;
+  border-radius: 34.351rpx;
+  background: var(--cimoa-surface-tinted);
+  color: var(--cimoa-text-secondary);
+  font-size: 27.672rpx;
+  line-height: 1.5;
+}
+.delete-page-footer {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 19.084rpx;
+  padding: 19.084rpx 38.168rpx 11.45rpx;
+}
+.delete-page-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 110.687rpx;
+  border-radius: 55.344rpx;
+  background: var(--cimoa-surface-tinted);
+  color: var(--cimoa-text-title);
+  font-size: 34.351rpx;
+  font-weight: 700;
+  cursor: pointer;
+}
+.delete-page-action--secondary {
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-card);
+  font-weight: 600;
+}

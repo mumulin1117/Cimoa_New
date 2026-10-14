@@ -1,0 +1,12 @@
+{
+  "phase": "delete-info",
+  "result": "passed",
+  "server_pid": 37418,
+  "checks": [
+    "Settings opens the source-matched Delete account information page with the canonical balance and truthful local-only scope",
+    "The pending reason dependency fails explicitly without changing the account, and refresh restores the information page",
+    "Delete information scrolls inside the fixed safe-area frame and Keep My Account returns to the same Settings instance",
+    "Expired session hides deletion actions and offers account-entry recovery"
+  ],
+  "errors": []
+}

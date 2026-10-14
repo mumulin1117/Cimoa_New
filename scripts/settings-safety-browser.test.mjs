@@ -721,6 +721,46 @@ try {
     check('Authenticated Legal → Privacy → Back restores the same Legal page without changing the session')
   }
 
+  if (phase === 'delete-info') {
+    await goto('/pages/settings/index')
+    const before = await state()
+    await click('settings.openDelInfo.click.1')
+    await page.locator('.delete-info-page').waitFor()
+    assert.match(await page.locator('.delete-page-title').innerText(), /This removes your account/)
+    assert.equal(await page.locator('.delete-impact-card uni-text').count(), 5)
+    assert.match(await page.locator('.delete-impact-card').innerText(), new RegExp(`remaining coin balance \\(${before.coin_transactions.reduce((sum, row) => sum + row.amount, 0).toLocaleString('en-US')}\\)`))
+    assert.match(await page.locator('.delete-page-disclosure').innerText(), /from this device/)
+    assert.match(await page.locator('.delete-page-disclosure').innerText(), /does not send a deletion request/)
+    assert.deepEqual(await state(), before)
+    await shot('delete-info')
+    check('Settings opens the source-matched Delete account information page with the canonical balance and truthful local-only scope')
+
+    await click('delInfo.openDelReason.click.1')
+    assert.match(await page.getByRole('alert').innerText(), /reason step is being restored next/)
+    assert.deepEqual(await state(), before)
+    await page.reload()
+    await page.locator('.delete-info-page').waitFor()
+    assert.deepEqual(await state(), before)
+    check('The pending reason dependency fails explicitly without changing the account, and refresh restores the information page')
+
+    await page.setViewportSize({ width: 320, height: 480 })
+    assert.equal(await page.locator('.secondary-page-scroll .uni-scroll-view').last().evaluate(element => element.scrollHeight > element.clientHeight), true)
+    await shot('delete-info-small')
+    await page.setViewportSize({ width: 393, height: 852 })
+    await click('delInfo.keepAccount.click.1')
+    await page.locator('.settings-page').waitFor()
+    assert.deepEqual(await state(), before)
+    check('Delete information scrolls inside the fixed safe-area frame and Keep My Account returns to the same Settings instance')
+
+    const expired = create_scenario('session_expired', Date.now())
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), expired)
+    await page.goto(`${origin}/?phase=${phase}&scenario=expired#/pages/settings/delete/info`)
+    await page.getByRole('alert').waitFor()
+    assert.equal(await page.getByText('Continue Account Deletion').count(), 0)
+    assert.match(await page.getByRole('alert').innerText(), /session has ended/)
+    check('Expired session hides deletion actions and offers account-entry recovery')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {
