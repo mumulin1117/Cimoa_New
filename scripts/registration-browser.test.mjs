@@ -194,6 +194,17 @@ try {
     check('17 source interests; selection is only a draft; fewer than three cannot proceed; committed IDs share the entity catalog')
     if (phase === 'interests') { await page.reload(); await page.locator('.onboarding-interests-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 3); check('Interests refresh restores three selected chips') }
   }
+  if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos', 'photo-access', 'about', 'interests'].includes(phase)) {
+    await page.locator('.onboarding-goal-page').waitFor(); await settle()
+    assert.equal(await page.locator('.goal-chips [role="checkbox"]').count(), 15)
+    assert.equal(await page.locator('[data-interaction="obGoal.goObIce.click.1"]').getAttribute('aria-disabled'), 'true')
+    for (const label of ['New Friends', 'Meaningful Conversations']) await page.getByRole('checkbox', { name: label, exact: true }).click()
+    await shot('goal'); await click('obGoal.goObIce.click.1')
+    await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='ice' })
+    const data = await snapshot(); assert.ok(data.goals.some(row => row.item_id === 'conversations'))
+    check('All 15 source connection goals, multiple selections and missing shared goal metadata save atomically')
+    if (phase === 'goal') { await page.reload(); await page.locator('.onboarding-goal-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 2); check('Goal refresh restores both selections') }
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }
