@@ -1,0 +1,11 @@
+{
+  "phase": "blocked",
+  "result": "passed",
+  "server_pid": 26847,
+  "checks": [
+    "Blocked account opens the source confirmation Sheet and Cancel performs no write",
+    "Failed unblock remains blocked and retryable after the required Loading",
+    "Confirmed unblock persists the empty state through refresh and Back returns to Settings"
+  ],
+  "errors": []
+}

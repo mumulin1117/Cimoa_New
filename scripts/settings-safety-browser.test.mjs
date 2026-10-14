@@ -200,6 +200,47 @@ try {
     check('English remains canonical across refresh and Back returns to Settings')
   }
 
+  if (phase === 'blocked') {
+    await goto('/pages/settings/index')
+    await click('settings.openBlockedList.click.1')
+    await page.locator('.settings-blocked-page').waitFor()
+    const before = await state()
+    assert.equal(before.blocked_users.length, 1)
+    await page.getByRole('button', { name: 'Unblock Jordan Ellis' }).click()
+    await page.getByRole('dialog', { name: 'Unblock Jordan Ellis?' }).waitFor()
+    assert.match(await page.getByRole('dialog').innerText(), /does not restore/)
+    await shot('blocked-confirm')
+    await page.getByRole('button', { name: 'Cancel' }).click()
+    await page.getByRole('dialog').waitFor({ state: 'hidden' })
+    assert.deepEqual(await state(), before)
+    check('Blocked account opens the source confirmation Sheet and Cancel performs no write')
+
+    await page.getByRole('button', { name: 'Unblock Jordan Ellis' }).click()
+    await page.evaluate(() => { window.__originalWrite = Storage.prototype.setItem; Storage.prototype.setItem = function (key, value) { if (key === 'cimoa_app_state_v2') throw Error('Storage full'); return window.__originalWrite.call(this, key, value) } })
+    await page.getByRole('button', { name: 'Unblock', exact: true }).click()
+    await page.locator('.loading').waitFor()
+    assert.equal((await state()).blocked_users.length, 1)
+    await page.locator('.loading').waitFor({ state: 'detached' })
+    assert.match(await page.getByRole('dialog').innerText(), /Storage full/)
+    assert.deepEqual(await state(), before)
+    await page.evaluate(() => { Storage.prototype.setItem = window.__originalWrite; delete window.__originalWrite })
+    check('Failed unblock remains blocked and retryable after the required Loading')
+
+    await page.getByRole('button', { name: 'Unblock', exact: true }).click()
+    await page.locator('.loading').waitFor()
+    assert.equal((await state()).blocked_users.length, 1)
+    await page.locator('.loading').waitFor({ state: 'detached' })
+    assert.equal((await state()).blocked_users.length, 0)
+    await page.getByText('No blocked accounts').waitFor()
+    await page.reload()
+    await page.getByText('No blocked accounts').waitFor()
+    assert.equal((await state()).blocked_users.length, 0)
+    await shot('blocked-empty')
+    await click('blockedList.goBack.click.1')
+    await page.locator('.settings-page').waitFor()
+    check('Confirmed unblock persists the empty state through refresh and Back returns to Settings')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {

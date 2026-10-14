@@ -42,6 +42,7 @@
     { "path": "pages/settings/privacy", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/perm", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/lang", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/settings/blocked", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auto-match/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/system/index", "style": { "navigationStyle": "custom" } }
