@@ -29,6 +29,7 @@ try {
   const field = label => page.locator(`uni-input[aria-label="${label}"] input, uni-textarea[aria-label="${label}"] textarea`)
   const fill = async (label, value) => { await field(label).fill(value); await page.waitForTimeout(60) }
   const settle = async () => { await page.locator('.page-transition').last().evaluate(el => Promise.all(el.getAnimations().map(a => a.finished))); await page.waitForTimeout(60) }
+  const revisit = route => page.goto(`${origin}/?refresh=${phase}#${route}`)
   const shot = async name => { await settle(); await page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect?.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {})))); await page.screenshot({ path: path.join(output, `${name}.png`) }) }
   fs.mkdirSync(output, { recursive: true })
   await page.goto(`${origin}/`); await page.locator('.welcome-page').waitFor()
@@ -43,7 +44,7 @@ try {
   assert.equal((await snapshot()).auth_flow.profile_draft.date_of_birth, '2000-01-01')
   check('Splash → Welcome → Age; invalid/underage zero writes; custom Loading before adult draft save')
   if (phase === 'age') {
-    await page.reload(); await page.locator('.age-page').waitFor()
+    await revisit('/pages/auth/age'); await page.locator('.age-page').waitFor()
     assert.equal(await field('Date of birth').inputValue(), '2000-01-01')
     await page.setViewportSize({ width: 320, height: 568 }); await page.waitForTimeout(150); await shot('age-small')
     const cta = await page.locator('.auth-primary').boundingBox(); assert.ok(cta.y + cta.height <= 568)
@@ -61,7 +62,7 @@ try {
     await click('agree.goSignup.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
     await page.locator('.loading').waitFor({ state: 'detached' }); assert.equal((await snapshot()).auth_flow.agreements.community, true)
     check('Community exact six rules; Read sheet closes without accepting; all three explicit agreements persist after Loading')
-    if (phase === 'community') { await page.reload(); await page.locator('.community-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 3); check('Community refresh restores three consent flags') }
+    if (phase === 'community') { await revisit('/pages/auth/community'); await page.locator('.community-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 3); check('Community refresh restores three consent flags') }
   }
   if (!['age', 'community'].includes(phase)) {
     await page.locator('.signup-page').waitFor(); await settle()
@@ -91,6 +92,14 @@ try {
   }
   if (!['age', 'community', 'signup', 'email'].includes(phase)) {
     await click('verSuccess.goObBasic.click.1'); await page.locator('.onboarding-basic-page').waitFor(); await settle()
+    if (phase === 'complete') {
+      const before = await snapshot()
+      await page.goto(`${origin}/?guard=home#/pages/home/index`); await page.locator('.onboarding-basic-page').waitFor(); assert.deepEqual(await snapshot(), before)
+      await page.goto(`${origin}/?guard=complete#/pages/onboarding/complete`); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /previous profile steps/)
+      assert.equal(await page.getByRole('button', { name: 'Explore Cimoa', exact: true }).count(), 0)
+      await page.getByRole('button', { name: 'Continue account setup', exact: true }).click(); await page.locator('.onboarding-basic-page').waitFor()
+      check('Incomplete local account cannot bypass profile setup via Home or Complete URL; guards preserve all data')
+    }
     assert.equal(await field('Display name').inputValue(), '')
     assert.equal(await field('Date of birth').inputValue(), '2000-01-01')
     await click('obBasic.goObUni.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /display name/)
@@ -102,7 +111,8 @@ try {
     const data = await snapshot(); const account = data.accounts.find(row => row.account_id === data.session.account_id)
     assert.equal(account.onboarding.step, 'uni'); assert.equal(data.users.find(row => row.user_id === account.user_id).verification_status, 'pending')
     check('Success establishes only current verified local session; Basic validates real fields and persists progress without student promotion')
-    if (phase === 'basic') { await page.reload(); await page.locator('.onboarding-basic-page').waitFor(); assert.equal(await field('Display name').inputValue(), 'Morgan'); check('Basic refresh restores submitted name and pronouns') }
+    if (phase === 'basic') { await revisit('/pages/onboarding/basic'); await page.locator('.onboarding-basic-page').waitFor(); assert.equal(await field('Display name').inputValue(), 'Morgan'); check('Basic refresh restores submitted name and pronouns') }
+    if (phase === 'complete') { const before = await snapshot(); await revisit('/pages/auth/splash'); await page.locator('.onboarding-uni-page').waitFor(); assert.deepEqual(await snapshot(), before); assert.equal(await page.locator('.main-skeleton').count(), 0); check('Cold launch resumes the next incomplete profile step without changing saved fields') }
   }
   if (!['age', 'community', 'signup', 'email', 'basic'].includes(phase)) {
     await page.locator('.onboarding-uni-page').waitFor(); await settle()
@@ -111,7 +121,7 @@ try {
     await shot('uni'); await click('obUni.goObMajor.click.1')
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='major' })
     check('University is self-reported, never pre-verified; year/field/graduation save to the current user')
-    if (phase === 'uni') { await page.reload(); await page.locator('.onboarding-uni-page').waitFor(); assert.equal(await field('University').inputValue(), 'HKUST'); await page.locator('.onboarding-back').click(); await page.locator('.onboarding-basic-page').waitFor(); check('University refresh restores data and direct Back returns Basic') }
+    if (phase === 'uni') { await revisit('/pages/onboarding/uni'); await page.locator('.onboarding-uni-page').waitFor(); assert.equal(await field('University').inputValue(), 'HKUST'); await page.locator('.onboarding-back').click(); await page.locator('.onboarding-basic-page').waitFor(); check('University refresh restores data and direct Back returns Basic') }
   }
   if (!['age', 'community', 'signup', 'email', 'basic', 'uni'].includes(phase)) {
     await page.locator('.onboarding-major-page').waitFor(); await settle()
@@ -121,7 +131,7 @@ try {
     await click('obMajor.goObPhotos.click.1')
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='photos' })
     check('Major renders all 15 source cards; selection validates and updates one shared profile field')
-    if (phase === 'major') { await page.reload(); await page.locator('.onboarding-major-page').waitFor(); assert.equal(await page.getByRole('button', { name: 'Computer Science', exact: true }).getAttribute('aria-pressed'), 'true'); check('Major refresh restores selected gradient card') }
+    if (phase === 'major') { await revisit('/pages/onboarding/major'); await page.locator('.onboarding-major-page').waitFor(); assert.equal(await page.getByRole('button', { name: 'Computer Science', exact: true }).getAttribute('aria-pressed'), 'true'); check('Major refresh restores selected gradient card') }
   }
   if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major'].includes(phase)) {
     await page.locator('.onboarding-photos-page').waitFor(); await settle()
@@ -179,7 +189,7 @@ try {
     await click('obAbout.goObInterests.click.1')
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='interests' })
     check('Optional About starts empty, follows source card/textarea, counts 300 characters and saves to shared profile')
-    if (phase === 'about') { await page.reload(); await page.locator('.onboarding-about-page').waitFor(); assert.equal((await field('About you').inputValue()).length, 300); check('About long content refresh restores all 300 characters') }
+    if (phase === 'about') { await revisit('/pages/onboarding/about'); await page.locator('.onboarding-about-page').waitFor(); assert.equal((await field('About you').inputValue()).length, 300); check('About long content refresh restores all 300 characters') }
   }
   if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos', 'photo-access', 'about'].includes(phase)) {
     await page.locator('.onboarding-interests-page').waitFor(); await settle()
@@ -192,7 +202,7 @@ try {
     await click('obInterests.goObGoal.click.1')
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='goal' })
     check('17 source interests; selection is only a draft; fewer than three cannot proceed; committed IDs share the entity catalog')
-    if (phase === 'interests') { await page.reload(); await page.locator('.onboarding-interests-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 3); check('Interests refresh restores three selected chips') }
+    if (phase === 'interests') { await revisit('/pages/onboarding/interests'); await page.locator('.onboarding-interests-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 3); check('Interests refresh restores three selected chips') }
   }
   if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos', 'photo-access', 'about', 'interests'].includes(phase)) {
     await page.locator('.onboarding-goal-page').waitFor(); await settle()
@@ -203,7 +213,7 @@ try {
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='ice' })
     const data = await snapshot(); assert.ok(data.goals.some(row => row.item_id === 'conversations'))
     check('All 15 source connection goals, multiple selections and missing shared goal metadata save atomically')
-    if (phase === 'goal') { await page.reload(); await page.locator('.onboarding-goal-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 2); check('Goal refresh restores both selections') }
+    if (phase === 'goal') { await revisit('/pages/onboarding/goal'); await page.locator('.onboarding-goal-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 2); check('Goal refresh restores both selections') }
   }
   if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos', 'photo-access', 'about', 'interests', 'goal'].includes(phase)) {
     await page.locator('.onboarding-ice-page').waitFor(); await settle()
@@ -224,7 +234,7 @@ try {
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='notif' })
     const d = await snapshot(); assert.equal(d.icebreakers.filter(q => q.user_id === d.session.current_user_id).length, 3)
     check('Ice library six source questions, three-item limit, remove, local custom validation, edit cancellation and shared question persistence')
-    if (phase === 'ice') { await page.reload(); await page.locator('.onboarding-ice-page').waitFor(); assert.equal(await page.locator('.ice-question:not(.ice-empty)').count(), 3); await shot('ice'); check('Three chosen questions restore after refresh') }
+    if (phase === 'ice') { await revisit('/pages/onboarding/ice'); await page.locator('.onboarding-ice-page').waitFor(); assert.equal(await page.locator('.ice-question:not(.ice-empty)').count(), 3); await shot('ice'); check('Three chosen questions restore after refresh') }
   }
   if (['notif', 'notification-access', 'complete'].includes(phase)) {
     await page.locator('.onboarding-notif-page').waitFor(); await shot('notif')
@@ -251,6 +261,43 @@ try {
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.notification_permission==='granted' })
     const d = await snapshot(); assert.equal(d.settings.find(s => s.owner_user_id === d.session.current_user_id).notifications.master, true)
     check('Notification capability unavailable and no-host Settings fail without writes; Back returns pre-prompt; actual Chrome granted permission persists after Loading')
+  }
+  if (phase === 'complete') {
+    await page.locator('.onboarding-complete-page').waitFor(); await shot('complete')
+    const before = await snapshot()
+    await page.setViewportSize({ width: 320, height: 568 }); await page.evaluate(() => window.CommonTemplateSafeAreaBridge.update({ top: 62, bottom: 34 })); await page.waitForTimeout(100)
+    const footer = await page.locator('.notice-footer').boundingBox(); assert.ok(footer.y + footer.height <= 535)
+    await page.locator('.onboarding-complete-page .uni-scroll-view').last().evaluate(el => { el.scrollTop = el.scrollHeight })
+    assert.deepEqual(await page.locator('.notice-footer').boundingBox(), footer); await shot('complete-small')
+    await page.setViewportSize({ width: 393, height: 852 }); await page.evaluate(() => window.CommonTemplateSafeAreaBridge.update({ top: 0, bottom: 0 }))
+    await page.evaluate(() => { window.__setItem = Storage.prototype.setItem; Storage.prototype.setItem = function(k,v) { if (k==='cimoa_app_state_v2') throw Error('Storage full'); return window.__setItem.call(this,k,v) } })
+    await click('obComplete.enterApp.click.1'); await page.getByRole('alert').waitFor(); assert.deepEqual(await snapshot(), before)
+    await page.evaluate(() => { Storage.prototype.setItem = window.__setItem; delete window.__setItem })
+    await page.getByRole('button', { name: 'Review Photos', exact: true }).click(); await page.locator('.onboarding-photos-page').waitFor(); await page.locator('.onboarding-back').click(); await page.locator('.onboarding-complete-page').waitFor()
+    await click('obComplete.enterApp.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
+    await page.locator('.home-header').waitFor(); await page.locator('.main-skeleton').waitFor(); await page.locator('.main-skeleton').waitFor({ state: 'detached' })
+    const completed = await snapshot(), owner = completed.session.current_user_id, user = completed.users.find(u=>u.user_id===owner)
+    assert.equal(user.onboarding_status, 'complete'); assert.equal(user.verification_status, 'pending'); assert.equal(user.user_name, 'Morgan')
+    assert.equal(completed.relationships.some(r=>r.from_user_id===owner||r.to_user_id===owner), false)
+    assert.equal(completed.coin_transactions.some(r=>r.owner_user_id===owner), false)
+    assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1'); assert.equal(await page.locator('.connection').count(), 0)
+    await shot('new-home')
+    for (const label of ['Discover', 'Events']) { await page.getByRole('button', { name: label, exact: true }).click(); await page.locator('.main-skeleton').waitFor(); await page.locator('.main-skeleton').waitFor({ state: 'detached' }) }
+    for (const label of ['Home', 'Discover', 'Events', 'Home']) { await page.getByRole('button', { name: label, exact: true }).click(); await settle(); assert.equal(await page.locator('.main-skeleton').count(), 0); assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1') }
+    await click('home.openMe.click.1'); await page.locator('.profile-name').waitFor(); assert.match(await page.locator('.profile-name').innerText(), /Morgan/)
+    assert.match(await page.locator('.profile-tags').innerText(), /HKUST/); assert.match(await page.locator('.profile-tags').innerText(), /Computer Science/)
+    assert.equal(await page.locator('.profile-verified').count(), 0); assert.equal(await page.locator('.profile-interest').count(), 3)
+    await page.waitForFunction(() => document.querySelector('.profile-photo')?.dataset.mediaStatus==='ready'); await shot('new-profile')
+    await click('profile.goBack.click.1'); await page.locator('.home-header').waitFor(); assert.deepEqual(await snapshot(), completed)
+    await page.reload(); await page.locator('.home-header').waitFor(); assert.equal(await page.locator('.main-skeleton').count(), 0); assert.deepEqual(await snapshot(), completed)
+    check('Complete handles storage failure and review/back; successful commit relaunches Home at depth 1, consumes each Tab skeleton once and synchronizes Profile/media with no fake verification or gifts')
+    // Isolated-test session expiry: exercise real credential login, not an unimplemented Settings logout UI.
+    await page.evaluate(() => { const e=JSON.parse(localStorage.getItem('cimoa_app_state_v2')); e.data.session={account_id:null,current_user_id:null,expires_at:null};localStorage.setItem('cimoa_app_state_v2',JSON.stringify(e)) })
+    await page.goto(`${origin}/?relogin=completed#/pages/auth/login`); await page.locator('.login-page').waitFor()
+    await fill('Email', 'corrected.member@campus.edu'); await fill('Password', 'localpass123'); await click('login.loginNow.click.1')
+    await page.locator('.home-header').waitFor(); await page.locator('.main-skeleton').waitFor(); await page.locator('.main-skeleton').waitFor({ state: 'detached' })
+    assert.equal((await snapshot()).session.current_user_id, owner); assert.equal(await page.locator('.onboarding-basic-page').count(), 0)
+    check('Actual new-account password signs in again to the same completed Home without repeating onboarding')
   }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }

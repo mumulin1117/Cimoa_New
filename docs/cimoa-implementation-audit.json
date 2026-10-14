@@ -3,33 +3,17 @@
   "meaning": "154 source states are not 154 pages. Registration/file existence does not establish fidelity or runtime acceptance.",
   "source_states": 154,
   "planned_routes": 103,
-  "registered_routes": 13,
-  "registered_planned_routes": 10,
+  "registered_routes": 29,
+  "registered_planned_routes": 26,
   "missing_routes": [
     "/pages/legal/terms",
     "/pages/legal/privacy",
-    "/pages/auth/age",
-    "/pages/auth/community",
-    "/pages/auth/signup",
-    "/pages/auth/verification/email",
     "/pages/auth/verification/unsupported",
     "/pages/auth/reset/email",
     "/pages/auth/reset/code",
     "/pages/auth/reset/new",
-    "/pages/onboarding/basic",
-    "/pages/onboarding/uni",
-    "/pages/onboarding/major",
-    "/pages/onboarding/photos",
-    "/pages/onboarding/about",
-    "/pages/onboarding/interests",
-    "/pages/onboarding/goal",
-    "/pages/onboarding/ice",
-    "/pages/onboarding/notif",
-    "/pages/onboarding/complete",
-    "/pages/permissions/photos",
     "/pages/permissions/camera",
     "/pages/permissions/mic",
-    "/pages/permissions/notif",
     "/pages/discover/profile",
     "/pages/discover/icebreaker/select",
     "/pages/discover/icebreaker/text",
@@ -189,9 +173,9 @@
         "age.underage.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -209,9 +193,9 @@
         "agree.goSignup.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -232,9 +216,9 @@
         "signup.goLogin.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -275,9 +259,9 @@
         "verEmail.goVerCode.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -396,7 +380,7 @@
       "source_query": "route=obBasic",
       "route": "/pages/onboarding/basic",
       "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/auth/verification/success）；无历史实例时 replace /pages/auth/verification/success，不创建伪造实体",
+      "return_owner": "pop actual origin (Success or Complete recovery); direct entry replace /pages/auth/verification/success",
       "interaction_ids": [
         "obBasic.goBack.click.1",
         "obBasic.onObName.change.1",
@@ -406,9 +390,9 @@
         "obBasic.goObUni.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -425,9 +409,9 @@
         "obUni.goObMajor.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -443,9 +427,9 @@
         "obMajor.goObPhotos.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -454,16 +438,16 @@
       "source_query": "route=obPhotos&photos=0",
       "route": "/pages/onboarding/photos",
       "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/onboarding/major）；无历史实例时 replace /pages/onboarding/major，不创建伪造实体",
+      "return_owner": "pop actual origin (Major or Complete recovery); direct entry replace /pages/onboarding/major",
       "interaction_ids": [
         "obPhotos.goBack.click.1",
         "obPhotos.p.tap.click.1",
         "obPhotos.goObAbout.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -472,16 +456,16 @@
       "source_query": "route=obPhotos&photos=3",
       "route": "/pages/onboarding/photos",
       "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/onboarding/major）；无历史实例时 replace /pages/onboarding/major，不创建伪造实体",
+      "return_owner": "pop actual origin (Major or Complete recovery); direct entry replace /pages/onboarding/major",
       "interaction_ids": [
         "obPhotos.goBack.click.1",
         "obPhotos.p.tap.click.1",
         "obPhotos.goObAbout.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -497,9 +481,9 @@
         "obAbout.goObInterests.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -515,9 +499,9 @@
         "obInterests.goObGoal.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -533,9 +517,9 @@
         "obGoal.goObIce.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -560,9 +544,9 @@
         "sheetIceCustom.addCustom.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -587,9 +571,9 @@
         "sheetIceCustom.addCustom.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -604,9 +588,9 @@
         "obNotif.skipNotifs.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -620,9 +604,9 @@
         "obComplete.enterApp.click.1"
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -671,9 +655,9 @@
         "permPhotos.denyPhotos.click.1"
       ],
       "entities": "permissions; media_files",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -725,9 +709,9 @@
         "permNotif.denyNotifs.click.1"
       ],
       "entities": "permissions; media_files",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -3147,8 +3131,8 @@
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
       "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -3174,8 +3158,8 @@
       ],
       "entities": "users; profile_drafts; profile_photos; interests; goals; icebreakers",
       "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },

@@ -26,6 +26,8 @@
 
 ## 本轮已执行与剩余范围
 
+2026-10-14更新：注册UI和资料引导已接通到Home；26/103条计划路由已注册、77条未注册、verified=0，无in_progress。新账号Chrome18组、WK完整注册路径随7/7测试通过；见[注册引导记录](./cimoa-registration-onboarding.md)。下段为2026-10-13验证码完成时基线，不再表示注册UI缺失。
+
 首次安装访客、Splash、Welcome和独立Login已实现；旧auth/index仅兼容跳转，不再运行错误的合并模板。本地注册Store接口及密码派生/重复邮箱/年龄/协议/原子性单测已实现，注册页面链尚未接通。固定验证码Code/Success已加入，计划路由当前注册匹配10/103，93条尚未注册，verified仍为0。
 
 本轮验证码增量及最终证据见[本地验证码](./cimoa-local-verification.md)。此前59项单元、Welcome8/Login13、Home22/Discover20/Events19/Profile20项浏览器及5项iPhone17Pro检查是历史局部证据，不代替全量跨页面验收。Login原型TEST STATES生产处理仍待用户确认，转pending；用户最新固定验证码要求优先执行，不声明全部页面已还原。

@@ -74,9 +74,9 @@ final class HostTests: XCTestCase {
             let afterRefresh = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
             XCTAssertEqual(afterRefresh, committed)
             _ = try await script(host, "await new Promise(r=>setTimeout(r,300));document.querySelector('[data-interaction=\"verSuccess.goObBasic.click.1\"]').click();return true")
-            try await waitFor(host, ".verification-success-page [role=alert]")
-            let deferred = try await script(host, "return document.querySelector('.verification-success-page [role=alert]').textContent") as! String
-            XCTAssertTrue(deferred.contains("not been restored"))
+            try await waitFor(host, ".home-header")
+            let continued = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            XCTAssertEqual(continued, committed, "Existing completed fixture returns Home without starting a new local registration.")
             try await restore()
         } catch { try? await restore(); throw error }
     }
@@ -104,6 +104,74 @@ final class HostTests: XCTestCase {
             let signedIn = try await script(host, "const saved=JSON.parse(localStorage.getItem('cimoa_app_state_v2'));return {user:saved.data.session.current_user_id,depth:document.querySelector('.main-tab-frame').dataset.pageDepth,skeleton:!!document.querySelector('.main-skeleton'),plaintext:JSON.stringify(saved).includes('12341234')}") as! [String: Any]
             XCTAssertEqual(signedIn["user"] as? String, "user_cimoa"); XCTAssertEqual(signedIn["depth"] as? String, "1")
             XCTAssertEqual(signedIn["skeleton"] as? Bool, true); XCTAssertEqual(signedIn["plaintext"] as? Bool, false)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
+    func testFreshRegistrationToHomeWithOwnedPhotos() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        let existingMedia = try await script(host, "const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onupgradeneeded=()=>r.result.createObjectStore('blobs');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});const keys=await new Promise((resolve,reject)=>{const r=db.transaction('blobs').objectStore('blobs').getAllKeys();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});db.close();return keys") as! [String]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("""
+            const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});
+            await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite'),s=t.objectStore('blobs'),r=s.getAllKeys();r.onsuccess=()=>r.result.filter(k=>!existing.includes(k)).forEach(k=>s.delete(k));t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();
+            for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true
+            """, arguments: ["snapshot": saved, "existing": existingMedia], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?registration=restored#/pages/auth/splash")!))
+            try await waitFor(host, ".home-header")
+        }
+        do {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?registration=fresh#/pages/auth/splash")!))
+            try await waitFor(host, ".welcome-page")
+            let setup = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms));
+            const visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0&&getComputedStyle(e).visibility!=='hidden');
+            const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Registration timeout: '+location.hash+' '+document.body.innerText)};
+            const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);e.click();await delay(80)};
+            const fill=async(label,value)=>{const e=await wait(()=>visible('uni-input[aria-label="'+label+'"] input,uni-textarea[aria-label="'+label+'"] textarea'));e.value=value;e.dispatchEvent(new Event('input',{bubbles:true}));await delay(80)};
+            const choose=async label=>{await delay(320);const e=[...document.querySelectorAll('[role=button],[role=checkbox]')].find(e=>(e.getAttribute('aria-label')===label||e.textContent.trim()===label)&&e.getBoundingClientRect().height>0);if(!e)throw Error('Missing '+label);e.click();await delay(80)};
+            window.__registrationHelpers={delay,visible,wait,click,choose};
+            await click('welcome.goAge.click.1');await fill('Date of birth','2000-01-01');await click('age.goAgree.click.1');await wait(()=>visible('.community-page'));
+            for(const key of ['terms','privacy','community']){await delay(100);document.querySelector('[data-agreement="'+key+'"]').click()}
+            await click('agree.goSignup.click.1');await fill('University email','native.registration@campus.edu');await fill('Password','localpass123');await fill('Confirm password','localpass123');await click('signup.createAccount.click.1');
+            await wait(()=>visible('.verification-email-page'));await click('verEmail.goVerCode.click.1');await wait(()=>visible('.verification-input input'));const code=document.querySelector('.verification-input input');code.value='009789';code.dispatchEvent(new Event('input',{bubbles:true}));await delay(80);await click('verCode.goVerSuccess.click.1');
+            await wait(()=>visible('.verification-success-page'));await click('verSuccess.goObBasic.click.1');await fill('Display name','Native Morgan');await choose('Non-binary');await choose('they / them');await click('obBasic.goObUni.click.1');
+            await fill('University','HKUST');await choose('Year 3');await fill('Field of study','Design');await fill('Expected graduation','2027');await click('obUni.goObMajor.click.1');await wait(()=>visible('.onboarding-major-page'));await choose('💻Computer Science');await click('obMajor.goObPhotos.click.1');
+            await wait(()=>visible('.photo-slot-1'));await delay(350);document.querySelector('.photo-slot-1').click();await wait(()=>visible('.permission-photos-page'));
+            // Feed real bundled images into WebKit's file input. This tests the
+            // production decoding/IndexedDB path, not manual system-picker UI.
+            const suppress=e=>{if(e.target.matches('input[type=file]'))e.preventDefault()};document.addEventListener('click',suppress,true);
+            try{await click('permPhotos.allowPhotos.click.1');await wait(()=>document.querySelector('input[type=file]'));const files=new DataTransfer();for(const name of ['me','maya-card']){const b=await(await fetch('/static/assets/head/'+name+'.png')).blob();files.items.add(new File([b],name+'.png',{type:'image/png'}))}const input=[...document.querySelectorAll('input[type=file]')].at(-1);input.files=files.files;input.dispatchEvent(new Event('change',{bubbles:true}))}finally{document.removeEventListener('click',suppress,true)}
+            await wait(()=>document.querySelectorAll('.onboarding-photos-page .profile-photo[data-media-status=ready]').length===2);await click('obPhotos.goObAbout.click.1');await fill('About you','A local campus profile created in real WKWebView.');await click('obAbout.goObInterests.click.1');await wait(()=>visible('.onboarding-interests-page'));
+            for(const label of ['📷Photography','☕Coffee','🎵Live Music'])await choose(label);await click('obInterests.goObGoal.click.1');await wait(()=>visible('.onboarding-goal-page'));await choose('🙋New Friends');await click('obGoal.goObIce.click.1');await wait(()=>visible('.onboarding-ice-page'));await click('obIce.browseQuestions.click.1');await delay(350);
+            for(const e of [...document.querySelectorAll('.library-question')].slice(0,3)){e.click();await delay(80)}await choose('Done');await delay(350);await click('obIce.goObNotif.click.1');await wait(()=>visible('.onboarding-notif-page'));await click('obNotif.skipNotifs.click.1');await wait(()=>visible('.onboarding-complete-page'));await delay(350);
+            const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,u=d.users.find(u=>u.user_id===d.session.current_user_id);return {name:u.user_name,photos:u.photo_ids.length,questions:u.icebreaker_ids.length,permission:d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.notification_permission,complete:u.onboarding_status}
+            """) as! [String: Any]
+            XCTAssertEqual(setup["name"] as? String, "Native Morgan"); XCTAssertEqual(setup["photos"] as? Int, 2); XCTAssertEqual(setup["questions"] as? Int, 3)
+            XCTAssertEqual(setup["permission"] as? String, "skipped"); XCTAssertEqual(setup["complete"] as? String, "in_progress")
+            let ready = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); ready.name = "WKWebView registration profile ready"; ready.lifetime = .keepAlways; add(ready)
+            let final = try await script(host, """
+            const {delay,visible,wait,click,choose}=window.__registrationHelpers;
+            await click('obComplete.enterApp.click.1');await wait(()=>visible('.home-header'));
+            const depth=document.querySelector('.main-tab-frame').dataset.pageDepth,skeleton=!!document.querySelector('.main-skeleton');await wait(()=>!document.querySelector('.main-skeleton'));
+            const cycles=[];for(const label of ['Discover','Events']){await choose(label);await wait(()=>document.querySelector('.tab[aria-current=page]')?.getAttribute('aria-label')===label);cycles.push(!!document.querySelector('.main-skeleton'));await wait(()=>!document.querySelector('.main-skeleton'))}
+            await choose('Home');await wait(()=>visible('.home-header'));cycles.push(!document.querySelector('.main-skeleton'));
+            await click('home.openMe.click.1');await wait(()=>visible('.profile-name'));await wait(()=>document.querySelector('.profile-photo')?.dataset.mediaStatus==='ready');
+            const profile=visible('.profile-name').textContent,verified=!!document.querySelector('.profile-verified');await click('profile.goBack.click.1');await wait(()=>visible('.home-header'));await delay(350);
+            const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,u=d.users.find(u=>u.user_id===d.session.current_user_id);window.__registrationOldDocument=true;
+            return {depth,skeleton,cycles,profile,verified,complete:u.onboarding_status,student:u.verification_status,noCoins:!d.coin_transactions.some(r=>r.owner_user_id===u.user_id),noRelationships:!d.relationships.some(r=>r.from_user_id===u.user_id||r.to_user_id===u.user_id),state:localStorage.getItem('cimoa_app_state_v2')}
+            """) as! [String: Any]
+            XCTAssertEqual(final["depth"] as? String, "1"); XCTAssertEqual(final["skeleton"] as? Bool, true); XCTAssertEqual(final["cycles"] as? [Bool], [true, true, true])
+            XCTAssertTrue((final["profile"] as? String ?? "").contains("Native Morgan")); XCTAssertEqual(final["verified"] as? Bool, false)
+            XCTAssertEqual(final["complete"] as? String, "complete"); XCTAssertEqual(final["student"] as? String, "pending"); XCTAssertEqual(final["noCoins"] as? Bool, true); XCTAssertEqual(final["noRelationships"] as? Bool, true)
+            let homeImage = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); homeImage.name = "WKWebView newly registered Home"; homeImage.lifetime = .keepAlways; add(homeImage)
+            host.webView.reload()
+            var refreshed = false
+            for _ in 0..<100 { if (try? await script(host, "return !window.__registrationOldDocument && !!document.querySelector('.home-header')")) as? Bool == true { refreshed = true; break }; try await Task.sleep(nanoseconds: 100_000_000) }
+            XCTAssertTrue(refreshed)
+            let after = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            XCTAssertEqual(after, final["state"] as? String)
             try await restore()
         } catch { try? await restore(); throw error }
     }

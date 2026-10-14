@@ -18,6 +18,7 @@
     { "path": "pages/onboarding/goal", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/ice", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/notif", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/onboarding/complete", "style": { "navigationStyle": "custom" } },
     { "path": "pages/permissions/photos", "style": { "navigationStyle": "custom" } },
     { "path": "pages/permissions/notif", "style": { "navigationStyle": "custom" } },
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },

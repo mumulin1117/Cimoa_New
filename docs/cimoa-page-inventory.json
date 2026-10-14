@@ -519,9 +519,7 @@
       "/pages/auth/login",
       "/pages/profile/reverify"
     ],
-    "required_parameters": [
-      "auth_flow_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "goVerEmail@5565",
       "loginUnverified@5592",
@@ -991,13 +989,14 @@
     "component": null,
     "parent_route": "/pages/auth/verification/success",
     "allowed_origin_routes": [
-      "/pages/auth/verification/success"
+      "/pages/auth/verification/success",
+      "/pages/onboarding/complete"
     ],
     "required_parameters": [],
     "entry_points": [
       "goObBasic@5568"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auth/verification/success）；无历史实例时 replace /pages/auth/verification/success，不创建伪造实体",
+    "return_owner": "pop actual origin (Success or Complete recovery); direct entry replace /pages/auth/verification/success",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -1209,7 +1208,8 @@
     "component": null,
     "parent_route": "/pages/onboarding/major",
     "allowed_origin_routes": [
-      "/pages/onboarding/major"
+      "/pages/onboarding/major",
+      "/pages/onboarding/complete"
     ],
     "required_parameters": [],
     "entry_points": [
@@ -1217,7 +1217,7 @@
       "go@5170",
       "goObPhotos@5581"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/onboarding/major）；无历史实例时 replace /pages/onboarding/major，不创建伪造实体",
+    "return_owner": "pop actual origin (Major or Complete recovery); direct entry replace /pages/onboarding/major",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -1289,7 +1289,8 @@
     "component": null,
     "parent_route": "/pages/onboarding/major",
     "allowed_origin_routes": [
-      "/pages/onboarding/major"
+      "/pages/onboarding/major",
+      "/pages/onboarding/complete"
     ],
     "required_parameters": [],
     "entry_points": [
@@ -1297,7 +1298,7 @@
       "go@5170",
       "goObPhotos@5581"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/onboarding/major）；无历史实例时 replace /pages/onboarding/major，不创建伪造实体",
+    "return_owner": "pop actual origin (Major or Complete recovery); direct entry replace /pages/onboarding/major",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -1782,15 +1783,13 @@
     "allowed_origin_routes": [
       "/pages/onboarding/ice"
     ],
-    "required_parameters": [
-      "auth_flow_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "goObNotif@5588"
     ],
     "return_owner": "pop origin_route（允许来源：/pages/onboarding/ice）；无历史实例时 replace /pages/onboarding/ice，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+    "fixed_regions": "TopSafeArea; bottom Enable/Not Now; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -1862,11 +1861,10 @@
     "component": null,
     "parent_route": "/pages/onboarding/notif",
     "allowed_origin_routes": [
-      "/pages/onboarding/notif"
+      "/pages/onboarding/notif",
+      "/pages/permissions/notif"
     ],
-    "required_parameters": [
-      "auth_flow_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "goObComplete@5589",
       "skipNotifs@5770",
@@ -1875,7 +1873,7 @@
     ],
     "return_owner": "pop origin_route（允许来源：/pages/onboarding/notif）；无历史实例时 replace /pages/onboarding/notif，不创建伪造实体",
     "completion_navigation": "认证持久化成功 → 准备三 Tab 单次骨架 → reLaunch /pages/home/index",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+    "fixed_regions": "TopSafeArea; bottom Explore CTA; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -1914,10 +1912,11 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
+    "acceptance_evidence": "docs/evidence/registration/complete-browser.json"
   },
   {
     "source_screen": "Home / People Met / Empty",
@@ -12031,9 +12030,7 @@
     "allowed_origin_routes": [
       "/pages/onboarding/ice"
     ],
-    "required_parameters": [
-      "auth_flow_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "go@5171",
       "go@5172",
@@ -12130,9 +12127,7 @@
     "allowed_origin_routes": [
       "/pages/onboarding/ice"
     ],
-    "required_parameters": [
-      "auth_flow_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "go@5171",
       "go@5172",

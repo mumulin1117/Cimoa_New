@@ -1,11 +1,7 @@
-const available_auth_routes = new Set(['/pages/auth/splash', '/pages/auth/welcome', '/pages/auth/login', '/pages/auth/age', '/pages/auth/verification/code', '/pages/auth/verification/success'])
+import { ONBOARDING_FLOW, onboarding_route } from './onboardingFlow.js'
+const available_auth_routes = new Set(['/pages/auth/splash', '/pages/auth/welcome', '/pages/auth/login', '/pages/auth/age', '/pages/auth/community', '/pages/auth/signup', '/pages/auth/verification/email', '/pages/auth/verification/code', '/pages/auth/verification/success', '/pages/permissions/photos', '/pages/permissions/notif', '/pages/home/index', ...ONBOARDING_FLOW.map(onboarding_route)])
 export const auth_destination = target => {
-  if (['/pages/onboarding/notif', '/pages/permissions/notif'].includes(target)) return target
-  if (['/pages/onboarding/interests', '/pages/onboarding/goal', '/pages/onboarding/ice'].includes(target)) return target
-  if (target.split('?')[0] === '/pages/permissions/photos') return target
-  if (['/pages/onboarding/uni', '/pages/onboarding/major', '/pages/onboarding/photos', '/pages/onboarding/about'].includes(target)) return target
-  if (['/pages/auth/community', '/pages/auth/signup', '/pages/auth/verification/email', '/pages/onboarding/basic', '/pages/home/index'].includes(target)) return target
-  if (!available_auth_routes.has(target)) throw new Error('This step has not been restored yet. Your account data has not changed.')
+  if (!available_auth_routes.has(target.split('?')[0])) throw new Error('This step has not been restored yet. Your account data has not changed.')
   return target
 }
 export const startup_destination = store => {
@@ -15,4 +11,3 @@ export const startup_destination = store => {
   return auth_destination('/pages/auth/welcome')
 }
 export const authenticated_destination = store => store.requires_local_verification ? auth_destination('/pages/auth/verification/code') : store.onboarding && !store.onboarding.completed ? onboarding_route(store.onboarding.step) : '/pages/home/index'
-import { onboarding_route } from './onboardingFlow.js'

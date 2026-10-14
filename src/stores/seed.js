@@ -1,5 +1,6 @@
 // Independent, normalized fixture entities transcribed from the source detail screens.
 // These records are test data, not claims of live users, payments or services.
+import { ONBOARDING_FLOW } from '../utils/onboardingFlow.js'
 export const SCHEMA_VERSION = 2
 export const TEST_USER_ID = 'user_cimoa'
 export const TEST_EMAIL = 'cimoa@gmail.com'
@@ -19,7 +20,7 @@ export const INTERESTS = make_options([
   ['fitness', '💪', 'Fitness'], ['cooking', '🍳', 'Cooking'], ['dance', '💃', 'Dance'],
   ['sports', '🏀', 'Sports'], ['volunteering', '🤝', 'Volunteering'], ['study', '📝', 'Study Groups'], ['food', '🍜', 'Food'],
 ])
-export const ONBOARDING_STEPS = ['basic', 'university', 'major', 'photos', 'about', 'interests', 'goals', 'icebreakers', 'notifications', 'complete']
+export const ONBOARDING_STEPS = ONBOARDING_FLOW
 export const PICKER_OPTIONS = {
   majors: ['Business', 'Computer Science', 'Engineering', 'Medicine', 'Finance', 'Sciences', 'Data Science', 'Economics', 'Information Technology', 'Design', 'Law', 'Architecture', 'Psychology', 'Media', 'Education'],
   countries: ['China', 'Hong Kong', 'Singapore', 'Malaysia', 'Korea', 'Japan', 'Taiwan', 'India', 'Indonesia', 'Vietnam', 'Thailand', 'Philippines', 'United States', 'United Kingdom', 'Canada', 'Australia', 'France', 'Germany'],

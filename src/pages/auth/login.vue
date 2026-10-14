@@ -42,7 +42,7 @@ const login = async () => {
     <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
     <view class="auth-link auth-forgot" role="button" tabindex="0" data-interaction="login.goFpEmail.click.1" @click="go('/pages/auth/reset/email')" @keydown.enter="go('/pages/auth/reset/email')">Forgot password?</view>
     <text class="auth-local-note">Local accounts are stored on this device. Signing in does not verify your student status.</text>
-    <template #footer><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="login.loginNow.click.1" @click="login" @keydown.enter="login">{{ store.session.is_authenticated ? (store.requires_local_verification ? 'Continue verification' : 'Continue to Home') : 'Log In' }}</view><view class="auth-secondary" role="button" tabindex="0" data-interaction="login.goAge.click.1" @click="go('/pages/auth/age')" @keydown.enter="go('/pages/auth/age')">New here? Create an account</view></template>
+    <template #footer><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="login.loginNow.click.1" @click="login" @keydown.enter="login">{{ store.session.is_authenticated ? (store.requires_local_verification ? 'Continue verification' : store.onboarding && !store.onboarding.completed ? 'Continue profile setup' : 'Continue to Home') : 'Log In' }}</view><view class="auth-secondary" role="button" tabindex="0" data-interaction="login.goAge.click.1" @click="go('/pages/auth/age')" @keydown.enter="go('/pages/auth/age')">New here? Create an account</view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" /></template>
   </AuthPageFrame>
 </template>

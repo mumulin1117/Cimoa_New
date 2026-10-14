@@ -10,8 +10,12 @@ Cimoa 的 UIKit / WKWebView iOS 工程。界面是随包加载的独立 Vue / un
 
 ## 原生/JS 接口
 
+首次安装从Splash→Welcome进入注册；本地账号验证码固定`009789`，不发送邮件或授予学生认证。填完资料并选择至少2张真实照片可进入Home；通知可选择Not Now。已有会话恢复原账号或未完成步骤，不自动清数据。
+
 - `CimoaNativeBridge.request('getEnvironment')`：真实项目/系统版本/能力信息。
 - `CimoaNativeBridge.request('getSafeArea')`：原生实测安全区。
+- `getNotificationPermission` / `requestNotifications`：读取/请求真实通知权限；尚未配置通知投递。
+- `openSettings`：打开本App系统设置，明确返回打开结果。
 - `CommonTemplateSafeArea`：H5既有安全区请求与更新。
 - `CimoaPurchase`：当前内购产品未配置，明确失败、不加币；不模拟成功。
 

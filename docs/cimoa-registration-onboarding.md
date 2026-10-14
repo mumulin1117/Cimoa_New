@@ -33,6 +33,26 @@
 
 ## 当前执行
 
+2026-10-14最终结果：首次启动→Welcome→Age→Community→Signup→Email→固定009789→Success→Basic→University→Major→真实Photos→About→Interests→Goal→Ice与两Sheet→Notifications→Complete→Home已在Chrome和iPhone17Pro WKWebView跑通。当前无in_progress；本轮新增页面local passed/full pending，整个App不标verified。
+
+最终第13节check:conventions → git diff --check → build:h5按顺序通过，无约定警告；原生正常App构建通过。导出artifacts/cimoaNeapo-ios.zip共195条目/162份H5，逐文件与dist和实际测试App的SHA256一致，含最新原生测试、不含原型或DerivedData，见[打包报告](./evidence/registration-native/package.json)。所有一次性预览均已关闭，诊断失败截图移入忽略的ios/cimoaNeapo/build保留；原有用户服务未清理。
+
+正常App已安装并启动于iPhone17Pro（PID90109，未清除旧账号）；实际18765入口与dist/index.html SHA256均为d08911d2b721da67c68968aa5366e5a85e18f5eff437dce19791130fc9b8b072。[当前模拟器截图](./evidence/registration-native/simulator-current.png)仅显示恢复的原有会话，新注册路径用上方独立测试截图证明。
+
+- 74项单元；[完整注册18组浏览器检查](./evidence/registration/complete-browser.json)；验证码15、Login13、Welcome8、Home22、Discover20、Events19、Profile20项回归通过。
+- [原生7/7摘要](./evidence/registration-native/acceptance.json)及[附件](./evidence/registration-native/manifest.json)：RegistrationAcceptance-2.xcresult，iPhone17Pro/iOS26.5，0失败/跳过；安全区62/34，本地H5 origin18765。首轮仅测试按文字查找无文字Tab失败，改为aria-label后完整重跑通过，未跳过断言。
+- Chrome用真实文件选择器；WK测试将包内图片作为真实File交给生产输入/解码/IndexedDB链路，未冒称手动系统选图。WK覆盖新用户Not Now、完成资料、三Tab单次骨架、Profile实体头像、刷新；测试后恢复原模拟器快照并删除仅测试新增Blob。
+- 已测存储满时Complete不半提交、Review Photos返回、未完成账号不能直接Home/Complete、中断后Splash恢复下一步、完成后实际本地密码再登录、零示例关系/币数且学生身份仍pending。
+- 边界：不发送邮件、不证明学生身份、不连接真实推送/Apple/重置；原生通知授权弹窗点击、系统触摸键盘/后台、全部主界面依赖未完整验收。注册路径通过不是整个App完成。
+
+复测：新浏览器隔离数据或新安装时从Splash开始，使用自己的本地邮箱/8–128位含数字密码、固定码009789，选至少2张自己的照片、3兴趣、1目标、3问题；通知可Not Now，Explore Cimoa进Home。已有有效会话会恢复原账号，不自动清空用户数据。
+
+主要文件范围：src/pages/auth/{age,community,signup}.vue及verification/{email,success}.vue、src/pages/onboarding/*.vue及样式、src/pages/permissions/{photos,notif}.vue；OnboardingFrame/Sheet、AgreementSheet、PhotoActionsConfirmDialog、IceLibrary/CustomSheet与MainTabFrame；src/stores/onboarding.js、store/seed/selectors、src/utils/{registrationCatalog,onboardingFlow,authNavigation,nativePermissions,hostBridge,mediaCapabilities}.js与useOnboarding；theme/pages配置、注册/权限/认证测试、原生WebViewController/HostTests、独立H5及文档证据。详细以逐页本地提交为准；原HTML与两份强制约定未改，不push。
+
+以下为逐页历史记录，提及“当前页”仅对应当时阶段，以本节与页面清单最新结果为准。
+
+Complete（当前唯一in_progress）：source3196–3205，固定96图标/31标题/60CTA与单scroll/安全区；obComplete.enterApp.click.1仅当前账号所有步骤及真实媒体仍有效时500ms后完成资料并reLaunch Home。保存失败零写入，Review Photos/Review Profile为真实修复入口，返回恢复Complete；成功后的重复入口只回Home，不再重复提交或准备骨架。MainTab共享守卫阻止未完成本地账号绕过；旧fixture和未登录错误态不改。注册进度目录统一ONBOARDING_FLOW，新增可选元数据严格校验但兼容没有该字段的旧快照。验收包括首启至Home、存储失败/修复返回、三Tab一次骨架/栈深、Profile同实体/头像刷新、重新密码登录；整个App其他依赖不因此verified。
+
 Permissions Notifications本页：4项能力/桥接单元、累计14组H5检查、iPhone17Pro实际1项WK桥接测试通过（RegistrationPermission.xcresult），原生构建成功。Chrome真实granted分支、无API和无宿主Settings失败、返回归属已测；WK只读取真实系统状态，未触发系统授权弹窗，不冒称已测点击Allow。原生请求成功/拒绝的系统弹窗手动验收仍待完成，但不阻塞本地注册“Not Now”路径。三项强制校验通过无警告、临时PID84793关闭；pending待Complete。
 
 Permissions Notifications契约：source3272–3288，route /pages/permissions/notif，来源/返回Notifications（直达fallback该页）。allowNotifs在有效已验证本地账号及前序完成时读取/请求实际Chrome Notification或WK UNUserNotificationCenter；只有granted才经500msLoading写本人account.onboarding/Settings然后Complete。denied/unavailable/not_requested留本页说明与可重试/Settings；denyNotifs保存已观测denied/unavailable，否则skipped，不伪造系统拒绝；关闭/换账号取消后不写。openSettings经既有可信主frame白名单，普通浏览器明确失败。同步账号进度/Settings、刷新重读系统权限；原生响应包括delivery_configured=false，不注册APNs、不发推送。十字段验收包括允许/拒绝/不可用/取消/未知回包/无宿主/刷新/500ms前零写；当前仅此页in_progress。

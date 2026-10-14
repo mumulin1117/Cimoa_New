@@ -7,6 +7,7 @@ import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import AuthActionLoading from '@/components/AuthActionLoading.vue'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { onboarding_route } from '@/utils/onboardingFlow.js'
+import { relaunch_route } from '@/utils/routeTransition.js'
 const store = use_app_store(), frame = ref(null), error = ref('')
 const context = computed(() => store.local_verification)
 const go = async route => { error.value = ''; try { await frame.value.navigate_forward(auth_destination(route)) } catch (cause) { error.value = cause.message } }
@@ -14,6 +15,7 @@ const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 onHide(cancel_loading)
 const continue_setup = async () => {
   if (!context.value?.verified || is_loading.value) return
+  if (store.session.is_authenticated && (!store.onboarding || store.onboarding.completed)) { try { await relaunch_route('/pages/home/index') } catch (cause) { error.value = cause.message }; return }
   const id = context.value.account_id
   const result = store.session.is_authenticated && store.onboarding ? { success: true, data: store.onboarding.completed ? 'home' : store.onboarding.step } : await run_with_loading(() => store.begin_onboarding(id))
   if (result.reason === 'cancelled') return

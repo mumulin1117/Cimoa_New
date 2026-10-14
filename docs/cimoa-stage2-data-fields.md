@@ -4,6 +4,8 @@
 
 ## 持久化与公共字段
 
+2026-10-14引导增量：account.onboarding保存step、completed_steps、notification_permission（granted/denied/unavailable/skipped）、可选completed_at；缺失时兼容旧本地账号从basic开始，有值时严格校验，不接受未知步骤。ONBOARDING_FLOW是唯一目录。begin_onboarding仅为当前已固定码验证的本地账号建立会话；save_onboarding_step逐项写本人users字段、account DOB、关联icebreakers，不建页面副本。Photos用本人profile_photos/media_files与真实IndexedDB Blob，最多3/至少2；新增Blob与元数据失败回滚。complete复查全部步骤及媒体后更新onboarding_status，不改变学生认证/账本/关系。契约及具体字段见[本轮记录](./cimoa-registration-onboarding.md)。
+
 本轮入口复核补充：首次安装session为空（hydration只读、不落盘）；有效旧会话原样恢复。新增本地accounts凭据字段credential_algorithm、credential_iterations、credential_salt、credential_hash；date_of_birth和agreements仅存在账号私有元数据。register_local_account校验18+、三项协议、邮箱与8–128位含数字且一致的密码，原子写accounts/users，不自动登录、不加币、不创建关系。新users.verification_status=pending、onboarding_status=not_started、discoverable=false；下一步local_verification。密码和确认密码不进草稿或storage。固定fixture摘要兼容；普通本地账号用随机盐PBKDF2，login/delete_account均验证对应算法。固定验证码009789是用户新增决定，字段与边界见[本地验证码](./cimoa-local-verification.md)，不扩大重置/真实学生认证权限。
 
 所有集合是 Store state；轻量记录持久化类型为 local_storage_metadata，默认枚举/选项为 store_seed；媒体二进制为 indexed_db_blob，getter/统计为 derived。schema_version 为整数，revision 为递增整数，updated_at 为毫秒时间戳；单次业务操作克隆 next state，验证后一次保存再发布，失败保持旧 revision。

@@ -104,3 +104,30 @@ test('icebreaker validation requires exactly three unique safe bounded questions
   assert.equal(onboarding_error('ice', { questions: valid }), '')
   for (const questions of [[], valid.slice(0, 2), [...valid, 'Fourth?'], ['Same?', ' Same? ', 'Third?'], ['password?', ...valid.slice(1)], ['X'.repeat(161), ...valid.slice(1)], [null, ...valid.slice(1)]]) assert.ok(onboarding_error('ice', { questions }))
 })
+test('completion validates real media and every step, commits atomically, resumes Home and keeps new-user identity isolated', async () => {
+  const { store, id, disk, persistence, blobs } = await photo_fixture()
+  const image = new Blob(['unit decoded image'], { type: 'image/png' })
+  await store.add_onboarding_photos([image, image], null, id)
+  for (const [step, patch] of [['photos', {}], ['about', { bio: '' }], ['interests', { interest_ids: ['coffee', 'music', 'photography'] }], ['goal', { goal_ids: ['friends', 'conversations'] }], ['ice', { questions: ['Ideal Sunday?', 'Favourite meal?', 'A campus spot?'] }], ['notif', { notification_permission: 'skipped' }]]) assert.equal((await store.save_onboarding_step(step, patch, id)).success, true)
+  const before = clone_data(store.data), media_id = store.current_photos[0].media_url.slice(12), photo = blobs.get(media_id)
+  blobs.delete(media_id); assert.equal((await store.save_onboarding_step('complete', {}, id)).success, false); blobs.set(media_id, photo)
+  assert.equal((await store.save_onboarding_step('complete', {}, id, { is_current: () => false })).reason, 'cancelled')
+  configure_store_runtime(store, { persistence: { ...persistence, write() { throw Error('Storage full') } } })
+  assert.equal((await store.save_onboarding_step('complete', {}, id)).success, false); assert.deepEqual(clone_data(store.data), before)
+  configure_store_runtime(store, { persistence })
+  assert.equal((await store.save_onboarding_step('complete', {}, id)).data, 'home')
+  const restored = fixture(disk.get('cimoa_app_state_v2')).store
+  assert.equal(restored.onboarding.completed, true); assert.equal(startup_destination(restored), '/pages/home/index')
+  assert.equal(restored.current_user.verification_status, 'pending'); assert.equal(restored.coin_balance, 0); assert.deepEqual(restored.home_connections, [])
+  restored.logout(); assert.equal((await restored.login('photos@campus.edu', 'localpass123')).success, true)
+  assert.equal(authenticated_destination(restored), '/pages/home/index'); assert.equal(restored.current_user.user_name, 'Morgan')
+  assert.equal((await restored.save_onboarding_step('complete', {}, id)).success, false)
+})
+test('invalid persisted onboarding step fails hydration instead of silently skipping setup', async () => {
+  const { store, disk, id } = await photo_fixture()
+  const value = clone_data(disk.get('cimoa_app_state_v2'))
+  value.accounts.find(a => a.account_id === id).onboarding.step = 'invented-step'
+  const restored = fixture(value).store
+  assert.equal(restored.hydration_status, 'error'); assert.equal(restored.onboarding, null)
+  assert.equal(store.onboarding.step, 'photos')
+})

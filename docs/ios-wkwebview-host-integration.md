@@ -8,11 +8,13 @@
 
 执行 `corepack pnpm build:h5` 后，postbuild先复制原有本地资源，再运行 `scripts/package-ios.mjs`；将 **同一份** `dist/build/h5` 复制到 `ios/cimoaNeapo/Resources/H5`，同时复制唯一主题和生成逐文件SHA256清单。生成资源不重复提交Git，但当前本地工程与导出zip包含它们。可单独 `corepack pnpm prepare:ios` 同步已构建产物；不能只改dist而不重新构建。
 
-App包内的只读静态资源适配器固定绑定 `127.0.0.1:18765`，WKWebView加载 `/index.html#/pages/home/index`。固定origin保证localStorage/IndexedDB稳定，绝不使用电脑5173/4173服务、局域网或原型HTML。只允许GET/HEAD、准确Host、合法根目录内文件；拒绝目录遍历、写操作和未知类型。端口占用显示可重试错误，不换端口导致数据看似丢失。桥接和导航仅允许本origin主框架，禁止外部页面获得原生能力。
+App包内的只读静态资源适配器固定绑定 `127.0.0.1:18765`，WKWebView加载 `/index.html#/pages/auth/splash`。首次进入Welcome；有效会话恢复Home或尚未完成的资料步骤。固定origin保证localStorage/IndexedDB稳定，绝不使用电脑5173/4173服务、局域网或原型HTML。只允许GET/HEAD、准确Host、合法根目录内文件；拒绝目录遍历、写操作和未知类型。端口占用显示可重试错误，不换端口导致数据看似丢失。桥接和导航仅允许本origin主框架，禁止外部页面获得原生能力。
 
 使用Apple的 [WKWebView](https://developer.apple.com/documentation/webkit/wkwebview/) 与 [Network局部绑定接口](https://developer.apple.com/documentation/network/nwparameters/requiredlocalendpoint)，不启用私有WebKit文件权限API。网络监听属于App进程生命周期，不是驻留Node服务。
 
 ## 桥接 v1
+
+2026-10-14新增白名单：openSettings仅打开本App系统设置、返回opened；getNotificationPermission读取UNUserNotificationCenter；requestNotifications请求alert/badge/sound后重读实际status。状态为granted/denied/not_requested/unavailable，delivery_configured=false；普通浏览器使用真实Notification API或明确不可用，不假授权。原生权限请求允许60秒响应（系统弹窗等待），其他请求仍8秒；关闭页面或换账号后迟到结果不得写业务。
 
 | 消息 | JS→原生 | 原生→JS | 权限与失败 |
 | --- | --- | --- | --- |

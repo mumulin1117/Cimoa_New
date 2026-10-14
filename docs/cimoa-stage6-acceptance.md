@@ -1,6 +1,14 @@
 # Cimoa 整体验收状态
 
-## 最新增量：固定本地验证码009789（2026-10-13）
+## 最新增量：注册UI与资料引导（2026-10-14）
+
+首次启动到新账号Home已跑通，不代表整个App验收完成。74项单元、注册路径18组H5、验证码15/Login13/Welcome8/Home22/Discover20/Events19/Profile20回归通过。RegistrationAcceptance-2.xcresult在iPhone17Pro/iOS26.5原生7/7通过（0失败/跳过）；新增注册/真实媒体存储/通知跳过/完成/单次骨架/Profile同步/刷新。见[本轮记录与边界](./cimoa-registration-onboarding.md)、[原生摘要](./evidence/registration-native/acceptance.json)、[截图附件](./evidence/registration-native/manifest.json)。测试恢复原模拟器数据；系统照片选择和通知授权弹窗的手动点击未包含在自动通过项中。
+
+当前29个注册路由、26/103匹配、77个未注册，无in_progress、verified=0。新增页面local passed/full pending；原HTML未改变、不嵌入或运行；独立H5共162文件，原生加载同一打包资源。正式发布、Apple、密码重置、真实推送/学生认证、主Tab剩余依赖仍未完成。仅本地提交、不push；下面所有“当前”及数字属于各历史版本，不覆盖本节。
+
+最终三项强制命令通过无警告；导出工程195条目/162份H5与原生测试构建逐文件匹配，见[最新打包报告](./evidence/registration-native/package.json)。正常App另用RegistrationRunData构建，供模拟器查看；不会清除已有账号。
+
+## 历史增量：固定本地验证码009789（2026-10-13）
 
 Code/Success已按HTML结构与用户本地认证决定实现，结果只保存当前账号local_verification；不发送邮件、不把学生认证改成verified。62项单元、两页14项浏览器、Login13项回归通过；iPhone17Pro/iOS26.5全新构建FixedCodeAcceptance-2.xcresult完成6/6，0失败/跳过，含新增验证码及刷新用例。证据与文件范围见[本地验证码](./cimoa-local-verification.md)、[原生摘要](./evidence/fixed-code-native/acceptance.json)、[附件](./evidence/fixed-code-native/manifest.json)。
 

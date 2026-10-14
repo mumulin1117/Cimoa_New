@@ -1,3 +1,4 @@
+import { ONBOARDING_FLOW } from '../utils/onboardingFlow.js'
 export const owner_id = (data) => data.session.current_user_id
 export const authenticated = (data, now = Date.now()) => data.session.expires_at > now && data.accounts.some((account) => account.account_id === data.session.account_id && account.user_id === owner_id(data) && account.status === 'active')
 export const blocked = (data, user_id, owner = owner_id(data)) => data.blocked_users.some((row) => row.owner_user_id === owner && row.user_id === user_id)
@@ -68,6 +69,12 @@ export function validate_data(data) {
   ensure(unique(data.accounts, (row) => row.email.toLowerCase()), 'Duplicate account email.')
   for (const row of data.accounts) ensure(has('users', row.user_id) && ['active', 'deleted'].includes(row.status), 'Invalid account.')
   for (const row of data.accounts) if (row.local_verification != null) ensure(row.local_verification.method === 'fixed_code' && row.local_verification.status === 'verified' && Number.isFinite(row.local_verification.verified_at), 'Invalid local verification.')
+  for (const row of data.accounts) if (row.onboarding != null) {
+    const progress = row.onboarding
+    ensure(ONBOARDING_FLOW.includes(progress.step) && Array.isArray(progress.completed_steps) && unique(progress.completed_steps, step => step) && progress.completed_steps.every(step => ONBOARDING_FLOW.includes(step)), 'Invalid profile setup progress.')
+    ensure(progress.completed_at === undefined || Number.isFinite(progress.completed_at), 'Invalid profile completion time.')
+    ensure(progress.notification_permission === undefined || ['granted', 'denied', 'skipped', 'unavailable'].includes(progress.notification_permission), 'Invalid notification choice.')
+  }
   if (data.auth_flow.pending_registration_account_id != null) ensure(has('accounts', data.auth_flow.pending_registration_account_id), 'Invalid registration account.')
   if (owner_id(data)) ensure(data.accounts.some((row) => row.account_id === data.session.account_id && row.user_id === owner_id(data)) && Number.isFinite(data.session.expires_at), 'Invalid session.')
   for (const row of data.users) {
