@@ -104,12 +104,54 @@ try {
     await page.locator('.coin-purchasing-page').waitFor()
     await page.locator('[data-interaction="coinPurchasing.backToStore.click.1"]').click()
     await page.locator('.loading').waitFor()
-    await page.locator('.purchase-status').getByText('This purchase was cancelled. Your balance is unchanged.', { exact: true }).waitFor()
+    await page.locator('.coin-cancelled-page').waitFor()
     const cancelled = await state()
     assert.equal(cancelled.purchase_requests.length, 1)
     assert.equal(cancelled.purchase_requests[0].status, 'cancelled')
     assert.equal(cancelled.coin_transactions.reduce((sum, row) => sum + row.amount, 0), 260)
     check('Cancel resolves the bridge once, persists cancelled status and leaves the ledger unchanged')
+  }
+
+  if (phase === 'cancelled') {
+    await page.goto(`${origin}/?phase=coin-cancelled#/pages/coins/index`)
+    const before = await state()
+    await page.locator('[data-interaction="coinStore.continuePurchase.click.1"]').click()
+    await page.locator('.coin-purchasing-page').waitFor()
+    await page.locator('[data-interaction="coinPurchasing.backToStore.click.1"]').click()
+    await page.locator('.loading').waitFor()
+    await page.locator('.coin-cancelled-page').waitFor()
+    const cancelled = await state()
+    assert.equal(cancelled.purchase_requests.length, 1)
+    assert.equal(cancelled.purchase_requests[0].status, 'cancelled')
+    assert.equal(cancelled.coin_transactions.length, before.coin_transactions.length)
+    assert.equal(cancelled.coin_transactions.reduce((sum, row) => sum + row.amount, 0), 260)
+    assert.equal(await page.locator('.cancelled-copy').innerText(), 'Nothing was charged and your balance is unchanged.')
+    await page.screenshot({ path: path.join(output, 'cancelled-default.png') })
+    check('Cancelling Purchasing opens the owned Cancelled result and leaves the ledger unchanged')
+
+    const result_url = page.url()
+    await page.reload()
+    await page.locator('.coin-cancelled-page').waitFor()
+    assert.equal(page.url(), result_url)
+    assert.equal((await state()).purchase_requests.length, 1)
+    check('Cancelled restores the terminal request after refresh without replaying cancellation')
+
+    await page.locator('.cancelled-footer [data-interaction="coinCancelled.goBack.click.1"]').click()
+    await page.locator('.coin-center-page').waitFor()
+    assert.equal((await state()).purchase_requests[0].status, 'cancelled')
+    check('Close pops the purchase flow back to the existing Coin Center instance')
+
+    await page.goto(result_url)
+    await page.locator('.coin-cancelled-page').waitFor()
+    await page.locator('[data-interaction="coinCancelled.backToStore.click.1"]').click()
+    await page.locator('.coin-center-page').waitFor()
+    assert.equal((await state()).coin_transactions.reduce((sum, row) => sum + row.amount, 0), 260)
+    check('Back to Coin Store replaces direct-entry Cancelled without changing balance')
+
+    await page.goto(`${origin}/?phase=coin-cancelled-invalid#/pages/coins/cancelled`)
+    assert.match(await page.getByRole('alert').innerText(), /unavailable/)
+    assert.equal((await state()).purchase_requests.length, 1)
+    check('Cancelled rejects a missing request ID and performs no fallback mutation')
   }
 
   if (phase === 'failed') {

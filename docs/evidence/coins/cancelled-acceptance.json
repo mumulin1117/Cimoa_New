@@ -1,0 +1,13 @@
+{
+  "phase": "cancelled",
+  "result": "passed",
+  "server_pid": 45501,
+  "checks": [
+    "Cancelling Purchasing opens the owned Cancelled result and leaves the ledger unchanged",
+    "Cancelled restores the terminal request after refresh without replaying cancellation",
+    "Close pops the purchase flow back to the existing Coin Center instance",
+    "Back to Coin Store replaces direct-entry Cancelled without changing balance",
+    "Cancelled rejects a missing request ID and performs no fallback mutation"
+  ],
+  "errors": []
+}
