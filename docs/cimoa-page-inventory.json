@@ -838,7 +838,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local-only email UI implemented with guest/session guard, active-device-account disclosure, fixed Loading contract and pre-write dependency gate; Code dependency pending"
+    "mapping_status": "source-mapped; local-only email UI implemented with guest/session guard, active-device-account disclosure, custom Loading before reset record creation, owned reset_id navigation and zero-write invalid or unknown-account errors"
   },
   {
     "source_screen": "Auth / Forgot Password / Code",
@@ -848,7 +848,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/auth/reset/code",
-    "component": null,
+    "component": "src/pages/auth/reset/code.vue; src/components/AuthActionLoading.vue",
     "parent_route": "/pages/auth/reset/email",
     "allowed_origin_routes": [
       "/pages/auth/reset/email"
@@ -908,10 +908,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; fixed code 009789 is disclosed as local-only, reset_id ownership and guest session are validated, resend never claims email delivery, wrong code is zero-write, and New Password dependency is checked before verification write"
   },
   {
     "source_screen": "Auth / Forgot Password / New Password",

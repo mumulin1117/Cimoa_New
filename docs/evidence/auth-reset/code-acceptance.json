@@ -1,0 +1,13 @@
+{
+  "phase": "code",
+  "result": "passed",
+  "server_pid": 52249,
+  "checks": [
+    "Code shows the fixed local-only value and keeps reset verification pending on arrival",
+    "Wrong reset code is rejected without a persisted write",
+    "Resend explicitly reports no email delivery and performs no write",
+    "Correct code dependency-gates New Password before changing verification state",
+    "Code refresh clears the secret field, preserves the owned reset, and Back restores Email"
+  ],
+  "errors": []
+}
