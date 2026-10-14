@@ -112,14 +112,16 @@ test('events enforce capacity, unique memberships, ended dates and group access'
   assert.equal(store.leave_event('event_picnic').success, true); assert.equal(store.messages_for_conversation('group_picnic').length, 0)
   assert.equal(fixture('event_past').store.join_event('event_picnic').success, false)
 })
-test('blocking filters Home, people, participants and direct/group messages; unblocking adds no relationships', () => {
+test('blocking removes the old connection/private chat and filters shared surfaces; unblocking recreates nothing', () => {
   const { store } = fixture('event_joined')
   assert.equal(store.block_user('user_chloe').success, true)
   assert.ok(!store.home_connections.some((row) => row.user_id === 'user_chloe'))
   assert.equal(store.current_conversations.length, 0)
   assert.ok(store.messages_for_conversation('group_picnic').every((row) => row.sender_id !== 'user_chloe'))
   assert.ok(store.event_participants('event_picnic').every((row) => row.user_id !== 'user_chloe'))
-  const edges = store.data.relationships.length; assert.equal(store.unblock_user('user_chloe').success, true); assert.equal(store.data.relationships.length, edges)
+  assert.equal(store.data.relationships.some((row) => [row.from_user_id, row.to_user_id].includes('user_chloe') && [row.from_user_id, row.to_user_id].includes(TEST_USER_ID)), false)
+  assert.equal(store.data.conversations.some((row) => row.kind === 'direct' && row.participant_ids.includes('user_chloe')), false)
+  assert.equal(store.unblock_user('user_chloe').success, true); assert.equal(store.can_chat('user_chloe'), false); assert.equal(store.current_conversations.length, 0)
   assert.equal(store.submit_report({ target_type: 'user', target_id: TEST_USER_ID, reason: 'Spam' }).success, false)
   assert.equal(store.submit_report({ target_type: 'event', target_id: 'event_picnic', reason: 'Incorrect information' }).success, true); assert.equal(store.current_reports[0].status, 'local_saved')
 })

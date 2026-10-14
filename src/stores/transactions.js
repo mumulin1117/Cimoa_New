@@ -64,6 +64,20 @@ export function connect_users(data, other, now) {
   }
   return conversation.conversation_id
 }
+export function disconnect_for_block(data, target, now) {
+  const owner = select.owner_id(data)
+  data.relationships = data.relationships.filter((row) => ![row.from_user_id, row.to_user_id].includes(owner) || ![row.from_user_id, row.to_user_id].includes(target))
+  for (const row of data.requests) {
+    if (row.status === 'pending' && [row.sender_id, row.recipient_id].includes(owner) && [row.sender_id, row.recipient_id].includes(target)) {
+      row.status = 'cancelled'
+      row.resolved_at = now
+    }
+  }
+  for (const row of data.match_sessions) if (row.owner_user_id === owner && row.candidate_id === target && !['connected', 'passed', 'expired', 'no_match', 'left'].includes(row.status)) row.status = 'left'
+  const direct_ids = data.conversations.filter((row) => row.kind === 'direct' && row.participant_ids.includes(owner) && row.participant_ids.includes(target)).map((row) => row.conversation_id)
+  data.conversations = data.conversations.filter((row) => !direct_ids.includes(row.conversation_id))
+  data.messages = data.messages.filter((row) => !direct_ids.includes(row.conversation_id))
+}
 export const password_hash = async (password) => {
   select.ensure(globalThis.crypto?.subtle, 'Secure authentication is unavailable.')
   const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`cimoa-fixture:${password}`))

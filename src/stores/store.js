@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { create_seed, clone_data } from './seed.js'
-import { migrate_legacy } from './migration.js'
-import { normalize_email, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
+import { migrate_legacy, upgrade_additive_data } from './migration.js'
+import { normalize_email, valid_email, password_error, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
 import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
 import { community_rules, registration_agreements } from '../utils/registrationCatalog.js'
 import { onboarding_context, onboarding_actions } from './onboarding.js'
@@ -13,7 +13,7 @@ import * as s from './selectors.js'
 import * as ev from './eventSelectors.js'
 import { event_group, event_message_actions } from './eventMessaging.js'
 import { STATE_KEY, LEGACY_KEY } from '../utils/statePersistence.js'
-import { get_runtime, transact, operation, make_id, failure, unavailable, require_target, require_student, password_hash, add_transaction, connect_users } from './transactions.js'
+import { get_runtime, transact, operation, make_id, failure, unavailable, require_target, require_student, password_hash, add_transaction, connect_users, disconnect_for_block } from './transactions.js'
 export { configure_store_runtime, make_id as make_operation_id } from './transactions.js'
 const own = (data, rows) => rows.filter((row) => row.owner_user_id === s.owner_id(data))
 const require_owned = (data, rows, key, id) => {
@@ -72,10 +72,14 @@ export const use_app_store = defineStore('app', {
     coin_balance: (state) => ready(state) ? s.balance(state.data) : 0,
     coin_transactions: (state) => ready(state) ? clone_data(own(state.data, state.data.coin_transactions)) : [],
     coin_packages: (state) => clone_data(state.data.coin_packages),
+    current_purchase_requests: (state) => ready(state) ? clone_data(own(state.data, state.data.purchase_requests)) : [],
+    purchase_by_id: (state) => (id) => ready(state) ? clone_data(own(state.data, state.data.purchase_requests).find((row) => row.request_id === id) || null) : null,
     current_reports: (state) => ready(state) ? clone_data(own(state.data, state.data.reports)) : [],
+    report_by_id: (state) => (id) => ready(state) ? clone_data(own(state.data, state.data.reports).find((row) => row.report_id === id) || null) : null,
     current_drafts: (state) => ready(state) ? clone_data(own(state.data, state.data.drafts)) : [],
     current_photos: (state) => ready(state) ? clone_data(state.data.profile_photos.filter((row) => row.user_id === s.owner_id(state.data)).sort((a, b) => a.position - b.position)) : [],
     current_settings: (state) => ready(state) ? clone_data(state.data.settings.find((row) => row.owner_user_id === s.owner_id(state.data)) || {}) : {},
+    privacy_visibility() { const privacy = this.current_settings.privacy || {}; return privacy.discover_visible ? 'discover' : privacy.auto_match_visible !== false ? 'auto_match' : 'hidden' },
     settings() { const row = this.current_settings; return { ...row, notifications_enabled: row.notifications?.master || false, show_online_status: row.privacy?.show_online || false, location_enabled: false } },
     blocked_accounts: (state) => ready(state) ? own(state.data, state.data.blocked_users).map((row) => clone_data(state.data.users.find((user) => user.user_id === row.user_id))).filter(Boolean) : [],
     blocked_user_ids() { return this.blocked_accounts.map((row) => row.user_id) },
@@ -95,7 +99,7 @@ export const use_app_store = defineStore('app', {
     event_detail: state => id => ready(state) ? ev.event_detail(state.data, id, state.clock_ms) : null,
     event_group: state => (event_id, conversation_id) => ready(state) ? event_group(state.data, event_id, conversation_id, state.clock_ms) : null,
     event_join_blocker: (state) => id => state.hydration_status === 'ready' ? ev.event_join_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
-    event_participants: (state) => (id) => ready(state) ? s.members(state.data, id).filter((row) => s.visible(state.data, row.user_id)).map((row) => profile(state.data, row.user_id)) : [],
+    event_participants: (state) => (id) => ready(state) ? s.members(state.data, id).filter((row) => s.visible(state.data, row.user_id) && (row.user_id === s.owner_id(state.data) || s.privacy_for(state.data, row.user_id).event_visible !== false)).map((row) => profile(state.data, row.user_id)) : [],
     event_people() { return (id, query = '') => this.event_participants(id).filter(user => [user.user_name, user.university, user.major].join(' ').toLowerCase().includes(query.trim().toLowerCase())).map(user => ({ ...user, meta: [user.university, user.major].filter(Boolean).join(' · '), relationship_label: user.user_id === this.session.current_user_id ? 'You' : this.can_chat(user.user_id) ? 'Connected' : 'Not connected' })) },
     my_events() { return this.events.filter((row) => row.joined) },
     my_event_groups: state => ready(state) ? ev.my_event_groups(state.data, state.clock_ms) : { featured: null, sections: [] },
@@ -115,7 +119,7 @@ export const use_app_store = defineStore('app', {
       this.hydration_status = 'loading'
       try {
         const rt = get_runtime(this), current = rt.persistence.read(STATE_KEY)
-        const data = current == null ? migrate_legacy(rt.persistence.read(LEGACY_KEY), rt.clock()) : clone_data(current)
+        const data = current == null ? migrate_legacy(rt.persistence.read(LEGACY_KEY), rt.clock()) : upgrade_additive_data(current)
         s.validate_data(data)
         this.data = data; this.clock_ms = rt.clock(); this.hydration_status = 'ready'; this.hydration_error = ''
         return { success: true }
@@ -147,15 +151,37 @@ export const use_app_store = defineStore('app', {
         data.auth_flow = { flow_id: make_id('auth_flow'), step: 'welcome', email: '', verification_request_id: null, pending_registration_account_id: null, agreements: { age: false, student: false, terms: false, privacy: false, community: false }, profile_draft: {} }
       }, { public: true })
     },
-    async delete_account(password) {
+    async delete_account(password, reason = '') {
       const owner = s.owner_id(this.data), expected = this.data.accounts.find(row => row.account_id === this.data.session.account_id)
       const valid = await (expected?.auth_provider === 'local' ? verify_local_credential(expected, password) : password_hash(password).then(hash => hash === expected?.credential_hash)).catch(() => false)
-      return transact(this, null, (data) => {
+      const media_ids = this.data.media_files.filter((row) => row.owner_user_id === owner).map((row) => row.media_id)
+      const result = transact(this, null, (data, now) => {
         const account = data.accounts.find((row) => row.account_id === data.session.account_id)
         s.ensure(valid && account?.credential_hash === expected?.credential_hash, 'Password is incorrect.')
-        account.status = 'deleted'; data.users.find((row) => row.user_id === owner).deleted = true
+        account.status = 'deleted'; account.deleted_at = now; account.deletion_reason = String(reason || '').slice(0, 120); account.credential_hash = 'deleted'
+        delete account.credential_salt; delete account.credential_algorithm; delete account.credential_iterations
+        const user = data.users.find((row) => row.user_id === owner)
+        Object.assign(user, { user_name: 'Deleted account', avatar_url: '', bio: '', photo_ids: [], goal_ids: [], interest_ids: [], icebreaker_ids: [], song_id: null, bio_audio_id: null, discoverable: false, deleted: true })
+        data.profile_photos = data.profile_photos.filter((row) => row.user_id !== owner)
+        data.icebreakers = data.icebreakers.filter((row) => row.user_id !== owner)
+        data.media_files = data.media_files.filter((row) => row.owner_user_id !== owner)
+        data.relationships = data.relationships.filter((row) => row.from_user_id !== owner && row.to_user_id !== owner)
+        data.requests = data.requests.filter((row) => row.sender_id !== owner && row.recipient_id !== owner)
+        data.match_sessions = data.match_sessions.filter((row) => row.owner_user_id !== owner && row.candidate_id !== owner)
+        data.match_preferences = data.match_preferences.filter((row) => row.owner_user_id !== owner)
+        data.match_quota = data.match_quota.filter((row) => row.owner_user_id !== owner)
+        data.memberships = data.memberships.filter((row) => row.user_id !== owner)
+        const direct_ids = data.conversations.filter((row) => row.kind === 'direct' && row.participant_ids.includes(owner)).map((row) => row.conversation_id)
+        data.conversations = data.conversations.filter((row) => !direct_ids.includes(row.conversation_id))
+        data.messages = data.messages.filter((row) => row.sender_id !== owner && !direct_ids.includes(row.conversation_id))
+        for (const table of ['coin_transactions', 'purchase_requests', 'blocked_users', 'reports', 'drafts', 'support_requests', 'operation_receipts', 'settings', 'event_preferences']) data[table] = data[table].filter((row) => row.owner_user_id !== owner && (table !== 'blocked_users' || row.user_id !== owner))
         data.session = { current_user_id: null, account_id: null, expires_at: null }
+        data.auth_flow = { flow_id: make_id('auth_flow'), step: 'welcome', email: '', verification_request_id: null, pending_registration_account_id: null, password_reset: null, agreements: { age: false, student: false, terms: false, privacy: false, community: false }, profile_draft: {} }
+        return { user_id: owner, media_ids }
       }, { expected_owner: owner })
+      if (!result.success) return result
+      const cleanup = await Promise.allSettled(media_ids.map((id) => get_runtime(this).media.delete(id)))
+      return { ...result, data: { ...result.data, cleanup_warning: cleanup.some((row) => row.status === 'rejected') ? 'Some local media could not be removed. Clear app data before sharing this device.' : '' } }
     },
     async register_local_account(input, { is_current = () => true } = {}) {
       const email = normalize_email(input?.email), now = get_runtime(this).clock()
@@ -178,7 +204,43 @@ export const use_app_store = defineStore('app', {
       } catch { return unavailable('Secure local authentication') }
     },
     create_account({ email } = {}) { return this.data.accounts.some(row => row.email === normalize_email(email)) ? failure('email_exists', 'This email is already registered.') : failure('registration_form_required', 'Complete the local registration form first.') },
-    reset_password() { return unavailable('Password reset') },
+    begin_password_reset(email) {
+      const normalized = normalize_email(email)
+      if (!valid_email(normalized)) return failure('invalid_form', 'Enter a valid email address.')
+      return transact(this, null, (data, now) => {
+        s.ensure(!s.authenticated(data, now), 'Log out before resetting a password.')
+        const account = data.accounts.find((row) => row.email === normalized && row.status === 'active' && ['fixture', 'local'].includes(row.auth_provider))
+        s.ensure(account, 'No active local account was found for this email on this device.')
+        const reset_id = make_id('password_reset')
+        data.auth_flow.password_reset = { reset_id, account_id: account.account_id, email: account.email, created_at: now, verified_at: null }
+        return { reset_id, email: account.email }
+      }, { public: true })
+    },
+    verify_password_reset_code(code, expected_reset_id) {
+      if (!valid_local_code(code)) return failure('invalid_code', 'That code is incorrect. Enter the six-digit local reset code.')
+      return transact(this, null, (data, now) => {
+        const reset = data.auth_flow.password_reset
+        s.ensure(reset?.reset_id === expected_reset_id && data.accounts.some((row) => row.account_id === reset.account_id && row.status === 'active'), 'This local reset is no longer available. Start again.')
+        reset.verified_at = reset.verified_at || now
+        return { reset_id: reset.reset_id, email: reset.email }
+      }, { public: true })
+    },
+    async finish_password_reset(password, confirmation, expected_reset_id) {
+      const error = password_error(password, confirmation)
+      if (error) return failure('invalid_form', error)
+      try {
+        const credential = await create_local_credential(password)
+        return transact(this, null, (data, now) => {
+          const reset = data.auth_flow.password_reset
+          s.ensure(reset?.reset_id === expected_reset_id && reset.verified_at && data.accounts.some((row) => row.account_id === reset.account_id && row.status === 'active'), 'Verify the local reset code first.')
+          const account = data.accounts.find((row) => row.account_id === reset.account_id)
+          Object.assign(account, credential)
+          data.auth_flow = { flow_id: make_id('auth_flow'), step: 'welcome', email: account.email, verification_request_id: null, pending_registration_account_id: null, password_reset: null, agreements: { age: false, student: false, terms: false, privacy: false, community: false }, profile_draft: {} }
+          return { email: account.email, changed_at: now }
+        }, { public: true })
+      } catch { return unavailable('Secure local password reset') }
+    },
+    reset_password() { return failure('reset_flow_required', 'Start the local password reset flow with this account email.') },
     change_registration_email(email, expected_account_id) {
       return transact(this, null, (data, now) => {
         const context = local_verification_context(data, now), normalized = normalize_email(email)
@@ -284,6 +346,7 @@ export const use_app_store = defineStore('app', {
         s.ensure(!blocker, blocker)
         s.ensure(data.icebreakers.some((q) => q.question_id === question_id && q.user_id === user_id), 'Choose one of this person’s questions.')
         s.ensure(kind === 'text' ? typeof text === 'string' && text.trim() : kind === 'voice', 'Write an introduction or record a voice note.')
+        if (kind === 'voice') s.ensure(s.privacy_for(data, user_id).allow_voice !== false, 'This person is not accepting voice introductions.')
         const request_id = make_id('request')
         if (kind === 'voice') add_transaction(data, -10, `voice:${request_id}`, 'spend', request_id, now)
         data.requests.push({ request_id, sender_id: owner, recipient_id: user_id, question_id, kind, text: text.trim(), audio_id, status: 'pending', created_at: now, resolved_at: null }); return request_id
@@ -305,7 +368,7 @@ export const use_app_store = defineStore('app', {
     start_match(operation_id) {
       if (!get_runtime(this).services.matching_available) return unavailable('Auto Match service')
       return transact(this, operation(operation_id, 'match', []), (data, now) => {
-        require_student(data); s.ensure(!s.active_match(data, now), 'A match session is already active.')
+        require_student(data); s.ensure(s.privacy_for(data, s.owner_id(data)).auto_match_visible !== false, 'Enable Auto Match visibility in Privacy before joining the queue.'); s.ensure(!s.active_match(data, now), 'A match session is already active.')
         const match_id = make_id('match'), date_key = s.utc_date_key(now)
         let quota = own(data, data.match_quota).find((row) => row.date_key === date_key)
         if (!quota) { quota = { owner_user_id: s.owner_id(data), date_key, used_count: 0 }; data.match_quota.push(quota) }
@@ -335,7 +398,7 @@ export const use_app_store = defineStore('app', {
           s.ensure(row.status === 'searching' && Number.isInteger(event.queue_position) && event.queue_position > 0 && (event.estimated_wait_seconds == null || Number.isFinite(event.estimated_wait_seconds) && event.estimated_wait_seconds >= 0), 'Invalid queue update.')
           row.queue_position = event.queue_position; row.estimated_wait_seconds = event.estimated_wait_seconds ?? null
         }
-        else if (event.type === 'found') { s.ensure(row.status === 'searching', 'The queue is not searching.'); require_target(data, event.user_id); row.candidate_id = event.user_id; row.status = 'found'; row.expires_at = now + 45000 }
+        else if (event.type === 'found') { s.ensure(row.status === 'searching' && s.match_visible(data, event.user_id), 'This person is unavailable for Auto Match.'); require_target(data, event.user_id); row.candidate_id = event.user_id; row.status = 'found'; row.expires_at = now + 45000 }
         else if (event.type === 'accepted') { s.ensure(row.status === 'waiting' && row.self_accepted && row.candidate_id === event.user_id, 'The candidate does not match.'); require_target(data, event.user_id); row.peer_accepted = true; row.status = 'connected'; connect_users(data, event.user_id, now) }
         else { s.ensure(event.type === 'no_match' && row.status === 'searching', 'Invalid queue event.'); row.status = 'no_match' }
       }, { expected_owner: owner })
@@ -377,7 +440,7 @@ export const use_app_store = defineStore('app', {
       }, { expected_owner: owner })
     },
     mark_read(id) { return transact(this, null, (data) => { s.ensure(s.can_open_conversation(data, data.conversations.find((row) => row.conversation_id === id)), 'Conversation unavailable.'); for (const row of s.messages_for(data, id)) if (!row.read_by.includes(s.owner_id(data))) row.read_by.push(s.owner_id(data)) }) },
-    block_user(id) { return transact(this, null, (data, now) => { require_target(data, id); data.blocked_users.push({ block_id: make_id('block'), owner_user_id: s.owner_id(data), user_id: id, created_at: now }) }) },
+    block_user(id) { return transact(this, null, (data, now) => { require_target(data, id); data.blocked_users.push({ block_id: make_id('block'), owner_user_id: s.owner_id(data), user_id: id, created_at: now }); disconnect_for_block(data, id, now) }) },
     unblock_user(id) { return transact(this, null, (data) => { s.ensure(s.blocked(data, id), 'This account is not blocked.'); data.blocked_users = data.blocked_users.filter((row) => row.owner_user_id !== s.owner_id(data) || row.user_id !== id) }) },
     submit_report({ target_type, target_id, reason, description = '', context_id = null, also_block = false }) {
       return transact(this, null, (data, now) => {
@@ -385,12 +448,14 @@ export const use_app_store = defineStore('app', {
         if (target_type === 'user') require_target(data, target_id)
         else s.ensure(data.events.some((row) => row.event_id === target_id), 'Event unavailable.')
         const report_id = make_id('report'); data.reports.push({ report_id, owner_user_id: s.owner_id(data), target_type, target_id, reason, description, context_id, status: 'local_saved', created_at: now })
-        if (also_block) { s.ensure(target_type === 'user', 'Only a user can be blocked.'); data.blocked_users.push({ block_id: make_id('block'), owner_user_id: s.owner_id(data), user_id: target_id, created_at: now }) }
+        if (also_block) { s.ensure(target_type === 'user' && !s.blocked(data, target_id), 'Only an unblocked user can be blocked.'); data.blocked_users.push({ block_id: make_id('block'), owner_user_id: s.owner_id(data), user_id: target_id, created_at: now }); disconnect_for_block(data, target_id, now) }
         return report_id
       })
     },
     report_user(id, reason) { return this.submit_report({ target_type: 'user', target_id: id, reason }) },
     update_settings(group, patch) { return transact(this, null, (data) => { const row = data.settings.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(['notifications', 'privacy'].includes(group) && Object.keys(patch).every((key) => key in row[group] && typeof patch[key] === 'boolean'), 'Invalid setting.'); Object.assign(row[group], patch) }) },
+    set_privacy_visibility(value) { return transact(this, null, (data) => { const row = data.settings.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(['discover', 'auto_match', 'hidden'].includes(value), 'Choose a valid profile visibility.'); row.privacy.discover_visible = value === 'discover'; row.privacy.auto_match_visible = value !== 'hidden' }) },
+    set_language(value) { return value === 'en-US' ? { success: true, repeated: true, data: 'en-US' } : failure('language_unavailable', 'Traditional Chinese is not available in this build. English remains selected.') },
     toggle_setting(key) { const map = { notifications_enabled: ['notifications', 'master'], show_online_status: ['privacy', 'show_online'] }; const path = map[key]; return path ? this.update_settings(path[0], { [path[1]]: !this.current_settings[path[0]][path[1]] }) : unavailable('Location permission settings') },
     begin_purchase(package_id, operation_id) { return transact(this, operation(operation_id, 'purchase', package_id), (data, now) => { s.ensure(data.coin_packages.some((row) => row.package_id === package_id) && !own(data, data.purchase_requests).some((row) => row.status === 'pending'), 'A purchase is already pending or this package is unavailable.'); const request_id = make_id('purchase'); data.purchase_requests.push({ request_id, owner_user_id: s.owner_id(data), package_id, status: 'pending', created_at: now, receipt_id: null }); return request_id }) },
     expire_purchases() { return transact(this, null, (data, now) => { for (const row of own(data, data.purchase_requests)) if (row.status === 'pending' && now - row.created_at >= 8000) row.status = 'timeout' }) },

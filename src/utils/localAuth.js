@@ -3,6 +3,11 @@ const hex = bytes => [...new Uint8Array(bytes)].map(byte => byte.toString(16).pa
 const decode = value => Uint8Array.from(value.match(/../g), part => Number.parseInt(part, 16))
 export const normalize_email = value => String(value || '').trim().toLowerCase()
 export const valid_email = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalize_email(value))
+export const password_error = (password, confirmation = password) => {
+  if (typeof password !== 'string' || password.length < 8 || password.length > 128 || !/\d/.test(password)) return 'Use 8–128 characters with at least one number.'
+  if (password !== confirmation) return 'Passwords do not match.'
+  return ''
+}
 export function age_from_date(value, now = Date.now()) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return null
   const birth = new Date(`${value}T00:00:00Z`), today = new Date(now)
@@ -11,8 +16,8 @@ export function age_from_date(value, now = Date.now()) {
 }
 export function signup_error({ email, password, confirmation, date_of_birth, agreements } = {}, now = Date.now()) {
   if (!valid_email(email)) return 'Enter a valid email address.'
-  if (typeof password !== 'string' || password.length < 8 || password.length > 128 || !/\d/.test(password)) return 'Use 8–128 characters with at least one number.'
-  if (password !== confirmation) return 'Passwords do not match.'
+  const credential_error = password_error(password, confirmation)
+  if (credential_error) return credential_error
   const age = age_from_date(date_of_birth, now)
   if (age == null) return 'Enter a valid date of birth.'
   if (age < 18) return 'You must be 18 or older to create an account.'

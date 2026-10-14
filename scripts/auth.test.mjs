@@ -59,12 +59,12 @@ test('concurrent registration cannot duplicate an account; write failures leave 
   assert.equal((await next.store.register_local_account(form())).success, false)
   assert.deepEqual(clone_data(next.store.data), before)
 })
-test('deleted emails remain reserved; missing-code verification fails and reset stays unavailable', async () => {
+test('deleted emails remain reserved and missing-code verification fails', async () => {
   const data = create_seed(now); data.session = { account_id: null, current_user_id: null, expires_at: null }
   data.accounts[0].status = 'deleted'; data.users[0].deleted = true
   const { store } = fixture(data)
   assert.equal((await store.register_local_account(form('cimoa@gmail.com'))).reason, 'email_exists')
-  assert.equal(store.apply_verification().success, false); assert.equal(store.reset_password().success, false)
+  assert.equal(store.apply_verification().success, false); assert.equal(store.begin_password_reset('cimoa@gmail.com').success, false)
 })
 test('fixed local code is exact, preserves leading zeroes, never promotes student identity, and is idempotent', async () => {
   const { store, disk, writes } = fixture()

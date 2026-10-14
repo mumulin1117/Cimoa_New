@@ -3,11 +3,13 @@ export const owner_id = (data) => data.session.current_user_id
 export const authenticated = (data, now = Date.now()) => data.session.expires_at > now && data.accounts.some((account) => account.account_id === data.session.account_id && account.user_id === owner_id(data) && account.status === 'active')
 export const blocked = (data, user_id, owner = owner_id(data)) => data.blocked_users.some((row) => row.owner_user_id === owner && row.user_id === user_id)
 export const visible = (data, user_id) => data.users.some((user) => user.user_id === user_id && !user.deleted) && !blocked(data, user_id) && !blocked(data, owner_id(data), user_id)
+export const privacy_for = (data, user_id) => data.settings.find((row) => row.owner_user_id === user_id)?.privacy || {}
+export const match_visible = (data, user_id) => visible(data, user_id) && privacy_for(data, user_id).auto_match_visible !== false
 export const user_by_id = (data, user_id) => {
   if (!visible(data, user_id)) return null
   const user = data.users.find((row) => row.user_id === user_id)
-  const privacy = data.settings.find((row) => row.owner_user_id === user_id)?.privacy
-  return { ...user, ...(owner_id(data) !== user_id && privacy ? { year: privacy.show_year ? user.year : '', major: privacy.show_field ? user.major : '' } : {}) }
+  const privacy = privacy_for(data, user_id)
+  return { ...user, ...(owner_id(data) !== user_id ? { year: privacy.show_year === false ? '' : user.year, major: privacy.show_field === false ? '' : user.major } : {}) }
 }
 export const balance = (data, owner = owner_id(data)) => data.coin_transactions.filter((row) => row.owner_user_id === owner && row.status === 'completed').reduce((sum, row) => sum + row.amount, 0)
 export const connected = (data, user_id, owner = owner_id(data)) => !!owner && visible(data, user_id) && [[owner, user_id], [user_id, owner]].every(([from, to]) => data.relationships.some((row) => row.from_user_id === from && row.to_user_id === to))
@@ -76,6 +78,10 @@ export function validate_data(data) {
     ensure(progress.notification_permission === undefined || ['granted', 'denied', 'skipped', 'unavailable'].includes(progress.notification_permission), 'Invalid notification choice.')
   }
   if (data.auth_flow.pending_registration_account_id != null) ensure(has('accounts', data.auth_flow.pending_registration_account_id), 'Invalid registration account.')
+  if (data.auth_flow.password_reset != null) {
+    const reset = data.auth_flow.password_reset
+    ensure(typeof reset.reset_id === 'string' && reset.reset_id && has('accounts', reset.account_id) && typeof reset.email === 'string' && Number.isFinite(reset.created_at) && (reset.verified_at == null || Number.isFinite(reset.verified_at)), 'Invalid password reset.')
+  }
   if (owner_id(data)) ensure(data.accounts.some((row) => row.account_id === data.session.account_id && row.user_id === owner_id(data)) && Number.isFinite(data.session.expires_at), 'Invalid session.')
   for (const row of data.users) {
     ensure(typeof row.user_name === 'string' && row.user_name && (row.age === null || Number.isInteger(row.age) && row.age >= 18), 'Invalid profile.')
@@ -110,8 +116,14 @@ export function validate_data(data) {
   for (const row of data.coin_transactions) ensure(has('users', row.owner_user_id) && Number.isInteger(row.amount) && row.amount !== 0 && ['completed', 'cancelled', 'failed'].includes(row.status), 'Invalid transaction.')
   for (const row of data.purchase_requests) ensure(has('users', row.owner_user_id) && has('coin_packages', row.package_id) && ['pending', 'success', 'failure', 'cancelled', 'timeout'].includes(row.status), 'Invalid purchase.')
   for (const table of ['settings', 'event_preferences', 'match_preferences', 'blocked_users', 'reports', 'drafts', 'support_requests', 'operation_receipts']) for (const row of data[table]) ensure(has('users', row.owner_user_id), 'Invalid account scope.')
+  for (const row of data.settings) {
+    ensure(row.language === undefined || row.language === 'en-US', 'Invalid language setting.')
+    if (row.notifications) ensure(Object.values(row.notifications).every(value => typeof value === 'boolean'), 'Invalid notification setting.')
+    if (row.privacy) ensure(Object.values(row.privacy).every(value => typeof value === 'boolean'), 'Invalid privacy setting.')
+  }
   for (const row of data.blocked_users) ensure(has('users', row.user_id) && row.user_id !== row.owner_user_id, 'Invalid block.')
   ensure(unique(data.blocked_users, (row) => `${row.owner_user_id}:${row.user_id}`), 'Duplicate block.')
+  for (const row of data.reports) ensure(['user', 'event'].includes(row.target_type) && typeof row.reason === 'string' && row.reason && row.status === 'local_saved' && (row.target_type === 'user' ? has('users', row.target_id) && row.target_id !== row.owner_user_id : has('events', row.target_id)), 'Invalid report.')
   ensure(unique(data.operation_receipts, (row) => `${row.owner_user_id}:${row.operation_id}`), 'Duplicate operation.')
   return true
 }

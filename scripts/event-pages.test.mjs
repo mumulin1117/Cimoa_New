@@ -14,7 +14,7 @@ const make = transform => {
 test('participants filter real memberships, privacy, blocking and search; joining does not connect',()=>{
   const {store}=make();const before=clone_data(store.data.relationships);store.join_event('event_picnic')
   assert.equal(store.event_people('event_picnic').length,4);assert.equal(store.event_people('event_picnic','ethan')[0].relationship_label,'You')
-  store.block_user('user_chloe');assert.equal(store.event_people('event_picnic','chloe').length,0);assert.equal(store.event_detail('event_picnic').available_count,16);assert.deepEqual(store.data.relationships,before)
+  store.block_user('user_chloe');assert.equal(store.event_people('event_picnic','chloe').length,0);assert.equal(store.event_detail('event_picnic').available_count,16);assert.ok(store.data.relationships.length<before.length)
   store.leave_event('event_picnic');assert.equal(store.event_people('event_picnic','ethan').length,0)
 })
 test('detail derives host, zoned schedule, unique notes and count without reseeding old data',()=>{

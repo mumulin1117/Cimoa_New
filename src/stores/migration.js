@@ -1,5 +1,11 @@
 import { create_seed, clone_data, TEST_USER_ID } from './seed.js'
 import { ensure, validate_data } from './selectors.js'
+export function upgrade_additive_data(value) {
+  const data = clone_data(value)
+  for (const row of data.settings || []) if (row.privacy && row.privacy.auto_match_visible === undefined) row.privacy.auto_match_visible = true
+  if (data.auth_flow && data.auth_flow.password_reset === undefined) data.auth_flow.password_reset = null
+  return data
+}
 export function migrate_legacy(legacy, now) {
   const data = create_seed(now)
   if (legacy == null) {
