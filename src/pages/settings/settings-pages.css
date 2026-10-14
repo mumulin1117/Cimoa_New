@@ -1,0 +1,65 @@
+.settings-page-section-title {
+  display: block;
+  font-size: 32.443rpx;
+  font-weight: 700;
+}
+.settings-page-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 19.084rpx;
+  margin-top: 19.084rpx;
+}
+.settings-page-choice {
+  display: flex;
+  align-items: center;
+  min-height: 114.504rpx;
+  padding: 22.901rpx 34.351rpx;
+  border: 2px solid var(--cimoa-surface-onboarding-border);
+  border-radius: 38.168rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-card);
+  font-size: 31.489rpx;
+  font-weight: 600;
+  cursor: pointer;
+}
+.settings-page-choice.selected {
+  border: 2px solid transparent;
+  background: var(--cimoa-gradient-card-fill) padding-box, var(--cimoa-gradient-primary) border-box;
+  font-weight: 700;
+}
+.settings-page-note {
+  display: block;
+  margin-top: 19.084rpx;
+  color: var(--cimoa-text-secondary);
+  font-size: 28.626rpx;
+  line-height: 1.45;
+}
+.settings-page-row {
+  display: flex;
+  align-items: center;
+  gap: 22.901rpx;
+  min-height: 110.687rpx;
+  padding: 15.267rpx 34.351rpx;
+  border-radius: 45.802rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-card);
+}
+.settings-page-row > text {
+  flex: 1;
+  min-width: 0;
+  font-size: 31.489rpx;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.settings-page-empty {
+  margin-top: 76.336rpx;
+  text-align: center;
+  color: var(--cimoa-text-secondary);
+}
+.settings-page-empty-title {
+  display: block;
+  color: var(--cimoa-text-title);
+  font-size: 38.168rpx;
+  font-weight: 700;
+}
+.settings-page-empty-copy { display: block; margin-top: 15.267rpx; font-size: 28.626rpx; line-height: 1.45; }

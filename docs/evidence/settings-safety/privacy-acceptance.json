@@ -1,0 +1,14 @@
+{
+  "phase": "privacy",
+  "result": "passed",
+  "server_pid": 22796,
+  "checks": [
+    "Privacy opens from Settings with source visibility choice and seven Store-backed controls",
+    "Visibility waits for custom Loading, persists canonical flags and restores after refresh",
+    "Privacy toggles write only through the canonical settings entity",
+    "Persistence failure shows a retryable error and leaves privacy data unchanged",
+    "Small viewport scrolls inside the fixed safe-area frame and Back returns to Settings",
+    "Expired session hides private controls and offers account-entry recovery"
+  ],
+  "errors": []
+}
