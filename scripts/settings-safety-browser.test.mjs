@@ -175,6 +175,31 @@ try {
     check('Former simulation control refreshes real system state; browser Settings failure is explicit and Back is correct')
   }
 
+  if (phase === 'language') {
+    await goto('/pages/settings/index')
+    const before = await state()
+    await click('settings.openSetLang.click.1')
+    await page.locator('.settings-language-page').waitFor()
+    assert.equal(await page.getByRole('radio', { name: 'English' }).getAttribute('aria-checked'), 'true')
+    assert.equal(await page.getByRole('radio', { name: '繁體中文' }).getAttribute('aria-checked'), 'false')
+    await shot('language-default')
+    await page.getByRole('radio', { name: '繁體中文' }).click()
+    assert.match(await page.getByRole('alert').innerText(), /not available/)
+    assert.equal(await page.locator('.loading').count(), 0)
+    assert.deepEqual(await state(), before)
+    assert.equal(await page.getByRole('radio', { name: 'English' }).getAttribute('aria-checked'), 'true')
+    check('Unavailable Traditional Chinese reports a real limitation without Loading, write or false selection')
+
+    await page.getByRole('radio', { name: 'English' }).click()
+    assert.match(await page.getByRole('status').innerText(), /already selected/)
+    assert.deepEqual(await state(), before)
+    await page.reload()
+    assert.equal(await page.getByRole('radio', { name: 'English' }).getAttribute('aria-checked'), 'true')
+    await click('setLang.goBack.click.1')
+    await page.locator('.settings-page').waitFor()
+    check('English remains canonical across refresh and Back returns to Settings')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {

@@ -1,0 +1,10 @@
+{
+  "phase": "language",
+  "result": "passed",
+  "server_pid": 25954,
+  "checks": [
+    "Unavailable Traditional Chinese reports a real limitation without Loading, write or false selection",
+    "English remains canonical across refresh and Back returns to Settings"
+  ],
+  "errors": []
+}
