@@ -1,0 +1,13 @@
+{
+  "phase": "report-detail",
+  "result": "passed",
+  "server_pid": 32210,
+  "checks": [
+    "Report detail renders the exact local subject, category, date, status, reference and long description without moderation claims",
+    "Pending Support entry fails explicitly with no fake request, refresh restores the same report and Back restores its list owner",
+    "Event reports and empty optional descriptions use the same canonical detail contract",
+    "Forged report identifiers expose no private detail",
+    "Expired sessions expose no report detail and provide account-entry recovery"
+  ],
+  "errors": []
+}

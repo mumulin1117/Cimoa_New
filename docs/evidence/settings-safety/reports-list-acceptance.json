@@ -1,11 +1,11 @@
 {
   "phase": "reports-list",
   "result": "passed",
-  "server_pid": 31205,
+  "server_pid": 32264,
   "checks": [
     "Settings opens the Store-backed Submitted Reports empty state and Back restores Settings",
     "Report rows are newest-first, retain raw subjects after blocking, wrap long content and never claim moderation status",
-    "Pending report-detail dependency fails explicitly without changing local records, and the list restores after refresh",
+    "Each row opens its canonical detail without changing local records, Back restores the list, and refresh preserves both rows",
     "Expired sessions expose no private report rows and offer account-entry recovery"
   ],
   "errors": []

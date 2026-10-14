@@ -417,13 +417,15 @@ try {
     check('Report rows are newest-first, retain raw subjects after blocking, wrap long content and never claim moderation status')
 
     await page.locator('.report-row').first().click()
-    assert.match(await page.getByRole('alert').innerText(), /next page in this restoration flow/)
-    assert.match(page.url(), /#\/pages\/safety\/reports$/)
+    await page.locator('.safety-report-detail-page').waitFor()
+    assert.match(await page.locator('.report-detail-card').innerText(), /Sunset Picnic/)
+    await click('reportDetail.goBack.click.1')
+    await page.locator('.safety-reports-page').waitFor()
     assert.equal((await state()).reports.length, 2)
     await page.reload()
     await page.locator('.report-row').first().waitFor()
     assert.equal(await page.locator('.report-row').count(), 2)
-    check('Pending report-detail dependency fails explicitly without changing local records, and the list restores after refresh')
+    check('Each row opens its canonical detail without changing local records, Back restores the list, and refresh preserves both rows')
 
     const expired = create_scenario('session_expired', Date.now())
     await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), expired)
@@ -431,6 +433,63 @@ try {
     await page.getByRole('alert').waitFor()
     assert.equal(await page.locator('.report-row').count(), 0)
     check('Expired sessions expose no private report rows and offer account-entry recovery')
+  }
+
+  if (phase === 'report-detail') {
+    const populated = create_scenario('default', Date.now())
+    const now = Date.now()
+    populated.reports.push(
+      { report_id: 'fixture_detail_user', owner_user_id: populated.session.current_user_id, target_type: 'user', target_id: 'user_chloe', reason: 'Harassment', description: 'Repeated unwanted messages. '.repeat(50), context_id: 'conversation_chloe', status: 'local_saved', created_at: now },
+      { report_id: 'fixture_detail_event', owner_user_id: populated.session.current_user_id, target_type: 'event', target_id: 'event_picnic', reason: 'Unsafe activity', description: '', context_id: null, status: 'local_saved', created_at: now - 3600000 },
+    )
+    populated.blocked_users.push({ block_id: 'fixture_detail_block', owner_user_id: populated.session.current_user_id, user_id: 'user_chloe', created_at: now })
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), populated)
+    await page.goto(`${origin}/?phase=${phase}#/pages/safety/reports`)
+    await page.locator('.report-row').first().click()
+    await page.locator('.safety-report-detail-page').waitFor()
+    const card = await page.locator('.report-detail-card').innerText()
+    assert.match(card, /Chloe Lin/)
+    assert.match(card, /Harassment/)
+    assert.match(card, /Saved locally/)
+    assert.match(card, /fixture_detail_user/)
+    assert.match(await page.locator('.report-detail-note').innerText(), /not sent to a moderation service/)
+    await page.setViewportSize({ width: 320, height: 568 })
+    assert.equal(await page.locator('.secondary-page-scroll .uni-scroll-view').last().evaluate(element => element.scrollHeight > element.clientHeight), true)
+    assert.equal(await page.locator('.report-detail-card').evaluate(element => element.scrollWidth <= element.clientWidth), true)
+    await shot('report-detail-long')
+    await page.setViewportSize({ width: 393, height: 852 })
+    check('Report detail renders the exact local subject, category, date, status, reference and long description without moderation claims')
+
+    const before = await state()
+    await click('reportDetail.openSetSupport.click.1')
+    assert.match(await page.getByRole('alert').innerText(), /has not been restored yet/)
+    assert.match(page.url(), /report-detail\?report_id=fixture_detail_user/)
+    assert.deepEqual(await state(), before)
+    await page.reload()
+    await page.locator('.safety-report-detail-page').waitFor()
+    assert.match(await page.locator('.report-detail-card').innerText(), /fixture_detail_user/)
+    await click('reportDetail.goBack.click.1')
+    await page.locator('.safety-reports-page').waitFor()
+    assert.equal(await page.locator('.report-row').count(), 2)
+    check('Pending Support entry fails explicitly with no fake request, refresh restores the same report and Back restores its list owner')
+
+    await page.goto(`${origin}/?phase=${phase}&empty=1#/pages/safety/report-detail?report_id=fixture_detail_event`)
+    await page.getByText('No additional description was saved.', { exact: true }).waitFor()
+    assert.match(await page.locator('.report-detail-card').innerText(), /Sunset Picnic/)
+    check('Event reports and empty optional descriptions use the same canonical detail contract')
+
+    await page.goto(`${origin}/?phase=${phase}&invalid=1#/pages/safety/report-detail?report_id=missing`)
+    await page.getByRole('alert').waitFor()
+    assert.equal(await page.locator('.report-detail-card').count(), 0)
+    check('Forged report identifiers expose no private detail')
+
+    const expired = create_scenario('session_expired', Date.now())
+    expired.reports.push({ report_id: 'fixture_expired_report', owner_user_id: 'user_cimoa', target_type: 'event', target_id: 'event_picnic', reason: 'Other', description: '', context_id: null, status: 'local_saved', created_at: now })
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), expired)
+    await page.goto(`${origin}/?phase=${phase}&expired=1#/pages/safety/report-detail?report_id=fixture_expired_report`)
+    await page.getByRole('alert').waitFor()
+    assert.equal(await page.locator('.report-detail-card').count(), 0)
+    check('Expired sessions expose no report detail and provide account-entry recovery')
   }
 
   assert.deepEqual(report.errors, [])
