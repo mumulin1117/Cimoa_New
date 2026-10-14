@@ -4,6 +4,7 @@
     { "path": "pages/auth/welcome", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/login", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/age", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/auth/community", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/verification/code", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/verification/success", "style": { "navigationStyle": "custom" } },
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },

@@ -50,6 +50,19 @@ try {
     await page.locator('.auth-back').click(); await page.locator('.welcome-page').waitFor()
     check('Age refresh preserves DOB; 320px fixed CTA fits; direct-refresh Back returns Welcome')
   }
+  if (phase !== 'age') {
+    await page.locator('.community-page').waitFor(); await settle()
+    await page.locator('[data-interaction="agree.goSignup.click.1"]').dispatchEvent('click'); assert.match(await page.getByRole('alert').innerText(), /three community/)
+    await page.getByRole('button', { name: 'Read Privacy Policy', exact: true }).click()
+    await page.getByRole('dialog').waitFor(); assert.match(await page.getByRole('dialog').innerText(), /stored locally/)
+    await page.getByRole('button', { name: 'Close', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' })
+    for (const key of ['terms', 'privacy', 'community']) await page.locator(`[data-agreement="${key}"]`).click()
+    await shot('community'); const before = await snapshot()
+    await click('agree.goSignup.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
+    await page.locator('.loading').waitFor({ state: 'detached' }); assert.equal((await snapshot()).auth_flow.agreements.community, true)
+    check('Community exact six rules; Read sheet closes without accepting; all three explicit agreements persist after Loading')
+    if (phase === 'community') { await page.reload(); await page.locator('.community-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 3); check('Community refresh restores three consent flags') }
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }

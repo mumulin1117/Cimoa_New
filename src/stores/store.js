@@ -4,6 +4,7 @@ import { create_seed, clone_data } from './seed.js'
 import { migrate_legacy } from './migration.js'
 import { normalize_email, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
 import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
+import { community_rules, registration_agreements } from '../utils/registrationCatalog.js'
 import { local_verification_context, valid_local_code } from '../utils/localVerification.js'
 import * as s from './selectors.js'
 import * as ev from './eventSelectors.js'
@@ -32,6 +33,7 @@ export const use_app_store = defineStore('app', {
   state: () => ({ data: create_seed(), hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
   getters: {
     auth_draft: state => clone_data(state.data.auth_flow),
+    registration_catalog: () => ({ rules: clone_data(community_rules), agreements: clone_data(registration_agreements) }),
     local_verification: state => state.hydration_status === 'ready' ? local_verification_context(state.data, state.clock_ms) : null,
     local_verification_code: () => LOCAL_VERIFICATION_CODE,
     requires_local_verification() { return this.session.is_authenticated && this.data.accounts.find(row => row.account_id === this.data.session.account_id)?.auth_provider === 'local' && !this.local_verification?.verified },

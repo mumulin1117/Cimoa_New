@@ -1,0 +1,11 @@
+{
+  "phase": "community",
+  "result": "passed",
+  "server_pid": 73905,
+  "checks": [
+    "Splash → Welcome → Age; invalid/underage zero writes; custom Loading before adult draft save",
+    "Community exact six rules; Read sheet closes without accepting; all three explicit agreements persist after Loading",
+    "Community refresh restores three consent flags"
+  ],
+  "errors": []
+}
