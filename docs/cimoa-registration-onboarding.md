@@ -33,6 +33,10 @@
 
 ## 当前执行
 
+Notifications本页：累计14组H5检查通过，Not Now在500msLoading后保存skipped且不开启通知，notif.png视觉核对；上一页Ice关闭动画截帧问题也已在本轮证据修正。三项校验通过无警告，PID84095已关闭。pending待权限说明及Complete。
+
+Notifications十字段：source3181–3190，route /pages/onboarding/notif，前页Ice/无历史回Ice；两安全区、唯一scroll、固定双CTA。obNotif.enableNotifs.click.1仅导航首用真实权限说明页，不写权限；skipNotifs仅有效当前账号完成前序步骤后Loading500ms保存notification_permission=skipped、master=false并进入Complete；失败留页可重试，卸载取消；Store为单一读写口、同步Settings/Complete/冷启动。明确本地构建没有推送服务，允许不授权继续，验收初态/500ms前零写/跳过/刷新/错误/小屏固定区域。当前本页in_progress。
+
 Ice：8项注册引导单元、累计14组H5检查通过。题库六题、三题限制、移除、自定义过滤/添加、编辑取消、刷新实体恢复均实测；Sheet截图核对，主页面截图在最终链路回归中更新（避免关闭动画中截帧）。三项校验通过无警告；PID83159已关闭。pending待Notifications依赖，不标verified。
 
 Ice及首用两Sheet契约：obIce.e.tap/browseQuestions→源Library六题；q.edit保留原值至确认替换（关闭不删旧题），q.drop只改内存草稿；writeOwnQuestion→Custom；sheetIceLibrary.q.pick单选增/去选或替换，不超过3；sheetIceCustom.addCustom校验非空/160字/源本地敏感词/重复，成功仅更新草稿并关闭，失败留Sheet真实错误；两个closeSheet均不写Store。仅goObNotif在3个不同有效问题时Loading500ms后原子更新本人icebreakers和user.icebreaker_ids并前进；刷新从这组实体恢复、Profile读取同一组；所有目录从Store。自定义说明不声称服务审核，未选齐或异常保持原数据；验收包含四题限制、重复、编辑取消、自定义失败/成功、关闭和刷新。

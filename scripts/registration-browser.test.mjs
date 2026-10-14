@@ -226,6 +226,17 @@ try {
     check('Ice library six source questions, three-item limit, remove, local custom validation, edit cancellation and shared question persistence')
     if (phase === 'ice') { await page.reload(); await page.locator('.onboarding-ice-page').waitFor(); assert.equal(await page.locator('.ice-question:not(.ice-empty)').count(), 3); await shot('ice'); check('Three chosen questions restore after refresh') }
   }
+  if (['notif', 'notification-access', 'complete'].includes(phase)) {
+    await page.locator('.onboarding-notif-page').waitFor(); await shot('notif')
+    assert.match(await page.locator('.notice-note').innerText(), /delivery is not connected/)
+    if (phase === 'notif') {
+      const before = await snapshot(); await click('obNotif.skipNotifs.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
+      await page.locator('.loading').waitFor({ state: 'detached' }); const d = await snapshot(), account = d.accounts.find(a => a.account_id === d.session.account_id)
+      assert.equal(account.onboarding.notification_permission, 'skipped'); assert.equal(account.onboarding.step, 'complete')
+      assert.equal(d.settings.find(s => s.owner_user_id === account.user_id).notifications.master, false)
+      check('Notification pre-prompt follows source; Not Now saves skipped after Loading without granting permission')
+    }
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }

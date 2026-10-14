@@ -1,0 +1,9 @@
+@import '../auth/auth.css';
+.notice-content { display: flex; flex-direction: column; align-items: center; gap: 30.534rpx; padding: 251.908rpx 45.802rpx 45.802rpx; }
+.notice-icon { flex: none; display: flex; align-items: center; justify-content: center; width: 175.572rpx; height: 175.572rpx; border-radius: 87.786rpx; background: var(--cimoa-gradient-primary); color: var(--cimoa-text-inverse); box-shadow: var(--cimoa-shadow-auth-action); }
+.notice-icon svg { width: 72.519rpx; height: 72.519rpx; }
+.notice-title { font-size: 53.435rpx; font-weight: 800; letter-spacing: -.035em; line-height: 1.15; text-align: center; }
+.notice-copy { font-size: 32.443rpx; color: var(--cimoa-text-secondary); text-align: center; line-height: 1.5; }
+.notice-note { font-size: 26.718rpx; color: var(--cimoa-text-auth-muted); line-height: 1.45; text-align: center; }
+.notice-footer { display: flex; flex-direction: column; gap: 11.45rpx; padding: 0 38.168rpx 57.252rpx; }
+.notice-secondary { display: flex; align-items: center; justify-content: center; min-height: 87.786rpx; font-size: 30.534rpx; font-weight: 600; color: var(--cimoa-text-auth-muted); text-align: center; }
