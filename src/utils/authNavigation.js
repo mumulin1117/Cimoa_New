@@ -1,6 +1,6 @@
 const available_auth_routes = new Set(['/pages/auth/splash', '/pages/auth/welcome', '/pages/auth/login', '/pages/auth/age', '/pages/auth/verification/code', '/pages/auth/verification/success'])
 export const auth_destination = target => {
-  if (['/pages/onboarding/uni', '/pages/onboarding/major'].includes(target)) return target
+  if (['/pages/onboarding/uni', '/pages/onboarding/major', '/pages/onboarding/photos'].includes(target)) return target
   if (['/pages/auth/community', '/pages/auth/signup', '/pages/auth/verification/email', '/pages/onboarding/basic', '/pages/home/index'].includes(target)) return target
   if (!available_auth_routes.has(target)) throw new Error('This step has not been restored yet. Your account data has not changed.')
   return target

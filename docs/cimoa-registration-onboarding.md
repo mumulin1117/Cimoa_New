@@ -33,6 +33,10 @@
 
 ## 当前执行
 
+Photos分段提交：6项注册/引导单元（含主图/排序/替换/移除、缺Blob、取消、存储失败撤销）及累计8组H5检查通过，photos-empty.png核对。相册选择UI依赖尚未接通，因此local/full均保持pending；先单独补Permissions Photos，不把空态能打开算完成。三项校验通过，PID78528已关闭。
+
+Photos为当前页；Photos完成后先补首用Permissions Photos页再继续About。照片编辑弹层由用户先前授权补齐方案：只选择自己的实际图片，最多3张、至少2张才可完成步骤；主图/前移/后移立即映射当前用户photo_ids和avatar_url，但所有持久化先Loading500ms；移除先独立ConfirmDialog确认，取消零写入。选择/替换经源相册说明页，不直接伪造相册权限。媒体解码、IndexedDB、元数据提交失败或取消时撤销本次新增Blob，不混入测试头像。刷新后从真实Blob恢复，缺文件显示错误且不能完成。此十字段补充适用于obPhotos.p.tap.click.1与photo.replace/primary/earlier/later/remove/confirm-remove，实体为current account/profile_photos/media_files，跨页同步Profile头像，返回归Photos；Loading前无写/取消/失败/至少两张/刷新为验收条件。
+
 Major：累计8组H5检查通过，15项源专业/emoji与三列网格截图核对；无选择报错、保存、刷新选中恢复。三项校验通过无警告，PID77756关闭；pending待Photos依赖。
 
 University：累计7组H5检查通过，uni.png视觉核对；年级/大学/专业字段与可选毕业年份保存和刷新/返回Basic实测。三项校验通过无警告，PID77243关闭；pending待Major依赖。新增大学和毕业年份输入仅替换原型伪造的默认HKUST/2027，不生成认证状态。

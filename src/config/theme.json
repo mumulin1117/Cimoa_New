@@ -119,6 +119,8 @@
     "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)"
   },
   "shadows": {
+    "onboarding_photo_side": "0 19.084rpx 41.985rpx rgba(16,36,74,0.12)",
+    "onboarding_photo_main": "0 34.351rpx 64.885rpx rgba(16,36,74,0.20)",
     "verification_success": "0 26.718rpx 57.252rpx rgba(168,85,247,0.28)",
     "verification_cell": "0 15.267rpx 38.168rpx rgba(16,36,74,0.08)",
     "verification_shield": "0 15.267rpx 30.534rpx rgba(16,36,74,0.14)",

@@ -1,0 +1,16 @@
+{
+  "phase": "photos",
+  "result": "passed",
+  "server_pid": 78528,
+  "checks": [
+    "Splash → Welcome → Age; invalid/underage zero writes; custom Loading before adult draft save",
+    "Community exact six rules; Read sheet closes without accepting; all three explicit agreements persist after Loading",
+    "Signup source fields, mismatch and Show/Hide; real salted local credential; no plaintext/session/student certification",
+    "Email conflict rolls back; correction persists; Change email opens actual form; fixed code → Success",
+    "Success establishes only current verified local session; Basic validates real fields and persists progress without student promotion",
+    "University is self-reported, never pre-verified; year/field/graduation save to the current user",
+    "Major renders all 15 source cards; selection validates and updates one shared profile field",
+    "Photos source fan and fixed footer render; empty collection cannot continue"
+  ],
+  "errors": []
+}

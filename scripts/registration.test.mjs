@@ -59,3 +59,35 @@ test('onboarding is scoped to a verified local account and cannot skip steps; sa
   restored.logout(); assert.equal(restored.onboarding, null)
   assert.equal((await restored.save_onboarding_step('basic', {}, data.account_id)).success, false)
 })
+async function photo_fixture() {
+  const fixture_data = fixture(), { store } = fixture_data, blobs = new Map()
+  configure_store_runtime(store, { media: { put: async (id, blob) => blobs.set(id, blob), get: async id => blobs.get(id), delete: async id => blobs.delete(id) }, inspect_media: async () => ({}) })
+  const id = (await store.register_local_account({ email: 'photos@campus.edu', password: 'localpass123', confirmation: 'localpass123', date_of_birth: '2000-01-01', agreements: { terms: true, privacy: true, community: true } })).data.account_id
+  store.apply_verification('009789', id); store.begin_onboarding(id)
+  for (const [step, patch] of [['basic', { user_name: 'Morgan', date_of_birth: '2000-01-01', gender: 'Man', pronouns: '' }], ['uni', { university: 'HKUST', year: 'Year 3', major: '', graduation_year: '' }], ['major', { major: 'Engineering' }]]) assert.equal((await store.save_onboarding_step(step, patch, id)).success, true)
+  return { ...fixture_data, id, blobs }
+}
+test('photo collection enforces 2–3 real owned media, synchronizes primary/order/remove and fails on missing blobs', async () => {
+  const { store, id, blobs } = await photo_fixture(), image = new Blob(['unit decoded fixture'], { type: 'image/png' })
+  assert.equal((await store.add_onboarding_photos([new Blob(['bad'])], null, id)).success, false)
+  assert.equal((await store.add_onboarding_photos([image, image], null, id)).success, true)
+  const ids = store.current_photos.map(row => row.photo_id), primary = store.current_photos[1].media_url
+  assert.equal(store.edit_onboarding_photo(ids[1], 'primary', id).success, true); assert.equal(store.current_user.avatar_url, primary)
+  assert.equal(store.edit_onboarding_photo(ids[1], 'later', id).success, true); assert.equal(store.current_photos[1].photo_id, ids[1])
+  assert.equal(store.edit_onboarding_photo(ids[1], 'remove', id).success, true)
+  assert.equal((await store.save_onboarding_step('photos', {}, id)).success, false)
+  assert.equal((await store.add_onboarding_photos([image, image], null, id)).success, true)
+  assert.equal((await store.add_onboarding_photos([image], null, id)).success, false)
+  assert.equal((await store.add_onboarding_photos([image], ids[0], id)).success, true)
+  assert.equal((await store.save_onboarding_step('photos', {}, id)).success, true)
+  blobs.delete(store.current_photos[0].media_url.slice(12))
+  assert.equal((await store.save_onboarding_step('photos', {}, id)).success, false)
+})
+test('failed photo metadata save or cancelled decode leaves neither half-photo nor new Blob', async () => {
+  const { store, id, blobs, persistence } = await photo_fixture(), before = clone_data(store.data), image = new Blob(['unit image'], { type: 'image/png' })
+  assert.equal((await store.add_onboarding_photos([image], null, id, { is_current: () => false })).success, false)
+  assert.equal(blobs.size, 0); assert.deepEqual(clone_data(store.data), before)
+  configure_store_runtime(store, { persistence: { ...persistence, write() { throw Error('Storage full') } } })
+  assert.equal((await store.add_onboarding_photos([image], null, id)).success, false)
+  assert.equal(blobs.size, 0); assert.deepEqual(clone_data(store.data), before)
+})

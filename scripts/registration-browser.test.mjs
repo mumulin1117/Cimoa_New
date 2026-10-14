@@ -123,6 +123,14 @@ try {
     check('Major renders all 15 source cards; selection validates and updates one shared profile field')
     if (phase === 'major') { await page.reload(); await page.locator('.onboarding-major-page').waitFor(); assert.equal(await page.getByRole('button', { name: 'Computer Science', exact: true }).getAttribute('aria-pressed'), 'true'); check('Major refresh restores selected gradient card') }
   }
+  if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major'].includes(phase)) {
+    await page.locator('.onboarding-photos-page').waitFor(); await settle()
+    assert.equal(await page.locator('.photo-slot').count(), 3)
+    await page.locator('[data-interaction="obPhotos.goObAbout.click.1"]').dispatchEvent('click')
+    await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /at least two photos/)
+    await shot('photos-empty')
+    check('Photos source fan and fixed footer render; empty collection cannot continue')
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }

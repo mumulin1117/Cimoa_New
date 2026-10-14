@@ -12,6 +12,7 @@
     { "path": "pages/onboarding/basic", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/uni", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/major", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/onboarding/photos", "style": { "navigationStyle": "custom" } },
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/discover/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/events/index", "style": { "navigationStyle": "custom" } },

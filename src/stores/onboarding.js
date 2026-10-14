@@ -21,6 +21,51 @@ const require_context = (data, now, step) => {
 }
 const fields = { basic: ['user_name', 'gender', 'pronouns'], uni: ['university', 'year', 'major', 'graduation_year'], major: ['major'], about: ['bio'], interests: ['interest_ids'], goal: ['goal_ids'] }
 export const onboarding_actions = {
+  async add_onboarding_photos(blobs, replace_id, expected_account_id, { is_current = () => true } = {}) {
+    const rt = get_runtime(this), created = []
+    try {
+      const { account, user } = require_context(this.data, rt.clock(), 'photos')
+      ensure(account.account_id === expected_account_id, 'The account changed. Please retry.')
+      const previous_ids = [...user.photo_ids]
+      ensure(Array.isArray(blobs) && blobs.length > 0, 'Choose at least one photo.')
+      ensure(replace_id ? previous_ids.includes(replace_id) && blobs.length === 1 : previous_ids.length + blobs.length <= 3, replace_id ? 'Choose one replacement photo.' : 'You can keep up to three profile photos.')
+      for (const blob of blobs) {
+        ensure(blob instanceof Blob && blob.type.startsWith('image/') && blob.size > 0 && blob.size <= 20 * 1024 * 1024, 'Choose a valid image up to 20 MB.')
+        await rt.inspect_media(blob, 'image')
+        ensure(is_current(), 'Photo selection was cancelled.')
+        const media_id = make_id('media')
+        await rt.media.put(media_id, blob)
+        created.push({ media_id, owner_user_id: user.user_id, kind: 'image', mime: blob.type, byte_size: blob.size, duration_ms: 0, media_url: `indexeddb://${media_id}`, created_at: rt.clock() })
+      }
+      ensure(is_current(), 'Photo selection was cancelled.')
+      const result = transact(this, null, (data, now) => {
+        const current = require_context(data, now, 'photos')
+        ensure(current.account.account_id === expected_account_id && JSON.stringify(current.user.photo_ids) === JSON.stringify(previous_ids), 'Photos or account changed. Please select again.')
+        data.media_files.push(...created)
+        if (replace_id) data.profile_photos.find(row => row.photo_id === replace_id && row.user_id === user.user_id).media_url = created[0].media_url
+        else for (const media of created) { const photo_id = make_id('photo'); data.profile_photos.push({ photo_id, user_id: user.user_id, media_url: media.media_url, position: current.user.photo_ids.length }); current.user.photo_ids.push(photo_id) }
+        current.user.avatar_url = data.profile_photos.find(row => row.photo_id === current.user.photo_ids[0]).media_url
+        return current.user.photo_ids
+      }, { expected_owner: user.user_id })
+      if (result.success) return result
+      throw new Error(result.message)
+    } catch (error) {
+      await Promise.all(created.map(row => rt.media.delete(row.media_id).catch(() => {})))
+      return failure('photo_failed', error.message)
+    }
+  },
+  edit_onboarding_photo(photo_id, action, expected_account_id) {
+    return transact(this, null, (data, now) => {
+      const { account, user } = require_context(data, now, 'photos')
+      ensure(account.account_id === expected_account_id, 'The account changed. Please retry.')
+      const ids = [...user.photo_ids], index = ids.indexOf(photo_id)
+      ensure(index >= 0 && ['primary', 'earlier', 'later', 'remove'].includes(action), 'This photo is unavailable.')
+      if (action === 'remove') { ids.splice(index, 1); data.profile_photos = data.profile_photos.filter(row => row.photo_id !== photo_id) }
+      else { const to = action === 'primary' ? 0 : action === 'earlier' ? index - 1 : index + 1; ensure(to >= 0 && to < ids.length, 'This photo cannot move further.'); ids.splice(index, 1); ids.splice(to, 0, photo_id) }
+      ids.forEach((id, position) => { data.profile_photos.find(row => row.photo_id === id).position = position })
+      user.photo_ids = ids; user.avatar_url = data.profile_photos.find(row => row.photo_id === ids[0])?.media_url || ''
+    })
+  },
   begin_onboarding(expected_account_id) {
     const rt = get_runtime(this), existing = onboarding_context(this.data, rt.clock())
     if (existing?.account.account_id === expected_account_id && existing.account.onboarding) return { success: true, data: existing.completed ? 'home' : existing.step, repeated: true }
