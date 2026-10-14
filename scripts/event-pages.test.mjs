@@ -11,6 +11,12 @@ const make = transform => {
   configure_store_runtime(store,{clock:()=>now,persistence,media:{put:async(id,blob)=>blobs.set(id,blob),get:async id=>blobs.get(id),delete:async id=>blobs.delete(id)},inspect_media:async()=>({duration_ms:1200})})
   assert.equal(store.hydrate().success,true); return {store,blobs,persistence}
 }
+test('participants filter real memberships, privacy, blocking and search; joining does not connect',()=>{
+  const {store}=make();const before=clone_data(store.data.relationships);store.join_event('event_picnic')
+  assert.equal(store.event_people('event_picnic').length,4);assert.equal(store.event_people('event_picnic','ethan')[0].relationship_label,'You')
+  store.block_user('user_chloe');assert.equal(store.event_people('event_picnic','chloe').length,0);assert.equal(store.event_detail('event_picnic').available_count,16);assert.deepEqual(store.data.relationships,before)
+  store.leave_event('event_picnic');assert.equal(store.event_people('event_picnic','ethan').length,0)
+})
 test('detail derives host, zoned schedule, unique notes and count without reseeding old data',()=>{
   const {store}=make(), before=clone_data(store.data), detail=store.event_detail('event_picnic')
   assert.equal(detail.organizer.name,'HKUST Student Union');assert.equal(detail.schedule[1].time_label,'6:00 PM');assert.equal(detail.notes.filter(n=>n==='Free to join').length,1);assert.match(detail.share_text,/Asia\/Hong_Kong/);assert.deepEqual(store.data,before)

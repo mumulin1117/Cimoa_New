@@ -43,6 +43,15 @@ try {
   await load('/pages/events/detail?event_id=missing'); await page.getByRole('alert').waitFor(); assert.equal(await page.locator('.event-detail-cover').count(),0)
   check('Small/long/empty-source details scroll; full/ended/unverified/invalid-ID errors stay honest')
   // Further phases append their own assertions below, retaining the completed page regressions.
+  if(phase !== 'detail') {
+    await load(detail);await click('evDetail.openParticipantsList.click.1');await page.locator('.event-participants-page').waitFor();assert.equal(await page.locator('.event-person').count(),3);await shot('participants')
+    const field=page.locator('uni-input[aria-label="Search participants"] input');await field.fill('Chloe');assert.equal(await page.locator('.event-person').count(),1);await page.locator('.event-person').click();assert.match(await page.getByRole('alert').innerText(),/not been restored/)
+    await field.fill('no matching student');await page.getByText('No participants match your search.').waitFor();assert.equal(await page.locator('.event-person').count(),0);await click('evParticipants.goBack.click.1');await page.locator('.event-detail-page:visible').waitFor()
+    await load('/pages/events/participants?event_id=event_picnic',d=>{d.blocked_users.push({block_id:'event_test_block',owner_user_id:'user_cimoa',user_id:'user_chloe',created_at:now});d.users.find(u=>u.user_id==='user_alex').user_name='A very long campus participant name '.repeat(4)})
+    await page.locator('.event-person').first().waitFor();assert.equal(await page.locator('.event-person').count(),2);assert.equal(await page.locator('.event-page-body').evaluate(el=>el.scrollWidth<=el.clientWidth),true);await page.reload();await page.locator('.event-person').first().waitFor();assert.equal(await page.locator('.event-person').count(),2)
+    await load('/pages/events/participants?event_id=event_picnic',d=>{d.memberships=d.memberships.filter(m=>m.event_id!=='event_picnic')});await page.getByText('No visible participants yet.').waitFor()
+    check('Participants search, empty/long, deferred person, correct return and persistent block filter; no automatic friendship')
+  }
   assert.deepEqual(report.errors,[]); report.result='passed'
 } catch(error){report.failure=String(error.stack||error);report.visible_failure=await page?.evaluate(()=>({route:location.hash,text:document.body.innerText.slice(-1800)})).catch(()=>null);console.error(report.failure,report.visible_failure);process.exitCode=1}
 finally{await browser?.close();await new Promise(resolve=>server.close(resolve));fs.writeFileSync(path.join(output,`${phase}-acceptance.json`),JSON.stringify(report,null,2)+'\n');console.log('Temporary event server and isolated browser closed.')}

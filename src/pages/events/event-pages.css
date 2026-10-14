@@ -46,3 +46,13 @@
 .event-detail-schedule-copy { display: block; font-size: 28.626rpx; color: var(--cimoa-text-secondary); margin-top: 7.634rpx; }
 .event-detail-notes { display: flex; gap: 15.267rpx; flex-wrap: wrap; }
 .event-detail-note { min-height: 64.885rpx; border-radius: 32.443rpx; background: var(--cimoa-surface-card); padding: 11.45rpx 22.901rpx; box-shadow: var(--cimoa-shadow-profile-tag); font-size: 26.718rpx; }
+.event-people-search { display: flex; align-items: center; gap: 22.901rpx; height: 99.237rpx; padding: 0 30.534rpx; border-radius: 49.618rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-auth-input); color: var(--cimoa-text-auth-placeholder); }
+.event-people-search input { flex: 1; min-width: 0; color: var(--cimoa-text-title); font-size: 32.443rpx; }
+.event-people-caption { display: block; font-size: 28.626rpx; color: var(--cimoa-text-secondary); line-height: 1.45; margin: 30.534rpx 0 26.718rpx; }
+.event-person { display: flex; align-items: center; gap: 22.901rpx; padding: 26.718rpx; margin-bottom: 22.901rpx; cursor: pointer; flex-wrap: wrap; }
+.event-person-avatar { width: 99.237rpx; height: 99.237rpx; border-radius: 50%; overflow: hidden; flex: none; }
+.event-person-copy { flex: 1; min-width: 171.756rpx; }
+.event-person-name { display: block; font-size: 34.351rpx; font-weight: 700; }
+.event-person-meta { display: block; font-size: 27.672rpx; color: var(--cimoa-text-secondary); margin-top: 5.725rpx; }
+.event-person-badge { padding: 13.359rpx 20.992rpx; border-radius: 30.534rpx; font-size: 24.809rpx; background: var(--cimoa-surface-profile-icon); color: var(--cimoa-text-secondary); }
+.event-person-badge--connected { background: var(--cimoa-status-connected-bg); color: var(--cimoa-status-connected-ink); }

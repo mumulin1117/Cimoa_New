@@ -94,6 +94,7 @@ export const use_app_store = defineStore('app', {
     event_detail: state => id => ready(state) ? ev.event_detail(state.data, id, state.clock_ms) : null,
     event_join_blocker: (state) => id => state.hydration_status === 'ready' ? ev.event_join_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
     event_participants: (state) => (id) => ready(state) ? s.members(state.data, id).filter((row) => s.visible(state.data, row.user_id)).map((row) => profile(state.data, row.user_id)) : [],
+    event_people() { return (id, query = '') => this.event_participants(id).filter(user => [user.user_name, user.university, user.major].join(' ').toLowerCase().includes(query.trim().toLowerCase())).map(user => ({ ...user, meta: [user.university, user.major].filter(Boolean).join(' · '), relationship_label: user.user_id === this.session.current_user_id ? 'You' : this.can_chat(user.user_id) ? 'Connected' : 'Not connected' })) },
     my_events() { return this.events.filter((row) => row.joined) },
     event_count() { return this.my_events.length },
     legacy_recovery: (state) => ready(state) && state.data.legacy_archive?.owner_user_id === s.owner_id(state.data) ? clone_data(state.data.legacy_archive.snapshot) : null,
