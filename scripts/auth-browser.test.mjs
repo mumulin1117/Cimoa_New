@@ -52,10 +52,10 @@ try {
       await page.getByRole('button', { name, exact: true }).click()
       if (name === 'Log In') { await page.locator('.login-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.welcome-page').waitFor() }
       else if (name === 'Create Account') { await page.locator('.age-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.welcome-page').waitFor() }
-      else { assert.match(await page.getByRole('alert').innerText(), /not been restored/); assert.match(page.url(), /pages\/auth\/welcome$/) }
+      else { await page.locator(name === 'Terms' ? '.legal-terms-page' : '.legal-privacy-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.welcome-page').waitFor() }
       assert.equal(await saved(), null)
     }
-    check('Login and Create Account use real routes and return; standalone legal dependencies fail explicitly without state mutation')
+    check('Login, Create Account, Terms and Privacy use real routes and return without session writes')
     await page.route('**/*welcome-campus*.png', route => route.fulfill({ status: 404 }))
     await page.reload(); await page.getByRole('button', { name: 'Retry photo' }).waitFor()
     await page.getByRole('button', { name: 'Retry photo' }).click()

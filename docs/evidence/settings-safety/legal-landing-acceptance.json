@@ -1,10 +1,10 @@
 {
   "phase": "legal-landing",
   "result": "passed",
-  "server_pid": 35587,
+  "server_pid": 36197,
   "checks": [
     "Settings opens the source four-row Legal page with an explicit local-build disclosure",
-    "Terms opens as a real local page while pending Privacy fails explicitly; neither opens an external site or changes account data",
+    "Terms and Privacy open as real local pages, return to Legal, never open external sites and change no account data",
     "Community Guidelines uses the shared local agreement Sheet; pending coin information starts no purchase",
     "Legal rows scroll inside the safe-area frame and Back restores Settings",
     "Expired sessions expose no Legal navigation and offer account-entry recovery"

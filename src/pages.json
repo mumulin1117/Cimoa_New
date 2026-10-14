@@ -10,6 +10,7 @@
     { "path": "pages/auth/verification/code", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auth/verification/success", "style": { "navigationStyle": "custom" } },
     { "path": "pages/legal/terms", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/legal/privacy", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/basic", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/uni", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/major", "style": { "navigationStyle": "custom" } },

@@ -1,12 +1,12 @@
 {
   "phase": "welcome",
   "result": "passed",
-  "server_pid": 87470,
+  "server_pid": 36277,
   "checks": [
     "fresh launch renders source brand/progress without authenticating or writing storage",
     "source automatic launch reaches actual Welcome once without a session write",
     "Welcome uses extracted campus image, source copy and 360/60/56 geometry",
-    "Login and Create Account use real routes and return; standalone legal dependencies fail explicitly without state mutation",
+    "Login, Create Account, Terms and Privacy use real routes and return without session writes",
     "image 404 is visible and retry actually reloads the original local image",
     "small viewport scrolls content while footer stays fixed and state remains untouched",
     "saved session restores Home at stack one; double tap/timer cannot duplicate or prepare skeleton",

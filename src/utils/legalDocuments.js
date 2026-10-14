@@ -13,3 +13,20 @@ export const terms_document = Object.freeze({
     ['8. Publication status', 'A production operator, jurisdiction, dispute process, legal contact and release terms have not been supplied. This local draft is for development and testing and must not be treated as approval for public release.'],
   ],
 })
+
+export const privacy_document = Object.freeze({
+  title: 'Privacy Policy',
+  updated: 'Local draft · 14 October 2026',
+  intro: 'This notice describes information handled by this local Cimoa build. It is not a published production privacy policy and does not identify a configured controller, processor or privacy contact.',
+  sections: [
+    ['1. Information stored locally', 'The app may store your email, salted password credential, date of birth, profile fields, preferences, local verification state, messages, event activity, safety records, coin ledger and support drafts on this device.'],
+    ['2. Photos, audio and other media', 'Media you choose is stored in the browser or app’s local media database. This build does not upload that media to a Cimoa server. A missing or denied device capability is reported as unavailable.'],
+    ['3. Profile visibility', 'Your visibility settings control which local profile fields appear in Discover, Auto Match and event surfaces. Your email and date of birth are not shown on public profile cards. Existing chats may remain visible when discovery is hidden.'],
+    ['4. Messages and connections', 'Private chats are available only for a mutual local connection. Blocking removes the current private relationship, request, match, conversation and its messages. Unblocking does not recreate deleted records.'],
+    ['5. Reports and support drafts', 'Reports and support notes are saved only on this device. They are not sent to a moderation or support service, and no review status, decision or ticket is created.'],
+    ['6. Authentication and permissions', 'Email registration and password reset are local. The fixed code does not prove control of an email address or student status. Apple sign-in is not configured. System permission status comes from the browser or iOS host and cannot be changed by Cimoa itself.'],
+    ['7. Purchases and external services', 'StoreKit products, payment receipt verification, remote matching, push delivery and production service providers are not configured. The app does not claim data sharing with providers that have not been supplied.'],
+    ['8. Retention, clearing and deletion', 'Local records remain until changed, deleted through the app or removed with site/app data. Account deletion removes that account’s private local entities and media where the local media database permits. Clearing app data can remove all local accounts.'],
+    ['9. Production gaps', 'A production operator, legal basis, jurisdiction, retention schedule, data-rights process and privacy contact have not been provided. Those items must be completed before public release.'],
+  ],
+})
