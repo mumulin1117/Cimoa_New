@@ -152,6 +152,16 @@ export const use_app_store = defineStore('app', {
     },
     create_account({ email } = {}) { return this.data.accounts.some(row => row.email === normalize_email(email)) ? failure('email_exists', 'This email is already registered.') : failure('registration_form_required', 'Complete the local registration form first.') },
     reset_password() { return unavailable('Password reset') },
+    change_registration_email(email, expected_account_id) {
+      return transact(this, null, (data, now) => {
+        const context = local_verification_context(data, now), normalized = normalize_email(email)
+        s.ensure(context?.account_id === expected_account_id && !context.verified, 'This registration can no longer change its email here.')
+        s.ensure(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized), 'Enter a valid email address.')
+        s.ensure(!data.accounts.some(row => row.email === normalized && row.account_id !== context.account_id), 'This email already has a local account. Please log in instead.')
+        data.accounts.find(row => row.account_id === context.account_id).email = normalized
+        if (data.auth_flow.pending_registration_account_id === context.account_id) data.auth_flow.email = normalized
+      }, { public: true })
+    },
     apply_verification(code, expected_account_id) {
       if (!valid_local_code(code)) return failure('invalid_code', 'That code is incorrect. Enter the six-digit local verification code.')
       if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Saved data is unavailable. Please retry loading it.')

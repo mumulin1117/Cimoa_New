@@ -33,6 +33,8 @@
 
 ## 当前执行
 
+Verification Email：12项认证/注册单元、累计4组H5检查通过，原型结构截图检查。重复邮箱不写入；真实更正后Code显示新邮箱，Change email实际返回表单，009789进入Success。PID74945关闭；pending待引导及整条路径回归。
+
 Signup：本地表单创建实测通过；11项认证/注册单元及累计3组H5检查通过，截图核对。取消密码派生后不创建账号；账号创建与空用户原子写入，不自动会话或认证。暂回pending待Email依赖，PID74434关闭。
 
 Community Read补齐：每个Read打开同一常驻AgreementSheet中的对应条款，关闭不勾选、不持久化；数据从registration_catalog getter读取。协议展示明确为本地原型说明，未配置的法律主体/联系方式/真实服务承诺登记发布阻塞，不冒称可上线政策。Community本页3组H5检查通过、截图核对；暂回pending待Signup。临时PID73905关闭。

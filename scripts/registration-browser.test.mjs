@@ -76,6 +76,19 @@ try {
     assert.equal(after.users.find(row => row.user_id === account.user_id).verification_status, 'pending'); assert.equal(after.session.current_user_id, null)
     check('Signup source fields, mismatch and Show/Hide; real salted local credential; no plaintext/session/student certification')
   }
+  if (!['age', 'community', 'signup'].includes(phase)) {
+    await page.locator('.verification-email-page').waitFor(); await settle()
+    await fill('University email', 'cimoa@gmail.com'); await click('verEmail.goVerCode.click.1')
+    await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /already has/)
+    await fill('University email', 'corrected.member@campus.edu'); await click('verEmail.goVerCode.click.1')
+    await page.locator('.verification-page').waitFor(); await settle()
+    assert.ok((await snapshot()).accounts.some(row => row.email === 'corrected.member@campus.edu'))
+    await page.getByRole('button', { name: 'Change email' }).click(); await page.locator('.verification-email-page').waitFor(); await shot('verification-email')
+    await click('verEmail.goVerCode.click.1'); await page.locator('.verification-page').waitFor()
+    await page.locator('.verification-input input').fill('009789'); await page.waitForTimeout(80)
+    await click('verCode.goVerSuccess.click.1'); await page.locator('.verification-success-page').waitFor()
+    check('Email conflict rolls back; correction persists; Change email opens actual form; fixed code → Success')
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }
