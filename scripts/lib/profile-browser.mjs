@@ -40,7 +40,7 @@ export async function test_profile({ page, origin, evidence, check }) {
   for (const [id, target] of [['profile.openAppSettings.click.1','/pages/settings/index'], ['profile.openEditBasic.click.1','/pages/profile/edit'], ['profile.openStore.click.1','/pages/coins/index'], ['profile.openProfilePreview.click.1','/pages/profile/preview']]) {
     assert.equal(await entry(id).getAttribute('data-target'), target); await entry(id).click()
     if (PROFILE_DEFERRED_ROUTES.includes(target)) assert.match(await profile.locator('.profile-feedback').textContent(), /not been restored/)
-    else { await page.locator('.editor-title:visible').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.profile-title:visible').waitFor() }
+    else { await page.locator(target === '/pages/profile/preview' ? '.preview-name:visible' : '.editor-title:visible').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.profile-title:visible').waitFor() }
     assert.equal(await profile.getAttribute('data-page-depth'), '1'); assert.equal(await storage(), before)
     assert.equal(await page.locator('uni-toast, uni-modal, .app-loading:visible').count(), 0)
   }

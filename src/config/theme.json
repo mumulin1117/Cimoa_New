@@ -5,6 +5,7 @@
       "gradient": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
     },
     "surface": {
+      "profile_picker": "#f7f9fc",
       "settings_pink": "#fbe3ef",
       "settings_purple": "#efe9fb",
       "settings_blue": "#e5f0ff",

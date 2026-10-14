@@ -45,7 +45,19 @@ const write_patch = (data, section, patch) => {
     })
   }
 }
+const validate_edit = (store, patch, photos, expected_account_id) => {
+  ensure(store.session.is_authenticated && store.data.session.account_id === expected_account_id, 'The account changed. Please reopen the editor.')
+  validate_profile_patch('all', patch)
+  if (photos === null) return
+  const minimum = store.data.accounts.find(row => row.account_id === expected_account_id)?.auth_provider === 'local' ? 2 : 1
+  ensure(Array.isArray(photos) && photos.length >= minimum && photos.length <= 3, `Keep ${minimum}–3 profile photos.`)
+  const ids = photos.filter(row => row?.photo_id).map(row => row.photo_id), owned = new Set(store.current_photos.map(row => row.photo_id))
+  ensure(new Set(ids).size === ids.length, 'Each photo can appear only once.')
+  ensure(ids.every(id => owned.has(id)), 'This photo no longer belongs to your profile.')
+  ensure(photos.every(row => row && (row.blob instanceof Blob || owned.has(row.photo_id))), 'Choose a valid profile photo.')
+}
 export const profile_edit_actions = {
+  profile_edit_validation_error(patch, photos, expected_account_id) { try { validate_edit(this, patch, photos, expected_account_id); return '' } catch (error) { return error.message } },
   profile_validation_error(section, patch) { try { validate_profile_patch(section, patch); return '' } catch (error) { return error.message } },
   save_profile_section(section, patch, expected_account_id) {
     return transact(this, null, (data) => {
@@ -56,16 +68,9 @@ export const profile_edit_actions = {
   async save_profile_edit(patch, photos, expected_account_id, { is_current = () => true } = {}) {
     const rt = get_runtime(this), created = [], owner = owner_id(this.data)
     try {
-      ensure(this.session.is_authenticated && this.data.session.account_id === expected_account_id, 'The account changed. Please reopen the editor.')
-      validate_profile_patch('all', patch)
+      validate_edit(this, patch, photos, expected_account_id)
       const original = clone_data(this.current_photos)
       if (photos !== null) {
-        // Existing fixture accounts may have one legacy photo; edits require at least one.
-        // Completed local onboarding keeps its two-photo minimum.
-        const minimum = this.data.accounts.find(row => row.account_id === expected_account_id)?.auth_provider === 'local' ? 2 : 1
-        ensure(Array.isArray(photos) && photos.length >= minimum && photos.length <= 3, `Keep ${minimum}–3 profile photos.`)
-        const ids = photos.filter(row => row.photo_id).map(row => row.photo_id)
-        ensure(new Set(ids).size === ids.length, 'Each photo can appear only once.')
         for (const row of photos) {
           if (row.blob) {
             const blob = row.blob

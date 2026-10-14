@@ -65,3 +65,11 @@ test('scoped logout is atomic, clears entry drafts only and relogin restores edi
   assert.equal((await store.login('cimoa@gmail.com','12341234')).success, true); assert.equal(store.current_user.user_name,'Returning Morgan'); assert.equal(store.profile_editor.questions[2],'Your campus tradition?')
   assert.equal(store.profile_editor.account_id,id); assert.equal(store.coin_balance,260)
 })
+test('preflight rejects invalid photo drafts without writes, including foreign replacement IDs', async () => {
+  const f = fixture(), { store, id } = f, blob = new Blob(['image'], { type:'image/png' }), before = clone_data(store.data)
+  assert.match(store.profile_edit_validation_error({}, [], id),/Keep/)
+  const foreign = store.data.profile_photos.find(row=>row.user_id!==store.current_user.user_id)
+  assert.match(store.profile_edit_validation_error({}, [{ photo_id:foreign.photo_id,blob }], id),/no longer belongs/)
+  assert.equal((await store.save_profile_edit({}, [{ photo_id:foreign.photo_id,blob }], id)).success,false)
+  assert.equal(f.writes(),0); assert.equal(f.blobs.size,0); assert.deepEqual(clone_data(store.data),before)
+})

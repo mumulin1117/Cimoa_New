@@ -44,7 +44,11 @@ const pick = async (index = -1) => {
   } catch (cause) { if (token === generation) error.value = cause.message } finally { picker_busy.value = false }
 }
 const photo_action = action => { const index = selected.value; if (index < 0) return; const rows = [...photos.value]; if (action === 'remove') rows.splice(index, 1); else { const to = action === 'primary' ? 0 : action === 'earlier' ? index - 1 : index + 1; if (to < 0 || to >= rows.length) return; const [row] = rows.splice(index, 1); rows.splice(to, 0, row) } photos.value = rows; photo_dirty.value = true; selected.value = -1 }
-const save = () => submit(scope => store.save_profile_edit({ ...changes.value }, photo_dirty.value ? photos.value : null, account_id, scope))
+const save = () => {
+  const patch = { ...changes.value }, rows = photo_dirty.value ? [...photos.value] : null
+  error.value = store.profile_edit_validation_error(patch, rows, account_id)
+  if (!error.value) submit(scope => store.save_profile_edit(patch, rows, account_id, scope))
+}
 const unavailable_song = () => { error.value = 'No playable audio is configured for this song. Nothing was played or added.' }
 const swipe = event => { if (start_x != null && questions.value.length) { const dx = event.clientX - start_x; if (Math.abs(dx) > 30) question.value = (question.value + (dx < 0 ? 1 : questions.value.length - 1)) % questions.value.length } start_x = null }
 </script>
@@ -67,7 +71,7 @@ const swipe = event => { if (start_x != null && questions.value.length) { const 
       <ProfileFieldSheet :field="field" :title="title" :value="draft[field]" @close="field = null" @select="changes[field] = $event; field = null" />
       <ProfileBioConfirmDialog :open="sheet === 'bio'" :bio="draft.bio" :font="draft.bio_font" @close="sheet = ''" @done="Object.assign(changes, $event); sheet = ''" />
       <PhotoActionsConfirmDialog draft :open="selected >= 0" :position="selected" :count="photos.length" @close="selected = -1" @replace="pick(selected)" @action="photo_action" />
-      <OnboardingSheet :open="sheet === 'song'" label="Add profile song" @close="sheet = ''"><text class="event-dialog-title">Add profile song</text><input v-model="song_query" class="editor-input" aria-label="Search songs" placeholder="Search songs, artists…" data-interaction="editAll.onEaSongQ.change.1" /><view class="editor-chips"><view class="editor-chip" :class="{ selected: song_tab === 'trend' }" role="button" @click="song_tab = 'trend'">🔥 Trending</view><view class="editor-chip" :class="{ selected: song_tab === 'forYou' }" role="button" @click="song_tab = 'forYou'">✨ For you</view></view><text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text><view v-for="item in songs" :key="item.song_id" class="editor-card editor-row" role="button" data-interaction="editAll.g.pick.click.1" @click="unavailable_song"><image class="song-cover" :src="item.cover_url" /><view><text>{{ item.title }}</text><text class="editor-copy">{{ item.artist }}</text></view><view class="song-play" role="button" :aria-label="`Play ${item.title}`" data-interaction="editAll.g.play.click.1" @click.stop="unavailable_song"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m7 4 13 8-13 8z" /></svg></view></view><text v-if="!songs.length" class="editor-copy">No songs match your search.</text><view class="editor-outline" role="button" @click="sheet = ''">Close</view></OnboardingSheet>
+      <OnboardingSheet :open="sheet === 'song'" label="Add profile song" @close="sheet = ''"><text class="event-dialog-title">Add profile song</text><input v-model="song_query" class="editor-input" aria-label="Search songs" placeholder="Search songs, artists…" data-interaction="editAll.onEaSongQ.change.1" /><view class="editor-chips"><view class="editor-chip" :class="{ selected: song_tab === 'trend' }" role="button" data-interaction="editAll.eaTabTrend.click.1" @click="song_tab = 'trend'">🔥 Trending</view><view class="editor-chip" :class="{ selected: song_tab === 'forYou' }" role="button" data-interaction="editAll.eaTabForYou.click.1" @click="song_tab = 'forYou'">✨ For you</view></view><text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text><view v-for="item in songs" :key="item.song_id" class="editor-card editor-row" role="button" data-interaction="editAll.g.pick.click.1" @click="unavailable_song"><image class="song-cover" :src="item.cover_url" /><view><text>{{ item.title }}</text><text class="editor-copy">{{ item.artist }}</text></view><view class="song-play" role="button" :aria-label="`Play ${item.title}`" data-interaction="editAll.g.play.click.1" @click.stop="unavailable_song"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m7 4 13 8-13 8z" /></svg></view></view><text v-if="!songs.length" class="editor-copy">No songs match your search.</text><view class="editor-outline" role="button" @click="sheet = ''">Close</view></OnboardingSheet>
     </template>
   </ProfileEditorFrame>
 </template>
@@ -76,26 +80,99 @@ const swipe = event => { if (start_x != null && questions.value.length) { const 
 .score-title { font-size: 38.168rpx; font-weight: 800; }
 .score-ring { position: relative; width: 145.038rpx; height: 145.038rpx; flex: none; }
 .score-ring svg { width: 100%; height: 100%; }
-.score-ring text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 36.26rpx; font-weight: 800; }
+.score-ring text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36.26rpx;
+  font-weight: 800;
+}
 .score-start { stop-color: var(--cimoa-brand-cyan); }
 .score-middle { stop-color: var(--cimoa-brand-purple); }
 .score-end { stop-color: var(--cimoa-brand-pink); }
 .score-track { stroke: var(--cimoa-surface-event-divider); }
 .edit-photos { display: flex; gap: 22.901rpx; margin-top: 26.718rpx; }
-.edit-photo { flex: 1; min-width: 0; max-width: 33.333%; aspect-ratio: 3/4; position: relative; border-radius: 45.802rpx; overflow: hidden; cursor: pointer; }
-.add-photo { min-height: 190.84rpx; border: 2px dashed var(--cimoa-surface-onboarding-dashed); background: var(--cimoa-surface-onboarding-empty); display: flex; align-items: center; justify-content: center; color: var(--cimoa-text-auth-placeholder); }
+.edit-photo {
+  flex: 1;
+  min-width: 0;
+  max-width: 33.333%;
+  aspect-ratio: 3/4;
+  position: relative;
+  border-radius: 45.802rpx;
+  overflow: hidden;
+  cursor: pointer;
+}
+.add-photo {
+  min-height: 190.84rpx;
+  border: 2px dashed var(--cimoa-surface-onboarding-dashed);
+  background: var(--cimoa-surface-onboarding-empty);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cimoa-text-auth-placeholder);
+}
 .add-photo svg { width: 53.435rpx; height: 53.435rpx; }
-.primary-photo { position: absolute; top: 15.267rpx; left: 11.45rpx; border-radius: 19.084rpx; padding: 5.725rpx 11.45rpx; background: var(--cimoa-surface-photo-tag); color: var(--cimoa-text-inverse); font-size: 20.992rpx; }
-.camera-icon { position: absolute; right: 15.267rpx; bottom: 15.267rpx; width: 64.885rpx; height: 64.885rpx; border-radius: 32.443rpx; padding: 16.221rpx; color: var(--cimoa-text-inverse); background: var(--cimoa-surface-photo-tag); }
+.primary-photo {
+  position: absolute;
+  top: 15.267rpx;
+  left: 11.45rpx;
+  border-radius: 19.084rpx;
+  padding: 5.725rpx 11.45rpx;
+  background: var(--cimoa-surface-photo-tag);
+  color: var(--cimoa-text-inverse);
+  font-size: 20.992rpx;
+}
+.camera-icon {
+  position: absolute;
+  right: 15.267rpx;
+  bottom: 15.267rpx;
+  width: 64.885rpx;
+  height: 64.885rpx;
+  border-radius: 32.443rpx;
+  padding: 16.221rpx;
+  color: var(--cimoa-text-inverse);
+  background: var(--cimoa-surface-photo-tag);
+}
 .camera-icon svg, .song-play svg { width: 100%; height: 100%; }
 .song-cover { width: 106.87rpx; height: 106.87rpx; border-radius: 26.718rpx; flex: none; }
-.song-play { width: 83.969rpx; height: 83.969rpx; padding: 24.809rpx; border-radius: 41.985rpx; color: var(--cimoa-brand-purple); background: var(--cimoa-surface-tinted); margin-left: auto; flex: none; cursor: pointer; }
+.song-play {
+  width: 83.969rpx;
+  height: 83.969rpx;
+  padding: 24.809rpx;
+  border-radius: 41.985rpx;
+  color: var(--cimoa-brand-purple);
+  background: var(--cimoa-surface-tinted);
+  margin-left: auto;
+  flex: none;
+  cursor: pointer;
+}
 .remove-song { color: var(--cimoa-status-danger); }
-.ice-preview { min-height: 183.206rpx; display: flex; align-items: center; justify-content: center; font-size: 49.618rpx; font-weight: 800; line-height: 1.2; text-align: center; touch-action: pan-y; }
+.ice-preview {
+  min-height: 183.206rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 49.618rpx;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  touch-action: pan-y;
+}
 .ice-dots { display: flex; justify-content: center; gap: 13.359rpx; margin-top: 30.534rpx; }
 .ice-dots > view { width: 15.267rpx; height: 15.267rpx; background: var(--cimoa-surface-onboarding-dashed); border-radius: 7.634rpx; cursor: pointer; }
 .ice-dots > .active { width: 41.985rpx; background: var(--cimoa-text-title); }
 .habit-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22.901rpx; }
-.habit { display: flex; flex-direction: column; align-items: center; gap: 19.084rpx; font-size: 32.443rpx; font-weight: 700; cursor: pointer; text-align: center; }
+.habit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 19.084rpx;
+  font-size: 32.443rpx;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
 .habit > text { font-size: 91.603rpx; }
 </style>

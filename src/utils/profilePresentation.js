@@ -5,6 +5,8 @@ export const PROFILE_FIELDS = [
 ].map(([key, title, action]) => ({ key, title, action }))
 export const profile_value = (user, key) => Array.isArray(user[key]) ? user[key].join(' · ') || 'Not set' : user[key] ? `${user[key]}${key === 'height_cm' ? ' cm' : ''}` : 'Not set'
 export const country_emoji = label => ({ China: '🇨🇳', 'Hong Kong': '🇭🇰', Singapore: '🇸🇬', Malaysia: '🇲🇾', Korea: '🇰🇷', Japan: '🇯🇵', Taiwan: '🇹🇼', India: '🇮🇳', Indonesia: '🇮🇩', Vietnam: '🇻🇳', Thailand: '🇹🇭', Philippines: '🇵🇭', 'United States': '🇺🇸', 'United Kingdom': '🇬🇧', Canada: '🇨🇦', Australia: '🇦🇺', France: '🇫🇷', Germany: '🇩🇪' })[label] || '🌏'
+export const major_emoji = label => ({ Business: '💼', 'Computer Science': '🖥️', Engineering: '⚙️', Medicine: '🏥', Finance: '💵', Sciences: '🧬', 'Data Science': '📊', Economics: '💸', 'Information Technology': '💻', Design: '🎨', Law: '⚖️', Architecture: '🏛️', Psychology: '🧠', Media: '🎬', Education: '📚' })[label] || '🎓'
+export const bio_font_label = font => ({ 'Playfair Display': 'Playfair', 'Permanent Marker': 'Sharpie', Anton: 'Tanker' })[font] || font
 export const profile_preview_tags = (user, settings) => [
   { key: 'height', icon: 'height', label: user.height_cm ? `${user.height_cm} cm` : '' },
   { key: 'university', icon: 'university', label: user.university },

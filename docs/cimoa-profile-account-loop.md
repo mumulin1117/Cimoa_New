@@ -39,6 +39,8 @@ Edit All、Basic Info、Interests、Connection Goals、Icebreakers、Preview、S
 
 ## 验收记录
 
+Edit All 回查：新增照片替换/前后排序/删除二次确认/取消/全部删除拒绝用例，保存前通过 Store 纯校验，非法数量不进入 Loading；外来照片 ID 不能被替换到本人资料。字体显示名、选项 emoji、Sheet 来源 ID 与样式格式已校准。最新累计 Chrome17组、资料专属6项单元通过；本页重新恢复 pending。首轮原生7/7通过，最终修正版原生及既有页面回归正在执行。
+
 Settings / Logout：Chrome16组累计回归通过；79项全量单元通过。设置头像/余额、Account返回、社区规则、退出取消/失败/500ms写时序、清栈Welcome、访客主Tab守卫、错误密码、同账号重登、三Tab单次骨架和刷新保持通过。见[完整浏览器记录](./evidence/profile-edit/settings-acceptance.json)。其余设置子页明确 deferred，不标记成功。三项检查通过；local passed/full pending。
 
 Preview：Chrome13组通过，同一资料/照片顺序、预览发起编辑后保存返回、Profile即时同步、刷新和小屏固定按钮已验证；缺少音源明确报错。见[preview验收](./evidence/profile-edit/preview-acceptance.json)。三项检查通过；local passed/full pending。
