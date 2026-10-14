@@ -1,11 +1,11 @@
 {
   "phase": "detail",
   "result": "passed",
-  "server_pid": 12195,
+  "server_pid": 30174,
   "checks": [
     "Events → exact detail → original Tab; source card geometry, local cover and actual count",
     "Join/cancel confirmation and pre-write Loading; unique membership, refresh, rollback and released seat",
-    "Real share summary and address; missing maps/report services fail without fake success",
+    "Real report route, share summary and address; missing map service fails without fake success",
     "Small/long/empty-source details scroll; full/ended/unverified/invalid-ID errors stay honest"
   ],
   "errors": []

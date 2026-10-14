@@ -84,7 +84,7 @@ const navigate_menu = kind => { close(); go(kind) }
         <view class="event-page-menu" role="button" tabindex="0" data-interaction="eventGroup.menu.participants.click.1" @click="navigate_menu('participants')" @keydown.enter="navigate_menu('participants')">View participants</view>
         <view class="event-page-menu" role="button" tabindex="0" data-interaction="eventGroup.menu.detail.click.1" @click="navigate_menu('detail')" @keydown.enter="navigate_menu('detail')">View event</view>
         <view class="event-page-menu" role="button" tabindex="0" data-interaction="eventGroup.menu.manage.click.1" @click="sheet = 'cancel'; error = ''" @keydown.enter="sheet = 'cancel'; error = ''">Manage attendance</view>
-        <view class="event-page-menu" role="button" tabindex="0" data-interaction="eventGroup.menu.report.click.1" @click="error = 'Report Event has not been restored yet. No report was submitted.'" @keydown.enter="error = 'Report Event has not been restored yet. No report was submitted.'">Report Event</view>
+        <view class="event-page-menu" role="button" tabindex="0" data-interaction="eventGroup.menu.report.click.1" @click="navigate_menu('report')" @keydown.enter="navigate_menu('report')">Report Event</view>
         <text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text><view class="event-dialog-secondary" role="button" tabindex="0" @click="close" @keydown.enter="close">Close</view>
       </EventConfirmDialog>
       <EvCancelConfirmDialog :open="sheet === 'cancel'" :busy="is_loading" :error="error" @confirm="attendance" @close="close" @released="!sheet && (locked = false)" />
