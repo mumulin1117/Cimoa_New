@@ -42,6 +42,7 @@
     { "path": "pages/profile/preview", "style": { "navigationStyle": "custom" } },
     { "path": "pages/coins/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/coins/purchasing", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/coins/failed", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/notif", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/privacy", "style": { "navigationStyle": "custom" } },

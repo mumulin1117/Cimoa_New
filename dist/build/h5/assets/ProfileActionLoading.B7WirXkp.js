@@ -1,0 +1,1 @@
+import{d as i,c as l}from"./index-DhGI2UKi.js";import{A as e}from"./AppLoading.D8BGB8Iw.js";const a={__name:"ProfileActionLoading",props:{visible:Boolean,label:{type:String,default:"Saving your profile…"}},setup:a=>(o,s)=>(i(),l(e,{visible:a.visible,label:a.label},null,8,["visible","label"]))};export{a as _};

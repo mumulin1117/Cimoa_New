@@ -112,6 +112,54 @@ try {
     check('Cancel resolves the bridge once, persists cancelled status and leaves the ledger unchanged')
   }
 
+  if (phase === 'failed') {
+    page.setDefaultTimeout(15000)
+    await page.goto(`${origin}/?phase=coin-failed#/pages/coins/index`)
+    const before = await state()
+    await page.locator('[data-interaction="coinStore.continuePurchase.click.1"]').click()
+    await page.locator('.coin-failed-page').waitFor()
+    const failed = await state()
+    assert.equal(failed.purchase_requests.length, 1)
+    assert.equal(failed.purchase_requests[0].status, 'timeout')
+    assert.equal(failed.coin_transactions.length, before.coin_transactions.length)
+    assert.equal(failed.coin_transactions.reduce((sum, row) => sum + row.amount, 0), 260)
+    assert.match(await page.locator('.failed-copy').innerText(), /did not respond in time/)
+    await page.screenshot({ path: path.join(output, 'failed-timeout.png') })
+    check('Purchasing routes a real browser timeout to Failed with unchanged balance and timeout-specific copy')
+
+    const failed_url = page.url()
+    await page.reload()
+    await page.locator('.coin-failed-page').waitFor()
+    assert.equal(page.url(), failed_url)
+    assert.equal((await state()).purchase_requests.length, 1)
+    check('Failed restores the owned terminal request after refresh without resubmitting it')
+
+    const before_help = await state()
+    await page.locator('[data-interaction="coinFailed.openCoinHelp.click.1"]').click()
+    assert.match(await page.getByRole('alert').innerText(), /still being restored/)
+    assert.deepEqual(await state(), before_help)
+    check('Unrestored Coin Help fails visibly without writing purchase or ledger state')
+
+    await page.locator('.failed-footer [data-interaction="coinFailed.backToStore.click.1"]').click()
+    await page.locator('.coin-center-page').waitFor()
+    assert.equal((await state()).purchase_requests.length, 1)
+    check('Cancel replaces Failed with Coin Center and preserves its terminal request')
+
+    await page.goto(failed_url)
+    await page.locator('.coin-failed-page').waitFor()
+    await page.locator('[data-interaction="coinFailed.tryAgainPurchase.click.1"]').click()
+    await page.locator('.loading').waitFor()
+    assert.equal((await state()).purchase_requests.length, 1)
+    await page.locator('.coin-purchasing-page').waitFor()
+    const retried = await state()
+    assert.equal(retried.purchase_requests.length, 2)
+    assert.equal(retried.purchase_requests[0].status, 'timeout')
+    assert.equal(retried.purchase_requests[1].status, 'pending')
+    assert.notEqual(retried.purchase_requests[0].request_id, retried.purchase_requests[1].request_id)
+    assert.equal(retried.coin_transactions.reduce((sum, row) => sum + row.amount, 0), 260)
+    check('Try Again waits for custom Loading and creates a distinct pending request without adding coins')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {

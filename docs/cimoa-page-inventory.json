@@ -7655,7 +7655,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/coins/failed",
-    "component": null,
+    "component": "src/pages/coins/failed.vue; src/components/CoinActionLoading.vue",
     "parent_route": "/pages/coins/index",
     "allowed_origin_routes": [
       "/pages/coins/index"
@@ -7715,10 +7715,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented with owned failure or timeout request validation, new-request retry after custom Loading, unchanged-ledger enforcement, dependency-gated support, refresh restoration and store fallback"
   },
   {
     "source_screen": "Coins / Purchase / Cancelled",
