@@ -838,7 +838,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; verified in the complete local reset flow with guest/session guard, active-device-account disclosure, custom Loading, owned reset_id navigation and zero-write invalid or unknown-account errors"
+    "mapping_status": "source-mapped; implemented; verified in browser and iPhone 17 Pro WKWebView complete local reset flow with guest/session guard, active-device-account disclosure, custom Loading, owned reset_id navigation and zero-write invalid or unknown-account errors"
   },
   {
     "source_screen": "Auth / Forgot Password / Code",
@@ -911,7 +911,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; verified with disclosed local-only code 009789, owned reset_id, zero-write wrong code and resend, custom Loading, refresh recovery and correct Back ownership"
+    "mapping_status": "source-mapped; implemented; verified in browser and iPhone 17 Pro WKWebView with disclosed local-only code 009789, owned reset_id, zero-write wrong code and resend, custom Loading, refresh recovery and correct Back ownership"
   },
   {
     "source_screen": "Auth / Forgot Password / New Password",
@@ -980,7 +980,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; verified with direct-access guard, password validation, visibility toggle, custom Loading, secret clearing on refresh, fixture-to-local credential migration, old-password rejection and new-password return to Home"
+    "mapping_status": "source-mapped; implemented; verified in browser and iPhone 17 Pro WKWebView with direct-access guard, password validation, visibility toggle, custom Loading, secret clearing on refresh, fixture-to-local credential migration, old-password rejection and new-password return to Home"
   },
   {
     "source_screen": "Onboarding / Basic Info / Default",

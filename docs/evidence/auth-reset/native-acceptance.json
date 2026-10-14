@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-14",
+  "device": "iPhone 17 Pro",
+  "device_id": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+  "os": "iOS 26.5 Simulator",
+  "host": "cimoaNeapo",
+  "bundle_id": "com.cimoa.neapo.dev",
+  "test": "cimoaNeapoTests.HostTests/testLocalPasswordResetAndRelogin",
+  "result": "passed",
+  "passed": 1,
+  "failed": 0,
+  "skipped": 0,
+  "checks": [
+    "Reset Email and fixed local code 009789 run inside the bundled WKWebView",
+    "reset record and verification state do not write before their custom Loading completes",
+    "wrong reset code leaves the owned reset unverified",
+    "password update migrates only the selected fixture credential to local PBKDF2",
+    "existing account verification and completed profile readiness are preserved",
+    "old password is rejected, new password signs in and reaches Home",
+    "users and coin ledger remain unchanged, and the original simulator account bytes are restored"
+  ],
+  "xcresult": "ios/cimoaNeapo/build/PasswordResetAcceptance-2.xcresult",
+  "attachments": "docs/evidence/auth-reset/native-final/manifest.json"
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "F1569BD6-FB07-4C37-9A32-A2D4E00C6296.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView local password reset_0_50EEE0D4-9E1C-4DA4-98E3-CD6706B1C326.png",
+        "timestamp" : 1791959364.656
+      }
+    ],
+    "testIdentifier" : "HostTests/testLocalPasswordResetAndRelogin()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testLocalPasswordResetAndRelogin"
+  }
+]

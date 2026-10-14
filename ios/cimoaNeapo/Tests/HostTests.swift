@@ -80,6 +80,52 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { try? await restore(); throw error }
     }
+    func testLocalPasswordResetAndRelogin() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?passwordReset=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        do {
+            _ = try await script(host, "const e=JSON.parse(localStorage.getItem('cimoa_app_state_v2'));e.data.session={account_id:null,current_user_id:null,expires_at:null};e.data.auth_flow.password_reset=null;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(e));return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?passwordReset=native#/pages/auth/login")!))
+            try await waitFor(host, ".login-page")
+            let arrived = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Password reset timeout: '+location.hash+' '+document.body.innerText)};
+            const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);e.click();await delay(80)};
+            const fill=async(label,value)=>{const e=await wait(()=>visible('uni-input[aria-label="'+label+'"] input'));const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(e,value);e.dispatchEvent(new Event('input',{bubbles:true}));await delay(100)};
+            const original=state(),users=JSON.stringify(original.users),coins=JSON.stringify(original.coin_transactions);
+            window.__passwordReset={delay,visible,wait,click,fill,users,coins};
+            await click('login.goFpEmail.click.1');await wait(()=>visible('.reset-email-page'));await fill('Reset email','cimoa@gmail.com');await click('fpEmail.goFpCode.click.1');
+            const emailLoading=!!visible('.loading')&&state().auth_flow.password_reset===null;await wait(()=>visible('.reset-code-page'));
+            await fill('Reset code','111111');await click('fpCode.goFpNew.click.1');await wait(()=>visible('.reset-code-page [role=alert]'));const wrongUnchanged=state().auth_flow.password_reset.verified_at===null;
+            await fill('Reset code','009789');await click('fpCode.goFpNew.click.1');const codeLoading=!!visible('.loading')&&state().auth_flow.password_reset.verified_at===null;await wait(()=>visible('.reset-new-page'));
+            return {emailLoading,wrongUnchanged,codeLoading,code:document.body.innerText.includes('Choose a new password')}
+            """) as! [String: Any]
+            XCTAssertEqual(arrived["emailLoading"] as? Bool, true); XCTAssertEqual(arrived["wrongUnchanged"] as? Bool, true)
+            XCTAssertEqual(arrived["codeLoading"] as? Bool, true); XCTAssertEqual(arrived["code"] as? Bool, true)
+            _ = try await script(host, "await document.fonts.ready;await Promise.all(document.querySelector('.reset-new-page .page-transition').getAnimations().map(animation=>animation.finished));await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));return true")
+            try await Task.sleep(nanoseconds: 250_000_000)
+            let resetPage = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
+            resetPage.name = "WKWebView local password reset"; resetPage.lifetime = .keepAlways; add(resetPage)
+            let result = try await script(host, """
+            const {delay,visible,wait,click,fill,users,coins}=window.__passwordReset,state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            await fill('New password','nativepass123');await fill('Confirm new password','nativepass123');const before=state().accounts.find(a=>a.email==='cimoa@gmail.com').credential_hash;await click('fpNew.finishReset.click.1');
+            const finishLoading=!!visible('.loading')&&state().accounts.find(a=>a.email==='cimoa@gmail.com').credential_hash===before;await wait(()=>visible('.login-page'));const migrated=state(),account=migrated.accounts.find(a=>a.email==='cimoa@gmail.com');
+            await fill('Password','12341234');await click('login.loginNow.click.1');await wait(()=>visible('.login-page [role=alert]'));const oldRejected=state().session.account_id===null;
+            await fill('Password','nativepass123');await click('login.loginNow.click.1');await wait(()=>visible('.home-header'));const final=state();
+            return {finishLoading,oldRejected,provider:account.auth_provider,verified:account.local_verification?.status,onboarding:account.onboarding?.step,reset:migrated.auth_flow.password_reset===null,signedIn:final.session.account_id===account.account_id,users:JSON.stringify(final.users)===users,coins:JSON.stringify(final.coin_transactions)===coins}
+            """) as! [String: Any]
+            XCTAssertEqual(result["finishLoading"] as? Bool, true); XCTAssertEqual(result["oldRejected"] as? Bool, true)
+            XCTAssertEqual(result["provider"] as? String, "local"); XCTAssertEqual(result["verified"] as? String, "verified")
+            XCTAssertEqual(result["onboarding"] as? String, "complete"); XCTAssertEqual(result["reset"] as? Bool, true)
+            XCTAssertEqual(result["signedIn"] as? Bool, true); XCTAssertEqual(result["users"] as? Bool, true); XCTAssertEqual(result["coins"] as? Bool, true)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testFreshEntryAndRealLocalLogin() async throws {
         let host = try await host()
         let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
