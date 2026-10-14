@@ -6,6 +6,8 @@
     },
     "surface": {
       "event_people": "#fbe6f7",
+      "event_group_header": "rgba(255,255,255,0.88)",
+      "event_group_composer": "rgba(255,255,255,0.9)",
       "profile_picker": "#f7f9fc",
       "settings_pink": "#fbe3ef",
       "settings_purple": "#efe9fb",
@@ -143,6 +145,8 @@
     "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)"
   },
   "shadows": {
+    "event_group_header": "0 1px 0 rgba(16,36,74,0.06)",
+    "event_message": "0 11.45rpx 34.351rpx rgba(16,36,74,0.07)",
     "onboarding_photo_side": "0 19.084rpx 41.985rpx rgba(16,36,74,0.12)",
     "onboarding_photo_main": "0 34.351rpx 64.885rpx rgba(16,36,74,0.20)",
     "verification_success": "0 26.718rpx 57.252rpx rgba(168,85,247,0.28)",

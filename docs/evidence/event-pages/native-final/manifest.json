@@ -1,0 +1,17 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "BC2B8D8D-4081-4017-9098-75C3EF415640.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView event group after media refresh_0_57A5405B-1090-41A6-913C-4CB1565EF16E.png",
+        "timestamp" : 1791953485.709
+      }
+    ],
+    "testIdentifier" : "HostTests/testEventAttendanceGroupAndMediaRefresh()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testEventAttendanceGroupAndMediaRefresh"
+  }
+]

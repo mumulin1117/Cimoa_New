@@ -29,3 +29,27 @@ test('My Events sorts only own active memberships into campus-week, later and pa
   Object.assign(store.data.events.find(e=>e.event_id==='event_mic'),{starts_at:now-7200000,ends_at:now-1});assert.equal(store.my_event_groups.sections[0].label,'Past')
   store.leave_event('event_picnic');assert.equal(store.my_event_groups.featured,null);assert.equal(store.my_event_groups.sections[0].events.length,1)
 })
+test('group validates membership and event/conversation pair; text is idempotent and blocking is read-filtered',async()=>{
+  const {store}=make();assert.equal(store.event_group('event_picnic','group_picnic'),null);assert.equal((await store.send_event_message('event_picnic','group_picnic','hello')).success,false)
+  store.join_event('event_picnic');assert.equal(store.event_group('event_mic','group_picnic'),null)
+  const before=store.data.messages.length;assert.equal((await store.send_event_message('event_picnic','group_picnic','hello',null,'same')).success,true);assert.equal((await store.send_event_message('event_picnic','group_picnic','hello',null,'same')).repeated,true);assert.equal(store.data.messages.length,before+1)
+  assert.equal((await store.send_event_message('event_picnic','group_picnic','x'.repeat(2001))).success,false)
+  store.data.messages.push({message_id:'incoming',conversation_id:'group_picnic',sender_id:'user_chloe',kind:'text',body:'hello',media_id:null,sent_at:now,read_by:[]});assert.equal(store.event_group('event_picnic','group_picnic').messages.length,2)
+  store.block_user('user_chloe');assert.equal(store.event_group('event_picnic','group_picnic').messages.length,1);store.leave_event('event_picnic');assert.equal(store.event_group('event_picnic','group_picnic'),null)
+})
+test('group media publishes Blob and message metadata together, refreshes and reuses operation result',async()=>{
+  const {store,blobs}=make();store.join_event('event_picnic');const payload={kind:'image',blob:new Blob(['test decoded by injected adapter'],{type:'image/png'}),duration_ms:0}
+  const result=await store.send_event_message('event_picnic','group_picnic','',payload,'photo-once');assert.equal(result.success,true);assert.equal(blobs.size,1);const meta=store.event_group('event_picnic','group_picnic').messages[0].media;assert.ok(blobs.has(meta.media_id))
+  assert.equal((await store.send_event_message('event_picnic','group_picnic','',payload,'photo-once')).repeated,true);assert.equal(blobs.size,1);store.hydration_status='idle';store.hydrate();assert.equal(store.event_group('event_picnic','group_picnic').messages[0].media.media_id,meta.media_id)
+})
+test('group media failure/cancellation/attendance change compensates only its new Blob',async()=>{
+  for(const mode of ['storage','cancel','left','account']) {
+    const {store,blobs,persistence}=make();store.join_event('event_picnic');blobs.set('unrelated',new Blob(['keep']));const before=clone_data(store.data);let current=true
+    configure_store_runtime(store,{media:{put:async(id,blob)=>{blobs.set(id,blob);if(mode==='cancel')current=false;if(mode==='left')store.leave_event('event_picnic');if(mode==='account'){store.data.session.current_user_id='user_chloe';store.data.session.account_id='changed'}},delete:async id=>blobs.delete(id)},...(mode==='storage'?{persistence:{...persistence,write(){throw Error('Storage full')}}}:{})})
+    const result=await store.send_event_message('event_picnic','group_picnic','',{kind:'image',blob:new Blob(['decoded fixture'],{type:'image/png'})},'failure',{is_current:()=>current});assert.equal(result.success,false);assert.deepEqual([...blobs.keys()],['unrelated']);assert.deepEqual(store.data.messages,before.messages);assert.deepEqual(store.data.media_files,before.media_files)
+    if(mode==='storage')assert.deepEqual(store.data,before)
+  }
+})
+test('mute is owned, persistent and does not imply push delivery or alter other preferences',()=>{
+  const {store}=make();store.join_event('event_picnic');const before=clone_data(store.data.event_preferences[0]);assert.equal(store.set_event_group_muted('event_picnic','group_picnic',true).success,true);assert.equal(store.event_group('event_picnic','group_picnic').muted,true);assert.deepEqual(store.data.event_preferences[0].filters,before.filters);store.hydration_status='idle';store.hydrate();assert.equal(store.event_group('event_picnic','group_picnic').muted,true);store.leave_event('event_picnic');assert.equal(store.set_event_group_muted('event_picnic','group_picnic',false).success,false)
+})

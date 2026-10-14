@@ -101,6 +101,7 @@ export function validate_data(data) {
   }
   ensure(unique(data.event_preferences, row => row.owner_user_id), 'Duplicate event preferences.')
   for (const row of data.event_preferences) ensure(row.active_tab === undefined || ['Today', 'This week', 'My campus'].includes(row.active_tab), 'Invalid event tab.')
+  for (const row of data.event_preferences) if (row.group_muted_event_ids !== undefined) ensure(Array.isArray(row.group_muted_event_ids) && unique(row.group_muted_event_ids, id => id) && row.group_muted_event_ids.every(id => has('events', id)), 'Invalid group notification preference.')
   for (const row of data.memberships) ensure(has('users', row.user_id) && has('events', row.event_id) && ['joined', 'left'].includes(row.status), 'Invalid member.')
   ensure(unique(data.memberships, (row) => `${row.event_id}:${row.user_id}`), 'Duplicate member.')
   for (const row of data.conversations) ensure(row.kind === 'group' ? has('events', row.event_id) : row.kind === 'direct' && row.participant_ids.length === 2 && new Set(row.participant_ids).size === 2 && row.participant_ids.every((id) => has('users', id)), 'Invalid conversation.')

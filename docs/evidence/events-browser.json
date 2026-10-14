@@ -1,7 +1,7 @@
 {
   "result": "passed",
   "runtime": "Chromium, fresh isolated profile, 393 x 852",
-  "server_pid": 7538,
+  "server_pid": 17156,
   "checks": [
     {
       "name": "three source tabs, capsule geometry, restored session has no skeleton",
@@ -98,11 +98,11 @@
       }
     },
     {
-      "name": "Profile push/pop works; My Events/detail/participants gates preserve entity IDs and do not autojoin",
+      "name": "Profile/My Events/detail/participants push and pop preserve entities and never autojoin",
       "result": "passed"
     },
     {
-      "name": "join confirmation repeats, 500ms pre-write Loading, unique membership, refresh and honest deferred success page",
+      "name": "join confirmation, 500ms pre-write Loading, unique membership, success and My Events return, group permission and refresh",
       "result": "passed",
       "detail": {
         "panel": {

@@ -1,5 +1,15 @@
 # Cimoa 整体验收状态
 
+## 最新增量：活动二级页面（2026-10-14）
+
+详情、参与者、报名成功、我的活动、群聊已完成本页还原和本地闭环验收；报名/取消同步人数、名额、当前报名、我的活动以及群访问权限。文字与媒体经真实持久化、失败补偿和刷新验证。详见[本轮范围、文件及边界](./cimoa-event-pages.md)。
+
+87项非浏览器单元、10组活动链路Chrome、19组Events/主Tab回归通过。EventPagesFullRegression.xcresult在iPhone17Pro/iOS26.5完成8/8，无失败或跳过；活动新增用例含真实WKWebView路由、人数同步、图片Blob保存/刷新、安全区与取消后权限撤销。媒体测试不冒称手动系统相册、实体麦克风或软键盘触摸验收。
+
+当前41条注册路由、38/103计划路由匹配、65条待补；五页local passed/full pending、无in_progress、verified仍0。只本地提交、不推送；活动举报、主办方拉黑、参与者的他人详情等依赖尚未完成。原HTML保持不变，不在运行包中。后续段落均为历史证据，不覆盖本次新增范围。
+
+本轮[原生8项摘要](./evidence/event-pages/native-acceptance.json)、[最终原生截图](./evidence/event-pages/native-final/manifest.json)、[导出包核验](./evidence/event-pages/package.json)已留存。独立包195份H5与浏览器/测试App/正常App一致，正常版已在iPhone17Pro运行；临时预览已清理。约定检查、diff检查、H5构建依次通过，无约定警告。
+
 ## 最新增量：个人资料与账号闭环（2026-10-14）
 
 本轮局部闭环通过，不是全App完成。80项单元、17组资料账号H5、完整注册18组、Profile20/Home22/Discover20/Events19回归通过。`ProfileAccountAcceptance-3.xcresult`在iPhone17Pro/iOS26.5最终7/7通过（0失败/跳过）：真实新注册账号复用注册数据，资料/照片/兴趣/目标/破冰、来源返回、退出取消/确认、错误密码/重登、单次骨架及刷新恢复。见[记录](./cimoa-profile-account-loop.md)、[原生摘要](./evidence/profile-account-native/acceptance.json)、[截图附件](./evidence/profile-account-native/manifest.json)。系统相册弹窗与硬件/键盘实际触摸未包含在自动通过项中。

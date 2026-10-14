@@ -1,0 +1,18 @@
+{
+  "phase": "group",
+  "result": "passed",
+  "server_pid": 16634,
+  "checks": [
+    "Events → exact detail → original Tab; source card geometry, local cover and actual count",
+    "Join/cancel confirmation and pre-write Loading; unique membership, refresh, rollback and released seat",
+    "Real share summary and address; missing maps/report services fail without fake success",
+    "Small/long/empty-source details scroll; full/ended/unverified/invalid-ID errors stay honest",
+    "Group text validates/loads/saves, failure preserves draft; real photo chooser → confirmation → atomic Blob/message → refresh and preview",
+    "Denied microphone has no fake success; controlled real tone records/decodes/previews/sends and plays after IndexedDB refresh",
+    "Group mute persists, participants push/pop and small footer work; cancellation revokes content and composer on refresh; forged event/group rejected",
+    "My Events success entry, exact detail and return, cancel removes own card, refresh/Tab counts synchronize; actual Past section",
+    "Success page reads actual membership, reload is read-only, Open event pops original detail, cancelled attendance cannot show success",
+    "Participants search, empty/long, deferred person, correct return and persistent block filter; no automatic friendship"
+  ],
+  "errors": []
+}

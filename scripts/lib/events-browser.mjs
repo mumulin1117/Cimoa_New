@@ -39,11 +39,11 @@ export async function test_events({ page, origin, evidence, check }) {
     if (id === 'events.openMe.click.1') {
       await page.locator('.profile-name').waitFor(); assert.equal(await page.locator('.secondary-page-frame:visible').getAttribute('data-page-depth'), '2')
       await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor()
-    } else assert.match(await page.locator('.events-feedback').textContent(), /not been restored/)
+    } else { await page.locator(id.includes('openMyEvents') ? '.event-upcoming-page' : '.event-participants-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor() }
   }
-  await entry('events.openEvent.click.1').click(); assert.match(await page.locator('.events-feedback').textContent(), /not been restored/)
-  await entry('events.openEvent.click.2').click(); assert.equal(await storage(), before)
-  check('Profile push/pop works; My Events/detail/participants gates preserve entity IDs and do not autojoin')
+  for(const id of ['events.openEvent.click.1','events.openEvent.click.2']) { await entry(id).click(); await page.locator('.event-detail-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor() }
+  assert.equal(await storage(), before)
+  check('Profile/My Events/detail/participants push and pop preserve entities and never autojoin')
 
   await entry('events.evJoinTap.click.1').click(); await open_settled()
   const panel = await rect('.event-dialog:visible .event-dialog-panel')
@@ -53,13 +53,13 @@ export async function test_events({ page, origin, evidence, check }) {
   await page.getByRole('button', { name: 'Confirm join', exact: true }).click()
   await page.locator('.event-loading').waitFor({ state: 'visible' }); assert.equal(await storage(), before)
   await settle(); await page.locator('.event-dialog:visible').waitFor({ state: 'hidden' })
+  await page.locator('.event-success-page').waitFor(); await page.getByRole('button', { name: 'View My Events', exact: true }).click(); await page.locator('.event-upcoming-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor()
   assert.equal(await picnic().locator('.event-join').textContent(), 'Joined'); assert.match(await picnic().locator('.event-count').textContent(), /4 going · 16 spaces/)
-  assert.match(await page.locator('.events-feedback').textContent(), /place is saved.*not been restored/)
   assert.equal((await data()).memberships.filter(m => m.event_id === 'event_picnic' && m.user_id === 'user_cimoa').length, 1)
   await page.reload({ waitUntil: 'networkidle' }); assert.equal(await picnic().locator('.event-join').textContent(), 'Joined')
-  await entry('events.openGroup.click.1').click(); assert.match(await page.locator('.events-feedback').textContent(), /not been restored/)
+  await entry('events.openGroup.click.1').click(); await page.locator('.event-group-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor()
   assert.equal(await entry('events.openGroup.click.1').getAttribute('data-target'), '/pages/events/group?event_id=event_picnic&conversation_id=group_picnic')
-  await shot('joined'); check('join confirmation repeats, 500ms pre-write Loading, unique membership, refresh and honest deferred success page', { panel })
+  await shot('joined'); check('join confirmation, 500ms pre-write Loading, unique membership, success and My Events return, group permission and refresh', { panel })
 
   await entry('events.manageAttendance.click.1').click(); await open_settled(); await shot('cancel-confirm')
   const joined_disk = await storage()

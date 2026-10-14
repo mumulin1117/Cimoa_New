@@ -38,6 +38,11 @@ defineProps({ name: { type: String, required: true }, strokeWidth: { type: Numbe
       <template v-else-if="name === 'puzzle'"><path d="M9.2 3.8a2.3 2.3 0 0 1 4.6 0V5H17a1 1 0 0 1 1 1v3.3h1.2a2.3 2.3 0 0 1 0 4.6H18V18a1 1 0 0 1-1 1h-3.3v-1.2a2.3 2.3 0 0 0-4.6 0V19H6a1 1 0 0 1-1-1v-3.4h1.2a2.3 2.3 0 0 0 0-4.6H5V6a1 1 0 0 1 1-1h3.2z" :stroke-width="strokeWidth || 1.9" /></template>
       <template v-if="name === 'more'"><circle cx="5" cy="12" r="1.9" fill="currentColor" stroke="none" /><circle cx="12" cy="12" r="1.9" fill="currentColor" stroke="none" /><circle cx="19" cy="12" r="1.9" fill="currentColor" stroke="none" /></template>
       <template v-if="name === 'check'"><path d="m5 12 4 4L19 6" /></template>
+      <template v-if="name === 'photo'"><rect x="2.5" y="5" width="19" height="15" rx="3" /><circle cx="8.5" cy="10.5" r="1.7" /><path d="m4 17 5-5 4 4 3-3 5 5" /></template>
+      <template v-if="name === 'mic'"><rect x="9" y="2.5" width="6" height="11" rx="3" /><path d="M5.5 10.5v1a6.5 6.5 0 0 0 13 0v-1M12 18v3.5M8.5 21.5h7" /></template>
+      <template v-if="name === 'send'"><path d="M22 2 11 13M22 2 15 22l-4-9-9-4z" /></template>
+      <template v-if="name === 'play'"><path d="m7 4 13 8-13 8z" fill="currentColor" stroke="none" /></template>
+      <template v-if="name === 'pause'"><path d="M8 5v14M16 5v14" stroke-width="4" /></template>
     </svg>
   </view>
 </template>

@@ -1,4 +1,11 @@
 export function inspect_media(blob, kind) {
+  // MediaRecorder WebM may omit a finite container duration. Decode the actual
+  // audio frames instead of accepting an estimated duration or silent payload.
+  const Offline = globalThis.OfflineAudioContext || globalThis.webkitOfflineAudioContext
+  if (kind === 'audio' && Offline) return blob.arrayBuffer().then(buffer => new Offline(1, 1, 48000).decodeAudioData(buffer)).then(audio => {
+    if (!Number.isFinite(audio.duration) || audio.duration <= 0) throw new Error('This audio could not be decoded.')
+    return { duration_ms: audio.duration * 1000 }
+  }).catch(error => { throw new Error(`This audio could not be decoded. ${error.message || 'Choose another recording.'}`) })
   return new Promise((resolve, reject) => {
     if (typeof document === 'undefined') { reject(new Error('Media decoding is unavailable.')); return }
     const url = URL.createObjectURL(blob)

@@ -1,5 +1,7 @@
 # Cimoa 阶段五页面还原状态
 
+2026-10-14活动增量：详情、参与者、报名成功、我的活动、活动群聊五页已逐页还原与本地验收，报名/取消后人数、名额、群权限同步通过。87项单元、活动链路10组、Events/主Tab19组以及WKWebView8/8通过。新增5条路由，当前41条注册路由、38/103匹配、65条待补；无in_progress，verified仍0。详见[活动本轮记录](./cimoa-event-pages.md)。举报、主办方拉黑、他人详情及系统硬件操作仍待补，不计全App完成。以下为历史时点。
+
 2026-10-14最新增量：个人资料与账号闭环已接通；Edit All/Basic/Interests/Goals/Ice/Preview/Settings新增7条路由和退出确认。80项单元、17组闭环H5、完整注册18组、Profile20/Home22/Discover20/Events19回归及WKWebView7/7通过。最终三项强制检查通过无警告，独立iOS包182份H5与测试和正常App一致。共36条注册路由、33/103条匹配、70条待补；无in_progress、verified仍0，本轮local passed/full pending。详见[本轮契约、证据与文件](./cimoa-profile-account-loop.md)。Settings其他子页、语音简介/歌曲/认证/Coins等依赖不属于已通过项。以下段落保留历史时点。
 
 2026-10-14最新：注册UI与资料引导路径已接通，新增16条计划路由；29个注册路由中26个匹配103个计划路由，77个待补。Chrome首次注册到Home18组、74项单元、原生7/7通过。Age/Community/Signup/Email、10步资料及相册/通知说明local passed/full pending，无in_progress，verified仍0；见[本轮记录](./cimoa-registration-onboarding.md)。主Tab其他依赖、独立法律页、Apple/重置等不在本次完成范围。以下2026-10-13段落为历史进度。
@@ -12,7 +14,7 @@
 | --- | --- | --- | --- | --- | --- |
 | 1 | Home | pending | passed | pending | Profile/Chat/Auto Match/Request真实入口返回与宿主回归 |
 | 2 | Discover | pending | passed | pending | 已本地提交；Profile/Preferences/Expanded/Icebreaker/通知与宿主待补齐 |
-| 3 | Events | pending | passed | pending | 已本地提交；详情/参与者/群聊/成功页/宿主后续补齐 |
+| 3 | Events | pending | passed | pending | 五个活动子页及宿主局部回归已通过；举报/主办方拉黑/他人详情和完整验收待补 |
 | 4 | Profile | pending | passed | pending | Edit/Preview/Settings退出重登已局部回归；Coins/认证/语音等依赖和完整验收待补 |
 | 后续 | Messages、Auto Match、Connection、Auth、Settings、Coins、Safety、System | pending | pending | pending | 主Tab之后按入口依赖逐页推进 |
 | 新入口优先 | Splash、Welcome | pending | passed | pending | 登录/注册/协议依赖、原生入口回归；见认证交互契约 |

@@ -249,6 +249,71 @@ final class HostTests: XCTestCase {
         let attachment = XCTAttachment(image: image); attachment.name = "WKWebView Home with measured insets"; attachment.lifetime = .keepAlways; add(attachment)
         print("CIMOA_NATIVE_SAFE_AREA top=\(host.view.safeAreaInsets.top) bottom=\(host.view.safeAreaInsets.bottom)")
     }
+    func testEventAttendanceGroupAndMediaRefresh() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        let existing = try await script(host, "return JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.media_files.map(m=>m.media_id)") as! [String]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("""
+            const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,ids=d.media_files.map(m=>m.media_id).filter(id=>!existing.includes(id));
+            if(ids.length){const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');ids.forEach(id=>t.objectStore('blobs').delete(id));t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close()}
+            localStorage.setItem('cimoa_app_state_v2',snapshot);return true
+            """, arguments: ["snapshot": saved, "existing": existing], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?events=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        do {
+            _ = try await script(host, """
+            const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),d=envelope.data,owner=d.session.current_user_id,e=d.events.find(e=>e.event_id==='event_picnic');
+            d.users.find(u=>u.user_id===owner).verification_status='verified';e.starts_at=Date.now()+600000;e.ends_at=Date.now()+7200000;e.capacity=40;
+            d.memberships=d.memberships.filter(m=>m.user_id!==owner||m.event_id!=='event_picnic');localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true
+            """)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?events=test#/pages/events/detail?event_id=event_picnic")!))
+            try await waitFor(host, ".event-detail-page")
+            let result = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0);
+            const wait=async fn=>{for(let i=0;i<160;i++){const v=fn();if(v)return v;await delay(50)}throw Error('Event timeout '+location.hash+' '+document.body.innerText)};
+            const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);e.click();await delay(80)};
+            const assert=(ok,message)=>{if(!ok)throw Error(message)},state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            const original=state(),count=original.memberships.filter(m=>m.event_id==='event_picnic'&&m.status==='joined').length;
+            await click('evDetail.askJoin.click.1');const before=localStorage.getItem('cimoa_app_state_v2');await click('sheetEvJoin.confirmJoin.click.1');assert(visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===before,'Join wrote before Loading');await wait(()=>visible('.event-success-page'));await click('evJoinSuccess.openMyEvents.click.1');await wait(()=>visible('.event-upcoming-page'));
+            const card=visible('[data-event-id="event_picnic"]');assert(!!card,'My Events missing attendance');await delay(320);card.querySelector('[role=button]').click();await wait(()=>visible('.event-detail-page'));assert(visible('[data-event-count]').textContent.includes((count+1)+' of 40'),'Count did not synchronize');
+            await click('evDetail.openParticipantsList.click.1');await wait(()=>visible('.event-participants-page'));assert(document.querySelectorAll('.event-person').length===count+1,'Participants not synchronized');await click('evParticipants.goBack.click.1');await wait(()=>visible('.event-detail-page'));await click('evDetail.openGroup.click.1');await wait(()=>visible('.event-group-page'));
+            const field=visible('uni-input[aria-label="Message event group"] input');field.value='Native event message';field.dispatchEvent(new Event('input',{bubbles:true}));await delay(80);await click('evGroup.sendGroup.click.1');await wait(()=>[...document.querySelectorAll('.event-message-bubble')].some(e=>e.textContent==='Native event message'));
+            // Real bundle image through the production file-input decoder, not
+            // a claim of manually operating the iOS system photo library.
+            const suppress=e=>{if(e.target.matches('input[type=file]'))e.preventDefault()};document.addEventListener('click',suppress,true);
+            try{await click('evGroup.sendPhoto.click.1');await wait(()=>document.querySelector('input[type=file]'));const transfer=new DataTransfer(),blob=await(await fetch('/static/assets/img/event-picnic.png')).blob();transfer.items.add(new File([blob],'picnic.png',{type:'image/png'}));const input=[...document.querySelectorAll('input[type=file]')].at(-1);input.files=transfer.files;input.dispatchEvent(new Event('change',{bubbles:true}))}finally{document.removeEventListener('click',suppress,true)}
+            await wait(()=>visible('.event-media-preview .profile-photo')?.dataset.mediaStatus==='ready');await click('eventGroup.media.send.click.1');await wait(()=>visible('.event-message-image .profile-photo')?.dataset.mediaStatus==='ready');
+            await click('evGroup.openGroupMenu.click.1');await click('eventGroup.menu.mute.click.1');await wait(()=>!visible('.event-loading'));await click('eventGroup.menu.close.click.1');await wait(()=>!visible('[role=dialog]'));
+            const composer=visible('.event-group-composer').getBoundingClientRect();window.__eventOldDocument=true;
+            return {state:localStorage.getItem('cimoa_app_state_v2'),count:count+1,footer:composer.bottom,height:innerHeight,top:visible('.event-group-page .safe-area').getBoundingClientRect().height}
+            """) as! [String: Any]
+            XCTAssertLessThanOrEqual(result["footer"] as! Double, result["height"] as! Double)
+            XCTAssertEqual(result["top"] as! Double, Double(host.view.safeAreaInsets.top), accuracy: 1)
+            host.webView.reload()
+            var ready = false
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__eventOldDocument && document.querySelector('.event-message-image .profile-photo')?.dataset.mediaStatus==='ready'")) as? Bool == true { ready = true; break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            XCTAssertTrue(ready)
+            let reloaded = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(reloaded, result["state"] as? String)
+            _ = try await script(host, "await document.fonts.ready;await Promise.all([...document.querySelectorAll('.event-group-page img')].map(image=>image.decode()));await Promise.all(document.querySelector('.event-group-page .page-transition').getAnimations().map(animation=>animation.finished));await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));return true")
+            try await Task.sleep(nanoseconds: 250_000_000)
+            let screenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); screenshot.name = "WKWebView event group after media refresh"; screenshot.lifetime = .keepAlways; add(screenshot)
+            let cancelled = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0);
+            const click=async id=>{await delay(350);visible('[data-interaction="'+id+'"]').click();await delay(100)};
+            await click('evGroup.openGroupMenu.click.1');await click('eventGroup.menu.manage.click.1');await click('sheetEvCancel.cancelAttendance.click.1');await delay(700);
+            return {blocked:!!visible('[role=alert]'),messages:document.querySelectorAll('.event-message').length,composer:!!visible('.event-group-composer'),joined:JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.memberships.filter(m=>m.event_id==='event_picnic'&&m.status==='joined').length}
+            """) as! [String: Any]
+            XCTAssertEqual(cancelled["blocked"] as? Bool, true); XCTAssertEqual(cancelled["messages"] as? Int, 0); XCTAssertEqual(cancelled["composer"] as? Bool, false)
+            XCTAssertEqual(cancelled["joined"] as! Int, (result["count"] as! Int) - 1)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testNativeRequestReplyAndFailureBoundaries() async throws {
         let host = try await host()
         let permission = try await script(host, "return await window.CimoaNativeBridge.request('getNotificationPermission')") as! [String: Any]
