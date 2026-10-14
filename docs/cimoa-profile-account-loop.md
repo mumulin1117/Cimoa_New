@@ -4,7 +4,7 @@
 
 ## 当前执行
 
-Edit All、Basic Info、Interests、Connection Goals、Icebreakers、Preview、Settings 主页面与退出弹层均通过本轮浏览器局部闭环；status pending、local passed、full pending，当前无 in_progress。原生回归正在执行，完整验收和 verified 不以路由存在代替完成。
+Edit All、Basic Info、Interests、Connection Goals、Icebreakers、Preview、Settings 主页面与退出弹层均通过本轮局部闭环；status pending、local passed、full pending，当前无 in_progress。80项单元、17组资料账号浏览器检查及最终WKWebView 7/7通过；完整验收和 verified 不以路由存在或局部通过代替完成。
 
 ## 阶段一与交互契约
 
@@ -39,6 +39,14 @@ Edit All、Basic Info、Interests、Connection Goals、Icebreakers、Preview、S
 
 ## 验收记录
 
+最终原生：`ProfileAccountAcceptance-3.xcresult`，iPhone17Pro / iOS26.5，7/7通过、0失败/跳过。注册用例创建真实本地账号并完成009789及资料引导，再修改姓名/专业/兴趣/目标/三题/文字字体/主图，验证Profile、Preview、Settings同步，预览/设置进入编辑的来源返回，退出取消与500ms确认，错误密码及正确重登，三Tab单次骨架，真实新文档的IndexedDB图片恢复。测试后恢复原模拟器元数据、移除仅本次新建媒体。见[摘要](./evidence/profile-account-native/acceptance.json)、[附件清单](./evidence/profile-account-native/manifest.json)、[稳定预览截图](./evidence/profile-account-native/2D3241B1-C742-4AC7-A72A-1973C4A96DA8.png)。实测安全区top62/bottom34。前两轮功能亦7/7，但第二轮截图捕获过渡帧，已移至本地build诊断目录，不作为最终视觉证据。
+
+既有页面回归：Profile20、Home22、Discover20、Events19及完整注册18组通过。注册使用真实本地新账号，从启动、009789到资料引导、Home、退出重登完成，见[完整注册回归](./evidence/registration/complete-browser.json)。普通浏览器没有宿主时音源等缺项明确失败；未伪造服务结果。主Tab来回切换、二级页返回、状态隔离、拉黑过滤、刷新及媒体加载回归保持通过。
+
+最终三项强制命令按顺序执行通过：`corepack pnpm check:conventions`、`git diff --check`、`corepack pnpm build:h5`；约定检查无警告。随后`corepack pnpm archive:ios`生成独立工程包，解压完整性通过。ZIP共215条目，全部182份H5与dist、宿主资源、原生测试构建及正常模拟器构建逐文件SHA256一致；更新后的测试和README亦包含，原HTML、DerivedData及xcuserdata均未打包。见[打包报告](./evidence/profile-account-native/package.json)。
+
+正常App使用独立`ProfileAccountRunData`构建并安装到iPhone17Pro，不卸载、不清除已有账号；运行PID8229，仅监听127.0.0.1:18765，见[模拟器整屏截图](./evidence/profile-account-native/simulator-home.png)。本轮临时H5服务、测试脚本与隔离Chrome进程最终检查无残留；用户原4173服务未操作。工程包位于`artifacts/cimoaNeapo-ios.zip`。以下逐页记录保留各提交时点的检查数量与待办，不覆盖本节最终结果。
+
 Edit All 回查：新增照片替换/前后排序/删除二次确认/取消/全部删除拒绝用例，保存前通过 Store 纯校验，非法数量不进入 Loading；外来照片 ID 不能被替换到本人资料。字体显示名、选项 emoji、Sheet 来源 ID 与样式格式已校准。最新累计 Chrome17组、资料专属6项单元通过；本页重新恢复 pending。首轮原生7/7通过，最终修正版原生及既有页面回归正在执行。
 
 Settings / Logout：Chrome16组累计回归通过；79项全量单元通过。设置头像/余额、Account返回、社区规则、退出取消/失败/500ms写时序、清栈Welcome、访客主Tab守卫、错误密码、同账号重登、三Tab单次骨架和刷新保持通过。见[完整浏览器记录](./evidence/profile-edit/settings-acceptance.json)。其余设置子页明确 deferred，不标记成功。三项检查通过；local passed/full pending。
@@ -54,3 +62,21 @@ Interests：复用 onboarding 兴趣实体与最低3项校验；Chrome10组通�
 Basic info：原稿输入/代词/年级/专业、大学生日不可改、缺客服依赖已落实；Chrome9组（含前页8组）通过，空姓名在Loading前拒绝，取消无写入，刷新与无历史返回正确。见[basic验收](./evidence/profile-edit/basic-acceptance.json)。三项检查通过；local passed/full pending。本页提交后继续 Interests。
 
 Edit All：4项新增 Store 单元、5项 Profile 既有单元通过；Chrome8组覆盖真实照片选择/IndexedDB/主图、草稿取消、500ms写时序、存储失败回滚、原稿尺寸、长/空/会话失效、小屏固定区与无音源失败。见[浏览器记录](./evidence/profile-edit/edit-acceptance.json)和[截图](./evidence/profile-edit/edit-default.png)。三项强制命令通过无警告。原型文件浏览器访问受策略限制，来源通过本地静态源码核对，未声称原型浏览器视觉对照通过。完整原生与子页仍 pending；不推送。
+
+上述逐页记录为各提交时点；最终结果以本节顶部为准。首次组件和页面已逐页本地提交：Edit All `21facf1`、Basic `cd51ea5`、Interests `5729b31`、Goals `9184efe`、Ice `667cbbe`、Preview `acb0c05`、Settings `f4829de`、编辑回查 `76b36e8`。没有推送。
+
+## 范围和未完成项
+
+- 注册引导和本轮编辑共用users、profile_photos、interests、goals及icebreakers，不新增页面种子。照片替换保持photo_id，重新写真实媒体；头像引用按第一张同步。退出不删除账号/资料/媒体，只清会话和入口草稿。
+- 原型语音简介、歌曲真实音源、学生认证、Coins、客服及通知/隐私/权限/语言/拉黑列表/举报列表/法律/删除账号的独立设置子页尚未完成。所有缺依赖入口继续明确失败，不能用本轮结果冒充这些成功路径。
+- 原生测试使用真实图片送入系统WebKit文件输入并走生产解码、存储路径；未自动点击系统相册弹窗，硬件、键盘/实际触摸和全App依赖仍待完整验收。
+- 原HTML未改动或嵌入；普通浏览器禁止打开原型的限制仍存在，UI来源由静态源码核对，不能宣称原型运行时逐像素对照完成。
+- 新增7条路由；总36条注册路由、33/103条计划路由已注册、70条待补。verified仍0。
+
+## 改动文件
+
+- 页面：`src/pages/profile/edit.vue`、`basic.vue`、`interests.vue`、`goals.vue`、`ice.vue`、`preview.vue`、`editor.css`、`src/pages/settings/index.vue`；原`profile/index.vue`消费保存字体。
+- 共用组件：`ProfileEditorFrame.vue`、`ProfileChoiceEditor.vue`、`ProfileFieldSheet.vue`、`ProfileBioConfirmDialog.vue`、`ProfileActionLoading.vue`、`LogoutConfirmDialog.vue`；复用并扩展`PhotoActionsConfirmDialog.vue`、`SourceIcon.vue`和`MainTabFrame.vue`。
+- 数据/工具：`src/stores/profileEditing.js`、`store.js`、`src/composables/useProfileEditor.js`、`src/utils/profileNavigation.js`、`profilePresentation.js`、`settingsNavigation.js`；路由`src/pages.json`，主题`src/config/theme.json`，全局样式引用`src/App.vue`。
+- 验证：`scripts/profile-edit.test.mjs`、`profile-edit-browser.test.mjs`、`profile.test.mjs`、`scripts/lib/profile-browser.mjs`、`ios/cimoaNeapo/Tests/HostTests.swift`；证据在`docs/evidence/profile-edit`及`profile-account-native`。
+- 文档/产物：本记录、页面清单、实现审计、阶段五/六状态、宿主README、`dist/build/h5`、自动同步的`ios/cimoaNeapo/Resources`与独立导出包。两份强制约定没有修改。

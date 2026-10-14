@@ -1,0 +1,15 @@
+{
+  "result": "passed",
+  "archive": "artifacts/cimoaNeapo-ios.zip",
+  "zip_entries": 215,
+  "h5_files": 182,
+  "h5_manifest_sha256": "4e3b0a1347a090d881ffdad39ba4f32faf7c7368bee589683ff533fa60ba1ca5",
+  "archive_sha256": "ce8aa2e8cb3724f9fdc78957c51bc6711b90d516fdb421c3afd4a22f76404d85",
+  "matches_dist": true,
+  "matches_native_test_build": true,
+  "matches_normal_simulator_build": true,
+  "includes_updated_tests": true,
+  "includes_updated_readme": true,
+  "no_prototype_or_derived_data": true,
+  "native_result": "ProfileAccountAcceptance-3.xcresult"
+}

@@ -1,0 +1,89 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "BF504B4D-0F2A-4DC1-8744-B08F1F3988DA.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView Home with measured insets_0_44A0517C-1304-418B-884F-0235CCED7B2F.png",
+        "timestamp" : 1791950672.38
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "791A0018-2CC8-4843-8890-4682297B0939.txt",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Native safe area and H5 geometry_0_3A6566AE-F4BE-4326-8F49-1D06BA710523.txt",
+        "timestamp" : 1791950672.306
+      }
+    ],
+    "testIdentifier" : "HostTests/testBundledH5AndMeasuredSafeAreas()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testBundledH5AndMeasuredSafeAreas"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "1DDE1D3E-BE71-474B-852B-5EFEE2588277.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView fixed local code success_0_9CFE7739-1BAF-4ABE-B74E-1A9410CAC66D.png",
+        "timestamp" : 1791950674.125
+      }
+    ],
+    "testIdentifier" : "HostTests/testFixedLocalVerificationAndRefresh()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testFixedLocalVerificationAndRefresh"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "16A8A701-4D3C-4924-9689-0BBD18550877.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "Fresh WKWebView Welcome_0_8B0C0308-72C4-4D01-A998-EAE31BEE4AB4.png",
+        "timestamp" : 1791950677.066
+      }
+    ],
+    "testIdentifier" : "HostTests/testFreshEntryAndRealLocalLogin()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testFreshEntryAndRealLocalLogin"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "2D3241B1-C742-4AC7-A72A-1973C4A96DA8.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView edited local profile after relogin and refresh_0_EB5716DB-81F1-43E8-A575-9D06CFE582DB.png",
+        "timestamp" : 1791950734.784
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "B5ADF44D-6E36-4179-B183-4276B7025BD0.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView newly registered Home_0_C3B5F5C7-943A-4FE8-A79F-205897BC5CB2.png",
+        "timestamp" : 1791950709.024
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "25849BB7-7B62-4EF7-B1B3-CC3020D0F4A2.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView registration profile ready_0_33797ACB-5696-4729-9C98-2839917B44C3.png",
+        "timestamp" : 1791950703.764
+      }
+    ],
+    "testIdentifier" : "HostTests/testFreshRegistrationToHomeWithOwnedPhotos()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testFreshRegistrationToHomeWithOwnedPhotos"
+  }
+]

@@ -1,7 +1,7 @@
 {
   "phase": "age",
   "result": "passed",
-  "server_pid": 73151,
+  "server_pid": 7864,
   "checks": [
     "Splash → Welcome → Age; invalid/underage zero writes; custom Loading before adult draft save",
     "Age refresh preserves DOB; 320px fixed CTA fits; direct-refresh Back returns Welcome"

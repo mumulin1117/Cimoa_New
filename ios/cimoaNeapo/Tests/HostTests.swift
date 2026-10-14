@@ -172,8 +172,63 @@ final class HostTests: XCTestCase {
             XCTAssertTrue(refreshed)
             let after = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
             XCTAssertEqual(after, final["state"] as? String)
+            try await verifyProfileAccountLoop(host)
             try await restore()
         } catch { try? await restore(); throw error }
+    }
+    private func verifyProfileAccountLoop(_ host: WebViewController) async throws {
+        // Continue with the just-registered local account and its real IndexedDB
+        // photos. The caller restores the exact pre-test account/media afterward.
+        let result = try await script(host, """
+        const delay=ms=>new Promise(r=>setTimeout(r,ms));
+        const visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0&&getComputedStyle(e).visibility!=='hidden');
+        const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Profile loop timeout: '+location.hash+' '+document.body.innerText)};
+        const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);e.click();await delay(80)};
+        const fill=async(label,value)=>{const e=await wait(()=>visible('uni-input[aria-label="'+label+'"] input,uni-textarea[aria-label="'+label+'"] textarea'));e.value=value;e.dispatchEvent(new Event('input',{bubbles:true}));await delay(80)};
+        const choose=async label=>{await delay(320);const e=[...document.querySelectorAll('[role=button]')].find(e=>(e.getAttribute('aria-label')===label||e.textContent.trim()===label)&&e.getBoundingClientRect().height>0);if(!e)throw Error('Missing '+label);e.click();await delay(80)};
+        const state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data, owner=d=>d.users.find(u=>u.user_id===d.session.current_user_id);
+        const assert=(value,label)=>{if(!value)throw Error(label)};
+        const original=state(),originalUser=owner(original),secondPhoto=original.profile_photos.find(p=>p.photo_id===originalUser.photo_ids[1]);
+        await click('home.openMe.click.1');await wait(()=>visible('.profile-name'));await click('profile.openEditBasic.click.1');await wait(()=>visible('.profile-edit-page'));
+        await click('profileEdit.basic.click.1');await fill('Display name','Native Updated');await fill('Field of study','Collaborative Design');await click('editBasic.saveBasic.click.1');await wait(()=>visible('.profile-edit-page'));
+        await click('editAll.eaInterests.click.1');await wait(()=>visible('.profile-interests-page'));visible('[data-choice-id="films"]').click();await delay(80);await click('editInterests.saveInterests.click.1');await wait(()=>visible('.profile-edit-page'));
+        await click('editAll.eaGoals.click.1');await wait(()=>visible('.profile-goals-page'));visible('[data-choice-id="coffee"]').click();await delay(80);await click('editGoals.saveGoals.click.1');await wait(()=>visible('.profile-edit-page'));
+        await click('editAll.eaIce.click.1');await wait(()=>visible('.profile-ice-page'));await choose('Remove question 1');await fill('Custom icebreaker','Which campus tradition should we start?');await click('editIce.addCustom.click.1');await click('editIce.saveIce.click.1');await wait(()=>visible('.profile-edit-page'));
+        await choose('Edit photo 2');await choose('Set as Primary');await wait(()=>!visible('[role=dialog]'));await click('editAll.eaOpenBio.click.1');await fill('Profile bio','Updated through the native profile editor.');await choose('Poppins');await click('editAll.eaBioDone.click.1');await wait(()=>!visible('[role=dialog]'));await click('editAll.eaSave.click.1');await wait(()=>visible('.profile-name'));
+        assert(visible('.profile-name').textContent.includes('Native Updated'),'Profile did not update');await wait(()=>visible('.profile-avatar .profile-photo')?.dataset.mediaStatus==='ready');
+        await click('profile.openProfilePreview.click.1');await wait(()=>visible('.profile-preview-page'));await click('profilePreview.nextPhoto.click.1');assert(visible('.photo-dots').children[1].getAttribute('aria-current')==='true','Photo paging failed');
+        await click('profilePreview.openEditBasic.click.1');await wait(()=>visible('.profile-edit-page'));await click('editAll.eaSave.click.1');await wait(()=>visible('.profile-preview-page'));await click('profilePreview.goBack.click.1');await wait(()=>visible('.profile-name'));
+        await click('profile.openAppSettings.click.1');await wait(()=>visible('.settings-page'));await wait(()=>visible('.settings-avatar .profile-photo')?.dataset.mediaStatus==='ready');
+        await click('settings.openEditBasic.click.1');await wait(()=>visible('.profile-edit-page'));await click('editAll.eaSave.click.1');await wait(()=>visible('.settings-page'));
+        const saved=state(),user=owner(saved);assert(user.avatar_url===secondPhoto.media_url,'Primary photo did not synchronize');assert(user.interest_ids.includes('films')&&user.goal_ids.includes('coffee'),'Selections not shared');assert(saved.icebreakers.find(q=>q.question_id===user.icebreaker_ids[2]).text==='Which campus tradition should we start?','Questions not shared');assert(user.verification_status==='pending','False student verification');
+        const snapshot=localStorage.getItem('cimoa_app_state_v2');await click('settings.openLogoutConfirm.click.1');await click('sheetLogout.closeSheet.click.2');await wait(()=>!visible('[role=dialog]'));assert(localStorage.getItem('cimoa_app_state_v2')===snapshot,'Logout cancellation wrote data');
+        await click('settings.openLogoutConfirm.click.1');await click('sheetLogout.logOut2.click.1');assert(!!visible('.loading')&&localStorage.getItem('cimoa_app_state_v2')===snapshot,'Logout wrote before Loading');await wait(()=>visible('.welcome-page'));assert(state().session.account_id===null,'Session not cleared');
+        for(const key of ['users','accounts','profile_photos','media_files','icebreakers','relationships','coin_transactions','settings'])assert(JSON.stringify(state()[key])===JSON.stringify(saved[key]),'Logout changed '+key);
+        await click('welcome.goLogin.click.1');await fill('Email','native.registration@campus.edu');await fill('Password','wrong-password');await click('login.loginNow.click.1');await wait(()=>visible('.login-page [role=alert]'));assert(state().session.account_id===null,'Wrong password logged in');
+        await fill('Password','localpass123');await click('login.loginNow.click.1');await wait(()=>visible('.home-header'));assert(!!visible('.main-skeleton'),'Login skeleton missing');await wait(()=>!visible('.main-skeleton'));
+        for(const tab of ['Discover','Events']){await choose(tab);await wait(()=>document.querySelector('.tab[aria-current=page]')?.getAttribute('aria-label')===tab);assert(!!visible('.main-skeleton'),'First Tab skeleton missing');await wait(()=>!visible('.main-skeleton'))}
+        await choose('Home');await wait(()=>visible('.home-header'));assert(!visible('.main-skeleton'),'Home skeleton repeated');await click('home.openMe.click.1');await wait(()=>visible('.profile-name'));await click('profile.openProfilePreview.click.1');await wait(()=>visible('.preview-photo .profile-photo')?.dataset.mediaStatus==='ready');
+        assert(JSON.stringify(owner(state()))===JSON.stringify(user),'Relogin changed profile');assert(visible('.preview-body').textContent.includes('Updated through the native profile editor.'),'Preview text missing');
+        await document.fonts.ready;window.__profileOldDocument=true;
+        return {name:user.user_name,photos:user.photo_ids.length,questions:user.icebreaker_ids.length,student:user.verification_status,state:localStorage.getItem('cimoa_app_state_v2')}
+        """) as! [String: Any]
+        XCTAssertEqual(result["name"] as? String, "Native Updated")
+        XCTAssertEqual(result["photos"] as? Int, 2); XCTAssertEqual(result["questions"] as? Int, 3)
+        XCTAssertEqual(result["student"] as? String, "pending")
+        host.webView.reload()
+        var refreshed = false
+        for _ in 0..<100 {
+            if (try? await script(host, "return !window.__profileOldDocument && document.querySelector('.preview-photo .profile-photo')?.dataset.mediaStatus==='ready'")) as? Bool == true { refreshed = true; break }
+            try await Task.sleep(nanoseconds: 100_000_000)
+        }
+        XCTAssertTrue(refreshed, "Real profile photos must decode after a fresh WKWebView document.")
+        let after = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        XCTAssertEqual(after, result["state"] as? String)
+        _ = try await script(host, "await document.fonts.ready;await Promise.all([...document.querySelectorAll('.preview-photo img')].map(image=>image.decode()));await Promise.all(document.querySelector('.profile-preview-page .page-transition').getAnimations().map(animation=>animation.finished));await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));return true")
+        // WebKit's UI-process snapshot may trail the DOM/image load by a frame.
+        // Wait for compositing, not for any business operation or fake loading.
+        try await Task.sleep(nanoseconds: 250_000_000)
+        let image = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); image.name = "WKWebView edited local profile after relogin and refresh"; image.lifetime = .keepAlways; add(image)
     }
     private func home(_ host: WebViewController) async throws {
         _ = try await script(host, "location.hash = '#/pages/home/index'; await new Promise((resolve,reject) => { let tries=0; const t=setInterval(() => { const el=document.querySelector('.home-header'); if(el && el.getBoundingClientRect().height>0) {clearInterval(t);resolve(true)} else if(++tries>100) {clearInterval(t);reject(Error('Home unavailable'))}},50)}); return true")

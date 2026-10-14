@@ -1,7 +1,7 @@
 {
   "result": "passed",
   "runtime": "Chromium, fresh isolated profile, 393 x 852",
-  "server_pid": 87041,
+  "server_pid": 6796,
   "checks": [
     {
       "name": "three source tabs, capsule geometry, restored session has no skeleton",
@@ -98,7 +98,7 @@
       }
     },
     {
-      "name": "all four exact child routes remain honest deferred failures with no writes or native navigation Loading",
+      "name": "all four exact child routes use current readiness; restored pages return, deferred routes fail honestly without writes",
       "result": "passed"
     },
     {

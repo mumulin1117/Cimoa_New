@@ -3,8 +3,8 @@
   "meaning": "154 source states are not 154 pages. Registration/file existence does not establish fidelity or runtime acceptance.",
   "source_states": 154,
   "planned_routes": 103,
-  "registered_routes": 29,
-  "registered_planned_routes": 26,
+  "registered_routes": 36,
+  "registered_planned_routes": 33,
   "missing_routes": [
     "/pages/legal/terms",
     "/pages/legal/privacy",
@@ -52,16 +52,9 @@
     "/pages/coins/purchase-detail",
     "/pages/coins/spend-detail",
     "/pages/coins/help",
-    "/pages/profile/preview",
-    "/pages/profile/edit",
-    "/pages/profile/basic",
-    "/pages/profile/interests",
-    "/pages/profile/goals",
     "/pages/profile/prefs",
-    "/pages/profile/ice",
     "/pages/profile/verification",
     "/pages/profile/reverify",
-    "/pages/settings/index",
     "/pages/settings/notif",
     "/pages/settings/privacy",
     "/pages/settings/perm",
@@ -2211,9 +2204,9 @@
         "profilePreview.openEditBasic.click.2"
       ],
       "entities": "users; profile_photos; interests; goals; icebreakers; profile_song",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2222,7 +2215,7 @@
       "source_query": "route=editAll",
       "route": "/pages/profile/edit",
       "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/profile/index）；无历史实例时 replace /pages/profile/index，不创建伪造实体",
+      "return_owner": "pop origin_route（Profile / Preview / Settings）；无历史实例时 replace /pages/profile/index，不创建伪造实体",
       "interaction_ids": [
         "editAll.goBack.click.1",
         "editAll.eaVerify.click.1",
@@ -2284,9 +2277,9 @@
         "sheetMic.denyMic.click.1"
       ],
       "entities": "users; profile_photos; interests; goals; icebreakers; profile_song",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2306,9 +2299,9 @@
         "editBasic.saveBasic.click.1"
       ],
       "entities": "users; profile_photos; interests; goals; icebreakers; profile_song",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2324,9 +2317,9 @@
         "editInterests.saveInterests.click.1"
       ],
       "entities": "users; profile_photos; interests; goals; icebreakers; profile_song",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2342,9 +2335,9 @@
         "editGoals.saveGoals.click.1"
       ],
       "entities": "users; profile_photos; interests; goals; icebreakers; profile_song",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2386,9 +2379,9 @@
         "sheetIceCustom.addCustom.click.1"
       ],
       "entities": "users; profile_photos; interests; goals; icebreakers; profile_song",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2452,9 +2445,9 @@
         "sheetLogout.logOut2.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2633,8 +2626,8 @@
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
       "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },

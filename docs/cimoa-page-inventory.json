@@ -8769,7 +8769,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
   },
   {
     "source_screen": "Profile / Edit / All",
@@ -8782,13 +8782,15 @@
     "component": null,
     "parent_route": "/pages/profile/index",
     "allowed_origin_routes": [
-      "/pages/profile/index"
+      "/pages/profile/index",
+      "/pages/profile/preview",
+      "/pages/settings/index"
     ],
     "required_parameters": [],
     "entry_points": [
       "openEditBasic@5383"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/profile/index）；无历史实例时 replace /pages/profile/index，不创建伪造实体",
+    "return_owner": "pop origin_route（Profile / Preview / Settings）；无历史实例时 replace /pages/profile/index，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -8961,7 +8963,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
   },
   {
     "source_screen": "Profile / Edit / Basic Info",
@@ -9030,7 +9032,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
   },
   {
     "source_screen": "Profile / Edit / Interests",
@@ -9091,7 +9093,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
   },
   {
     "source_screen": "Profile / Edit / Connection Goals",
@@ -9146,7 +9148,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
   },
   {
     "source_screen": "Profile / Edit / Preferences",
@@ -9297,7 +9299,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
   },
   {
     "source_screen": "Profile / Verification / Verified",
@@ -9584,7 +9586,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
   },
   {
     "source_screen": "Settings / Notifications / Default",
@@ -10220,7 +10222,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
   },
   {
     "source_screen": "Settings / Delete Account / Information",
