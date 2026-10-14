@@ -96,3 +96,45 @@
   background: var(--cimoa-gradient-card-fill) padding-box, var(--cimoa-gradient-primary) border-box;
   font-weight: 700;
 }
+.delete-final-reason {
+  display: block;
+  margin-top: 30.534rpx;
+  color: var(--cimoa-text-secondary);
+  font-size: 27.672rpx;
+  line-height: 1.45;
+}
+.delete-password-block { margin-top: 34.351rpx; }
+.delete-password-label {
+  display: block;
+  margin-bottom: 13.359rpx;
+  color: var(--cimoa-text-secondary);
+  font-size: 27.672rpx;
+  font-weight: 600;
+}
+.delete-password-box {
+  display: flex;
+  align-items: center;
+  min-height: 106.87rpx;
+  padding: 0 34.351rpx;
+  border-radius: 34.351rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-card);
+}
+.delete-password-input {
+  flex: 1;
+  min-width: 0;
+  color: var(--cimoa-text-title);
+  font-size: 32.443rpx;
+}
+.delete-password-toggle {
+  flex: none;
+  padding: 15.267rpx;
+  color: var(--cimoa-text-link);
+  font-size: 26.718rpx;
+  font-weight: 700;
+  cursor: pointer;
+}
+.delete-page-action--danger {
+  background: var(--cimoa-surface-settings-danger);
+  color: var(--cimoa-text-settings-danger);
+}

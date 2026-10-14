@@ -38,7 +38,7 @@ const save_and_continue = async () => {
   const result = await run_with_loading(() => store.save_draft('delete-account', draft_target, { reason: selected.value }))
   if (!active || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message || 'The deletion reason could not be saved.'; return }
-  error.value = 'Your optional reason is saved on this device. Final confirmation is being restored next.'
+  try { await frame.value.navigate_forward('/pages/settings/delete/final') } catch (cause) { error.value = cause.message }
 }
 </script>
 

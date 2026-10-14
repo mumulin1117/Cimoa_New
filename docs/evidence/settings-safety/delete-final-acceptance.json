@@ -1,0 +1,14 @@
+{
+  "phase": "delete-final",
+  "result": "passed",
+  "server_pid": 38700,
+  "checks": [
+    "Final confirmation reads the Store-backed reason and states the local deletion boundary",
+    "Empty password is rejected and cancelling the custom danger confirmation performs no write",
+    "Destructive confirmation remains honestly gated until a real success destination exists",
+    "Password and confirmation Sheet are cleared across refresh while the account remains active",
+    "Final page scrolls in the safe-area frame and Keep My Account abandons the flow at Settings",
+    "Expired session never exposes password or destructive controls"
+  ],
+  "errors": []
+}

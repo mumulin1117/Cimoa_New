@@ -10358,7 +10358,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/settings/delete/final",
-    "component": null,
+    "component": "src/pages/settings/delete/final.vue; src/components/DeleteAccountConfirmDialog.vue",
     "parent_route": "/pages/settings/delete/reason",
     "allowed_origin_routes": [
       "/pages/settings/delete/reason"
@@ -10400,10 +10400,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; destructive action gated until success dependency is restored; full deletion flow pending"
   },
   {
     "source_screen": "Settings / Delete Account / Success",
