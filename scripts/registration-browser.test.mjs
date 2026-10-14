@@ -131,6 +131,46 @@ try {
     await shot('photos-empty')
     check('Photos source fan and fixed footer render; empty collection cannot continue')
   }
+  if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos'].includes(phase)) {
+    const tap_side_photo = async () => {
+      const point = await page.locator('.photo-slot-0').evaluate(el => {
+        const rect = el.getBoundingClientRect()
+        for (let y = rect.top + 25; y < rect.bottom - 25; y += 20) for (let x = rect.left + 25; x < rect.right - 25; x += 20) if (el.contains(document.elementFromPoint(x, y))) return { x, y }
+        throw Error('No exposed clickable photo area')
+      })
+      await page.mouse.click(point.x, point.y)
+    }
+    const open_picker = async (files) => {
+      await page.locator('.permission-photos-page').waitFor(); await settle()
+      const chosen = page.waitForEvent('filechooser'); await click('permPhotos.allowPhotos.click.1'); const chooser = await chosen
+      await chooser.setFiles(files.map(name => path.resolve('static/assets/head', name)))
+      await page.locator('.onboarding-photos-page').waitFor(); await settle()
+      await page.waitForFunction(() => [...document.querySelectorAll('.profile-photo')].every(el => el.dataset.mediaStatus === 'ready'))
+    }
+    await page.locator('.photo-slot-1').click(); await page.locator('.permission-photos-page').waitFor(); await shot('photo-access')
+    const before = await snapshot(); await click('permPhotos.denyPhotos.click.1'); assert.deepEqual(await snapshot(), before)
+    await click('permPhotos.openSettings.click.1'); await page.waitForFunction(() => document.querySelector('[role="alert"]')?.textContent.includes('unavailable in this browser'))
+    await page.getByRole('button', { name: 'Back to Photos', exact: true }).click(); await page.locator('.onboarding-photos-page').waitFor()
+    await page.locator('.photo-slot-1').click(); await open_picker(['me.png', 'maya-card.png'])
+    let data = await snapshot(), owner = data.session.current_user_id
+    assert.equal(data.profile_photos.filter(row => row.user_id === owner).length, 2)
+    await shot('photos-added')
+    const second_url = data.profile_photos.filter(row => row.user_id === owner).sort((a,b)=>a.position-b.position)[1].media_url
+    await tap_side_photo(); await page.getByRole('button', { name: 'Set as Primary', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' })
+    assert.equal((await snapshot()).users.find(row => row.user_id === owner).avatar_url, second_url)
+    await page.locator('.photo-slot-1').click(); await page.getByRole('button', { name: 'Move Later', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' })
+    await tap_side_photo(); await page.getByRole('button', { name: 'Remove Photo', exact: true }).click()
+    const before_remove = await snapshot(); await page.getByRole('button', { name: 'Keep Photo', exact: true }).click(); assert.deepEqual(await snapshot(), before_remove)
+    await page.getByRole('button', { name: 'Remove Photo', exact: true }).click(); await page.locator('[data-photo-action="confirm-remove"]').click(); await page.getByRole('dialog').waitFor({ state: 'hidden' })
+    assert.equal((await snapshot()).profile_photos.filter(row => row.user_id === owner).length, 1)
+    assert.equal(await page.locator('[data-interaction="obPhotos.goObAbout.click.1"]').getAttribute('aria-disabled'), 'true')
+    await tap_side_photo(); await open_picker(['maya-card.png'])
+    await page.locator('.photo-slot-1').click(); await page.getByRole('button', { name: 'Replace Photo', exact: true }).click(); await open_picker(['me.png'])
+    await page.reload(); await page.locator('.onboarding-photos-page').waitFor(); await page.waitForFunction(() => document.querySelectorAll('.profile-photo[data-media-status="ready"]').length === 2)
+    await shot('photos-restored'); await click('obPhotos.goObAbout.click.1')
+    await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='about' })
+    check('Real file chooser → decoded IndexedDB photos; Not Now/no-host Settings honest; primary/order/remove confirmation/replacement/refresh and two-photo gate')
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }

@@ -1,0 +1,1 @@
+import{d as a,c as r,i as e}from"./index-DQhRoq8U.js";import{_ as s}from"./TopSafeArea.B3PkwI_I.js";const o=s({},[["render",function(s,o){const t=e;return a(),r(t,{class:"safe-area","aria-hidden":"true"})}],["__scopeId","data-v-dc104e27"]]);export{o as B};

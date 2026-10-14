@@ -42,9 +42,9 @@ export async function create_recorder({ devices = globalThis.navigator?.mediaDev
     dispose() { if (disposed) return; disposed = true; if (recorder.state !== 'inactive') recorder.stop(); tracks(); reject_pending('Recording was cancelled.'); chunks = [] },
   }
 }
-export const choose_images = () => new Promise((resolve, reject) => {
+export const choose_images = (count = 6) => new Promise((resolve, reject) => {
   if (typeof uni === 'undefined') { reject(new Error('Photo selection is unavailable.')); return }
-  uni.chooseImage({ count: 6, sourceType: ['album'], success: (result) => resolve(result.tempFiles), fail: () => reject(new Error('No photos were selected. Check photo access and try again.')) })
+  uni.chooseImage({ count, sourceType: ['album'], success: (result) => resolve(result.tempFiles), fail: () => reject(new Error('No photos were selected. Check photo access and try again.')) })
 })
 export async function read_permissions(navigator_api = globalThis.navigator) {
   const result = {}

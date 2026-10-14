@@ -92,6 +92,12 @@ final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDeleg
               let method = payload["method"] as? String else { reply(nil, "Invalid or untrusted native bridge request."); return }
         let result: [String: Any]
         switch method {
+        case "openSettings":
+            guard let url = URL(string: UIApplication.openSettingsURLString) else { reply(nil, "Settings are unavailable."); return }
+            UIApplication.shared.open(url, options: [:]) { opened in
+                reply(["version": 1, "request_id": id, "success": true, "result": ["opened": opened]], nil)
+            }
+            return
         case "getEnvironment":
             result = ["platform": "ios", "project": "cimoaNeapo", "bundle_id": Bundle.main.bundleIdentifier ?? "", "system_version": UIDevice.current.systemVersion, "content_source": "bundled-h5", "native_back_gesture": false, "purchases_available": false]
         case "getSafeArea":

@@ -33,6 +33,10 @@
 
 ## 当前执行
 
+Photos + Permissions Photos依赖回归通过：8项单元（注册/媒体与桥接）、累计9组H5检查，真实文件选择器选2张，主图/后移/移除取消及确认/替换/刷新Blob均已执行，photo-access及photos-restored截图核对。当前两页local passed/full pending，原生Settings实际跳转和宿主选图后续验收。三项校验通过无警告，PID79389关闭。此前Photos分段pending记录保留作历史。
+
+Permissions Photos十字段契约：来源3209–3226、/pages/permissions/photos二级说明页，返回原Photos实例/直达fallback Photos；replace_id可选且Store验证归当前账号。permPhotos.allowPhotos.click.1要求已到Photos步骤，系统选图本身不写业务；选择后自定义Loading500ms再真实解码/保存，成功返回Photos，取消/拒绝/容量/过期则本页明确错误不变。Not Now只显示未选择说明，不伪称系统拒绝；Back to Photos取消返回。openSettings在普通浏览器明确不可用，在可信WKWebView白名单桥接调用系统Settings并检查opened结果，不更改权限。持久化/同步范围为本人照片集合、头像和账号进度；验收含真实选择、取消零写、替换/主图/排序/删除/至少2/刷新Blob。当前仅本说明页in_progress，Photos依赖回归不新增并行页面。
+
 Photos分段提交：6项注册/引导单元（含主图/排序/替换/移除、缺Blob、取消、存储失败撤销）及累计8组H5检查通过，photos-empty.png核对。相册选择UI依赖尚未接通，因此local/full均保持pending；先单独补Permissions Photos，不把空态能打开算完成。三项校验通过，PID78528已关闭。
 
 Photos为当前页；Photos完成后先补首用Permissions Photos页再继续About。照片编辑弹层由用户先前授权补齐方案：只选择自己的实际图片，最多3张、至少2张才可完成步骤；主图/前移/后移立即映射当前用户photo_ids和avatar_url，但所有持久化先Loading500ms；移除先独立ConfirmDialog确认，取消零写入。选择/替换经源相册说明页，不直接伪造相册权限。媒体解码、IndexedDB、元数据提交失败或取消时撤销本次新增Blob，不混入测试头像。刷新后从真实Blob恢复，缺文件显示错误且不能完成。此十字段补充适用于obPhotos.p.tap.click.1与photo.replace/primary/earlier/later/remove/confirm-remove，实体为current account/profile_photos/media_files，跨页同步Profile头像，返回归Photos；Loading前无写/取消/失败/至少两张/刷新为验收条件。
