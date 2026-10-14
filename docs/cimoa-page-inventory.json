@@ -120,10 +120,12 @@
   {
     "source_screen": "Legal / Terms of Service / Default",
     "source_query": "route=legalTerms",
-    "source_lines": [],
+    "source_lines": [
+      1035
+    ],
     "page_level": "三级",
     "route": "/pages/legal/terms",
-    "component": null,
+    "component": "src/pages/legal/terms.vue",
     "parent_route": "/pages/settings/legal",
     "allowed_origin_routes": [
       "/pages/settings/legal",
@@ -164,10 +166,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; independent local-document acceptance passed; final legal/auth cross-flow acceptance pending"
   },
   {
     "source_screen": "Legal / Privacy Policy / Default",
@@ -10074,7 +10076,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; Terms, Privacy and Coin Help dependencies pending before full acceptance"
+    "mapping_status": "source-mapped; local acceptance passed with Terms dependency; Privacy and Coin Help dependencies pending before full acceptance"
   },
   {
     "source_screen": "Settings / Log Out / Confirmation",

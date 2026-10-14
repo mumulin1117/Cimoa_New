@@ -604,11 +604,13 @@ try {
     check('Settings opens the source four-row Legal page with an explicit local-build disclosure')
 
     await click('setLegal.openTerms.click.1')
-    assert.match(await page.getByRole('alert').innerText(), /next independent legal page/)
+    await page.locator('.legal-terms-page').waitFor()
+    await click('isLegalDoc.goBack.click.1')
+    await page.locator('.settings-legal-page').waitFor()
     await click('setLegal.openPrivacy.click.1')
     assert.match(await page.getByRole('alert').innerText(), /next independent legal page/)
     assert.deepEqual(await state(), before)
-    check('Pending Terms and Privacy dependencies fail explicitly without opening external pages or changing account data')
+    check('Terms opens as a real local page while pending Privacy fails explicitly; neither opens an external site or changes account data')
 
     await click('setLegal.openAgreeInfo.click.1')
     await page.getByRole('dialog', { name: 'Community Guidelines' }).waitFor()
@@ -633,6 +635,47 @@ try {
     await page.getByRole('alert').waitFor()
     assert.equal(await page.locator('.legal-row').count(), 0)
     check('Expired sessions expose no Legal navigation and offer account-entry recovery')
+  }
+
+  if (phase === 'legal-terms') {
+    const guest = create_scenario('default', Date.now())
+    guest.session = { account_id: null, current_user_id: null, expires_at: null }
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), guest)
+    await page.goto(`${origin}/?phase=${phase}&origin=welcome#/pages/auth/welcome`)
+    const before = await state()
+    await click('welcome.openTerms.click.1')
+    await page.locator('.legal-terms-page').waitFor()
+    const text = await page.locator('.legal-document-body').innerText()
+    assert.match(text, /Local draft · 14 October 2026/)
+    assert.match(text, /not published production terms/)
+    assert.match(text, /StoreKit products, payment processing and receipt verification are not configured/)
+    assert.doesNotMatch(text, /support@|unimatch\.hk/)
+    assert.equal(await page.locator('.legal-document-section').count(), 8)
+    assert.deepEqual(await state(), before)
+    await shot('legal-terms')
+    check('Welcome opens the independent local Terms page with eight truthful sections and no invented operator or contact')
+
+    await page.reload()
+    await page.locator('.legal-terms-page').waitFor()
+    assert.deepEqual(await state(), before)
+    await page.setViewportSize({ width: 320, height: 568 })
+    assert.equal(await page.locator('.secondary-page-scroll .uni-scroll-view').last().evaluate(element => element.scrollHeight > element.clientHeight), true)
+    assert.equal(await page.locator('.legal-document-card').evaluate(element => element.scrollWidth <= element.clientWidth), true)
+    await shot('legal-terms-small')
+    await page.setViewportSize({ width: 393, height: 852 })
+    await click('isLegalDoc.goBack.click.1')
+    await page.locator('.welcome-page').waitFor()
+    check('Terms restores after refresh, scrolls on a small viewport and returns to the unauthenticated Welcome owner')
+
+    const authenticated = create_scenario('default', Date.now())
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), authenticated)
+    await page.goto(`${origin}/?phase=${phase}&origin=settings#/pages/settings/legal`)
+    await click('setLegal.openTerms.click.1')
+    await page.locator('.legal-terms-page').waitFor()
+    await click('isLegalDoc.goBack.click.1')
+    await page.locator('.settings-legal-page').waitFor()
+    assert.equal((await state()).session.current_user_id, 'user_cimoa')
+    check('Authenticated Legal → Terms → Back restores the same Legal page without changing the session')
   }
 
   assert.deepEqual(report.errors, [])

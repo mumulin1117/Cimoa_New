@@ -1,5 +1,5 @@
 import { ONBOARDING_FLOW, onboarding_route } from './onboardingFlow.js'
-const available_auth_routes = new Set(['/pages/auth/splash', '/pages/auth/welcome', '/pages/auth/login', '/pages/auth/age', '/pages/auth/community', '/pages/auth/signup', '/pages/auth/verification/email', '/pages/auth/verification/code', '/pages/auth/verification/success', '/pages/permissions/photos', '/pages/permissions/notif', '/pages/home/index', ...ONBOARDING_FLOW.map(onboarding_route)])
+const available_auth_routes = new Set(['/pages/auth/splash', '/pages/auth/welcome', '/pages/auth/login', '/pages/auth/age', '/pages/auth/community', '/pages/auth/signup', '/pages/auth/verification/email', '/pages/auth/verification/code', '/pages/auth/verification/success', '/pages/legal/terms', '/pages/permissions/photos', '/pages/permissions/notif', '/pages/home/index', ...ONBOARDING_FLOW.map(onboarding_route)])
 export const auth_destination = target => {
   if (!available_auth_routes.has(target.split('?')[0])) throw new Error('This step has not been restored yet. Your account data has not changed.')
   return target

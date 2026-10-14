@@ -31,10 +31,15 @@ const back = async () => {
   navigating.value = true; error.value = ''
   try { await frame.value.navigate_back('/pages/settings/index') } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
-const open_row = row => {
+const open_row = async row => {
   if (navigating.value || access_error.value) return
   error.value = ''
   if (row.kind === 'community') { document.value = store.registration_catalog.agreements.find(item => item.key === 'community'); return }
+  if (row.kind === 'terms') {
+    navigating.value = true
+    try { await frame.value.navigate_forward('/pages/legal/terms') } catch (cause) { error.value = cause.message } finally { navigating.value = false }
+    return
+  }
   error.value = row.kind === 'coins'
     ? 'Coin and Purchase Information has not been restored yet. No purchase was started.'
     : `${row.label} is the next independent legal page in this restoration flow.`
