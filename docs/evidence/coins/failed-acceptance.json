@@ -1,11 +1,11 @@
 {
   "phase": "failed",
   "result": "passed",
-  "server_pid": 44624,
+  "server_pid": 60963,
   "checks": [
     "Purchasing routes a real browser timeout to Failed with unchanged balance and timeout-specific copy",
     "Failed restores the owned terminal request after refresh without resubmitting it",
-    "Unrestored Coin Help fails visibly without writing purchase or ledger state",
+    "Contact Support opens Coin Help and Back restores Failed without writing state",
     "Cancel replaces Failed with Coin Center and preserves its terminal request",
     "Try Again waits for custom Loading and creates a distinct pending request without adding coins"
   ],

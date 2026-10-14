@@ -1,7 +1,7 @@
 {
   "phase": "privacy",
   "result": "passed",
-  "server_pid": 22796,
+  "server_pid": 59523,
   "checks": [
     "Privacy opens from Settings with source visibility choice and seven Store-backed controls",
     "Visibility waits for custom Loading, persists canonical flags and restores after refresh",

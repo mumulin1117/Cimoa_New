@@ -135,9 +135,9 @@ Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码
 | Home / Auto Match / Waiting | route=home&am=waiting | 主 Tab | /pages/home/index | pending |
 | Home / Auto Match / Connected | route=home&am=connected | 主 Tab | /pages/home/index | pending |
 | Messages / Chat / Connected | route=chat | 二级 | /pages/messages/chat | pending |
-| Video Call / Incoming / Default | route=callIncoming | 三级 | /pages/messages/call/waiting | pending |
-| Video Call / Active / Default | route=callActive | 三级 | /pages/messages/call/waiting | pending |
-| Video Call / Ended / Default | route=callEnded | 三级 | /pages/messages/call/waiting | pending |
+| Video Call / Incoming / Default | route=callIncoming | 三级 | /pages/messages/call/waiting | verified |
+| Video Call / Active / Default | route=callActive | 三级 | /pages/messages/call/waiting | verified |
+| Video Call / Ended / Default | route=callEnded | 三级 | /pages/messages/call/waiting | verified |
 | Events / Explore / Default | route=events | 主 Tab | /pages/events/index | pending |
 | Events / Detail / Available | route=evDetail | 二级 | /pages/events/detail | pending |
 | Events / Detail / Joined | route=evDetail&joined=1 | 二级 | /pages/events/detail | pending |
@@ -189,9 +189,9 @@ Home 邀请卡归一化为 Lina 是对“以详情页为准”的应用：源码
 | Settings / Delete Account / Success | route=delSuccess | 流程状态页 | /pages/settings/delete/success | pending |
 | Safety / Reports / Submitted | route=reportsSubmitted | 三级 | /pages/safety/reports | pending |
 | Safety / Report Detail / Default | route=reportDetail | 三级 | /pages/safety/report-detail | pending |
-| Safety / User Actions / Default | route=chat&sheet=safetyActions | Sheet | src/components/SafetyActionsSheet.vue | pending |
+| Safety / User Actions / Default | route=chat&sheet=safetyActions | Sheet | src/components/SafetyActionsSheet.vue | verified |
 | Safety / Report User / Select Reason | route=safetyReport | 三级 | /pages/safety/report-user | pending |
-| Safety / Block User / Confirmation | route=chat&sheet=safetyBlock | 确认弹窗 | src/components/SafetyBlockConfirmDialog.vue | pending |
+| Safety / Block User / Confirmation | route=chat&sheet=safetyBlock | 确认弹窗 | src/components/SafetyActionsSheet.vue + src/components/EventConfirmDialog.vue | verified |
 | System / Loading / Default | route=sysLoading | 流程状态页 | /pages/system/loading | pending |
 | System / Offline / Default | route=sysOffline | 流程状态页 | /pages/system/offline | pending |
 | System / Error / Default | route=sysError | 流程状态页 | /pages/system/error | pending |

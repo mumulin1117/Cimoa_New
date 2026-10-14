@@ -360,6 +360,71 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { try? await restore(); throw error }
     }
+    func testDirectChatSafetyAndMediaInRealWebKit() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        let existing = try await script(host, "return JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.media_files.map(m=>m.media_id)") as! [String]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("""
+            const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,ids=d.media_files.map(m=>m.media_id).filter(id=>!existing.includes(id));
+            if(ids.length){const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');ids.forEach(id=>t.objectStore('blobs').delete(id));t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close()}
+            localStorage.setItem('cimoa_app_state_v2',snapshot);return true
+            """, arguments: ["snapshot": saved, "existing": existing], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?safety=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        do {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?safety=chat#/pages/messages/chat?conversation_id=conversation_chloe")!))
+            try await waitFor(host, ".direct-chat-page")
+            let media = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            const wait=async fn=>{for(let i=0;i<200;i++){const v=fn();if(v)return v;await delay(50)}throw Error('Direct media timeout '+location.hash+' '+document.body.innerText)};
+            const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);e.click();await delay(80)};
+            await wait(()=>!visible('.event-loading'));
+            const field=visible('uni-input[aria-label="Message"] input'),set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(field,'Native direct message');field.dispatchEvent(new Event('input',{bubbles:true}));await delay(80);
+            const count=state().messages.length,beforeText=localStorage.getItem('cimoa_app_state_v2');await click('chat.send.click.1');const textLoading=!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===beforeText;await wait(()=>state().messages.length===count+1);
+            const beforePhoto=localStorage.getItem('cimoa_app_state_v2'),suppress=e=>{if(e.target.matches('input[type=file]'))e.preventDefault()};document.addEventListener('click',suppress,true);
+            try{await click('chat.sendPhoto.click.1');await wait(()=>document.querySelector('input[type=file]'));const transfer=new DataTransfer(),blob=await(await fetch('/static/assets/head/maya-full.png')).blob();transfer.items.add(new File([blob],'maya.png',{type:'image/png'}));const input=[...document.querySelectorAll('input[type=file]')].at(-1);input.files=transfer.files;input.dispatchEvent(new Event('change',{bubbles:true}))}finally{document.removeEventListener('click',suppress,true)}
+            await wait(()=>visible('.chat-media-preview .profile-photo')?.dataset.mediaStatus==='ready');const photoDraft=localStorage.getItem('cimoa_app_state_v2')===beforePhoto;await click('chat.media.send.click.1');const photoLoading=!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===beforePhoto;await wait(()=>visible('.chat-image .profile-photo')?.dataset.mediaStatus==='ready');
+            const last=state().messages.at(-1),file=state().media_files.find(m=>m.media_id===last.media_id);window.__directOldDocument=true;
+            return {textLoading,photoDraft,photoLoading,kind:last.kind,media:file?.media_url,state:localStorage.getItem('cimoa_app_state_v2')}
+            """) as! [String: Any]
+            XCTAssertEqual(media["textLoading"] as? Bool, true); XCTAssertEqual(media["photoDraft"] as? Bool, true); XCTAssertEqual(media["photoLoading"] as? Bool, true)
+            XCTAssertEqual(media["kind"] as? String, "image"); XCTAssertTrue((media["media"] as? String ?? "").hasPrefix("indexeddb://"))
+            host.webView.reload()
+            var refreshed = false
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__directOldDocument && document.querySelector('.chat-image .profile-photo')?.dataset.mediaStatus==='ready'")) as? Bool == true { refreshed = true; break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            XCTAssertTrue(refreshed, "Direct photo must decode from IndexedDB after a fresh WKWebView document.")
+            let afterRefresh = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(afterRefresh, media["state"] as? String)
+            _ = try await script(host, "await document.fonts.ready;await Promise.all([...document.querySelectorAll('.direct-chat-page img')].map(image=>image.decode()));await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));return true")
+            try await Task.sleep(nanoseconds: 250_000_000)
+            let screenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); screenshot.name = "WKWebView direct chat after media refresh"; screenshot.lifetime = .keepAlways; add(screenshot)
+
+            let safety = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            const wait=async fn=>{for(let i=0;i<200;i++){const v=fn();if(v)return v;await delay(50)}throw Error('Safety timeout '+location.hash+' '+document.body.innerText)};
+            const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);e.click();await delay(80)};
+            const beforeCall=localStorage.getItem('cimoa_app_state_v2');await click('chat.startCall.click.1');await wait(()=>visible('.waiting-call-page'));const waitingOnly=visible('.waiting-call-copy').textContent.includes('never claims the other person answered');await click('callActive.endCall.click.1');await wait(()=>visible('.direct-chat-page'));const callUnchanged=localStorage.getItem('cimoa_app_state_v2')===beforeCall;
+            await click('chat.openSafety.click.1');await click('sheetSafety.openReport.click.1');await wait(()=>visible('.safety-report-user-page'));const reportTarget=visible('.editor-title').textContent.includes('Chloe Lin'),reportCount=state().reports.length;await click('safetyReport.goBack.click.1');await wait(()=>visible('.direct-chat-page'));
+            await click('chat.openSafety.click.1');const beforeMute=localStorage.getItem('cimoa_app_state_v2');await click('sheetSafety.muteNotifs.click.1');const muteLoading=!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===beforeMute;await wait(()=>visible('[data-interaction="sheetSafety.muteNotifs.click.1"]')?.textContent.includes('Unmute'));
+            await click('sheetSafety.openBlock.click.1');const beforeCancel=localStorage.getItem('cimoa_app_state_v2');await click('sheetBlock.closeSheet.click.2');await wait(()=>!visible('[role=dialog]'));const cancelUnchanged=localStorage.getItem('cimoa_app_state_v2')===beforeCancel;
+            await click('chat.openSafety.click.1');await click('sheetSafety.openBlock.click.1');const beforeBlock=localStorage.getItem('cimoa_app_state_v2');await click('sheetBlock.confirmBlock.click.1');const blockLoading=!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===beforeBlock;await wait(()=>visible('.home-header'));
+            const blocked=state().blocked_users.some(r=>r.owner_user_id===state().session.current_user_id&&r.user_id==='user_chloe'),conversationGone=!state().conversations.some(r=>r.conversation_id==='conversation_chloe'),messagesGone=!state().messages.some(r=>r.conversation_id==='conversation_chloe');
+            location.hash='#/pages/settings/blocked';await wait(()=>visible('.settings-blocked-page'));const card=await wait(()=>[...document.querySelectorAll('.blocked-card')].find(e=>e.textContent.includes('Chloe Lin')));await delay(320);card.querySelector('[data-interaction="blockedList.b.unblock.click.1"]').click();await wait(()=>visible('[data-interaction="unblockOpen.confirmUnblock.click.1"]'));const beforeUnblock=localStorage.getItem('cimoa_app_state_v2');await click('unblockOpen.confirmUnblock.click.1');const unblockLoading=!!visible('.loading')&&localStorage.getItem('cimoa_app_state_v2')===beforeUnblock;await wait(()=>![...document.querySelectorAll('.blocked-card')].some(e=>e.textContent.includes('Chloe Lin')));
+            return {waitingOnly,callUnchanged,reportTarget,reportCount,muteLoading,muted:state().settings.find(r=>r.owner_user_id===state().session.current_user_id).muted_direct_user_ids.includes('user_chloe'),cancelUnchanged,blockLoading,blocked,conversationGone,messagesGone,unblockLoading,unblocked:!state().blocked_users.some(r=>r.owner_user_id===state().session.current_user_id&&r.user_id==='user_chloe'),notRestored:!state().conversations.some(r=>r.conversation_id==='conversation_chloe')}
+            """) as! [String: Any]
+            XCTAssertEqual(safety["waitingOnly"] as? Bool, true); XCTAssertEqual(safety["callUnchanged"] as? Bool, true)
+            XCTAssertEqual(safety["reportTarget"] as? Bool, true); XCTAssertEqual(safety["reportCount"] as? Int, 0)
+            XCTAssertEqual(safety["muteLoading"] as? Bool, true); XCTAssertEqual(safety["muted"] as? Bool, true); XCTAssertEqual(safety["cancelUnchanged"] as? Bool, true)
+            XCTAssertEqual(safety["blockLoading"] as? Bool, true); XCTAssertEqual(safety["blocked"] as? Bool, true); XCTAssertEqual(safety["conversationGone"] as? Bool, true); XCTAssertEqual(safety["messagesGone"] as? Bool, true)
+            XCTAssertEqual(safety["unblockLoading"] as? Bool, true); XCTAssertEqual(safety["unblocked"] as? Bool, true); XCTAssertEqual(safety["notRestored"] as? Bool, true)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testNativeRequestReplyAndFailureBoundaries() async throws {
         let host = try await host()
         let permission = try await script(host, "return await window.CimoaNativeBridge.request('getNotificationPermission')") as! [String: Any]

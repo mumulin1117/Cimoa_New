@@ -1,7 +1,7 @@
 {
   "phase": "delete-success",
   "result": "passed",
-  "server_pid": 39637,
+  "server_pid": 59939,
   "checks": [
     "Storage failure rolls back the complete deletion transaction and keeps the confirmation retryable",
     "Correct password atomically removes the local private entities, clears the session and lands on a truthful success page",

@@ -1,0 +1,31 @@
+{
+  "phase": "ios-chat-safety",
+  "completed_at": "2026-10-14",
+  "project": "ios/cimoaNeapo/cimoaNeapo.xcodeproj",
+  "scheme": "cimoaNeapo",
+  "bundle_identifier": "com.cimoa.neapo.dev",
+  "simulator": {
+    "name": "iPhone 17 Pro",
+    "runtime": "iOS 26.5",
+    "device_id": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D"
+  },
+  "test": "cimoaNeapoTests.HostTests.testDirectChatSafetyAndMediaInRealWebKit",
+  "result": "passed",
+  "checks": [
+    "Bundled H5 direct chat sends text only after custom Loading",
+    "A real bundled image is decoded through the production file input, persisted with IndexedDB metadata and restored after a fresh WKWebView document",
+    "Waiting-only call opens and returns once without changing business entities",
+    "Report opens for the conversation participant and Back restores the same chat without creating a report",
+    "Direct notification mute writes after Loading",
+    "Block cancellation performs no write",
+    "Confirmed block removes the relationship, conversation and messages after Loading",
+    "Blocked accounts immediately contains the same user",
+    "Confirmed unblock writes after Loading and does not recreate the old relationship or conversation",
+    "The exact pre-test localStorage bytes and newly created media blobs are restored or cleaned after the test"
+  ],
+  "boundaries": [
+    "The image test injects a real bundled image into WebKit's production file input; it does not claim manual system photo-picker operation.",
+    "Physical microphone operation is covered separately by permission state and controlled-browser MediaRecorder tests, not claimed by this simulator test.",
+    "No remote moderation, support, Apple sign-in or StoreKit success is claimed."
+  ]
+}

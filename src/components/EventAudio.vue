@@ -3,7 +3,7 @@ import { ref, watch, onUnmounted } from 'vue'
 import { onHide } from '@dcloudio/uni-app'
 import { media_cache } from '@/utils/mediaRepository.js'
 import SourceIcon from './SourceIcon.vue'
-const props = defineProps({ src: String, duration: Number })
+const props = defineProps({ src: String, duration: Number, interaction: { type: String, default: 'eventGroup.media.play.click.1' } })
 const error = ref(''), playing = ref(false), pending = ref(false)
 let audio, handle, token = 0
 const dispose = () => { token++; audio?.stop(); audio?.destroy(); audio = null; handle?.release(); handle = null; playing.value = false; pending.value = false }
@@ -25,4 +25,10 @@ const toggle = async () => {
   finally { if (current === token) pending.value = false }
 }
 </script>
-<template><view class="event-audio"><view class="event-audio-button" role="button" tabindex="0" :aria-label="playing ? 'Pause voice message' : 'Play voice message'" :aria-disabled="pending" data-interaction="eventGroup.media.play.click.1" @click="toggle" @keydown.enter="toggle"><view class="event-page-icon"><SourceIcon :name="playing ? 'pause' : 'play'" /></view><text>{{ pending ? 'Loading audio…' : `${Math.ceil((duration || 0) / 1000)}s voice message` }}</text></view><text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text></view></template>
+<template><view class="event-audio"><view class="event-audio-button" role="button" tabindex="0" :aria-label="playing ? 'Pause voice message' : 'Play voice message'" :aria-disabled="pending" :data-interaction="interaction" @click="toggle" @keydown.enter="toggle"><view class="event-page-icon"><SourceIcon :name="playing ? 'pause' : 'play'" /></view><text>{{ pending ? 'Loading audio…' : `${Math.ceil((duration || 0) / 1000)}s voice message` }}</text></view><text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text></view></template>
+
+<style scoped>
+.event-audio-button { display: flex; align-items: center; gap: 15.267rpx; padding: 7.634rpx 0; font-size: 28.626rpx; cursor: pointer; }
+.event-page-icon { flex: none; display: flex; width: 41.985rpx; height: 41.985rpx; }
+.event-dialog-error { display: block; margin-top: 11.45rpx; color: var(--cimoa-status-danger); font-size: 24.809rpx; line-height: 1.4; }
+</style>

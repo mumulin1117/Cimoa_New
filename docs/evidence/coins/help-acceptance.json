@@ -1,7 +1,7 @@
 {
   "phase": "help",
   "result": "passed",
-  "server_pid": 49897,
+  "server_pid": 60434,
   "checks": [
     "Coin Help renders seven source FAQs with approved free text and 10/20 coin pricing without writes",
     "Terms and Privacy open as independent pages and return to Coin Help",

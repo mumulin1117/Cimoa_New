@@ -1,7 +1,7 @@
 {
   "phase": "success",
   "result": "passed",
-  "server_pid": 50493,
+  "server_pid": 65252,
   "checks": [
     "Success rejects a real cancelled request and renders no success actions or coin mutation",
     "Refreshing invalid Success remains fail-closed and does not mint coins",

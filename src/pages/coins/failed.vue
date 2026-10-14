@@ -47,7 +47,13 @@ const retry = () => {
     replace(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(result.data)}`)
   })
 }
-const open_help = () => replace(COIN_ROUTES.help)
+const open_help = async () => {
+  if (navigating.value || is_loading.value || access_error.value) return
+  navigating.value = true; error.value = ''
+  try { await frame.value.navigate_forward(require_coin_route_ready(COIN_ROUTES.help)) }
+  catch (cause) { error.value = cause.message }
+  finally { navigating.value = false }
+}
 const back_to_store = () => replace(COIN_ROUTES.center)
 onHide(() => { navigating.value = false; cancel_loading() })
 onUnmounted(cancel_loading)

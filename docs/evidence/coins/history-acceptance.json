@@ -1,11 +1,11 @@
 {
   "phase": "history",
   "result": "passed",
-  "server_pid": 47097,
+  "server_pid": 60302,
   "checks": [
     "History combines four ledger entries with one terminal request without changing the 260 balance",
     "All, Purchases and Used filters derive from canonical ledger and request entities",
-    "Unrestored purchase detail is dependency-gated without a ledger write",
+    "Purchase rows open their owned ledger detail and Back restores History without a write",
     "Terminal request rows open their real result entity and Close restores History",
     "History refresh restores persisted ledger and terminal requests",
     "History Back restores the existing Coin Center instance",

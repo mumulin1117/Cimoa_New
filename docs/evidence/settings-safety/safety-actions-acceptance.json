@@ -1,0 +1,26 @@
+{
+  "phase": "safety-actions",
+  "result": "passed",
+  "server_pid": 63632,
+  "checks": [
+    "Direct text send waits for custom Loading, persists once, clears the draft and restores after refresh",
+    "Direct-message persistence failure rolls back completely and keeps the text draft retryable",
+    "Direct photo uses the real chooser, remains a draft until confirmation, then restores its Blob after refresh",
+    "Denied direct-chat microphone access reports the real failure and cannot send an empty voice message",
+    "Controlled real audio records, decodes, saves once, and plays from IndexedDB after direct-chat refresh",
+    "Long direct history scrolls only inside the fixed header/composer frame and remains safe on a small viewport",
+    "Call entry uses only the approved waiting simulation and returns once without changing local entities",
+    "Waiting call remains safe at small size and auto-ends once within the approved 8–12 second window",
+    "Chat opens the source safety Sheet over the same conversation and Store-backed user entity",
+    "Mute waits for custom Loading, persists, and restores after refresh without changing the conversation",
+    "Block confirmation explains destructive effects and Cancel performs no write",
+    "View Profile and Report preserve the exact chat return owner and create no record before confirmation",
+    "Profile safety write failure stays retryable and leaves profile, chat, relationship and block state unchanged",
+    "Confirmed profile block waits for Loading, atomically filters cross-page entities, and returns to Discover",
+    "A valid conversation with no messages renders the real empty state without inventing history",
+    "A forged conversation ID shows a recoverable error and exposes no private composer",
+    "A forged call conversation shows an explicit error and never starts a timer or fake call",
+    "Home opens the canonical Chloe conversation and chat Back restores the original Home instance"
+  ],
+  "errors": []
+}

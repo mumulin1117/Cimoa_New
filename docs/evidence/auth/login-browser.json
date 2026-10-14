@@ -1,13 +1,13 @@
 {
   "phase": "login",
   "result": "passed",
-  "server_pid": 86941,
+  "server_pid": 64845,
   "checks": [
     "fresh launch renders source brand/progress without authenticating or writing storage",
     "source automatic launch reaches actual Welcome once without a session write",
     "Welcome pushes source Login once; 46px Back returns to the original Welcome",
     "invalid form skips Loading; wrong credentials show real failure, retain form and never create session",
-    "Apple and reset cannot fabricate authorization or email delivery in a normal browser",
+    "Apple cannot fabricate authorization; local reset opens without claiming email delivery and Back restores Login",
     "storage failure is atomic and leaves login retryable without a partial session",
     "only successful delayed commit signs in; all three Tabs consume a single skeleton and never grow the stack",
     "refresh restores the committed session without preparing skeletons or storing plaintext password",

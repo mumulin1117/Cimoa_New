@@ -1,7 +1,7 @@
 {
   "phase": "delete-info",
   "result": "passed",
-  "server_pid": 39935,
+  "server_pid": 59915,
   "checks": [
     "Settings opens the source-matched Delete account information page with the canonical balance and truthful local-only scope",
     "Continue opens the real reason page, Back restores the information owner and refresh performs no write",

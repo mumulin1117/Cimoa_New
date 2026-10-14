@@ -3,18 +3,12 @@
   "meaning": "154 source states are not 154 pages. Registration/file existence does not establish fidelity or runtime acceptance.",
   "source_states": 154,
   "planned_routes": 103,
-  "registered_routes": 41,
-  "registered_planned_routes": 38,
+  "registered_routes": 73,
+  "registered_planned_routes": 70,
   "missing_routes": [
-    "/pages/legal/terms",
-    "/pages/legal/privacy",
     "/pages/auth/verification/unsupported",
-    "/pages/auth/reset/email",
-    "/pages/auth/reset/code",
-    "/pages/auth/reset/new",
     "/pages/permissions/camera",
     "/pages/permissions/mic",
-    "/pages/discover/profile",
     "/pages/discover/icebreaker/select",
     "/pages/discover/icebreaker/text",
     "/pages/discover/icebreaker/voice",
@@ -33,37 +27,11 @@
     "/pages/auto-match/expired",
     "/pages/auto-match/no-match",
     "/pages/auto-match/history",
-    "/pages/messages/chat",
-    "/pages/messages/call/waiting",
-    "/pages/events/report",
-    "/pages/coins/index",
-    "/pages/coins/purchasing",
-    "/pages/coins/success",
-    "/pages/coins/failed",
-    "/pages/coins/cancelled",
     "/pages/coins/processing",
     "/pages/coins/spend-failed",
-    "/pages/coins/history",
-    "/pages/coins/purchase-detail",
-    "/pages/coins/spend-detail",
-    "/pages/coins/help",
     "/pages/profile/prefs",
     "/pages/profile/verification",
     "/pages/profile/reverify",
-    "/pages/settings/notif",
-    "/pages/settings/privacy",
-    "/pages/settings/perm",
-    "/pages/settings/lang",
-    "/pages/settings/blocked",
-    "/pages/settings/support",
-    "/pages/settings/legal",
-    "/pages/settings/delete/info",
-    "/pages/settings/delete/reason",
-    "/pages/settings/delete/final",
-    "/pages/settings/delete/success",
-    "/pages/safety/reports",
-    "/pages/safety/report-detail",
-    "/pages/safety/report-user",
     "/pages/system/loading",
     "/pages/system/offline",
     "/pages/system/error",
@@ -77,7 +45,7 @@
     "/pages/auth/index",
     "/pages/system/index"
   ],
-  "fully_verified_states": 0,
+  "fully_verified_states": 12,
   "production_acceptance": "pending",
   "pages": [
     {
@@ -119,15 +87,15 @@
       "source_screen": "Legal / Terms of Service / Default",
       "source_query": "route=legalTerms",
       "route": "/pages/legal/terms",
-      "component": null,
+      "component": "src/pages/legal/terms.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/legal、/pages/auth/welcome、/pages/auth/signup）；无历史实例时 replace /pages/settings/legal，不创建伪造实体",
       "interaction_ids": [
         "isLegalDoc.goBack.click.1"
       ],
       "entities": "legal_documents; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -135,15 +103,15 @@
       "source_screen": "Legal / Privacy Policy / Default",
       "source_query": "route=legalPrivacy",
       "route": "/pages/legal/privacy",
-      "component": null,
+      "component": "src/pages/legal/privacy.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/legal、/pages/auth/welcome、/pages/auth/signup）；无历史实例时 replace /pages/settings/legal，不创建伪造实体",
       "interaction_ids": [
         "isLegalDoc.goBack.click.1"
       ],
       "entities": "legal_documents; agreements",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -310,7 +278,7 @@
       "source_screen": "Auth / Forgot Password / Email",
       "source_query": "route=fpEmail",
       "route": "/pages/auth/reset/email",
-      "component": null,
+      "component": "src/pages/auth/reset/email.vue; src/components/AuthActionLoading.vue",
       "return_owner": "pop origin_route（允许来源：/pages/auth/login）；无历史实例时 replace /pages/auth/login，不创建伪造实体",
       "interaction_ids": [
         "fpEmail.goBack.click.1",
@@ -318,17 +286,17 @@
         "fpEmail.goFpCode.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Auth / Forgot Password / Code",
       "source_query": "route=fpCode",
       "route": "/pages/auth/reset/code",
-      "component": null,
+      "component": "src/pages/auth/reset/code.vue; src/components/AuthActionLoading.vue",
       "return_owner": "pop origin_route（允许来源：/pages/auth/reset/email）；无历史实例时 replace /pages/auth/reset/email，不创建伪造实体",
       "interaction_ids": [
         "fpCode.goBack.click.1",
@@ -337,17 +305,17 @@
         "fpCode.goFpNew.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Auth / Forgot Password / New Password",
       "source_query": "route=fpNew",
       "route": "/pages/auth/reset/new",
-      "component": null,
+      "component": "src/pages/auth/reset/new.vue; src/components/AuthActionLoading.vue",
       "return_owner": "pop origin_route（允许来源：/pages/auth/reset/code）；无历史实例时 replace /pages/auth/reset/code，不创建伪造实体",
       "interaction_ids": [
         "fpNew.goBack.click.1",
@@ -357,11 +325,11 @@
         "fpNew.finishReset.click.1"
       ],
       "entities": "user_accounts; session; verification; agreements",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Onboarding / Basic Info / Default",
@@ -783,9 +751,9 @@
         "sheetBlock.closeSheet.click.2"
       ],
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1530,9 +1498,9 @@
         "sheetBlock.closeSheet.click.2"
       ],
       "entities": "users; dm_conversations; dm_messages; call_sessions; user_relationships; blocked_users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1547,11 +1515,11 @@
         "callIncoming.acceptCall.click.1"
       ],
       "entities": "users; dm_conversations; dm_messages; call_sessions; user_relationships; blocked_users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Video Call / Active / Default",
@@ -1569,11 +1537,11 @@
         "callActive.endCall.click.1"
       ],
       "entities": "users; dm_conversations; dm_messages; call_sessions; user_relationships; blocked_users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Video Call / Ended / Default",
@@ -1587,11 +1555,11 @@
         "callEnded.openReport.click.1"
       ],
       "entities": "users; dm_conversations; dm_messages; call_sessions; user_relationships; blocked_users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Events / Explore / Default",
@@ -1840,7 +1808,7 @@
       "source_screen": "Events / Report / Select Reason",
       "source_query": "route=evReport",
       "route": "/pages/events/report",
-      "component": null,
+      "component": "src/pages/events/report.vue",
       "return_owner": "pop origin_route（允许来源：/pages/events/detail、/pages/events/group）；无历史实例时 replace /pages/events/detail，不创建伪造实体",
       "interaction_ids": [
         "evReport.goBack.click.1",
@@ -1848,9 +1816,9 @@
         "evReport.submitEvReport.click.1"
       ],
       "entities": "events; event_memberships; organizers; group_list; group_messages; reports",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1858,7 +1826,7 @@
       "source_screen": "Wallet / Coin Center / Default",
       "source_query": "route=coinStore",
       "route": "/pages/coins/index",
-      "component": null,
+      "component": "src/pages/coins/index.vue",
       "return_owner": "pop origin_route（允许来源：/pages/profile/index、/pages/discover/icebreaker/preview、/pages/auto-match/index、/pages/auto-match/searching）；无历史实例时 replace /pages/profile/index，不创建伪造实体",
       "interaction_ids": [
         "coinStore.goBack.click.1",
@@ -1867,9 +1835,9 @@
         "coinStore.continuePurchase.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1877,16 +1845,16 @@
       "source_screen": "Coins / Store / Purchasing",
       "source_query": "route=coinPurchasing&pkg=1",
       "route": "/pages/coins/purchasing",
-      "component": null,
+      "component": "src/pages/coins/purchasing.vue; src/components/CoinActionLoading.vue",
       "return_owner": "pop origin_route（允许来源：/pages/coins/index）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
       "interaction_ids": [
         "coinPurchasing.goBack.click.1",
         "coinPurchasing.backToStore.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1894,7 +1862,7 @@
       "source_screen": "Coins / Purchase / Apple Confirmation",
       "source_query": "route=coinApple&pkg=1",
       "route": "/pages/coins/purchasing",
-      "component": null,
+      "component": "src/pages/coins/purchasing.vue; src/utils/iapBridge.js",
       "return_owner": "pop origin_route（允许来源：/pages/coins/index）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
       "interaction_ids": [
         "coinApple.goBack.click.1",
@@ -1903,9 +1871,9 @@
         "coinApple.appleFail.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1913,7 +1881,7 @@
       "source_screen": "Coins / Purchase / Success",
       "source_query": "route=coinSuccess&pkg=1&coins=200",
       "route": "/pages/coins/success",
-      "component": null,
+      "component": "src/pages/coins/success.vue",
       "return_owner": "pop origin_route（允许来源：/pages/coins/index）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
       "interaction_ids": [
         "coinSuccess.resumeSpend.click.1",
@@ -1922,9 +1890,9 @@
         "coinSuccess.backToStore.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1932,7 +1900,7 @@
       "source_screen": "Coins / Purchase / Failed",
       "source_query": "route=coinFailed&pkg=1",
       "route": "/pages/coins/failed",
-      "component": null,
+      "component": "src/pages/coins/failed.vue; src/components/CoinActionLoading.vue",
       "return_owner": "pop origin_route（允许来源：/pages/coins/index）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
       "interaction_ids": [
         "coinFailed.tryAgainPurchase.click.1",
@@ -1940,9 +1908,9 @@
         "coinFailed.backToStore.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1950,16 +1918,16 @@
       "source_screen": "Coins / Purchase / Cancelled",
       "source_query": "route=coinCancelled&pkg=1",
       "route": "/pages/coins/cancelled",
-      "component": null,
+      "component": "src/pages/coins/cancelled.vue",
       "return_owner": "pop origin_route（允许来源：/pages/coins/index）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
       "interaction_ids": [
         "coinCancelled.backToStore.click.1",
         "coinCancelled.goBack.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2096,7 +2064,7 @@
       "source_screen": "Coins / History / Default",
       "source_query": "route=coinHistory",
       "route": "/pages/coins/history",
-      "component": null,
+      "component": "src/pages/coins/history.vue; src/utils/coinHistory.js",
       "return_owner": "pop origin_route（允许来源：/pages/coins/index）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
       "interaction_ids": [
         "coinHistory.goBack.click.1",
@@ -2104,9 +2072,9 @@
         "coinHistory.t.go.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2114,16 +2082,16 @@
       "source_screen": "Coins / History / Purchase Detail",
       "source_query": "route=coinPurchaseDetail",
       "route": "/pages/coins/purchase-detail",
-      "component": null,
+      "component": "src/pages/coins/purchase-detail.vue; src/utils/coinHistory.js",
       "return_owner": "pop origin_route（允许来源：/pages/coins/history）；无历史实例时 replace /pages/coins/history，不创建伪造实体",
       "interaction_ids": [
         "coinPurchaseDetail.goBack.click.1",
         "coinPurchaseDetail.openSupport.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2131,16 +2099,16 @@
       "source_screen": "Coins / History / Spending Detail",
       "source_query": "route=coinSpendDetail",
       "route": "/pages/coins/spend-detail",
-      "component": null,
+      "component": "src/pages/coins/spend-detail.vue; src/utils/coinHistory.js",
       "return_owner": "pop origin_route（允许来源：/pages/coins/history）；无历史实例时 replace /pages/coins/history，不创建伪造实体",
       "interaction_ids": [
         "coinSpendDetail.goBack.click.1",
         "coinSpendDetail.openSupport.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2148,8 +2116,8 @@
       "source_screen": "Coins / Help / Default",
       "source_query": "route=coinHelp",
       "route": "/pages/coins/help",
-      "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/coins/index）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
+      "component": "src/pages/coins/help.vue",
+      "return_owner": "pop 真实来源（Coin Center、失败结果、购买详情、消费详情或 Settings Legal）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
       "interaction_ids": [
         "coinHelp.goBack.click.1",
         "coinHelp.h.toggle.click.1",
@@ -2158,9 +2126,9 @@
         "coinHelp.openSupport.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2450,7 +2418,7 @@
       "source_screen": "Settings / Notifications / Default",
       "source_query": "route=setNotif",
       "route": "/pages/settings/notif",
-      "component": null,
+      "component": "src/pages/settings/notif.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "setNotif.goBack.click.1",
@@ -2460,9 +2428,9 @@
         "setNotif.simulateSystemOff.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2470,7 +2438,7 @@
       "source_screen": "Settings / Privacy / Default",
       "source_query": "route=setPrivacy",
       "route": "/pages/settings/privacy",
-      "component": null,
+      "component": "src/pages/settings/privacy.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "setPrivacy.goBack.click.1",
@@ -2478,9 +2446,9 @@
         "setPrivacy.p.toggle.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2488,16 +2456,16 @@
       "source_screen": "Settings / Permissions / Default",
       "source_query": "route=setPerm",
       "route": "/pages/settings/perm",
-      "component": null,
+      "component": "src/pages/settings/perm.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "setPerm.goBack.click.1",
         "setPerm.p.openSettings.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2505,16 +2473,16 @@
       "source_screen": "Settings / Language / Default",
       "source_query": "route=setLang",
       "route": "/pages/settings/lang",
-      "component": null,
+      "component": "src/pages/settings/lang.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "setLang.goBack.click.1",
         "setLang.o.pick.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2522,7 +2490,7 @@
       "source_screen": "Settings / Blocked Accounts / Default",
       "source_query": "route=blockedList",
       "route": "/pages/settings/blocked",
-      "component": null,
+      "component": "src/pages/settings/blocked.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "blockedList.goBack.click.1",
@@ -2532,9 +2500,9 @@
         "unblockOpen.closeUnblock.click.2"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2542,7 +2510,7 @@
       "source_screen": "Settings / Blocked Accounts / Empty",
       "source_query": "route=blockedList&blocked=0",
       "route": "/pages/settings/blocked",
-      "component": null,
+      "component": "src/pages/settings/blocked.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "blockedList.goBack.click.1",
@@ -2552,9 +2520,9 @@
         "unblockOpen.closeUnblock.click.2"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2562,17 +2530,17 @@
       "source_screen": "Settings / Support / Default",
       "source_query": "route=setSupport",
       "route": "/pages/settings/support",
-      "component": null,
-      "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
+      "component": "src/pages/settings/support.vue",
+      "return_owner": "pop origin_route（允许来源：/pages/settings/index、/pages/profile/basic、/pages/safety/report-detail）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "setSupport.goBack.click.1",
         "setSupport.h.toggle.click.1",
         "setSupport.openSupportForm.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2580,7 +2548,7 @@
       "source_screen": "Settings / Legal / Default",
       "source_query": "route=setLegal",
       "route": "/pages/settings/legal",
-      "component": null,
+      "component": "src/pages/settings/legal.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "setLegal.goBack.click.1",
@@ -2588,9 +2556,9 @@
         "setLegal.openCoinHelp.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2630,7 +2598,7 @@
       "source_screen": "Settings / Delete Account / Information",
       "source_query": "route=delInfo",
       "route": "/pages/settings/delete/info",
-      "component": null,
+      "component": "src/pages/settings/delete/info.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "delInfo.goBack.click.1",
@@ -2638,17 +2606,17 @@
         "delInfo.keepAccount.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Settings / Delete Account / Reason",
       "source_query": "route=delReason",
       "route": "/pages/settings/delete/reason",
-      "component": null,
+      "component": "src/pages/settings/delete/reason.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/delete/info）；无历史实例时 replace /pages/settings/delete/info，不创建伪造实体",
       "interaction_ids": [
         "delReason.goBack.click.1",
@@ -2656,17 +2624,17 @@
         "delReason.openDelFinal.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Settings / Delete Account / Final Confirmation",
       "source_query": "route=delFinal",
       "route": "/pages/settings/delete/final",
-      "component": null,
+      "component": "src/pages/settings/delete/final.vue; src/components/DeleteAccountConfirmDialog.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/delete/reason）；无历史实例时 replace /pages/settings/delete/reason，不创建伪造实体",
       "interaction_ids": [
         "delFinal.goBack.click.1",
@@ -2675,42 +2643,42 @@
         "delFinal.confirmDelete.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
+      "registered": true,
       "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Settings / Delete Account / Success",
       "source_query": "route=delSuccess",
       "route": "/pages/settings/delete/success",
-      "component": null,
+      "component": "src/pages/settings/delete/success.vue",
       "return_owner": "pop origin_route（允许来源：/pages/auth/welcome）；无历史实例时 replace /pages/auth/welcome，不创建伪造实体",
       "interaction_ids": [
         "delSuccess.returnToWelcome.click.1"
       ],
       "entities": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Safety / Reports / Submitted",
       "source_query": "route=reportsSubmitted",
       "route": "/pages/safety/reports",
-      "component": null,
+      "component": "src/pages/safety/reports.vue",
       "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
       "interaction_ids": [
         "reportsSubmitted.goBack.click.1",
         "reportsSubmitted.r.open.click.1"
       ],
       "entities": "reports; blocked_users; users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2718,16 +2686,16 @@
       "source_screen": "Safety / Report Detail / Default",
       "source_query": "route=reportDetail",
       "route": "/pages/safety/report-detail",
-      "component": null,
+      "component": "src/pages/safety/report-detail.vue",
       "return_owner": "pop origin_route（允许来源：/pages/safety/reports）；无历史实例时 replace /pages/safety/reports，不创建伪造实体",
       "interaction_ids": [
         "reportDetail.goBack.click.1",
         "reportDetail.openSetSupport.click.1"
       ],
       "entities": "reports; blocked_users; users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2758,16 +2726,16 @@
       ],
       "entities": "users; dm_conversations; dm_messages; call_sessions; user_relationships; blocked_users",
       "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "file_exists": true,
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "Safety / Report User / Select Reason",
       "source_query": "route=safetyReport",
       "route": "/pages/safety/report-user",
-      "component": null,
+      "component": "src/pages/safety/report-user.vue",
       "return_owner": "pop origin_route（允许来源：/pages/messages/chat、/pages/discover/profile、/pages/auto-match/found、/pages/events/participants）；无历史实例时 replace /pages/messages/chat，不创建伪造实体",
       "interaction_ids": [
         "safetyReport.goBack.click.1",
@@ -2775,9 +2743,9 @@
         "safetyReport.submitReport.click.1"
       ],
       "entities": "reports; blocked_users; users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2785,7 +2753,7 @@
       "source_screen": "Safety / Block User / Confirmation",
       "source_query": "route=chat&sheet=safetyBlock",
       "route": "component",
-      "component": "src/components/SafetyBlockConfirmDialog.vue",
+      "component": "src/components/SafetyActionsSheet.vue + src/components/EventConfirmDialog.vue",
       "return_owner": "关闭后恢复 /pages/messages/chat 的原实体和滚动位置",
       "interaction_ids": [
         "chat.goBack.click.1",
@@ -2809,9 +2777,9 @@
       "entities": "users; dm_conversations; dm_messages; call_sessions; user_relationships; blocked_users",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
-      "full_acceptance": "pending",
-      "status": "pending"
+      "local_acceptance": "passed",
+      "full_acceptance": "passed",
+      "status": "verified"
     },
     {
       "source_screen": "System / Loading / Default",
@@ -3177,8 +3145,8 @@
       ],
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
       "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },

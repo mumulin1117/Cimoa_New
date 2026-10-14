@@ -1,7 +1,7 @@
 {
   "phase": "report-user",
   "result": "passed",
-  "server_pid": 28694,
+  "server_pid": 59434,
   "checks": [
     "Chat Safety opens the source report reasons with explicit local-only scope and optional block",
     "Report persistence failure creates neither report nor block and keeps the form retryable",

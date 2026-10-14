@@ -12,6 +12,7 @@ import { local_verification_context, valid_local_code } from '../utils/localVeri
 import * as s from './selectors.js'
 import * as ev from './eventSelectors.js'
 import { event_group, event_message_actions } from './eventMessaging.js'
+import { direct_conversation, direct_message_actions } from './directMessaging.js'
 import { STATE_KEY, LEGACY_KEY } from '../utils/statePersistence.js'
 import { get_runtime, transact, operation, make_id, failure, unavailable, require_target, require_student, password_hash, add_transaction, connect_users, disconnect_for_block } from './transactions.js'
 export { configure_store_runtime, make_id as make_operation_id } from './transactions.js'
@@ -56,6 +57,10 @@ export const use_app_store = defineStore('app', {
     current_interests: (state) => ready(state) ? clone_data((s.user_by_id(state.data, s.owner_id(state.data))?.interest_ids || []).map(id => state.data.interests.find(row => row.item_id === id)).filter(Boolean)) : [],
     user_by_id: (state) => (id) => ready(state) ? profile(state.data, id) : null,
     goals_for_user: (state) => (id) => ready(state) ? s.goals_for_user(state.data, id) : [],
+    interests_for_user: (state) => (id) => ready(state) ? clone_data((s.user_by_id(state.data, id)?.interest_ids || []).map(item_id => state.data.interests.find(row => row.item_id === item_id)).filter(Boolean)) : [],
+    photos_for_user: (state) => (id) => ready(state) ? clone_data(state.data.profile_photos.filter(row => row.user_id === id && s.user_by_id(state.data, id)?.photo_ids.includes(row.photo_id)).sort((a, b) => a.position - b.position)) : [],
+    questions_for_user: (state) => (id) => ready(state) ? clone_data((s.user_by_id(state.data, id)?.icebreaker_ids || []).map(question_id => state.data.icebreakers.find(row => row.question_id === question_id)).filter(Boolean).sort((a, b) => a.position - b.position)) : [],
+    song_for_user: (state) => (id) => ready(state) ? clone_data(state.data.songs.find(row => row.song_id === s.user_by_id(state.data, id)?.song_id) || null) : null,
     visible_people: (state) => ready(state) ? state.data.users.filter((row) => row.user_id !== s.owner_id(state.data) && row.discoverable && s.visible(state.data, row.user_id) && state.data.settings.find((settings) => settings.owner_user_id === row.user_id)?.privacy.discover_visible !== false).map((row) => profile(state.data, row.user_id)) : [],
     discover_person() {
       const user = this.visible_people[0]
@@ -88,12 +93,14 @@ export const use_app_store = defineStore('app', {
     current_drafts: (state) => ready(state) ? clone_data(own(state.data, state.data.drafts)) : [],
     current_photos: (state) => ready(state) ? clone_data(state.data.profile_photos.filter((row) => row.user_id === s.owner_id(state.data)).sort((a, b) => a.position - b.position)) : [],
     current_settings: (state) => ready(state) ? clone_data(state.data.settings.find((row) => row.owner_user_id === s.owner_id(state.data)) || {}) : {},
+    is_direct_muted: (state) => (user_id) => ready(state) && (state.data.settings.find((row) => row.owner_user_id === s.owner_id(state.data))?.muted_direct_user_ids || []).includes(user_id),
     privacy_visibility() { const privacy = this.current_settings.privacy || {}; return privacy.discover_visible ? 'discover' : privacy.auto_match_visible !== false ? 'auto_match' : 'hidden' },
     settings() { const row = this.current_settings; return { ...row, notifications_enabled: row.notifications?.master || false, show_online_status: row.privacy?.show_online || false, location_enabled: false } },
     blocked_accounts: (state) => ready(state) ? own(state.data, state.data.blocked_users).map((row) => clone_data(state.data.users.find((user) => user.user_id === row.user_id))).filter(Boolean) : [],
     blocked_user_ids() { return this.blocked_accounts.map((row) => row.user_id) },
     can_chat: (state) => (id) => ready(state) && s.connected(state.data, id),
     messages_for_conversation: (state) => (id) => ready(state) ? clone_data(s.messages_for(state.data, id)) : [],
+    direct_conversation: (state) => (id) => ready(state) ? direct_conversation(state.data, id, state.clock_ms) : null,
     current_conversations: (state) => ready(state) ? state.data.conversations.filter((row) => row.kind === 'direct' && s.can_open_conversation(state.data, row)).map((row) => {
       const messages = s.messages_for(state.data, row.conversation_id)
       return { ...clone_data(row), participant_id: row.participant_ids.find((id) => id !== s.owner_id(state.data)), messages: clone_data(messages), unread_count: messages.filter((message) => !message.read_by.includes(s.owner_id(state.data))).length }
@@ -120,6 +127,7 @@ export const use_app_store = defineStore('app', {
   },
   actions: {
     ...event_message_actions,
+    ...direct_message_actions,
     ...profile_edit_actions,
     ...onboarding_actions,
     tick() { this.clock_ms = get_runtime(this).clock() },
@@ -455,6 +463,15 @@ export const use_app_store = defineStore('app', {
       }, { expected_owner: owner })
     },
     mark_read(id) { return transact(this, null, (data) => { s.ensure(s.can_open_conversation(data, data.conversations.find((row) => row.conversation_id === id)), 'Conversation unavailable.'); for (const row of s.messages_for(data, id)) if (!row.read_by.includes(s.owner_id(data))) row.read_by.push(s.owner_id(data)) }) },
+    set_direct_muted(id, muted) {
+      return transact(this, null, (data) => {
+        require_target(data, id)
+        const row = data.settings.find((entry) => entry.owner_user_id === s.owner_id(data))
+        s.ensure(row, 'Notification settings are unavailable.')
+        const current = row.muted_direct_user_ids || []
+        row.muted_direct_user_ids = muted ? [...new Set([...current, id])] : current.filter((user_id) => user_id !== id)
+      })
+    },
     block_user(id) { return transact(this, null, (data, now) => { require_target(data, id); data.blocked_users.push({ block_id: make_id('block'), owner_user_id: s.owner_id(data), user_id: id, created_at: now }); disconnect_for_block(data, id, now) }) },
     unblock_user(id) { return transact(this, null, (data) => { s.ensure(s.blocked(data, id), 'This account is not blocked.'); data.blocked_users = data.blocked_users.filter((row) => row.owner_user_id !== s.owner_id(data) || row.user_id !== id) }) },
     submit_report({ target_type, target_id, reason, description = '', context_id = null, also_block = false }) {

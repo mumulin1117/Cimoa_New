@@ -1,7 +1,7 @@
 {
   "phase": "event-report",
   "result": "passed",
-  "server_pid": 29982,
+  "server_pid": 59742,
   "checks": [
     "Event detail opens the seven source reasons in a fixed safe-area frame with explicit local-only scope",
     "Event report persistence failure creates no report and leaves attendance unchanged",

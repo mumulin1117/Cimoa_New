@@ -1,0 +1,15 @@
+.safety-action-list { margin-top: 22.901rpx; }
+.safety-action {
+  display: flex;
+  align-items: center;
+  min-height: 114.504rpx;
+  border-bottom: 1px solid var(--cimoa-surface-event-divider);
+  color: var(--cimoa-text-title);
+  font-size: 34.351rpx;
+  font-weight: 600;
+  cursor: pointer;
+}
+.safety-action--icon { gap: 26.718rpx; }
+.safety-action--danger { color: var(--cimoa-status-danger); }
+.safety-action-icon { flex: none; width: 38.168rpx; height: 38.168rpx; }
+.safety-block-copy { display: flex; flex-direction: column; gap: 22.901rpx; margin-top: 30.534rpx; color: var(--cimoa-text-profile-bio); font-size: 32.443rpx; line-height: 1.4; }

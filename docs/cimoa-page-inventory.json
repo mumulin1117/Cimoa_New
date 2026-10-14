@@ -2744,10 +2744,11 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; profile structure, gallery, source media, honest missing-audio error, report/block and exact returns passed local acceptance; Say Hi icebreaker dependency is still pending, so full acceptance and verified remain pending",
+    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json"
   },
   {
     "source_screen": "Events / Explore / Default",
@@ -5845,10 +5846,12 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; text/photo/voice, Loading, failure rollback, empty/error/long/refresh/back, safety actions, Home entry and WKWebView acceptance passed; full verified waits for the still-pending Profile Say Hi dependency",
+    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
+    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
   },
   {
     "source_screen": "Video Call / Incoming / Default",
@@ -5906,12 +5909,14 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
-    "full_acceptance": "pending",
+    "status": "verified",
+    "local_acceptance": "passed",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; user-authorized waiting-only override verified through manual end, 8–12 second auto end, one-return cleanup, invalid conversation, small viewport and WKWebView",
+    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
+    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
   },
   {
     "source_screen": "Video Call / Active / Default",
@@ -6015,12 +6020,14 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
-    "full_acceptance": "pending",
+    "status": "verified",
+    "local_acceptance": "passed",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; original active-call controls are superseded by the user-authorized waiting-only override; manual/automatic end, timer cleanup, invalid conversation, small viewport and WKWebView passed",
+    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
+    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
   },
   {
     "source_screen": "Video Call / Ended / Default",
@@ -6091,12 +6098,14 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
-    "full_acceptance": "pending",
+    "status": "verified",
+    "local_acceptance": "passed",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; original ended screen is superseded by the user-authorized waiting-only single return; manual/automatic end are idempotent and verified in browser, timer unit tests and WKWebView",
+    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
+    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
   },
   {
     "source_screen": "Events / Explore / Default",
@@ -10678,11 +10687,13 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
-    "full_acceptance": "pending",
+    "status": "verified",
+    "local_acceptance": "passed",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; source Sheet, mute persistence, profile/report returns, cancel/error/confirmed block, cross-page filtering, refresh and WKWebView passed",
+    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
+    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
   },
   {
     "source_screen": "Safety / Report User / Select Reason",
@@ -10758,7 +10769,7 @@
     ],
     "page_level": "确认弹窗",
     "route": "component",
-    "component": "src/pages/messages/index.vue + src/components/EventConfirmDialog.vue",
+    "component": "src/components/SafetyActionsSheet.vue + src/components/EventConfirmDialog.vue",
     "parent_route": "/pages/messages/chat",
     "allowed_origin_routes": [
       "/pages/messages/chat"
@@ -10837,11 +10848,13 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; custom confirmation, cancellation, Loading and atomic chat cleanup acceptance passed; full safety regression pending; contract: docs/cimoa-safety-settings-coins-contract.md"
+    "mapping_status": "source-mapped; custom confirmation, cancellation, pre-write Loading, persistence rollback, atomic chat cleanup, refresh, unblock non-restoration and WKWebView passed; contract: docs/cimoa-safety-settings-coins-contract.md",
+    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
+    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
   },
   {
     "source_screen": "System / Loading / Default",
@@ -12357,10 +12370,11 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; profile mini Sheet, report return, block cancellation/failure/success and Discover filtering passed local acceptance; parent Profile Say Hi dependency and native profile-menu acceptance remain pending",
+    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json"
   },
   {
     "source_screen": "Auto Match / Help / Explanation",

@@ -12,7 +12,7 @@ const fixture = ({ guest = false, fail_write = false } = {}) => {
   const blobs = new Map([['owned_media', new Blob(['photo'], { type: 'image/png' })]])
   const store = use_app_store(createPinia())
   const persistence = { read: key => key === STATE_KEY ? clone_data(disk) : null, write: (_, value) => { if (fail_write) throw Error('Storage full'); disk = clone_data(value) } }
-  configure_store_runtime(store, { clock: () => now, persistence, media: { get: async id => blobs.get(id), put: async (id, blob) => blobs.set(id, blob), delete: async id => blobs.delete(id) } })
+  configure_store_runtime(store, { clock: () => now, persistence, media: { get: async id => blobs.get(id), put: async (id, blob) => blobs.set(id, blob), delete: async id => blobs.delete(id) }, inspect_media: async (_, kind) => ({ duration_ms: kind === 'audio' ? 1500 : 0 }) })
   assert.equal(store.hydrate().success, true)
   return { store, blobs, snapshot: () => clone_data(disk) }
 }
@@ -45,6 +45,50 @@ test('blocking is account-scoped, atomic, clears private linkage, and unblocking
   assert.equal(store.data.requests.some(row => row.status === 'pending' && [row.sender_id, row.recipient_id].includes('user_chloe') && [row.sender_id, row.recipient_id].includes(TEST_USER_ID)), false)
   assert.equal(store.unblock_user('user_chloe').success, true)
   assert.equal(store.can_chat('user_chloe'), false)
+})
+
+test('direct notification mute is Store-backed, account-scoped and validated', () => {
+  const { store, snapshot } = fixture()
+  assert.equal(store.is_direct_muted('user_chloe'), false)
+  assert.equal(store.set_direct_muted('user_chloe', true).success, true)
+  assert.equal(store.is_direct_muted('user_chloe'), true)
+  assert.deepEqual(snapshot().settings[0].muted_direct_user_ids, ['user_chloe'])
+  assert.equal(store.set_direct_muted('user_chloe', true).success, true)
+  assert.deepEqual(store.current_settings.muted_direct_user_ids, ['user_chloe'])
+  assert.equal(store.set_direct_muted('user_chloe', false).success, true)
+  assert.equal(store.is_direct_muted('user_chloe'), false)
+  assert.equal(store.set_direct_muted('missing_user', true).success, false)
+})
+
+test('direct text messages persist once and require a live mutual conversation', async () => {
+  const { store } = fixture()
+  const before = store.direct_conversation('conversation_chloe').messages.length
+  const sent = await store.send_direct_message('conversation_chloe', 'A local message', null, 'direct_message_test')
+  assert.equal(sent.success, true)
+  assert.equal(store.direct_conversation('conversation_chloe').messages.length, before + 1)
+  const repeated = await store.send_direct_message('conversation_chloe', 'A local message', null, 'direct_message_test')
+  assert.equal(repeated.success, true)
+  assert.equal(repeated.repeated, true)
+  assert.equal(store.direct_conversation('conversation_chloe').messages.length, before + 1)
+  assert.equal(store.block_user('user_chloe').success, true)
+  assert.equal((await store.send_direct_message('conversation_chloe', 'Should fail')).success, false)
+})
+
+test('direct media publishes its Blob and metadata atomically and compensates failed storage', async () => {
+  const fixture_ok = fixture(), image = new Blob(['decoded image'], { type: 'image/png' })
+  const sent = await fixture_ok.store.send_direct_message('conversation_chloe', '', { kind: 'image', blob: image }, 'direct_photo_test')
+  assert.equal(sent.success, true)
+  const message = fixture_ok.store.direct_conversation('conversation_chloe').messages.at(-1)
+  assert.equal(message.kind, 'image'); assert.equal(message.media.media_url, `indexeddb://${message.media.media_id}`)
+  assert.equal(fixture_ok.blobs.has(message.media.media_id), true)
+  const restored = use_app_store(createPinia())
+  configure_store_runtime(restored, { clock: () => now, persistence: { read: key => key === STATE_KEY ? fixture_ok.snapshot() : null, write() {} }, media: { get: id => fixture_ok.blobs.get(id), put: async () => {}, delete: async () => {} }, inspect_media: async () => ({ duration_ms: 0 }) })
+  assert.equal(restored.hydrate().success, true)
+  assert.equal(restored.direct_conversation('conversation_chloe').messages.at(-1).media.media_id, message.media.media_id)
+
+  const failed = fixture({ fail_write: true }), before = clone_data(failed.store.data), before_blobs = [...failed.blobs.keys()]
+  const result = await failed.store.send_direct_message('conversation_chloe', '', { kind: 'audio', blob: new Blob(['decoded audio'], { type: 'audio/webm' }), duration_ms: 1500 }, 'direct_voice_failure')
+  assert.equal(result.success, false); assert.deepEqual(failed.store.data, before); assert.deepEqual([...failed.blobs.keys()], before_blobs)
 })
 
 test('reports are local records with the correct target and optional blocking is one atomic write', () => {

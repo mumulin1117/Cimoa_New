@@ -1,7 +1,7 @@
 {
   "phase": "support",
   "result": "passed",
-  "server_pid": 33531,
+  "server_pid": 59628,
   "checks": [
     "Help & Support opens from Settings with seven truthful source-style accordion rows",
     "Contact Support exposes topic and long description fields while explicitly disabling unavailable screenshot delivery",

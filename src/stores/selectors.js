@@ -120,6 +120,7 @@ export function validate_data(data) {
     ensure(row.language === undefined || row.language === 'en-US', 'Invalid language setting.')
     if (row.notifications) ensure(Object.values(row.notifications).every(value => typeof value === 'boolean'), 'Invalid notification setting.')
     if (row.privacy) ensure(Object.values(row.privacy).every(value => typeof value === 'boolean'), 'Invalid privacy setting.')
+    if (row.muted_direct_user_ids !== undefined) ensure(Array.isArray(row.muted_direct_user_ids) && unique(row.muted_direct_user_ids, id => id) && row.muted_direct_user_ids.every(id => has('users', id) && id !== row.owner_user_id), 'Invalid direct notification preference.')
   }
   for (const row of data.blocked_users) ensure(has('users', row.user_id) && row.user_id !== row.owner_user_id, 'Invalid block.')
   ensure(unique(data.blocked_users, (row) => `${row.owner_user_id}:${row.user_id}`), 'Duplicate block.')

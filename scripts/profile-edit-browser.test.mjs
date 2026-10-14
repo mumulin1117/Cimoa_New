@@ -84,9 +84,9 @@ try {
     await click('editBasic.saveBasic.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await state(),before); await page.locator('.profile-edit-page:visible').waitFor()
     assert.equal((await state()).users[0].user_name,'Morgan Campus'); assert.equal((await state()).users[0].university,'HKUST')
     await click('profileEdit.basic.click.1'); await field('Display name').fill('Cancel this name'); await button('Back').click(); assert.equal((await state()).users[0].user_name,'Morgan Campus')
-    await goto('/pages/profile/basic'); await page.reload(); await page.locator('.profile-basic-page').waitFor(); assert.equal(await field('Display name').inputValue(),'Morgan Campus'); await button('Contact support').click(); assert.match(await page.getByRole('alert').innerText(),/not been restored/)
-    await button('Back').click(); await page.locator('.profile-edit-page').waitFor()
-    check('Basic validates before Loading; name/pronouns/year/major save, cancel, refresh and correct fallback return; support remains deferred')
+    await goto('/pages/profile/basic'); await page.reload(); await page.locator('.profile-basic-page').waitFor(); assert.equal(await field('Display name').inputValue(),'Morgan Campus'); await button('Contact support').click(); await page.locator('.settings-support-page').waitFor()
+    await button('Back').click(); await page.locator('.profile-basic-page').waitFor(); await button('Back').click(); await page.locator('.profile-edit-page').waitFor()
+    check('Basic validates before Loading; name/pronouns/year/major save, cancel and refresh persist; support opens and returns to its owning Basic page')
   }
   if (!['edit', 'basic'].includes(phase)) {
     await click('editAll.eaInterests.click.1'); await page.locator('.profile-interests-page').waitFor(); const before = await state()
@@ -132,9 +132,21 @@ try {
   if (phase === 'settings') {
     await click('profilePreview.goBack.click.1'); await page.locator('.profile-title').waitFor(); await click('profile.openAppSettings.click.1'); await page.locator('.settings-page').waitFor(); await page.locator('.settings-avatar .profile-photo[data-media-status="ready"]').waitFor(); await shot('settings')
     const before = await state(); await click('settings.openEditBasic.click.1'); await page.locator('.profile-edit-page:visible').waitFor(); await click('editAll.eaSave.click.1'); await page.locator('.settings-page:visible').waitFor(); assert.equal((await state()).users[0].user_name,before.users[0].user_name)
-    for (const id of ['openStore','openSetNotif','openSetPrivacy','openSetPerm','openSetLang','openBlockedList','openReportsSubmitted','openSetSupport','openSetLegal','openDelInfo']) { await click(`settings.${id}.click.1`); assert.match(await page.locator('.editor-error:visible').innerText(),/not been restored/) }
+    const children = [
+      ['openStore', '.coin-center-page'],
+      ['openSetNotif', '.settings-notifications-page'],
+      ['openSetPrivacy', '.settings-privacy-page'],
+      ['openSetPerm', '.settings-permissions-page'],
+      ['openSetLang', '.settings-language-page'],
+      ['openBlockedList', '.settings-blocked-page'],
+      ['openReportsSubmitted', '.safety-reports-page'],
+      ['openSetSupport', '.settings-support-page'],
+      ['openSetLegal', '.settings-legal-page'],
+      ['openDelInfo', '.delete-info-page'],
+    ]
+    for (const [id, selector] of children) { await click(`settings.${id}.click.1`); await page.locator(selector).waitFor(); await button('Back').click(); await page.locator('.settings-page').waitFor() }
     await click('settings.openAgreeInfo.click.1'); await page.getByRole('dialog',{name:'Community Guidelines'}).waitFor(); assert.match(await page.getByRole('dialog').innerText(),/Respect boundaries/); await button('Close').click(); await page.getByRole('dialog').waitFor({state:'hidden'})
-    check('Settings restores source sections, canonical avatar/balance and Account return; guidelines open; missing children fail without fake navigation')
+    check('Settings restores source sections and canonical avatar/balance; every restored child opens and returns to Settings; guidelines use a custom Sheet')
     const saved = await state(); await click('settings.openLogoutConfirm.click.1'); await page.getByRole('dialog',{name:'Log out of Cimoa?'}).waitFor(); await shot('logout'); await click('sheetLogout.closeSheet.click.2'); await page.getByRole('dialog').waitFor({state:'hidden'}); assert.deepEqual(await state(),saved)
     await click('settings.openLogoutConfirm.click.1'); await page.getByRole('dialog',{name:'Log out of Cimoa?'}).waitFor(); await page.evaluate(()=>{window.__originalWrite=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw Error('Storage full');return window.__originalWrite.call(this,key,value)}})
     await click('sheetLogout.logOut2.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await state(),saved); await page.locator('.loading').waitFor({state:'detached'}); assert.match(await page.getByRole('dialog').innerText(),/Storage full/); assert.deepEqual(await state(),saved)
