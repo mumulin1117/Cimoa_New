@@ -82,6 +82,15 @@ try {
     await goto('/pages/profile/interests'); await page.reload(); await page.locator('.profile-interests-page').waitFor(); assert.equal(await page.locator('[data-choice-id="films"]').getAttribute('aria-pressed'),'true'); await page.locator('[data-choice-id="art"]').click(); await button('Back').click(); assert.deepEqual((await state()).users[0].interest_ids,['photography','coffee','films'])
     check('Interests enforces three, saves canonical IDs, survives parent Save/refresh and cancels draft-only changes')
   }
+  if (!['edit', 'basic', 'interests'].includes(phase)) {
+    await click('editAll.eaGoals.click.1'); await page.locator('.profile-goals-page').waitFor(); const before = await state()
+    for (const id of before.users[0].goal_ids) await page.locator(`[data-choice-id="${id}"]`).click()
+    await click('editGoals.saveGoals.click.1'); assert.match(await page.getByRole('alert').innerText(),/at least one/); assert.deepEqual(await state(),before)
+    await page.locator('[data-choice-id="career"]').click(); await page.locator('[data-choice-id="coffee"]').click(); await shot('goals'); await click('editGoals.saveGoals.click.1'); await page.locator('.profile-edit-page:visible').waitFor()
+    assert.deepEqual((await state()).users[0].goal_ids,['career','coffee']); assert.match(await page.locator('.profile-edit-page').innerText(),/Career Networking/)
+    await goto('/pages/profile/goals'); await page.reload(); await page.locator('.profile-goals-page').waitFor(); assert.equal(await page.locator('[data-choice-id="career"]').getAttribute('aria-pressed'),'true'); await button('Back').click()
+    check('Goals rejects empty selection; canonical catalog expansion, parent summary and refresh persist both selections')
+  }
   assert.deepEqual(report.errors,[]); report.result='passed'
 } catch(error) { report.failure=String(error.stack||error); console.error(report.failure); process.exitCode=1 }
 finally { await browser?.close(); await new Promise(resolve=>server.close(resolve)); fs.writeFileSync(path.join(output,`${phase}-acceptance.json`),JSON.stringify(report,null,2)+'\n'); console.log('Temporary profile server and isolated browser closed.') }
