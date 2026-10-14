@@ -73,6 +73,7 @@ export const use_app_store = defineStore('app', {
     coin_balance: (state) => ready(state) ? s.balance(state.data) : 0,
     coin_transactions: (state) => ready(state) ? clone_data(own(state.data, state.data.coin_transactions)) : [],
     coin_packages: (state) => clone_data(state.data.coin_packages),
+    coin_package_by_id: (state) => (id) => clone_data(state.data.coin_packages.find((row) => row.package_id === id) || null),
     current_purchase_requests: (state) => ready(state) ? clone_data(own(state.data, state.data.purchase_requests)) : [],
     purchase_by_id: (state) => (id) => ready(state) ? clone_data(own(state.data, state.data.purchase_requests).find((row) => row.request_id === id) || null) : null,
     current_reports: (state) => ready(state) ? clone_data(own(state.data, state.data.reports)) : [],

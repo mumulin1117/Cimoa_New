@@ -2,12 +2,16 @@
 import { computed, ref } from 'vue'
 import { onHide } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { make_operation_id } from '@/stores/store.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
+import CoinActionLoading from '@/components/CoinActionLoading.vue'
+import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { COIN_FEATURES, package_image } from '@/utils/coinPresentation.js'
 
 const store = use_app_store(), frame = ref(null), navigating = ref(false), error = ref('')
+const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 const account_id = store.session.account_id
 const packages = computed(() => store.coin_packages)
 const selected_id = ref(packages.value.find(item => item.coins === 300)?.package_id || packages.value[0]?.package_id || '')
@@ -36,19 +40,27 @@ const select_package = package_id => {
   error.value = ''
 }
 const continue_purchase = () => {
+  if (is_loading.value || navigating.value) return
   if (!selected.value) { error.value = 'Choose an available coin package first.'; return }
-  navigate(`${COIN_ROUTES.purchasing}?package_id=${encodeURIComponent(selected.value.package_id)}`)
+  const existing = store.current_purchase_requests.find(item => item.status === 'pending')
+  if (existing) { navigate(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(existing.request_id)}`); return }
+  error.value = ''
+  run_with_loading(() => store.begin_purchase(selected.value.package_id, make_operation_id('purchase'))).then(result => {
+    if (result.reason === 'cancelled') return
+    if (!result.success) { error.value = result.message; return }
+    navigate(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(result.data)}`)
+  })
 }
-onHide(() => { error.value = '' })
+onHide(() => { error.value = ''; cancel_loading() })
 </script>
 
 <template>
   <SecondaryPageFrame ref="frame" class="coin-center-page">
     <template #header>
       <view class="coin-header">
-        <view class="coin-back" role="button" aria-label="Back" :aria-disabled="navigating" data-interaction="coinStore.goBack.click.1" @click="navigate()"><SourceIcon name="back" /></view>
+        <view class="coin-back" role="button" aria-label="Back" :aria-disabled="navigating || is_loading" data-interaction="coinStore.goBack.click.1" @click="!is_loading && navigate()"><SourceIcon name="back" /></view>
         <text class="coin-title">Coin Center</text>
-        <view class="coin-history" role="button" :aria-disabled="navigating" data-interaction="coinStore.openHistory2.click.1" @click="navigate(COIN_ROUTES.history)">History</view>
+        <view class="coin-history" role="button" :aria-disabled="navigating || is_loading" data-interaction="coinStore.openHistory2.click.1" @click="!is_loading && navigate(COIN_ROUTES.history)">History</view>
       </view>
       <text v-if="error" class="coin-error" role="alert">{{ error }}</text>
     </template>
@@ -87,10 +99,11 @@ onHide(() => { error.value = '' })
 
     <template #footer>
       <view v-if="!access_error" class="coin-footer">
-        <view class="coin-buy" role="button" :aria-disabled="navigating || !selected" data-interaction="coinStore.continuePurchase.click.1" @click="continue_purchase">Get Coins</view>
+        <view class="coin-buy" role="button" :aria-disabled="navigating || is_loading || !selected" data-interaction="coinStore.continuePurchase.click.1" @click="continue_purchase">Get Coins</view>
         <text>{{ storekit_ready ? 'Payment is processed through the App Store' : 'StoreKit products are not configured; purchases cannot complete yet.' }}</text>
       </view>
     </template>
+    <template #overlays><CoinActionLoading :visible="is_loading" label="Creating purchase request…" /></template>
   </SecondaryPageFrame>
 </template>
 
