@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_scenario } from '../src/stores/scenarios.js'
 import { clone_data } from '../src/stores/seed.js'
-import { profile_destination, require_profile_destination_ready } from '../src/utils/profileNavigation.js'
+import { profile_destination, require_profile_destination_ready, PROFILE_DEFERRED_ROUTES } from '../src/utils/profileNavigation.js'
 import { home_destination, require_home_destination_ready } from '../src/utils/homeNavigation.js'
 import { discover_destination, require_discover_destination_ready } from '../src/utils/discoverNavigation.js'
 import { events_destination, require_events_destination_ready } from '../src/utils/eventsNavigation.js'
@@ -55,12 +55,13 @@ test('switching accounts derives only that account interests and balance', () =>
   assert.deepEqual(f.store.current_interests.map(i => i.item_id), ['photography', 'hiking', 'films'])
   assert.equal(f.store.coin_balance, 0); assert.equal(f.writes(), 0)
 })
-test('all three restored Tab entries reach Profile; its four dependencies stay explicit and read-only', () => {
+test('all three restored Tab entries reach Profile; child readiness stays explicit and read-only', () => {
   const f = make(), before = JSON.stringify(f.store.data)
   for (const [destination, require_ready] of [[home_destination, require_home_destination_ready], [discover_destination, require_discover_destination_ready], [events_destination, require_events_destination_ready]]) assert.equal(require_ready(destination(f.store, 'profile')), '/pages/profile/index')
   for (const [kind, target] of [['settings','/pages/settings/index'], ['edit','/pages/profile/edit'], ['coins','/pages/coins/index'], ['preview','/pages/profile/preview']]) {
     assert.equal(profile_destination(f.store, kind), target)
-    assert.throws(() => require_profile_destination_ready(target), /not been restored/)
+    if (PROFILE_DEFERRED_ROUTES.includes(target)) assert.throws(() => require_profile_destination_ready(target), /not been restored/)
+    else assert.equal(require_profile_destination_ready(target), target)
   }
   assert.throws(() => profile_destination(f.store, 'invalid'), /unavailable/)
   assert.equal(JSON.stringify(f.store.data), before); assert.equal(f.writes(), 0)

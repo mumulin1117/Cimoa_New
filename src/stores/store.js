@@ -6,6 +6,7 @@ import { normalize_email, signup_error, age_from_date, create_local_credential, 
 import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
 import { community_rules, registration_agreements } from '../utils/registrationCatalog.js'
 import { onboarding_context, onboarding_actions } from './onboarding.js'
+import { profile_context, profile_edit_actions } from './profileEditing.js'
 import { ONBOARDING_FLOW, ONBOARDING_GOALS, ONBOARDING_INTEREST_IDS, onboarding_catalog } from '../utils/onboardingFlow.js'
 import { local_verification_context, valid_local_code } from '../utils/localVerification.js'
 import * as s from './selectors.js'
@@ -34,6 +35,8 @@ const check_media = async (store, id, kind) => {
 export const use_app_store = defineStore('app', {
   state: () => ({ data: create_seed(), hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
   getters: {
+    profile_editor: state => state.hydration_status === 'ready' ? profile_context(state.data, state.clock_ms) : null,
+    profile_catalog: state => ({ ...clone_data(state.data.picker_options), songs: clone_data(state.data.songs) }),
     auth_draft: state => clone_data(state.data.auth_flow),
     registration_catalog: () => ({ rules: clone_data(community_rules), agreements: clone_data(registration_agreements) }),
     onboarding: state => {
@@ -98,6 +101,7 @@ export const use_app_store = defineStore('app', {
     posts: () => [], comments_for_post: () => () => [],
   },
   actions: {
+    ...profile_edit_actions,
     ...onboarding_actions,
     tick() { this.clock_ms = get_runtime(this).clock() },
     hydrate() {

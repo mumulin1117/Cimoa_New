@@ -6,6 +6,7 @@ import { profile_destination, require_profile_destination_ready } from '@/utils/
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import ProfilePhoto from '@/components/ProfilePhoto.vue'
+import { bio_style } from '@/utils/profilePresentation.js'
 
 const store = use_app_store(), frame = ref(null), navigating = ref(false), navigation_error = ref('')
 const user = computed(() => store.current_user)
@@ -48,7 +49,7 @@ onHide(() => { navigation_error.value = '' })
           </view>
           <view class="profile-edit" role="button" :aria-disabled="navigating" data-interaction="profile.openEditBasic.click.1" :data-target="target('edit')" @click="navigate('edit')"><view class="profile-edit-icon"><SourceIcon name="edit" :stroke-width="2.2" /></view><text>Edit Profile</text></view>
         </view>
-        <view class="profile-card profile-about"><text class="profile-section-title">About me</text><text v-if="user.bio" class="profile-bio">{{ user.bio }}</text><text v-else class="profile-empty">No introduction yet.</text></view>
+        <view class="profile-card profile-about"><text class="profile-section-title">About me</text><text v-if="user.bio" class="profile-bio" :style="bio_style(user.bio_font)">{{ user.bio }}</text><text v-else class="profile-empty">No introduction yet.</text></view>
         <view class="profile-card"><text class="profile-section-title">Interests</text><view v-if="store.current_interests.length" class="profile-interests"><view v-for="interest in store.current_interests" :key="interest.item_id" class="profile-interest"><view class="interest-icon">{{ interest.emoji }}</view><text class="interest-label">{{ interest.label }}</text></view></view><text v-else class="profile-empty">No interests selected yet.</text></view>
         <view class="profile-card profile-link" role="button" :aria-disabled="navigating" data-interaction="profile.openStore.click.1" :data-target="target('coins')" @click="navigate('coins')"><image class="profile-coin" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><text class="profile-balance">{{ store.coin_balance.toLocaleString('en-US') }} coins</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
         <view class="profile-card profile-link" role="button" :aria-disabled="navigating" data-interaction="profile.openProfilePreview.click.1" :data-target="target('preview')" @click="navigate('preview')"><view class="profile-preview-icon"><view><SourceIcon name="person" :stroke-width="1.9" /></view></view><text class="profile-preview-label">Preview my profile</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>

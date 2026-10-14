@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import path from 'node:path'
 import fs from 'node:fs'
 import { create_scenario } from '../../src/stores/scenarios.js'
+import { PROFILE_DEFERRED_ROUTES } from '../../src/utils/profileNavigation.js'
 
 export async function test_profile({ page, origin, evidence, check }) {
   const now = Date.UTC(2026, 9, 13, 1)
@@ -38,11 +39,12 @@ export async function test_profile({ page, origin, evidence, check }) {
   const before = await storage()
   for (const [id, target] of [['profile.openAppSettings.click.1','/pages/settings/index'], ['profile.openEditBasic.click.1','/pages/profile/edit'], ['profile.openStore.click.1','/pages/coins/index'], ['profile.openProfilePreview.click.1','/pages/profile/preview']]) {
     assert.equal(await entry(id).getAttribute('data-target'), target); await entry(id).click()
-    assert.match(await profile.locator('.profile-feedback').textContent(), /not been restored/)
+    if (PROFILE_DEFERRED_ROUTES.includes(target)) assert.match(await profile.locator('.profile-feedback').textContent(), /not been restored/)
+    else { await page.locator('.editor-title:visible').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.profile-title:visible').waitFor() }
     assert.equal(await profile.getAttribute('data-page-depth'), '1'); assert.equal(await storage(), before)
     assert.equal(await page.locator('uni-toast, uni-modal, .app-loading:visible').count(), 0)
   }
-  await shot('dependency-error'); check('all four exact child routes remain honest deferred failures with no writes or native navigation Loading')
+  await shot('dependency-error'); check('all four exact child routes use current readiness; restored pages return, deferred routes fail honestly without writes')
   await entry('profile.goBack.click.1').click(); await page.locator('.home-header:visible').waitFor()
   assert.equal(await page.locator('.main-tab-frame:visible').getAttribute('data-page-depth'), '1')
   check('direct Profile has no fake history and replaces Home on Back')

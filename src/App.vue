@@ -21,6 +21,7 @@ onShow(() => { apply_theme(); request_safe_area() })
 
 <style>
 @import '../static/assets/fonts/source-fonts.css';
+@import './pages/profile/editor.css';
 :root { --app-safe-top: max(var(--status-bar-height, 0px), var(--native-safe-area-top, 0px), env(safe-area-inset-top, 0px)); --app-safe-bottom: max(var(--native-safe-area-bottom, 0px), env(safe-area-inset-bottom, 0px)); --app-main-tab-bar-height: calc(194.657rpx + var(--app-safe-bottom)); }
 * { box-sizing: border-box; }
 html, body, #app, uni-app, uni-page, uni-page-wrapper, uni-page-body { height: 100%; overflow: hidden; }
