@@ -33,6 +33,10 @@
 
 ## 当前执行
 
+Permissions Notifications本页：4项能力/桥接单元、累计14组H5检查、iPhone17Pro实际1项WK桥接测试通过（RegistrationPermission.xcresult），原生构建成功。Chrome真实granted分支、无API和无宿主Settings失败、返回归属已测；WK只读取真实系统状态，未触发系统授权弹窗，不冒称已测点击Allow。原生请求成功/拒绝的系统弹窗手动验收仍待完成，但不阻塞本地注册“Not Now”路径。三项强制校验通过无警告、临时PID84793关闭；pending待Complete。
+
+Permissions Notifications契约：source3272–3288，route /pages/permissions/notif，来源/返回Notifications（直达fallback该页）。allowNotifs在有效已验证本地账号及前序完成时读取/请求实际Chrome Notification或WK UNUserNotificationCenter；只有granted才经500msLoading写本人account.onboarding/Settings然后Complete。denied/unavailable/not_requested留本页说明与可重试/Settings；denyNotifs保存已观测denied/unavailable，否则skipped，不伪造系统拒绝；关闭/换账号取消后不写。openSettings经既有可信主frame白名单，普通浏览器明确失败。同步账号进度/Settings、刷新重读系统权限；原生响应包括delivery_configured=false，不注册APNs、不发推送。十字段验收包括允许/拒绝/不可用/取消/未知回包/无宿主/刷新/500ms前零写；当前仅此页in_progress。
+
 Notifications本页：累计14组H5检查通过，Not Now在500msLoading后保存skipped且不开启通知，notif.png视觉核对；上一页Ice关闭动画截帧问题也已在本轮证据修正。三项校验通过无警告，PID84095已关闭。pending待权限说明及Complete。
 
 Notifications十字段：source3181–3190，route /pages/onboarding/notif，前页Ice/无历史回Ice；两安全区、唯一scroll、固定双CTA。obNotif.enableNotifs.click.1仅导航首用真实权限说明页，不写权限；skipNotifs仅有效当前账号完成前序步骤后Loading500ms保存notification_permission=skipped、master=false并进入Complete；失败留页可重试，卸载取消；Store为单一读写口、同步Settings/Complete/冷启动。明确本地构建没有推送服务，允许不授权继续，验收初态/500ms前零写/跳过/刷新/错误/小屏固定区域。当前本页in_progress。

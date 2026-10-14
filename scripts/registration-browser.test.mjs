@@ -237,6 +237,21 @@ try {
       check('Notification pre-prompt follows source; Not Now saves skipped after Loading without granting permission')
     }
   }
+  if (['notification-access', 'complete'].includes(phase)) {
+    await click('obNotif.enableNotifs.click.1'); await page.locator('.permission-notif-page').waitFor(); await shot('notification-access')
+    const before = await snapshot()
+    await page.evaluate(() => { window.__notificationAPI = window.Notification; window.Notification = undefined })
+    await click('permNotif.allowNotifs.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /unavailable/); assert.deepEqual(await snapshot(), before)
+    await click('permNotif.openSettings.click.1'); assert.match(await page.getByRole('alert').innerText(), /unavailable in this browser/)
+    await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.onboarding-notif-page').waitFor()
+    await page.evaluate(() => { window.Notification = window.__notificationAPI; delete window.__notificationAPI })
+    await page.context().grantPermissions(['notifications'])
+    await click('obNotif.enableNotifs.click.1'); await page.locator('.permission-notif-page').waitFor()
+    await click('permNotif.allowNotifs.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
+    await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.notification_permission==='granted' })
+    const d = await snapshot(); assert.equal(d.settings.find(s => s.owner_user_id === d.session.current_user_id).notifications.master, true)
+    check('Notification capability unavailable and no-host Settings fail without writes; Back returns pre-prompt; actual Chrome granted permission persists after Loading')
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }

@@ -19,6 +19,7 @@
     { "path": "pages/onboarding/ice", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/notif", "style": { "navigationStyle": "custom" } },
     { "path": "pages/permissions/photos", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/permissions/notif", "style": { "navigationStyle": "custom" } },
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/discover/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/events/index", "style": { "navigationStyle": "custom" } },

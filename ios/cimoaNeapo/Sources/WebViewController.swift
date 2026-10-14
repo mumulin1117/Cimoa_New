@@ -1,5 +1,6 @@
 import UIKit
 import WebKit
+import UserNotifications
 
 final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     private(set) var webView: WKWebView!
@@ -92,6 +93,27 @@ final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDeleg
               let method = payload["method"] as? String else { reply(nil, "Invalid or untrusted native bridge request."); return }
         let result: [String: Any]
         switch method {
+        case "getNotificationPermission", "requestNotifications":
+            let center = UNUserNotificationCenter.current()
+            let respond = {
+                center.getNotificationSettings { settings in
+                    let status: String
+                    switch settings.authorizationStatus {
+                    case .authorized, .provisional, .ephemeral: status = "granted"
+                    case .denied: status = "denied"
+                    case .notDetermined: status = "not_requested"
+                    @unknown default: status = "unavailable"
+                    }
+                    DispatchQueue.main.async { reply(["version": 1, "request_id": id, "success": true, "result": ["status": status, "delivery_configured": false]], nil) }
+                }
+            }
+            if method == "requestNotifications" {
+                center.requestAuthorization(options: [.alert, .badge, .sound]) { _, error in
+                    if let error { DispatchQueue.main.async { reply(nil, error.localizedDescription) }; return }
+                    respond()
+                }
+            } else { respond() }
+            return
         case "openSettings":
             guard let url = URL(string: UIApplication.openSettingsURLString) else { reply(nil, "Settings are unavailable."); return }
             UIApplication.shared.open(url, options: [:]) { opened in

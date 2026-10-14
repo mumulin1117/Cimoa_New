@@ -128,6 +128,9 @@ final class HostTests: XCTestCase {
     }
     func testNativeRequestReplyAndFailureBoundaries() async throws {
         let host = try await host()
+        let permission = try await script(host, "return await window.CimoaNativeBridge.request('getNotificationPermission')") as! [String: Any]
+        XCTAssertTrue(["granted", "denied", "not_requested", "unavailable"].contains(permission["status"] as? String ?? ""))
+        XCTAssertEqual(permission["delivery_configured"] as? Bool, false)
         let result = try await script(host, "const before=localStorage.getItem('cimoa_app_state_v2');const env=await window.CimoaNativeBridge.request('getEnvironment'); const safe=await window.CimoaNativeBridge.request('getSafeArea'); let denied=false;try{await window.webkit.messageHandlers.CimoaHost.postMessage({version:1,request_id:'invalid-method',method:'arbitraryExecution'})}catch{denied=true};let malformed=false;try{await window.webkit.messageHandlers.CimoaHost.postMessage({version:99,request_id:'bad-version',method:'getEnvironment'})}catch{malformed=true};return {env,safe,denied,malformed,unchanged:before===localStorage.getItem('cimoa_app_state_v2')}") as! [String: Any]
         let env = result["env"] as! [String: Any]
         XCTAssertEqual(env["project"] as? String, "cimoaNeapo"); XCTAssertEqual(env["bundle_id"] as? String, "com.cimoa.neapo.dev")
