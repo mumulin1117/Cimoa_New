@@ -202,6 +202,66 @@ try {
     check('Try Again waits for custom Loading and creates a distinct pending request without adding coins')
   }
 
+  if (phase === 'history') {
+    await page.goto(`${origin}/?phase=coin-history#/pages/coins/index`)
+    await page.locator('[data-interaction="coinStore.continuePurchase.click.1"]').click()
+    await page.locator('.coin-purchasing-page').waitFor()
+    await page.locator('[data-interaction="coinPurchasing.backToStore.click.1"]').click()
+    await page.locator('.coin-cancelled-page').waitFor()
+    await page.locator('[data-interaction="coinCancelled.backToStore.click.1"]').click()
+    await page.locator('.coin-center-page').waitFor()
+    const before_history = await state()
+    await page.locator('[data-interaction="coinStore.openHistory2.click.1"]').click()
+    await page.locator('.coin-history-page').waitFor()
+    assert.match(await page.locator('.history-balance').innerText(), /Current balance\s*260/)
+    assert.equal(await page.locator('.history-row').count(), 5)
+    assert.equal(await page.locator('[data-record-type="purchase_request"]').count(), 1)
+    assert.match(await page.locator('[data-record-type="purchase_request"]').innerText(), /Purchase cancelled/)
+    await page.waitForTimeout(400)
+    await page.screenshot({ path: path.join(output, 'history-default.png') })
+    check('History combines four ledger entries with one terminal request without changing the 260 balance')
+
+    await page.locator('[data-filter="purchases"]').click()
+    assert.equal(await page.locator('.history-row').count(), 2)
+    await page.locator('[data-filter="used"]').click()
+    assert.equal(await page.locator('.history-row').count(), 3)
+    await page.locator('[data-filter="all"]').click()
+    assert.equal(await page.locator('.history-row').count(), 5)
+    check('All, Purchases and Used filters derive from canonical ledger and request entities')
+
+    await page.locator('[data-record-type="transaction"]').filter({ hasText: 'Coin purchase' }).click()
+    assert.match(await page.getByRole('alert').innerText(), /still being restored/)
+    assert.deepEqual(await state(), before_history)
+    check('Unrestored purchase detail is dependency-gated without a ledger write')
+
+    await page.locator('[data-record-type="purchase_request"]').click()
+    await page.locator('.coin-cancelled-page').waitFor()
+    await page.locator('.cancelled-footer [data-interaction="coinCancelled.goBack.click.1"]').click()
+    await page.locator('.coin-history-page').waitFor()
+    assert.equal((await state()).coin_transactions.reduce((sum, row) => sum + row.amount, 0), 260)
+    check('Terminal request rows open their real result entity and Close restores History')
+
+    await page.reload()
+    await page.locator('.coin-history-page').waitFor()
+    assert.equal(await page.locator('.history-row').count(), 5)
+    check('History refresh restores persisted ledger and terminal requests')
+
+    await page.locator('[data-interaction="coinHistory.goBack.click.1"]').click()
+    await page.locator('.coin-center-page').waitFor()
+    check('History Back restores the existing Coin Center instance')
+
+    const empty = await state()
+    empty.coin_transactions = []
+    empty.purchase_requests = []
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), empty)
+    await page.goto(`${origin}/?phase=coin-history-empty#/pages/coins/history`)
+    await page.locator('.history-empty').waitFor()
+    assert.match(await page.locator('.history-balance').innerText(), /Current balance\s*0/)
+    await page.waitForTimeout(400)
+    await page.screenshot({ path: path.join(output, 'history-empty.png') })
+    check('History renders the zero-balance empty state from Store data')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {
