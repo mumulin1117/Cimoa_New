@@ -11,7 +11,7 @@ export function events_destination(store, kind, id) {
   return `/pages/events/${kind}?event_id=${encodeURIComponent(id)}` + (kind === 'group' ? `&conversation_id=${encodeURIComponent(event.conversation_id)}` : '')
 }
 // Per-target gates are removed only when their own Stage 5 restoration is complete.
-export const EVENTS_DEFERRED_ROUTES = Object.freeze(['upcoming', 'detail', 'participants', 'group', 'join-success'].map(key => `/pages/events/${key}`))
+export const EVENTS_DEFERRED_ROUTES = Object.freeze(['upcoming', 'participants', 'group', 'join-success'].map(key => `/pages/events/${key}`))
 export function require_events_destination_ready(url) {
   if (EVENTS_DEFERRED_ROUTES.includes(url.split('?')[0])) throw new Error('This destination has not been restored yet.')
   return url

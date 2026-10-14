@@ -91,6 +91,7 @@ export const use_app_store = defineStore('app', {
     active_event_tab: (state) => ready(state) ? ev.active_event_tab(state.data) : 'Today',
     event_feed: (state) => ready(state) ? ev.event_feed(state.data, state.clock_ms) : [],
     event_by_id() { return id => clone_data(this.events.find(row => row.event_id === id) || null) },
+    event_detail: state => id => ready(state) ? ev.event_detail(state.data, id, state.clock_ms) : null,
     event_join_blocker: (state) => id => state.hydration_status === 'ready' ? ev.event_join_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
     event_participants: (state) => (id) => ready(state) ? s.members(state.data, id).filter((row) => s.visible(state.data, row.user_id)).map((row) => profile(state.data, row.user_id)) : [],
     my_events() { return this.events.filter((row) => row.joined) },

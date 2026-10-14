@@ -40,12 +40,12 @@ onUnmounted(() => { token++; clearTimeout(timer) })
 }
 .event-dialog-panel {
   position: absolute;
-  bottom: var(--app-main-tab-bar-height);
+  bottom: var(--event-dialog-bottom, var(--app-main-tab-bar-height));
   right: 0;
   left: 0;
   display: flex;
   flex-direction: column;
-  max-height: calc(100% - var(--app-main-tab-bar-height) - var(--app-safe-top, 0px) - 30.534rpx);
+  max-height: calc(100% - var(--event-dialog-bottom, var(--app-main-tab-bar-height)) - var(--app-safe-top, 0px) - 30.534rpx);
   box-sizing: border-box;
   padding: 49.618rpx 41.985rpx 64.885rpx;
   border-radius: 61.069rpx 61.069rpx 0 0;
@@ -66,7 +66,7 @@ onUnmounted(() => { token++; clearTimeout(timer) })
   background: var(--cimoa-surface-event-handle);
   margin: 0 auto 34.351rpx;
 }
-.event-dialog-scroll { min-height: 0; flex: 1; max-height: calc(100vh - var(--app-main-tab-bar-height) - var(--app-safe-top, 0px) - 188.93rpx); }
+.event-dialog-scroll { min-height: 0; flex: 1; max-height: calc(100vh - var(--event-dialog-bottom, var(--app-main-tab-bar-height)) - var(--app-safe-top, 0px) - 188.93rpx); }
 .event-dialog-scroll :deep(.uni-scroll-view) { height: auto; max-height: inherit; }
 .event-dialog :deep(.event-dialog-title) { display: block; font-size: 47.71rpx; font-weight: 800; letter-spacing: -0.03em; overflow-wrap: anywhere; }
 .event-dialog :deep(.event-dialog-copy) { display: block; font-size: 29.58rpx; color: var(--cimoa-text-secondary); margin-top: 26.718rpx; line-height: 1.45; }

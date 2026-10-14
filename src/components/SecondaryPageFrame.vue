@@ -7,7 +7,7 @@ import PageTransition from './PageTransition.vue'
 import TopSafeArea from './TopSafeArea.vue'
 import BottomSafeArea from './BottomSafeArea.vue'
 
-defineProps({ duration: { type: Number, default: null } })
+defineProps({ duration: { type: Number, default: null }, scrollLocked: Boolean, scrollIntoView: String })
 const store = use_app_store(), transition = ref(null), depth = ref(route_depth())
 let timer
 const stop_clock = () => { clearInterval(timer); timer = null }
@@ -16,6 +16,7 @@ onHide(stop_clock)
 onUnmounted(stop_clock)
 defineExpose({
   navigate_forward: url => transition.value.navigate_forward(url),
+  navigate_replace: url => transition.value.navigate_replace(url),
   navigate_back: (fallback = '/pages/home/index') => route_depth() > 1 ? transition.value.navigate_back() : transition.value.navigate_replace(fallback),
 })
 </script>
@@ -25,7 +26,7 @@ defineExpose({
     <TopSafeArea />
     <PageTransition ref="transition" :duration="duration">
       <view class="secondary-page-header"><slot name="header" /></view>
-      <scroll-view class="secondary-page-scroll" scroll-y :show-scrollbar="false"><slot /></scroll-view>
+      <scroll-view class="secondary-page-scroll" :scroll-y="!scrollLocked" :scroll-into-view="scrollIntoView" :show-scrollbar="false"><slot /></scroll-view>
       <slot name="footer" />
     </PageTransition>
     <BottomSafeArea />

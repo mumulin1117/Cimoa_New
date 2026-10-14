@@ -36,6 +36,8 @@ defineProps({ name: { type: String, required: true }, strokeWidth: { type: Numbe
       <template v-else-if="name === 'filter'"><path d="M4 7h16M7 12h10M10 17h4" /></template>
       <template v-else-if="name === 'book'"><path d="M2.5 5.5c3.2-1 6.3-.7 9.5 1.2 3.2-1.9 6.3-2.2 9.5-1.2v13c-3.2-1-6.3-.7-9.5 1.2-3.2-1.9-6.3-2.2-9.5-1.2zM12 6.7v13" :stroke-width="strokeWidth || 1.9" /></template>
       <template v-else-if="name === 'puzzle'"><path d="M9.2 3.8a2.3 2.3 0 0 1 4.6 0V5H17a1 1 0 0 1 1 1v3.3h1.2a2.3 2.3 0 0 1 0 4.6H18V18a1 1 0 0 1-1 1h-3.3v-1.2a2.3 2.3 0 0 0-4.6 0V19H6a1 1 0 0 1-1-1v-3.4h1.2a2.3 2.3 0 0 0 0-4.6H5V6a1 1 0 0 1 1-1h3.2z" :stroke-width="strokeWidth || 1.9" /></template>
+      <template v-if="name === 'more'"><circle cx="5" cy="12" r="1.9" fill="currentColor" stroke="none" /><circle cx="12" cy="12" r="1.9" fill="currentColor" stroke="none" /><circle cx="19" cy="12" r="1.9" fill="currentColor" stroke="none" /></template>
+      <template v-if="name === 'check'"><path d="m5 12 4 4L19 6" /></template>
     </svg>
   </view>
 </template>

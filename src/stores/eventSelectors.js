@@ -48,3 +48,15 @@ export function event_join_blocker(data, id, now) {
   if (event.price !== 0) return 'Paid event booking is not configured. No changes were made.'
   return ''
 }
+export function event_detail(data, id, now) {
+  const source = data.events.find(row => row.event_id === id)
+  if (!source) return null
+  const event = event_card(data, source, now), zone = event.time_zone || 'UTC'
+  const clock = value => new Intl.DateTimeFormat('en-US', { timeZone: zone, hour: 'numeric', minute: '2-digit' }).format(value)
+  const organizer = data.organizers.find(row => row.organizer_id === event.organizer_id)
+  return { ...event, organizer: clone_data(organizer || null), ended: event.ends_at <= now,
+    attendance_label: `${event.participant_count} of ${event.capacity} going`,
+    schedule: (event.schedule || []).map(item => ({ ...item, time_label: clock(event.starts_at + item.offset_minutes * 60000) })),
+    notes: [...new Set([event.price === 0 ? 'Free to join' : null, ...(event.notes || '').split(/\.\s*/).filter(Boolean), event.accessibility, event.weather_plan].filter(Boolean))],
+    share_text: [event.title, `${event.date_label} (${zone})`, event.location, event.description].filter(Boolean).join('\n') }
+}

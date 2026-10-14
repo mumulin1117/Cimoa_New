@@ -24,6 +24,7 @@
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/discover/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/events/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/events/detail", "style": { "navigationStyle": "custom" } },
     { "path": "pages/messages/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/edit", "style": { "navigationStyle": "custom" } },
