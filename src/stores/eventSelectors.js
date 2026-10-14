@@ -60,3 +60,17 @@ export function event_detail(data, id, now) {
     notes: [...new Set([event.price === 0 ? 'Free to join' : null, ...(event.notes || '').split(/\.\s*/).filter(Boolean), event.accessibility, event.weather_plan].filter(Boolean))],
     share_text: [event.title, `${event.date_label} (${zone})`, event.location, event.description].filter(Boolean).join('\n') }
 }
+export function my_event_groups(data, now) {
+  const rows = data.events.filter(row => joined(data, row.event_id)).map(row => event_card(data, row, now))
+  const future = rows.filter(row => row.ends_at > now).sort((a,b) => a.starts_at - b.starts_at)
+  const featured = future.shift() || null, week = [], later = []
+  for (const event of future) {
+    const zone = event.time_zone || 'UTC', today = date_day(now, zone), monday = today - ((new Date(today * 86400000).getUTCDay() + 6) % 7)
+    ;(date_day(event.starts_at, zone) < monday + 7 ? week : later).push(event)
+  }
+  return { featured, sections: [
+    { label: 'This week', interaction_id: 'evUpcoming.openJoined.click.2', events: week },
+    { label: 'Later', interaction_id: 'evUpcoming.openJoined.click.3', events: later },
+    { label: 'Past', interaction_id: 'evUpcoming.openJoined.click.4', events: rows.filter(row => row.ends_at <= now).sort((a,b) => b.starts_at - a.starts_at) },
+  ].filter(section => section.events.length) }
+}

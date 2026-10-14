@@ -27,6 +27,7 @@
     { "path": "pages/events/detail", "style": { "navigationStyle": "custom" } },
     { "path": "pages/events/participants", "style": { "navigationStyle": "custom" } },
     { "path": "pages/events/join-success", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/events/upcoming", "style": { "navigationStyle": "custom" } },
     { "path": "pages/messages/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/edit", "style": { "navigationStyle": "custom" } },

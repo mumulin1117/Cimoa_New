@@ -60,3 +60,16 @@
 .event-success-icon { width: 183.206rpx; height: 183.206rpx; border-radius: 50%; background: var(--cimoa-gradient-primary); color: var(--cimoa-text-inverse); padding: 49.618rpx; }
 .event-success-name { font-size: 36.26rpx; font-weight: 700; }
 .event-success-description { font-size: 32.443rpx; line-height: 1.5; color: var(--cimoa-text-secondary); }
+.event-upcoming-featured { padding: 30.534rpx; }
+.event-upcoming-summary, .event-upcoming-row { display: flex; align-items: center; gap: 22.901rpx; cursor: pointer; }
+.event-upcoming-cover { position: relative; width: 122.137rpx; height: 122.137rpx; border-radius: 34.351rpx; flex: none; overflow: hidden; }
+.event-upcoming-copy { flex: 1; min-width: 0; font-size: 28.626rpx; color: var(--cimoa-text-secondary); }
+.event-upcoming-copy > text { display: block; margin-top: 7.634rpx; }
+.event-upcoming-copy .event-upcoming-title { margin-top: 0; font-size: 36.26rpx; font-weight: 700; color: var(--cimoa-text-title); }
+.event-upcoming-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 19.084rpx; margin-top: 26.718rpx; }
+.event-upcoming-actions > view { min-height: 91.603rpx; border-radius: 45.802rpx; font-size: 30.534rpx; padding: 15.267rpx; }
+.event-upcoming-actions .event-page-secondary { box-shadow: none; border: 1px solid var(--cimoa-surface-outline); }
+.event-upcoming-row { padding: 26.718rpx; border-radius: 41.985rpx; margin-bottom: 22.901rpx; gap: 26.718rpx; }
+.event-upcoming-row .event-upcoming-title { font-size: 32.443rpx; }
+.event-upcoming-row .event-upcoming-copy { font-size: 27.672rpx; }
+.event-upcoming-row .event-page-icon { width: 30.534rpx; height: 30.534rpx; color: var(--cimoa-text-profile-chevron); }

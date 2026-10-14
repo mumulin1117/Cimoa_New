@@ -24,3 +24,8 @@ test('detail derives host, zoned schedule, unique notes and count without reseed
   const legacy=make(d=>{delete d.events[0].schedule;delete d.events[0].notes;d.events[0].description='Old saved text'})
   assert.deepEqual(legacy.store.event_detail('event_picnic').schedule,[]);assert.equal(legacy.store.event_detail('event_picnic').description,'Old saved text');assert.equal(store.event_detail('missing'),null)
 })
+test('My Events sorts only own active memberships into campus-week, later and past',()=>{
+  const {store}=make();store.join_event('event_picnic');store.join_event('event_mic');assert.equal(store.my_event_groups.featured.event_id,'event_picnic');assert.equal(store.my_event_groups.sections[0].label,'This week')
+  Object.assign(store.data.events.find(e=>e.event_id==='event_mic'),{starts_at:now-7200000,ends_at:now-1});assert.equal(store.my_event_groups.sections[0].label,'Past')
+  store.leave_event('event_picnic');assert.equal(store.my_event_groups.featured,null);assert.equal(store.my_event_groups.sections[0].events.length,1)
+})
