@@ -1,0 +1,11 @@
+{
+  "phase": "email",
+  "result": "passed",
+  "server_pid": 51095,
+  "checks": [
+    "Apple login is explicitly unavailable and performs no local account write",
+    "Reset Email validates locally and dependency-gates Code before creating a reset record",
+    "Reset Email refresh leaks no unsaved address and Back restores Login"
+  ],
+  "errors": []
+}
