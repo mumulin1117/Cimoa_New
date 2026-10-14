@@ -230,9 +230,11 @@ try {
     check('All, Purchases and Used filters derive from canonical ledger and request entities')
 
     await page.locator('[data-record-type="transaction"]').filter({ hasText: 'Coin purchase' }).click()
-    assert.match(await page.getByRole('alert').innerText(), /still being restored/)
+    await page.locator('.coin-purchase-detail-page').waitFor()
     assert.deepEqual(await state(), before_history)
-    check('Unrestored purchase detail is dependency-gated without a ledger write')
+    await page.locator('[data-interaction="coinPurchaseDetail.goBack.click.1"]').click()
+    await page.locator('.coin-history-page').waitFor()
+    check('Purchase rows open their owned ledger detail and Back restores History without a write')
 
     await page.locator('[data-record-type="purchase_request"]').click()
     await page.locator('.coin-cancelled-page').waitFor()
@@ -260,6 +262,42 @@ try {
     await page.waitForTimeout(400)
     await page.screenshot({ path: path.join(output, 'history-empty.png') })
     check('History renders the zero-balance empty state from Store data')
+  }
+
+  if (phase === 'purchase-detail') {
+    await page.goto(`${origin}/?phase=coin-purchase-detail#/pages/coins/history`)
+    const before = await state()
+    await page.locator('[data-record-type="transaction"]').filter({ hasText: 'Coin purchase' }).click()
+    await page.locator('.coin-purchase-detail-page').waitFor()
+    assert.match(await page.locator('.detail-hero').innerText(), /300 Coins\s*Local demo ledger entry/)
+    assert.match(await page.locator('.detail-card').innerText(), /Amount paid\s*Unavailable for local demo data/)
+    assert.match(await page.locator('.detail-card').innerText(), /Transaction ID\s*txn_seed_0/)
+    assert.match(await page.locator('.detail-note').innerText(), /does not represent an Apple charge/)
+    await page.waitForTimeout(400)
+    await page.screenshot({ path: path.join(output, 'purchase-detail-fixture.png') })
+    check('Purchase Detail discloses fixture provenance and never fabricates price or StoreKit receipt data')
+
+    await page.locator('[data-interaction="coinPurchaseDetail.openSupport.click.1"]').click()
+    assert.match(await page.getByRole('alert').innerText(), /still being restored/)
+    assert.deepEqual(await state(), before)
+    check('Unrestored Coin Help fails visibly without mutating the ledger')
+
+    const detail_url = page.url()
+    await page.reload()
+    await page.locator('.coin-purchase-detail-page').waitFor()
+    assert.equal(page.url(), detail_url)
+    assert.match(await page.locator('.detail-card').innerText(), /txn_seed_0/)
+    check('Purchase Detail refresh restores the canonical transaction')
+
+    await page.locator('[data-interaction="coinPurchaseDetail.goBack.click.1"]').click()
+    await page.locator('.coin-history-page').waitFor()
+    assert.equal(await page.locator('.history-row').count(), 4)
+    check('Purchase Detail Back restores History')
+
+    await page.goto(`${origin}/?phase=coin-purchase-detail-invalid#/pages/coins/purchase-detail?transaction_id=missing`)
+    assert.match(await page.getByRole('alert').innerText(), /unavailable/)
+    assert.deepEqual(await state(), before)
+    check('Purchase Detail rejects an unknown transaction ID without fallback data or writes')
   }
 
   assert.deepEqual(report.errors, [])
