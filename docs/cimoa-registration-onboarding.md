@@ -33,6 +33,8 @@
 
 ## 当前执行
 
+University：累计7组H5检查通过，uni.png视觉核对；年级/大学/专业字段与可选毕业年份保存和刷新/返回Basic实测。三项校验通过无警告，PID77243关闭；pending待Major依赖。新增大学和毕业年份输入仅替换原型伪造的默认HKUST/2027，不生成认证状态。
+
 Basic功能首轮：13项单元、累计6组H5检查通过，PID75940关闭。截图复核发现slot内容未消费共享auth.css，输入框和说明字号不正确；重新打开本页修复，并新增56高输入框/17字号的自动断言。最新PID76741复测通过，当前basic.png已重新视觉核对；三项强制校验通过无警告。当前恢复pending待依赖，首轮截图不作为视觉证据。
 
 Basic当前唯一in_progress。阶段2/3增量：`account.onboarding.step/completed_steps/notification_permission/completed_at`保存账号级进度；用户实体直接保存已提交字段，DOB归account；`onboarding`和`onboarding_catalog`为唯一页面读口。Success明确点击并500msLoading后，仅为当前已固定码验证的待注册账号建立本地会话，不授予学生认证。重新登录未完成账号恢复步骤；完整账户仍Home。源大学Verified/HKUST改为后续用户自填、自报而非自动确认；流程总数配置10，避免原稿7/8/9矛盾。

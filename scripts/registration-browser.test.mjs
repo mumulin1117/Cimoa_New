@@ -104,6 +104,15 @@ try {
     check('Success establishes only current verified local session; Basic validates real fields and persists progress without student promotion')
     if (phase === 'basic') { await page.reload(); await page.locator('.onboarding-basic-page').waitFor(); assert.equal(await field('Display name').inputValue(), 'Morgan'); check('Basic refresh restores submitted name and pronouns') }
   }
+  if (!['age', 'community', 'signup', 'email', 'basic'].includes(phase)) {
+    await page.locator('.onboarding-uni-page').waitFor(); await settle()
+    await click('obUni.goObMajor.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /university/)
+    await fill('University', 'HKUST'); await page.getByRole('button', { name: 'Year 3', exact: true }).click(); await fill('Field of study', 'Design'); await fill('Expected graduation', '2027')
+    await shot('uni'); await click('obUni.goObMajor.click.1')
+    await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='major' })
+    check('University is self-reported, never pre-verified; year/field/graduation save to the current user')
+    if (phase === 'uni') { await page.reload(); await page.locator('.onboarding-uni-page').waitFor(); assert.equal(await field('University').inputValue(), 'HKUST'); await page.locator('.onboarding-back').click(); await page.locator('.onboarding-basic-page').waitFor(); check('University refresh restores data and direct Back returns Basic') }
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }
