@@ -29,7 +29,7 @@ try {
   const field = label => page.locator(`uni-input[aria-label="${label}"] input, uni-textarea[aria-label="${label}"] textarea`)
   const fill = async (label, value) => { await field(label).fill(value); await page.waitForTimeout(60) }
   const settle = async () => { await page.locator('.page-transition').last().evaluate(el => Promise.all(el.getAnimations().map(a => a.finished))); await page.waitForTimeout(60) }
-  const shot = async name => { await settle(); await page.screenshot({ path: path.join(output, `${name}.png`) }) }
+  const shot = async name => { await settle(); await page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect?.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {})))); await page.screenshot({ path: path.join(output, `${name}.png`) }) }
   fs.mkdirSync(output, { recursive: true })
   await page.goto(`${origin}/`); await page.locator('.welcome-page').waitFor()
   assert.equal(await snapshot(), undefined)
@@ -204,6 +204,27 @@ try {
     const data = await snapshot(); assert.ok(data.goals.some(row => row.item_id === 'conversations'))
     check('All 15 source connection goals, multiple selections and missing shared goal metadata save atomically')
     if (phase === 'goal') { await page.reload(); await page.locator('.onboarding-goal-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 2); check('Goal refresh restores both selections') }
+  }
+  if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos', 'photo-access', 'about', 'interests', 'goal'].includes(phase)) {
+    await page.locator('.onboarding-ice-page').waitFor(); await settle()
+    assert.equal(await page.locator('.ice-empty').count(), 3)
+    await click('obIce.browseQuestions.click.1'); await page.getByRole('dialog').waitFor()
+    assert.equal(await page.locator('.library-question').count(), 6)
+    for (let i = 0; i < 3; i++) await page.locator('.library-question').nth(i).click()
+    await page.locator('.library-question').nth(3).click(); assert.match(await page.getByRole('dialog').innerText(), /Three questions is the limit/)
+    await shot('ice-library'); await page.getByRole('button', { name: 'Done', exact: true }).click()
+    await page.getByRole('button', { name: 'Remove question 3', exact: true }).click()
+    await click('obIce.writeOwnQuestion.click.1'); await fill('Custom question', 'What is your password?'); await click('sheetIceCustom.addCustom.click.1')
+    assert.match(await page.getByRole('dialog').innerText(), /friendly|personal/i)
+    await fill('Custom question', 'Where would you explore on campus?'); await shot('ice-custom'); await click('sheetIceCustom.addCustom.click.1')
+    await page.getByRole('dialog').waitFor({ state: 'hidden' })
+    await page.getByRole('button', { name: 'Edit question 3', exact: true }).click(); await fill('Custom question', 'Discard this draft?')
+    await page.getByRole('button', { name: 'Cancel', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' }); assert.match(await page.locator('.ice-list').innerText(), /Where would you explore/)
+    await shot('ice'); await click('obIce.goObNotif.click.1')
+    await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='notif' })
+    const d = await snapshot(); assert.equal(d.icebreakers.filter(q => q.user_id === d.session.current_user_id).length, 3)
+    check('Ice library six source questions, three-item limit, remove, local custom validation, edit cancellation and shared question persistence')
+    if (phase === 'ice') { await page.reload(); await page.locator('.onboarding-ice-page').waitFor(); assert.equal(await page.locator('.ice-question:not(.ice-empty)').count(), 3); await shot('ice'); check('Three chosen questions restore after refresh') }
   }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }

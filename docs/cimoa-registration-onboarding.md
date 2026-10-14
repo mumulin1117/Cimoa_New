@@ -33,6 +33,10 @@
 
 ## 当前执行
 
+Ice：8项注册引导单元、累计14组H5检查通过。题库六题、三题限制、移除、自定义过滤/添加、编辑取消、刷新实体恢复均实测；Sheet截图核对，主页面截图在最终链路回归中更新（避免关闭动画中截帧）。三项校验通过无警告；PID83159已关闭。pending待Notifications依赖，不标verified。
+
+Ice及首用两Sheet契约：obIce.e.tap/browseQuestions→源Library六题；q.edit保留原值至确认替换（关闭不删旧题），q.drop只改内存草稿；writeOwnQuestion→Custom；sheetIceLibrary.q.pick单选增/去选或替换，不超过3；sheetIceCustom.addCustom校验非空/160字/源本地敏感词/重复，成功仅更新草稿并关闭，失败留Sheet真实错误；两个closeSheet均不写Store。仅goObNotif在3个不同有效问题时Loading500ms后原子更新本人icebreakers和user.icebreaker_ids并前进；刷新从这组实体恢复、Profile读取同一组；所有目录从Store。自定义说明不声称服务审核，未选齐或异常保持原数据；验收包含四题限制、重复、编辑取消、自定义失败/成功、关闭和刷新。
+
 Goal：累计13组H5检查、全套69项单元通过；15项源目标、至少1/多选、共享目标目录原子补齐、刷新恢复与goal.png核对。三项校验通过无警告，PID81236关闭；pending待Ice依赖。
 
 Interests：累计12组H5检查、7项注册引导单元通过；17项源选项及顺序、至少3门槛、选择期间不写入、保存/刷新、缺目录/读取失败边界已测，interests.png核对。三项校验通过无警告，PID80676关闭；pending待Goal依赖。

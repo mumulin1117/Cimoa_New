@@ -1589,9 +1589,7 @@
     "allowed_origin_routes": [
       "/pages/onboarding/goal"
     ],
-    "required_parameters": [
-      "auth_flow_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "go@5171",
       "go@5172",
@@ -1668,10 +1666,11 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
+    "acceptance_evidence": "docs/evidence/registration/ice-browser.json"
   },
   {
     "source_screen": "Onboarding / Icebreakers / Completed",
@@ -1686,9 +1685,7 @@
     "allowed_origin_routes": [
       "/pages/onboarding/goal"
     ],
-    "required_parameters": [
-      "auth_flow_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "go@5171",
       "go@5172",
@@ -1766,10 +1763,11 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
+    "acceptance_evidence": "docs/evidence/registration/ice-browser.json"
   },
   {
     "source_screen": "Onboarding / Notifications / Pre-Permission",
@@ -12111,10 +12109,11 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work",
+    "acceptance_evidence": "docs/evidence/registration/ice-browser.json"
   },
   {
     "source_screen": "Onboarding / Icebreakers / Write My Own",
@@ -12209,10 +12208,11 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work",
+    "acceptance_evidence": "docs/evidence/registration/ice-browser.json"
   },
   {
     "source_screen": "Safety / User Actions / Profile Menu",

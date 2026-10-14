@@ -11,7 +11,7 @@ defineExpose({ navigate_forward: url => frame.value.navigate_forward(url), navig
 </script>
 <template>
   <SecondaryPageFrame ref="frame" class="onboarding-page" :class="`onboarding-${step}-page`">
-    <template #header><view class="onboarding-header"><view class="onboarding-back" role="button" tabindex="0" aria-label="Back" :aria-disabled="busy" @click="!busy && emit('back')" @keydown.enter="!busy && emit('back')"><SourceIcon name="back" /></view><view class="onboarding-track"><view :style="{ width: `${index / steps.length * 100}%` }" /></view><text class="onboarding-step">{{ index }} / {{ steps.length }}</text></view></template>
+    <template #header><view class="onboarding-header" :class="{ 'onboarding-header--ice': step === 'ice' }"><view class="onboarding-back" role="button" tabindex="0" aria-label="Back" :aria-disabled="busy" @click="!busy && emit('back')" @keydown.enter="!busy && emit('back')"><SourceIcon name="back" /></view><text v-if="step === 'ice'" class="ice-progress">Profile setup · {{ index }} of {{ steps.length }}</text><view class="onboarding-track"><view :style="{ width: `${index / steps.length * 100}%` }" /></view><text v-if="step !== 'ice'" class="onboarding-step">{{ index }} / {{ steps.length }}</text></view></template>
     <view class="onboarding-content"><template v-if="!accessError"><slot /><text v-if="error" class="auth-error-box" role="alert">{{ error }}</text></template><text v-else class="auth-error-box" role="alert">{{ accessError }}</text></view>
     <template #footer><view class="onboarding-footer"><slot name="hint" /><view v-if="!accessError" class="auth-primary" :class="{ 'is-disabled': disabled }" role="button" tabindex="0" :aria-disabled="busy || disabled" :data-interaction="interaction" @click="!busy && emit('continue')" @keydown.enter="!busy && emit('continue')">{{ button }}</view><view v-else class="auth-primary" role="button" tabindex="0" @click="emit('recover')" @keydown.enter="emit('recover')">Continue account setup</view></view></template>
     <template #overlays><slot name="overlays" /><AuthActionLoading :visible="busy" label="Saving profile…" /></template>
@@ -27,6 +27,10 @@ defineExpose({ navigate_forward: url => frame.value.navigate_forward(url), navig
 .onboarding-track { flex: 1; height: 11.45rpx; border-radius: 5.725rpx; background: var(--cimoa-surface-splash-track); overflow: hidden; }
 .onboarding-track view { height: 100%; border-radius: inherit; background: var(--cimoa-gradient-primary); }
 .onboarding-step { font-size: 25.763rpx; font-weight: 700; color: var(--cimoa-text-auth-placeholder); }
+.onboarding-header--ice { position: relative; height: 133.588rpx; }
+.onboarding-header--ice .onboarding-back { position: absolute; top: 0; left: 0; z-index: 1; }
+.ice-progress { position: absolute; top: 0; width: 100%; text-align: center; font-size: 30.534rpx; font-weight: 500; color: var(--cimoa-text-secondary); }
+.onboarding-header--ice .onboarding-track { position: absolute; bottom: 26.718rpx; left: 0; width: 100%; }
 .onboarding-content { padding: 0 38.168rpx 45.802rpx; }
 .onboarding-footer { display: flex; flex-direction: column; gap: 22.901rpx; padding: 0 38.168rpx 64.885rpx; }
 </style>

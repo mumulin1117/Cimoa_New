@@ -16,6 +16,7 @@
     { "path": "pages/onboarding/about", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/interests", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/goal", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/onboarding/ice", "style": { "navigationStyle": "custom" } },
     { "path": "pages/permissions/photos", "style": { "navigationStyle": "custom" } },
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/discover/index", "style": { "navigationStyle": "custom" } },

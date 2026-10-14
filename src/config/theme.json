@@ -7,6 +7,9 @@
     "surface": {
       "card": "#ffffff",
       "onboarding_border": "rgba(16,36,74,0.06)",
+      "onboarding_empty": "rgba(255,255,255,0.55)",
+      "onboarding_dashed": "#c7d0dd",
+      "onboarding_counter": "#eef2f7",
       "splash_track": "rgba(11,27,58,0.08)",
       "deep": "#0b1b3a",
       "border": "#e6ebf2",
@@ -36,6 +39,7 @@
       "auth_muted": "#6b7a93",
       "auth_legal": "#44536b",
       "auth_placeholder": "#8b95a6",
+      "onboarding_muted": "#96a1b4",
       "auth_error": "#991b1b",
       "title": "#0b1b3a",
       "secondary": "#5b6b85",
@@ -109,6 +113,7 @@
     }
   },
   "gradients": {
+    "ice_badge": "linear-gradient(135deg,#1ec8f5 0%,#4a7bf7 50%,#a855f7 100%)",
     "verification_glow": "radial-gradient(circle,rgba(30,200,245,0.35),rgba(248,28,229,0.28) 60%,transparent 75%)",
     "welcome_mask": "linear-gradient(to bottom,#000 0%,#000 70%,transparent 100%)",
     "card_fill": "linear-gradient(#ffffff,#ffffff)",

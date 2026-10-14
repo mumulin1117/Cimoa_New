@@ -4,6 +4,7 @@ import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { clone_data } from '../src/stores/seed.js'
 import { authenticated_destination, startup_destination } from '../src/utils/authNavigation.js'
+import { onboarding_error } from '../src/utils/onboardingFlow.js'
 function fixture(saved = null) {
   const store = use_app_store(createPinia()), disk = new Map(saved ? [['cimoa_app_state_v2', saved]] : [])
   const persistence = { read: key => clone_data(disk.get(key) ?? null), write: (key, data) => disk.set(key, clone_data(data)) }
@@ -97,4 +98,9 @@ test('missing catalog rows and unreadable storage do not expose a partial onboar
   assert.deepEqual(store.onboarding_catalog.interests, [])
   store.hydration_status = 'error'
   assert.equal(store.onboarding, null)
+})
+test('icebreaker validation requires exactly three unique safe bounded questions', () => {
+  const valid = ['Your ideal Sunday?', 'A campus spot?', 'Your favourite meal?']
+  assert.equal(onboarding_error('ice', { questions: valid }), '')
+  for (const questions of [[], valid.slice(0, 2), [...valid, 'Fourth?'], ['Same?', ' Same? ', 'Third?'], ['password?', ...valid.slice(1)], ['X'.repeat(161), ...valid.slice(1)], [null, ...valid.slice(1)]]) assert.ok(onboarding_error('ice', { questions }))
 })
