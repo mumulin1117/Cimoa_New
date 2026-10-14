@@ -5,6 +5,8 @@ import { migrate_legacy } from './migration.js'
 import { normalize_email, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
 import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
 import { community_rules, registration_agreements } from '../utils/registrationCatalog.js'
+import { onboarding_context, onboarding_actions } from './onboarding.js'
+import { ONBOARDING_FLOW, ONBOARDING_GOALS, ONBOARDING_INTEREST_IDS, onboarding_catalog } from '../utils/onboardingFlow.js'
 import { local_verification_context, valid_local_code } from '../utils/localVerification.js'
 import * as s from './selectors.js'
 import * as ev from './eventSelectors.js'
@@ -34,6 +36,11 @@ export const use_app_store = defineStore('app', {
   getters: {
     auth_draft: state => clone_data(state.data.auth_flow),
     registration_catalog: () => ({ rules: clone_data(community_rules), agreements: clone_data(registration_agreements) }),
+    onboarding: state => {
+      const context = onboarding_context(state.data, state.clock_ms)
+      return context ? { account_id: context.account.account_id, step: context.step, completed: context.completed, profile: clone_data({ ...context.user, date_of_birth: context.account.date_of_birth, questions: context.user.icebreaker_ids.map(id => state.data.icebreakers.find(row => row.question_id === id)?.text).filter(Boolean) }) } : null
+    },
+    onboarding_catalog: state => ({ ...clone_data(onboarding_catalog), steps: [...ONBOARDING_FLOW], goals: clone_data(ONBOARDING_GOALS), interests: ONBOARDING_INTEREST_IDS.map(id => clone_data(state.data.interests.find(row => row.item_id === id))).filter(Boolean) }),
     local_verification: state => state.hydration_status === 'ready' ? local_verification_context(state.data, state.clock_ms) : null,
     local_verification_code: () => LOCAL_VERIFICATION_CODE,
     requires_local_verification() { return this.session.is_authenticated && this.data.accounts.find(row => row.account_id === this.data.session.account_id)?.auth_provider === 'local' && !this.local_verification?.verified },
@@ -90,6 +97,7 @@ export const use_app_store = defineStore('app', {
     posts: () => [], comments_for_post: () => () => [],
   },
   actions: {
+    ...onboarding_actions,
     tick() { this.clock_ms = get_runtime(this).clock() },
     hydrate() {
       if (this.hydration_status === 'ready') return { success: true }

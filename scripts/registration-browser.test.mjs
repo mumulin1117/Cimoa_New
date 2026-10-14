@@ -89,6 +89,19 @@ try {
     await click('verCode.goVerSuccess.click.1'); await page.locator('.verification-success-page').waitFor()
     check('Email conflict rolls back; correction persists; Change email opens actual form; fixed code → Success')
   }
+  if (!['age', 'community', 'signup', 'email'].includes(phase)) {
+    await click('verSuccess.goObBasic.click.1'); await page.locator('.onboarding-basic-page').waitFor(); await settle()
+    assert.equal(await field('Display name').inputValue(), '')
+    assert.equal(await field('Date of birth').inputValue(), '2000-01-01')
+    await click('obBasic.goObUni.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /display name/)
+    await fill('Display name', 'Morgan'); await page.getByRole('button', { name: 'Non-binary', exact: true }).click(); await page.getByRole('button', { name: 'they / them', exact: true }).click()
+    await shot('basic'); await click('obBasic.goObUni.click.1'); await page.locator('.loading').waitFor({ state: 'detached' })
+    await page.waitForFunction(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.users.some(row => row.user_name === 'Morgan'))
+    const data = await snapshot(); const account = data.accounts.find(row => row.account_id === data.session.account_id)
+    assert.equal(account.onboarding.step, 'uni'); assert.equal(data.users.find(row => row.user_id === account.user_id).verification_status, 'pending')
+    check('Success establishes only current verified local session; Basic validates real fields and persists progress without student promotion')
+    if (phase === 'basic') { await page.reload(); await page.locator('.onboarding-basic-page').waitFor(); assert.equal(await field('Display name').inputValue(), 'Morgan'); check('Basic refresh restores submitted name and pronouns') }
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }

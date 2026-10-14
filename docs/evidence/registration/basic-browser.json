@@ -1,0 +1,14 @@
+{
+  "phase": "basic",
+  "result": "passed",
+  "server_pid": 75940,
+  "checks": [
+    "Splash → Welcome → Age; invalid/underage zero writes; custom Loading before adult draft save",
+    "Community exact six rules; Read sheet closes without accepting; all three explicit agreements persist after Loading",
+    "Signup source fields, mismatch and Show/Hide; real salted local credential; no plaintext/session/student certification",
+    "Email conflict rolls back; correction persists; Change email opens actual form; fixed code → Success",
+    "Success establishes only current verified local session; Basic validates real fields and persists progress without student promotion",
+    "Basic refresh restores submitted name and pronouns"
+  ],
+  "errors": []
+}
