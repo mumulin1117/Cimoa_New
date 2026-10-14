@@ -39,6 +39,8 @@ Edit All 本页通过，恢复 pending 等待子页与原生回归，full pendin
 
 ## 验收记录
 
+Icebreakers：Chrome12组通过，三题/重复校验、题库替换、自定义保存、取消草稿、刷新及历史问题保留均通过。见[ice验收](./evidence/profile-edit/ice-acceptance.json)。三项检查通过；local passed/full pending。
+
 Connection goals：复用注册目标 catalog；Chrome11组通过，空选择拒绝写入，新增目标 catalog 项同步、父页摘要与刷新保持一致。见[goals验收](./evidence/profile-edit/goals-acceptance.json)。三项检查通过；local passed/full pending。
 
 Interests：复用 onboarding 兴趣实体与最低3项校验；Chrome10组通过（包含前页回归），子页保存、父页再保存、不保存返回、刷新与 Profile 展示一致。见[interests验收](./evidence/profile-edit/interests-acceptance.json)。三项检查通过；local passed/full pending。

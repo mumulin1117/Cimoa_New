@@ -91,6 +91,17 @@ try {
     await goto('/pages/profile/goals'); await page.reload(); await page.locator('.profile-goals-page').waitFor(); assert.equal(await page.locator('[data-choice-id="career"]').getAttribute('aria-pressed'),'true'); await button('Back').click()
     check('Goals rejects empty selection; canonical catalog expansion, parent summary and refresh persist both selections')
   }
+  if (!['edit', 'basic', 'interests', 'goals'].includes(phase)) {
+    await click('editAll.eaIce.click.1'); await page.locator('.profile-ice-page').waitFor(); const before = await state()
+    await button('Remove question 1').click(); await click('editIce.saveIce.click.1'); assert.match(await page.getByRole('alert').innerText(),/three different/); assert.deepEqual(await state(),before)
+    await field('Custom icebreaker').fill('What campus tradition should we start?'); await click('editIce.addCustom.click.1'); await click('editIce.saveIce.click.1'); await page.locator('.profile-edit-page:visible').waitFor()
+    const saved = await state(), user = saved.users[0]; assert.equal(user.icebreaker_ids.length,3); assert.equal(saved.icebreakers.find(row=>row.question_id===user.icebreaker_ids[2]).text,'What campus tradition should we start?')
+    for (const id of before.users[0].icebreaker_ids) assert.ok(saved.icebreakers.some(row=>row.question_id===id))
+    await goto('/pages/profile/ice'); await page.reload(); await page.locator('.profile-ice-page').waitFor(); assert.match(await page.locator('.chosen-list').innerText(),/campus tradition/)
+    await field('Custom icebreaker').fill('What campus tradition should we start?'); await click('editIce.addCustom.click.1'); assert.match(await page.getByRole('alert').innerText(),/already selected/)
+    await button('Remove question 1').click(); await page.locator('.library-question').first().click(); await shot('ice'); await button('Back').click(); assert.deepEqual((await state()).users[0].icebreaker_ids,user.icebreaker_ids)
+    check('Icebreakers enforce three unique questions, preserve historical entities, save and refresh canonical active IDs; Back discards draft')
+  }
   assert.deepEqual(report.errors,[]); report.result='passed'
 } catch(error) { report.failure=String(error.stack||error); console.error(report.failure); process.exitCode=1 }
 finally { await browser?.close(); await new Promise(resolve=>server.close(resolve)); fs.writeFileSync(path.join(output,`${phase}-acceptance.json`),JSON.stringify(report,null,2)+'\n'); console.log('Temporary profile server and isolated browser closed.') }
