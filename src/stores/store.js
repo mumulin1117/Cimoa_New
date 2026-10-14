@@ -130,7 +130,7 @@ export const use_app_store = defineStore('app', {
         data.session = { current_user_id: null, account_id: null, expires_at: null }
       }, { expected_owner: owner })
     },
-    async register_local_account(input) {
+    async register_local_account(input, { is_current = () => true } = {}) {
       const email = normalize_email(input?.email), now = get_runtime(this).clock()
       const error = signup_error(input, now)
       if (error) return failure('invalid_form', error)
@@ -138,6 +138,7 @@ export const use_app_store = defineStore('app', {
       if (this.data.accounts.some(row => row.email === email)) return failure('email_exists', 'This email is already registered. Log in instead.')
       try {
         const credential = await create_local_credential(input.password)
+        if (!is_current()) return failure('cancelled', 'Registration was cancelled.')
         return transact(this, null, (data, timestamp) => {
           s.ensure(!s.authenticated(data, timestamp), 'The account changed. Please retry.')
           s.ensure(!data.accounts.some(row => row.email === email), 'This email is already registered. Log in instead.')

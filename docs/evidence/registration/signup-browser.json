@@ -1,0 +1,11 @@
+{
+  "phase": "signup",
+  "result": "passed",
+  "server_pid": 74434,
+  "checks": [
+    "Splash → Welcome → Age; invalid/underage zero writes; custom Loading before adult draft save",
+    "Community exact six rules; Read sheet closes without accepting; all three explicit agreements persist after Loading",
+    "Signup source fields, mismatch and Show/Hide; real salted local credential; no plaintext/session/student certification"
+  ],
+  "errors": []
+}

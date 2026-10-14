@@ -22,3 +22,8 @@ test('age/agreements reject underage and invalid dates without writes and restor
   assert.equal(store.save_registration_agreements({ terms: true, privacy: true, community: true }).success, false)
   assert.deepEqual(clone_data(store.data), before)
 })
+test('cancelled registration hashing cannot create an account', async () => {
+  const { store } = fixture(), before = clone_data(store.data)
+  const result = await store.register_local_account({ email: 'new@campus.edu', password: 'localpass123', confirmation: 'localpass123', date_of_birth: '2000-01-01', agreements: { terms: true, privacy: true, community: true } }, { is_current: () => false })
+  assert.equal(result.reason, 'cancelled'); assert.deepEqual(clone_data(store.data), before)
+})

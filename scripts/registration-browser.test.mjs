@@ -63,6 +63,19 @@ try {
     check('Community exact six rules; Read sheet closes without accepting; all three explicit agreements persist after Loading')
     if (phase === 'community') { await page.reload(); await page.locator('.community-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 3); check('Community refresh restores three consent flags') }
   }
+  if (!['age', 'community'].includes(phase)) {
+    await page.locator('.signup-page').waitFor(); await settle()
+    await fill('University email', 'new.member@campus.edu'); await fill('Password', 'localpass123'); await fill('Confirm password', 'different')
+    assert.match(await page.locator('.signup-mismatch').innerText(), /don’t match/)
+    await fill('Confirm password', 'localpass123'); await click('signup.togglePw.click.1'); assert.equal(await field('Password').getAttribute('type'), 'text')
+    await click('signup.togglePw.click.1'); await shot('signup')
+    const before = await snapshot(); await click('signup.createAccount.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
+    await page.locator('.loading').waitFor({ state: 'detached' }); const after = await snapshot()
+    const account = after.accounts.find(row => row.email === 'new.member@campus.edu')
+    assert.ok(account); assert.equal(account.auth_provider, 'local'); assert.equal(JSON.stringify(after).includes('localpass123'), false)
+    assert.equal(after.users.find(row => row.user_id === account.user_id).verification_status, 'pending'); assert.equal(after.session.current_user_id, null)
+    check('Signup source fields, mismatch and Show/Hide; real salted local credential; no plaintext/session/student certification')
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }

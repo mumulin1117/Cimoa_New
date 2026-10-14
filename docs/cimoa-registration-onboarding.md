@@ -33,6 +33,8 @@
 
 ## 当前执行
 
+Signup：本地表单创建实测通过；11项认证/注册单元及累计3组H5检查通过，截图核对。取消密码派生后不创建账号；账号创建与空用户原子写入，不自动会话或认证。暂回pending待Email依赖，PID74434关闭。
+
 Community Read补齐：每个Read打开同一常驻AgreementSheet中的对应条款，关闭不勾选、不持久化；数据从registration_catalog getter读取。协议展示明确为本地原型说明，未配置的法律主体/联系方式/真实服务承诺登记发布阻塞，不冒称可上线政策。Community本页3组H5检查通过、截图核对；暂回pending待Signup。临时PID73905关闭。
 
 - Age：本页浏览器2组检查、日期/原子写单元通过；默认及320小屏截图已检查。三项强制命令通过无警告，临时服务73151已关闭。恢复pending待Community依赖；证据`evidence/registration/age-browser.json`。其余新页面pending。
