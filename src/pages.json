@@ -14,6 +14,7 @@
     { "path": "pages/onboarding/major", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/photos", "style": { "navigationStyle": "custom" } },
     { "path": "pages/onboarding/about", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/onboarding/interests", "style": { "navigationStyle": "custom" } },
     { "path": "pages/permissions/photos", "style": { "navigationStyle": "custom" } },
     { "path": "pages/home/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/discover/index", "style": { "navigationStyle": "custom" } },

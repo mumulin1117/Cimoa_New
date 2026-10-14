@@ -181,6 +181,19 @@ try {
     check('Optional About starts empty, follows source card/textarea, counts 300 characters and saves to shared profile')
     if (phase === 'about') { await page.reload(); await page.locator('.onboarding-about-page').waitFor(); assert.equal((await field('About you').inputValue()).length, 300); check('About long content refresh restores all 300 characters') }
   }
+  if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos', 'photo-access', 'about'].includes(phase)) {
+    await page.locator('.onboarding-interests-page').waitFor(); await settle()
+    assert.equal(await page.locator('.interest-chips [role="checkbox"]').count(), 17)
+    const before = await snapshot()
+    for (const label of ['Photography', 'Coffee']) await page.getByRole('checkbox', { name: label, exact: true }).click()
+    assert.equal(await page.locator('[data-interaction="obInterests.goObGoal.click.1"]').getAttribute('aria-disabled'), 'true')
+    assert.deepEqual(await snapshot(), before)
+    await page.getByRole('checkbox', { name: 'Live Music', exact: true }).click(); await shot('interests')
+    await click('obInterests.goObGoal.click.1')
+    await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='goal' })
+    check('17 source interests; selection is only a draft; fewer than three cannot proceed; committed IDs share the entity catalog')
+    if (phase === 'interests') { await page.reload(); await page.locator('.onboarding-interests-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 3); check('Interests refresh restores three selected chips') }
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }

@@ -1,5 +1,6 @@
 const available_auth_routes = new Set(['/pages/auth/splash', '/pages/auth/welcome', '/pages/auth/login', '/pages/auth/age', '/pages/auth/verification/code', '/pages/auth/verification/success'])
 export const auth_destination = target => {
+  if (target === '/pages/onboarding/interests') return target
   if (target.split('?')[0] === '/pages/permissions/photos') return target
   if (['/pages/onboarding/uni', '/pages/onboarding/major', '/pages/onboarding/photos', '/pages/onboarding/about'].includes(target)) return target
   if (['/pages/auth/community', '/pages/auth/signup', '/pages/auth/verification/email', '/pages/onboarding/basic', '/pages/home/index'].includes(target)) return target

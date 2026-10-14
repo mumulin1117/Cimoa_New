@@ -91,3 +91,10 @@ test('failed photo metadata save or cancelled decode leaves neither half-photo n
   assert.equal((await store.add_onboarding_photos([image], null, id)).success, false)
   assert.equal(blobs.size, 0); assert.deepEqual(clone_data(store.data), before)
 })
+test('missing catalog rows and unreadable storage do not expose a partial onboarding context', () => {
+  const { store } = fixture()
+  store.data.interests = []
+  assert.deepEqual(store.onboarding_catalog.interests, [])
+  store.hydration_status = 'error'
+  assert.equal(store.onboarding, null)
+})

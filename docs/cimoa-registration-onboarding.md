@@ -33,6 +33,8 @@
 
 ## 当前执行
 
+Interests：累计12组H5检查、7项注册引导单元通过；17项源选项及顺序、至少3门槛、选择期间不写入、保存/刷新、缺目录/读取失败边界已测，interests.png核对。三项校验通过无警告，PID80676关闭；pending待Goal依赖。
+
 About：累计11组H5检查通过，300字保存/刷新、空白初态、源卡片尺寸和正常英文换行截图核对。三项校验通过无警告，PID80266关闭；pending待Interests依赖。
 
 Photos + Permissions Photos依赖回归通过：8项单元（注册/媒体与桥接）、累计9组H5检查，真实文件选择器选2张，主图/后移/移除取消及确认/替换/刷新Blob均已执行，photo-access及photos-restored截图核对。当前两页local passed/full pending，原生Settings实际跳转和宿主选图后续验收。三项校验通过无警告，PID79389关闭。此前Photos分段pending记录保留作历史。
