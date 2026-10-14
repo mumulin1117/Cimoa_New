@@ -38,6 +38,7 @@
     { "path": "pages/profile/ice", "style": { "navigationStyle": "custom" } },
     { "path": "pages/profile/preview", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/index", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/settings/notif", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/privacy", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/perm", "style": { "navigationStyle": "custom" } },
     { "path": "pages/auto-match/index", "style": { "navigationStyle": "custom" } },

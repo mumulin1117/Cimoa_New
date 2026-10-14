@@ -122,6 +122,59 @@ try {
     check('Permission statuses refresh from the environment and Back returns to Settings with no writes')
   }
 
+  if (phase === 'notifications') {
+    await page.context().grantPermissions(['notifications'], { origin })
+    await goto('/pages/settings/index')
+    const initial = await state()
+    await click('settings.openSetNotif.click.1')
+    await page.locator('.settings-notifications-page').waitFor()
+    await page.getByRole('switch', { name: 'All notifications' }).waitFor()
+    assert.equal(await page.getByRole('switch', { name: 'All notifications' }).getAttribute('aria-checked'), 'true')
+    assert.equal(await page.getByRole('switch', { name: 'Product updates' }).getAttribute('aria-checked'), 'false')
+    await shot('notifications-default')
+    check('Notifications opens with source master and eight canonical preference rows')
+
+    await page.getByRole('switch', { name: 'All notifications' }).click()
+    await page.locator('.loading').waitFor()
+    assert.equal((await state()).settings[0].notifications.master, true)
+    await page.locator('.loading').waitFor({ state: 'detached' })
+    assert.equal((await state()).settings[0].notifications.master, false)
+    assert.equal(await page.getByRole('switch', { name: 'Messages' }).getAttribute('aria-disabled'), 'true')
+    await page.getByRole('switch', { name: 'All notifications' }).click()
+    await page.locator('.loading').waitFor()
+    await page.locator('.loading').waitFor({ state: 'detached' })
+    assert.equal((await state()).settings[0].notifications.master, true)
+    check('Master switch requests a real granted permission, then waits for Loading before each Store write')
+
+    await page.getByRole('switch', { name: 'Product updates' }).click()
+    await page.locator('.loading').waitFor()
+    await page.locator('.loading').waitFor({ state: 'detached' })
+    assert.equal((await state()).settings[0].notifications.product, true)
+    await page.reload()
+    assert.equal(await page.getByRole('switch', { name: 'Product updates' }).getAttribute('aria-checked'), 'true')
+    check('Individual preference persists and restores after refresh')
+
+    const failure_before = await state()
+    await page.evaluate(() => { window.__originalWrite = Storage.prototype.setItem; Storage.prototype.setItem = function (key, value) { if (key === 'cimoa_app_state_v2') throw Error('Storage full'); return window.__originalWrite.call(this, key, value) } })
+    await page.getByRole('switch', { name: 'Messages' }).click()
+    await page.locator('.loading').waitFor()
+    await page.locator('.loading').waitFor({ state: 'detached' })
+    assert.match(await page.getByRole('alert').innerText(), /Storage full/)
+    assert.deepEqual(await state(), failure_before)
+    await page.evaluate(() => { Storage.prototype.setItem = window.__originalWrite; delete window.__originalWrite })
+    check('Notification persistence failure leaves the preference entity unchanged')
+
+    await page.context().clearPermissions()
+    await click('setNotif.simulateSystemOff.click.1')
+    await page.getByText(/permission has not been requested|unavailable in this environment/).waitFor()
+    assert.deepEqual(await state(), failure_before)
+    await click('setNotif.openSettings.click.1')
+    assert.match(await page.getByRole('alert').innerText(), /unavailable in this browser/)
+    await click('setNotif.goBack.click.1')
+    await page.locator('.settings-page').waitFor()
+    check('Former simulation control refreshes real system state; browser Settings failure is explicit and Back is correct')
+  }
+
   assert.deepEqual(report.errors, [])
   report.result = 'passed'
 } catch (error) {
