@@ -1,5 +1,7 @@
 # Cimoa 阶段五页面还原状态
 
+2026-10-14依赖流程增量：破冰文字/语音、连接请求、Auto Match 全状态、相机/麦克风说明、金币消费处理/失败、Profile 偏好/认证/重新认证及七类系统状态均已实现并完成本地回归。100项非浏览器测试、普通浏览器实测和iPhone 17 Pro（iOS 26.5）WKWebView 11/11通过；H5 316份文件已打包。真实匹配服务、大学认证服务及实体麦克风/相机成功路径仍缺，因此相关页只记local passed/full pending，不标verified。详见[本轮十字段契约与证据](./cimoa-stage5-dependency-flows.md)。
+
 2026-10-14活动增量：详情、参与者、报名成功、我的活动、活动群聊五页已逐页还原与本地验收，报名/取消后人数、名额、群权限同步通过。87项单元、活动链路10组、Events/主Tab19组以及WKWebView8/8通过。新增5条路由，当前41条注册路由、38/103匹配、65条待补；无in_progress，verified仍0。详见[活动本轮记录](./cimoa-event-pages.md)。举报、主办方拉黑、他人详情及系统硬件操作仍待补，不计全App完成。以下为历史时点。
 
 2026-10-14最新增量：个人资料与账号闭环已接通；Edit All/Basic/Interests/Goals/Ice/Preview/Settings新增7条路由和退出确认。80项单元、17组闭环H5、完整注册18组、Profile20/Home22/Discover20/Events19回归及WKWebView7/7通过。最终三项强制检查通过无警告，独立iOS包182份H5与测试和正常App一致。共36条注册路由、33/103条匹配、70条待补；无in_progress、verified仍0，本轮local passed/full pending。详见[本轮契约、证据与文件](./cimoa-profile-account-loop.md)。Settings其他子页、语音简介/歌曲/认证/Coins等依赖不属于已通过项。以下段落保留历史时点。

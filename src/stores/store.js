@@ -72,7 +72,18 @@ export const use_app_store = defineStore('app', {
     home_connections: (state) => ready(state) ? s.home_cards(state.data, state.clock_ms) : [],
     home_match_card: (state) => ready(state) ? s.home_match_card(state.data, state.clock_ms) : null,
     request_by_id: (state) => (id) => ready(state) ? clone_data(state.data.requests.find((row) => row.request_id === id && [row.sender_id, row.recipient_id].includes(s.owner_id(state.data)) && s.visible(state.data, row.sender_id) && s.visible(state.data, row.recipient_id)) || null) : null,
+    request_detail() { return id => {
+      const request = this.request_by_id(id)
+      if (!request) return null
+      const other_id = request.sender_id === this.session.current_user_id ? request.recipient_id : request.sender_id
+      const audio = request.audio_id ? this.media_by_id(request.audio_id) : null
+      return { ...request, other: this.user_by_id(other_id), question: this.data.icebreakers.find(row => row.question_id === request.question_id)?.text || '', audio }
+    } },
     match_by_id: (state) => (id) => ready(state) ? s.owned_matches(state.data, state.clock_ms).find((row) => row.match_id === id) || null : null,
+    match_detail() { return id => { const match = this.match_by_id(id); return match ? { ...match, candidate: match.candidate_id ? this.user_by_id(match.candidate_id) : null } : null } },
+    match_history: (state) => ready(state) ? clone_data(s.owned_matches(state.data, state.clock_ms).filter(row => row.created_at >= state.clock_ms - 30 * 86400000).sort((a, b) => b.created_at - a.created_at)) : [],
+    match_preferences: (state) => ready(state) ? clone_data(state.data.match_preferences.find(row => row.owner_user_id === s.owner_id(state.data)) || null) : null,
+    media_by_id: (state) => (id) => ready(state) ? clone_data(state.data.media_files.find(row => row.media_id === id && row.owner_user_id === s.owner_id(state.data)) || null) : null,
     active_match: (state) => ready(state) ? s.active_match(state.data, state.clock_ms) : null,
     free_matches_remaining: (state) => ready(state) ? s.remaining_quota(state.data, state.clock_ms) : 0,
     coin_balance: (state) => ready(state) ? s.balance(state.data) : 0,
@@ -348,6 +359,21 @@ export const use_app_store = defineStore('app', {
         return result
       } catch (error) { return failure('media_failed', error.message || 'Media could not be saved.') }
     },
+    async discard_media(id) {
+      const owner = s.owner_id(this.data), rt = get_runtime(this)
+      const row = this.data.media_files.find(item => item.media_id === id && item.owner_user_id === owner)
+      if (!row) return failure('media_unavailable', 'This recording is no longer available.')
+      const referenced = this.data.requests.some(item => item.audio_id === id) || this.data.messages.some(item => item.media_id === id) || this.data.users.some(item => item.bio_audio_id === id) || this.data.profile_photos.some(item => item.media_url === row.media_url)
+      if (referenced) return failure('media_in_use', 'This media is already in use and cannot be discarded.')
+      let blob
+      try {
+        blob = await rt.media.get(id)
+        await rt.media.delete(id)
+        const result = transact(this, null, data => { data.media_files = data.media_files.filter(item => item.media_id !== id) }, { expected_owner: owner })
+        if (!result.success && blob instanceof Blob) await rt.media.put(id, blob)
+        return result
+      } catch (error) { return failure('media_failed', error.message || 'The recording could not be discarded.') }
+    },
     async save_profile_photos(media_ids) {
       const owner = s.owner_id(this.data)
       try {
@@ -361,10 +387,10 @@ export const use_app_store = defineStore('app', {
         }, { expected_owner: owner })
       } catch (error) { return failure('media_failed', error.message) }
     },
-    async send_introduction({ user_id, question_id, kind = 'text', text = '', audio_id = null, operation_id }) {
+    async send_introduction({ user_id, question_id, kind = 'text', text = '', audio_id = null, operation_id, draft_id = null }) {
       const owner = s.owner_id(this.data)
       try { if (kind === 'voice') await check_media(this, audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
-      return transact(this, operation(operation_id, 'introduction', [user_id, question_id, kind, text, audio_id]), (data, now) => {
+      return transact(this, operation(operation_id, 'introduction', [user_id, question_id, kind, text, audio_id, draft_id]), (data, now) => {
         const blocker = s.introduction_blocker(data, user_id, now)
         s.ensure(!blocker, blocker)
         s.ensure(data.icebreakers.some((q) => q.question_id === question_id && q.user_id === user_id), 'Choose one of this person’s questions.')
@@ -372,7 +398,42 @@ export const use_app_store = defineStore('app', {
         if (kind === 'voice') s.ensure(s.privacy_for(data, user_id).allow_voice !== false, 'This person is not accepting voice introductions.')
         const request_id = make_id('request')
         if (kind === 'voice') add_transaction(data, -10, `voice:${request_id}`, 'spend', request_id, now)
-        data.requests.push({ request_id, sender_id: owner, recipient_id: user_id, question_id, kind, text: text.trim(), audio_id, status: 'pending', created_at: now, resolved_at: null }); return request_id
+        data.requests.push({ request_id, sender_id: owner, recipient_id: user_id, question_id, kind, text: text.trim(), audio_id, status: 'pending', created_at: now, resolved_at: null })
+        if (draft_id) {
+          const draft = require_owned(data, data.drafts, 'draft_id', draft_id)
+          s.ensure(draft.kind === 'introduction' && draft.target_id === user_id && draft.payload.question_id === question_id, 'This introduction draft is unavailable.')
+          draft.payload.completed_request_id = request_id
+        }
+        return request_id
+      }, { expected_owner: owner })
+    },
+    async complete_coin_spend(context_id) {
+      const owner = s.owner_id(this.data)
+      const context = this.data.drafts.find((row) => row.draft_id === context_id && row.owner_user_id === owner && row.kind === 'coin_spend')
+      if (!context) return failure('operation_unavailable', 'This coin operation is unavailable. No coins were deducted.')
+      const payload = clone_data(context.payload || {})
+      if (!['voice_introduction', 'priority_match'].includes(payload.kind)) return failure('operation_invalid', 'This coin operation is invalid. No coins were deducted.')
+      try { if (payload.kind === 'voice_introduction') await check_media(this, payload.audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
+      return transact(this, operation(payload.operation_id, 'coin-spend', [context_id, payload]), (data, now) => {
+        const current = require_owned(data, data.drafts, 'draft_id', context_id)
+        s.ensure(current.kind === 'coin_spend', 'This coin operation is unavailable.')
+        if (payload.kind === 'voice_introduction') {
+          const blocker = s.introduction_blocker(data, payload.user_id, now)
+          s.ensure(!blocker, blocker)
+          s.ensure(data.icebreakers.some((row) => row.question_id === payload.question_id && row.user_id === payload.user_id), 'Choose one of this person’s questions.')
+          s.ensure(s.privacy_for(data, payload.user_id).allow_voice !== false, 'This person is not accepting voice introductions.')
+          s.ensure(data.media_files.some((row) => row.media_id === payload.audio_id && row.owner_user_id === owner && row.kind === 'audio'), 'Saved media is unavailable. Please record it again.')
+          const request_id = make_id('request')
+          add_transaction(data, -10, `voice:${request_id}`, 'spend', request_id, now)
+          data.requests.push({ request_id, sender_id: owner, recipient_id: payload.user_id, question_id: payload.question_id, kind: 'voice', text: '', audio_id: payload.audio_id, status: 'pending', created_at: now, resolved_at: null })
+          data.drafts = data.drafts.filter((row) => row.draft_id !== payload.introduction_draft_id)
+          return { kind: payload.kind, destination_id: request_id }
+        }
+        const match = require_owned(data, data.match_sessions, 'match_id', payload.match_id)
+        s.ensure(['searching', 'paused'].includes(match.status) && !(match.priority_until > now), 'Priority Match is not available for this session.')
+        add_transaction(data, -20, `priority:${payload.operation_id}`, 'spend', match.match_id, now)
+        match.priority_until = now + 900000
+        return { kind: payload.kind, destination_id: match.match_id }
       }, { expected_owner: owner })
     },
     resolve_request(id, decision) {
@@ -428,6 +489,7 @@ export const use_app_store = defineStore('app', {
     },
     boost_match(id, operation_id) { return transact(this, operation(operation_id, 'priority', id), (data, now) => { const row = require_owned(data, data.match_sessions, 'match_id', id); s.ensure(['searching', 'paused'].includes(row.status) && !(row.priority_until > now), 'Priority Match is not available for this session.'); add_transaction(data, -20, `priority:${operation_id}`, 'spend', id, now); row.priority_until = now + 900000 }) },
     update_match_preferences(patch) { return transact(this, null, (data) => { const row = data.match_preferences.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(row && Object.keys(patch).every((key) => key !== 'owner_user_id' && key in row), 'Invalid matching preference.'); Object.assign(row, clone_data(patch)); s.ensure(row.age_min >= 18 && row.age_min <= row.age_max && row.age_max <= 100 && row.height_min <= row.height_max && row.distance_max > 0 && row.interest_ids.every((id) => data.interests.some((item) => item.item_id === id)), 'Check your matching preferences.') }) },
+    start_student_reverification() { return unavailable('University verification service') },
     join_event(id) {
       return transact(this, null, (data, now) => {
         const blocker = ev.event_join_blocker(data, id, now)

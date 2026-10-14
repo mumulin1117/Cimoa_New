@@ -3,42 +3,10 @@
   "meaning": "154 source states are not 154 pages. Registration/file existence does not establish fidelity or runtime acceptance.",
   "source_states": 154,
   "planned_routes": 103,
-  "registered_routes": 73,
-  "registered_planned_routes": 70,
+  "registered_routes": 105,
+  "registered_planned_routes": 102,
   "missing_routes": [
-    "/pages/auth/verification/unsupported",
-    "/pages/permissions/camera",
-    "/pages/permissions/mic",
-    "/pages/discover/icebreaker/select",
-    "/pages/discover/icebreaker/text",
-    "/pages/discover/icebreaker/voice",
-    "/pages/discover/icebreaker/preview",
-    "/pages/connections/sent",
-    "/pages/connections/received",
-    "/pages/connections/accepted",
-    "/pages/connections/declined",
-    "/pages/auto-match/preferences",
-    "/pages/auto-match/searching",
-    "/pages/auto-match/paused",
-    "/pages/auto-match/found",
-    "/pages/auto-match/waiting",
-    "/pages/auto-match/connected",
-    "/pages/auto-match/passed",
-    "/pages/auto-match/expired",
-    "/pages/auto-match/no-match",
-    "/pages/auto-match/history",
-    "/pages/coins/processing",
-    "/pages/coins/spend-failed",
-    "/pages/profile/prefs",
-    "/pages/profile/verification",
-    "/pages/profile/reverify",
-    "/pages/system/loading",
-    "/pages/system/offline",
-    "/pages/system/error",
-    "/pages/system/maintenance",
-    "/pages/system/empty",
-    "/pages/system/perm-denied",
-    "/pages/system/session-expired"
+    "/pages/auth/verification/unsupported"
   ],
   "extra_registered_routes": [
     "/pages/messages/index",
@@ -629,9 +597,9 @@
         "permCamera.denyPhotos.click.1"
       ],
       "entities": "permissions; media_files",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -647,9 +615,9 @@
         "permMic.denyMic.click.1"
       ],
       "entities": "permissions; media_files",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -808,9 +776,9 @@
         "ibSelect.answerGo.click.1"
       ],
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -827,9 +795,9 @@
         "ibText.switchToVoice.click.1"
       ],
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -853,9 +821,9 @@
         "sheetVoiceDiscard.closeSheet.click.2"
       ],
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -884,9 +852,9 @@
         "sheetVoiceCoin.editRecording.click.1"
       ],
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -912,7 +880,7 @@
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -927,9 +895,9 @@
         "reqSent.doneSent.click.1"
       ],
       "entities": "connection_requests; user_relationships; dm_conversations; users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -951,9 +919,9 @@
         "reqReceived.accept.click.1"
       ],
       "entities": "connection_requests; user_relationships; dm_conversations; users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -969,9 +937,9 @@
         "reqAccepted.viewProfile.click.1"
       ],
       "entities": "connection_requests; user_relationships; dm_conversations; users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -986,9 +954,9 @@
         "reqDeclined.backToDiscover.click.2"
       ],
       "entities": "connection_requests; user_relationships; dm_conversations; users",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1010,7 +978,7 @@
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
       "registered": true,
       "file_exists": true,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1042,9 +1010,9 @@
         "sheetInterestsPicker.closeSheet.click.2"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1077,9 +1045,9 @@
         "sheetAmHelp.closeSheet.click.2"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1096,9 +1064,9 @@
         "amPaused.askLeave.click.1"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1133,7 +1101,7 @@
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1161,9 +1129,9 @@
         "sheetAmFoundLeave.closeSheet.click.2"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1193,7 +1161,7 @@
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1209,9 +1177,9 @@
         "amWaiting.cancelRequest.click.1"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1227,9 +1195,9 @@
         "amConnected.viewProfile.click.1"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1245,9 +1213,9 @@
         "amPassed.returnHome.click.1"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1263,9 +1231,9 @@
         "amExpired.returnHome.click.1"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1282,9 +1250,9 @@
         "amNoMatch.returnHome.click.1"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1299,9 +1267,9 @@
         "amHistory.h.go.click.1"
       ],
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1336,7 +1304,7 @@
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1958,7 +1926,7 @@
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -1989,7 +1957,7 @@
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2024,7 +1992,7 @@
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2036,9 +2004,9 @@
       "return_owner": "pop origin_route（允许来源：/pages/discover/icebreaker/preview、/pages/auto-match/searching）；无历史实例时 replace /pages/discover/icebreaker/preview，不创建伪造实体",
       "interaction_ids": [],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2054,9 +2022,9 @@
         "coinSpendFailed.openCoinHelp.click.1"
       ],
       "entities": "coin_packages; purchase_requests; coin_transactions",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2316,9 +2284,9 @@
         "editPrefs.savePrefs.click.1"
       ],
       "entities": "users; profile_photos; interests; goals; icebreakers; profile_song",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2359,9 +2327,9 @@
         "verified.openReverify.click.1"
       ],
       "entities": "users; profile_photos; interests; goals; icebreakers; profile_song",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2376,9 +2344,9 @@
         "reverify.goVerEmail.click.1"
       ],
       "entities": "users; profile_photos; interests; goals; icebreakers; profile_song",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2789,9 +2757,9 @@
       "return_owner": "pop origin_route（允许来源：/pages/home/index、/pages/discover/index、/pages/events/index）；无历史实例时 replace /pages/home/index，不创建伪造实体",
       "interaction_ids": [],
       "entities": "session; service_state",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2806,9 +2774,9 @@
         "sysOffline.goBack.click.2"
       ],
       "entities": "session; service_state",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2823,9 +2791,9 @@
         "sysError.goBack.click.2"
       ],
       "entities": "session; service_state",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2837,9 +2805,9 @@
       "return_owner": "pop origin_route（允许来源：/pages/home/index、/pages/discover/index、/pages/events/index）；无历史实例时 replace /pages/home/index，不创建伪造实体",
       "interaction_ids": [],
       "entities": "session; service_state",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2851,9 +2819,9 @@
       "return_owner": "pop origin_route（允许来源：/pages/home/index、/pages/discover/index、/pages/events/index）；无历史实例时 replace /pages/home/index，不创建伪造实体",
       "interaction_ids": [],
       "entities": "session; service_state",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2868,9 +2836,9 @@
         "sysPermDenied.goBack.click.2"
       ],
       "entities": "session; service_state",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -2884,9 +2852,9 @@
         "sysSessionExpired.goLoginFresh.click.1"
       ],
       "entities": "session; service_state",
-      "registered": false,
-      "file_exists": false,
-      "local_acceptance": "pending",
+      "registered": true,
+      "file_exists": true,
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -3004,7 +2972,7 @@
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -3035,7 +3003,7 @@
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -3061,7 +3029,7 @@
       "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -3181,7 +3149,7 @@
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -3211,7 +3179,7 @@
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -3245,7 +3213,7 @@
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },
@@ -3279,7 +3247,7 @@
       "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
       "registered": false,
       "file_exists": false,
-      "local_acceptance": "pending",
+      "local_acceptance": "passed",
       "full_acceptance": "pending",
       "status": "pending"
     },

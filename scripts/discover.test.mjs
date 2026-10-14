@@ -51,6 +51,11 @@ test('entry and submit share verification, relationship and pending-request elig
   assert.throws(() => discover_destination(pending, 'icebreaker', 'user_lina'), /already pending/)
   assert.throws(() => discover_destination(make('blocked'), 'detail', 'user_chloe'), /no longer/)
 })
+test('a visible profile opened from another real entry can start its own eligible icebreaker', () => {
+  const store = make('default', data => { data.requests.find(row => row.request_id === 'request_lina').status = 'declined' })
+  assert.equal(store.discover_person.user_id, 'user_chloe')
+  assert.equal(discover_destination(store, 'icebreaker', 'user_lina'), '/pages/discover/icebreaker/select?user_id=user_lina')
+})
 test('Store changes and rehydration preserve the same canonical profile and photo', () => {
   const store = make(), persisted = structuredClone(JSON.parse(JSON.stringify(store.data)))
   persisted.users[1].user_name = 'Updated Chloe'

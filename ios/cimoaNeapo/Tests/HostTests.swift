@@ -445,6 +445,59 @@ final class HostTests: XCTestCase {
         let purchase = try await script(host, "const original=window.CimoaPurchaseBridge;try{return await new Promise((resolve,reject)=>{const t=setTimeout(()=>reject(Error('No purchase failure callback')),4000);window.CimoaPurchaseBridge={resolve:(id,result)=>{clearTimeout(t);resolve({id,status:result.status,product:result.product_id})}};window.webkit.messageHandlers.CimoaPurchase.postMessage({request_id:'native-failure-probe',package_id:'pkg_60',owner_user_id:'user_cimoa',product_id:null})})}finally{window.CimoaPurchaseBridge=original}") as! [String: Any]
         XCTAssertEqual(purchase["id"] as? String, "native-failure-probe"); XCTAssertEqual(purchase["status"] as? String, "failure")
     }
+    func testRestoredDependencyFlowsInRealWebKit() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?dependencies=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        do {
+            _ = try await script(host, """
+            const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),data=envelope.data,owner=data.session.current_user_id,target='user_liam';
+            data.requests=data.requests.filter(row=>!([row.sender_id,row.recipient_id].includes(owner)&&[row.sender_id,row.recipient_id].includes(target)));
+            data.relationships=data.relationships.filter(row=>!([row.from_user_id,row.to_user_id].includes(owner)&&[row.from_user_id,row.to_user_id].includes(target)));
+            data.match_sessions=data.match_sessions.filter(row=>!(row.owner_user_id===owner&&row.candidate_id===target));
+            data.blocked_users=data.blocked_users.filter(row=>!(row.owner_user_id===owner&&row.user_id===target));
+            localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true
+            """)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?dependencies=text#/pages/discover/icebreaker/select?user_id=user_liam")!))
+            try await waitFor(host, ".flow-choice")
+            let textFlow = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Dependency flow timeout: '+location.hash+' '+document.body.innerText)};
+            const click=async id=>{const element=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);element.click();await delay(80)};
+            const beforeCoins=state().coin_transactions.reduce((sum,row)=>sum+(row.owner_user_id===state().session.current_user_id&&row.status==='completed'?row.amount:0),0);
+            visible('[data-interaction="ibSelect.q.pick.click.1"]').click();await click('ibSelect.answerGo.click.1');await wait(()=>visible('uni-textarea[aria-label="Your introduction"] textarea'));
+            const field=visible('uni-textarea[aria-label="Your introduction"] textarea'),set=Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set;set.call(field,'Native text introduction');field.dispatchEvent(new Event('input',{bubbles:true}));await delay(80);
+            const beforeSend=localStorage.getItem('cimoa_app_state_v2');await click('ibText.continueText.click.1');const loading=!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===beforeSend;
+            await wait(()=>visible('[data-interaction="reqSent.doneSent.click.1"]'));const data=state(),request=data.requests.find(row=>row.sender_id===data.session.current_user_id&&row.recipient_id==='user_liam'&&row.text==='Native text introduction');
+            const afterCoins=data.coin_transactions.reduce((sum,row)=>sum+(row.owner_user_id===data.session.current_user_id&&row.status==='completed'?row.amount:0),0);
+            return {loading,request:request?.status,kind:request?.kind,free:beforeCoins===afterCoins,linked:data.drafts.some(row=>row.kind==='introduction'&&row.payload.completed_request_id===request?.request_id)}
+            """) as! [String: Any]
+            XCTAssertEqual(textFlow["loading"] as? Bool, true); XCTAssertEqual(textFlow["request"] as? String, "pending")
+            XCTAssertEqual(textFlow["kind"] as? String, "text"); XCTAssertEqual(textFlow["free"] as? Bool, true); XCTAssertEqual(textFlow["linked"] as? Bool, true)
+
+            let boundaries = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>localStorage.getItem('cimoa_app_state_v2');
+            const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Boundary timeout: '+location.hash+' '+document.body.innerText)};
+            const open=async hash=>{location.hash=hash;await wait(()=>location.hash===hash);await delay(350)};
+            await open('#/pages/profile/prefs');const prefs=!!visible('[data-interaction="editPrefs.savePrefs.click.1"]')&&document.body.innerText.includes('Shared interests');
+            await open('#/pages/profile/reverify');const beforeVerify=state();visible('[data-interaction="reverify.goVerEmail.click.1"]').click();await wait(()=>visible('[role=alert]'));const verifyFailure=visible('[role=alert]').textContent.includes('not configured')&&state()===beforeVerify;
+            await open('#/pages/auto-match/index');const beforeMatch=state();visible('[data-interaction="amEntry.joinPool.click.1"]').click();await wait(()=>visible('[role=alert]'));const matchFailure=visible('[role=alert]').textContent.includes('not configured')&&state()===beforeMatch;
+            await open('#/pages/permissions/camera?fallback=%2Fpages%2Fprofile%2Fedit');const camera=document.body.innerText.includes('used only while you take a photo');
+            await open('#/pages/permissions/mic?fallback=%2Fpages%2Fdiscover%2Ficebreaker%2Fvoice');const microphone=document.body.innerText.includes('Recording stops when you leave the page');
+            await open('#/pages/coins/processing?return_context_id=missing');const coinFailure=document.body.innerText.includes('No coins were deducted');
+            await open('#/pages/system/maintenance');const maintenance=document.body.innerText.includes('temporarily unavailable');
+            await open('#/pages/system/session-expired');const session=document.body.innerText.includes('session has expired');
+            return {prefs,verifyFailure,matchFailure,camera,microphone,coinFailure,maintenance,session}
+            """) as! [String: Any]
+            for key in ["prefs", "verifyFailure", "matchFailure", "camera", "microphone", "coinFailure", "maintenance", "session"] { XCTAssertEqual(boundaries[key] as? Bool, true, key) }
+            let attachment = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); attachment.name = "WKWebView restored dependency states"; attachment.lifetime = .keepAlways; add(attachment)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testProfilePushPopAndMainTabsInRealWebKit() async throws {
         let host = try await host(); try await home(host)
         let result = try await script(host, "const delay=()=>new Promise(r=>setTimeout(r,400));const before=localStorage.getItem('cimoa_app_state_v2');const checks=[]; for(const label of ['Home','Discover','Events']){document.querySelector('.tab[aria-label='+label+']').click();await delay();const main=[...document.querySelectorAll('.main-tab-frame')].find(e=>e.getBoundingClientRect().height>0);main.querySelector('[data-target=\"/pages/profile/index\"]').click();await delay();const profile=document.querySelector('.secondary-page-frame');checks.push(profile?.dataset.pageDepth==='2'&&!!profile.querySelector('.profile-name'));profile.querySelector('[data-interaction=\"profile.goBack.click.1\"]').click();await delay();checks.push(document.querySelector('.tab[aria-current=page]')?.getAttribute('aria-label')===label)}return {checks,unchanged:before===localStorage.getItem('cimoa_app_state_v2')}") as! [String: Any]

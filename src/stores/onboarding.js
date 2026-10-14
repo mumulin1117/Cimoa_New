@@ -80,7 +80,7 @@ export const onboarding_actions = {
       user.onboarding_status = 'in_progress'
       if (!data.settings.some(row => row.owner_user_id === user.user_id)) data.settings.push({ owner_user_id: user.user_id, language: 'en-US', muted_direct_user_ids: [], notifications: { master: false, requests: true, accepted: true, messages: true, auto_match: true, events: true, organizer: true, calls: true, product: false }, privacy: { discover_visible: true, auto_match_visible: true, show_online: true, show_year: true, show_field: true, show_mutual: true, allow_voice: true, allow_video: true, event_visible: true } })
       if (!data.event_preferences.some(row => row.owner_user_id === user.user_id)) data.event_preferences.push({ owner_user_id: user.user_id, filters: {}, saved_event_ids: [], reminder_by_event: {} })
-      if (!data.match_preferences.some(row => row.owner_user_id === user.user_id)) data.match_preferences.push({ owner_user_id: user.user_id, age_min: 18, age_max: 100, height_min: 100, height_max: 250, distance_max: 100, university: 'All', major: 'All', interest_ids: [], mbti: 'All', religion: 'All', drinking: 'All', gender: 'Everyone', language: 'All', goal_id: 'friends' })
+      if (!data.match_preferences.some(row => row.owner_user_id === user.user_id)) data.match_preferences.push({ owner_user_id: user.user_id, age_min: 18, age_max: 100, height_min: 100, height_max: 250, distance_max: 100, university: 'All', major: 'All', interest_ids: [], interest_mode: 'Similar interests', mbti: 'All', religion: 'All', drinking: 'All', gender: 'Everyone', language: 'All', goal_id: 'friends' })
       return account.onboarding.step
     }, { public: true })
   },

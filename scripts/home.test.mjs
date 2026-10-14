@@ -18,11 +18,16 @@ test('Home destinations use canonical entity IDs, have no write or balance effec
   assert.equal(home_destination(store, 'card', 'user_lina'), '/pages/connections/received?request_id=request_lina')
   assert.equal(JSON.stringify(store.data), before)
 })
-test('deferred dependencies cannot navigate into wrong legacy screens or appear successful', () => {
+test('restored dependencies navigate to their exact entity routes without writes', () => {
   const store = make()
-  for (const [kind, id] of [['match'], ['card', 'user_chloe'], ['card', 'user_liam'], ['card', 'user_lina']]) assert.throws(() => require_home_destination_ready(home_destination(store, kind, id)), /not been restored/)
+  const before = JSON.stringify(store.data)
+  assert.equal(require_home_destination_ready(home_destination(store, 'match')), '/pages/auto-match/index')
+  assert.equal(require_home_destination_ready(home_destination(store, 'card', 'user_chloe')), '/pages/messages/chat?conversation_id=conversation_chloe')
+  assert.equal(require_home_destination_ready(home_destination(store, 'card', 'user_liam')), '/pages/auto-match/found?match_id=match_liam')
+  assert.equal(require_home_destination_ready(home_destination(store, 'card', 'user_lina')), '/pages/connections/received?request_id=request_lina')
   assert.equal(require_home_destination_ready(home_destination(store, 'profile')), '/pages/profile/index')
   assert.equal(require_home_destination_ready(home_destination(store, 'discover')), '/pages/discover/index')
+  assert.equal(JSON.stringify(store.data), before)
 })
 test('Home rejects blocked, expired, declined, one-way and logged-out navigation', () => {
   for (const [scenario, id] of [['blocked','user_chloe'], ['match_expired','user_liam'], ['request_declined','user_lina'], ['one_way','user_chloe']]) assert.throws(() => home_destination(make(scenario), 'card', id), /no longer/)

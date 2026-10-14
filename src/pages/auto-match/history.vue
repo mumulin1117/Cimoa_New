@@ -1,0 +1,13 @@
+<script setup>
+import { computed, ref } from 'vue'
+import { use_app_store } from '@/stores/store.js'
+import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
+import FlowPageHeader from '@/components/FlowPageHeader.vue'
+import UserAvatar from '@/components/UserAvatar.vue'
+const store = use_app_store(), frame = ref(null), error = ref(''), navigating = ref(false)
+const rows = computed(() => store.match_history.map(match => ({ ...match, person: match.candidate_id ? store.user_by_id(match.candidate_id) : null })))
+const go = async match => { if (navigating.value) return; navigating.value = true; const status = match.status === 'no_match' ? 'no-match' : match.status === 'left' || match.status === 'searching' || match.status === 'paused' ? 'index' : match.status; try { await frame.value.navigate_forward(status === 'index' ? '/pages/auto-match/index' : `/pages/auto-match/${status}?match_id=${encodeURIComponent(match.match_id)}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false } }
+const back = async () => { try { await frame.value.navigate_back('/pages/auto-match/index') } catch (cause) { error.value = cause.message } }
+</script>
+<template><SecondaryPageFrame ref="frame"><template #header><FlowPageHeader title="Auto Match history" interaction="amHistory.goBack.click.1" :busy="navigating" @back="back" /><text v-if="error" class="flow-error" role="alert">{{ error }}</text></template><view class="flow-body"><text class="flow-copy">Connected matches, pending decisions, and expired matches from the last 30 days.</text><view v-if="!rows.length" class="flow-card" role="status">No Auto Match history in the last 30 days.</view><view v-for="match in rows" :key="match.match_id" class="flow-choice history-row" role="button" data-interaction="amHistory.h.go.click.1" @click="go(match)"><view class="history-avatar"><UserAvatar :src="match.person?.avatar_url || ''" :name="match.person?.user_name || 'Auto Match'" /></view><view><text>{{ match.person?.user_name || 'Auto Match session' }}</text><text>{{ match.status.replace('_', ' ') }} · {{ new Date(match.created_at).toLocaleDateString('en-US') }}</text></view></view></view></SecondaryPageFrame></template>
+<style scoped>.history-avatar { width: 83.969rpx; height: 83.969rpx; border-radius: 50%; flex: none; }.history-row > view:last-child { min-width: 0; flex: 1; }.history-row text { display: block; }.history-row text:first-child { font-weight: 700; }.history-row text:last-child { margin-top: 5.725rpx; color: var(--cimoa-text-secondary); font-size: 24.809rpx; text-transform: capitalize; }</style>

@@ -30,4 +30,21 @@ export const permission_statuses = async (env = globalThis) => {
     : await read_permissions(env.navigator)
   return Object.fromEntries(permission_keys.map(key => [key, normalized_permission(source[key] || 'unavailable')]))
 }
+
+export const request_media_permission = async (kind, env = globalThis) => {
+  if (!['camera', 'microphone'].includes(kind)) throw new Error('Unsupported media permission.')
+  const devices = env.navigator?.mediaDevices
+  if (!devices?.getUserMedia) throw new Error(`${kind === 'camera' ? 'Camera' : 'Microphone'} access is unavailable in this browser or device.`)
+  let stream
+  try {
+    stream = await devices.getUserMedia(kind === 'camera' ? { video: true } : { audio: true })
+    const tracks = stream.getTracks()
+    if (!tracks.length) throw new Error(`No ${kind} device was found.`)
+    return 'granted'
+  } catch (error) {
+    if (error.name === 'NotAllowedError') throw new Error(`${kind === 'camera' ? 'Camera' : 'Microphone'} permission was denied.`)
+    if (error.name === 'NotFoundError') throw new Error(`No ${kind} device was found.`)
+    throw new Error(error.message || `${kind === 'camera' ? 'Camera' : 'Microphone'} access could not be opened.`)
+  } finally { stream?.getTracks().forEach(track => track.stop()) }
+}
 import { read_permissions } from './mediaCapabilities.js'
