@@ -1,0 +1,13 @@
+{
+  "phase": "delete-success",
+  "result": "passed",
+  "server_pid": 39637,
+  "checks": [
+    "Storage failure rolls back the complete deletion transaction and keeps the confirmation retryable",
+    "Correct password atomically removes the local private entities, clears the session and lands on a truthful success page",
+    "Deletion success restores after refresh, fits the safe-area frame and clears history to Welcome",
+    "Deleted local credentials cannot create a new session",
+    "Direct access without a completed deletion shows an honest error instead of fake success"
+  ],
+  "errors": []
+}

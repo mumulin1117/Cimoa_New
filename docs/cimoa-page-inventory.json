@@ -10279,11 +10279,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; reason dependency pending; full deletion flow pending"
+    "mapping_status": "source-mapped; implemented; verified in the complete local deletion flow"
   },
   {
     "source_screen": "Settings / Delete Account / Reason",
@@ -10344,11 +10344,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; final confirmation dependency pending; full deletion flow pending"
+    "mapping_status": "source-mapped; implemented; verified with optional Store draft, Loading, refresh and final-page handoff"
   },
   {
     "source_screen": "Settings / Delete Account / Final Confirmation",
@@ -10399,11 +10399,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; destructive action gated until success dependency is restored; full deletion flow pending"
+    "mapping_status": "source-mapped; implemented; verified with password failure, persistence rollback, custom confirmation and atomic local deletion"
   },
   {
     "source_screen": "Settings / Delete Account / Success",
@@ -10413,7 +10413,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/settings/delete/success",
-    "component": null,
+    "component": "src/pages/settings/delete/success.vue",
     "parent_route": "/pages/auth/welcome",
     "allowed_origin_routes": [
       "/pages/auth/welcome"
@@ -10467,11 +10467,11 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
-    "full_acceptance": "pending",
+    "status": "verified",
+    "local_acceptance": "passed",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; verified with truthful local success, refresh restoration, old-credential rejection and direct-access error state"
   },
   {
     "source_screen": "Safety / Reports / Submitted",

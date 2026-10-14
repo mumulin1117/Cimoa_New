@@ -48,6 +48,7 @@ export const use_app_store = defineStore('app', {
     onboarding_catalog: state => ({ ...clone_data(onboarding_catalog), steps: [...ONBOARDING_FLOW], goals: clone_data(ONBOARDING_GOALS), interests: ONBOARDING_INTEREST_IDS.map(id => state.data.interests.find(row => row.item_id === id)).filter(Boolean).map(clone_data) }),
     local_verification: state => state.hydration_status === 'ready' ? local_verification_context(state.data, state.clock_ms) : null,
     local_verification_code: () => LOCAL_VERIFICATION_CODE,
+    last_deleted_account: state => state.hydration_status === 'ready' ? clone_data(state.data.accounts.filter(row => row.status === 'deleted' && Number.isFinite(row.deleted_at)).sort((a, b) => b.deleted_at - a.deleted_at)[0] || null) : null,
     requires_local_verification() { return this.session.is_authenticated && this.data.accounts.find(row => row.account_id === this.data.session.account_id)?.auth_provider === 'local' && !this.local_verification?.verified },
     session: (state) => ({ ...state.data.session, is_authenticated: ready(state) }),
     current_user: (state) => ready(state) ? { ...profile(state.data, s.owner_id(state.data)), email: state.data.accounts.find((row) => row.account_id === state.data.session.account_id)?.email, coin_balance: s.balance(state.data) } : { user_name: '', interests: [], coin_balance: 0 },

@@ -85,6 +85,7 @@ test('account deletion verifies the password, removes private local entities, an
   const result = await store.delete_account('12341234', 'Privacy concerns')
   assert.equal(result.success, true); assert.equal(result.data.cleanup_warning, '')
   assert.equal(blobs.has('owned_media'), false); assert.equal(store.session.is_authenticated, false)
+  assert.deepEqual([store.last_deleted_account.account_id, store.last_deleted_account.deletion_reason], ['account_cimoa', 'Privacy concerns'])
   assert.equal(store.data.accounts[0].status, 'deleted'); assert.equal(store.data.users[0].deleted, true)
   assert.equal(store.data.relationships.some(row => [row.from_user_id, row.to_user_id].includes(TEST_USER_ID)), false)
   assert.equal(store.data.coin_transactions.some(row => row.owner_user_id === TEST_USER_ID), false)

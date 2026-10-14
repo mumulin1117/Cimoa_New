@@ -138,3 +138,54 @@
   background: var(--cimoa-surface-settings-danger);
   color: var(--cimoa-text-settings-danger);
 }
+.delete-success-content {
+  display: flex;
+  min-height: 1068.702rpx;
+  padding: 213.74rpx 45.802rpx 45.802rpx;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.delete-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 175.573rpx;
+  height: 175.573rpx;
+  border-radius: 50%;
+  background: var(--cimoa-surface-skeleton);
+  color: var(--cimoa-text-auth-muted);
+}
+.delete-success-icon > view { width: 76.336rpx; height: 76.336rpx; }
+.delete-success-title {
+  display: block;
+  max-width: 629.771rpx;
+  margin-top: 30.534rpx;
+  font-size: 51.527rpx;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
+}
+.delete-success-copy {
+  display: block;
+  max-width: 629.771rpx;
+  margin-top: 22.901rpx;
+  color: var(--cimoa-text-secondary);
+  font-size: 28.626rpx;
+  line-height: 1.5;
+}
+.delete-success-error { margin-top: 267.176rpx; }
+.delete-success-footer { padding: 19.084rpx 38.168rpx 11.45rpx; }
+.delete-success-return {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 114.504rpx;
+  border-radius: 57.252rpx;
+  background: var(--cimoa-gradient-primary);
+  box-shadow: var(--cimoa-shadow-primary);
+  color: var(--cimoa-text-inverse);
+  font-size: 36.26rpx;
+  font-weight: 700;
+  cursor: pointer;
+}

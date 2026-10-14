@@ -51,6 +51,7 @@
     { "path": "pages/settings/delete/info", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/delete/reason", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/delete/final", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/settings/delete/success", "style": { "navigationStyle": "custom" } },
     { "path": "pages/safety/report-user", "style": { "navigationStyle": "custom" } },
     { "path": "pages/safety/reports", "style": { "navigationStyle": "custom" } },
     { "path": "pages/safety/report-detail", "style": { "navigationStyle": "custom" } },

@@ -1,11 +1,11 @@
 {
   "phase": "delete-reason",
   "result": "passed",
-  "server_pid": 37977,
+  "server_pid": 39982,
   "checks": [
     "Delete reason restores the eight source choices, adapts the brand to Cimoa and keeps selection transient before Continue",
     "Deletion reason persistence failure follows Loading, remains retryable and creates no partial draft",
-    "Continue persists the optional reason only after Loading and refresh restores it while the final dependency stays explicit",
+    "Continue persists the optional reason only after Loading, opens final confirmation and Back restores it across refresh",
     "Reason choices scroll inside the fixed frame and Back restores the information page",
     "Expired session hides deletion reasons and the Continue action"
   ],
