@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import SecondaryPageFrame from './SecondaryPageFrame.vue'
 import SourceIcon from './SourceIcon.vue'
-defineProps({ title: String, busy: Boolean })
+defineProps({ title: String, busy: Boolean, backInteraction: { type: String, default: '' } })
 const emit = defineEmits(['back', 'error']), frame = ref(null)
 defineExpose({
   navigate_forward: target => frame.value.navigate_forward(target),
@@ -11,7 +11,7 @@ defineExpose({
 </script>
 <template>
   <SecondaryPageFrame ref="frame" class="auth-frame">
-    <template #header><view class="auth-header"><view class="auth-back" role="button" aria-label="Back" tabindex="0" :aria-disabled="busy" @click="!busy && emit('back')" @keydown.enter="!busy && emit('back')"><SourceIcon name="back" /></view><text class="auth-header-title">{{ title }}</text></view></template>
+    <template #header><view class="auth-header"><view class="auth-back" role="button" aria-label="Back" tabindex="0" :aria-disabled="busy" :data-interaction="backInteraction || undefined" @click="!busy && emit('back')" @keydown.enter="!busy && emit('back')"><SourceIcon name="back" /></view><text class="auth-header-title">{{ title }}</text></view></template>
     <view class="auth-content"><slot /></view>
     <template #footer><view class="auth-footer"><slot name="footer" /></view></template>
     <template #overlays><slot name="overlays" /></template>

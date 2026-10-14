@@ -59,7 +59,7 @@ test('reports are local records with the correct target and optional blocking is
   assert.deepEqual(failed.store.data, before)
 })
 
-test('fixed-code password reset only changes the selected on-device account credential', async () => {
+test('fixed-code password reset migrates only the selected credential and preserves account readiness', async () => {
   const { store } = fixture({ guest: true })
   const before_users = clone_data(store.data.users), before_coins = clone_data(store.data.coin_transactions)
   const started = store.begin_password_reset(' Cimoa@gmail.com ')
@@ -71,8 +71,11 @@ test('fixed-code password reset only changes the selected on-device account cred
   assert.equal((await store.finish_password_reset('short', 'short', id)).success, false)
   assert.equal((await store.finish_password_reset('newlocal123', 'newlocal123', id)).success, true)
   assert.deepEqual(store.data.users, before_users); assert.deepEqual(store.data.coin_transactions, before_coins)
+  const migrated = store.data.accounts.find(row => row.email === 'cimoa@gmail.com')
+  assert.equal(migrated.auth_provider, 'local'); assert.equal(migrated.local_verification.status, 'verified'); assert.equal(Number.isFinite(migrated.onboarding.completed_at), true)
   assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, false)
   assert.equal((await store.login('cimoa@gmail.com', 'newlocal123')).success, true)
+  assert.equal(store.onboarding.completed, true)
 })
 
 test('account deletion verifies the password, removes private local entities, and deletes owned blobs', async () => {

@@ -11,7 +11,7 @@ export function onboarding_context(data, now) {
   if (account?.auth_provider !== 'local' || !local_verification_context(data, now)?.verified) return null
   const user = data.users.find(row => row.user_id === account.user_id && !row.deleted)
   if (!user) return null
-  return { account, user, step: account.onboarding?.step || 'basic', completed: user.onboarding_status === 'complete' }
+  return { account, user, step: account.onboarding?.step || 'basic', completed: user.onboarding_status === 'complete' || Number.isFinite(account.onboarding?.completed_at) }
 }
 const require_context = (data, now, step) => {
   const context = onboarding_context(data, now)

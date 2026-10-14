@@ -234,16 +234,22 @@ export const use_app_store = defineStore('app', {
         return { reset_id: reset.reset_id, email: reset.email }
       }, { public: true })
     },
-    async finish_password_reset(password, confirmation, expected_reset_id) {
+    async finish_password_reset(password, confirmation, expected_reset_id, { is_current = () => true } = {}) {
       const error = password_error(password, confirmation)
       if (error) return failure('invalid_form', error)
       try {
         const credential = await create_local_credential(password)
+        if (!is_current()) return failure('cancelled', 'Password reset was cancelled.')
         return transact(this, null, (data, now) => {
           const reset = data.auth_flow.password_reset
           s.ensure(reset?.reset_id === expected_reset_id && reset.verified_at && data.accounts.some((row) => row.account_id === reset.account_id && row.status === 'active'), 'Verify the local reset code first.')
           const account = data.accounts.find((row) => row.account_id === reset.account_id)
+          const migrating_fixture = account.auth_provider === 'fixture'
           Object.assign(account, credential)
+          account.local_verification ||= { method: 'fixed_code', status: 'verified', verified_at: reset.verified_at }
+          if (migrating_fixture) {
+            account.onboarding ||= { step: 'complete', completed_steps: [...ONBOARDING_FLOW], completed_at: now }
+          }
           data.auth_flow = { flow_id: make_id('auth_flow'), step: 'welcome', email: account.email, verification_request_id: null, pending_registration_account_id: null, password_reset: null, agreements: { age: false, student: false, terms: false, privacy: false, community: false }, profile_draft: {} }
           return { email: account.email, changed_at: now }
         }, { public: true })

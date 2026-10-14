@@ -38,7 +38,7 @@ const next = async () => {
 </script>
 
 <template>
-  <AuthPageFrame ref="frame" class="reset-code-page" title="Enter code" :busy="is_loading" @back="back">
+  <AuthPageFrame ref="frame" class="reset-code-page" title="Enter code" back-interaction="fpCode.goBack.click.1" :busy="is_loading" @back="back">
     <view v-if="access_error" class="auth-error-box" role="alert">{{ access_error }}</view>
     <template v-else>
       <text class="auth-heading">Use the local reset code</text>

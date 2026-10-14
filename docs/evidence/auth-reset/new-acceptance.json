@@ -1,0 +1,14 @@
+{
+  "phase": "new",
+  "result": "passed",
+  "server_pid": 54356,
+  "checks": [
+    "New Password rejects direct access without a verified owned reset",
+    "Fixed code reaches New Password with the verified reset owned by the local account",
+    "Weak and mismatched passwords are rejected without changing the account credential",
+    "Password visibility works, while refresh clears both secrets and preserves verified reset state",
+    "Password changes only after custom Loading, clears reset state, stays signed out, and prefills Login",
+    "Old fixture password is invalidated and the new local password signs back into Home"
+  ],
+  "errors": []
+}
