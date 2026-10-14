@@ -45,9 +45,12 @@ const open_row = async row => {
     try { await frame.value.navigate_forward('/pages/legal/privacy') } catch (cause) { error.value = cause.message } finally { navigating.value = false }
     return
   }
-  error.value = row.kind === 'coins'
-    ? 'Coin and Purchase Information has not been restored yet. No purchase was started.'
-    : `${row.label} is the next independent legal page in this restoration flow.`
+  if (row.kind === 'coins') {
+    navigating.value = true
+    try { await frame.value.navigate_forward('/pages/coins/help') } catch (cause) { error.value = cause.message } finally { navigating.value = false }
+    return
+  }
+  error.value = `${row.label} is the next independent legal page in this restoration flow.`
 }
 </script>
 

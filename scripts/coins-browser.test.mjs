@@ -178,9 +178,11 @@ try {
 
     const before_help = await state()
     await page.locator('[data-interaction="coinFailed.openCoinHelp.click.1"]').click()
-    assert.match(await page.getByRole('alert').innerText(), /still being restored/)
+    await page.locator('.coin-help-page').waitFor()
     assert.deepEqual(await state(), before_help)
-    check('Unrestored Coin Help fails visibly without writing purchase or ledger state')
+    await page.locator('[data-interaction="coinHelp.goBack.click.1"]').click()
+    await page.locator('.coin-failed-page').waitFor()
+    check('Contact Support opens Coin Help and Back restores Failed without writing state')
 
     await page.locator('.failed-footer [data-interaction="coinFailed.backToStore.click.1"]').click()
     await page.locator('.coin-center-page').waitFor()
@@ -278,9 +280,11 @@ try {
     check('Purchase Detail discloses fixture provenance and never fabricates price or StoreKit receipt data')
 
     await page.locator('[data-interaction="coinPurchaseDetail.openSupport.click.1"]').click()
-    assert.match(await page.getByRole('alert').innerText(), /still being restored/)
+    await page.locator('.coin-help-page').waitFor()
     assert.deepEqual(await state(), before)
-    check('Unrestored Coin Help fails visibly without mutating the ledger')
+    await page.locator('[data-interaction="coinHelp.goBack.click.1"]').click()
+    await page.locator('.coin-purchase-detail-page').waitFor()
+    check('Purchase support opens Coin Help and Back restores detail without mutating the ledger')
 
     const detail_url = page.url()
     await page.reload()
@@ -313,9 +317,11 @@ try {
     check('Spending Detail discloses fixture provenance and does not invent a linked feature')
 
     await page.locator('[data-interaction="coinSpendDetail.openSupport.click.1"]').click()
-    assert.match(await page.getByRole('alert').innerText(), /still being restored/)
+    await page.locator('.coin-help-page').waitFor()
     assert.deepEqual(await state(), before)
-    check('Unrestored Coin Help fails visibly without mutating coin activity')
+    await page.locator('[data-interaction="coinHelp.goBack.click.1"]').click()
+    await page.locator('.coin-spend-detail-page').waitFor()
+    check('Coin activity support opens Coin Help and Back restores detail without mutating coin activity')
 
     const detail_url = page.url()
     await page.reload()
@@ -333,6 +339,55 @@ try {
     assert.match(await page.getByRole('alert').innerText(), /not a completed coin spend/)
     assert.deepEqual(await state(), before)
     check('Spending Detail rejects a purchase transaction without fallback data or writes')
+  }
+
+  if (phase === 'help') {
+    await page.goto(`${origin}/?phase=coin-help#/pages/coins/help`)
+    const before = await state()
+    await page.locator('.coin-help-page').waitFor()
+    assert.equal(await page.locator('.help-faq').count(), 7)
+    assert.match(await page.locator('.help-notice').innerText(), /Apple purchases cannot complete/)
+    await page.locator('[data-faq-index="2"]').click()
+    assert.match(await page.locator('.help-answer').innerText(), /text introduction is free.*voice introduction costs 10 coins.*Priority Match costs 20 coins/s)
+    await page.waitForTimeout(400)
+    await page.screenshot({ path: path.join(output, 'help-pricing.png') })
+    assert.deepEqual(await state(), before)
+    check('Coin Help renders seven source FAQs with approved free text and 10/20 coin pricing without writes')
+
+    await page.locator('[data-interaction="coinHelp.openTerms.click.1"]').click()
+    await page.locator('.legal-terms-page').waitFor()
+    await page.locator('[data-interaction="isLegalDoc.goBack.click.1"]').click()
+    await page.locator('.coin-help-page').waitFor()
+    await page.locator('[data-interaction="coinHelp.openPrivacy.click.1"]').click()
+    await page.locator('.legal-privacy-page').waitFor()
+    await page.locator('[data-interaction="isLegalDoc.goBack.click.1"]').click()
+    await page.locator('.coin-help-page').waitFor()
+    check('Terms and Privacy open as independent pages and return to Coin Help')
+
+    await page.locator('[data-interaction="coinHelp.openSupport.click.1"]').click()
+    await page.locator('.settings-support-page').waitFor()
+    await page.locator('[data-interaction="setSupport.h.toggle.click.1"]').first().click()
+    assert.match(await page.locator('.support-answer').innerText(), /no configured support-delivery service/i)
+    await page.locator('[data-interaction="setSupport.goBack.click.1"]').click()
+    await page.locator('.coin-help-page').waitFor()
+    assert.deepEqual(await state(), before)
+    check('Purchase support opens the local-draft support page and returns without claiming delivery')
+
+    await page.reload()
+    await page.locator('.coin-help-page').waitFor()
+    assert.equal(await page.locator('.help-faq').count(), 7)
+    check('Coin Help refresh restores its canonical static content')
+
+    await page.locator('[data-interaction="coinHelp.goBack.click.1"]').click()
+    await page.locator('.coin-center-page').waitFor()
+    check('Direct-entry Coin Help Back falls back to Coin Center')
+
+    await page.goto(`${origin}/?phase=coin-help-legal#/pages/settings/legal`)
+    await page.locator('[data-interaction="setLegal.openCoinHelp.click.1"]').click()
+    await page.locator('.coin-help-page').waitFor()
+    await page.locator('[data-interaction="coinHelp.goBack.click.1"]').click()
+    await page.locator('.settings-legal-page').waitFor()
+    check('Settings Legal opens Coin Help and Back restores the legal landing page')
   }
 
   assert.deepEqual(report.errors, [])

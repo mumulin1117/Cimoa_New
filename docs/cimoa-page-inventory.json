@@ -8481,10 +8481,14 @@
     ],
     "page_level": "三级",
     "route": "/pages/coins/help",
-    "component": null,
+    "component": "src/pages/coins/help.vue",
     "parent_route": "/pages/coins/index",
     "allowed_origin_routes": [
-      "/pages/coins/index"
+      "/pages/coins/index",
+      "/pages/coins/failed",
+      "/pages/coins/purchase-detail",
+      "/pages/coins/spend-detail",
+      "/pages/settings/legal"
     ],
     "required_parameters": [
       "return_context_id (optional; Store draft ID, never an arbitrary URL)"
@@ -8492,7 +8496,7 @@
     "entry_points": [
       "openCoinHelp@5935"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/coins/index）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
+    "return_owner": "pop 真实来源（Coin Center、失败结果、购买详情、消费详情或 Settings Legal）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -8536,10 +8540,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented with seven truthful FAQ accordions, user-approved free text and 10/20 coin pricing, explicit missing StoreKit and support delivery, independent legal document routes, local support route and origin-aware back"
   },
   {
     "source_screen": "Profile / Personal / Default",

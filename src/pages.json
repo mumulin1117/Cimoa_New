@@ -47,6 +47,7 @@
     { "path": "pages/coins/history", "style": { "navigationStyle": "custom" } },
     { "path": "pages/coins/purchase-detail", "style": { "navigationStyle": "custom" } },
     { "path": "pages/coins/spend-detail", "style": { "navigationStyle": "custom" } },
+    { "path": "pages/coins/help", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/index", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/notif", "style": { "navigationStyle": "custom" } },
     { "path": "pages/settings/privacy", "style": { "navigationStyle": "custom" } },

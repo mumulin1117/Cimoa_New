@@ -1,0 +1,14 @@
+{
+  "phase": "help",
+  "result": "passed",
+  "server_pid": 49897,
+  "checks": [
+    "Coin Help renders seven source FAQs with approved free text and 10/20 coin pricing without writes",
+    "Terms and Privacy open as independent pages and return to Coin Help",
+    "Purchase support opens the local-draft support page and returns without claiming delivery",
+    "Coin Help refresh restores its canonical static content",
+    "Direct-entry Coin Help Back falls back to Coin Center",
+    "Settings Legal opens Coin Help and Back restores the legal landing page"
+  ],
+  "errors": []
+}
