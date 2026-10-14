@@ -72,7 +72,7 @@ const back = async () => { if (locked.value) return; try { await frame.value.nav
 const open_profile = async () => {
   if (is_loading.value || media_busy.value || access_error.value) return
   sheet.value = ''
-  try { await frame.value.navigate_forward(`/pages/discover/profile?user_id=${encodeURIComponent(participant.value.user_id)}`) } catch (cause) { error.value = cause.message }
+  try { await frame.value.navigate_forward(`/pages/discover/profile?user_id=${encodeURIComponent(participant.value.user_id)}&origin_conversation_id=${encodeURIComponent(conversation_id.value)}`) } catch (cause) { error.value = cause.message }
 }
 const start_call = async () => {
   if (locked.value || access_error.value) return

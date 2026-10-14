@@ -3,6 +3,12 @@ export function discover_destination(store, kind, id) {
   if (!store.session.is_authenticated) throw new Error('Your session has expired. Please sign in again.')
   if (kind === 'profile') return '/pages/profile/index'
   if (kind === 'preferences') return '/pages/auto-match/preferences'
+  if (kind === 'chat') {
+    if (!id || !store.user_by_id(id)) throw new Error('This profile is no longer available.')
+    const conversation = store.current_conversations.find((row) => row.participant_id === id)
+    if (!conversation || !store.can_chat(id)) throw new Error('This conversation is no longer available.')
+    return `/pages/messages/chat?conversation_id=${encodeURIComponent(conversation.conversation_id)}`
+  }
   if (kind === 'icebreaker') {
     if (!id || !store.user_by_id(id)) throw new Error('This profile is no longer available.')
     const blocker = store.introduction_blocker(id)

@@ -40,6 +40,12 @@ test('Discover builds source destinations with same user ID, no spending and exp
   for (const route of DISCOVER_DEFERRED_ROUTES) assert.throws(() => require_discover_destination_ready(route + '?user_id=user_chloe'), /not been restored/)
   assert.equal(JSON.stringify(store.data), before)
 })
+test('connected profile resolves its existing direct conversation without creating or changing data', () => {
+  const store = make(), before = JSON.stringify(store.data)
+  assert.equal(discover_destination(store, 'chat', 'user_chloe'), '/pages/messages/chat?conversation_id=conversation_chloe')
+  assert.throws(() => discover_destination(store, 'chat', 'user_liam'), /conversation is no longer available/)
+  assert.equal(JSON.stringify(store.data), before)
+})
 test('entry and submit share verification, relationship and pending-request eligibility', async () => {
   for (const [scenario, pattern] of [['default', /already connected/], ['discover_unverified', /verification/], ['session_expired', /session/]]) {
     const store = make(scenario), before = JSON.stringify(store.data)

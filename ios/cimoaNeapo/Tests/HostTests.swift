@@ -425,6 +425,33 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { try? await restore(); throw error }
     }
+    func testConnectedProfileChatCTAInRealWebKit() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?profileChat=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        do {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?profileChat=connected#/pages/messages/chat?conversation_id=conversation_chloe")!))
+            try await waitFor(host, ".direct-chat-page")
+            let result = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms));
+            const visible=s=>[...document.querySelectorAll(s)].find(e=>{const r=e.getBoundingClientRect(),style=getComputedStyle(e);return r.height>0&&style.display!=='none'&&style.visibility!=='hidden'});
+            const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Profile Chat timeout '+location.hash+' '+document.body.innerText)};
+            const click=async id=>{const element=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);element.click();await delay(80)};
+            const before=localStorage.getItem('cimoa_app_state_v2');
+            await click('chat.viewProfile.click.1');const profile=await wait(()=>visible('.expanded-profile-page'));const profileDepth=profile.dataset.pageDepth,label=visible('[data-interaction="expanded.sayHi.click.1"]')?.textContent.trim();
+            await click('expanded.sayHi.click.1');const chat=await wait(()=>visible('.direct-chat-page'));const chatDepth=chat.dataset.pageDepth;
+            return {label,profileDepth,chatDepth,conversation:location.hash.includes('conversation_id=conversation_chloe'),unchanged:localStorage.getItem('cimoa_app_state_v2')===before};
+            """) as! [String: Any]
+            XCTAssertEqual(result["label"] as? String, "Chat")
+            XCTAssertEqual(result["profileDepth"] as? String, "2"); XCTAssertEqual(result["chatDepth"] as? String, "1")
+            XCTAssertEqual(result["conversation"] as? Bool, true); XCTAssertEqual(result["unchanged"] as? Bool, true)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testNativeRequestReplyAndFailureBoundaries() async throws {
         let host = try await host()
         let permission = try await script(host, "return await window.CimoaNativeBridge.request('getNotificationPermission')") as! [String: Any]

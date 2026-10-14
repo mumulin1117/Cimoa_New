@@ -14,6 +14,7 @@ import SafetyActionsMiniSheet from '@/components/SafetyActionsMiniSheet.vue'
 const store = use_app_store()
 const frame = ref(null)
 const user_id = ref('')
+const origin_conversation_id = ref('')
 const photo_index = ref(0)
 const sheet = ref('')
 const error = ref('')
@@ -26,8 +27,10 @@ const goals = computed(() => store.goals_for_user(user_id.value))
 const interests = computed(() => store.interests_for_user(user_id.value))
 const questions = computed(() => store.questions_for_user(user_id.value))
 const song = computed(() => store.song_for_user(user_id.value))
+const conversation = computed(() => store.current_conversations.find((row) => row.participant_id === user_id.value) || null)
 const photo = computed(() => photos.value[photo_index.value] || null)
 const is_self = computed(() => user_id.value === store.session.current_user_id)
+const primary_label = computed(() => is_self.value ? 'This is you' : conversation.value ? 'Chat' : 'Send shot')
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
   : !store.session.is_authenticated
@@ -50,6 +53,7 @@ const details = computed(() => person.value ? [
 
 onLoad(options => {
   user_id.value = String(options?.user_id || '')
+  origin_conversation_id.value = String(options?.origin_conversation_id || '')
   was_available.value = !!store.user_by_id(user_id.value)
 })
 const leave = () => { active.value = false; cancel_loading(); sheet.value = '' }
@@ -63,7 +67,9 @@ onShow(async () => {
   }
 })
 
-const back = async () => { if (is_loading.value || sheet.value) return; try { await frame.value.navigate_back('/pages/discover/index') } catch (cause) { error.value = cause.message } }
+const conversation_route = () => discover_destination(store, 'chat', user_id.value)
+const back_fallback = () => conversation.value?.conversation_id === origin_conversation_id.value ? conversation_route() : '/pages/discover/index'
+const back = async () => { if (is_loading.value || sheet.value) return; try { await frame.value.navigate_back(back_fallback()) } catch (cause) { error.value = cause.message } }
 const change_photo = delta => {
   if (photos.value.length < 2) return
   photo_index.value = (photo_index.value + delta + photos.value.length) % photos.value.length
@@ -74,7 +80,15 @@ const play_song = () => { error.value = song.value?.audio_id ? 'This song audio 
 const say_hi = async () => {
   if (is_loading.value || sheet.value || access_error.value || is_self.value) return
   error.value = ''
-  try { await frame.value.navigate_forward(require_discover_destination_ready(discover_destination(store, 'icebreaker', user_id.value))) } catch (cause) { error.value = cause.message }
+  try {
+    if (conversation.value) {
+      const route = conversation_route()
+      if (conversation.value.conversation_id === origin_conversation_id.value) await frame.value.navigate_back(route)
+      else await frame.value.navigate_forward(route)
+      return
+    }
+    await frame.value.navigate_forward(require_discover_destination_ready(discover_destination(store, 'icebreaker', user_id.value)))
+  } catch (cause) { error.value = cause.message }
 }
 const open_report = async () => {
   if (is_loading.value || access_error.value || is_self.value) return
@@ -121,7 +135,7 @@ const confirm_block = async () => {
     </view>
 
     <template #footer>
-      <view v-if="person" class="expanded-footer"><text v-if="error" class="expanded-error" role="alert">{{ error }}</text><view class="expanded-send" role="button" tabindex="0" :aria-disabled="is_self || is_loading" data-interaction="expanded.sayHi.click.1" @click="say_hi" @keydown.enter="say_hi">{{ is_self ? 'This is you' : 'Send shot' }}</view></view>
+      <view v-if="person" class="expanded-footer"><text v-if="error" class="expanded-error" role="alert">{{ error }}</text><view class="expanded-send" role="button" tabindex="0" :aria-disabled="is_self || is_loading" data-interaction="expanded.sayHi.click.1" @click="say_hi" @keydown.enter="say_hi">{{ primary_label }}</view></view>
     </template>
 
     <template #overlays>
