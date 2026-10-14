@@ -1,19 +1,19 @@
 <script setup>
 import { computed, nextTick, ref } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { back_route, push_route } from '@/utils/routeTransition.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import TopSafeArea from '@/components/TopSafeArea.vue'
 import AppLoading from '@/components/AppLoading.vue'
-import ConfirmDialog from '@/components/ConfirmDialog.vue'
+import EventConfirmDialog from '@/components/EventConfirmDialog.vue'
 
 const store = use_app_store()
 const view = ref('list')
 const user_id = ref('user_maya')
 const event_id = ref('event_picnic')
 const message_draft = ref('')
-const show_safety = ref(false)
+const safety_mode = ref('')
 const call_state = ref('incoming')
 const scroll_top = ref(0)
 const notice = ref('')
@@ -25,8 +25,14 @@ const send_message = async () => { const body = message_draft.value.trim(); if (
 const start_call = () => { view.value = 'call'; call_state.value = 'incoming' }
 const accept_call = () => { call_state.value = 'active' }
 const end_call = () => { call_state.value = 'ended' }
-const confirm_block = async () => { show_safety.value = false; const result = await run_with_loading(() => store.block_user(user_id.value)); if (result.success) view.value = 'list'; notice.value = result.success ? 'Account blocked.' : result.message }
+const open_report = async () => {
+  const target = user_id.value, context = conversation.value?.conversation_id || ''
+  safety_mode.value = ''
+  try { await push_route(`/pages/safety/report-user?target_user_id=${encodeURIComponent(target)}&context_id=${encodeURIComponent(context)}`) } catch (cause) { notice.value = cause.message }
+}
+const confirm_block = async () => { const result = await run_with_loading(() => store.block_user(user_id.value)); if (result.success) { safety_mode.value = ''; view.value = 'list' }; notice.value = result.success ? 'Account blocked.' : result.message }
 onLoad((options) => { if (options?.view) view.value = options.view; if (options?.user_id) user_id.value = options.user_id; if (options?.event_id) event_id.value = options.event_id })
+onShow(() => { if (view.value === 'chat' && !conversation.value) view.value = 'list' })
 </script>
 
 <template>
@@ -39,13 +45,16 @@ onLoad((options) => { if (options?.view) view.value = options.view; if (options?
     <template v-else-if="view === 'chat'">
       <view class="chat-header"><view class="back-button" role="button" @click="view = 'list'">Back</view><view class="chat-header__person"><image class="chat-header__avatar" :src="participant?.avatar_url" mode="aspectFill" /><view><text class="chat-header__name">{{ participant?.user_name }}</text><text class="chat-header__status">{{ participant?.online ? 'Online now' : 'Recently active' }}</text></view></view><view class="chat-header__call" role="button" @click="start_call">Call</view></view>
       <scroll-view class="chat-scroll" scroll-y :scroll-top="scroll_top" :show-scrollbar="false"><view v-for="message in conversation?.messages" :key="message.message_id" class="message-row" :class="{ mine: message.sender_id === store.current_user.user_id }"><text class="message-bubble">{{ message.body }}</text><text class="message-time">{{ message.sent_at }}</text></view><text v-if="notice" class="notice">{{ notice }}</text></scroll-view>
-      <view class="composer"><textarea v-model="message_draft" class="composer__input" placeholder="Write a message" :maxlength="500" /><view class="composer__send" role="button" @click="send_message">Send</view><view class="composer__safety" role="button" @click="show_safety = true">Safety</view></view>
+      <view class="composer"><textarea v-model="message_draft" class="composer__input" placeholder="Write a message" :maxlength="500" /><view class="composer__send" role="button" @click="send_message">Send</view><view class="composer__safety" role="button" data-interaction="messages.openSafety.click.1" @click="safety_mode = 'menu'">Safety</view></view>
     </template>
     <template v-else>
       <view class="call-page"><image class="call-page__avatar" :src="participant?.avatar_url" mode="aspectFill" /><text class="call-page__name">{{ participant?.user_name }}</text><text class="call-page__state">{{ call_state === 'incoming' ? 'Incoming video call' : call_state === 'active' ? 'Connected' : 'Call ended' }}</text><view class="call-page__actions"><view v-if="call_state === 'incoming'" class="cimoa-button" role="button" @click="accept_call">Answer</view><view v-if="call_state !== 'ended'" class="cimoa-button danger" role="button" @click="end_call">End call</view><view v-if="call_state === 'ended'" class="cimoa-button ghost" role="button" @click="view = 'chat'">Return to chat</view></view></view>
     </template>
-    <AppLoading :visible="is_loading" label="Sending..." />
-    <ConfirmDialog :visible="show_safety" title="Safety actions" message="You can block this account and report the conversation." confirm-label="Block account" danger @cancel="show_safety = false" @confirm="confirm_block" />
+    <AppLoading :visible="is_loading" :label="safety_mode === 'block' ? 'Blocking account…' : 'Sending…'" />
+    <EventConfirmDialog :open="!!safety_mode" :busy="is_loading" :label="safety_mode === 'block' ? `Block ${participant?.user_name || 'account'}?` : 'Safety actions'" close-interaction="messages.closeSafety.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="safety_mode = ''">
+      <template v-if="safety_mode === 'menu'"><text class="event-dialog-title">Safety actions</text><text class="event-dialog-copy">Reports are saved only on this device. Blocking removes this connection and private chat.</text><view class="event-dialog-primary" role="button" data-interaction="messages.reportUser.click.1" @click="open_report">Report {{ participant?.user_name }}</view><view class="event-dialog-secondary event-dialog-danger" role="button" data-interaction="messages.openBlock.click.1" @click="safety_mode = 'block'">Block account</view></template>
+      <template v-else><text class="event-dialog-title">Block {{ participant?.user_name }}?</text><text class="event-dialog-copy">This removes the connection, pending requests, Auto Match record, private chat and its messages.</text><view class="event-dialog-primary event-dialog-danger" role="button" :aria-disabled="is_loading" data-interaction="messages.confirmBlock.click.1" @click="confirm_block">Block account</view><view class="event-dialog-secondary" role="button" :aria-disabled="is_loading" @click="safety_mode = 'menu'">Back</view></template>
+    </EventConfirmDialog>
   </view>
 </template>
 

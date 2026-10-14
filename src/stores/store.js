@@ -76,6 +76,12 @@ export const use_app_store = defineStore('app', {
     purchase_by_id: (state) => (id) => ready(state) ? clone_data(own(state.data, state.data.purchase_requests).find((row) => row.request_id === id) || null) : null,
     current_reports: (state) => ready(state) ? clone_data(own(state.data, state.data.reports)) : [],
     report_by_id: (state) => (id) => ready(state) ? clone_data(own(state.data, state.data.reports).find((row) => row.report_id === id) || null) : null,
+    report_subject: (state) => (report) => {
+      if (!ready(state) || !report) return null
+      if (report.target_type === 'user') { const user = state.data.users.find((row) => row.user_id === report.target_id); return user ? { id: user.user_id, name: user.user_name, kind: 'user' } : null }
+      const event = state.data.events.find((row) => row.event_id === report.target_id)
+      return event ? { id: event.event_id, name: event.title, kind: 'event' } : null
+    },
     current_drafts: (state) => ready(state) ? clone_data(own(state.data, state.data.drafts)) : [],
     current_photos: (state) => ready(state) ? clone_data(state.data.profile_photos.filter((row) => row.user_id === s.owner_id(state.data)).sort((a, b) => a.position - b.position)) : [],
     current_settings: (state) => ready(state) ? clone_data(state.data.settings.find((row) => row.owner_user_id === s.owner_id(state.data)) || {}) : {},

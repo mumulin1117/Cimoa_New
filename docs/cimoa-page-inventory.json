@@ -10682,7 +10682,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/safety/report-user",
-    "component": null,
+    "component": "src/pages/safety/report-user.vue",
     "parent_route": "/pages/messages/chat",
     "allowed_origin_routes": [
       "/pages/messages/chat",
@@ -10735,10 +10735,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; local-only report, failure recovery, optional atomic block, refresh and return acceptance passed; submitted-list dependency pending; contract: docs/cimoa-safety-settings-coins-contract.md"
   },
   {
     "source_screen": "Safety / Block User / Confirmation",
@@ -10748,7 +10748,7 @@
     ],
     "page_level": "确认弹窗",
     "route": "component",
-    "component": "src/components/SafetyBlockConfirmDialog.vue",
+    "component": "src/pages/messages/index.vue + src/components/EventConfirmDialog.vue",
     "parent_route": "/pages/messages/chat",
     "allowed_origin_routes": [
       "/pages/messages/chat"
@@ -10828,10 +10828,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; custom confirmation, cancellation, Loading and atomic chat cleanup acceptance passed; full safety regression pending; contract: docs/cimoa-safety-settings-coins-contract.md"
   },
   {
     "source_screen": "System / Loading / Default",
