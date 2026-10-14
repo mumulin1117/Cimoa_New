@@ -113,6 +113,16 @@ try {
     check('University is self-reported, never pre-verified; year/field/graduation save to the current user')
     if (phase === 'uni') { await page.reload(); await page.locator('.onboarding-uni-page').waitFor(); assert.equal(await field('University').inputValue(), 'HKUST'); await page.locator('.onboarding-back').click(); await page.locator('.onboarding-basic-page').waitFor(); check('University refresh restores data and direct Back returns Basic') }
   }
+  if (!['age', 'community', 'signup', 'email', 'basic', 'uni'].includes(phase)) {
+    await page.locator('.onboarding-major-page').waitFor(); await settle()
+    assert.equal(await page.locator('.major-card').count(), 15)
+    await click('obMajor.goObPhotos.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /major closest/)
+    await page.getByRole('button', { name: 'Computer Science', exact: true }).click(); await shot('major')
+    await click('obMajor.goObPhotos.click.1')
+    await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='photos' })
+    check('Major renders all 15 source cards; selection validates and updates one shared profile field')
+    if (phase === 'major') { await page.reload(); await page.locator('.onboarding-major-page').waitFor(); assert.equal(await page.getByRole('button', { name: 'Computer Science', exact: true }).getAttribute('aria-pressed'), 'true'); check('Major refresh restores selected gradient card') }
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }
