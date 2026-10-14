@@ -102,6 +102,17 @@ try {
     await button('Remove question 1').click(); await page.locator('.library-question').first().click(); await shot('ice'); await button('Back').click(); assert.deepEqual((await state()).users[0].icebreaker_ids,user.icebreaker_ids)
     check('Icebreakers enforce three unique questions, preserve historical entities, save and refresh canonical active IDs; Back discards draft')
   }
+  if (!['edit', 'basic', 'interests', 'goals', 'ice'].includes(phase)) {
+    await goto('/pages/profile/index'); await click('profile.openProfilePreview.click.1'); await page.locator('.profile-preview-page').waitFor(); await page.locator('.preview-photo .profile-photo[data-media-status="ready"]').waitFor(); await shot('preview')
+    assert.match(await page.locator('.preview-name').innerText(),/Morgan Campus/); assert.match(await page.locator('.preview-body').innerText(),/Career Networking/); assert.match(await page.locator('.preview-body').innerText(),/Films/)
+    assert.equal(await page.locator('.photo-dots > uni-view').count(),2); await click('profilePreview.nextPhoto.click.1'); assert.equal(await page.locator('.photo-dots > uni-view').nth(1).getAttribute('aria-current'),'true'); await click('profilePreview.prevPhoto.click.1'); assert.equal(await page.locator('.photo-dots > uni-view').first().getAttribute('aria-current'),'true')
+    await click('profilePreview.eaSongPlay.click.1'); assert.match(await page.getByRole('alert').innerText(),/No playable audio/)
+    await click('profilePreview.openEditBasic.click.1'); await page.locator('.profile-edit-page:visible').waitFor(); await click('editAll.eaOpenBio.click.1'); await field('Profile bio').fill('Updated from my profile preview.'); await click('editAll.eaBioDone.click.1'); await page.getByRole('dialog').waitFor({state:'hidden'}); await click('editAll.eaSave.click.1'); await page.locator('.profile-preview-page:visible').waitFor(); assert.match(await page.locator('.preview-body:visible').innerText(),/Updated from my profile preview/)
+    await click('profilePreview.goBack.click.1'); await page.locator('.profile-title').waitFor(); assert.match(await page.locator('.profile-bio').innerText(),/Updated from my profile preview/)
+    await goto('/pages/profile/preview'); await page.reload(); await page.locator('.preview-photo .profile-photo[data-media-status="ready"]').waitFor(); assert.match(await page.locator('.editor-bio').innerText(),/Updated from my profile preview/)
+    await page.setViewportSize({width:320,height:568}); await shot('preview-small'); const footer=await page.locator('.editor-footer').boundingBox(); assert.ok(footer.y+footer.height<=568); await page.setViewportSize({width:393,height:852})
+    check('Preview reads saved entities and real photo order, edits return to the originating preview, Profile/refresh synchronize, small-screen footer stays fixed')
+  }
   assert.deepEqual(report.errors,[]); report.result='passed'
 } catch(error) { report.failure=String(error.stack||error); console.error(report.failure); process.exitCode=1 }
 finally { await browser?.close(); await new Promise(resolve=>server.close(resolve)); fs.writeFileSync(path.join(output,`${phase}-acceptance.json`),JSON.stringify(report,null,2)+'\n'); console.log('Temporary profile server and isolated browser closed.') }

@@ -5,6 +5,10 @@
       "gradient": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
     },
     "surface": {
+      "profile_song": "rgba(8,16,31,0.55)",
+      "profile_dot_inactive": "rgba(255,255,255,0.4)",
+      "profile_goal_icon": "#efe9fb",
+      "profile_interest_icon": "#e5f0ff",
       "card": "#ffffff",
       "onboarding_border": "rgba(16,36,74,0.06)",
       "onboarding_empty": "rgba(255,255,255,0.55)",
@@ -33,6 +37,9 @@
       "verification_pill": "#e8f1fd"
     },
     "text": {
+      "profile_goal_icon": "#7c3aed",
+      "profile_interest_icon": "#2563eb",
+      "profile_song_artist": "rgba(255,255,255,0.8)",
       "welcome_brand": "#14124a",
       "welcome_title": "#120e4a",
       "welcome_copy": "#7478a8",

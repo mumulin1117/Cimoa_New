@@ -39,6 +39,8 @@ Edit All 本页通过，恢复 pending 等待子页与原生回归，full pendin
 
 ## 验收记录
 
+Preview：Chrome13组通过，同一资料/照片顺序、预览发起编辑后保存返回、Profile即时同步、刷新和小屏固定按钮已验证；缺少音源明确报错。见[preview验收](./evidence/profile-edit/preview-acceptance.json)。三项检查通过；local passed/full pending。
+
 Icebreakers：Chrome12组通过，三题/重复校验、题库替换、自定义保存、取消草稿、刷新及历史问题保留均通过。见[ice验收](./evidence/profile-edit/ice-acceptance.json)。三项检查通过；local passed/full pending。
 
 Connection goals：复用注册目标 catalog；Chrome11组通过，空选择拒绝写入，新增目标 catalog 项同步、父页摘要与刷新保持一致。见[goals验收](./evidence/profile-edit/goals-acceptance.json)。三项检查通过；local passed/full pending。
