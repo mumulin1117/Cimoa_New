@@ -171,6 +171,16 @@ try {
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='about' })
     check('Real file chooser → decoded IndexedDB photos; Not Now/no-host Settings honest; primary/order/remove confirmation/replacement/refresh and two-photo gate')
   }
+  if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos', 'photo-access'].includes(phase)) {
+    await page.locator('.onboarding-about-page').waitFor(); await settle()
+    assert.equal(await field('About you').inputValue(), '')
+    await fill('About you', 'Campus walks, coffee and new conversations.'); await shot('about')
+    await fill('About you', 'A'.repeat(300)); assert.match(await page.locator('.about-counter').innerText(), /300 \/ 300/)
+    await click('obAbout.goObInterests.click.1')
+    await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='interests' })
+    check('Optional About starts empty, follows source card/textarea, counts 300 characters and saves to shared profile')
+    if (phase === 'about') { await page.reload(); await page.locator('.onboarding-about-page').waitFor(); assert.equal((await field('About you').inputValue()).length, 300); check('About long content refresh restores all 300 characters') }
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; if (page) await page.screenshot({ path: path.join(output, 'failure.png') }).catch(() => {}); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); fs.mkdirSync(output, { recursive: true }); fs.writeFileSync(path.join(output, `${phase}-browser.json`), JSON.stringify(report, null, 2) + '\n'); console.log(`Closed registration preview PID ${process.pid}`) }

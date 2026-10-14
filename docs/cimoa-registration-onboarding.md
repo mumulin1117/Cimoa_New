@@ -33,6 +33,8 @@
 
 ## 当前执行
 
+About：累计11组H5检查通过，300字保存/刷新、空白初态、源卡片尺寸和正常英文换行截图核对。三项校验通过无警告，PID80266关闭；pending待Interests依赖。
+
 Photos + Permissions Photos依赖回归通过：8项单元（注册/媒体与桥接）、累计9组H5检查，真实文件选择器选2张，主图/后移/移除取消及确认/替换/刷新Blob均已执行，photo-access及photos-restored截图核对。当前两页local passed/full pending，原生Settings实际跳转和宿主选图后续验收。三项校验通过无警告，PID79389关闭。此前Photos分段pending记录保留作历史。
 
 Permissions Photos十字段契约：来源3209–3226、/pages/permissions/photos二级说明页，返回原Photos实例/直达fallback Photos；replace_id可选且Store验证归当前账号。permPhotos.allowPhotos.click.1要求已到Photos步骤，系统选图本身不写业务；选择后自定义Loading500ms再真实解码/保存，成功返回Photos，取消/拒绝/容量/过期则本页明确错误不变。Not Now只显示未选择说明，不伪称系统拒绝；Back to Photos取消返回。openSettings在普通浏览器明确不可用，在可信WKWebView白名单桥接调用系统Settings并检查opened结果，不更改权限。持久化/同步范围为本人照片集合、头像和账号进度；验收含真实选择、取消零写、替换/主图/排序/删除/至少2/刷新Blob。当前仅本说明页in_progress，Photos依赖回归不新增并行页面。
