@@ -43,6 +43,13 @@ try {
   await load('/pages/events/detail?event_id=missing'); await page.getByRole('alert').waitFor(); assert.equal(await page.locator('.event-detail-cover').count(),0)
   check('Small/long/empty-source details scroll; full/ended/unverified/invalid-ID errors stay honest')
   // Further phases append their own assertions below, retaining the completed page regressions.
+  if(!['detail','participants'].includes(phase)) {
+    await load('/pages/events/index');await click('events.openEvent.click.1');await click('evDetail.askJoin.click.1');await button('Confirm join').click();await page.locator('.event-success-page').waitFor();await shot('join-success');const saved=await state();await click('evJoinSuccess.openJoined.click.1');await page.locator('.event-detail-page:visible').waitFor();assert.equal(await page.locator('.event-detail-page:visible').getAttribute('data-page-depth'),'2');assert.deepEqual(await state(),saved)
+    await goto('/pages/events/join-success?event_id=event_picnic');await page.reload();await page.locator('.event-success-name').waitFor();assert.equal(await page.locator('.event-success-name').innerText(),'Sunset Picnic');assert.deepEqual(await state(),saved)
+    if(phase==='success'){await click('evJoinSuccess.openMyEvents.click.1');assert.match(await page.getByRole('alert').innerText(),/not been restored/)}
+    await load('/pages/events/join-success?event_id=event_picnic');await page.getByRole('alert').waitFor();assert.equal(await page.locator('.event-success-icon').count(),0);await button('Back to events').click();await page.locator('.events-header').waitFor()
+    check('Success page reads actual membership, reload is read-only, Open event pops original detail, cancelled attendance cannot show success')
+  }
   if(phase !== 'detail') {
     await load(detail);await click('evDetail.openParticipantsList.click.1');await page.locator('.event-participants-page').waitFor();assert.equal(await page.locator('.event-person').count(),3);await shot('participants')
     const field=page.locator('uni-input[aria-label="Search participants"] input');await field.fill('Chloe');assert.equal(await page.locator('.event-person').count(),1);await page.locator('.event-person').click();assert.match(await page.getByRole('alert').innerText(),/not been restored/)

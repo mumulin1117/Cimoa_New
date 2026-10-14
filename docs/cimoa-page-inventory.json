@@ -6726,7 +6726,7 @@
     "entry_points": [
       "confirmJoin@6256"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/events/index、/pages/events/detail）；无历史实例时 replace /pages/events/index，不创建伪造实体",
+    "return_owner": "Open event: pop matching detail origin; otherwise replace exact detail; invalid membership can return to origin/Events",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -6769,10 +6769,10 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-event-pages.md"
   },
   {
     "source_screen": "Events / Participants / Default",

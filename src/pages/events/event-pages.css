@@ -56,3 +56,7 @@
 .event-person-meta { display: block; font-size: 27.672rpx; color: var(--cimoa-text-secondary); margin-top: 5.725rpx; }
 .event-person-badge { padding: 13.359rpx 20.992rpx; border-radius: 30.534rpx; font-size: 24.809rpx; background: var(--cimoa-surface-profile-icon); color: var(--cimoa-text-secondary); }
 .event-person-badge--connected { background: var(--cimoa-status-connected-bg); color: var(--cimoa-status-connected-ink); }
+.event-success-content { padding: 244.275rpx 38.168rpx 45.802rpx; display: flex; align-items: center; flex-direction: column; gap: 30.534rpx; text-align: center; overflow-wrap: anywhere; }
+.event-success-icon { width: 183.206rpx; height: 183.206rpx; border-radius: 50%; background: var(--cimoa-gradient-primary); color: var(--cimoa-text-inverse); padding: 49.618rpx; }
+.event-success-name { font-size: 36.26rpx; font-weight: 700; }
+.event-success-description { font-size: 32.443rpx; line-height: 1.5; color: var(--cimoa-text-secondary); }

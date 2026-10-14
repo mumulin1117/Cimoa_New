@@ -55,7 +55,7 @@ const submit = async () => {
   close()
   if (kind === 'join') {
     try { await frame.value.navigate_forward(require_events_destination_ready(events_destination(store, 'join-success', id))) }
-    catch { feedback.value = 'Your place is saved. The confirmation page has not been restored yet.' }
+    catch (error) { feedback.value = `Your place is saved. ${error.message}` }
   } else feedback.value = 'Attendance cancelled. Your place is available again.'
 }
 const reset_transient = () => { cancel(); sheet.value = ''; sheet_locked.value = false; selected_id.value = ''; feedback.value = ''; dialog_error.value = '' }
