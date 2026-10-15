@@ -109,6 +109,91 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { try? await restore(); throw error }
     }
+    func testWelcomePixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?welcomePixel=restored#/pages/auth/splash")!))
+        }
+        do {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?welcomePixel=native#/pages/auth/welcome")!))
+            try await waitFor(host, ".welcome-page")
+            for _ in 0..<100 {
+                if (try? await script(host, "return !document.querySelector('.welcome-photo-status')")) as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom,cx:rect.x+rect.width/2}},root=box('.welcome-page'),photo=box('.welcome-photo-region'),copy=box('.welcome-copy'),brand=box('.welcome-brand'),create=box('.welcome-create'),login=box('.welcome-login'),legal=box('.welcome-legal'),safes=[...document.querySelectorAll('.welcome-page > .safe-area')].map(element=>element.getBoundingClientRect().height),image=document.querySelector('.welcome-photo .uni-image-element,.welcome-photo img')||document.querySelector('.welcome-photo');
+                return {root,photo,copy,brand,create,login,legal,safes,imagePosition:image?getComputedStyle(image).objectPosition:null,status:!!document.querySelector('.welcome-photo-status'),text:{brand:document.querySelector('.welcome-brand').textContent,title:document.querySelector('.welcome-title').textContent,description:document.querySelector('.welcome-description').textContent,create:document.querySelector('.welcome-create').textContent.trim(),login:document.querySelector('.welcome-login').textContent.trim(),legal:document.querySelector('.welcome-legal').textContent.replace(/\\s+/g,' ').trim()}};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double]
+            let photo = metrics["photo"] as! [String: Double]
+            let copy = metrics["copy"] as! [String: Double]
+            let brand = metrics["brand"] as! [String: Double]
+            let create = metrics["create"] as! [String: Double]
+            let login = metrics["login"] as! [String: Double]
+            let legal = metrics["legal"] as! [String: Double]
+            let safes = metrics["safes"] as! [Double]
+            let text = metrics["text"] as! [String: String]
+            let sourceScale = root["width"]! / 393
+            XCTAssertEqual(root["x"]!, 0, accuracy: 1); XCTAssertEqual(root["y"]!, 0, accuracy: 1)
+            XCTAssertEqual(root["width"]!, Double(host.webView.bounds.width), accuracy: 1); XCTAssertEqual(root["height"]!, Double(host.webView.bounds.height), accuracy: 1)
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(photo["x"]!, 4 * sourceScale, accuracy: 1); XCTAssertEqual(photo["y"]!, safes[0], accuracy: 1); XCTAssertEqual(photo["width"]!, root["width"]! - 8 * sourceScale, accuracy: 1); XCTAssertEqual(photo["height"]!, 360 * sourceScale, accuracy: 1)
+            XCTAssertEqual(copy["y"]!, safes[0] + 404 * sourceScale, accuracy: 1); XCTAssertEqual(brand["cx"]!, root["width"]! / 2, accuracy: 1)
+            XCTAssertEqual(create["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(create["width"]!, root["width"]! - 40 * sourceScale, accuracy: 1); XCTAssertEqual(create["height"]!, 60 * sourceScale, accuracy: 1); XCTAssertEqual(login["height"]!, 56 * sourceScale, accuracy: 1)
+            XCTAssertEqual(legal["bottom"]!, root["height"]! - safes[1] - 30 * sourceScale, accuracy: 2)
+            XCTAssertTrue(["50% 0%", "center top"].contains(metrics["imagePosition"] as? String ?? "")); XCTAssertEqual(metrics["status"] as? Bool, false)
+            XCTAssertEqual(text["brand"], "Cimoa"); XCTAssertEqual(text["title"], "Meet your campus")
+            XCTAssertEqual(text["description"], "Discover people, conversations, and events around university life.")
+            XCTAssertEqual(text["create"], "Create Account"); XCTAssertEqual(text["login"], "Log In")
+            XCTAssertEqual(text["legal"], "By continuing, you agree to our Terms and Privacy Policy.")
+            let screenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
+            screenshot.name = "WKWebView Welcome deterministic"; screenshot.lifetime = .keepAlways; add(screenshot)
+            let scrolled = try await script(host, """
+            const scroller=[...document.querySelectorAll('.secondary-page-scroll .uni-scroll-view')].at(-1),footer=document.querySelector('.welcome-footer').getBoundingClientRect();
+            const before={clientHeight:scroller.clientHeight,scrollHeight:scroller.scrollHeight,footerY:footer.y};scroller.scrollTop=scroller.scrollHeight;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+            const description=document.querySelector('.welcome-description').getBoundingClientRect(),afterFooter=document.querySelector('.welcome-footer').getBoundingClientRect();return {clientHeight:before.clientHeight,scrollHeight:before.scrollHeight,scrollTop:scroller.scrollTop,footerY:before.footerY,afterFooterY:afterFooter.y,descriptionBottom:description.bottom};
+            """) as! [String: Double]
+            XCTAssertGreaterThan(scrolled["scrollHeight"]!, scrolled["clientHeight"]!); XCTAssertGreaterThan(scrolled["scrollTop"]!, 0)
+            XCTAssertEqual(scrolled["afterFooterY"]!, scrolled["footerY"]!, accuracy: 1); XCTAssertLessThanOrEqual(scrolled["descriptionBottom"]!, scrolled["afterFooterY"]! + 1)
+            let scrolledScreenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
+            scrolledScreenshot.name = "WKWebView Welcome safe-area scrolled"; scrolledScreenshot.lifetime = .keepAlways; add(scrolledScreenshot)
+            print("CIMOA_WELCOME_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+
+            _ = try await script(host, "const entry=document.querySelector('[data-interaction=\"welcome.goAge.click.1\"]');entry.click();entry.click();return true")
+            try await waitFor(host, ".age-page")
+            let ageDepth = try await script(host, "return document.querySelector('.age-page').dataset.pageDepth") as? String
+            XCTAssertEqual(ageDepth, "2")
+            _ = try await script(host, "document.querySelector('.age-page .auth-back').click();return true"); try await waitFor(host, ".welcome-page")
+            for (interaction, destination, backSelector) in [
+                ("welcome.goLogin.click.1", ".login-page", ".login-page .auth-back"),
+                ("welcome.openTerms.click.1", ".legal-terms-page", ".legal-terms-page .event-page-round"),
+                ("welcome.openPrivacy.click.1", ".legal-privacy-page", ".legal-privacy-page .event-page-round")
+            ] {
+                _ = try await script(host, "document.querySelector('[data-interaction=\"\(interaction)\"]').click();return true")
+                try await waitFor(host, destination)
+                let depth = try await script(host, "return document.querySelector('\(destination)').dataset.pageDepth") as? String
+                XCTAssertEqual(depth, "2")
+                _ = try await script(host, "document.querySelector('\(backSelector)').click();return true"); try await waitFor(host, ".welcome-page")
+            }
+            let guestStorageRemainsEmpty = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===null") as? Bool
+            XCTAssertEqual(guestStorageRemainsEmpty, true)
+            host.webView.reload(); try await waitFor(host, ".welcome-page")
+            let refreshStorageRemainsEmpty = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===null") as? Bool
+            XCTAssertEqual(refreshStorageRemainsEmpty, true)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

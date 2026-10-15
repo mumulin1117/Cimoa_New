@@ -1,6 +1,6 @@
 # Cimoa 认证入口逐页交互契约
 
-Splash本页已本地提交e1af81a，Welcome本页提交50d140c，同样pending待完整依赖；用户随后优先要求固定验证码009789，Login转pending，Code本页提交10c2154，再顺序实施Success。最新状态及十字段契约见[本地验证码](./cimoa-local-verification.md)。每页依次补来源契约、实施、测试、三项校验、本地提交；完成本页后回pending待完整依赖，不并行留下半页。
+Splash 像素专项已由本地提交 `745bd7d2` 封版。Welcome 的来源锁定、差异修正、用户视觉确认、双端验收和最终门禁均已完成，本页随本地专项提交封版；提交完成后才将 Login 切换为唯一 `in_progress`。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。
 
 ## Splash
 
@@ -28,7 +28,7 @@ Welcome首次未还原时以deferred显示明确错误；现在已由下方Welco
 | welcome.openPrivacy.click.1 | Welcome2523 | Privacy Policy | 同上 | 同上 | /pages/legal/privacy | 同上 | none | legal | 不跳成Terms，不自动勾选协议 |
 | welcome.media.retry（技术补齐） | Welcome image | Retry photo | 本地图片失败 | 内容区真实重载 | 显示相同校园图片 | 继续明确错误，不换图 | none | source resource | 注入404→重试、恢复资源→正确加载 |
 
-Welcome 本页8项浏览器检查通过：[报告](./evidence/auth/welcome-browser.json)、[393默认](./evidence/auth/welcome.png)、[320小屏安全区](./evidence/auth/welcome-small.png)。已检查实际Splash自动进入Welcome、原图与360/60/56尺寸、四个依赖入口真实失败边界、图片404与重试、小屏唯一滚动/固定footer、有效会话与损坏快照恢复。PID83162的服务/隔离浏览器已关闭。local passed / full pending；协议和认证目标缺失不算闭环，原生尚待本轮回归，不标记verified。
+Welcome 本轮像素专项已完成并获用户视觉确认：[来源契约](./ui-restoration/welcome/source-contract.json)、[差异审计](./ui-restoration/welcome/difference-audit.md)、[验收摘要](./ui-restoration/welcome/acceptance.json)。浏览器 6/6 通过，固定 393×852 与 cRise 结束帧，输出 reference/actual/overlay/diff；62/34 安全区及 320×568 验证唯一滚动区和固定 footer。iPhone 17 Pro WKWebView 实测 402×874、真实安全区 62/34，专项 1/1 通过。四个入口、返回归属、连点只进一层、图片真实失败/恢复和刷新零写入均通过。三项最终门禁与 H5 重构建通过，最终状态为 `status: verified`、`visual_acceptance: passed`。
 
 ## Login
 

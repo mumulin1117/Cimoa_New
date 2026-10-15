@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "page": "Welcome",
+  "route": "/pages/auth/welcome",
+  "source_screen": "Auth / Welcome / Default",
+  "source_query": "route=welcome",
+  "source_lock": "locked",
+  "locked_at": "2026-10-15",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isWelcome",
+    "visual_lines": "2512-2525",
+    "visual_fragment_sha256": "95083f7905d32b356e84d42c87224bbcbe37389fe38be1598e87cb4bb685e66b",
+    "behavior_lines": [
+      5529,
+      5561,
+      5564,
+      6016,
+      6017
+    ],
+    "behavior_fragment_sha256": "f41875ef8ca78f2deaa0e477a19e82ac5fc4180d6bb5669c1c9b2c243472bc2b"
+  },
+  "reference_viewport": {
+    "width_css_px": 393,
+    "height_css_px": 852,
+    "scale": 1
+  },
+  "structure": {
+    "root": "absolute inset 0; cRise entry; no source page-level padding",
+    "source_system_chrome": "54px StatusBar import; campus image overlaps from y=44",
+    "fixed_regions": "campus image and copy in the source absolute layer; action/legal stack fixed 30px from the bottom",
+    "scroll_region": "none at 393x852 in the source default state",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "photo": {
+    "source_id": "d94783de-a46b-442f-9163-27afd548eacd",
+    "local_path": "static/assets/img/welcome-campus.png",
+    "sha256": "c4350a2be9d94721c915b93b2c4d09754194a3a3a6357665692d226ad3bf0896",
+    "intrinsic_px": "837x760",
+    "source_frame": {
+      "top_css_px": 44,
+      "left_css_px": 4,
+      "right_css_px": 4,
+      "width_css_px": 385,
+      "height_css_px": 360
+    },
+    "object_fit": "cover",
+    "object_position": "center top",
+    "border_radius_css_px": "30 30 0 0",
+    "mask": "linear-gradient(to bottom,#000 0%,#000 70%,transparent 100%)",
+    "alt": "Students walking on campus"
+  },
+  "copy": {
+    "frame": "absolute top 448px; left/right 24px; centered column",
+    "brand": {
+      "source_copy": "CIRCA",
+      "approved_copy": "Cimoa",
+      "font_size_css_px": 38,
+      "font_weight": 500,
+      "letter_spacing": "0.08em",
+      "padding_left": "0.08em",
+      "line_height": 1,
+      "color": "#14124a"
+    },
+    "title": {
+      "copy": "Meet your campus",
+      "margin_top_css_px": 22,
+      "font_size_css_px": 34,
+      "font_weight": 800,
+      "letter_spacing": "-0.04em",
+      "line_height": 1.05,
+      "color": "#120e4a"
+    },
+    "description": {
+      "copy": "Discover people, conversations, and events around university life.",
+      "margin_top_css_px": 10,
+      "max_width_css_px": 290,
+      "font_size_css_px": 16.5,
+      "line_height": 1.4,
+      "color": "#7478a8",
+      "text_wrap": "balance"
+    }
+  },
+  "footer": {
+    "frame": "absolute left/right 20px; bottom 30px; column gap 12px; z-index 20",
+    "create_account": {
+      "interaction_id": "welcome.goAge.click.1",
+      "height_css_px": 60,
+      "border_radius_css_px": 30,
+      "gap_css_px": 8,
+      "font_size_css_px": 19,
+      "font_weight": 700,
+      "copy": "Create Account",
+      "arrow_css_px": "18x18",
+      "gradient": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+      "shadow": "0 12px 26px rgba(168,85,247,0.24)"
+    },
+    "login": {
+      "interaction_id": "welcome.goLogin.click.1",
+      "height_css_px": 56,
+      "border_radius_css_px": 28,
+      "font_size_css_px": 18,
+      "font_weight": 600,
+      "copy": "Log In",
+      "background": "#fff",
+      "color": "#0b1b3a",
+      "shadow": "0 8px 22px rgba(16,36,74,0.07)"
+    },
+    "legal": {
+      "margin_top_css_px": 2,
+      "font_size_css_px": 14.5,
+      "line_height": 1.4,
+      "color": "#6b7a93",
+      "copy": "By continuing, you agree to our Terms and Privacy Policy.",
+      "link_color": "#44536b",
+      "link_weight": 600,
+      "terms_interaction_id": "welcome.openTerms.click.1",
+      "privacy_interaction_id": "welcome.openPrivacy.click.1"
+    }
+  },
+  "motion": {
+    "entry": "cRise 240ms ease both; opacity 0 and translateY(14px) to opacity 1 and translateY(0)"
+  },
+  "source_behavior": {
+    "create_account": "nav age",
+    "login": "nav login",
+    "terms": "nav legalTerms",
+    "privacy": "nav legalPrivacy"
+  },
+  "approved_deltas": [
+    {
+      "id": "welcome-brand",
+      "source": "INTERACTION_CONVENTIONS.md 1.1",
+      "delta": "Replace visible CIRCA brand copy with Cimoa while preserving typography and placement."
+    },
+    {
+      "id": "welcome-safe-area",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.1",
+      "delta": "Replace the prototype StatusBar with measured TopSafeArea and place BottomSafeArea after the 30px source footer inset."
+    },
+    {
+      "id": "welcome-small-screen-scroll",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.4",
+      "delta": "Use the single middle scroll container when the safe content height cannot contain the source layout; keep the action footer fixed."
+    },
+    {
+      "id": "welcome-media-error",
+      "source": "INTERACTION_CONVENTIONS.md 12",
+      "delta": "Expose real local-image loading and failure states with retry; do not change the default loaded composition."
+    }
+  ],
+  "implementation_files": [
+    "src/pages/auth/welcome.vue",
+    "src/components/SecondaryPageFrame.vue",
+    "src/components/PageTransition.vue",
+    "src/components/TopSafeArea.vue",
+    "src/components/BottomSafeArea.vue",
+    "src/components/SourceIcon.vue",
+    "src/config/navigation.js",
+    "src/config/theme.json",
+    "src/utils/authNavigation.js",
+    "static/assets/img/welcome-campus.png"
+  ],
+  "capture": {
+    "reference_kind": "source-derived locked reference with approved Cimoa brand and safe-area deltas",
+    "reference_png": "docs/ui-restoration/welcome/reference.png",
+    "reference_sha256": "1c3734ef9047d40c51ca440a0b145e46adb974e3a79ebdc9c179a765764b9039",
+    "reason": "The browser security boundary prevents automation of the local prototype file. The deterministic reference is rendered only from this hash-verified source contract; the application never embeds or loads the prototype.",
+    "actual_browser_png": "docs/ui-restoration/welcome/actual-browser.png",
+    "actual_browser_sha256": "b9d0f81e657fb5596e043ff933ea15b6c7880f39f30bc5671d02e5a9792b20a2",
+    "actual_browser_safe_area_png": "docs/ui-restoration/welcome/actual-browser-safe-area.png",
+    "actual_browser_safe_area_sha256": "0ae59778b7801b6b713c47b0ad25f827e44b97c6b8f7914ffc15c66ef6c8b97e",
+    "actual_browser_safe_area_scrolled_png": "docs/ui-restoration/welcome/actual-browser-safe-area-scrolled.png",
+    "actual_browser_safe_area_scrolled_sha256": "b1cb2d7e3b046b3f80086ba375151fe4baba1f04755e53b91fcc3a7929a7d9ea",
+    "actual_browser_small_png": "docs/ui-restoration/welcome/actual-browser-small.png",
+    "actual_browser_small_sha256": "e7fb7323c03ab35eecef828c2bd56b3e9cb784967efbd1b4c4c2e0f6253f8e06",
+    "overlay_png": "docs/ui-restoration/welcome/overlay.png",
+    "overlay_sha256": "0f776dede2874db83b34bc2427763e5093f75949537be03731176d2cf4a5293f",
+    "diff_png": "docs/ui-restoration/welcome/diff.png",
+    "diff_sha256": "25c83e9da6743096cbd8db19f585a44c5f8ad33593e74eba5a3582fe64434659",
+    "actual_wkwebview_png": "docs/ui-restoration/welcome/actual-wkwebview.png",
+    "actual_wkwebview_sha256": "8e92c01c314052a5c754f4312dccd136860ad0b1d3c72e03cb6af46e9dd94246",
+    "actual_wkwebview_scrolled_png": "docs/ui-restoration/welcome/actual-wkwebview-scrolled.png",
+    "actual_wkwebview_scrolled_sha256": "4cee35e530a8e43b6ba5ccd0c16c66d7db0e22248a2040c3cdd6145fe6c49e10"
+  }
+}

@@ -32,7 +32,9 @@ const retry_photo = () => { photo_status.value = 'loading'; photo_key.value++ }
 </template>
 <style scoped>
 .welcome-photo-region { position: relative; margin: 0 7.634rpx; height: 687.023rpx; }
-.welcome-photo { width: 100%; height: 100%; border-radius: 57.252rpx 57.252rpx 0 0; mask-image: var(--cimoa-gradient-welcome-mask); -webkit-mask-image: var(--cimoa-gradient-welcome-mask); }
+.welcome-photo { width: 100%; height: 100%; border-radius: 57.252rpx 57.252rpx 0 0; object-position: center top; mask-image: var(--cimoa-gradient-welcome-mask); -webkit-mask-image: var(--cimoa-gradient-welcome-mask); }
+.welcome-photo :deep(.uni-image-element),
+.welcome-photo :deep(img) { object-position: center top; }
 .welcome-photo-status {
   position: absolute;
   inset: 0;

@@ -114,12 +114,16 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/welcome/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/welcome/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work",
-    "acceptance_notes": "8 isolated browser checks passed; 4 dependency routes deferred; see cimoa-auth-interactions.md. Not verified."
+    "mapping_status": "Welcome source locked; pixel restoration confirmed by user; deterministic browser and iPhone 17 Pro WKWebView acceptance passed; final checks and local specialty commit complete",
+    "acceptance_notes": "Browser 6/6 and WKWebView 1/1 passed, including source geometry, 62/34 safe-area scrolling, source entries and return ownership. User confirmed pixel screenshots on 2026-10-15; final gates and H5 packaging passed."
   },
   {
     "source_screen": "Legal / Terms of Service / Default",
