@@ -194,6 +194,105 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { try? await restore(); throw error }
     }
+    func testLoginPixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?loginPixel=restored#/pages/auth/splash")!))
+        }
+        func reloadAndWait(_ selector: String) async throws {
+            _ = try await script(host, "window.__loginOldDocument=true;return true")
+            host.webView.reload()
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__loginOldDocument&&!!document.querySelector('\(selector)')")) as? Bool == true { return }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            throw NSError(domain: "CimoaTests", code: 4, userInfo: [NSLocalizedDescriptionKey: "Missing new document \(selector)"])
+        }
+        var stage = "prepare guest Login"
+        do {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?loginPixel=native#/pages/auth/login")!))
+            try await waitFor(host, ".login-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom,cx:rect.x+rect.width/2}},fields=[...document.querySelectorAll('.auth-field')].map(element=>{const rect=element.getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,bottom:rect.bottom}}),chips=[...document.querySelectorAll('.auth-test-chip')].map(element=>{const rect=element.getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,text:element.textContent.trim()}}),inputs=[...document.querySelectorAll('.login-page .auth-input')].map(element=>({interaction:element.dataset.interaction,placeholder:element.querySelector('.uni-input-placeholder')?.textContent||null,type:element.querySelector('input')?.type||null}));
+                return {root:box('.login-page'),header:box('.auth-header'),back:box('.auth-back'),title:box('.auth-header-title'),content:box('.auth-content'),heading:box('.auth-heading'),apple:box('.auth-apple'),divider:box('.auth-divider'),fields,forgot:box('.auth-forgot'),tests:box('.auth-test-states'),chips,note:box('.auth-local-note'),login:box('.auth-primary'),create:box('.auth-secondary'),safes:[...document.querySelectorAll('.login-page > .safe-area')].map(element=>element.getBoundingClientRect().height),text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.auth-heading').textContent,apple:document.querySelector('.auth-apple').textContent.trim(),divider:document.querySelector('.auth-divider').textContent.trim(),labels:[...document.querySelectorAll('.auth-label')].map(element=>element.textContent),forgot:document.querySelector('.auth-forgot').textContent,tests:document.querySelector('.auth-test-title').textContent,note:document.querySelector('.auth-local-note').textContent,login:document.querySelector('.auth-primary').textContent.trim(),create:document.querySelector('.auth-secondary').textContent.trim()},inputs,backInteraction:document.querySelector('.auth-back').dataset.interaction,alert:!!document.querySelector('.login-page [role=alert]')};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], header = metrics["header"] as! [String: Double]
+            let back = metrics["back"] as! [String: Double], heading = metrics["heading"] as! [String: Double]
+            let apple = metrics["apple"] as! [String: Double], divider = metrics["divider"] as! [String: Double], fields = metrics["fields"] as! [[String: Double]]
+            let forgot = metrics["forgot"] as! [String: Double], tests = metrics["tests"] as! [String: Double], note = metrics["note"] as! [String: Double]
+            let chips = metrics["chips"] as! [[String: Any]], login = metrics["login"] as! [String: Double]
+            let create = metrics["create"] as! [String: Double], safes = metrics["safes"] as! [Double]
+            let text = metrics["text"] as! [String: Any], inputs = metrics["inputs"] as! [[String: Any]]
+            let sourceScale = root["width"]! / 393
+            XCTAssertEqual(root["x"]!, 0, accuracy: 1); XCTAssertEqual(root["y"]!, 0, accuracy: 1)
+            XCTAssertEqual(root["width"]!, Double(host.webView.bounds.width), accuracy: 1); XCTAssertEqual(root["height"]!, Double(host.webView.bounds.height), accuracy: 1)
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(header["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(header["y"]!, safes[0] + 4 * sourceScale, accuracy: 1); XCTAssertEqual(header["height"]!, 48 * sourceScale, accuracy: 1)
+            XCTAssertEqual(back["width"]!, 46 * sourceScale, accuracy: 1); XCTAssertEqual(back["height"]!, 46 * sourceScale, accuracy: 1)
+            XCTAssertEqual(heading["y"]!, safes[0] + 68 * sourceScale, accuracy: 1); XCTAssertEqual(apple["y"]!, heading["bottom"]! + 18 * sourceScale, accuracy: 1); XCTAssertEqual(apple["height"]!, 56 * sourceScale, accuracy: 1)
+            XCTAssertEqual(fields[0]["y"]!, divider["bottom"]! + 14 * sourceScale, accuracy: 1); XCTAssertEqual(fields[1]["y"]!, fields[0]["bottom"]! + 14 * sourceScale, accuracy: 1)
+            XCTAssertEqual(forgot["y"]!, fields[1]["bottom"]! + 16 * sourceScale, accuracy: 1); XCTAssertEqual(tests["y"]!, forgot["bottom"]! + 22 * sourceScale, accuracy: 1); XCTAssertEqual(note["y"]!, tests["bottom"]! + 22 * sourceScale, accuracy: 1)
+            XCTAssertEqual(chips.map { $0["text"] as! String }, ["Wrong password", "Unverified account"])
+            for chip in chips { XCTAssertEqual(chip["height"] as! Double, 40 * sourceScale, accuracy: 1) }
+            XCTAssertEqual(login["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(login["height"]!, 60 * sourceScale, accuracy: 1)
+            XCTAssertEqual(create["height"]!, 46 * sourceScale, accuracy: 1); XCTAssertEqual(create["bottom"]!, root["height"]! - safes[1] - 30 * sourceScale, accuracy: 2)
+            XCTAssertEqual(text["header"] as? String, "Log in"); XCTAssertEqual(text["heading"] as? String, "Welcome back")
+            XCTAssertEqual(text["apple"] as? String, "Continue with Apple"); XCTAssertEqual(text["divider"] as? String, "or")
+            XCTAssertEqual(text["labels"] as? [String], ["Email", "Password"]); XCTAssertEqual(text["forgot"] as? String, "Forgot password?")
+            XCTAssertEqual(text["tests"] as? String, "TEST STATES"); XCTAssertEqual(text["note"] as? String, "Local accounts are stored on this device. Signing in does not verify your student status.")
+            XCTAssertEqual(text["login"] as? String, "Log In"); XCTAssertEqual(text["create"] as? String, "New here? Create an account")
+            XCTAssertEqual(inputs[0]["interaction"] as? String, "login.onEmail.change.1"); XCTAssertEqual(inputs[0]["placeholder"] as? String, "you@university.edu")
+            XCTAssertEqual(inputs[1]["interaction"] as? String, "login.onPw.change.1"); XCTAssertEqual(inputs[1]["placeholder"] as? String, "Your password")
+            XCTAssertEqual(inputs[1]["type"] as? String, "password"); XCTAssertEqual(metrics["backInteraction"] as? String, "login.goBack.click.1"); XCTAssertEqual(metrics["alert"] as? Bool, false)
+            let screenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
+            screenshot.name = "WKWebView Login deterministic"; screenshot.lifetime = .keepAlways; add(screenshot)
+            print("CIMOA_LOGIN_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+
+            stage = "wrong-password source state"
+            _ = try await script(host, "document.querySelector('[data-interaction=\"login.loginWrong.click.1\"]').click();return true")
+            try await waitFor(host, ".login-page [role=alert]")
+            var state = try await script(host, "return {error:document.querySelector('.login-page [role=alert]').textContent,storage:localStorage.getItem('cimoa_app_state_v2')}") as! [String: Any]
+            XCTAssertEqual(state["error"] as? String, "Incorrect password. Try again or reset it."); XCTAssertTrue(state["storage"] is NSNull)
+            stage = "unverified source state"
+            try await reloadAndWait(".login-page")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"login.loginUnverified.click.1\"]').click();return true")
+            try await waitFor(host, ".login-page [role=alert]")
+            state = try await script(host, "return {error:document.querySelector('.login-page [role=alert]').textContent,storage:localStorage.getItem('cimoa_app_state_v2')}") as! [String: Any]
+            XCTAssertEqual(state["error"] as? String, "No unverified local account is available on this device. No changes were made."); XCTAssertTrue(state["storage"] is NSNull)
+            stage = "password toggle and Apple failure"
+            _ = try await script(host, "document.querySelector('[data-interaction=\"login.togglePw.click.1\"]').click();return true")
+            let shownType = try await script(host, "return document.querySelectorAll('.login-page input')[1].type") as? String
+            XCTAssertEqual(shownType, "text")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"login.togglePw.click.1\"]').click();document.querySelector('[data-interaction=\"login.appleAuth.click.1\"]').click();return true")
+            state = try await script(host, "return {type:document.querySelectorAll('.login-page input')[1].type,error:document.querySelector('.login-page [role=alert]').textContent,storage:localStorage.getItem('cimoa_app_state_v2')}") as! [String: Any]
+            XCTAssertEqual(state["type"] as? String, "password"); XCTAssertTrue((state["error"] as! String).contains("not configured")); XCTAssertTrue(state["storage"] is NSNull)
+
+            stage = "successful delayed Login"
+            try await reloadAndWait(".login-page")
+            _ = try await script(host, "await new Promise(resolve=>setTimeout(resolve,300));const fields=document.querySelectorAll('.login-page input');for(const [index,value] of ['cimoa@gmail.com','12341234'].entries()){fields[index].value=value;fields[index].dispatchEvent(new Event('input',{bubbles:true}))}await Promise.resolve();document.querySelector('[data-interaction=\"login.loginNow.click.1\"]').click();return true")
+            try await waitFor(host, ".loading")
+            let loading = try await script(host, "return {visible:!!document.querySelector('.loading'),storage:localStorage.getItem('cimoa_app_state_v2')}") as! [String: Any]
+            XCTAssertEqual(loading["visible"] as? Bool, true); XCTAssertTrue(loading["storage"] is NSNull)
+            try await waitFor(host, ".home-header")
+            let committed = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            XCTAssertEqual((try JSONSerialization.jsonObject(with: Data(committed.utf8)) as! [String: Any])["type"] as? String, "object")
+            try await reloadAndWait(".home-header")
+            let restoredSession = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(restoredSession, committed)
+            stage = "restore original storage"
+            try await restore()
+        } catch { XCTFail("Login WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

@@ -1,6 +1,6 @@
 # Cimoa 认证入口逐页交互契约
 
-Splash 像素专项已由本地提交 `745bd7d2` 封版。Welcome 的来源锁定、差异修正、用户视觉确认、双端验收和最终门禁均已完成，本页随本地专项提交封版；提交完成后才将 Login 切换为唯一 `in_progress`。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。
+Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版；Login 的来源差异、浏览器/WKWebView 取证、用户视觉确认与最终门禁也已完成，状态为 `verified / passed`。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面按 2026-10-15 用户授权在完整证据链通过后自动视觉确认并进入下一页，不再逐页等待人工回复。
 
 ## Splash
 
@@ -32,7 +32,7 @@ Welcome 本轮像素专项已完成并获用户视觉确认：[来源契约](./u
 
 ## Login
 
-来源2659–2705，/pages/auth/login；复用SecondaryPageFrame/routeTransition，源46返回、48标题栏、33 Welcome back、56 Apple/输入、60固定登录。返回前一认证页，直达fallback Welcome。密码只保留内存，隐藏/卸载清除。真实认证数据仅Store。固定本地验证码已单独实施，重置/Apple仍不可用；原型TEST STATES不是业务数据，是否在生产移除已询问用户，未决时不标完整验收。
+来源2659–2705，/pages/auth/login；复用SecondaryPageFrame/routeTransition，源46返回、48标题栏、33 Welcome back、56 Apple/输入、60固定登录。返回前一认证页，直达fallback Welcome。密码只保留内存，隐藏/卸载清除。真实认证数据仅Store。固定本地验证码已单独实施，重置/Apple仍不可用；原型 TEST STATES 按来源保留，但只读检查真实本地状态，不创建账号、会话或认证结果。
 
 | interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -43,6 +43,6 @@ Welcome 本轮像素专项已完成并获用户视觉确认：[来源契约](./u
 | login.appleAuth.click.1 | Login2669 | Apple | 未配置服务 | 明确英文不可用 | 不伪造授权 | 保持原页与数据 | none | none | 普通浏览器/宿主同样真实失败 |
 | login.goFpEmail.click.1 | Login2691 | Forgot password | 目标需还原且服务未配置 | 导航或明确缺依赖 | 后续按真实重置结果 | 不发送邮件/不改密码 | none | account | 当前deferred；固定009789不授权重置他人密码 |
 | login.goAge.click.1 | Login2702 | Create account | Age就绪 | 立即push，无Loading | 注册年龄流程 | 未还原明确错误 | none | auth_flow | Age补齐后验入口与返回 |
-| login.loginWrong.click.1 / login.loginUnverified.click.1 | Login2695/2696 | 原型TEST STATES | 原型调试用途待确认 | 不编造认证结果 | 真实失败/未验证由Store数据测试覆盖 | 不强造已认证账号 | none | test only | 不将静态测试按钮算认证成功 |
+| login.loginWrong.click.1 / login.loginUnverified.click.1 | Login2695/2696 | 原型TEST STATES | 只读检查现有 fixture 凭据失配 / 当前未验证本地账号 | none | 展示来源错误；未验证状态仅在真实 pending context 存在时进入验证页 | 不创建账号、不写 session、不强造认证状态 | none | test only | fresh fixture、真实 pending、本地状态缺失三路回归 |
 
-运行检查已通过但不是页面完整验收：[Login检查记录](./cimoa-stage5-login-acceptance.md)。先前普通浏览器13项、Welcome更新回归8项、iPhone17Pro入口/宿主5项均通过。当前实现未显示源TEST STATES两个调试按钮；已向用户询问是否在正式App移除，未获答复前不将此差异自行定为完成。Login转pending，local/full pending；不把固定验证码的新决定理解为批准删除调试区。注册仅Store接口已实现，年龄/社区/注册UI尚未完成；固定验证码两页单独按新请求实施，不声称整个注册链已接通。
+本轮来源锁定证据见 [Login 来源契约](./ui-restoration/login/source-contract.json)、[差异审计](./ui-restoration/login/difference-audit.md) 与 [验收摘要](./ui-restoration/login/acceptance.json)。393×852 浏览器确定性测试 5/5、登录功能回归 14/14、Store 单元测试 10/10、iPhone 17 Pro WKWebView 专项 1/1 均通过；真实软键盘下密码框可见、footer 临时收起并在 Done 后恢复。用户于 2026-10-15 确认截图，三项最终门禁与本地专项提交完成。注册页面是否完成仍按各自页面清单逐页验收，不能由 Login 结果代替。

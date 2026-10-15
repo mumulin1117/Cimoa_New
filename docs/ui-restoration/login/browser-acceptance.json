@@ -1,0 +1,235 @@
+{
+  "phase": "login-pixel-restoration",
+  "result": "passed",
+  "server_pid": 84768,
+  "reference": {
+    "kind": "source-derived locked reference with approved safe-area and local-mode deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "1c6f4bd2b5fdad94581146ae4b12f437b204be6c8d8991cd2516eb27807993ea",
+    "behavior_fragment_sha256": "96bf285f6aaef4fc293cfed9eff6ee8694c90f85aafe0ffccc5551cb354db857",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "right": 393,
+      "bottom": 852,
+      "center_x": 196.5
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375,
+      "center_x": 196.5
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "right": 65.984375,
+      "bottom": 104.984375,
+      "center_x": 42.9921875
+    },
+    "title": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 47.984375,
+      "right": 315,
+      "bottom": 105.984375,
+      "center_x": 196.5
+    },
+    "content": {
+      "x": 0,
+      "y": 121.96875,
+      "width": 393,
+      "height": 535.78125,
+      "right": 393,
+      "bottom": 657.75,
+      "center_x": 196.5
+    },
+    "heading": {
+      "x": 20,
+      "y": 121.96875,
+      "width": 353,
+      "height": 36.296875,
+      "right": 373,
+      "bottom": 158.265625,
+      "center_x": 196.5
+    },
+    "apple": {
+      "x": 20,
+      "y": 176.25,
+      "width": 353,
+      "height": 55.984375,
+      "right": 373,
+      "bottom": 232.234375,
+      "center_x": 196.5
+    },
+    "divider": {
+      "x": 20,
+      "y": 250.21875,
+      "width": 353,
+      "height": 17,
+      "right": 373,
+      "bottom": 267.21875,
+      "center_x": 196.5
+    },
+    "fields": [
+      {
+        "x": 20,
+        "y": 281.21875,
+        "width": 353,
+        "height": 79.984375,
+        "bottom": 361.203125
+      },
+      {
+        "x": 20,
+        "y": 375.203125,
+        "width": 353,
+        "height": 79.984375,
+        "bottom": 455.1875
+      }
+    ],
+    "forgot": {
+      "x": 20,
+      "y": 471.171875,
+      "width": 353,
+      "height": 18,
+      "right": 373,
+      "bottom": 489.171875,
+      "center_x": 196.5
+    },
+    "tests": {
+      "x": 20,
+      "y": 511.171875,
+      "width": 353,
+      "height": 63.984375,
+      "right": 373,
+      "bottom": 575.15625,
+      "center_x": 196.5
+    },
+    "tests_title": {
+      "x": 20,
+      "y": 511.171875,
+      "width": 353,
+      "height": 16,
+      "right": 373,
+      "bottom": 527.171875,
+      "center_x": 196.5
+    },
+    "chips": [
+      {
+        "x": 20,
+        "y": 535.15625,
+        "width": 144.734375,
+        "height": 40,
+        "text": "Wrong password"
+      },
+      {
+        "x": 172.71875,
+        "y": 535.15625,
+        "width": 159.5,
+        "height": 40,
+        "text": "Unverified account"
+      }
+    ],
+    "note": {
+      "x": 20,
+      "y": 597.15625,
+      "width": 353,
+      "height": 40.59375,
+      "right": 373,
+      "bottom": 637.75,
+      "center_x": 196.5
+    },
+    "footer": {
+      "x": 0,
+      "y": 710.03125,
+      "width": 393,
+      "height": 141.96875,
+      "right": 393,
+      "bottom": 852,
+      "center_x": 196.5
+    },
+    "login": {
+      "x": 20,
+      "y": 710.03125,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 770.03125,
+      "center_x": 196.5
+    },
+    "create": {
+      "x": 20,
+      "y": 776.015625,
+      "width": 353,
+      "height": 45.984375,
+      "right": 373,
+      "bottom": 822,
+      "center_x": 196.5
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "text": {
+      "header": "Log in",
+      "heading": "Welcome back",
+      "apple": "Continue with Apple",
+      "divider": "or",
+      "labels": [
+        "Email",
+        "Password"
+      ],
+      "forgot": "Forgot password?",
+      "tests": "TEST STATES",
+      "note": "Local accounts are stored on this device. Signing in does not verify your student status.",
+      "login": "Log In",
+      "create": "New here? Create an account"
+    },
+    "inputs": [
+      {
+        "interaction": "login.onEmail.change.1",
+        "placeholder": "you@university.edu",
+        "type": "text"
+      },
+      {
+        "interaction": "login.onPw.change.1",
+        "placeholder": "Your password",
+        "type": "password"
+      }
+    ],
+    "back_interaction": "login.goBack.click.1",
+    "alert_visible": false
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 72626,
+    "pixels_above_channel_delta_8": 10594,
+    "mean_absolute_channel_delta": 0.8913229162933496,
+    "max_channel_delta": 162
+  },
+  "checks": [
+    "393x852 actual restores locked source geometry, exact copy, inputs, source test states and finished cRise frame",
+    "reference, actual, overlay and absolute diff were generated from one hash-locked source state",
+    "source test controls inspect real fixture or pending state without creating an account, session or false verification",
+    "Apple fails explicitly, password privacy is real, and Forgot password returns to Login without a guest-state write",
+    "320x568 safe-area scrolling and keyboard-height reduction keep the focused password visible while temporarily folding the source footer"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

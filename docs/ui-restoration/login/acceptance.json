@@ -1,0 +1,74 @@
+{
+  "phase": "login-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "user_confirmed_at": "2026-10-15",
+  "browser": {
+    "result": "passed",
+    "checks_passed": 5,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": {
+      "top": 54,
+      "bottom": 0
+    },
+    "safe_area_probe_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/login/browser-acceptance.json",
+    "comparison": {
+      "pixels_different": 72626,
+      "pixels_above_channel_delta_8": 10594,
+      "mean_absolute_channel_delta": 0.8913229162933496,
+      "max_channel_delta": 162
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "test": "cimoaNeapoTests.HostTests.testLoginPixelRestoration",
+    "result_bundle": "/tmp/cimoa-login-acceptance.5oxjSW/LoginAcceptance.xcresult",
+    "tests": 1,
+    "failures": 0,
+    "screenshots": [
+      "docs/ui-restoration/login/actual-wkwebview.png",
+      "docs/ui-restoration/login/actual-wkwebview-keyboard.png"
+    ],
+    "keyboard_manual_probe": {
+      "result": "passed",
+      "temporary_simulator": "Cimoa Login Keyboard Test 20261015",
+      "temporary_simulator_cleaned_up": true,
+      "focused_password_visible": true,
+      "source_footer_folded_while_keyboard_open": true,
+      "footer_restored_after_done": true
+    }
+  },
+  "verified_flows": [
+    "locked source geometry, exact copy, source icons and source test-state controls",
+    "test-state controls inspect real local data without creating an account, session or false verification",
+    "Apple sign-in fails explicitly, password visibility is real and Forgot password returns to Login",
+    "invalid credentials and persistence failures do not create a partial session",
+    "successful login writes only after the 500ms custom Loading and prepares one skeleton cycle",
+    "session refresh restores Home without storing a plaintext password or repeating skeletons",
+    "320x568 scrolling and iPhone 17 Pro keyboard focus keep the password field visible",
+    "iPhone 17 Pro WKWebView uses the measured 62/34 safe area and the bundled H5"
+  ],
+  "final_checks": {
+    "status": "passed",
+    "corepack pnpm check:conventions": "passed with no warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; 317 files packaged into ios/cimoaNeapo/Resources/H5"
+  },
+  "commit": "included in the Login local specialty commit"
+}

@@ -11,9 +11,14 @@
 .auth-error-box { display: block; margin-top: 26.718rpx; padding: 26.718rpx 30.534rpx; border-radius: 30.534rpx; background: var(--cimoa-surface-auth-error); color: var(--cimoa-text-auth-error); font-size: 29.58rpx; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
 .auth-link { font-size: 30.534rpx; font-weight: 600; color: var(--cimoa-text-link); }
 .auth-forgot { margin-top: 30.534rpx; }
+.auth-test-states { display: flex; flex-direction: column; gap: 15.267rpx; margin-top: 41.985rpx; }
+.auth-test-title { color: var(--cimoa-text-auth-placeholder); font-size: 24.809rpx; font-weight: 700; letter-spacing: .08em; }
+.auth-test-chips { display: flex; flex-wrap: wrap; gap: 15.267rpx; }
+.auth-test-chip { display: flex; align-items: center; height: 76.336rpx; padding: 0 26.718rpx; border-radius: 38.168rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-auth-test); font-size: 27.672rpx; font-weight: 600; }
 .auth-local-note { display: block; margin-top: 41.985rpx; color: var(--cimoa-text-auth-muted); font-size: 27.672rpx; line-height: 1.4; }
 .auth-primary { display: flex; align-items: center; justify-content: center; height: 114.504rpx; border-radius: 57.252rpx; background: var(--cimoa-gradient-primary); color: var(--cimoa-text-inverse); box-shadow: var(--cimoa-shadow-auth-action); font-size: 36.26rpx; font-weight: 700; }
 .auth-secondary { display: flex; align-items: center; justify-content: center; height: 87.786rpx; font-size: 30.534rpx; font-weight: 600; color: var(--cimoa-text-auth-muted); }
+.login-page.login-page--keyboard :deep(.auth-footer) { display: none; }
 .auth-description { display: block; margin-top: 19.084rpx; font-size: 32.443rpx; color: var(--cimoa-text-secondary); line-height: 1.45; }
 .auth-card { padding: 34.351rpx; background: var(--cimoa-surface-card); border-radius: 45.802rpx; box-shadow: var(--cimoa-shadow-card); }
 .auth-primary.is-disabled { background: var(--cimoa-surface-event-handle); color: var(--cimoa-text-profile-chevron); }

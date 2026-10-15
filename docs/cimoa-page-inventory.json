@@ -458,7 +458,7 @@
     ],
     "page_level": "二级",
     "route": "/pages/auth/login",
-    "component": null,
+    "component": "src/pages/auth/login.vue",
     "parent_route": "/pages/auth/welcome",
     "allowed_origin_routes": [
       "/pages/auth/welcome",
@@ -509,12 +509,17 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
-    "full_acceptance": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/login/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/login/difference-audit.md",
+    "acceptance_artifact": "docs/ui-restoration/login/acceptance.json",
+    "local_acceptance": "passed",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work",
-    "acceptance_notes": "User-prioritized fixed-code verification; prior TEST STATES visual decision still pending, not verified."
+    "mapping_status": "Login source locked; first-audit differences resolved; user visual confirmation, browser/WKWebView evidence and final gates passed",
+    "acceptance_notes": "Browser pixel/flow checks, Store tests, iPhone 17 Pro WKWebView and real soft-keyboard probes passed. User confirmed the screenshots on 2026-10-15; final gates passed and the page is included in the Login local specialty commit."
   },
   {
     "source_screen": "Auth / Email Verification / Enter Email",

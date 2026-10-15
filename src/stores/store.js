@@ -170,6 +170,24 @@ export const use_app_store = defineStore('app', {
         }, { public: true })
       } catch { return unavailable('Secure authentication') }
     },
+    async inspect_login_test_state(kind) {
+      if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Saved data is unavailable. Please retry loading it.')
+      if (kind === 'wrong_password') {
+        const account = this.data.accounts.find(row => row.status === 'active' && row.auth_provider === 'fixture')
+        if (!account) return failure('test_state_unavailable', 'No bundled test account is available on this device. No changes were made.')
+        try {
+          const deliberately_wrong = await password_hash('\0cimoa-source-wrong-password')
+          if (deliberately_wrong === account.credential_hash) return failure('test_state_unavailable', 'The wrong-password test state is unavailable. No changes were made.')
+          return { success: true, data: { email: account.email, message: 'Incorrect password. Try again or reset it.' } }
+        } catch { return unavailable('Secure authentication test state') }
+      }
+      if (kind === 'unverified_account') {
+        const context = local_verification_context(this.data, get_runtime(this).clock())
+        if (!context || context.verified) return failure('test_state_unavailable', 'No unverified local account is available on this device. No changes were made.')
+        return { success: true, data: { email: context.email, message: 'This account still needs university verification.' } }
+      }
+      return failure('invalid_test_state', 'This login test state is unavailable. No changes were made.')
+    },
     logout(expected_account_id) {
       return transact(this, null, (data, now) => {
         if (expected_account_id !== undefined) s.ensure(s.authenticated(data, now) && data.session.account_id === expected_account_id, 'The account changed or the session expired. Reopen Settings before logging out.')

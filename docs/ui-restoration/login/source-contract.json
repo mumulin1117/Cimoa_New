@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "page": "Login",
+  "route": "/pages/auth/login",
+  "source_screen": "Auth / Log In / Default",
+  "source_query": "route=login",
+  "source_lock": "locked",
+  "locked_at": "2026-10-15",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isLogin",
+    "visual_lines": "2659-2705",
+    "visual_fragment_sha256": "1c6f4bd2b5fdad94581146ae4b12f437b204be6c8d8991cd2516eb27807993ea",
+    "behavior_lines": [
+      5224,
+      5533,
+      5561,
+      5591,
+      5592,
+      5593,
+      5596,
+      5606,
+      5608,
+      5611,
+      5612,
+      5613,
+      5623
+    ],
+    "behavior_fragment_sha256": "96bf285f6aaef4fc293cfed9eff6ee8694c90f85aafe0ffccc5551cb354db857"
+  },
+  "reference_viewport": {
+    "width_css_px": 393,
+    "height_css_px": 852,
+    "scale": 1
+  },
+  "structure": {
+    "root": "absolute inset 0; cRise entry",
+    "source_system_chrome": "source header begins at y=58; project replaces prototype system chrome with measured TopSafeArea plus 4px source inset",
+    "fixed_regions": "header at source y=58; Log In/Create account footer left/right 20px and bottom 30px",
+    "scroll_region": "source absolute top 122px, left/right 0, bottom 0; overflow-y auto; padding 0 20px 210px",
+    "project_skeleton": "TopSafeArea; fixed AuthPageFrame header; one flex scroll region; fixed auth footer; BottomSafeArea",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "header": {
+    "frame": "top 58px; left/right 20px; height 48px; gap 12px; z-index 20",
+    "back": {
+      "interaction_id": "login.goBack.click.1",
+      "size_css_px": "46x46",
+      "border_radius_css_px": 23,
+      "background": "#fff",
+      "shadow": "0 6px 18px rgba(16,36,74,0.10)",
+      "svg_css_px": "22x22",
+      "svg_view_box": "0 0 24 24",
+      "path": "M15 5l-7 7 7 7",
+      "stroke": "#0b1b3a",
+      "stroke_width": 2.4,
+      "stroke_linecap": "round",
+      "stroke_linejoin": "round"
+    },
+    "title": {
+      "copy": "Log in",
+      "frame": "absolute left/right 58px; top/bottom 0",
+      "font_size_css_px": 21,
+      "font_weight": 700,
+      "letter_spacing": "-0.025em",
+      "line_height": 1.15,
+      "alignment": "center"
+    }
+  },
+  "content": {
+    "heading": {
+      "copy": "Welcome back",
+      "font_size_css_px": 33,
+      "font_weight": 800,
+      "letter_spacing": "-0.035em",
+      "line_height": 1.1
+    },
+    "apple": {
+      "interaction_id": "login.appleAuth.click.1",
+      "copy": "Continue with Apple",
+      "margin_top_css_px": 18,
+      "height_css_px": 56,
+      "border_radius_css_px": 28,
+      "gap_css_px": 10,
+      "background": "#0b1b3a",
+      "font_size_css_px": 18,
+      "font_weight": 600,
+      "color": "#fff",
+      "icon_css_px": "26x26",
+      "icon_margin_top_css_px": -3,
+      "icon_view_box": "0 0 24 24",
+      "icon_path": "M16.2 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.9-1.5-.1-2.8.8-3.5.8-.7 0-1.8-.8-3-.8-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.3 3 2.3 1.2 0 1.6-.8 3.1-.8 1.4 0 1.8.8 3 .7 1.2 0 2-1.1 2.8-2.2.9-1.3 1.3-2.5 1.3-2.6-.1 0-2.5-1-2.7-3.6zM14.3 5.6c.6-.8 1.1-1.9 1-3-1 0-2.2.7-2.9 1.5-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4z"
+    },
+    "divider": {
+      "margin_top_css_px": 18,
+      "gap_css_px": 12,
+      "line_height_css_px": 1,
+      "line_color": "#dbe3ee",
+      "copy": "or",
+      "font_size_css_px": 14.5,
+      "color": "#8b95a6"
+    },
+    "fields": {
+      "margin_top_css_px": 14,
+      "label_font_size_css_px": 14.5,
+      "label_font_weight": 600,
+      "label_color": "#5b6b85",
+      "label_margin_bottom_css_px": 7,
+      "box_height_css_px": 56,
+      "box_padding_inline_css_px": 18,
+      "box_border_radius_css_px": 18,
+      "box_background": "#fff",
+      "box_shadow": "0 8px 22px rgba(16,36,74,0.06)",
+      "input_font_size_css_px": 17,
+      "input_color": "#0b1b3a",
+      "email": {
+        "label": "Email",
+        "placeholder": "you@university.edu",
+        "interaction_id": "login.onEmail.change.1"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Your password",
+        "interaction_id": "login.onPw.change.1",
+        "toggle_interaction_id": "login.togglePw.click.1",
+        "toggle_default_copy": "Show",
+        "toggle_selected_copy": "Hide",
+        "toggle_font_size_css_px": 15,
+        "toggle_font_weight": 600,
+        "toggle_color": "#4a7bf7"
+      }
+    },
+    "error": {
+      "visible_by_default": false,
+      "margin_top_css_px": 14,
+      "padding_css_px": "14 16",
+      "border_radius_css_px": 16,
+      "background": "#fee2e2",
+      "font_size_css_px": 15.5,
+      "font_weight": 600,
+      "color": "#991b1b",
+      "wrong_password_copy": "Incorrect password. Try again or reset it.",
+      "unverified_copy": "This account still needs university verification."
+    },
+    "forgot_password": {
+      "interaction_id": "login.goFpEmail.click.1",
+      "copy": "Forgot password?",
+      "margin_top_css_px": 16,
+      "font_size_css_px": 16,
+      "font_weight": 600,
+      "color": "#4a7bf7"
+    },
+    "test_states": {
+      "visible_in_source_default": true,
+      "margin_top_css_px": 22,
+      "group_gap_css_px": 8,
+      "heading_copy": "TEST STATES",
+      "heading_font_size_css_px": 13,
+      "heading_font_weight": 700,
+      "heading_letter_spacing": "0.08em",
+      "heading_color": "#8b95a6",
+      "chip_gap_css_px": 8,
+      "chip_height_css_px": 40,
+      "chip_padding_inline_css_px": 14,
+      "chip_border_radius_css_px": 20,
+      "chip_background": "#fff",
+      "chip_shadow": "0 6px 16px rgba(16,36,74,0.06)",
+      "chip_font_size_css_px": 14.5,
+      "chip_font_weight": 600,
+      "wrong_password": {
+        "interaction_id": "login.loginWrong.click.1",
+        "copy": "Wrong password"
+      },
+      "unverified_account": {
+        "interaction_id": "login.loginUnverified.click.1",
+        "copy": "Unverified account"
+      }
+    }
+  },
+  "footer": {
+    "frame": "absolute left/right 20px; bottom 30px; column gap 6px; z-index 20",
+    "login": {
+      "interaction_id": "login.loginNow.click.1",
+      "copy": "Log In",
+      "height_css_px": 60,
+      "border_radius_css_px": 30,
+      "gradient": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+      "shadow": "0 12px 26px rgba(168,85,247,0.24)",
+      "font_size_css_px": 19,
+      "font_weight": 700,
+      "color": "#fff"
+    },
+    "create_account": {
+      "interaction_id": "login.goAge.click.1",
+      "copy": "New here? Create an account",
+      "height_css_px": 46,
+      "font_size_css_px": 16,
+      "font_weight": 600,
+      "color": "#6b7a93"
+    }
+  },
+  "motion": {
+    "entry": "cRise 240ms ease both; opacity 0 and translateY(14px) to opacity 1 and translateY(0)"
+  },
+  "source_behavior": {
+    "back": "goBack to the actual previous source screen",
+    "login": "clear source login error, set newUser false and root Home",
+    "wrong_password_test_state": "show the source wrong-password error",
+    "unverified_test_state": "show the source unverified error and navigate verification email",
+    "forgot_password": "navigate fpEmail",
+    "create_account": "navigate Age",
+    "apple": "show source ping and navigate verification email",
+    "password_toggle": "toggle pwShown and Show/Hide copy"
+  },
+  "approved_deltas": [
+    {
+      "id": "login-safe-area-and-skeleton",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.1",
+      "delta": "Replace prototype system chrome and absolute overlay scroll compensation with measured Top/BottomSafeArea, a fixed header/footer and one flex middle scroll region while preserving source coordinates at the reference safe area."
+    },
+    {
+      "id": "login-local-authentication",
+      "source": "INTERACTION_CONVENTIONS.md 9.2 and user decision",
+      "delta": "Validate the real local account and password, persist a session only on success, then prepare one main-tab skeleton cycle and route to verification, onboarding or Home from Store state instead of blindly entering Home."
+    },
+    {
+      "id": "login-local-mode-disclosure",
+      "source": "INTERACTION_CONVENTIONS.md 9.2",
+      "delta": "Display the exact local-mode disclosure: Local accounts are stored on this device. Signing in does not verify your student status. It must follow the complete source control group rather than replace it."
+    },
+    {
+      "id": "login-apple-unavailable",
+      "source": "INTERACTION_CONVENTIONS.md 9.2",
+      "delta": "Keep the source Apple button and icon, but without configured Apple service show an explicit unavailable error and do not navigate or claim success."
+    },
+    {
+      "id": "login-write-loading",
+      "source": "DEVELOPMENT_CONVENTIONS.md 7",
+      "delta": "Show the project custom 400-600ms write Loading before a login attempt that can persist session state; cancel cleanly on hide or unmount."
+    },
+    {
+      "id": "login-password-privacy",
+      "source": "INTERACTION_CONVENTIONS.md login contract",
+      "delta": "Render the password input hidden by default, make Show/Hide affect the actual input type, keep password only in memory and clear it on hide or unmount."
+    }
+  ],
+  "implementation_files": [
+    "src/pages/auth/login.vue",
+    "src/pages/auth/auth.css",
+    "src/components/AuthPageFrame.vue",
+    "src/components/SecondaryPageFrame.vue",
+    "src/components/PageTransition.vue",
+    "src/components/AuthActionLoading.vue",
+    "src/components/SourceIcon.vue",
+    "src/stores/store.js",
+    "src/utils/localAuth.js",
+    "src/utils/authNavigation.js",
+    "src/utils/routeTransition.js",
+    "src/utils/mainTabSkeleton.js",
+    "src/config/theme.json"
+  ],
+  "capture": {
+    "reference_png": "docs/ui-restoration/login/reference.png",
+    "reference_sha256": "0a6907be8669fbe1ec01c906b5f82e0c0bcd363601314db7559482267866390c",
+    "actual_browser_png": "docs/ui-restoration/login/actual-browser.png",
+    "actual_browser_sha256": "90b96ba72fb1d460da313da1fc8798876b269292dd79c833595248744032b941",
+    "overlay_png": "docs/ui-restoration/login/overlay.png",
+    "overlay_sha256": "a46a439279ffe7fe116d7c70ab1e498b49b7251d546fbd501c668ef4bb021018",
+    "diff_png": "docs/ui-restoration/login/diff.png",
+    "diff_sha256": "8fb34bf13d7416030cabd31d9fd4c0a8159ab3a32e8562d769e5e3683b5d9051",
+    "actual_wkwebview_png": "docs/ui-restoration/login/actual-wkwebview.png",
+    "actual_wkwebview_sha256": "8c25b3cd59ba69a2831c475dd1136f4b5cc076f61fa3155e24c9cdb9a7bb2f62",
+    "actual_wkwebview_keyboard_png": "docs/ui-restoration/login/actual-wkwebview-keyboard.png",
+    "actual_wkwebview_keyboard_sha256": "c7a9d16f033b9cf3a343893fc301a0bd5353289f581f5203ab0f85f8e14a15b5",
+    "browser_report": "docs/ui-restoration/login/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/login/acceptance.json",
+    "visual_acceptance": "passed; user confirmed 2026-10-15",
+    "historical_actual_png": "docs/evidence/auth/login.png",
+    "historical_actual_sha256": "98b468c7142280754e741e879ad18ee0ba9b32d61e90736d32e0ff592b40df5a",
+    "historical_small_png": "docs/evidence/auth/login-small.png",
+    "historical_small_sha256": "4cc28d7e2531cf61643c72c82312e862cb14a35913e988226535f34b9f385697",
+    "reference_method": "The deterministic reference is rendered from this hash-verified contract after resolving the first audit differences. The application does not embed or load the prototype."
+  }
+}

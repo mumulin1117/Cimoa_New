@@ -158,6 +158,7 @@
     "auth_action": "0 22.901rpx 49.618rpx rgba(168,85,247,0.24)",
     "auth_secondary": "0 15.267rpx 41.985rpx rgba(16,36,74,0.07)",
     "auth_input": "0 15.267rpx 41.985rpx rgba(16,36,74,0.06)",
+    "auth_test": "0 11.45rpx 30.534rpx rgba(16,36,74,0.06)",
     "profile_avatar": "0 22.901rpx 53.435rpx rgba(16,36,74,0.14)",
     "profile_tag": "0 7.634rpx 22.901rpx rgba(16,36,74,0.07)",
     "event_card": "0 22.901rpx 57.252rpx rgba(16,36,74,0.09)",
