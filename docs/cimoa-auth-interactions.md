@@ -1,6 +1,6 @@
 # Cimoa 认证入口逐页交互契约
 
-Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版；Login 的来源差异、浏览器/WKWebView 取证、用户视觉确认与最终门禁也已完成，状态为 `verified / passed`。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面按 2026-10-15 用户授权在完整证据链通过后自动视觉确认并进入下一页，不再逐页等待人工回复。
+Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版；Age Confirmation 也已通过完整证据链并按 2026-10-15 用户授权自动确认为 `verified / passed`，其专项提交将在最终门禁后生成。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在来源、浏览器、WKWebView、行为与最终门禁全部通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
 
 ## Splash
 

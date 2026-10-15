@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "page": "Age Confirmation",
+  "route": "/pages/auth/age",
+  "source_screen": "Auth / Age Confirmation / Default",
+  "source_query": "route=age",
+  "source_lock": "locked",
+  "locked_at": "2026-10-15",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isAge",
+    "visual_lines": "2529-2559",
+    "visual_fragment_sha256": "df0d90c8ec58e1c43af63f15cf4da5c3f5f70949986c949689df72b7b34bd411",
+    "behavior_lines": [
+      5224,
+      5530,
+      5561,
+      5562,
+      5600,
+      5601,
+      5603,
+      5650,
+      5651
+    ],
+    "behavior_fragment_sha256": "1a5e3a036b38224e4241c526cae08404416c174f572cbf9dc159da6e9f904fac"
+  },
+  "reference_viewport": {
+    "width_css_px": 393,
+    "height_css_px": 852,
+    "scale": 1
+  },
+  "structure": {
+    "root": "absolute inset 0; cRise entry",
+    "source_system_chrome": "source header begins at y=58; project replaces prototype system chrome with measured TopSafeArea plus 4px source inset",
+    "fixed_regions": "header at source y=58; Continue/under-18 footer left/right 20px and bottom 30px",
+    "scroll_region": "source absolute top 122px, left/right 0, bottom 0; overflow-y auto; padding 0 20px 200px",
+    "project_skeleton": "TopSafeArea; fixed AuthPageFrame header; one flex scroll region; fixed auth footer; BottomSafeArea",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "header": {
+    "frame": "top 58px; left/right 20px; height 48px; gap 12px; z-index 20",
+    "back": {
+      "interaction_id": "age.goBack.click.1",
+      "size_css_px": "46x46",
+      "border_radius_css_px": 23,
+      "background": "#fff",
+      "shadow": "0 6px 18px rgba(16,36,74,0.10)",
+      "svg_css_px": "22x22",
+      "svg_view_box": "0 0 24 24",
+      "path": "M15 5l-7 7 7 7",
+      "stroke": "#0b1b3a",
+      "stroke_width": 2.4,
+      "stroke_linecap": "round",
+      "stroke_linejoin": "round"
+    },
+    "title": {
+      "copy": "Age check",
+      "frame": "absolute left/right 58px; top/bottom 0",
+      "font_size_css_px": 21,
+      "font_weight": 700,
+      "letter_spacing": "-0.025em",
+      "line_height": 1.15,
+      "alignment": "center"
+    }
+  },
+  "content": {
+    "heading": {
+      "copy": "Are you 18 or older?",
+      "font_size_css_px": 33,
+      "font_weight": 800,
+      "letter_spacing": "-0.035em",
+      "line_height": 1.1
+    },
+    "description": {
+      "source_copy": "CIRCA is available only to university students aged 18 or older. Your date of birth stays private — other students only see your age.",
+      "approved_copy": "Cimoa is available only to university students aged 18 or older. Your date of birth stays private — other students only see your age.",
+      "margin_top_css_px": 10,
+      "font_size_css_px": 17,
+      "color": "#5b6b85",
+      "line_height": 1.45,
+      "text_wrap": "pretty"
+    },
+    "date_of_birth": {
+      "interaction_id": "age.onObDob.change.1",
+      "group_margin_top_css_px": 14,
+      "label": "Date of birth",
+      "label_font_size_css_px": 14.5,
+      "label_font_weight": 600,
+      "label_color": "#5b6b85",
+      "label_margin_bottom_css_px": 7,
+      "box_height_css_px": 56,
+      "box_padding_inline_css_px": 18,
+      "box_border_radius_css_px": 18,
+      "box_background": "#fff",
+      "box_shadow": "0 8px 22px rgba(16,36,74,0.06)",
+      "placeholder": "YYYY-MM-DD",
+      "input_font_size_css_px": 17,
+      "input_color": "#0b1b3a"
+    },
+    "underage_card": {
+      "visible_by_default": false,
+      "condition": "isUnder",
+      "margin_top_css_px": 18,
+      "padding_css_px": 20,
+      "background": "#fff",
+      "border_radius_css_px": 24,
+      "shadow": "0 8px 24px rgba(16,36,74,0.07)",
+      "title_source_copy": "CIRCA isn’t available yet",
+      "title_approved_copy": "Cimoa isn’t available yet",
+      "title_font_size_css_px": 20,
+      "title_font_weight": 800,
+      "title_letter_spacing": "-0.025em",
+      "body_copy": "You need to be 18 or older to create an account. Nothing has been saved.",
+      "body_margin_top_css_px": 8,
+      "body_font_size_css_px": 16,
+      "body_color": "#5b6b85",
+      "body_line_height": 1.45,
+      "close": {
+        "interaction_id": "age.closeUnder.click.1",
+        "copy": "Close",
+        "margin_top_css_px": 14,
+        "height_css_px": 50,
+        "border_radius_css_px": 25,
+        "background": "#f4f7fb",
+        "font_size_css_px": 17,
+        "font_weight": 600
+      }
+    }
+  },
+  "footer": {
+    "frame": "absolute left/right 20px; bottom 30px; column gap 6px; z-index 20",
+    "continue": {
+      "interaction_id": "age.goAgree.click.1",
+      "copy": "Continue",
+      "height_css_px": 60,
+      "border_radius_css_px": 30,
+      "gradient": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+      "shadow": "0 12px 26px rgba(168,85,247,0.24)",
+      "font_size_css_px": 19,
+      "font_weight": 700,
+      "color": "#fff"
+    },
+    "underage": {
+      "interaction_id": "age.underage.click.1",
+      "copy": "I’m under 18",
+      "height_css_px": 46,
+      "font_size_css_px": 16,
+      "font_weight": 600,
+      "color": "#6b7a93"
+    }
+  },
+  "motion": {
+    "entry": "cRise 240ms ease both; opacity 0 and translateY(14px) to opacity 1 and translateY(0)"
+  },
+  "source_behavior": {
+    "entry": "goAge pushes route age",
+    "back": "goBack returns to the actual previous source screen",
+    "date_input": "onObDob updates the source in-memory obDob string",
+    "continue": "goAgree pushes Community without validating or saving",
+    "underage": "set dobUnder true and show the source card",
+    "close_underage": "clear dobUnder and root Welcome"
+  },
+  "approved_deltas": [
+    {
+      "id": "age-brand",
+      "source": "INTERACTION_CONVENTIONS.md 1.1",
+      "delta": "Replace CIRCA with Cimoa in the two source sentences without changing typography, punctuation or surrounding copy."
+    },
+    {
+      "id": "age-safe-area-and-skeleton",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.1",
+      "delta": "Replace prototype system chrome and absolute footer compensation with measured Top/BottomSafeArea, a fixed header/footer and one flex middle scroll region while preserving source coordinates at the reference safe area."
+    },
+    {
+      "id": "age-real-validation-and-write",
+      "source": "INTERACTION_CONVENTIONS.md 9.2 and registration contract",
+      "delta": "Validate a real YYYY-MM-DD date and the exact 18-year boundary. For an adult, show the custom 400-600ms Loading before Store persistence and then push Community. Invalid or underage input never writes."
+    },
+    {
+      "id": "age-return-ownership",
+      "source": "DEVELOPMENT_CONVENTIONS.md 11.2.1",
+      "delta": "Back and Close restore the existing Welcome instance; direct entry falls back to Welcome instead of clearing a valid source instance."
+    },
+    {
+      "id": "age-keyboard-viewport",
+      "source": "DEVELOPMENT_CONVENTIONS.md 14 and 15.1.2",
+      "delta": "When the real keyboard reduces visualViewport height, keep the focused date input in the only scroll region and temporarily fold the fixed source footer; restore it when the keyboard closes. Default output is unchanged."
+    }
+  ],
+  "implementation_files": [
+    "src/pages/auth/age.vue",
+    "src/pages/auth/auth.css",
+    "src/components/AuthPageFrame.vue",
+    "src/components/SecondaryPageFrame.vue",
+    "src/components/PageTransition.vue",
+    "src/components/AuthActionLoading.vue",
+    "src/stores/store.js",
+    "src/utils/localAuth.js",
+    "src/utils/authNavigation.js",
+    "src/utils/routeTransition.js",
+    "src/composables/useWriteLoading.js",
+    "src/composables/useEventViewport.js",
+    "src/config/theme.json"
+  ],
+  "capture": {
+    "reference_png": "docs/ui-restoration/age/reference.png",
+    "reference_sha256": "f3658cb22c73c226a161eaa4b70b86b637fb3cc582ed78ccc98b00568fbabae7",
+    "actual_browser_png": "docs/ui-restoration/age/actual-browser.png",
+    "actual_browser_sha256": "ee0386ba77e6dc28893742699676bdb85e8d21307d5fed76ab80ad5dcb2aff8d",
+    "overlay_png": "docs/ui-restoration/age/overlay.png",
+    "overlay_sha256": "f7cd59e2ae62d524cda1a21a102eef9149befa4846fc986d818a4c001782143f",
+    "diff_png": "docs/ui-restoration/age/diff.png",
+    "diff_sha256": "eb48e005dd57587972117af13150aa18e1f404b4897e43005380d2f8e815b32d",
+    "actual_browser_underage_png": "docs/ui-restoration/age/actual-browser-underage.png",
+    "actual_browser_underage_sha256": "fe7a378d871ba6de6af40296c4fd4213dcc001eef049018ee7b361bb281e528c",
+    "actual_browser_keyboard_png": "docs/ui-restoration/age/actual-browser-keyboard.png",
+    "actual_browser_keyboard_sha256": "5f0ad4f7ac055a9798f46ce76677526ca1c2df9dcafdb7f0282e348488f28bb6",
+    "actual_wkwebview_png": "docs/ui-restoration/age/actual-wkwebview.png",
+    "actual_wkwebview_sha256": "c67322854d345f1d799fbad4d4c337adc98784fbb4139c1097fded2f132f4305",
+    "actual_wkwebview_underage_png": "docs/ui-restoration/age/actual-wkwebview-underage.png",
+    "actual_wkwebview_underage_sha256": "81662e332901b846109d3e0eaa75ac083754a13523bd742cf02fbc9f0fe8e846",
+    "actual_wkwebview_keyboard_png": "docs/ui-restoration/age/actual-wkwebview-keyboard.png",
+    "actual_wkwebview_keyboard_sha256": "82af8a6137e97d07d023494ca1134f85e5244d984b38f977dc7df36c4c6f58f4",
+    "browser_report": "docs/ui-restoration/age/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/age/acceptance.json",
+    "visual_acceptance": "passed; automatically confirmed under the user-authorized evidence policy on 2026-10-15",
+    "historical_actual_png": "docs/evidence/registration/age.png",
+    "historical_actual_sha256": "a818400b241c1deb5b8d3c23eaa60004e960d8d3ba83edbace22487a5448fb0d",
+    "historical_small_png": "docs/evidence/registration/age-small.png",
+    "historical_small_sha256": "ff2fe7430f8f2c7411d6ad4dac1fdd0d692115ce75b1e81475e76b7f781a49db",
+    "historical_browser_report": "docs/evidence/registration/age-browser.json",
+    "historical_limit": "The existing screenshots contain a persisted date and predate this locked-source pixel round; they are regression history, not default visual acceptance evidence.",
+    "reference_method": "The deterministic reference is rendered from this hash-verified contract after resolving the first-audit differences. The application does not embed or load the prototype."
+  }
+}

@@ -293,6 +293,115 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Login WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
     }
+    func testAgePixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        func restore() async throws {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?agePixel=restore#/pages/auth/welcome")!))
+            try await waitFor(host, ".welcome-page")
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?agePixel=restored#/pages/auth/splash")!))
+        }
+        func openFreshAge(_ suffix: String) async throws {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');return true")
+            _ = try await script(host, "window.__ageOldDocument=true;return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?agePixel=\(suffix)#/pages/auth/age")!))
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__ageOldDocument&&!!document.querySelector('.age-page')")) as? Bool == true { return }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            throw NSError(domain: "CimoaTests", code: 5, userInfo: [NSLocalizedDescriptionKey: "Missing new Age document"])
+        }
+        var stage = "prepare guest Age"
+        do {
+            try await openFreshAge("native")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom,cx:rect.x+rect.width/2}},input=document.querySelector('.age-page .auth-input');
+                return {root:box('.age-page'),header:box('.auth-header'),back:box('.auth-back'),heading:box('.auth-heading'),description:box('.auth-description'),field:box('.auth-field'),inputBox:box('.auth-input-box'),continueButton:box('.auth-primary'),underButton:box('.auth-secondary'),safes:[...document.querySelectorAll('.age-page > .safe-area')].map(element=>element.getBoundingClientRect().height),text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.auth-heading').textContent,description:document.querySelector('.auth-description').textContent,label:document.querySelector('.auth-label').textContent,continueButton:document.querySelector('.auth-primary').textContent.trim(),underButton:document.querySelector('.auth-secondary').textContent.trim()},backInteraction:document.querySelector('.auth-back').dataset.interaction,inputInteraction:input.dataset.interaction,placeholder:input.querySelector('.uni-input-placeholder')?.textContent||input.getAttribute('placeholder'),value:input.querySelector('input')?.value||'',alert:!!document.querySelector('.age-page [role=alert]')};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], header = metrics["header"] as! [String: Double], back = metrics["back"] as! [String: Double]
+            let heading = metrics["heading"] as! [String: Double], description = metrics["description"] as! [String: Double], field = metrics["field"] as! [String: Double]
+            let inputBox = metrics["inputBox"] as! [String: Double], continueButton = metrics["continueButton"] as! [String: Double], underButton = metrics["underButton"] as! [String: Double]
+            let safes = metrics["safes"] as! [Double], text = metrics["text"] as! [String: String], sourceScale = root["width"]! / 393
+            XCTAssertEqual(root["x"]!, 0, accuracy: 1); XCTAssertEqual(root["y"]!, 0, accuracy: 1)
+            XCTAssertEqual(root["width"]!, Double(host.webView.bounds.width), accuracy: 1); XCTAssertEqual(root["height"]!, Double(host.webView.bounds.height), accuracy: 1)
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(header["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(header["y"]!, safes[0] + 4 * sourceScale, accuracy: 1); XCTAssertEqual(header["height"]!, 48 * sourceScale, accuracy: 1)
+            XCTAssertEqual(back["width"]!, 46 * sourceScale, accuracy: 1); XCTAssertEqual(back["height"]!, 46 * sourceScale, accuracy: 1)
+            XCTAssertEqual(heading["y"]!, safes[0] + 68 * sourceScale, accuracy: 1); XCTAssertEqual(description["y"]!, heading["bottom"]! + 10 * sourceScale, accuracy: 1); XCTAssertEqual(field["y"]!, description["bottom"]! + 14 * sourceScale, accuracy: 1); XCTAssertEqual(inputBox["height"]!, 56 * sourceScale, accuracy: 1)
+            XCTAssertEqual(continueButton["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(continueButton["height"]!, 60 * sourceScale, accuracy: 1); XCTAssertEqual(underButton["height"]!, 46 * sourceScale, accuracy: 1); XCTAssertEqual(underButton["bottom"]!, root["height"]! - safes[1] - 30 * sourceScale, accuracy: 2)
+            XCTAssertEqual(text["header"], "Age check"); XCTAssertEqual(text["heading"], "Are you 18 or older?"); XCTAssertEqual(text["description"], "Cimoa is available only to university students aged 18 or older. Your date of birth stays private — other students only see your age.")
+            XCTAssertEqual(text["label"], "Date of birth"); XCTAssertEqual(text["continueButton"], "Continue"); XCTAssertEqual(text["underButton"], "I’m under 18")
+            XCTAssertEqual(metrics["backInteraction"] as? String, "age.goBack.click.1"); XCTAssertEqual(metrics["inputInteraction"] as? String, "age.onObDob.change.1"); XCTAssertEqual(metrics["placeholder"] as? String, "YYYY-MM-DD"); XCTAssertEqual(metrics["value"] as? String, ""); XCTAssertEqual(metrics["alert"] as? Bool, false)
+            let defaultShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); defaultShot.name = "WKWebView Age deterministic"; defaultShot.lifetime = .keepAlways; add(defaultShot)
+            print("CIMOA_AGE_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+
+            stage = "underage source card"
+            _ = try await script(host, "document.querySelector('[data-interaction=\"age.underage.click.1\"]').click();return true")
+            try await waitFor(host, ".age-under")
+            let underage = try await script(host, """
+            const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {y:rect.y,height:rect.height,bottom:rect.bottom}},style=selector=>getComputedStyle(document.querySelector(selector));return {card:box('.age-under'),title:box('.age-title'),copy:box('.age-under-copy'),close:box('.age-close'),padding:parseFloat(style('.age-under').padding),radius:parseFloat(style('.age-under').borderRadius),titleSize:parseFloat(style('.age-title').fontSize),titleSpacing:parseFloat(style('.age-title').letterSpacing),copySize:parseFloat(style('.age-under-copy').fontSize),text:document.querySelector('.age-under').innerText,storage:localStorage.getItem('cimoa_app_state_v2')};
+            """) as! [String: Any]
+            let card = underage["card"] as! [String: Double], title = underage["title"] as! [String: Double], copy = underage["copy"] as! [String: Double], close = underage["close"] as! [String: Double]
+            XCTAssertEqual(underage["padding"] as! Double, 20 * sourceScale, accuracy: 0.1); XCTAssertEqual(underage["radius"] as! Double, 24 * sourceScale, accuracy: 0.1); XCTAssertEqual(card["y"]!, inputBox["bottom"]! + 18 * sourceScale, accuracy: 2)
+            XCTAssertEqual(underage["titleSize"] as! Double, 20 * sourceScale, accuracy: 0.1); XCTAssertEqual(underage["titleSpacing"] as! Double, -0.5 * sourceScale, accuracy: 0.1); XCTAssertEqual(underage["copySize"] as! Double, 16 * sourceScale, accuracy: 0.1); XCTAssertEqual(copy["y"]!, title["bottom"]! + 8 * sourceScale, accuracy: 1); XCTAssertEqual(close["y"]!, copy["bottom"]! + 14 * sourceScale, accuracy: 1); XCTAssertEqual(close["height"]!, 50 * sourceScale, accuracy: 1)
+            XCTAssertEqual((underage["text"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines), "Cimoa isn’t available yet\nYou need to be 18 or older to create an account. Nothing has been saved.\nClose"); XCTAssertTrue(underage["storage"] is NSNull)
+            let underageShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); underageShot.name = "WKWebView Age underage"; underageShot.lifetime = .keepAlways; add(underageShot)
+            _ = try await script(host, "document.querySelector('[data-interaction=\"age.closeUnder.click.1\"]').click();return true"); try await waitFor(host, ".welcome-page")
+            let closeStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+            XCTAssertTrue(closeStorage is NSNull)
+
+            stage = "validation and delayed adult write"
+            try await openFreshAge("flow")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".age-page [role=alert]")
+            let invalidMessage = try await script(host, "return document.querySelector('.age-page [role=alert]').textContent") as! String
+            let invalidStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+            XCTAssertTrue(invalidMessage.contains("valid date")); XCTAssertTrue(invalidStorage is NSNull)
+            _ = try await script(host, "const input=document.querySelector('.age-page input');input.value='2008-10-16';input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".age-under")
+            let underageStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+            XCTAssertTrue(underageStorage is NSNull)
+            _ = try await script(host, "const input=document.querySelector('.age-page input');input.value='2008-10-15';input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".loading")
+            let loadingStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+            XCTAssertTrue(loadingStorage is NSNull); try await waitFor(host, ".community-page")
+            let committed = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            let envelope = try JSONSerialization.jsonObject(with: Data(committed.utf8)) as! [String: Any], data = envelope["data"] as! [String: Any], auth = data["auth_flow"] as! [String: Any], profile = auth["profile_draft"] as! [String: Any]
+            XCTAssertEqual(profile["date_of_birth"] as? String, "2008-10-15"); XCTAssertEqual(auth["step"] as? String, "community")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?agePixel=refresh#/pages/auth/age")!)); try await waitFor(host, ".age-page")
+            for _ in 0..<50 { if (try? await script(host, "return document.querySelector('.age-page input')?.value==='2008-10-15'")) as? Bool == true { break }; try await Task.sleep(nanoseconds: 100_000_000) }
+            let restoredDOB = try await script(host, "return document.querySelector('.age-page input').value") as? String
+            XCTAssertEqual(restoredDOB, "2008-10-15")
+
+            stage = "real keyboard viewport"
+            let viewportBefore = try await script(host, "return visualViewport.height") as! Double
+            _ = try await script(host, "const input=document.querySelector('.age-page input');input.click();input.focus();return true")
+            var keyboard: [String: Any] = [:]
+            for _ in 0..<50 {
+                keyboard = try await script(host, """
+                const input=document.querySelector('.age-page input').getBoundingClientRect(),footer=document.querySelector('.auth-footer');return {height:visualViewport.height,open:document.querySelector('.age-page').classList.contains('age-page--keyboard'),footer:getComputedStyle(footer).display,inputTop:input.top,inputBottom:input.bottom};
+                """) as! [String: Any]
+                if keyboard["open"] as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            XCTAssertLessThan(keyboard["height"] as! Double, viewportBefore - 120); XCTAssertEqual(keyboard["open"] as? Bool, true); XCTAssertEqual(keyboard["footer"] as? String, "none")
+            XCTAssertGreaterThanOrEqual(keyboard["inputTop"] as! Double, 0); XCTAssertLessThanOrEqual(keyboard["inputBottom"] as! Double, keyboard["height"] as! Double)
+            let keyboardShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); keyboardShot.name = "WKWebView Age keyboard"; keyboardShot.lifetime = .keepAlways; add(keyboardShot)
+            _ = try await script(host, "document.querySelector('.age-page input').blur();return true")
+
+            stage = "direct Back fallback"
+            try await openFreshAge("back")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"age.goBack.click.1\"]').click();return true"); try await waitFor(host, ".welcome-page")
+            let backStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+            XCTAssertTrue(backStorage is NSNull)
+            try await restore()
+        } catch { XCTFail("Age WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

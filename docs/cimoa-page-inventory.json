@@ -241,7 +241,7 @@
     ],
     "page_level": "二级",
     "route": "/pages/auth/age",
-    "component": null,
+    "component": "src/pages/auth/age.vue",
     "parent_route": "/pages/auth/welcome",
     "allowed_origin_routes": [
       "/pages/auth/welcome"
@@ -299,12 +299,17 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/age/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/age/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/age-browser.json"
+    "mapping_status": "Age source locked; pixel restoration automatically confirmed after deterministic browser and iPhone 17 Pro WKWebView acceptance; final checks and local specialty commit complete",
+    "acceptance_evidence": "docs/ui-restoration/age/acceptance.json",
+    "acceptance_notes": "Browser 7/7 and WKWebView 1/1 passed, including empty default, exact Underage card, zero-write failures, 18-year boundary, Loading, rollback, refresh, return ownership, 62/34 safe area and real iOS keyboard."
   },
   {
     "source_screen": "Auth / Community Agreement / Default",
