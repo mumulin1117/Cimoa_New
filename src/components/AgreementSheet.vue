@@ -4,10 +4,10 @@ defineProps({ open: Boolean, document: Object })
 const emit = defineEmits(['close'])
 </script>
 <template>
-  <EventConfirmDialog class="agreement-sheet" :open="open" :label="document?.title || 'Agreement'" @close="emit('close')">
+  <EventConfirmDialog class="agreement-sheet" :open="open" :label="document?.title || 'Agreement'" close-interaction="sheetAgreement.closeSheet.click.1" @close="emit('close')">
     <text class="event-dialog-title">{{ document?.title }}</text>
     <text v-for="paragraph in document?.paragraphs" :key="paragraph" class="event-dialog-copy">{{ paragraph }}</text>
-    <view class="event-dialog-secondary" role="button" tabindex="0" @click="emit('close')" @keydown.enter="emit('close')">Close</view>
+    <view class="event-dialog-secondary" role="button" tabindex="0" data-interaction="sheetAgreement.closeSheet.click.2" @click="emit('close')" @keydown.enter="emit('close')">Close</view>
   </EventConfirmDialog>
 </template>
 <style scoped>

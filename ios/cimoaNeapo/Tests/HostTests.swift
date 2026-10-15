@@ -402,6 +402,103 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Age WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
     }
+    func testCommunityPixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        func restore() async throws {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?communityPixel=restore#/pages/auth/welcome")!))
+            try await waitFor(host, ".welcome-page")
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?communityPixel=restored#/pages/auth/splash")!))
+        }
+        func loadFresh(_ route: String, _ suffix: String, _ selector: String) async throws {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');window.__communityOldDocument=true;return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?communityPixel=\(suffix)#\(route)")!))
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__communityOldDocument&&!!document.querySelector('\(selector)')")) as? Bool == true { return }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            throw NSError(domain: "CimoaTests", code: 6, userInfo: [NSLocalizedDescriptionKey: "Missing new Community document"])
+        }
+        var stage = "prepare Community default"
+        do {
+            try await loadFresh("/pages/auth/community", "native", ".community-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=value=>{const element=typeof value==='string'?document.querySelector(value):value,rect=element.getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}},rows=[...document.querySelectorAll('.community-row')],checks=[...document.querySelectorAll('.community-box')],reads=[...document.querySelectorAll('.community-read')],ruleStyle=getComputedStyle(document.querySelector('.community-rules'));
+                return {root:box('.community-page'),header:box('.auth-header'),back:box('.auth-back'),heading:box('.auth-heading'),rules:box('.community-rules'),rows:rows.map(box),checks:checks.map(box),footer:box('.auth-footer'),continueButton:box('.auth-primary'),safes:[...document.querySelectorAll('.community-page > .safe-area')].map(element=>element.getBoundingClientRect().height),ruleStyle:{gap:parseFloat(ruleStyle.gap),padding:parseFloat(ruleStyle.padding),radius:parseFloat(ruleStyle.borderRadius),fontSize:parseFloat(ruleStyle.fontSize)},text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.auth-heading').textContent,rules:[...document.querySelectorAll('.community-rules > uni-text')].map(element=>element.textContent),rows:rows.map(element=>element.innerText.split(String.fromCharCode(10)).join(' ').split(' ').filter(Boolean).join(' ')),continueButton:document.querySelector('.auth-primary').textContent.trim()},interactions:{back:document.querySelector('.auth-back').dataset.interaction,toggles:[...document.querySelectorAll('.community-check-area')].map(element=>element.dataset.interaction),reads:reads.map(element=>element.dataset.interaction),continueButton:document.querySelector('.auth-primary').dataset.interaction},selected:[...document.querySelectorAll('.community-check-area')].map(element=>element.getAttribute('aria-checked')),disabled:document.querySelector('.auth-primary').getAttribute('aria-disabled'),alert:!!document.querySelector('.community-page [role=alert]'),note:!!document.querySelector('.community-page .auth-local-note'),storage:localStorage.getItem('cimoa_app_state_v2')};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], header = metrics["header"] as! [String: Double], back = metrics["back"] as! [String: Double]
+            let heading = metrics["heading"] as! [String: Double], rules = metrics["rules"] as! [String: Double], rows = metrics["rows"] as! [[String: Double]], checks = metrics["checks"] as! [[String: Double]]
+            let continueButton = metrics["continueButton"] as! [String: Double], safes = metrics["safes"] as! [Double], ruleStyle = metrics["ruleStyle"] as! [String: Double], sourceScale = root["width"]! / 393
+            let text = metrics["text"] as! [String: Any], interactions = metrics["interactions"] as! [String: Any]
+            XCTAssertEqual(root["x"]!, 0, accuracy: 1); XCTAssertEqual(root["y"]!, 0, accuracy: 1); XCTAssertEqual(root["width"]!, Double(host.webView.bounds.width), accuracy: 1); XCTAssertEqual(root["height"]!, Double(host.webView.bounds.height), accuracy: 1)
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(header["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(header["y"]!, safes[0] + 4 * sourceScale, accuracy: 1); XCTAssertEqual(header["height"]!, 48 * sourceScale, accuracy: 1); XCTAssertEqual(back["width"]!, 46 * sourceScale, accuracy: 1); XCTAssertEqual(back["height"]!, 46 * sourceScale, accuracy: 1)
+            XCTAssertEqual(heading["y"]!, safes[0] + 68 * sourceScale, accuracy: 1); XCTAssertEqual(rules["y"]!, heading["bottom"]! + 16 * sourceScale, accuracy: 1)
+            XCTAssertEqual(ruleStyle["gap"]!, 9 * sourceScale, accuracy: 0.2); XCTAssertEqual(ruleStyle["padding"]!, 18 * sourceScale, accuracy: 0.2); XCTAssertEqual(ruleStyle["radius"]!, 24 * sourceScale, accuracy: 0.2); XCTAssertEqual(ruleStyle["fontSize"]!, 16.5 * sourceScale, accuracy: 0.2)
+            for index in rows.indices { let previous = index == 0 ? rules : rows[index - 1]; XCTAssertEqual(rows[index]["y"]!, previous["bottom"]! + 10 * sourceScale, accuracy: 1.5); XCTAssertEqual(checks[index]["width"]!, 28 * sourceScale, accuracy: 0.2); XCTAssertEqual(checks[index]["height"]!, 28 * sourceScale, accuracy: 0.2) }
+            XCTAssertEqual(continueButton["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(continueButton["height"]!, 60 * sourceScale, accuracy: 1); XCTAssertEqual(continueButton["bottom"]!, root["height"]! - safes[1] - 34 * sourceScale, accuracy: 2)
+            XCTAssertEqual(text["header"] as? String, "Community"); XCTAssertEqual(text["heading"] as? String, "How Cimoa works")
+            XCTAssertEqual(text["rules"] as? [String], ["Be respectful.", "Use your real university identity.", "Never harass or pressure anyone.", "Respect boundaries and consent.", "No illegal or unsafe content.", "Report anything concerning."])
+            XCTAssertEqual(text["rows"] as? [String], ["I agree to the Terms of Use Read", "I have read the Privacy Policy Read", "I agree to follow the Community Guidelines Read"]); XCTAssertEqual(text["continueButton"] as? String, "Continue")
+            XCTAssertEqual(interactions["back"] as? String, "agree.goBack.click.1"); XCTAssertEqual(interactions["toggles"] as? [String], ["agree.tTerms.click.1", "agree.tPrivacy.click.1", "agree.tGuides.click.1"]); XCTAssertEqual(interactions["reads"] as? [String], ["agree.readTerms.click.1", "agree.readPrivacy.click.1", "agree.readGuides.click.1"]); XCTAssertEqual(interactions["continueButton"] as? String, "agree.goSignup.click.1")
+            XCTAssertEqual(metrics["selected"] as? [String], ["false", "false", "false"]); XCTAssertEqual(metrics["disabled"] as? String, "true"); XCTAssertEqual(metrics["alert"] as? Bool, false); XCTAssertEqual(metrics["note"] as? Bool, false); XCTAssertTrue(metrics["storage"] is NSNull)
+            let defaultShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); defaultShot.name = "WKWebView Community deterministic"; defaultShot.lifetime = .keepAlways; add(defaultShot)
+            print("CIMOA_COMMUNITY_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+
+            stage = "Agreement Sheet first and repeated open"
+            _ = try await script(host, "document.querySelector('[data-interaction=\"agree.readPrivacy.click.1\"]').click();return true")
+            try await waitFor(host, ".event-dialog--open [role=dialog]"); try await Task.sleep(nanoseconds: 300_000_000)
+            let sheet = try await script(host, "return {text:document.querySelector('[role=dialog]').innerText,selected:[...document.querySelectorAll('.community-check-area')].map(element=>element.getAttribute('aria-checked')),storage:localStorage.getItem('cimoa_app_state_v2'),mask:document.querySelector('.event-dialog-mask').dataset.interaction,close:document.querySelector('.event-dialog-secondary').dataset.interaction,overflow:getComputedStyle(document.querySelector('.event-dialog-scroll .uni-scroll-view')).overflowY}") as! [String: Any]
+            XCTAssertTrue((sheet["text"] as? String)?.contains("Local prototype privacy information") == true); XCTAssertTrue((sheet["text"] as? String)?.contains("stored locally") == true); XCTAssertEqual(sheet["selected"] as? [String], ["false", "false", "false"]); XCTAssertTrue(sheet["storage"] is NSNull); XCTAssertEqual(sheet["mask"] as? String, "sheetAgreement.closeSheet.click.1"); XCTAssertEqual(sheet["close"] as? String, "sheetAgreement.closeSheet.click.2")
+            let sheetShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); sheetShot.name = "WKWebView Community Agreement Sheet"; sheetShot.lifetime = .keepAlways; add(sheetShot)
+            _ = try await script(host, "document.querySelector('[data-interaction=\"sheetAgreement.closeSheet.click.2\"]').click();return true"); try await Task.sleep(nanoseconds: 350_000_000)
+            let firstClose = try await script(host, "return getComputedStyle(document.querySelector('.event-dialog')).display==='none'&&!document.querySelector('.community-check-area').getAttribute('aria-checked').includes('true')") as? Bool
+            XCTAssertEqual(firstClose, true)
+            _ = try await script(host, "document.querySelector('[data-interaction=\"agree.readPrivacy.click.1\"]').click();return true"); try await waitFor(host, ".event-dialog--open [role=dialog]")
+            let repeatedOpen = try await script(host, "return document.querySelector('[role=dialog]').innerText.includes('Production data processing')") as? Bool
+            XCTAssertEqual(repeatedOpen, true)
+            _ = try await script(host, "document.querySelector('[data-interaction=\"sheetAgreement.closeSheet.click.1\"]').click();return true"); try await Task.sleep(nanoseconds: 350_000_000)
+
+            stage = "validation and atomic agreement write"
+            try await loadFresh("/pages/auth/age", "flow", ".age-page")
+            _ = try await script(host, "const input=document.querySelector('.age-page input');input.value='2000-01-01';input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".community-page")
+            let before = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host, "document.querySelector('[data-interaction=\"agree.goSignup.click.1\"]').click();return true"); try await waitFor(host, ".community-page [role=alert]")
+            let validationStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(validationStorage, before)
+            _ = try await script(host, "for(const id of ['agree.tTerms.click.1','agree.tPrivacy.click.1','agree.tGuides.click.1'])document.querySelector('[data-interaction=\"'+id+'\"]').click();const action=document.querySelector('[data-interaction=\"agree.goSignup.click.1\"]');action.click();action.click();return true")
+            try await waitFor(host, ".loading"); let loadingStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String; XCTAssertEqual(loadingStorage, before); try await waitFor(host, ".signup-page")
+            let committed = try await script(host, "const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2'));return {step:envelope.data.auth_flow.step,agreements:envelope.data.auth_flow.agreements,signupCount:document.querySelectorAll('.signup-page').length}") as! [String: Any]
+            let agreements = committed["agreements"] as! [String: Bool]
+            XCTAssertEqual(committed["step"] as? String, "signup"); XCTAssertEqual(agreements, ["age": true, "student": false, "terms": true, "privacy": true, "community": true]); XCTAssertEqual(committed["signupCount"] as? Int, 1)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?communityPixel=refresh#/pages/auth/community")!)); try await waitFor(host, ".community-page")
+            let restoredChecks = try await script(host, "return document.querySelectorAll('[aria-checked=true]').length") as? Int
+            XCTAssertEqual(restoredChecks, 3)
+
+            stage = "persistence failure rollback"
+            try await loadFresh("/pages/auth/age", "failure", ".age-page")
+            _ = try await script(host, "const input=document.querySelector('.age-page input');input.value='2000-01-01';input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".community-page")
+            let failureBefore = try await script(host, "for(const key of ['terms','privacy','community'])document.querySelector('[data-agreement=\"'+key+'\"]').click();const original=Storage.prototype.setItem;window.__restoreCommunityStorage=()=>Storage.prototype.setItem=original;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw new DOMException('Injected agreement storage failure','QuotaExceededError');return original.call(this,key,value)};return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host, "document.querySelector('[data-interaction=\"agree.goSignup.click.1\"]').click();return true"); try await waitFor(host, ".loading"); try await waitFor(host, ".community-page [role=alert]")
+            let failure = try await script(host, "const result={message:document.querySelector('.community-page [role=alert]').textContent,storage:localStorage.getItem('cimoa_app_state_v2'),selected:document.querySelectorAll('[aria-checked=true]').length,signup:!!document.querySelector('.signup-page')};window.__restoreCommunityStorage();return result") as! [String: Any]
+            XCTAssertTrue((failure["message"] as? String)?.contains("Injected agreement storage failure") == true); XCTAssertEqual(failure["storage"] as? String, failureBefore); XCTAssertEqual(failure["selected"] as? Int, 3); XCTAssertEqual(failure["signup"] as? Bool, false)
+
+            stage = "direct Back fallback"
+            try await loadFresh("/pages/auth/community", "back", ".community-page")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"agree.goBack.click.1\"]').click();return true"); try await waitFor(host, ".age-page")
+            let backStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+            XCTAssertTrue(backStorage is NSNull)
+            try await restore()
+        } catch { XCTFail("Community WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

@@ -1,6 +1,6 @@
 # Cimoa 认证入口逐页交互契约
 
-Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版；Age Confirmation 也已通过完整证据链并按 2026-10-15 用户授权自动确认为 `verified / passed`，其专项提交将在最终门禁后生成。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在来源、浏览器、WKWebView、行为与最终门禁全部通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
+Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版，Age Confirmation 已由本地提交 `9e6b318f` 封版。Community Agreement 已通过来源、浏览器、WKWebView、行为与最终门禁，按用户授权自动确认为 `verified / passed`。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在全部证据通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
 
 ## Splash
 
@@ -46,3 +46,17 @@ Welcome 本轮像素专项已完成并获用户视觉确认：[来源契约](./u
 | login.loginWrong.click.1 / login.loginUnverified.click.1 | Login2695/2696 | 原型TEST STATES | 只读检查现有 fixture 凭据失配 / 当前未验证本地账号 | none | 展示来源错误；未验证状态仅在真实 pending context 存在时进入验证页 | 不创建账号、不写 session、不强造认证状态 | none | test only | fresh fixture、真实 pending、本地状态缺失三路回归 |
 
 本轮来源锁定证据见 [Login 来源契约](./ui-restoration/login/source-contract.json)、[差异审计](./ui-restoration/login/difference-audit.md) 与 [验收摘要](./ui-restoration/login/acceptance.json)。393×852 浏览器确定性测试 5/5、登录功能回归 14/14、Store 单元测试 10/10、iPhone 17 Pro WKWebView 专项 1/1 均通过；真实软键盘下密码框可见、footer 临时收起并在 Done 后恢复。用户于 2026-10-15 确认截图，三项最终门禁与本地专项提交完成。注册页面是否完成仍按各自页面清单逐页验收，不能由 Login 结果代替。
+
+## Community Agreement
+
+来源内层 2562–2604 行，`/pages/auth/community`；仅允许 Age 进入，普通返回恢复 Age 实例，直达时 fallback Age。页面保留六条原文规则、三条同意项和底部 Continue；仅执行已批准的 CIRCA→Cimoa 品牌替换。Read 打开受控本地 Agreement Sheet，不会自动同意或持久化。
+
+| interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| agree.goBack.click.1 | Community2566 | Back | 非保存中 | 反向过渡 | 恢复 Age；直达 fallback Age | 保留当前页错误 | none | navigation | 不写游客状态、不黑屏 |
+| agree.tTerms.click.1 / agree.tPrivacy.click.1 / agree.tGuides.click.1 | Community2581/2588/2595 | 点击、Enter 或 Space | 非保存中 | 来源 checkbox 三态变化 | 仅更新内存表单 | none | none | current form | 单项、partial、ready 的外观和 Continue 启用条件一致 |
+| agree.readTerms.click.1 / agree.readPrivacy.click.1 / agree.readGuides.click.1 | Community2581/2588/2595 | Read | 非保存中 | 打开对应受控 Sheet | 首次和重复打开均显示正确本地文档 | 缺少生产法务信息在正文明确说明 | none | legal display | Read/Close/遮罩都不改同意项、不写 storage |
+| sheetAgreement.closeSheet.click.1 / sheetAgreement.closeSheet.click.2 | Agreement Sheet | 遮罩或 Close | Sheet 已打开 | 源 Sheet 退场 | 回 Community 原状态 | none | none | current page | 首次/再次动画均可用，长文可滚动 |
+| agree.goSignup.click.1 | Community2603 | Continue | 三项都明确同意 | AuthActionLoading 500ms | 通过 Store 原子写入完整 agreements，只进入一个 Signup | 未勾选零写入；持久化失败保留三项可重试选择 | auth_flow.agreements | registration flow | Loading 前零写、连点单次、刷新恢复、失败不进 Signup |
+
+证据见 [来源契约](./ui-restoration/community/source-contract.json)、[差异审计](./ui-restoration/community/difference-audit.md) 与 [验收摘要](./ui-restoration/community/acceptance.json)。浏览器 8/8，固定 393×852 并输出 reference/actual/overlay/diff；iPhone 17 Pro WKWebView 专项 1/1，实测视口 402×874、安全区 62/34。默认/partial/ready、Sheet 首次/再次、320×568 滚动、原子写入、失败回滚、刷新和返回归属均通过。依据用户授权，本页已自动确认为 `verified / passed`。

@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "page": "Community Agreement",
+  "route": "/pages/auth/community",
+  "source_screen": "Auth / Community Agreement / Default",
+  "source_query": "route=agree",
+  "source_lock": "locked",
+  "locked_at": "2026-10-15",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isAgree",
+    "visual_lines": "2562-2604",
+    "visual_fragment_sha256": "0e939a68da4e16016a6c8976b49395b2e119a8614f7ce77f69380c72576d3356",
+    "behavior_lines": [
+      4688,
+      5224,
+      5441,
+      5531,
+      5562,
+      5563,
+      5637,
+      5638,
+      5639,
+      5640,
+      5641,
+      5642,
+      5643,
+      5644,
+      5645,
+      5646
+    ],
+    "behavior_fragment_sha256": "8aca846b0acae996ca4013c1e8c3af2e2bb58bd61c8755073acb519d5cd48367"
+  },
+  "reference_viewport": {
+    "width_css_px": 393,
+    "height_css_px": 852,
+    "scale": 1
+  },
+  "structure": {
+    "root": "absolute inset 0; cRise entry",
+    "source_system_chrome": "source header begins at y=58; project replaces prototype system chrome with measured TopSafeArea plus 4px source inset",
+    "fixed_regions": "header at source y=58; Continue footer left/right 20px and bottom 34px",
+    "scroll_region": "source absolute top 122px, left/right 0, bottom 0; overflow-y auto; padding 0 20px 190px",
+    "project_skeleton": "TopSafeArea; fixed AuthPageFrame header; one flex scroll region; fixed auth footer; BottomSafeArea",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "header": {
+    "frame": "top 58px; left/right 20px; height 48px; gap 12px; z-index 20",
+    "back": {
+      "interaction_id": "agree.goBack.click.1",
+      "size_css_px": "46x46",
+      "border_radius_css_px": 23,
+      "background": "#fff",
+      "shadow": "0 6px 18px rgba(16,36,74,0.10)",
+      "svg_css_px": "22x22",
+      "svg_view_box": "0 0 24 24",
+      "path": "M15 5l-7 7 7 7",
+      "stroke": "#0b1b3a",
+      "stroke_width": 2.4,
+      "stroke_linecap": "round",
+      "stroke_linejoin": "round"
+    },
+    "title": {
+      "copy": "Community",
+      "frame": "absolute left/right 58px; top/bottom 0",
+      "font_size_css_px": 21,
+      "font_weight": 700,
+      "letter_spacing": "-0.025em",
+      "line_height": 1.15,
+      "alignment": "center"
+    }
+  },
+  "content": {
+    "heading": {
+      "source_copy": "How CIRCA works",
+      "approved_copy": "How Cimoa works",
+      "font_size_css_px": 33,
+      "font_weight": 800,
+      "letter_spacing": "-0.035em",
+      "line_height": 1.1
+    },
+    "rules_card": {
+      "margin_top_css_px": 16,
+      "padding_css_px": 18,
+      "gap_css_px": 9,
+      "background": "#fff",
+      "border_radius_css_px": 24,
+      "shadow": "0 8px 24px rgba(16,36,74,0.07)",
+      "font_size_css_px": 16.5,
+      "line_height": "source does not override the inherited normal line height",
+      "color": "#26364f",
+      "copy": [
+        "Be respectful.",
+        "Use your real university identity.",
+        "Never harass or pressure anyone.",
+        "Respect boundaries and consent.",
+        "No illegal or unsafe content.",
+        "Report anything concerning."
+      ]
+    },
+    "agreement_rows": {
+      "margin_top_css_px": 10,
+      "padding_css_px": "16 18",
+      "gap_css_px": 14,
+      "background": "#fff",
+      "border_radius_css_px": 24,
+      "shadow": "0 8px 24px rgba(16,36,74,0.07)",
+      "source_hit_region": "the complete source row toggles its agreement",
+      "rows": [
+        {
+          "key": "terms",
+          "copy": "I agree to the Terms of Use",
+          "toggle_interaction_id": "agree.tTerms.click.1",
+          "read_interaction_id": "agree.readTerms.click.1"
+        },
+        {
+          "key": "privacy",
+          "copy": "I have read the Privacy Policy",
+          "toggle_interaction_id": "agree.tPrivacy.click.1",
+          "read_interaction_id": "agree.readPrivacy.click.1"
+        },
+        {
+          "key": "community",
+          "copy": "I agree to follow the Community Guidelines",
+          "toggle_interaction_id": "agree.tGuides.click.1",
+          "read_interaction_id": "agree.readGuides.click.1"
+        }
+      ],
+      "label": {
+        "font_size_css_px": 16.5,
+        "font_weight": 600,
+        "text_wrap": "pretty"
+      },
+      "read": {
+        "copy": "Read",
+        "font_size_css_px": 15,
+        "font_weight": 600,
+        "color": "#4a7bf7"
+      },
+      "checkbox": {
+        "size_css_px": "28x28",
+        "border_radius_css_px": 9,
+        "unchecked_background": "#fff",
+        "unchecked_border": "2px solid #d6deea",
+        "checked_background": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+        "checked_border": "2px solid transparent",
+        "check_svg_css_px": "16x16",
+        "check_svg_view_box": "0 0 24 24",
+        "check_path": "m5 12.5 4.5 4.5L19 7.5",
+        "check_stroke": "#fff",
+        "check_stroke_width": 3.2,
+        "check_stroke_linecap": "round",
+        "check_stroke_linejoin": "round"
+      }
+    },
+    "source_default_extra_copy": "none"
+  },
+  "footer": {
+    "frame": "absolute left/right 20px; bottom 34px; z-index 20",
+    "continue": {
+      "interaction_id": "agree.goSignup.click.1",
+      "copy": "Continue",
+      "height_css_px": 60,
+      "border_radius_css_px": 30,
+      "enabled_gradient": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+      "enabled_color": "#fff",
+      "disabled_background": "#dfe5ee",
+      "disabled_color": "#96a1b4",
+      "shadow": "0 12px 26px rgba(168,85,247,0.24)",
+      "font_size_css_px": 19,
+      "font_weight": 700
+    }
+  },
+  "source_states": {
+    "default": "agreeTerms, agreePrivacy and agreeGuides are all false; Continue disabled",
+    "partial": "each complete source row independently toggles its boolean and visual checkbox",
+    "ready": "all three booleans true; Continue uses the primary gradient and white text",
+    "continue": "source pushes Signup without persistence or validation"
+  },
+  "motion": {
+    "entry": "cRise 240ms ease both; opacity 0 and translateY(14px) to opacity 1 and translateY(0)"
+  },
+  "approved_deltas": [
+    {
+      "id": "community-brand",
+      "source": "INTERACTION_CONVENTIONS.md 1.1",
+      "delta": "Replace CIRCA with Cimoa in the heading without changing typography or surrounding copy."
+    },
+    {
+      "id": "community-safe-area-and-skeleton",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.1",
+      "delta": "Replace prototype system chrome and absolute footer compensation with measured Top/BottomSafeArea, a fixed header/footer and one flex middle scroll region while preserving source coordinates at the reference safe area."
+    },
+    {
+      "id": "community-readable-local-agreements",
+      "source": "INTERACTION_CONVENTIONS.md 9.1 and DEVELOPMENT_CONVENTIONS.md 4",
+      "delta": "The visible source Read affordance opens a controlled bottom Sheet for the corresponding local prototype document. Read never toggles consent or persists state; missing production legal identity and promises remain explicit inside the document."
+    },
+    {
+      "id": "community-hit-region-split",
+      "source": "DEVELOPMENT_CONVENTIONS.md 10 and user-authorized complete interactions",
+      "delta": "Because Read is an independent action, the source row is split into a label/checkbox toggle region and a Read region without changing row geometry. Each region receives a unique interaction ID, and the Read region must not overlap the toggle region."
+    },
+    {
+      "id": "community-real-write",
+      "source": "DEVELOPMENT_CONVENTIONS.md 5 and INTERACTION_CONVENTIONS.md 9.2",
+      "delta": "Keep checkbox selection as in-memory form state. Continue requires all three explicit consents, shows the custom 400-600ms Loading, persists the complete agreement object atomically through Store, then pushes Signup. Failure stays on the page and preserves the retryable form."
+    },
+    {
+      "id": "community-return-ownership",
+      "source": "DEVELOPMENT_CONVENTIONS.md 11.2.1",
+      "delta": "Back restores the existing Age instance; direct entry falls back to Age instead of inventing an origin."
+    },
+    {
+      "id": "community-settings-entry-remap",
+      "source": "INTERACTION_CONVENTIONS.md 11 and the normalized target route inventory",
+      "delta": "The prototype reuses route agree from Settings through openAgreeInfo. The project keeps this page registration-only: authenticated Settings opens the same Community Guidelines document in AgreementSheet and returns to Settings, avoiding registration-consent writes and navigation to Signup."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-15",
+    "files": [
+      {
+        "path": "src/pages/auth/community.vue",
+        "sha256": "4c8c76df5c23c87a67970dc2433b33afe141d3476119bcb2dee786b20f459ba2"
+      },
+      {
+        "path": "src/components/AgreementSheet.vue",
+        "sha256": "32c0d53455bb244c9180c28908f0e781e5491feda36cfa63325a382d8e3a0815"
+      },
+      {
+        "path": "src/utils/registrationCatalog.js",
+        "sha256": "90e75425bc887ce55b9ed183439aa0b7816058e1b68f5b800ea7c17997ab765a"
+      },
+      {
+        "path": "src/components/AuthPageFrame.vue",
+        "sha256": "b50277b8759f5c4719dbf99db8e3d1930120e284f266d4ebf292668b3d09a47c"
+      },
+      {
+        "path": "src/pages/auth/auth.css",
+        "sha256": "5a9fb0f2cd57ea93c6f7a631e33fe8e8388f592877a8b229a1601601a03cd7f8"
+      }
+    ]
+  },
+  "capture": {
+    "reference_png": "docs/ui-restoration/community/reference.png",
+    "reference_sha256": "0b59e8469a2fb7f63f8c8ffa0aeae36d96c86db89118a3ef78cd72930ebd832e",
+    "actual_browser_png": "docs/ui-restoration/community/actual-browser.png",
+    "actual_browser_sha256": "3ab65a73f32dd52b3c352514b675d00e7e7767e56d06627b59a584984ad96b47",
+    "actual_browser_partial_png": "docs/ui-restoration/community/actual-browser-partial.png",
+    "actual_browser_partial_sha256": "f488cc28e645529fc1e328379df26a0a78e6dd2c8f51801f35ce0c212dcf8836",
+    "actual_browser_ready_png": "docs/ui-restoration/community/actual-browser-ready.png",
+    "actual_browser_ready_sha256": "2be49d7be64b18ea41dc3fce08a09cc67003b7f6bcb9983c9e6253264866216c",
+    "actual_browser_sheet_png": "docs/ui-restoration/community/actual-browser-sheet.png",
+    "actual_browser_sheet_sha256": "9f6dc70fa68d4b40450adf3d72729d6e0a44cdc63f73ff85d6a584c012f3cb99",
+    "actual_browser_small_png": "docs/ui-restoration/community/actual-browser-small.png",
+    "actual_browser_small_sha256": "b598bbfe1333d82d72f654b9cc28ca857808f2b45d1c9301ea45ef621a4d7ebd",
+    "actual_browser_small_scrolled_png": "docs/ui-restoration/community/actual-browser-small-scrolled.png",
+    "actual_browser_small_scrolled_sha256": "f5c33679ff27c12b16717a66d4b6eb8afb51dd114912777b8ccb8b6ee652aa6a",
+    "overlay_png": "docs/ui-restoration/community/overlay.png",
+    "overlay_sha256": "515558dd4d1b9d2f8734d4bdd2194b3e6dc3ae2cc13db54cb724bb45e4ce89c4",
+    "diff_png": "docs/ui-restoration/community/diff.png",
+    "diff_sha256": "286cee0f661ff7743a15a074252e0bbfc51df3ddeba88eab40f48a043c98ad3d",
+    "actual_wkwebview_png": "docs/ui-restoration/community/actual-wkwebview.png",
+    "actual_wkwebview_sha256": "fcb7118ca73f9c18d22f356ccd24bb5f97ebb8a2a04827f18ff9564421126580",
+    "actual_wkwebview_sheet_png": "docs/ui-restoration/community/actual-wkwebview-sheet.png",
+    "actual_wkwebview_sheet_sha256": "ccf29f8b2b5480179d836a8ab1816a0ede927761d243a6236f8431cde677d975",
+    "browser_report": "docs/ui-restoration/community/browser-acceptance.json",
+    "browser_report_sha256": "26f78cbe65aa461ad69833514ce887d50a29ecf224e4c17ee6ea70da203c6e05",
+    "acceptance_report": "docs/ui-restoration/community/acceptance.json",
+    "visual_acceptance": "passed; automatically confirmed under the user-authorized evidence policy on 2026-10-15",
+    "reference_method": "The deterministic reference is rendered from this hash-verified contract after resolving the first-audit differences. The application does not embed or load the prototype."
+  },
+  "historical_evidence": {
+    "actual_png": "docs/evidence/registration/community.png",
+    "actual_sha256": "b3b9c760d90d6b4b952ef935b6c999ea75d5fc5ec921a73a4e79efcb7603c280",
+    "browser_report": "docs/evidence/registration/community-browser.json",
+    "browser_report_sha256": "ddc54b279a0cbd506a32936144607fb6b71fda67daaca73a1238b098b593df48",
+    "limit": "The historical screenshot contains all three persisted checks, an error card and an unsourced local note. It is regression history only and cannot serve as default pixel acceptance evidence."
+  }
+}

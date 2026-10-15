@@ -1,0 +1,239 @@
+{
+  "phase": "community-pixel-restoration",
+  "result": "passed",
+  "server_pid": 93456,
+  "reference": {
+    "kind": "source-derived locked reference with approved brand, safe-area, readable-agreement and local-persistence deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "0e939a68da4e16016a6c8976b49395b2e119a8614f7ce77f69380c72576d3356",
+    "behavior_fragment_sha256": "8aca846b0acae996ca4013c1e8c3af2e2bb58bd61c8755073acb519d5cd48367",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "right": 393,
+      "bottom": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "right": 65.984375,
+      "bottom": 104.984375
+    },
+    "title": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 47.984375,
+      "right": 315,
+      "bottom": 105.984375
+    },
+    "content": {
+      "x": 0,
+      "y": 121.96875,
+      "width": 393,
+      "height": 497.140625,
+      "right": 393,
+      "bottom": 619.109375
+    },
+    "heading": {
+      "x": 20,
+      "y": 121.96875,
+      "width": 353,
+      "height": 36.296875,
+      "right": 373,
+      "bottom": 158.265625
+    },
+    "rules": {
+      "x": 20,
+      "y": 174.25,
+      "width": 353,
+      "height": 194.96875,
+      "right": 373,
+      "bottom": 369.21875
+    },
+    "rows": [
+      {
+        "x": 20,
+        "y": 379.21875,
+        "width": 353,
+        "height": 59.953125,
+        "right": 373,
+        "bottom": 439.171875
+      },
+      {
+        "x": 20,
+        "y": 449.171875,
+        "width": 353,
+        "height": 69.96875,
+        "right": 373,
+        "bottom": 519.140625
+      },
+      {
+        "x": 20,
+        "y": 529.140625,
+        "width": 353,
+        "height": 69.96875,
+        "right": 373,
+        "bottom": 599.109375
+      }
+    ],
+    "checks": [
+      {
+        "x": 37.984375,
+        "y": 395.203125,
+        "width": 27.984375,
+        "height": 27.984375,
+        "right": 65.96875,
+        "bottom": 423.1875
+      },
+      {
+        "x": 37.984375,
+        "y": 470.15625,
+        "width": 27.984375,
+        "height": 27.984375,
+        "right": 65.96875,
+        "bottom": 498.140625
+      },
+      {
+        "x": 37.984375,
+        "y": 550.125,
+        "width": 27.984375,
+        "height": 27.984375,
+        "right": 65.96875,
+        "bottom": 578.109375
+      }
+    ],
+    "reads": [
+      {
+        "x": 318.890625,
+        "y": 400.6875,
+        "width": 36.125,
+        "height": 17,
+        "right": 355.015625,
+        "bottom": 417.6875
+      },
+      {
+        "x": 318.890625,
+        "y": 475.65625,
+        "width": 36.125,
+        "height": 17,
+        "right": 355.015625,
+        "bottom": 492.65625
+      },
+      {
+        "x": 318.890625,
+        "y": 555.625,
+        "width": 36.125,
+        "height": 17,
+        "right": 355.015625,
+        "bottom": 572.625
+      }
+    ],
+    "footer": {
+      "x": 0,
+      "y": 758.015625,
+      "width": 393,
+      "height": 93.984375,
+      "right": 393,
+      "bottom": 852
+    },
+    "continue": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 818.015625
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "rule_style": {
+      "gap": "9.00022px",
+      "padding": "17.9999px",
+      "radius": "24.0002px",
+      "font_size": "16.5002px",
+      "line_height": "normal"
+    },
+    "text": {
+      "header": "Community",
+      "heading": "How Cimoa works",
+      "rules": [
+        "Be respectful.",
+        "Use your real university identity.",
+        "Never harass or pressure anyone.",
+        "Respect boundaries and consent.",
+        "No illegal or unsafe content.",
+        "Report anything concerning."
+      ],
+      "rows": [
+        "I agree to the Terms of Use Read",
+        "I have read the Privacy Policy Read",
+        "I agree to follow the Community Guidelines Read"
+      ],
+      "continue": "Continue"
+    },
+    "interactions": {
+      "back": "agree.goBack.click.1",
+      "toggles": [
+        "agree.tTerms.click.1",
+        "agree.tPrivacy.click.1",
+        "agree.tGuides.click.1"
+      ],
+      "reads": [
+        "agree.readTerms.click.1",
+        "agree.readPrivacy.click.1",
+        "agree.readGuides.click.1"
+      ],
+      "continue": "agree.goSignup.click.1"
+    },
+    "selected": [
+      "false",
+      "false",
+      "false"
+    ],
+    "continue_disabled": "true",
+    "alert_visible": false,
+    "note_visible": false
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 64453,
+    "pixels_above_channel_delta_8": 11262,
+    "mean_absolute_channel_delta": 0.7559349950423491,
+    "max_channel_delta": 140
+  },
+  "checks": [
+    "393x852 default restores locked source geometry, exact copy, disabled state, interaction IDs and finished cRise frame",
+    "reference, actual, overlay and absolute diff were generated and stayed within the deterministic pixel threshold",
+    "partial and ready states preserve source checkboxes and enable Continue only after all three choices",
+    "Read opens the correct controlled Sheet on first and repeated use; Close/mask do not accept or persist an agreement",
+    "320x568 long content scrolls in one region while the 62/34 safe-area footer stays fixed and unobscured",
+    "validation is zero-write; choices stay in memory; one Loading atomically persists all consents, navigates once and refresh restores them",
+    "injected persistence failure rolls Store back, preserves all retryable choices and never opens Signup",
+    "direct-entry Back falls back to Age without writing guest state"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

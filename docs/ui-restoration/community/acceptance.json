@@ -1,0 +1,69 @@
+{
+  "phase": "community-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-15",
+  "auto_confirmation_basis": "User authorized automatic confirmation and immediate next-page source locking when all source, browser, WKWebView, behavior and final-gate evidence passes without unresolved uncertainty.",
+  "browser": {
+    "result": "passed",
+    "checks_passed": 8,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": {
+      "top": 54,
+      "bottom": 0
+    },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/community/browser-acceptance.json",
+    "comparison": {
+      "pixels_different": 64453,
+      "pixels_above_channel_delta_8": 11262,
+      "mean_absolute_channel_delta": 0.7559349950423491,
+      "max_channel_delta": 140
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "test": "cimoaNeapoTests.HostTests.testCommunityPixelRestoration",
+    "result_bundle": "/var/folders/pn/z20q73zd4h9fbf0k2jrylfvr0000gn/T/cimoa-community-acceptance.G9pb3m1ibm/CommunityAcceptance2.xcresult",
+    "tests": 1,
+    "failures": 0,
+    "screenshots": [
+      "docs/ui-restoration/community/actual-wkwebview.png",
+      "docs/ui-restoration/community/actual-wkwebview-sheet.png"
+    ]
+  },
+  "verified_flows": [
+    "locked source geometry, exact copy, source back/check SVGs and all interaction IDs",
+    "empty default contains three unchecked choices, a disabled Continue and no unsourced note or error",
+    "partial and ready states preserve source checkbox visuals and enable Continue only after all three choices",
+    "Terms, Privacy and Community Read regions open the correct controlled Agreement Sheet without accepting or persisting consent",
+    "first and repeated Sheet open, mask close, Close action and long document scrolling remain usable",
+    "validation creates no write; one 500ms custom Loading atomically saves all three consents and navigates once",
+    "injected storage failure rolls back Store state, preserves retryable choices and never opens Signup",
+    "refresh restores persisted consents; direct-entry Back falls back to Age without creating guest state",
+    "320x568 and iPhone 17 Pro safe areas keep the fixed footer unobscured and leave exactly one scroll region"
+  ],
+  "final_checks": {
+    "status": "passed",
+    "corepack pnpm check:conventions": "passed with no warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; H5 packaged into ios/cimoaNeapo/Resources/H5"
+  },
+  "commit": "included in the Community local specialty commit"
+}

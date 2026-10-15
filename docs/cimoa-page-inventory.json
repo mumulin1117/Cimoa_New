@@ -319,14 +319,13 @@
     ],
     "page_level": "三级",
     "route": "/pages/auth/community",
-    "component": null,
+    "component": "src/pages/auth/community.vue",
     "parent_route": "/pages/auth/age",
     "allowed_origin_routes": [
       "/pages/auth/age"
     ],
     "required_parameters": [],
     "entry_points": [
-      "openAgreeInfo@5441",
       "goAgree@5562"
     ],
     "return_owner": "pop origin_route（允许来源：/pages/auth/age）；无历史实例时 replace /pages/auth/age，不创建伪造实体",
@@ -340,17 +339,16 @@
       "agree.tTerms.click.1",
       "agree.tPrivacy.click.1",
       "agree.tGuides.click.1",
+      "agree.readTerms.click.1",
+      "agree.readPrivacy.click.1",
+      "agree.readGuides.click.1",
+      "sheetAgreement.closeSheet.click.1",
+      "sheetAgreement.closeSheet.click.2",
       "agree.goSignup.click.1"
     ],
     "entities": "user_accounts; session; verification; agreements",
     "assets": {
-      "media": [
-        {
-          "source_id": "a7",
-          "local_path": "static/assets/songs/stupid-song.jpg",
-          "mime": "image/jpeg"
-        }
-      ],
+      "media": [],
       "svg_source_lines": [
         2566,
         2582,
@@ -358,7 +356,7 @@
         2596
       ],
       "fonts": "static/assets/fonts/source-fonts.css",
-      "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+      "dynamic_media": "none"
     },
     "states": {
       "required_checks": [
@@ -371,12 +369,17 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/community/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/community/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/community-browser.json"
+    "mapping_status": "Community source locked; every first-audit difference resolved; deterministic browser and iPhone 17 Pro WKWebView acceptance automatically confirmed; final checks and local specialty commit complete",
+    "acceptance_evidence": "docs/ui-restoration/community/acceptance.json",
+    "acceptance_notes": "Browser 8/8 and WKWebView 1/1 passed, including exact default/partial/ready geometry, Agreement Sheet first and repeated use, 320x568 scrolling, validation zero-write, 500ms atomic persistence, injected failure rollback, refresh restoration and return ownership."
   },
   {
     "source_screen": "Auth / Sign Up / Default",
