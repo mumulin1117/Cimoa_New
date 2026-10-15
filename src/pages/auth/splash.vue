@@ -25,8 +25,8 @@ onHide(() => { active = false; stop() })
 onUnmounted(() => { active = false; stop() })
 </script>
 <template>
-  <view class="splash-page"><TopSafeArea /><PageTransition ref="transition">
-    <view class="splash-content" role="button" tabindex="0" aria-label="Continue to Cimoa" data-interaction="splash.goWelcome.click.1" @click="proceed" @keydown.enter="proceed">
+  <view class="splash-page" role="button" tabindex="0" aria-label="Continue to Cimoa" data-interaction="splash.goWelcome.click.1" @click="proceed" @keydown.enter="proceed"><TopSafeArea /><PageTransition ref="transition">
+    <view class="splash-content">
       <CimoaBrand splash />
       <view v-if="!error" class="splash-track" aria-hidden="true"><view class="splash-progress" /></view>
       <view v-else class="splash-error" role="alert"><text>{{ error }}</text><text class="splash-retry">Retry</text></view>
@@ -42,7 +42,6 @@ onUnmounted(() => { active = false; stop() })
   align-items: center;
   justify-content: center;
   gap: 64.885rpx;
-  padding: 38.168rpx;
 }
 .splash-track { width: 286.26rpx; height: 7.634rpx; overflow: hidden; border-radius: 3.817rpx; background: var(--cimoa-surface-splash-track); }
 .splash-progress { width: 122.137rpx; height: 100%; border-radius: 3.817rpx; background: var(--cimoa-gradient-primary); animation: source-pulse 1500ms ease-in-out infinite; }

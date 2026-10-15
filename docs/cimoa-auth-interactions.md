@@ -14,7 +14,7 @@ Splash本页已本地提交e1af81a，Welcome本页提交50d140c，同样pending�
 
 Welcome首次未还原时以deferred显示明确错误；现在已由下方Welcome回归覆盖实际Splash→Welcome，不再跳旧错误页。
 
-首次本页浏览器4项通过：[历史报告](./evidence/auth/splash-browser.json)、[截图](./evidence/auth/splash.png)。默认源尺寸、自动计时/连点竞争、有效会话栈1且无骨架、损坏存储与修复重试均已执行；实际进入Welcome已追加在Welcome报告。三项强制校验通过；临时PID81954由finally关闭。原生入口URL已改为Splash，原生完整入口待本轮回归，不冒称已测。
+像素专项已完成实现与双端取证：[来源契约](./ui-restoration/splash/source-contract.json)、[差异审计](./ui-restoration/splash/difference-audit.md)、[验收摘要](./ui-restoration/splash/acceptance.json)。浏览器固定393×852、cRise结束帧与cPulse 750ms，已输出reference/actual/overlay/diff；iPhone 17 Pro WKWebView实测402×874、真实安全区62/34。两端均通过游客到Welcome、有效会话到Home、损坏存储Retry、连点/定时器只导航一次和安全区居中。用户已于2026-10-15确认视觉验收，最终状态为`status: verified`、`visual_acceptance: passed`。
 
 ## Welcome
 

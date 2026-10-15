@@ -4,6 +4,13 @@ import WebKit
 
 @MainActor
 final class HostTests: XCTestCase {
+    private func rawHost() async throws -> WebViewController {
+        for _ in 0..<100 {
+            if let host = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).compactMap({ $0.rootViewController as? WebViewController }).first, host.webView != nil, !host.webView.isLoading, host.isTrustedURL(host.webView.url) { return host }
+            try await Task.sleep(nanoseconds: 100_000_000)
+        }
+        throw NSError(domain: "CimoaTests", code: 3, userInfo: [NSLocalizedDescriptionKey: "Native host WebView was not ready."])
+    }
     private func host() async throws -> WebViewController {
         for _ in 0..<100 {
             if let host = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).compactMap({ $0.rootViewController as? WebViewController }).first, host.webView != nil, !host.webView.isLoading, host.isTrustedURL(host.webView.url) {
@@ -33,6 +40,74 @@ final class HostTests: XCTestCase {
         try await waitFor(host, ".login-page input")
         _ = try await script(host, "await new Promise(r=>setTimeout(r,300)); const fields=document.querySelectorAll('.login-page input'); for(const [i,value] of ['cimoa@gmail.com','12341234'].entries()){fields[i].value=value; fields[i].dispatchEvent(new Event('input',{bubbles:true}))} await Promise.resolve();document.querySelector('[data-interaction=\"login.loginNow.click.1\"]').click(); return true")
         try await waitFor(host, ".home-header")
+    }
+    func testSplashPixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?splashPixel=restored#/pages/auth/splash")!))
+        }
+        do {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?splashPixel=guest#/pages/auth/splash")!))
+            try await waitFor(host, ".splash-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const a of document.getAnimations()){const t=a.effect?.getComputedTiming();if(t?.iterations===Infinity){a.pause();a.currentTime=750}else a.finish()}await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+                const box=s=>{const r=document.querySelector(s).getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,cx:r.x+r.width/2,cy:r.y+r.height/2}},root=box('.splash-page'),content=box('.splash-content'),brand=box('.brand--splash'),track=box('.splash-track'),safes=[...document.querySelectorAll('.splash-page > .safe-area')].map(e=>e.getBoundingClientRect().height),visualCenter=(Math.min(brand.y,track.y)+Math.max(brand.y+brand.height,track.y+track.height))/2;
+                return {root,content,brand,track,safes,visualCenter,role:document.querySelector('.splash-page').getAttribute('role'),interaction:document.querySelector('.splash-page').dataset.interaction,padding:getComputedStyle(document.querySelector('.splash-content')).padding};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], content = metrics["content"] as! [String: Double], brand = metrics["brand"] as! [String: Double], safes = metrics["safes"] as! [Double]
+            XCTAssertEqual(metrics["role"] as? String, "button"); XCTAssertEqual(metrics["interaction"] as? String, "splash.goWelcome.click.1")
+            XCTAssertEqual(metrics["padding"] as? String, "0px")
+            XCTAssertEqual(root["x"]!, 0, accuracy: 1); XCTAssertEqual(root["y"]!, 0, accuracy: 1)
+            XCTAssertEqual(root["width"]!, Double(host.webView.bounds.width), accuracy: 1); XCTAssertEqual(root["height"]!, Double(host.webView.bounds.height), accuracy: 1)
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(content["cy"]!, safes[0] + (root["height"]! - safes[0] - safes[1]) / 2, accuracy: 1)
+            XCTAssertEqual(metrics["visualCenter"] as! Double, content["cy"]!, accuracy: 1); XCTAssertEqual(brand["cx"]!, root["width"]! / 2, accuracy: 1)
+            let screenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
+            screenshot.name = "WKWebView Splash deterministic"; screenshot.lifetime = .keepAlways; add(screenshot)
+            let rootWidth = root["width"] ?? -1
+            let rootHeight = root["height"] ?? -1
+            print(
+                "CIMOA_SPLASH_SAFE_AREA "
+                    + "top=\(safes[0]) bottom=\(safes[1]) "
+                    + "viewport=\(rootWidth)x\(rootHeight)"
+            )
+            try await waitFor(host, ".welcome-page")
+            let guestStorageRemainsEmpty = try await script(
+                host,
+                "return localStorage.getItem('cimoa_app_state_v2')===null"
+            ) as? Bool
+            XCTAssertEqual(guestStorageRemainsEmpty, true)
+
+            try await signIn(host)
+            let valid = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?splashPixel=valid#/pages/auth/splash")!))
+            try await waitFor(host, ".splash-page")
+            _ = try await script(host, "const root=document.querySelector('.splash-page');root.click();root.click();return true")
+            try await waitFor(host, ".home-header"); try await Task.sleep(nanoseconds: 1_900_000_000)
+            let restored = try await script(host, "return {home:!!document.querySelector('.home-header'),depth:document.querySelector('.main-tab-frame')?.dataset.pageDepth,skeleton:!!document.querySelector('.main-skeleton')}") as! [String: Any]
+            XCTAssertEqual(restored["home"] as? Bool, true); XCTAssertEqual(restored["depth"] as? String, "1"); XCTAssertEqual(restored["skeleton"] as? Bool, false)
+
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2','{corrupt');return true", arguments: [:], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?splashPixel=corrupt#/pages/auth/splash")!))
+            try await waitFor(host, ".splash-page [role=alert]")
+            let corruptStorageSnapshot = try await script(
+                host,
+                "return localStorage.getItem('cimoa_app_state_v2')"
+            ) as? String
+            XCTAssertEqual(corruptStorageSnapshot, "{corrupt")
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);document.querySelector('.splash-page').click();return true", arguments: ["snapshot": valid], in: nil, contentWorld: .page)
+            try await waitFor(host, ".home-header")
+            try await restore()
+        } catch { try? await restore(); throw error }
     }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()

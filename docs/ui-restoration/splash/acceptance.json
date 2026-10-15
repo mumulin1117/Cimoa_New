@@ -1,0 +1,52 @@
+{
+  "phase": "splash-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "user_confirmed_at": "2026-10-15",
+  "browser": {
+    "result": "passed",
+    "viewport_css_px": "393x852",
+    "safe_area_probe_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "animation_phase_ms": 750,
+    "report": "docs/ui-restoration/splash/browser-acceptance.json",
+    "comparison": {
+      "pixels_different": 1128,
+      "pixels_above_channel_delta_8": 447,
+      "mean_absolute_channel_delta": 0.04015921227108196,
+      "max_channel_delta": 98
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "test": "cimoaNeapoTests.HostTests.testSplashPixelRestoration",
+    "result_bundle": "/tmp/CimoaSplashAcceptance3.xcresult",
+    "screenshot": "docs/ui-restoration/splash/actual-wkwebview.png"
+  },
+  "verified_flows": [
+    "guest automatically reaches Welcome without creating a session",
+    "valid saved session restores Home",
+    "corrupt storage shows Retry and preserves the original bytes",
+    "full-screen safe-area click and the 1800ms timer navigate only once",
+    "source group stays centered in the measured safe content region"
+  ],
+  "final_checks": {
+    "corepack pnpm check:conventions": "passed",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed"
+  },
+  "commit": "included in the Splash local specialty commit"
+}

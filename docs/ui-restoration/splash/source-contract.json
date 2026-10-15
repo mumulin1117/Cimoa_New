@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "page": "Splash",
+  "route": "/pages/auth/splash",
+  "source_screen": "Launch / Splash / Default",
+  "source_query": "route=splash",
+  "source_lock": "locked",
+  "locked_at": "2026-10-15",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isSplash",
+    "visual_lines": "2499-2508",
+    "visual_fragment_sha256": "1e2a5e7e666a686bb671f5448154c1a6522e878118b246716e903bbf7fdfb36d",
+    "behavior_lines": [
+      4855,
+      5560
+    ],
+    "behavior_fragment_sha256": "49b2ca8f0ee9d0b8da955e6fb3d741a7569d1f46d8e273cf5755b864da292379",
+    "interaction_id": "splash.goWelcome.click.1"
+  },
+  "reference_viewport": {
+    "width_css_px": 393,
+    "height_css_px": 852,
+    "scale": 1
+  },
+  "structure": {
+    "root": "absolute inset 0; full-screen click target; centered column",
+    "fixed_regions": "full-screen source layer; project replaces source system chrome with TopSafeArea and BottomSafeArea",
+    "scroll_region": "none in the source default state",
+    "visible_children": [
+      "brand group",
+      "progress track"
+    ],
+    "gap_css_px": 34
+  },
+  "brand": {
+    "source_copy": "CIRCA",
+    "approved_copy": "Cimoa",
+    "arc": {
+      "width_css_px": 81,
+      "height_css_px": 22.8,
+      "view_box": "0 0 58 16",
+      "path": "M3 14C3 7 11.5 2 29 2s26 5 26 12",
+      "stroke_width": 4,
+      "stroke_linecap": "round",
+      "gradient": "linear x 0 to 58: #1ec8f5 0%, #6366f1 50%, #f81ce5 100%"
+    },
+    "group_gap_css_px": 3,
+    "typography": {
+      "font_family": "-apple-system, BlinkMacSystemFont, SF Pro Text, Helvetica Neue, Helvetica, sans-serif",
+      "font_size_css_px": 30,
+      "font_weight": 500,
+      "letter_spacing": "0.30em",
+      "padding_left": "0.30em",
+      "color": "#0b1b3a",
+      "line_height": "normal"
+    }
+  },
+  "progress": {
+    "track": {
+      "width_css_px": 150,
+      "height_css_px": 4,
+      "border_radius_css_px": 2,
+      "background": "rgba(11,27,58,0.08)"
+    },
+    "fill": {
+      "width_css_px": 64,
+      "height_css_px": 4,
+      "border_radius_css_px": 2,
+      "background": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)"
+    }
+  },
+  "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)",
+  "motion": {
+    "entry": "cRise 240ms ease both; opacity 0 and translateY(14px) to opacity 1 and translateY(0)",
+    "progress": "cPulse 1500ms ease-in-out infinite; scale 0.94/opacity 0.16 to scale 1.04/opacity 0.3",
+    "automatic_navigation_delay_ms": 1800
+  },
+  "source_behavior": {
+    "tap": "root welcome",
+    "automatic": "after 1800ms, root welcome if route is still splash"
+  },
+  "approved_deltas": [
+    {
+      "id": "splash-brand",
+      "source": "INTERACTION_CONVENTIONS.md 1.1",
+      "delta": "Replace visible CIRCA brand copy with Cimoa; preserve geometry and styling."
+    },
+    {
+      "id": "splash-safe-area",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.1",
+      "delta": "Do not draw the prototype status bar or Home Indicator; use measured system safe areas."
+    },
+    {
+      "id": "splash-session-routing",
+      "source": "docs/cimoa-page-inventory.json",
+      "delta": "Guest or expired session goes to Welcome; valid session restores Home; pending local verification resumes its required route."
+    },
+    {
+      "id": "splash-error-state",
+      "source": "INTERACTION_CONVENTIONS.md 12",
+      "delta": "Hydration or navigation failure exposes an English Retry state without overwriting stored data."
+    }
+  ],
+  "implementation_files": [
+    "src/pages/auth/splash.vue",
+    "src/components/CimoaBrand.vue",
+    "src/components/PageTransition.vue",
+    "src/components/TopSafeArea.vue",
+    "src/components/BottomSafeArea.vue",
+    "src/config/navigation.js",
+    "src/config/theme.json",
+    "src/utils/authNavigation.js"
+  ],
+  "capture": {
+    "reference_kind": "source-derived locked reference",
+    "reference_png": "docs/ui-restoration/splash/reference.png",
+    "reference_sha256": "2bce9686c25edbf0aa842e9330351d6f8721b00f319d1f50610b0772896fc74e",
+    "reason": "The browser security boundary prevents automation of the local file URL. The deterministic reference is rendered only from the locked, hash-verified Splash source contract; the application does not embed or load the prototype.",
+    "animation_phase_ms": 750,
+    "actual_browser_png": "docs/ui-restoration/splash/actual-browser.png",
+    "actual_browser_sha256": "ceae73bced434d18fdeb5464fdf7312177e56e40fbe00a16d5c251f3ad4c36f8",
+    "actual_browser_safe_area_png": "docs/ui-restoration/splash/actual-browser-safe-area.png",
+    "actual_browser_safe_area_sha256": "8665e960ec5972a425bc2ecc4ea88fb6b1b30a3cfbc7fd424be4b2ca0eccdeca",
+    "overlay_png": "docs/ui-restoration/splash/overlay.png",
+    "overlay_sha256": "d47b423088282a93982df53ca1ac1e3a97a9deb2f681fb14602bf612a3c714cc",
+    "diff_png": "docs/ui-restoration/splash/diff.png",
+    "diff_sha256": "61580e1d8b3eb54a4aad32e944e6d0c4f96311b7a3f95a3d62b8c90865144849",
+    "actual_wkwebview_png": "docs/ui-restoration/splash/actual-wkwebview.png",
+    "actual_wkwebview_sha256": "06fa62ffd13a936bad303260602ec00d89fea483acf43ce1cf55edfc8edba1a8"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "phase": "splash-pixel-restoration",
+  "result": "passed",
+  "server_pid": 48435,
+  "reference": {
+    "kind": "source-derived locked reference",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "1e2a5e7e666a686bb671f5448154c1a6522e878118b246716e903bbf7fdfb36d",
+    "animation_phase_ms": 750
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "center_x": 196.5,
+      "center_y": 426
+    },
+    "content": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "center_x": 196.5,
+      "center_y": 426
+    },
+    "brand": {
+      "x": 126.53125,
+      "y": 376.609375,
+      "width": 139.921875,
+      "height": 60.78125,
+      "center_x": 196.4921875,
+      "center_y": 407
+    },
+    "arc": {
+      "x": 155.984375,
+      "y": 376.609375,
+      "width": 81,
+      "height": 22.796875,
+      "center_x": 196.484375,
+      "center_y": 388.0078125
+    },
+    "track": {
+      "x": 121.5,
+      "y": 471.375,
+      "width": 150,
+      "height": 4,
+      "center_x": 196.5,
+      "center_y": 473.375
+    },
+    "fill_css": {
+      "width": 63.9844,
+      "height": 4,
+      "border_radius": 2.00009
+    },
+    "safe": [
+      0,
+      0
+    ],
+    "role": "button",
+    "interaction": "splash.goWelcome.click.1",
+    "content_padding": "0px"
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 1128,
+    "pixels_above_channel_delta_8": 447,
+    "mean_absolute_channel_delta": 0.04015921227108196,
+    "max_channel_delta": 98
+  },
+  "checks": [
+    "393x852 actual uses locked geometry, zero source padding, full-screen interaction, and deterministic motion",
+    "62/34 safe areas keep the source group centered inside the measured content region",
+    "reference, actual, overlay, and absolute diff were generated from one deterministic animation phase",
+    "guest automatically reaches Welcome without writing a session",
+    "saved session restores Home once; top-safe-area double click and timer cannot duplicate navigation or skeletons",
+    "corrupt storage shows Retry, preserves bytes, and bottom-safe-area retry recovers after repair"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

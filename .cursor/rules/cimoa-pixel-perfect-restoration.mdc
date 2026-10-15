@@ -1,0 +1,22 @@
+---
+description: Enforce source-locked, page-by-page pixel-perfect restoration for Cimoa
+alwaysApply: true
+---
+
+# Cimoa Pixel-Perfect Restoration
+
+- Read `DEVELOPMENT_CONVENTIONS.md`, `INTERACTION_CONVENTIONS.md`, and `docs/cimoa-ui-restoration-protocol.md` before changing UI.
+- `CIRCA All Screens (interactive).html` is the only visual source. Existing Vue code is an implementation to audit, never a design reference.
+- Work on exactly one inventory item at a time. It is the only item allowed to have `status: in_progress`.
+- Before code changes, create or update its source-lock contract and difference audit under `docs/ui-restoration/<page>/`.
+- Match visible copy, control type, hierarchy, geometry, spacing, typography, wrapping, colors, radii, shadows, icons, media, states, motion, fixed regions, and scroll regions to the locked source.
+- Never rewrite copy, substitute controls/assets, add or remove visible elements, reorganize hierarchy, or make unrequested UX improvements.
+- Allowed deltas are only documented user decisions and required technical adaptations. Record each delta with its source, reason, and acceptance impact.
+- Unknown, conflicting, or missing source facts block that item. Do not guess or silently degrade.
+- Keep business entities in Store/getters and preserve the interaction contract; visual fidelity never authorizes fake state, fake success, or page-local business data.
+- Reuse shared components only when their rendered output is source-identical. Otherwise add an exact variant without changing unrelated screens.
+- Capture the source and implementation at 393x852 with the same animation phase. Produce reference, actual, overlay, and diff evidence; automated diff never replaces overlay inspection.
+- Geometry may differ by at most 1 CSS px at the reference viewport. Text, control inventory, source assets, and approved copy must match exactly; anti-aliasing and documented safe-area regions are the only unannotated pixel noise.
+- A source that cannot be rendered may be locked from static evidence, but `visual_acceptance` must remain `pending`.
+- Do not mark `visual_acceptance: passed` or `status: verified` without explicit visual evidence and the functional/full-acceptance gates required by the project workflow.
+- After a page is accepted, run the three mandatory checks and create only the local page-specific commit; do not push.

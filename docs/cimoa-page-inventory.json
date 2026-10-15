@@ -44,11 +44,15 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/splash/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/splash/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Splash source restored; Welcome and native full flow pending"
+    "mapping_status": "Splash source locked; pixel restoration confirmed by user; deterministic browser and iPhone 17 Pro WKWebView acceptance passed; final checks and local specialty commit complete"
   },
   {
     "source_screen": "Auth / Welcome / Default",
