@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "page": "Onboarding University",
+  "route": "/pages/onboarding/uni",
+  "source_screen": "Onboarding / University / Default",
+  "source_query": "route=obUni",
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isObUni",
+    "visual_lines": "2948-2987",
+    "visual_fragment_sha256": "da5e6e3d8834491283889595ed5d5ed41d85fc73f56fc614f89ee13d02d4a7fc",
+    "behavior_lines": [5224, 5569, 5570, 5655, 5656, 5665, 5666, 5667],
+    "behavior_fragment_sha256": "a434220fc978498a9c03122d5c283dabd468428beeb9a9754494ce4d0c704c6b"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "root": "absolute inset 0; cRise 240ms ease both",
+    "header": "top 58px; left/right 20px; height 48px; 14px gap",
+    "scroll_region": "top 124px; left/right 0; bottom 0; padding 0 20px 140px; vertical scroll",
+    "footer": "left/right 20px; bottom 34px; fixed above the source bottom edge",
+    "project_skeleton": "TopSafeArea; fixed SecondaryPageHeader; one middle scroll-view; fixed footer; BottomSafeArea"
+  },
+  "content": {
+    "progress": { "source_index": 2, "source_total": 8, "source_percent": 26, "track_height_css_px": 6 },
+    "title": { "copy": "Your university", "font_size_css_px": 31, "font_weight": 800, "letter_spacing": "-0.035em", "line_height": 1.1 },
+    "university_card": { "margin_top_css_px": 18, "padding_css_px": "16 18", "radius_css_px": 24, "title": "HKUST", "source_status": "Verified · to change this you verify again" },
+    "academic_year": { "margin_top_css_px": 22, "privacy": "Public", "choices": ["Year 1", "Year 2", "Year 3", "Year 4", "Postgraduate"] },
+    "field": { "margin_top_css_px": 16, "label": "Field of study", "privacy": "Optional", "placeholder": "Design", "input_height_css_px": 56 },
+    "graduation": { "margin_top_css_px": 16, "copy": "Expected graduation · 2027", "font_size_css_px": 15 }
+  },
+  "interactions": [
+    "obUni.goBack.click.1",
+    "obUni.o.pick.click.1",
+    "obUni.onObField.change.1",
+    "obUni.goObMajor.click.1"
+  ],
+  "approved_deltas": [
+    {
+      "id": "university-local-identity-truth",
+      "source": "User-authorized local-only registration and DEVELOPMENT_CONVENTIONS.md no-fake-feedback rule",
+      "delta": "The school title remains editable until saved and the source verification claim is replaced by Self-reported · verification pending; no email or student verification is claimed."
+    },
+    {
+      "id": "university-safe-area-keyboard-persistence",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 5, 9.2, 15.1 and 15.4",
+      "delta": "Use measured safe areas and visualViewport; Continue validates before Loading, then performs one Store transaction. Persistence failure and page leave write nothing."
+    },
+    {
+      "id": "university-source-step-count",
+      "source": "CIRCA lines 2954-2957",
+      "delta": "Preserve this page's explicit 2 / 8 and 26 percent independently from the ten-step internal data workflow."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      { "path": "src/components/OnboardingFrame.vue", "sha256": "ce50af131bf2dbb07296d96fbb64c88d13cc652b78e7cfada1af95ab0ff09108" },
+      { "path": "src/composables/useOnboarding.js", "sha256": "a6d4d6ee57a442577f0f3869a167ab53c1baf43c42e614c6e9060d4d56af5728" },
+      { "path": "src/pages/onboarding/uni.vue", "sha256": "36a84475701403d05180fe52415e360da16eff87668eab55c659615e8a99867b" },
+      { "path": "src/pages/onboarding/onboarding.css", "sha256": "4c03a71518bd4fde55f8303f7304c5c7a4f3f39f427ac1559af43cc76c86f090" }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/onboarding-university/reference.png",
+    "actual_browser_png": "docs/ui-restoration/onboarding-university/actual-browser.png",
+    "actual_browser_keyboard_png": "docs/ui-restoration/onboarding-university/actual-browser-keyboard.png",
+    "actual_browser_error_png": "docs/ui-restoration/onboarding-university/actual-browser-error.png",
+    "overlay_png": "docs/ui-restoration/onboarding-university/overlay.png",
+    "diff_png": "docs/ui-restoration/onboarding-university/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/onboarding-university/actual-wkwebview.png",
+    "actual_wkwebview_keyboard_png": "docs/ui-restoration/onboarding-university/actual-wkwebview-keyboard.png",
+    "actual_wkwebview_error_png": "docs/ui-restoration/onboarding-university/actual-wkwebview-error.png",
+    "browser_report": "docs/ui-restoration/onboarding-university/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/onboarding-university/acceptance.json",
+    "actual_browser_sha256": "eb82a10243a248f81c69dd53f4575b7083d3f65f0892e417f50a2a499474663c",
+    "actual_browser_keyboard_sha256": "7ec165129b530c5bb860ae411bfd20c9659ffb174f9772bbbf09fa3f943b400a",
+    "actual_browser_error_sha256": "fd92a3672114ad91ba7bb2079b9e74a97f1afa7852ad1b560b66bd24920a404d",
+    "actual_wkwebview_sha256": "da4872c655183b2a9f7331191800b8257fd02886143d044c95ec864d46df47a4",
+    "actual_wkwebview_keyboard_sha256": "477688b816bdc967e6b65732f51504bf2bde3823ed0b2e1779dfaab8ceb72d29",
+    "actual_wkwebview_error_sha256": "d8f9eacb4253fa81e7ece7d46f33d2dc498c9d380d09f056e8dbb23321513af8",
+    "visual_acceptance": "passed"
+  }
+}

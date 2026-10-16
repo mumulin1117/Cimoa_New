@@ -117,7 +117,7 @@ try {
   if (!['age', 'community', 'signup', 'email', 'basic'].includes(phase)) {
     await page.locator('.onboarding-uni-page').waitFor(); await settle()
     await click('obUni.goObMajor.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /university/)
-    await fill('University', 'HKUST'); await page.getByRole('button', { name: 'Year 3', exact: true }).click(); await fill('Field of study', 'Design'); await fill('Expected graduation', '2027')
+    await fill('University', 'HKUST'); await page.getByRole('button', { name: 'Year 3', exact: true }).click(); await fill('Field of study', 'Design'); assert.equal(await page.locator('.university-graduation').innerText(), 'Expected graduation · 2027')
     await shot('uni'); await click('obUni.goObMajor.click.1')
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='major' })
     check('University is self-reported, never pre-verified; year/field/graduation save to the current user')

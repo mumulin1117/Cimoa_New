@@ -1,0 +1,61 @@
+{
+  "phase": "onboarding-university-pixel-restoration",
+  "result": "passed",
+  "accepted_at": "2026-10-16",
+  "source_lock": "passed",
+  "visual_acceptance": "passed",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 9,
+    "report": "docs/ui-restoration/onboarding-university/browser-acceptance.json",
+    "comparison": {
+      "viewport": "393x852",
+      "pixels_different": 100180,
+      "pixels_above_channel_delta_8": 20778,
+      "mean_absolute_channel_delta": 2.968515183552545,
+      "max_channel_delta": 244
+    },
+    "registration_regression": "7/7 passed",
+    "store_regression": "10/10 passed"
+  },
+  "wkwebview": {
+    "result": "passed",
+    "tests": "1/1",
+    "device": "iPhone 17 Pro",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "real_software_keyboard": {
+      "opened": true,
+      "visual_viewport_reduced": true,
+      "footer_folded": true,
+      "focused_input_visible": true
+    },
+    "result_bundle": "ios/cimoaNeapo/build/OnboardingUniversityAcceptance.xcresult"
+  },
+  "covered": [
+    "source-locked 2 / 8 and 26 percent progress",
+    "truthful self-reported university identity without a student-verification claim",
+    "exact source labels, year order, field placeholder and static graduation copy",
+    "required-field and long-boundary validation with zero write",
+    "custom Loading before one atomic Store write and double-tap protection",
+    "persistence failure rollback with retry draft retained",
+    "page-leave cancellation with no hidden navigation",
+    "refresh restoration from the shared profile entity",
+    "Back ownership to Basic",
+    "iOS safe areas and real keyboard adaptation"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/onboarding-university/source-contract.json",
+    "docs/ui-restoration/onboarding-university/difference-audit.md",
+    "docs/ui-restoration/onboarding-university/reference.png",
+    "docs/ui-restoration/onboarding-university/actual-browser.png",
+    "docs/ui-restoration/onboarding-university/actual-browser-keyboard.png",
+    "docs/ui-restoration/onboarding-university/actual-browser-error.png",
+    "docs/ui-restoration/onboarding-university/overlay.png",
+    "docs/ui-restoration/onboarding-university/diff.png",
+    "docs/ui-restoration/onboarding-university/actual-wkwebview.png",
+    "docs/ui-restoration/onboarding-university/actual-wkwebview-keyboard.png",
+    "docs/ui-restoration/onboarding-university/actual-wkwebview-error.png"
+  ]
+}
