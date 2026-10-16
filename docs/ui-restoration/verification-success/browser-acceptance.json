@@ -1,0 +1,121 @@
+{
+  "phase": "verification-success-pixel-restoration",
+  "result": "passed",
+  "server_pid": 61310,
+  "reference": {
+    "kind": "source-derived locked reference with approved truthful-local-copy, entity-guard and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "e8ead2a2c7d126d42257c2a6725cf81c3c91592664a329cb2103af61a8810f33",
+    "behavior_fragment_sha256": "929913ea4caf33ee04661d5e6cb4847164d2b77f2794c37502662260be4a076a",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "right": 393,
+      "bottom": 852
+    },
+    "content": {
+      "x": 0,
+      "y": 54,
+      "width": 393,
+      "height": 403.9375,
+      "right": 393,
+      "bottom": 457.9375
+    },
+    "icon": {
+      "x": 148.5,
+      "y": 195.984375,
+      "width": 95.984375,
+      "height": 95.984375,
+      "right": 244.484375,
+      "bottom": 291.96875
+    },
+    "check": {
+      "x": 174.5,
+      "y": 221.984375,
+      "width": 43.984375,
+      "height": 43.984375,
+      "right": 218.484375,
+      "bottom": 265.96875
+    },
+    "heading": {
+      "x": 20,
+      "y": 307.953125,
+      "width": 353,
+      "height": 72,
+      "right": 373,
+      "bottom": 379.953125
+    },
+    "pill": {
+      "x": 63.53125,
+      "y": 395.9375,
+      "width": 265.9375,
+      "height": 42,
+      "right": 329.46875,
+      "bottom": 437.9375
+    },
+    "badge": {
+      "x": 79.515625,
+      "y": 407.9375,
+      "width": 17.984375,
+      "height": 17.984375,
+      "right": 97.5,
+      "bottom": 425.921875
+    },
+    "footer": {
+      "x": 0,
+      "y": 758.015625,
+      "width": 393,
+      "height": 93.984375,
+      "right": 393,
+      "bottom": 852
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 818.015625
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "text": {
+      "heading": "Local verification complete",
+      "pill": "Local account · This device",
+      "primary": "Continue Profile Setup"
+    },
+    "interaction": "verSuccess.goObBasic.click.1"
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 38223,
+    "pixels_above_channel_delta_8": 5163,
+    "mean_absolute_channel_delta": 0.699921006104481,
+    "max_channel_delta": 226
+  },
+  "checks": [
+    "393x852 verified state restores source geometry, approved truthful copy, exact SVG and interaction ID at the finished cRise frame",
+    "reference, actual, overlay and absolute diff were generated from one hash-locked state",
+    "refresh restores the exact verified account without another write or skeleton",
+    "320x568 and 62/34 safe areas keep the source CTA fixed and the only middle region scrollable",
+    "double tap shows Loading before one atomic onboarding/session write and opens Basic without promoting student identity",
+    "authenticated incomplete onboarding resumes its persisted Basic instance with zero repeated write",
+    "injected persistence failure rolls back onboarding and keeps a retryable explicit error on Success",
+    "leaving during Loading cancels the pending write and hidden-page navigation",
+    "unverified and guest direct entry show explicit recovery, write nothing and never invent a success entity"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

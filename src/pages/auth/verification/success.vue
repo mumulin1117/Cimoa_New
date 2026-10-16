@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { onHide } from '@dcloudio/uni-app'
+import { computed, onUnmounted, ref } from 'vue'
+import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { auth_destination } from '@/utils/authNavigation.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
@@ -12,13 +12,16 @@ const store = use_app_store(), frame = ref(null), error = ref('')
 const context = computed(() => store.local_verification)
 const go = async route => { error.value = ''; try { await frame.value.navigate_forward(auth_destination(route)) } catch (cause) { error.value = cause.message } }
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
-onHide(cancel_loading)
+let active = true
+onShow(() => { active = true; store.tick() })
+const hide = () => { active = false; cancel_loading() }
+onHide(hide); onUnmounted(hide)
 const continue_setup = async () => {
   if (!context.value?.verified || is_loading.value) return
   if (store.session.is_authenticated && (!store.onboarding || store.onboarding.completed)) { try { await relaunch_route('/pages/home/index') } catch (cause) { error.value = cause.message }; return }
   const id = context.value.account_id
   const result = store.session.is_authenticated && store.onboarding ? { success: true, data: store.onboarding.completed ? 'home' : store.onboarding.step } : await run_with_loading(() => store.begin_onboarding(id))
-  if (result.reason === 'cancelled') return
+  if (!active || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
   await go(result.data === 'home' ? '/pages/home/index' : onboarding_route(result.data))
 }
@@ -34,7 +37,7 @@ const continue_setup = async () => {
       <text v-else class="auth-error-box" role="alert">{{ store.hydration_error || 'Local verification has not been completed for this account.' }}</text>
       <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
     </view>
-    <template #footer><view class="verification-success-footer"><view v-if="context?.verified" class="auth-primary" role="button" tabindex="0" data-interaction="verSuccess.goObBasic.click.1" @click="continue_setup" @keydown.enter="continue_setup">Continue Profile Setup</view><view v-else class="auth-primary" role="button" tabindex="0" @click="go(context ? '/pages/auth/verification/code' : '/pages/auth/login')" @keydown.enter="go(context ? '/pages/auth/verification/code' : '/pages/auth/login')">{{ context ? 'Enter Code' : 'Log In' }}</view></view></template>
+    <template #footer><view class="verification-success-footer"><view v-if="context?.verified" class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verSuccess.goObBasic.click.1" @click="continue_setup" @keydown.enter="continue_setup">Continue Profile Setup</view><view v-else class="auth-primary" role="button" tabindex="0" @click="go(context ? '/pages/auth/verification/code' : '/pages/auth/login')" @keydown.enter="go(context ? '/pages/auth/verification/code' : '/pages/auth/login')">{{ context ? 'Enter Code' : 'Log In' }}</view></view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Starting profile setup…" /></template>
   </SecondaryPageFrame>
 </template>

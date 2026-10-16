@@ -1,6 +1,6 @@
 # 固定本地验证码
 
-用户明确验证码为`009789`，本轮按该请求实施固定验证码。Login 与 Email Verification 已完成严格像素封版；Code 现已按新流程补齐来源锁定、确定性像素证据与真实 iOS 数字键盘验收并升级为 `verified`，Success 仍需独立来源锁定后才可升级。
+用户明确验证码为`009789`，本轮按该请求实施固定验证码。Login、Email Verification、Code 与 Success 均已完成来源锁定、确定性像素证据、完整状态回归和 iPhone 17 Pro WKWebView 验收，并升级为 `verified`。
 
 ## 字段与边界
 
@@ -19,13 +19,13 @@ Code来源2735–2774，路由`/pages/auth/verification/code`；源46返回/16�
 | verCode.goVerSuccess.click.1 | Code2773 | Verify | 六位数字、当前账号 | 自定义500ms Loading锁重复 | Store原子写local_verification；进入Success | 错码/存储失败保留草稿，状态不变 | account local metadata | Code/Success/Login | 正确/错误、500ms前不写、刷新、双击、切号与离开取消 |
 | verCode.changeEmail.click.1 | Code2763 | Change email | 真实账号 context | push无Loading | 同账号 Email correction | 缺 context 不泄露账号 | none | account | 真实入口与返回已闭环、零写入 |
 | verCode.login（缺账号补齐） | Code空态 | Log In | 无有效账号 | 纯路由 | Login | 原地错误 | none | session | 访客/过期/删除无账号信息泄漏 |
-| verSuccess.goObBasic.click.1 | Success2790 | Continue Profile Setup | 本地验证成功且资料页就绪 | 纯路由 | 正确onboarding/basic | 缺依赖明确提示；验证结果保留 | none | account/profile | 不跳错误旧页、不伪造资料完成 |
+| verSuccess.goObBasic.click.1 | Success2790 | Continue Profile Setup | 本地验证成功且当前账号有效 | 首次启动自定义500ms Loading；已有流程直接恢复 | Store原子建立session/onboarding/basic；已有步骤恢复，完成态Home | 存储失败完整回滚；离页取消；缺/未验证context进入Code/Login | first start: session + onboarding；resume: none | account/profile | Loading前零写、双击单写、刷新、失败、取消、直达守卫 |
 
-Success来源2778–2791，路由`/pages/auth/verification/success`；96渐变圆/44源check、30标题、说明胶囊、底部60按钮。仅Store结果为verified时展示“Local verification complete”，不把直接打开成功URL算作通过。Code到Success已接通并回归；Change email和Continue Profile Setup依赖仍deferred。源top196减去原系统占位54后的内容间距转rpx，由实际TopSafeArea占位，不绘制假系统栏。
+Success来源2778–2791，路由`/pages/auth/verification/success`；96渐变圆/44源check、30标题、说明胶囊、底部60按钮。仅Store结果为verified时展示“Local verification complete”，不把直接打开成功URL算作通过。Code到Success、首次原子建立Basic、已有引导恢复、完成态Home、存储失败回滚和离页取消均已接通并回归。源top196减去原系统占位54后的内容间距转rpx，由实际TopSafeArea占位，不绘制假系统栏。
 
 ## 验收状态
 
-Code：62项单元测试通过；9项一次性Chrome检查通过，见[evidence](evidence/auth/verification-code-browser.json)。含无宿主/无账号、源6格44×60尺寸、格式/错码零写入、Change email明确失败、存储失败原子回滚、500ms前不写、双击单次提交、刷新恢复、取消和本地登录导向、320小屏62/34安全区/滚动/返回。已检查默认和小屏截图。
+Code 与 Success 当前专项：Store 10/10；Verification 联合浏览器 15/15；Success 确定性像素与行为 9/9；注册入口回归 2/2。Success 已生成 hash 锁定的 reference/actual/overlay/diff，并覆盖 393×852、320×568、62/34 安全区、刷新零写、首次资料引导原子写入、恢复、失败回滚、离页取消和未验证/访客直达守卫。
 
 最终Code/Success联合[14项浏览器检查](evidence/auth/verification-success-browser.json)全部通过，新增成功页数据守卫/96圆尺寸、小屏长标题与错误滚动、验证前后真实登录导向和三Tab仅消费登录的一次骨架、长邮箱换行。既有[Login13项](evidence/auth/login-browser.json)回归通过，浏览器脚本异常0；截图默认/小屏已人工复核。PID91223、91222及隔离浏览器由finally关闭。
 
@@ -33,7 +33,7 @@ iPhone17Pro/iOS26.5，[FixedCodeAcceptance-2原生结果](evidence/fixed-code-na
 
 第13节三项检查通过，无约定警告。测试早期出现脚本问题：单元测试通配符误含浏览器入口导致缺playwright；浏览器抢在uni-input值、rpx尺寸和页面动画更新前断言，以及误用了另一页按钮文本。已用明确单元清单、实际UI就绪条件及正确标签修复，全部原始断言保留，无跳过。中间失败截图移到本地build目录，不作为通过证据。
 
-全App及注册/Email/资料依赖仍未完成，不标记verified。本次只本地提交，不推送；没有真实邮箱发送、学生验证或重置密码。两份约定依create-rule技能仅改用户授权认证条款；验收记录依write-page技能区分实测与待完成项，全部保留在仓库，无外部页面。
+固定码验证链路与 Success 已逐页标记 verified；其余注册资料引导页面仍按各自清单独立核验，不能由本页结果替代。本次只本地提交，不推送；没有真实邮箱发送、学生验证或重置密码。
 
 最终重新执行第13节三项并导出`artifacts/cimoaNeapo-ios.zip`，155条目/122个H5文件逐个哈希及ZIP完整性检查通过；新HostTests源码与包内副本一致，原生实际测试构建manifest与最终H5一致，见[导出报告](evidence/fixed-code-native/package.json)。没有原型、DerivedData或用户Xcode配置进入ZIP。中间失败截图只移入本地`ios/cimoaNeapo/build/verification-browser-diagnostic.png`保留，不删除用户数据。
 

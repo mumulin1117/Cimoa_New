@@ -739,6 +739,61 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Verification Code WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
     }
+    func testVerificationSuccessPixelRestoration() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationSuccess=reset#/pages/auth/login")!))
+            try await waitFor(host, ".login-page")
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationSuccess=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        var stage = "prepare verified account"
+        do {
+            _ = try await script(host, "const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),account=envelope.data.accounts.find(row=>row.account_id===envelope.data.session.account_id),user=envelope.data.users.find(row=>row.user_id===envelope.data.session.current_user_id);account.auth_provider='local';account.local_verification={method:'fixed_code',status:'verified',verified_at:Date.now()};delete account.onboarding;user.onboarding_status='not_started';user.verification_status='pending';envelope.data.auth_flow.pending_registration_account_id=account.account_id;envelope.data.session={account_id:null,current_user_id:null,expires_at:null};localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationSuccess=native#/pages/auth/verification/success")!))
+            try await waitFor(host, ".verification-success-icon")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}},root=box('.verification-success-page'),icon=box('.verification-success-icon'),check=box('.verification-success-icon svg'),heading=box('.verification-success-heading'),pill=box('.verification-success-pill'),badge=box('.verification-success-pill svg'),primary=box('[data-interaction="verSuccess.goObBasic.click.1"]'),safes=[...document.querySelectorAll('.verification-success-page>.safe-area')].map(element=>element.getBoundingClientRect().height);
+                return {root,icon,check,heading,pill,badge,primary,safes,text:{heading:document.querySelector('.verification-success-heading').textContent,pill:document.querySelector('.verification-success-pill').textContent,primary:document.querySelector('[data-interaction="verSuccess.goObBasic.click.1"]').textContent},interaction:document.querySelector('[data-interaction="verSuccess.goObBasic.click.1"]').dataset.interaction};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], icon = metrics["icon"] as! [String: Double], check = metrics["check"] as! [String: Double], pill = metrics["pill"] as! [String: Double], badge = metrics["badge"] as! [String: Double], primary = metrics["primary"] as! [String: Double], safes = metrics["safes"] as! [Double], text = metrics["text"] as! [String: String]
+            let scale = root["width"]! / 393
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(icon["y"]!, safes[0] + 142 * scale, accuracy: 1); XCTAssertEqual(icon["width"]!, 96 * scale, accuracy: 1); XCTAssertEqual(icon["height"]!, 96 * scale, accuracy: 1); XCTAssertEqual(check["width"]!, 44 * scale, accuracy: 1); XCTAssertEqual(check["height"]!, 44 * scale, accuracy: 1); XCTAssertEqual(pill["height"]!, 42 * scale, accuracy: 1); XCTAssertEqual(badge["width"]!, 18 * scale, accuracy: 1); XCTAssertEqual(primary["height"]!, 60 * scale, accuracy: 1); XCTAssertEqual(primary["bottom"]!, root["height"]! - safes[1] - 34 * scale, accuracy: 2)
+            XCTAssertEqual(text["heading"], "Local verification complete"); XCTAssertEqual(text["pill"], "Local account · This device"); XCTAssertEqual(text["primary"], "Continue Profile Setup"); XCTAssertEqual(metrics["interaction"] as? String, "verSuccess.goObBasic.click.1")
+            let defaultShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); defaultShot.name = "WKWebView Verification Success default"; defaultShot.lifetime = .keepAlways; add(defaultShot)
+
+            stage = "rollback and atomic onboarding start"
+            let failureBefore = try await script(host, "const original=Storage.prototype.setItem;window.__restoreVerificationSuccessStorage=()=>Storage.prototype.setItem=original;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw new DOMException('Injected success storage failure','QuotaExceededError');return original.call(this,key,value)};return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host, "document.querySelector('[data-interaction=\"verSuccess.goObBasic.click.1\"]').click();return true"); try await waitFor(host, ".loading"); try await waitFor(host, ".verification-success-page [role=alert]")
+            let failed = try await script(host, "const result={error:document.querySelector('.verification-success-page [role=alert]').textContent,state:localStorage.getItem('cimoa_app_state_v2')};window.__restoreVerificationSuccessStorage();return result") as! [String: Any]
+            XCTAssertTrue((failed["error"] as? String)?.contains("Injected success storage failure") == true); XCTAssertEqual(failed["state"] as? String, failureBefore)
+            let errorShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); errorShot.name = "WKWebView Verification Success failure"; errorShot.lifetime = .keepAlways; add(errorShot)
+            _ = try await script(host, "const original=Storage.prototype.setItem;window.__verificationSuccessBefore=localStorage.getItem('cimoa_app_state_v2');window.__verificationSuccessWrites=0;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')window.__verificationSuccessWrites++;return original.call(this,key,value)};const action=document.querySelector('[data-interaction=\"verSuccess.goObBasic.click.1\"]');action.click();action.click();return true")
+            try await waitFor(host, ".loading"); let unchangedDuringLoading = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===window.__verificationSuccessBefore")
+            XCTAssertEqual(unchangedDuringLoading as? Bool, true)
+            try await waitFor(host, ".onboarding-basic-page")
+            let committed = try await script(host, "const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,account=data.accounts.find(row=>row.account_id===data.session.account_id),user=data.users.find(row=>row.user_id===data.session.current_user_id);return {step:account.onboarding.step,status:user.onboarding_status,verification:user.verification_status,writes:window.__verificationSuccessWrites}") as! [String: Any]
+            XCTAssertEqual(committed["step"] as? String, "basic"); XCTAssertEqual(committed["status"] as? String, "in_progress"); XCTAssertEqual(committed["verification"] as? String, "pending"); XCTAssertEqual(committed["writes"] as? Int, 1)
+
+            stage = "direct unverified recovery"
+            _ = try await script(host, "const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),account=envelope.data.accounts.find(row=>row.account_id===envelope.data.session.account_id);delete account.local_verification;delete account.onboarding;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true")
+            let unverified = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationSuccess=unverified#/pages/auth/verification/success")!)); try await waitFor(host, ".verification-success-page [role=alert]")
+            let recovery = try await script(host, "return {success:!!document.querySelector('.verification-success-icon'),error:document.querySelector('.verification-success-page [role=alert]').textContent,label:document.querySelector('.verification-success-footer .auth-primary').textContent.trim(),state:localStorage.getItem('cimoa_app_state_v2')}") as! [String: Any]
+            XCTAssertEqual(recovery["success"] as? Bool, false); XCTAssertTrue((recovery["error"] as? String)?.contains("not been completed") == true); XCTAssertEqual(recovery["label"] as? String, "Enter Code"); XCTAssertEqual(recovery["state"] as? String, unverified)
+            try await restore()
+        } catch { XCTFail("Verification Success WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

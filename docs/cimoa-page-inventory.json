@@ -660,7 +660,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/auth/verification/success",
-    "component": null,
+    "component": "src/pages/auth/verification/success.vue",
     "parent_route": "/pages/auth/verification/code",
     "allowed_origin_routes": [
       "/pages/auth/verification/code"
@@ -699,11 +699,17 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/verification-success/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/verification-success/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source + authorized local-only copy implemented; 14 browser flow checks + native fixed-code check passed; onboarding/basic missing; contract docs/cimoa-local-verification.md"
+    "mapping_status": "Verification Success source locked; pixel restoration automatically confirmed after deterministic browser and iPhone 17 Pro WKWebView acceptance; final checks and local specialty commit complete",
+    "acceptance_evidence": "docs/ui-restoration/verification-success/acceptance.json",
+    "acceptance_notes": "Pixel browser 9/9, existing Verification flow 15/15, Store 10/10, registration regression 2/2 and WKWebView 1/1 passed, including source geometry, approved local copy, refresh, 62/34 safe areas, atomic onboarding start, rollback, cancellation, resume and guarded direct entry."
   },
   {
     "source_screen": "Auth / Email Verification / Unsupported",

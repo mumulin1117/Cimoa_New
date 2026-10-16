@@ -1,0 +1,69 @@
+{
+  "phase": "verification-success-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-16",
+  "auto_confirmation_basis": "User authorized automatic confirmation and immediate next-page source locking when all source, browser, WKWebView, behavior and final-gate evidence passes without unresolved uncertainty.",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 9,
+    "existing_flow_checks_passed": 15,
+    "store_checks_passed": 10,
+    "registration_regression_checks_passed": 2,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": { "top": 54, "bottom": 0 },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": { "top": 62, "bottom": 34 },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/verification-success/browser-acceptance.json",
+    "comparison": {
+      "pixels_different": 38223,
+      "pixels_above_channel_delta_8": 5163,
+      "mean_absolute_channel_delta": 0.699921006104481,
+      "max_channel_delta": 226
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testVerificationSuccessPixelRestoration",
+    "result_bundle": "ios/cimoaNeapo/build/VerificationSuccessAcceptance-3.xcresult",
+    "tests": 1,
+    "failures": 0,
+    "screenshots": [
+      "docs/ui-restoration/verification-success/actual-wkwebview.png",
+      "docs/ui-restoration/verification-success/actual-wkwebview-error.png"
+    ]
+  },
+  "verified_flows": [
+    "locked source success geometry, exact source SVGs, source CTA copy and interaction ID, with only the approved truthful local-device copy delta",
+    "refresh restores the exact verified account with no write, no repeated verification and no main-tab skeleton",
+    "320x568 content remains scrollable while the CTA stays fixed above 62/34 safe areas",
+    "pending registration shows 500ms Loading before one atomic session/onboarding/basic write despite double tap",
+    "authenticated incomplete onboarding resumes its persisted step without a repeated write",
+    "injected persistence failure rolls back fully and remains retryable on Success",
+    "leaving during Loading cancels the write and hidden-page navigation",
+    "unverified and guest direct entry expose no success UI, write nothing and recover through Code or Login",
+    "iPhone 17 Pro WKWebView confirms real 62/34 safe areas, source-scaled geometry, rollback and atomic continuation"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/verification-success/reference.png",
+    "docs/ui-restoration/verification-success/actual-browser.png",
+    "docs/ui-restoration/verification-success/overlay.png",
+    "docs/ui-restoration/verification-success/diff.png",
+    "docs/ui-restoration/verification-success/source-contract.json",
+    "docs/ui-restoration/verification-success/difference-audit.md"
+  ],
+  "final_gates": {
+    "check_conventions": "passed",
+    "git_diff_check": "passed",
+    "build_h5": "passed"
+  }
+}

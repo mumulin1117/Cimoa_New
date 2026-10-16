@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "page": "Verification Success",
+  "route": "/pages/auth/verification/success",
+  "source_screen": "Auth / Email Verification / Success",
+  "source_query": "route=verSuccess",
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isVerSuccess",
+    "visual_lines": "2778-2791",
+    "visual_fragment_sha256": "e8ead2a2c7d126d42257c2a6725cf81c3c91592664a329cb2103af61a8810f33",
+    "behavior_lines": [4780, 5155, 5536, 5568],
+    "behavior_fragment_sha256": "929913ea4caf33ee04661d5e6cb4847164d2b77f2794c37502662260be4a076a"
+  },
+  "reference_viewport": {
+    "width_css_px": 393,
+    "height_css_px": 852,
+    "scale": 1
+  },
+  "structure": {
+    "root": "absolute inset 0; cRise 240ms ease both",
+    "source_system_chrome": "none inside this screen; project owns measured safe-area strips",
+    "fixed_regions": "center status group at source y=196; CTA left/right 20px and bottom 34px",
+    "scroll_region": "project keeps one middle scroll-view between TopSafeArea and fixed footer for small screens and long errors",
+    "project_skeleton": "TopSafeArea; no header; one flex scroll region; fixed footer; BottomSafeArea",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "content": {
+    "status_group": {
+      "top_css_px": 196,
+      "left_right_css_px": 20,
+      "layout": "column; center; 16px gap"
+    },
+    "success_icon": {
+      "size_css_px": "96x96",
+      "border_radius_css_px": 48,
+      "check_css_px": "44x44",
+      "check_path": "m5 12.5 4.5 4.5L19 7.5",
+      "background": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+      "shadow": "0 14px 30px rgba(168,85,247,0.28)"
+    },
+    "heading": {
+      "source_copy": "You’re verified",
+      "approved_local_copy": "Local verification complete",
+      "font_size_css_px": 30,
+      "font_weight": 800,
+      "letter_spacing": "-0.035em",
+      "text_align": "center"
+    },
+    "status_pill": {
+      "source_copy": "HKUST · verified student",
+      "approved_local_copy": "Local account · This device",
+      "height_css_px": 42,
+      "padding_css_px": "0 16",
+      "border_radius_css_px": 21,
+      "gap_css_px": 8,
+      "background": "#e8f1fd",
+      "badge_css_px": "18x18",
+      "badge_fill": "#1d9bf0",
+      "font_size_css_px": 16,
+      "font_weight": 700,
+      "color": "#1e4b8f"
+    }
+  },
+  "footer": {
+    "frame": "absolute left/right 20px; bottom 34px; z-index 20",
+    "primary": {
+      "interaction_id": "verSuccess.goObBasic.click.1",
+      "copy": "Continue Profile Setup",
+      "height_css_px": 60,
+      "border_radius_css_px": 30,
+      "background": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+      "shadow": "0 12px 26px rgba(168,85,247,0.24)",
+      "font_size_css_px": 19,
+      "font_weight": 700,
+      "color": "#fff"
+    }
+  },
+  "approved_deltas": [
+    {
+      "id": "verification-success-safe-area-and-skeleton",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.1",
+      "delta": "Use measured TopSafeArea and BottomSafeArea with one middle scroll region, preserving the 393x852 source coordinates and the source 34px design gap above the physical bottom safe area."
+    },
+    {
+      "id": "verification-success-truthful-local-copy",
+      "source": "User authorized fixed local verification and explicitly deferred real email/student verification",
+      "delta": "Do not claim email ownership, university affiliation or verified-student status. Replace only those two claims with locked local-device copy while preserving all source geometry and styling."
+    },
+    {
+      "id": "verification-success-entity-guard",
+      "source": "DEVELOPMENT_CONVENTIONS.md 5 and INTERACTION_CONVENTIONS.md 9.2",
+      "delta": "Render the success state only for the real verified local account. Missing or unverified context shows an explicit failure path and performs no write."
+    },
+    {
+      "id": "verification-success-atomic-onboarding-start",
+      "source": "Existing Store begin_onboarding contract",
+      "delta": "For a pending local registration, Continue shows custom 500ms Loading before one atomic Store write that creates the authenticated onboarding context. Double taps, hidden-page cancellation and persistence failure cannot partially start onboarding."
+    },
+    {
+      "id": "verification-success-resume-routing",
+      "source": "Existing startup/auth routing contract",
+      "delta": "Authenticated incomplete onboarding resumes its persisted step without another write; completed onboarding relaunches Home; a missing context returns to Code or Login without inventing an account."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      { "path": "src/pages/auth/verification/success.vue", "sha256": "d72813928891be2047bf060d9b3ba0e58522f012da82463003ea4ca335dcffc6" },
+      { "path": "src/pages/auth/auth.css", "sha256": "5a9fb0f2cd57ea93c6f7a631e33fe8e8388f592877a8b229a1601601a03cd7f8" },
+      { "path": "src/components/SecondaryPageFrame.vue", "sha256": "016c3405dc8dd670390e2626d6ea495bca779393d024f2ce614098eb021362da" },
+      { "path": "src/components/PageTransition.vue", "sha256": "817f7fadf829a195ee2d2a20767edb5f07baaa6829b646a1797cbaaa1f9ce946" },
+      { "path": "src/config/theme.json", "sha256": "ca1a695f12a6575d6d1e857b8f6d70873e4dc694afe8c60306e874a889ad6d8b" },
+      { "path": "src/stores/store.js", "sha256": "38a83693fd60e06b8b742c56388f2e81173d0dfd89f4703d27d9edd249ebe501" },
+      { "path": "src/stores/onboarding.js", "sha256": "7604fb7105c04cad8c702af2d48543884a85953327a435fe188fe7a5989fd509" },
+      { "path": "src/utils/authNavigation.js", "sha256": "f9730bfc3048a8377ee57f0f728f3ae49ef8f28ae717aedf92cfc7a16377119a" },
+      { "path": "src/utils/onboardingFlow.js", "sha256": "37ce1d9a663f1caf564a99e94acdeb9cde26c8f03750431afb0bc7eef928ea4c" },
+      { "path": "src/utils/routeTransition.js", "sha256": "8932569aec69eb514cab7e82d1df791755d21e7570d12ba0ca751f48120c4a58" }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/verification-success/reference.png",
+    "actual_browser_png": "docs/ui-restoration/verification-success/actual-browser.png",
+    "actual_browser_small_png": "docs/ui-restoration/verification-success/actual-browser-small.png",
+    "actual_browser_error_png": "docs/ui-restoration/verification-success/actual-browser-error.png",
+    "overlay_png": "docs/ui-restoration/verification-success/overlay.png",
+    "diff_png": "docs/ui-restoration/verification-success/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/verification-success/actual-wkwebview.png",
+    "actual_wkwebview_error_png": "docs/ui-restoration/verification-success/actual-wkwebview-error.png",
+    "browser_report": "docs/ui-restoration/verification-success/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/verification-success/acceptance.json",
+    "visual_acceptance": "passed"
+  }
+}

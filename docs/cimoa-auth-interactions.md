@@ -1,6 +1,6 @@
 # Cimoa 认证入口逐页交互契约
 
-Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版，Age Confirmation 已由本地提交 `9e6b318f` 封版，Community Agreement 已由本地提交 `047e4c1d` 封版，Signup 已由本地提交 `4adc0b9a` 封版，Email Verification 已由本地提交 `250ab834` 封版。Verification Code 的来源差异、浏览器/WKWebView 证据和固定码闭环均已通过，已按用户授权自动确认为 `verified / passed`；专项本地提交完成后立即锁定 Verification Success。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在全部证据通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
+Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版，Age Confirmation 已由本地提交 `9e6b318f` 封版，Community Agreement 已由本地提交 `047e4c1d` 封版，Signup 已由本地提交 `4adc0b9a` 封版，Email Verification 已由本地提交 `250ab834` 封版，Verification Code 已由本地提交 `1f8b0326` 封版。Verification Success 的来源差异、浏览器/WKWebView 证据和资料引导原子入口均已通过，已按用户授权自动确认为 `verified / passed`；专项本地提交完成后立即锁定下一个认证模块页面。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在全部证据通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
 
 ## Splash
 
@@ -99,3 +99,13 @@ Welcome 本轮像素专项已完成并获用户视觉确认：[来源契约](./u
 | verCode.goVerSuccess.click.1 | Code2773 | Verify Code | context 存在；页面只保留前六个 ASCII 数字 | exact 009789 显示 AuthActionLoading 500ms | Store 原子写 local_verification 一次并进入 guarded Success | 格式错零 Loading；错码、持久化失败、离开取消均无半状态 | account.local_verification | Login/Code/Success | 连点单次、刷新恢复、不提升学生身份 |
 
 证据见 [来源契约](./ui-restoration/verification-code/source-contract.json)、[差异审计](./ui-restoration/verification-code/difference-audit.md) 与 [验收摘要](./ui-restoration/verification-code/acceptance.json)。浏览器像素专项 10/10、既有联合回归 15/15、Store 10/10、iPhone 17 Pro WKWebView 1/1 均通过；真实数字键盘下六格可见且 footer 折叠。依据用户授权，本页已自动确认为 `verified / passed`。
+
+## Verification Success
+
+来源内层 2778–2791 行，`/pages/auth/verification/success`；精确保留 y=196 的 96 渐变成功圆、44 check、30 标题、42 状态 pill 和 bottom 34 的 60 高 CTA。来源中 `You’re verified` 与 `HKUST · verified student` 会虚假声称邮箱或学生身份已认证，按已批准固定本地模式只替换为 `Local verification complete` 与 `Local account · This device`，其他几何、颜色、SVG 和交互不变。
+
+| interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| verSuccess.goObBasic.click.1 | Success2790 | Continue Profile Setup | 真实账号 `local_verification.status=verified` | pending registration 显示 AuthActionLoading 500ms；已有 onboarding 直接恢复 | Store 原子建立 session/onboarding/basic；已有步骤恢复原 step；完成态 Home | 存储失败完整回滚并留 Success；离页取消；缺/未验证 context 进入真实 Code/Login | first start: session + account.onboarding + user.onboarding_status；resume: none | Signup/Code/Success/Onboarding | Loading 前零写、连点单次、失败回滚、刷新、取消和直达守卫 |
+
+证据见 [来源契约](./ui-restoration/verification-success/source-contract.json)、[差异审计](./ui-restoration/verification-success/difference-audit.md) 与 [验收摘要](./ui-restoration/verification-success/acceptance.json)。浏览器像素专项 9/9、既有 Verification 回归 15/15、Store 10/10、注册入口回归 2/2、iPhone 17 Pro WKWebView 1/1 均通过；实测真实安全区 62/34、双击单写、失败回滚、刷新/恢复、离页取消和未验证直达零写。依据用户授权，本页已自动确认为 `verified / passed`。
