@@ -107,7 +107,11 @@ export const onboarding_actions = {
         account.onboarding ||= { step: 'basic', completed_steps: [] }
         for (const field of fields[step] || []) user[field] = typeof patch[field] === 'string' ? patch[field].trim() : [...new Set(patch[field])]
         if (step === 'basic') { account.date_of_birth = patch.date_of_birth; user.age = age_from_date(patch.date_of_birth, now) }
-        if (step === 'goal') for (const id of user.goal_ids) if (!data.goals.some(row => row.item_id === id)) data.goals.push(clone_data(ONBOARDING_GOALS.find(row => row.item_id === id)))
+        if (step === 'goal') for (const id of user.goal_ids) {
+          const source = ONBOARDING_GOALS.find(row => row.item_id === id), existing = data.goals.find(row => row.item_id === id)
+          if (existing) Object.assign(existing, clone_data(source))
+          else data.goals.push(clone_data(source))
+        }
         if (step === 'ice') {
           data.icebreakers = data.icebreakers.filter(row => row.user_id !== user.user_id)
           user.icebreaker_ids = patch.questions.map((text, position) => { const question_id = make_id('question'); data.icebreakers.push({ question_id, user_id: user.user_id, text: text.trim(), position }); return question_id })

@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "page": "Onboarding Connection Goal",
+  "route": "/pages/onboarding/goal",
+  "source_screen": "Onboarding / Connection Goal / Default",
+  "source_query": "route=obGoal",
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isObGoal",
+    "visual_lines": "3109-3136",
+    "visual_fragment_sha256": "6e2de162052c8e4f6905b741a56ef78a32354de78f4c0ce4e5acafa7ddf02469",
+    "behavior_lines": [4686, 5224, 5584, 5586, 5683, 5684, 5685, 5686, 5687, 5688, 5689, 5690, 5691, 5692, 5693, 5694, 5695],
+    "behavior_fragment_sha256": "94e835fa170f653e5cdcb474e72a42e73a4f8de418d30bbdc78e516be98d45bc"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "header": "top 58px; left/right 20px; height 48px; 14px gap",
+    "scroll_region": "top 124px; left/right 0; padding 0 20px 150px; one vertical scroll owner",
+    "footer": "left/right 20px; bottom 30px; 60px primary",
+    "chip_grid": "margin-top 18px; flex wrap; 10px gaps",
+    "chip": "height 50px; horizontal padding 20px; radius 25px; 8px content gap; 16.5px semibold; 18px emoji"
+  },
+  "content": {
+    "progress": { "source_index": 6, "source_total": 8, "source_percent": 72 },
+    "title": "What are you here for?",
+    "description": "Choose as many as you like. You can update this anytime.",
+    "source_selected": [],
+    "chips": ["New Friends", "Study Partners", "Activity Buddies", "Campus Events", "Meaningful Conversations", "Language Exchange", "Gym & Sports", "Coffee Chats", "Project Teammates", "Music & Gigs", "Food Explorers", "Travel Buddies", "Gaming", "Career Networking", "Dating"],
+    "button": "Continue"
+  },
+  "interactions": [
+    "obGoal.goBack.click.1",
+    "obGoal.o.pick.click.1",
+    "obGoal.goObIce.click.1"
+  ],
+  "approved_deltas": [
+    {
+      "id": "goal-owned-persistence",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 5 and 6",
+      "delta": "Chip toggles remain immediate low-cost draft state; Continue shows the custom 400-600ms write Loading and atomically saves normalized goal IDs through the Store before navigating."
+    },
+    {
+      "id": "goal-safe-area",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 2, 11 and 15",
+      "delta": "Source coordinates are applied below the real top safe area and the single scroll owner preserves access to all 15 chips above the fixed footer on short displays."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      {
+        "path": "src/pages/onboarding/goal.vue",
+        "sha256_before_restoration": "57a144daf66e3eca425dd6b0674ac1765583d5a368037b255225437eede1168c",
+        "sha256_after_restoration": "9dfcc9314bee98dd9363c3f8ccd78f8b82d3901be6c8a3fe73d83d66915a3ab1"
+      },
+      { "path": "src/pages/onboarding/onboarding.css", "sha256": "4c03a71518bd4fde55f8303f7304c5c7a4f3f39f427ac1559af43cc76c86f090" },
+      { "path": "src/components/OnboardingFrame.vue", "sha256": "fc049999f83a687c6400a7d50096a8e89c6c6f4ab611936f543dd326db26b979" },
+      { "path": "src/composables/useOnboarding.js", "sha256": "a6d4d6ee57a442577f0f3869a167ab53c1baf43c42e614c6e9060d4d56af5728" },
+      {
+        "path": "src/stores/onboarding.js",
+        "sha256_before_restoration": "7604fb7105c04cad8c702af2d48543884a85953327a435fe188fe7a5989fd509",
+        "sha256_after_restoration": "8f717000963cfa6dd63c299aff467a266a8a14a35b16492e40a62f36355e075b"
+      },
+      {
+        "path": "src/stores/profileEditing.js",
+        "sha256_before_restoration": "939e6de74bf4822ccca58ac8bc3a7ede9d3980e4a0da44b931ade564f2e106c2",
+        "sha256_after_restoration": "1d792b2f749e703107307ebe710069ed08c7fdd02e2a6037deab654c42117a72"
+      },
+      { "path": "src/utils/onboardingFlow.js", "sha256": "37ce1d9a663f1caf564a99e94acdeb9cde26c8f03750431afb0bc7eef928ea4c" }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/onboarding-goal/reference.png",
+    "actual_browser_png": "docs/ui-restoration/onboarding-goal/actual-browser.png",
+    "actual_browser_selected_png": "docs/ui-restoration/onboarding-goal/actual-browser-selected.png",
+    "actual_browser_failure_png": "docs/ui-restoration/onboarding-goal/actual-browser-failure.png",
+    "actual_browser_small_png": "docs/ui-restoration/onboarding-goal/actual-browser-small.png",
+    "overlay_png": "docs/ui-restoration/onboarding-goal/overlay.png",
+    "diff_png": "docs/ui-restoration/onboarding-goal/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/onboarding-goal/actual-wkwebview.png",
+    "actual_wkwebview_selected_png": "docs/ui-restoration/onboarding-goal/actual-wkwebview-selected.png",
+    "actual_wkwebview_failure_png": "docs/ui-restoration/onboarding-goal/actual-wkwebview-failure.png",
+    "browser_report": "docs/ui-restoration/onboarding-goal/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/onboarding-goal/acceptance.json",
+    "visual_acceptance": "passed",
+    "artifact_sha256": {
+      "reference_png": "6dd99789cad42a62bdda49a81bf4df97e30760d30bd4f7db6770f694f981acf1",
+      "actual_browser_png": "896f3df5b1c55821666cd48022472562eb489a770ef40958a8d600d4c8de1e1d",
+      "actual_browser_selected_png": "8c3fb2ca924a93aa94416c6613702c5f488e348d2ff00a9c308171a6d71d1878",
+      "actual_browser_failure_png": "de7ab6279c4b9ad84bf7da710c3bc346d778f55dda24e4b00a420125305c4bad",
+      "actual_browser_small_png": "6304b362ff15f4a4f9360a40c75d240c9dc42a68671f633a5c98b2e8f7b461c2",
+      "overlay_png": "9c9333bc92f8aadc0506785f5803656c1ce596ae143a3eac5c2ec4fa737461ea",
+      "diff_png": "71bd9bc61f571f7413a591e338b11c467bcee0ca96dca6d7592512ff314d19ec",
+      "actual_wkwebview_png": "2b35ad00841c20e4e346bf2b0f1f7fa1bb10b8ff155019e4b9746f3e486d6579",
+      "actual_wkwebview_selected_png": "d29023d0a599da7f2ae9162ff9ae69325afb76875244fee9de779adaca872653",
+      "actual_wkwebview_failure_png": "efe57a6c6fb2bbe8253ebd73ff8342122fd13df8f3ec7d827c65ad46a3287e17"
+    }
+  }
+}

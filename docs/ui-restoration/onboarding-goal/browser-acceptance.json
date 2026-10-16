@@ -1,0 +1,147 @@
+{
+  "phase": "onboarding-goal-pixel-restoration",
+  "result": "passed",
+  "server_pid": 97429,
+  "reference": {
+    "kind": "source-derived locked reference with approved persistence and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "6e2de162052c8e4f6905b741a56ef78a32354de78f4c0ce4e5acafa7ddf02469",
+    "behavior_fragment_sha256": "94e835fa170f653e5cdcb474e72a42e73a4f8de418d30bbdc78e516be98d45bc",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375
+    },
+    "track": {
+      "x": 79.984375,
+      "y": 79,
+      "width": 249.515625,
+      "height": 5.984375,
+      "right": 329.5,
+      "bottom": 84.984375
+    },
+    "progress": {
+      "x": 79.984375,
+      "y": 79,
+      "width": 179.640625,
+      "height": 5.984375,
+      "right": 259.625,
+      "bottom": 84.984375
+    },
+    "title": {
+      "x": 20,
+      "y": 123.96875,
+      "width": 353,
+      "height": 34.09375,
+      "right": 373,
+      "bottom": 158.0625
+    },
+    "description": {
+      "x": 20,
+      "y": 168.0625,
+      "width": 353,
+      "height": 49.28125,
+      "right": 373,
+      "bottom": 217.34375
+    },
+    "chips": {
+      "x": 20,
+      "y": 235.328125,
+      "width": 353,
+      "height": 770,
+      "right": 373,
+      "bottom": 1005.328125
+    },
+    "first": {
+      "x": 20,
+      "y": 235.328125,
+      "width": 165.671875,
+      "height": 50,
+      "right": 185.671875,
+      "bottom": 285.328125
+    },
+    "primary": {
+      "x": 20,
+      "y": 762,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 822
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "text": {
+      "step": "6 / 8",
+      "title": "What are you here for?",
+      "description": "Choose as many as you like. You can update this anytime.",
+      "choices": [
+        "New Friends",
+        "Study Partners",
+        "Activity Buddies",
+        "Campus Events",
+        "Meaningful Conversations",
+        "Language Exchange",
+        "Gym & Sports",
+        "Coffee Chats",
+        "Project Teammates",
+        "Music & Gigs",
+        "Food Explorers",
+        "Travel Buddies",
+        "Gaming",
+        "Career Networking",
+        "Dating"
+      ],
+      "primary": "Continue"
+    },
+    "selected": [],
+    "interactions": [
+      "obGoal.goBack.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.o.pick.click.1",
+      "obGoal.goObIce.click.1"
+    ]
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 68625,
+    "pixels_above_channel_delta_8": 12504,
+    "mean_absolute_channel_delta": 0.7623933806400746,
+    "max_channel_delta": 162
+  },
+  "checks": [
+    "393x852 source geometry, exact 6 / 8 progress, 15-chip order, empty disabled state and all interaction IDs match the finished cRise frame",
+    "toggle, cancel and reselect preserve the one-item gate; double tap performs one atomic Store write and advances to Icebreakers",
+    "refresh restores shared user goals and direct-refresh Back returns Interests with zero write",
+    "all 15 goals remain selectable and the one scroll owner exposes Dating above the fixed footer at 320x568",
+    "persistence failure rolls back progress, keeps the retry selection and never opens Icebreakers",
+    "leaving during Loading cancels the delayed write and hidden-page navigation"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

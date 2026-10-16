@@ -35,7 +35,11 @@ export function validate_profile_patch(section, patch) {
 const write_patch = (data, section, patch) => {
   const user = data.users.find(row => row.user_id === owner_id(data))
   for (const [key, value] of Object.entries(patch)) if (key !== 'questions') user[key] = typeof value === 'string' ? value.trim() : clone_data(value)
-  if (section === 'goals') for (const id of user.goal_ids) if (!data.goals.some(row => row.item_id === id)) data.goals.push(clone_data(ONBOARDING_GOALS.find(row => row.item_id === id)))
+  if (section === 'goals') for (const id of user.goal_ids) {
+    const source = ONBOARDING_GOALS.find(row => row.item_id === id), existing = data.goals.find(row => row.item_id === id)
+    if (existing) Object.assign(existing, clone_data(source))
+    else data.goals.push(clone_data(source))
+  }
   if (section === 'ice') {
     // Keep historical questions referenced by existing introductions; only the active IDs change.
     user.icebreaker_ids = patch.questions.map((text, position) => {
