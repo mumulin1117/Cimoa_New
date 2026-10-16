@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "page": "Email Verification",
+  "route": "/pages/auth/verification/email",
+  "source_screen": "Auth / Email Verification / Enter Email",
+  "source_query": "route=verEmail",
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isVerEmail",
+    "visual_lines": "2708-2732",
+    "visual_fragment_sha256": "8eb86861e88d3c4f47120e13990602f1888eed59b35838b1c913d89973d21937",
+    "behavior_lines": [
+      4689,
+      5224,
+      5534,
+      5565,
+      5566,
+      5592,
+      5605,
+      5606,
+      5620,
+      5623,
+      5633
+    ],
+    "behavior_fragment_sha256": "c3e68f236a72ba52c9f3faec7d16d5972fa43366c0dac62fde03689c6b0f75db"
+  },
+  "reference_viewport": {
+    "width_css_px": 393,
+    "height_css_px": 852,
+    "scale": 1
+  },
+  "structure": {
+    "root": "absolute inset 0; cRise entry",
+    "source_system_chrome": "source header begins at y=58; project replaces prototype system chrome with measured TopSafeArea plus 4px source inset",
+    "fixed_regions": "header at source y=58; Send Verification Code footer left/right 20px and bottom 34px",
+    "scroll_region": "source absolute top 122px, left/right 0, bottom 0; overflow-y auto; padding 0 20px 190px",
+    "project_skeleton": "TopSafeArea; fixed AuthPageFrame header; one flex scroll region; fixed auth footer; BottomSafeArea",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "header": {
+    "frame": "top 58px; left/right 20px; height 48px; gap 12px; z-index 20",
+    "back": {
+      "interaction_id": "verEmail.goBack.click.1",
+      "size_css_px": "46x46",
+      "border_radius_css_px": 23,
+      "background": "#fff",
+      "shadow": "0 6px 18px rgba(16,36,74,0.10)",
+      "svg_css_px": "22x22",
+      "path": "M15 5l-7 7 7 7",
+      "stroke": "#0b1b3a",
+      "stroke_width": 2.4,
+      "stroke_linecap": "round",
+      "stroke_linejoin": "round"
+    },
+    "title": {
+      "source_copy": "University verification",
+      "approved_local_copy": "Local verification",
+      "font_size_css_px": 21,
+      "font_weight": 700,
+      "letter_spacing": "-0.025em",
+      "line_height": 1.15
+    }
+  },
+  "content": {
+    "heading": {
+      "source_copy": "Verify your university",
+      "approved_local_copy": "Confirm your email",
+      "font_size_css_px": 33,
+      "font_weight": 800,
+      "letter_spacing": "-0.035em",
+      "line_height": 1.1
+    },
+    "description": {
+      "source_copy": "We send a six-digit code to your university address to confirm you are a current student.",
+      "approved_local_copy": "This local account uses the fixed code 009789. No email is sent. This does not verify your university or student identity.",
+      "margin_top_css_px": 10,
+      "font_size_css_px": 17,
+      "color": "#5b6b85",
+      "line_height": 1.45,
+      "text_wrap": "pretty"
+    },
+    "field": {
+      "margin_top_css_px": 14,
+      "label": "University email",
+      "label_margin_bottom_css_px": 7,
+      "label_font_size_css_px": 14.5,
+      "label_font_weight": 600,
+      "label_color": "#5b6b85",
+      "box_height_css_px": 56,
+      "box_padding_css_px": "0 18",
+      "box_border_radius_css_px": 18,
+      "box_background": "#fff",
+      "box_shadow": "0 8px 22px rgba(16,36,74,0.06)",
+      "input_placeholder": "name@university.edu",
+      "input_font_size_css_px": 17,
+      "input_color": "#0b1b3a",
+      "interaction_id": "verEmail.onEmail.change.1"
+    },
+    "privacy_card": {
+      "source_copy": "Your address is used once for verification and stays private. It is never shown to other students and never used for marketing.",
+      "approved_local_copy": "Your address identifies your account on this device. It stays private and is never shown on your profile.",
+      "margin_top_css_px": 16,
+      "padding_css_px": 18,
+      "border_radius_css_px": 22,
+      "background": "rgba(255,255,255,0.7)",
+      "font_size_css_px": 15.5,
+      "color": "#44536b",
+      "line_height": 1.5,
+      "text_wrap": "pretty"
+    },
+    "example": {
+      "copy": "Example · a.chan@connect.hkust.edu",
+      "margin_top_css_px": 14,
+      "font_size_css_px": 14.5,
+      "color": "#8b95a6"
+    }
+  },
+  "footer": {
+    "frame": "absolute left/right 20px; bottom 34px; z-index 20",
+    "primary": {
+      "interaction_id": "verEmail.goVerCode.click.1",
+      "source_copy": "Send Verification Code",
+      "approved_local_copy": "Continue to Local Code",
+      "height_css_px": 60,
+      "border_radius_css_px": 30,
+      "background": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+      "shadow": "0 12px 26px rgba(168,85,247,0.24)",
+      "font_size_css_px": 19,
+      "font_weight": 700,
+      "color": "#fff"
+    }
+  },
+  "source_states": {
+    "standalone_default": "email is empty; source still renders the email field and enabled Send Verification Code",
+    "invalid_email": "goVerCode pings Enter your university email and stays on the page",
+    "unsupported_domain": "a syntactically accepted email outside edu/ac.xx/hkust routes to the unsupported page",
+    "supported_domain": "sets a 42 second resend timer and routes to Code",
+    "return": "goBack restores the previous source screen"
+  },
+  "motion": {
+    "entry": "cRise 240ms ease both; opacity 0 and translateY(14px) to opacity 1 and translateY(0)"
+  },
+  "approved_deltas": [
+    {
+      "id": "verification-email-safe-area-and-skeleton",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.1",
+      "delta": "Replace prototype system chrome and footer compensation with measured safe areas, fixed header/footer and one flex middle scroll region while preserving reference coordinates."
+    },
+    {
+      "id": "verification-email-fixed-local-code",
+      "source": "User authorized fixed local verification code 009789 and explicitly deferred real email verification",
+      "delta": "Do not claim that an email was sent or that the fixed code verifies university/student identity. Use the locked approved local title, heading, description, privacy statement and button copy while preserving the source typography, cards and spacing."
+    },
+    {
+      "id": "verification-email-entity-guard",
+      "source": "DEVELOPMENT_CONVENTIONS.md 5 and INTERACTION_CONVENTIONS.md 9.2",
+      "delta": "The normal page requires a real pending local account or the same authenticated local account. Missing/expired context shows an explicit recovery error and Log In action; it must not invent an account just to reproduce the standalone source input."
+    },
+    {
+      "id": "verification-email-atomic-correction",
+      "source": "Existing Store change_registration_email contract",
+      "delta": "Editing remains in memory. A changed valid unique email shows custom 400-600ms Loading and atomically updates only the pending account before opening Code; conflict or persistence failure stays here with no partial write. An unchanged address navigates without a fake write or Loading."
+    },
+    {
+      "id": "verification-email-local-domain-policy",
+      "source": "User-authorized local account scope",
+      "delta": "Retire the prototype unsupported-domain branch for this local-only flow. Any syntactically valid unique email may identify the local account; no domain is treated as proof of enrollment."
+    },
+    {
+      "id": "verification-email-return-ownership",
+      "source": "DEVELOPMENT_CONVENTIONS.md 11.2.1",
+      "delta": "Back restores the actual origin instance; direct entry falls back to Signup. Change Email from Code restores this page rather than creating another registration."
+    },
+    {
+      "id": "verification-email-keyboard-viewport",
+      "source": "DEVELOPMENT_CONVENTIONS.md 14 and 15.1.2",
+      "delta": "When the real keyboard reduces visualViewport height, keep the email input in the only scroll region and temporarily fold the fixed source footer; restore it when the keyboard closes. Default output remains unchanged."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      {
+        "path": "src/pages/auth/verification/email.vue",
+        "sha256": "7514fdb6c3a1d3e04402faedf1c1c2be2b0d94482c7da6f026456244e4db6fac"
+      },
+      {
+        "path": "src/pages/auth/auth.css",
+        "sha256": "5a9fb0f2cd57ea93c6f7a631e33fe8e8388f592877a8b229a1601601a03cd7f8"
+      },
+      {
+        "path": "src/components/AuthPageFrame.vue",
+        "sha256": "b50277b8759f5c4719dbf99db8e3d1930120e284f266d4ebf292668b3d09a47c"
+      },
+      {
+        "path": "src/components/SecondaryPageFrame.vue",
+        "sha256": "016c3405dc8dd670390e2626d6ea495bca779393d024f2ce614098eb021362da"
+      },
+      {
+        "path": "src/utils/localVerification.js",
+        "sha256": "57066b996d41aa63eb4eb05a9a9d5ef517a3f3b3b72bbcb3d906fa042122a632"
+      },
+      {
+        "path": "src/utils/authNavigation.js",
+        "sha256": "f9730bfc3048a8377ee57f0f728f3ae49ef8f28ae717aedf92cfc7a16377119a"
+      },
+      {
+        "path": "src/stores/store.js",
+        "sha256": "38a83693fd60e06b8b742c56388f2e81173d0dfd89f4703d27d9edd249ebe501"
+      }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/verification-email/reference.png",
+    "actual_browser_png": "docs/ui-restoration/verification-email/actual-browser.png",
+    "actual_browser_invalid_png": "docs/ui-restoration/verification-email/actual-browser-error.png",
+    "actual_browser_conflict_png": "docs/ui-restoration/verification-email/actual-browser-conflict.png",
+    "actual_browser_missing_context_png": "docs/ui-restoration/verification-email/actual-browser-missing-context.png",
+    "overlay_png": "docs/ui-restoration/verification-email/overlay.png",
+    "diff_png": "docs/ui-restoration/verification-email/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/verification-email/actual-wkwebview.png",
+    "actual_wkwebview_keyboard_png": "docs/ui-restoration/verification-email/actual-wkwebview-keyboard.png",
+    "actual_wkwebview_error_png": "docs/ui-restoration/verification-email/actual-wkwebview-error.png",
+    "browser_report": "docs/ui-restoration/verification-email/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/verification-email/acceptance.json",
+    "visual_acceptance": "passed"
+  },
+  "historical_evidence": {
+    "actual_png": "docs/evidence/registration/verification-email.png",
+    "actual_sha256": "ff18cb73187a39a7028c3c196dc2395bfd7bf354ad3bb88fbef55516480ef2ed",
+    "browser_report": "docs/evidence/registration/email-browser.json",
+    "browser_report_sha256": "d8f6b2c0bfd7c4060eb5081321b4ce2aeefd63c89aeb9cf7dfc2b8581e008bf9",
+    "limit": "The historical evidence proves the older local correction and fixed-code flow but is not a hash-locked empty/default pixel comparison and does not cover the real iOS keyboard or exact footer position."
+  }
+}

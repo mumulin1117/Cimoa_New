@@ -1,0 +1,135 @@
+{
+  "phase": "verification-email-pixel-restoration",
+  "result": "passed",
+  "server_pid": 47934,
+  "reference": {
+    "kind": "source-derived locked reference with approved local-code, entity-guard, safe-area and keyboard deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "8eb86861e88d3c4f47120e13990602f1888eed59b35838b1c913d89973d21937",
+    "behavior_fragment_sha256": "c3e68f236a72ba52c9f3faec7d16d5972fa43366c0dac62fde03689c6b0f75db",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "right": 65.984375,
+      "bottom": 104.984375
+    },
+    "heading": {
+      "x": 20,
+      "y": 121.96875,
+      "width": 353,
+      "height": 36.296875,
+      "right": 373,
+      "bottom": 158.265625
+    },
+    "description": {
+      "x": 20,
+      "y": 168.265625,
+      "width": 353,
+      "height": 73.921875,
+      "right": 373,
+      "bottom": 242.1875
+    },
+    "field": {
+      "x": 20,
+      "y": 256.1875,
+      "width": 353,
+      "height": 79.984375,
+      "right": 373,
+      "bottom": 336.171875
+    },
+    "input_box": {
+      "x": 20,
+      "y": 280.1875,
+      "width": 353,
+      "height": 55.984375,
+      "right": 373,
+      "bottom": 336.171875
+    },
+    "info": {
+      "x": 20,
+      "y": 352.15625,
+      "width": 353,
+      "height": 105.71875,
+      "right": 373,
+      "bottom": 457.875
+    },
+    "example": {
+      "x": 20,
+      "y": 471.875,
+      "width": 353,
+      "height": 17,
+      "right": 373,
+      "bottom": 488.875
+    },
+    "footer": {
+      "x": 0,
+      "y": 758.015625,
+      "width": 393,
+      "height": 93.984375,
+      "right": 393,
+      "bottom": 852
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 818.015625
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "text": {
+      "header": "Local verification",
+      "heading": "Confirm your email",
+      "description": "This local account uses the fixed code 009789. No email is sent. This does not verify your university or student identity.",
+      "label": "University email",
+      "input": "verify.pixel@campus.edu",
+      "info": "Your address identifies your account on this device. It stays private and is never shown on your profile.",
+      "example": "Example · a.chan@connect.hkust.edu",
+      "primary": "Continue to Local Code"
+    },
+    "back_interaction": "verEmail.goBack.click.1",
+    "input_interaction": "verEmail.onEmail.change.1"
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 71849,
+    "pixels_above_channel_delta_8": 12744,
+    "mean_absolute_channel_delta": 0.7841271547862237,
+    "max_channel_delta": 140
+  },
+  "checks": [
+    "393x852 pending account restores locked source geometry, exact approved copy and interaction IDs",
+    "reference, actual, overlay and absolute diff were generated from one hash-locked state",
+    "invalid input is zero-write and clears on edit; unchanged navigation writes nothing; changed email commits once after Loading despite double tap",
+    "duplicate email retains the retryable form and rolls back the whole write",
+    "persistence failure preserves input and produces no partial account mutation",
+    "missing context exposes no account field, writes nothing and opens real Login",
+    "verified recovery disables correction and continues without a second verification write",
+    "320x568 safe areas preserve the fixed footer; keyboard reduction folds it and keeps the email field visible",
+    "direct-entry Back falls back to Signup without mutating the pending account"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

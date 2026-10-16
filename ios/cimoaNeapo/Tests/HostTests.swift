@@ -612,6 +612,71 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Signup WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
     }
+    func testVerificationEmailPixelRestoration() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationEmail=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        var stage = "prepare pending local account"
+        do {
+            _ = try await script(host, "const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),account=envelope.data.accounts.find(row=>row.account_id===envelope.data.session.account_id);delete account.local_verification;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationEmail=native#/pages/auth/verification/email")!))
+            try await waitFor(host, ".verification-email-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}},root=box('.verification-email-page'),header=box('.auth-header'),back=box('.auth-back'),heading=box('.auth-heading'),description=box('.auth-description'),input=box('.auth-input-box'),info=box('.email-info'),example=box('.email-example'),primary=box('.auth-primary'),safes=[...document.querySelectorAll('.verification-email-page > .safe-area')].map(element=>element.getBoundingClientRect().height),field=document.querySelector('.verification-email-page .auth-input');
+                return {root,header,back,heading,description,input,info,example,primary,safes,text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.auth-heading').textContent,description:document.querySelector('.auth-description').textContent,info:document.querySelector('.email-info').textContent,example:document.querySelector('.email-example').textContent,primary:document.querySelector('.auth-primary').textContent.trim()},backInteraction:document.querySelector('.auth-back').dataset.interaction,inputInteraction:field.dataset.interaction,value:field.querySelector('input')?.value||''};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], header = metrics["header"] as! [String: Double], back = metrics["back"] as! [String: Double], heading = metrics["heading"] as! [String: Double], description = metrics["description"] as! [String: Double], input = metrics["input"] as! [String: Double], info = metrics["info"] as! [String: Double], example = metrics["example"] as! [String: Double], primary = metrics["primary"] as! [String: Double], safes = metrics["safes"] as! [Double], text = metrics["text"] as! [String: String]
+            let scale = root["width"]! / 393
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(header["y"]!, safes[0] + 4 * scale, accuracy: 1); XCTAssertEqual(header["height"]!, 48 * scale, accuracy: 1); XCTAssertEqual(back["width"]!, 46 * scale, accuracy: 1); XCTAssertEqual(back["height"]!, 46 * scale, accuracy: 1)
+            XCTAssertEqual(heading["y"]!, safes[0] + 68 * scale, accuracy: 1); XCTAssertEqual(description["y"]!, heading["bottom"]! + 10 * scale, accuracy: 1); XCTAssertEqual(input["height"]!, 56 * scale, accuracy: 1); XCTAssertEqual(info["y"]!, input["bottom"]! + 16 * scale, accuracy: 1); XCTAssertEqual(example["y"]!, info["bottom"]! + 14 * scale, accuracy: 1); XCTAssertEqual(primary["height"]!, 60 * scale, accuracy: 1); XCTAssertEqual(primary["bottom"]!, root["height"]! - safes[1] - 34 * scale, accuracy: 2)
+            XCTAssertEqual(text["header"], "Local verification"); XCTAssertEqual(text["heading"], "Confirm your email"); XCTAssertEqual(text["description"], "This local account uses the fixed code 009789. No email is sent. This does not verify your university or student identity."); XCTAssertEqual(text["info"], "Your address identifies your account on this device. It stays private and is never shown on your profile."); XCTAssertEqual(text["example"], "Example · a.chan@connect.hkust.edu"); XCTAssertEqual(text["primary"], "Continue to Local Code")
+            XCTAssertEqual(metrics["backInteraction"] as? String, "verEmail.goBack.click.1"); XCTAssertEqual(metrics["inputInteraction"] as? String, "verEmail.onEmail.change.1")
+            let defaultShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); defaultShot.name = "WKWebView Verification Email default"; defaultShot.lifetime = .keepAlways; add(defaultShot)
+
+            stage = "validation and real keyboard"
+            _ = try await script(host, "const input=document.querySelector('.verification-email-page input'),set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(input,'bad');input.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-interaction=\"verEmail.goVerCode.click.1\"]').click();return true")
+            try await waitFor(host, ".verification-email-page [role=alert]")
+            let invalid = try await script(host, "return {error:document.querySelector('.verification-email-page [role=alert]').textContent,unchanged:localStorage.getItem('cimoa_app_state_v2')!==null,loading:!!document.querySelector('.loading')}") as! [String: Any]
+            XCTAssertTrue((invalid["error"] as? String)?.contains("valid email") == true); XCTAssertEqual(invalid["unchanged"] as? Bool, true); XCTAssertEqual(invalid["loading"] as? Bool, false)
+            let errorShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); errorShot.name = "WKWebView Verification Email invalid"; errorShot.lifetime = .keepAlways; add(errorShot)
+            let viewportBefore = try await script(host, "return visualViewport.height") as! Double
+            _ = try await script(host, "const input=document.querySelector('.verification-email-page input'),set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(input,'native.email@campus.edu');input.dispatchEvent(new Event('input',{bubbles:true}));input.click();input.focus();return true")
+            var keyboard: [String: Any] = [:]
+            for _ in 0..<50 {
+                keyboard = try await script(host, "const input=document.querySelector('.verification-email-page input').getBoundingClientRect();return {height:visualViewport.height,open:document.querySelector('.verification-email-page').classList.contains('verification-email-page--keyboard'),footer:getComputedStyle(document.querySelector('.auth-footer')).display,inputTop:input.top,inputBottom:input.bottom}") as! [String: Any]
+                if keyboard["open"] as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            XCTAssertLessThan(keyboard["height"] as! Double, viewportBefore - 120); XCTAssertEqual(keyboard["open"] as? Bool, true); XCTAssertEqual(keyboard["footer"] as? String, "none"); XCTAssertGreaterThanOrEqual(keyboard["inputTop"] as! Double, 0); XCTAssertLessThanOrEqual(keyboard["inputBottom"] as! Double, keyboard["height"] as! Double)
+            let keyboardShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); keyboardShot.name = "WKWebView Verification Email keyboard"; keyboardShot.lifetime = .keepAlways; add(keyboardShot)
+            _ = try await script(host, "document.querySelector('.verification-email-page input').blur();return true"); try await Task.sleep(nanoseconds: 350_000_000)
+
+            stage = "persistence rollback and atomic correction"
+            let failureBefore = try await script(host, "const original=Storage.prototype.setItem;window.__restoreVerificationEmailStorage=()=>Storage.prototype.setItem=original;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw new DOMException('Injected email storage failure','QuotaExceededError');return original.call(this,key,value)};return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host, "document.querySelector('[data-interaction=\"verEmail.goVerCode.click.1\"]').click();return true"); try await waitFor(host, ".loading"); try await waitFor(host, ".verification-email-page [role=alert]")
+            let failed = try await script(host, "const result={error:document.querySelector('.verification-email-page [role=alert]').textContent,state:localStorage.getItem('cimoa_app_state_v2'),value:document.querySelector('.verification-email-page input').value};window.__restoreVerificationEmailStorage();return result") as! [String: Any]
+            XCTAssertTrue((failed["error"] as? String)?.contains("failure") == true); XCTAssertEqual(failed["state"] as? String, failureBefore); XCTAssertEqual(failed["value"] as? String, "native.email@campus.edu")
+            _ = try await script(host, "const original=Storage.prototype.setItem;window.__verificationEmailWrites=0;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')window.__verificationEmailWrites++;return original.call(this,key,value)};const action=document.querySelector('[data-interaction=\"verEmail.goVerCode.click.1\"]');action.click();action.click();return true")
+            try await waitFor(host, ".loading"); try await waitFor(host, ".verification-page")
+            let committed = try await script(host, "const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,account=data.accounts.find(row=>row.account_id===data.session.account_id);return {email:account.email,writes:window.__verificationEmailWrites}") as! [String: Any]
+            XCTAssertEqual(committed["email"] as? String, "native.email@campus.edu"); XCTAssertEqual(committed["writes"] as? Int, 1)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationEmail=refresh#/pages/auth/verification/email")!)); try await waitFor(host, ".verification-email-page")
+            let restoredEmail = try await script(host, "return document.querySelector('.verification-email-page input').value") as? String; XCTAssertEqual(restoredEmail, "native.email@campus.edu")
+            try await restore()
+        } catch { XCTFail("Verification Email WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

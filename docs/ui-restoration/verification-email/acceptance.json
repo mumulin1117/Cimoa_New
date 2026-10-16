@@ -1,0 +1,74 @@
+{
+  "phase": "verification-email-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-16",
+  "auto_confirmation_basis": "User authorized automatic confirmation and immediate next-page source locking when all source, browser, WKWebView, behavior and final-gate evidence passes without unresolved uncertainty.",
+  "browser": {
+    "result": "passed",
+    "checks_passed": 9,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": {
+      "top": 54,
+      "bottom": 0
+    },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/verification-email/browser-acceptance.json",
+    "comparison": {
+      "pixels_different": 71849,
+      "pixels_above_channel_delta_8": 12744,
+      "mean_absolute_channel_delta": 0.7841271547862237,
+      "max_channel_delta": 140
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "test": "cimoaNeapoTests.HostTests.testVerificationEmailPixelRestoration",
+    "result_bundle": "ios/cimoaNeapo/build/VerificationEmailAcceptance-5.xcresult",
+    "tests": 1,
+    "failures": 0,
+    "screenshots": [
+      "docs/ui-restoration/verification-email/actual-wkwebview.png",
+      "docs/ui-restoration/verification-email/actual-wkwebview-keyboard.png",
+      "docs/ui-restoration/verification-email/actual-wkwebview-error.png"
+    ]
+  },
+  "verified_flows": [
+    "locked source geometry, approved truthful local-code copy, three interaction IDs and the finished cRise frame",
+    "invalid input is zero-write and clears on edit; unchanged email navigates without a fake write",
+    "changed unique email shows custom Loading and commits once despite double tap",
+    "duplicate email and injected persistence failure preserve the retryable form and fully roll back",
+    "missing context exposes no account field and returns to real Login; verified recovery does not repeat verification",
+    "320x568 scrolling, 62/34 safe areas, direct-entry Back and refresh restoration remain valid",
+    "iPhone 17 Pro WKWebView real software keyboard folds the fixed footer and leaves the email input visible"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/verification-email/reference.png",
+    "docs/ui-restoration/verification-email/actual-browser.png",
+    "docs/ui-restoration/verification-email/overlay.png",
+    "docs/ui-restoration/verification-email/diff.png",
+    "docs/ui-restoration/verification-email/source-contract.json",
+    "docs/ui-restoration/verification-email/difference-audit.md"
+  ],
+  "final_gates": {
+    "check_conventions": "passed",
+    "git_diff_check": "passed",
+    "build_h5": "passed; 342 files packaged into the WKWebView host"
+  }
+}
