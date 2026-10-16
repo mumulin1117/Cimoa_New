@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "page": "Onboarding Interests",
+  "route": "/pages/onboarding/interests",
+  "source_screen": "Onboarding / Interests / Default",
+  "source_query": "route=obInterests",
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isObInterests",
+    "visual_lines": "3083-3106",
+    "visual_fragment_sha256": "fdfa534ebee47f399119c051d58205a8705473afcf1f3f354bdc85bf510247f8",
+    "behavior_lines": [4686, 5545, 5583, 5584, 5669, 5670, 5671, 5672, 5673, 5674, 5675, 5676, 5677, 5678, 5679, 5680, 5681, 5682],
+    "behavior_fragment_sha256": "29585a78766592b716775e26a79bd3b239ab863216975748933c559ee73309fe"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "header": "top 58px; left/right 20px; height 48px; 14px gap",
+    "scroll_region": "top 124px; left/right 0; padding 0 20px 150px; one vertical scroll owner",
+    "footer": "left/right 20px; bottom 34px; 60px primary",
+    "counter": "margin-top 16px; 14.5px bold",
+    "chip_grid": "margin-top 12px; flex wrap; 10px gaps",
+    "chip": "height 50px; horizontal padding 20px; radius 25px; 8px content gap; 16.5px semibold; 18px emoji"
+  },
+  "content": {
+    "progress": { "source_index": 5, "source_total": 8, "source_percent": 62 },
+    "title": "What are you into?",
+    "description": "Pick at least three. They help us suggest people and events.",
+    "counter": "0 of 3 minimum through selected count of 3 minimum",
+    "minimum": 3,
+    "source_selected": ["Photography", "Coffee", "Live Music"],
+    "chips": ["Photography", "Coffee", "Live Music", "Sports", "Gaming", "Travel", "Art", "Films", "Books", "Volunteering", "Study Groups", "Food", "Fitness", "Hiking", "Cooking", "Dance", "K-pop"],
+    "button": "Continue"
+  },
+  "interactions": [
+    "obInterests.goBack.click.1",
+    "obInterests.o.pick.click.1",
+    "obInterests.goObGoal.click.1"
+  ],
+  "approved_deltas": [
+    {
+      "id": "interests-owned-persistence",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 5 and 6",
+      "delta": "Chip toggles remain immediate low-cost selection state; Continue shows the custom 400-600ms write Loading and atomically saves normalized interest IDs through the Store before navigating."
+    },
+    {
+      "id": "interests-safe-area",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 2, 11 and 15",
+      "delta": "Source coordinates are applied below the real top safe area and the single scroll owner preserves access to all 17 chips above the fixed footer on short displays."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      {
+        "path": "src/pages/onboarding/interests.vue",
+        "sha256_before_restoration": "3f463aa9cccc2186976142e1425c498d1ab4a214f0108760b60f181245a9e919",
+        "sha256_after_restoration": "7dace6ccdaf43093c7662e88daddd8f78527d67e726f5150a916a95412dca72f"
+      },
+      { "path": "src/pages/onboarding/onboarding.css", "sha256": "4c03a71518bd4fde55f8303f7304c5c7a4f3f39f427ac1559af43cc76c86f090" },
+      {
+        "path": "src/components/OnboardingFrame.vue",
+        "sha256_before_restoration": "ce50af131bf2dbb07296d96fbb64c88d13cc652b78e7cfada1af95ab0ff09108",
+        "sha256_after_restoration": "fc049999f83a687c6400a7d50096a8e89c6c6f4ab611936f543dd326db26b979"
+      },
+      { "path": "src/composables/useOnboarding.js", "sha256": "a6d4d6ee57a442577f0f3869a167ab53c1baf43c42e614c6e9060d4d56af5728" },
+      { "path": "src/stores/onboarding.js", "sha256": "7604fb7105c04cad8c702af2d48543884a85953327a435fe188fe7a5989fd509" },
+      { "path": "src/utils/onboardingFlow.js", "sha256": "37ce1d9a663f1caf564a99e94acdeb9cde26c8f03750431afb0bc7eef928ea4c" }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/onboarding-interests/reference.png",
+    "actual_browser_png": "docs/ui-restoration/onboarding-interests/actual-browser.png",
+    "actual_browser_empty_png": "docs/ui-restoration/onboarding-interests/actual-browser-empty.png",
+    "actual_browser_failure_png": "docs/ui-restoration/onboarding-interests/actual-browser-failure.png",
+    "actual_browser_small_png": "docs/ui-restoration/onboarding-interests/actual-browser-small.png",
+    "overlay_png": "docs/ui-restoration/onboarding-interests/overlay.png",
+    "diff_png": "docs/ui-restoration/onboarding-interests/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/onboarding-interests/actual-wkwebview.png",
+    "actual_wkwebview_empty_png": "docs/ui-restoration/onboarding-interests/actual-wkwebview-empty.png",
+    "actual_wkwebview_failure_png": "docs/ui-restoration/onboarding-interests/actual-wkwebview-failure.png",
+    "browser_report": "docs/ui-restoration/onboarding-interests/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/onboarding-interests/acceptance.json",
+    "visual_acceptance": "passed",
+    "artifact_sha256": {
+      "reference_png": "8cb50f8fbe348b992c8f822e5e7f16cd7c94ba747ca53d600822a3f464e3ca1b",
+      "actual_browser_png": "731e6a1cf7526f3142f719f3128eea4539b49016a5309abc391e5b07f8144752",
+      "actual_browser_empty_png": "6b71fc60b7dd2980c7a4fdd709c0a13c610dc8ee4349d804eab1fd22a9673829",
+      "actual_browser_failure_png": "deadb11dd2279155160ddc796f7a890703e5f8c84ac07ffe9f1a0591b39ef80a",
+      "actual_browser_small_png": "459995cd93fea107c91ac668c435cc7c513abaacd1d602a66c9c803623452861",
+      "overlay_png": "0ad35369abee4289ba6fbd5b6ba1b43ecb22b5f332dc32ec189f0f4bc96b694d",
+      "diff_png": "c220790771e19fdf7c49c844f32a67d33a999fbba8c8a77b5d4ae47e018ae624",
+      "actual_wkwebview_png": "b7d1a875bb2c2a32c2e4628101f7dccbe32699da3876b21047188b34535cff06",
+      "actual_wkwebview_empty_png": "ea96324f45a4c7ef57b97f78e9c3c9df7392fd7c6ed88a11ebcf8236ca13420c",
+      "actual_wkwebview_failure_png": "7b7470e1c3d163996b4ea8331a2df0e99ffc2e51593be62fecea032245fd2866"
+    }
+  }
+}

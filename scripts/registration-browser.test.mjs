@@ -136,10 +136,10 @@ try {
   if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major'].includes(phase)) {
     await page.locator('.onboarding-photos-page').waitFor(); await settle()
     assert.equal(await page.locator('.photo-slot').count(), 3)
-    await page.locator('[data-interaction="obPhotos.goObAbout.click.1"]').dispatchEvent('click')
-    await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /at least two photos/)
+    const empty_before = await snapshot(); await page.locator('[data-interaction="obPhotos.goObAbout.click.1"]').dispatchEvent('click'); await page.waitForTimeout(650)
+    assert.deepEqual(await snapshot(), empty_before); assert.equal(await page.locator('.loading').count(), 0); assert.equal(await page.getByRole('alert').count(), 0); assert.equal(await page.locator('.onboarding-about-page').count(), 0)
     await shot('photos-empty')
-    check('Photos source fan and fixed footer render; empty collection cannot continue')
+    check('Photos source fan and fixed footer render; empty collection keeps Continue disabled with zero Loading, write or navigation')
   }
   if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos'].includes(phase)) {
     const tap_side_photo = async () => {

@@ -1,0 +1,69 @@
+{
+  "phase": "onboarding-interests-pixel-restoration",
+  "result": "passed",
+  "accepted_at": "2026-10-16",
+  "source_lock": "passed",
+  "visual_acceptance": "passed",
+  "browser": {
+    "result": "passed",
+    "pixel_and_flow_checks": "8/8",
+    "report": "docs/ui-restoration/onboarding-interests/browser-acceptance.json",
+    "viewport_css_px": "393x852",
+    "safe_area_css_px": { "top": 54, "bottom": 0 },
+    "comparison": {
+      "pixels_different": 104128,
+      "pixels_above_channel_delta_8": 8952,
+      "mean_absolute_channel_delta": 0.679018235793045,
+      "max_channel_delta": 134
+    },
+    "registration_regression": "12/12 passed through Interests and refresh restore",
+    "store_regression": "10/10 passed"
+  },
+  "wkwebview": {
+    "result": "passed",
+    "tests": "1/1",
+    "host": "cimoaNeapo",
+    "device": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testOnboardingInterestsPixelRestoration",
+    "result_bundle": "ios/cimoaNeapo/build/OnboardingInterestsAcceptance-5.xcresult"
+  },
+  "covered": [
+    "source-locked 5 / 8 frame, exact copy, spacing, 17-chip order, selection and footer geometry",
+    "zero and two-item minimum gate with no Loading, write or navigation",
+    "all 17 interests selectable with accurate count and final-chip reachability",
+    "custom 400-600ms Loading before one atomic Store persistence",
+    "double Continue writes and navigates once",
+    "persistence failure rolls back progress and preserves the retry selection",
+    "leaving during Loading cancels the delayed write and hidden-page navigation",
+    "refresh restores the same user entity without page-level duplicate data",
+    "Back ownership returns to About and success enters Goal",
+    "393x852, 320x568 and iPhone 17 Pro preserve one scroll owner and fixed footer",
+    "offline bundled WKWebView execution with real safe-area ownership"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/onboarding-interests/source-contract.json",
+    "docs/ui-restoration/onboarding-interests/difference-audit.md",
+    "docs/ui-restoration/onboarding-interests/reference.png",
+    "docs/ui-restoration/onboarding-interests/actual-browser.png",
+    "docs/ui-restoration/onboarding-interests/actual-browser-empty.png",
+    "docs/ui-restoration/onboarding-interests/actual-browser-failure.png",
+    "docs/ui-restoration/onboarding-interests/actual-browser-small.png",
+    "docs/ui-restoration/onboarding-interests/overlay.png",
+    "docs/ui-restoration/onboarding-interests/diff.png",
+    "docs/ui-restoration/onboarding-interests/actual-wkwebview.png",
+    "docs/ui-restoration/onboarding-interests/actual-wkwebview-empty.png",
+    "docs/ui-restoration/onboarding-interests/actual-wkwebview-failure.png"
+  ],
+  "final_checks": {
+    "status": "passed",
+    "corepack pnpm check:conventions": "passed with no warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; 342 H5 files packaged into ios/cimoaNeapo/Resources/H5"
+  },
+  "commit": "included in the Onboarding Interests local specialty commit"
+}
