@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onUnmounted } from 'vue'
 import { onHide } from '@dcloudio/uni-app'
-import { media_cache } from '@/utils/mediaRepository.js'
+import { acquire_audio_media } from '@/utils/mediaRepository.js'
 import SourceIcon from './SourceIcon.vue'
 const props = defineProps({ src: String, duration: Number, interaction: { type: String, default: 'eventGroup.media.play.click.1' } })
 const error = ref(''), playing = ref(false), pending = ref(false)
@@ -14,7 +14,7 @@ const toggle = async () => {
   const current = ++token; pending.value = true; error.value = ''
   try {
     if (!audio) {
-      const acquired = await media_cache.acquire(props.src)
+      const acquired = await acquire_audio_media(props.src)
       if (current !== token) { acquired.release(); return }
       handle = acquired; audio = uni.createInnerAudioContext(); audio.src = handle.url
       audio.onPlay(() => { playing.value = true; pending.value = false }); audio.onPause(() => { playing.value = false }); audio.onEnded(() => { playing.value = false })

@@ -10,6 +10,7 @@ import ProfilePhoto from '@/components/ProfilePhoto.vue'
 import EventConfirmDialog from '@/components/EventConfirmDialog.vue'
 import EventActionLoading from '@/components/EventActionLoading.vue'
 import SafetyActionsMiniSheet from '@/components/SafetyActionsMiniSheet.vue'
+import ProfileVoiceIntro from '@/components/ProfileVoiceIntro.vue'
 
 const store = use_app_store()
 const frame = ref(null)
@@ -120,7 +121,7 @@ const confirm_block = async () => {
     <view v-if="access_error" class="expanded-state" role="alert">{{ access_error }}</view>
     <view v-else class="expanded-content">
       <view class="expanded-photo-card">
-        <view class="expanded-photo" role="button" tabindex="0" :aria-label="`Open photo ${photo_index + 1} of ${photos.length}`" :data-interaction="`expanded.openGallery.click.${Math.min(photo_index + 1, 3)}`" @click="open_gallery" @keydown.enter="open_gallery"><ProfilePhoto :src="photo?.media_url || ''" :name="person.user_name" /></view>
+        <view class="expanded-photo" role="button" tabindex="0" :aria-label="`Open photo ${photo_index + 1} of ${photos.length}`" :data-interaction="`expanded.openGallery.click.${Math.min(photo_index + 1, 3)}`" @click="open_gallery" @keydown.enter="open_gallery"><ProfilePhoto :src="photo?.media_url || ''" :name="person.user_name" :position="photo?.focal_point || '50% 22%'" /></view>
         <view v-if="song" class="expanded-song"><image :src="song.cover_url" mode="aspectFill" /><view><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view class="expanded-song-play" role="button" tabindex="0" aria-label="Play profile song" data-interaction="expanded.otherSongPlay.click.1" @click.stop="play_song" @keydown.enter.stop="play_song"><SourceIcon name="play" /></view></view>
         <view class="expanded-photo-hit expanded-photo-hit--prev" role="button" tabindex="0" aria-label="Previous photo" data-interaction="expanded.prevPhoto.click.1" @click.stop="change_photo(-1)" @keydown.enter.stop="change_photo(-1)" />
         <view class="expanded-photo-hit expanded-photo-hit--next" role="button" tabindex="0" aria-label="Next photo" data-interaction="expanded.nextPhoto.click.1" @click.stop="change_photo(1)" @keydown.enter.stop="change_photo(1)" />
@@ -129,6 +130,7 @@ const confirm_block = async () => {
 
       <view v-if="details.length" class="expanded-card expanded-tags"><view v-for="item in details" :key="item.label" class="expanded-tag"><view v-if="item.icon" class="expanded-tag-icon"><SourceIcon :name="item.icon" /></view><text v-else class="expanded-tag-emoji">{{ item.emoji }}</text><text>{{ item.label }}</text></view></view>
       <view v-if="person.bio" class="expanded-card expanded-bio"><text>{{ person.bio }}</text></view>
+      <ProfileVoiceIntro v-if="person.voice_intro" :intro="person.voice_intro" />
       <view v-if="goals.length" class="expanded-card"><view class="expanded-section-title"><view><SourceIcon name="people" /></view><text>Looking for</text></view><view class="expanded-chip-list"><view v-for="goal in goals" :key="goal.item_id" class="expanded-chip"><text>{{ goal.emoji }}</text><text>{{ goal.label }}</text></view></view></view>
       <view v-if="interests.length" class="expanded-card"><view class="expanded-section-title expanded-section-title--blue"><view><SourceIcon name="sparkle" /></view><text>Interests</text></view><view class="expanded-chip-list"><view v-for="interest in interests" :key="interest.item_id" class="expanded-chip"><text>{{ interest.emoji }}</text><text>{{ interest.label }}</text></view></view></view>
       <view v-if="questions.length" class="expanded-card"><view class="expanded-section-title expanded-section-title--blue"><view><SourceIcon name="sparkle" /></view><text>Ask me</text></view><view class="expanded-question-list"><text v-for="question in questions" :key="question.question_id">{{ question.text }}</text></view></view>
@@ -142,7 +144,7 @@ const confirm_block = async () => {
       <SafetyActionsMiniSheet :open="['safety', 'block'].includes(sheet)" :mode="sheet === 'block' ? 'block' : 'menu'" :user-name="person?.user_name" :busy="is_loading" :error="error" @close="sheet = ''; error = ''" @report="open_report" @open-block="sheet = 'block'; error = ''" @confirm-block="confirm_block" />
       <EventConfirmDialog :open="sheet === 'gallery'" :busy="false" :label="`${person?.user_name || 'Profile'} photo gallery`" close-interaction="expanded.gallery.close.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="sheet = ''">
         <text class="event-dialog-title">Photo {{ photo_index + 1 }} of {{ photos.length }}</text>
-        <view class="expanded-gallery"><ProfilePhoto :src="photo?.media_url || ''" :name="person?.user_name || 'Profile'" /></view>
+        <view class="expanded-gallery"><ProfilePhoto :src="photo?.media_url || ''" :name="person?.user_name || 'Profile'" :position="photo?.focal_point || '50% 22%'" /></view>
         <view class="expanded-gallery-actions"><view role="button" tabindex="0" :aria-disabled="photos.length < 2" @click="change_photo(-1)" @keydown.enter="change_photo(-1)">Previous</view><view role="button" tabindex="0" :aria-disabled="photos.length < 2" @click="change_photo(1)" @keydown.enter="change_photo(1)">Next</view></view>
         <view class="event-dialog-secondary" role="button" tabindex="0" @click="sheet = ''" @keydown.enter="sheet = ''">Close</view>
       </EventConfirmDialog>

@@ -1,0 +1,17 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName" : "iPhone 17 Pro",
+        "exportedFileName" : "645FA2BB-C7B4-4FBB-89F9-492964D594DC.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "WKWebView Discover swipe deck_0_DFAF3775-0950-47C0-B0E6-71F1AF6B54C7.png",
+        "timestamp" : 1792124197.115
+      }
+    ],
+    "testIdentifier" : "HostTests/testDiscoverDeckProfilesAndBundledAudioInRealWebKit()",
+    "testIdentifierURL" : "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testDiscoverDeckProfilesAndBundledAudioInRealWebKit"
+  }
+]

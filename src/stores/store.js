@@ -62,11 +62,19 @@ export const use_app_store = defineStore('app', {
     questions_for_user: (state) => (id) => ready(state) ? clone_data((s.user_by_id(state.data, id)?.icebreaker_ids || []).map(question_id => state.data.icebreakers.find(row => row.question_id === question_id)).filter(Boolean).sort((a, b) => a.position - b.position)) : [],
     song_for_user: (state) => (id) => ready(state) ? clone_data(state.data.songs.find(row => row.song_id === s.user_by_id(state.data, id)?.song_id) || null) : null,
     visible_people: (state) => ready(state) ? state.data.users.filter((row) => row.user_id !== s.owner_id(state.data) && row.discoverable && s.visible(state.data, row.user_id) && state.data.settings.find((settings) => settings.owner_user_id === row.user_id)?.privacy.discover_visible !== false).map((row) => profile(state.data, row.user_id)) : [],
+    discover_people: (state) => {
+      if (!ready(state)) return []
+      return state.data.users
+        .filter((row) => row.user_id !== s.owner_id(state.data) && row.discoverable && Number.isInteger(row.discover_order) && s.visible(state.data, row.user_id) && state.data.settings.find((settings) => settings.owner_user_id === row.user_id)?.privacy.discover_visible !== false)
+        .sort((a, b) => a.discover_order - b.discover_order)
+        .map((row) => {
+          const user = profile(state.data, row.user_id)
+          const photos = state.data.profile_photos.filter((photo) => photo.user_id === row.user_id && user.photo_ids.includes(photo.photo_id)).sort((a, b) => a.position - b.position)
+          return { ...user, photos: clone_data(photos), photo: clone_data(photos[0] || null) }
+        })
+    },
     discover_person() {
-      const user = this.visible_people[0]
-      if (!user) return null
-      const photos = this.data.profile_photos.filter((row) => row.user_id === user.user_id && user.photo_ids.includes(row.photo_id)).sort((a, b) => a.position - b.position)
-      return { ...user, photo: clone_data(photos[0] || null) }
+      return this.discover_people[0] || null
     },
     introduction_blocker: (state) => (id) => state.hydration_status === 'ready' ? s.introduction_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
     home_connections: (state) => ready(state) ? s.home_cards(state.data, state.clock_ms) : [],

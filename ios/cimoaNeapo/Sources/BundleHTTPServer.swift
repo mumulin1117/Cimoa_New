@@ -82,12 +82,35 @@ final class BundleHTTPServer {
         let requestedPath = url.path == "/" ? "index.html" : String(url.path.dropFirst())
         let file = root.appendingPathComponent(requestedPath).resolvingSymlinksInPath().standardizedFileURL
         guard file.path.hasPrefix(root.path + "/"), !requestedPath.split(separator: "/").contains(".."), !requestedPath.contains("\\") else { respond(connection, status: "403 Forbidden"); return }
-        let types = ["html": "text/html; charset=utf-8", "js": "text/javascript; charset=utf-8", "css": "text/css; charset=utf-8", "json": "application/json", "png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg", "svg": "image/svg+xml", "woff2": "font/woff2"]
+        let types = ["html": "text/html; charset=utf-8", "js": "text/javascript; charset=utf-8", "css": "text/css; charset=utf-8", "json": "application/json", "png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg", "mp3": "audio/mpeg", "svg": "image/svg+xml", "woff2": "font/woff2"]
         guard let type = types[file.pathExtension.lowercased()], let data = try? Data(contentsOf: file, options: .mappedIfSafe) else { respond(connection, status: "404 Not Found"); return }
-        respond(connection, status: "200 OK", type: type, data: data, head: request[0] == "HEAD")
+        if let requestedRange = headers["range"] {
+            guard let range = byteRange(requestedRange, count: data.count) else {
+                respond(connection, status: "416 Range Not Satisfiable", extraHeaders: ["Content-Range": "bytes */\(data.count)"])
+                return
+            }
+            let chunk = data.subdata(in: range)
+            respond(connection, status: "206 Partial Content", type: type, data: chunk, head: request[0] == "HEAD", extraHeaders: ["Accept-Ranges": "bytes", "Content-Range": "bytes \(range.lowerBound)-\(range.upperBound - 1)/\(data.count)"])
+            return
+        }
+        respond(connection, status: "200 OK", type: type, data: data, head: request[0] == "HEAD", extraHeaders: file.pathExtension.lowercased() == "mp3" ? ["Accept-Ranges": "bytes"] : [:])
     }
-    private func respond(_ connection: NWConnection, status: String, type: String = "text/plain", data: Data = Data(), head: Bool = false) {
-        var response = Data("HTTP/1.1 \(status)\r\nContent-Type: \(type)\r\nContent-Length: \(data.count)\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nConnection: close\r\n\r\n".utf8)
+    private func byteRange(_ value: String, count: Int) -> Range<Int>? {
+        guard count > 0, value.hasPrefix("bytes="), !value.contains(",") else { return nil }
+        let bounds = value.dropFirst(6).split(separator: "-", maxSplits: 1, omittingEmptySubsequences: false)
+        guard bounds.count == 2 else { return nil }
+        if bounds[0].isEmpty {
+            guard let suffix = Int(bounds[1]), suffix > 0 else { return nil }
+            return max(0, count - suffix)..<count
+        }
+        guard let start = Int(bounds[0]), start >= 0, start < count else { return nil }
+        let inclusiveEnd = bounds[1].isEmpty ? count - 1 : min(Int(bounds[1]) ?? -1, count - 1)
+        guard inclusiveEnd >= start else { return nil }
+        return start..<(inclusiveEnd + 1)
+    }
+    private func respond(_ connection: NWConnection, status: String, type: String = "text/plain", data: Data = Data(), head: Bool = false, extraHeaders: [String: String] = [:]) {
+        let additional = extraHeaders.map { "\($0.key): \($0.value)\r\n" }.joined()
+        var response = Data("HTTP/1.1 \(status)\r\nContent-Type: \(type)\r\nContent-Length: \(data.count)\r\n\(additional)Cache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nConnection: close\r\n\r\n".utf8)
         if !head { response.append(data) }
         connection.send(content: response, completion: .contentProcessed { _ in connection.cancel() })
     }

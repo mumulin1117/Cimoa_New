@@ -1,10 +1,19 @@
-import { create_seed, clone_data, TEST_USER_ID } from './seed.js'
+import { create_seed, clone_data, TEST_USER_ID, DISCOVER_PROFILE_IDS } from './seed.js'
 import { ensure, validate_data } from './selectors.js'
 export function upgrade_additive_data(value) {
   const data = clone_data(value)
   for (const row of data.settings || []) if (row.privacy && row.privacy.auto_match_visible === undefined) row.privacy.auto_match_visible = true
   for (const row of data.match_preferences || []) if (row.interest_mode === undefined) row.interest_mode = 'Similar interests'
   if (data.auth_flow && data.auth_flow.password_reset === undefined) data.auth_flow.password_reset = null
+  const catalog = create_seed(Number.isFinite(data.updated_at) ? data.updated_at : Date.now())
+  const discover_ids = new Set(DISCOVER_PROFILE_IDS)
+  for (const baseline of catalog.users.filter((row) => discover_ids.has(row.user_id))) {
+    const current = data.users.find((row) => row.user_id === baseline.user_id)
+    if (!current) data.users.push(clone_data(baseline))
+    else for (const key of ['discoverable', 'discover_order', 'voice_intro']) if (current[key] === undefined) current[key] = clone_data(baseline[key])
+  }
+  for (const baseline of catalog.profile_photos.filter((row) => discover_ids.has(row.user_id))) if (!data.profile_photos.some((row) => row.photo_id === baseline.photo_id)) data.profile_photos.push(clone_data(baseline))
+  for (const baseline of catalog.icebreakers.filter((row) => discover_ids.has(row.user_id))) if (!data.icebreakers.some((row) => row.question_id === baseline.question_id)) data.icebreakers.push(clone_data(baseline))
   return data
 }
 export function migrate_legacy(legacy, now) {

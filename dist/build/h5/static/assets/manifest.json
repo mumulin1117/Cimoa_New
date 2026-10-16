@@ -426,5 +426,6 @@
       "sha256": "5d2286941a6b02a29387efa94809a064f8917598eafa67b938261cf13bb887cd"
     }
   ],
-  "font_stylesheet": "static/assets/fonts/source-fonts.css"
+  "font_stylesheet": "static/assets/fonts/source-fonts.css",
+  "additional_manifests": ["static/assets/discover/manifest.json"]
 }

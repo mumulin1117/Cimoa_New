@@ -87,10 +87,11 @@ export function validate_data(data) {
     ensure(typeof row.user_name === 'string' && row.user_name && (row.age === null || Number.isInteger(row.age) && row.age >= 18), 'Invalid profile.')
     for (const [field, table] of [['goal_ids', 'goals'], ['interest_ids', 'interests'], ['photo_ids', 'profile_photos'], ['icebreaker_ids', 'icebreakers']]) ensure(Array.isArray(row[field]) && new Set(row[field]).size === row[field].length && row[field].every((id) => has(table, id)), `Invalid ${field}.`)
     ensure(!row.song_id || has('songs', row.song_id), 'Invalid song.')
+    if (row.voice_intro != null) ensure(typeof row.voice_intro.audio_url === 'string' && row.voice_intro.audio_url.startsWith('/static/assets/') && Number.isFinite(row.voice_intro.duration_ms) && row.voice_intro.duration_ms > 0 && typeof row.voice_intro.transcript === 'string' && row.voice_intro.transcript.trim(), 'Invalid voice introduction.')
     ensure(balance(data, row.user_id) >= 0, 'Not enough coins.')
   }
   for (const row of data.icebreakers) ensure(has('users', row.user_id) && typeof row.text === 'string' && row.text.trim(), 'Invalid question.')
-  for (const row of data.profile_photos) ensure(has('users', row.user_id) && typeof row.media_url === 'string' && row.media_url, 'Invalid photo.')
+  for (const row of data.profile_photos) ensure(has('users', row.user_id) && typeof row.media_url === 'string' && row.media_url && (row.focal_point === undefined || /^\d{1,3}% \d{1,3}%$/.test(row.focal_point)), 'Invalid photo.')
   for (const row of data.media_files) ensure(has('users', row.owner_user_id) && ['image', 'audio'].includes(row.kind) && row.media_url === `indexeddb://${row.media_id}` && row.byte_size > 0 && row.mime.startsWith(`${row.kind}/`), 'Invalid media.')
   for (const row of data.relationships) ensure(has('users', row.from_user_id) && has('users', row.to_user_id) && row.from_user_id !== row.to_user_id, 'Invalid relationship.')
   ensure(unique(data.relationships, (row) => `${row.from_user_id}:${row.to_user_id}`), 'Duplicate relationship.')

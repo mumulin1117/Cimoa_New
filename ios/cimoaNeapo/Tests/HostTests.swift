@@ -1,5 +1,6 @@
 import XCTest
 import WebKit
+import AVFoundation
 @testable import cimoaNeapo
 
 @MainActor
@@ -1026,6 +1027,55 @@ final class HostTests: XCTestCase {
             XCTAssertEqual(result["label"] as? String, "Chat")
             XCTAssertEqual(result["profileDepth"] as? String, "2"); XCTAssertEqual(result["chatDepth"] as? String, "1")
             XCTAssertEqual(result["conversation"] as? Bool, true); XCTAssertEqual(result["unchanged"] as? Bool, true)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
+    func testDiscoverDeckProfilesAndBundledAudioInRealWebKit() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?discoverDeck=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        do {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?discoverDeck=native#/pages/discover/index")!))
+            try await waitFor(host, ".discover-photo-card--front")
+            let result = try await script(host, """
+            const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+            const visible=selector=>[...document.querySelectorAll(selector)].find(element=>element.getBoundingClientRect().height>0);
+            const wait=async fn=>{for(let index=0;index<200;index++){const value=fn();if(value)return value;await delay(50)}throw Error('Discover timeout '+location.hash+' '+document.body.innerText)};
+            await document.fonts.ready;await Promise.all([...document.querySelectorAll('.discover-photo-card img')].map(image=>image.decode()));
+            const before=localStorage.getItem('cimoa_app_state_v2');
+            const card=visible('.discover-photo-card--front'),viewport=visible('.main-tab-scroll'),info=card.querySelector('.discover-info');
+            const cardRect=card.getBoundingClientRect(),viewportRect=viewport.getBoundingClientRect(),infoRect=info.getBoundingClientRect(),scale=innerWidth/393;
+            const swipeCurrent=async()=>{const active=visible('.discover-photo-card--front'),rect=active.getBoundingClientRect(),startX=rect.x+rect.width/2,startY=rect.y+rect.height/2,endX=startX-rect.width*.42,dispatch=(type,x)=>active.dispatchEvent(new MouseEvent(type,{bubbles:true,cancelable:true,clientX:x,clientY:startY,button:0}));dispatch('mousedown',startX);for(let step=1;step<=8;step++)dispatch('mousemove',startX+(endX-startX)*step/8);dispatch('mouseup',endX);await delay(420)};
+            const sourceIds=[];for(let index=0;index<6;index++){sourceIds.push(visible('.discover-photo-card--front')?.dataset.userId);await swipeCurrent()}await swipeCurrent();
+            const swiped=visible('.discover-photo-card--front')?.dataset.userId,next=visible('.discover-photo-card--back')?.dataset.userId;
+            visible('.discover-photo-card--front').click();await wait(()=>visible('.expanded-profile-page'));await delay(300);
+            const photoSources=[];for(let index=0;index<3;index++){const image=await wait(()=>visible('.expanded-photo .profile-photo[data-media-status="ready"] img'));photoSources.push(image.getAttribute('src'));if(index<2){visible('.expanded-photo-hit--next').click();await delay(180)}}
+            const transcript=visible('.profile-voice-transcript')?.textContent;
+            const audioURL=visible('.profile-voice-intro')?.dataset.audioUrl;
+            const range=await fetch(audioURL,{headers:{Range:'bytes=0-1023'}}),rangeBytes=(await range.arrayBuffer()).byteLength;
+            const full=await fetch(audioURL),audioBlob=await full.blob();
+            visible('[data-interaction="expanded.collapse.click.1"]').click();await wait(()=>visible('.discover-photo-card--front'));await delay(300);
+            return {sourceIds,first:'user_zane',swiped,next,cardHeight:cardRect.height,maxHeight:542*scale,cardBottom:cardRect.bottom,viewportBottom:viewportRect.bottom,infoBottom:infoRect.bottom,scrollTop:viewport.querySelector('.uni-scroll-view-scrollbar-hidden')?.scrollTop||0,photos:photoSources.length,photoSources,transcript,rangeStatus:range.status,rangeBytes,contentRange:range.headers.get('content-range'),acceptRanges:range.headers.get('accept-ranges'),fullStatus:full.status,blobType:audioBlob.type,blobBytes:audioBlob.size,returned:visible('.discover-photo-card--front')?.dataset.userId,unchanged:before===localStorage.getItem('cimoa_app_state_v2'),forbidden:/本地数据|模拟数据/.test(document.body.innerText)};
+            """) as! [String: Any]
+            XCTAssertEqual(result["sourceIds"] as? [String], ["user_zane", "user_linden", "user_evan", "user_coco", "user_anna", "user_bella"])
+            XCTAssertEqual(result["swiped"] as? String, "user_linden"); XCTAssertEqual(result["next"] as? String, "user_evan"); XCTAssertEqual(result["returned"] as? String, "user_linden")
+            XCTAssertLessThanOrEqual(result["cardHeight"] as! Double, (result["maxHeight"] as! Double) + 1)
+            XCTAssertLessThanOrEqual(result["cardBottom"] as! Double, (result["viewportBottom"] as! Double) + 1)
+            XCTAssertLessThanOrEqual(result["infoBottom"] as! Double, (result["cardBottom"] as! Double) + 1); XCTAssertEqual(result["scrollTop"] as? Int, 0)
+            XCTAssertEqual(result["photos"] as? Int, 3); XCTAssertTrue((result["photoSources"] as? [String] ?? []).contains { $0.contains("discover/linden/photo-3.jpg") })
+            XCTAssertEqual(result["transcript"] as? String, "Hi, I'm Linden. I'm into photography, music, and slow walks around sunset. I can be a little quiet at first, but once I warm up, I always have plenty to say. What song have you had on repeat lately? Send it my way.")
+            XCTAssertEqual(result["rangeStatus"] as? Int, 206); XCTAssertEqual(result["rangeBytes"] as? Int, 1024)
+            XCTAssertTrue((result["contentRange"] as? String ?? "").hasPrefix("bytes 0-1023/")); XCTAssertEqual(result["acceptRanges"] as? String, "bytes")
+            XCTAssertEqual(result["fullStatus"] as? Int, 200); XCTAssertEqual(result["blobType"] as? String, "audio/mpeg"); XCTAssertGreaterThan(result["blobBytes"] as? Int ?? 0, 80_000)
+            let bundledAudio = Bundle.main.resourceURL!.appendingPathComponent("H5/static/assets/discover/linden/voice-intro.mp3")
+            let nativeDuration = try await AVURLAsset(url: bundledAudio).load(.duration).seconds
+            XCTAssertEqual(nativeDuration, 14.04, accuracy: 0.1)
+            XCTAssertEqual(result["unchanged"] as? Bool, true); XCTAssertEqual(result["forbidden"] as? Bool, false)
+            let attachment = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); attachment.name = "WKWebView Discover swipe deck"; attachment.lifetime = .keepAlways; add(attachment)
             try await restore()
         } catch { try? await restore(); throw error }
     }

@@ -15,7 +15,7 @@ export function discover_destination(store, kind, id) {
     if (blocker) throw new Error(blocker)
     return `/pages/discover/icebreaker/select?user_id=${encodeURIComponent(id)}`
   }
-  if (!id || store.discover_person?.user_id !== id) throw new Error('This profile is no longer available.')
+  if (!id || !store.discover_people.some((person) => person.user_id === id)) throw new Error('This profile is no longer available.')
   if (kind === 'detail') return `/pages/discover/profile?user_id=${encodeURIComponent(id)}`
   throw new Error('This page is unavailable.')
 }

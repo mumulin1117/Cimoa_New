@@ -1,27 +1,38 @@
-# Discover 本页交互契约
+# Discover 页面交互契约
 
-来源：原 HTML 解包模板361–399行，Discover / Profile / Photo，`route=photo`。独立路由 `/pages/discover/index`，主 Tab 替换切换、无 push 返回层。顶部由 DiscoverHeroHeader 接管一次物理安全区及固定功能栏；照片在唯一 scroll-view 中；Send shot 固定在 CustomTabBar 上方，Tabbar 独占底部安全区。cRise 260ms。
+来源：原 HTML 第 34 屏 `Discover / Profile / Photo` 与第 35 屏 `Discover / Profile / Expanded`。独立路由为 `/pages/discover/index` 和 `/pages/discover/profile?user_id=...`；主 Tab 通过 replace 切换，详情通过 push 进入并按来源返回。
 
-默认卡353×542、圆角28、顶部工具54、人物31、标签15、按钮60/21（393宽设计值统一换算rpx）。原系统54顶部占位不绘制，改实际安全区；无安全区时卡在76，注入54时卡在130。短屏允许照片区滚动，长姓名/标签换行且增高，不裁字。照片 `be199ee7-6704-4324-98d1-52394676c49a` 已提取为 `static/assets/head/maya-full.png`，复用实体首张照片；不硬编码此人或图片到页面。
+## 页面结构
 
-## 十字段契约
+- 顶部工具栏独占一次系统安全区；人物卡、Send shot 和 Tabbar 分属固定区域。
+- 393×852 基准下卡片为 353×542、圆角 28；较矮 iPhone 只缩短卡片，不开启纵向页面滚动，不隐藏姓名、认证状态或三项资料标签。
+- 卡片资料全部来自 `discover_people` getter。稳定顺序为 Zane、Linden、Evan、Coco、Anna、Bella；被拉黑、不可见、删除或会话失效的实体不会进入牌堆。
+- 每个资料实体拥有三张本人照片、完整详情字段、三条破冰问题及一条带精确文案和时长的语音介绍。
+- 当前卡片点击进入同一 `user_id` 的详情；详情照片只在该实体的三张图片间切换，返回后牌序不重置。
 
-| interaction_id | 来源 | 触发 | 前置条件 | Store/工具 action | 成功目标 | 失败表现 | 持久化 | 同步范围 | 验收步骤 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| photo.openMe.click.1 | 364 | 左上头像 | 有效会话 | discover_destination(profile) | /pages/profile/index，当前用户 | 明确英文错误，留原页 | none | 当前账号资料 | 参数/无写入；真实目标、编辑同步、返回 deferred |
-| photo.openDiscoverFilters.click.1 | 365 / 5240 | 右上筛选 | 有效会话 | discover_destination(preferences) | /pages/auto-match/preferences | 明确英文错误，留原页 | none | 匹配偏好 Store | 原型是独立页面，不改 Sheet；偏好保存/刷新/返回 deferred |
-| photo.expand.click.1 | 370 | 点照片卡 | 当前可见 user_id | discover_destination(detail, id) | /pages/discover/profile?user_id=同一人 | 失效/拉黑拒绝；未还原目标明确报错 | none | 同一人物/照片实体 | ID、阻止串人；真实详情/相册/返回位置 deferred |
-| photo.sayHi.click.1 | 395 | Send shot | 有效会话、学生验证、目标可见，非已连接或待处理请求 | discover_destination(icebreaker, id) | /pages/discover/icebreaker/select?user_id=同一人 | 资格/重复请求或未还原错误；不扣币不建请求 | none | requests / relationships / coin账本 | 0余额入口、连接与请求防重；真实问题/免费文字/10金币语音流程 deferred |
-| showTabs.selectTab.select.1 | TabBar.dc.html | Home/Discover/Events | 路由不同、无切换锁 | switch_tab_route | replace当前Tab；无原生Loading | 保留原页反馈 | none | 路由、认证骨架消费 | 两轮切换、重复点击、栈深1、首次600ms骨架与刷新不重复 |
-| hasNotif.openNotif.click.1 | 全局4538 | 有真实通知时点通知 | 可信事件及合法实体、目标已还原 | 通知基础层，deferred | 对应真实目标 | 过期/服务未配置应报错 | 需通知实体设计，deferred | 全局通知/目标页 | 原型瞬时notif不得伪造为真实消息；此条件分支不计本页通过 |
-| hasNotif.dismissNotif.click.1 | 全局4547 | 有真实通知时关闭 | 当前通知存在 | 通知基础层，deferred | 关闭当前通知、不改消息内容 | 原通知保留 | 是否已读按后续契约，deferred | 全局通知 | 常驻面板、事件ID、关闭和刷新待全局通知任务 |
-| discover.retry | 错误扩展 | Retry | 读取失败 | store.hydrate | 从同一持久化源重新加载 | 保留损坏数据与错误 | none | 全局Store | 损坏数据不可覆盖、无假成功 |
-| discover.retryPhoto | 媒体扩展 | Retry photo | 资源解码/读取失败 | media_cache.acquire | 加载原照片 | 可重试错误，绝不换成他人照片 | none | Blob缓存租约 | 网络失败后重试、缺失Blob、切页清租约 |
+## 交互矩阵
 
-上述入口为纯导航或读取，无写入Loading/确认弹窗。当前依赖未还原时 readiness guard 只允许明确失败，不进入旧 mega-page。默认 Chloe 已连接，因此 Send shot 诚实提示已连接；未连接场景才生成破冰路由。文字价格不在此页决定，不调用消费 action。
+| interaction_id | 触发 | 前置条件 | 行为 | 数据写入 | 失败表现 |
+| --- | --- | --- | --- | --- | --- |
+| `photo.browse.drag.1` | 卡片横向拖动 | 有当前人物且页面未导航 | 卡片随手指平移并轻微旋转，下张卡同步抬升；距离达到卡宽 24% 或速度达到阈值后离场，否则回弹 | none | 手势取消时回弹，不改变牌序 |
+| `photo.expand.click.1` | 点击当前卡片 | 当前 `user_id` 可访问 | push 到同一人物详情 | none | 失效或拉黑时留在原页并显示错误 |
+| `photo.sayHi.click.1` | 点击 Send shot | 会话、认证和请求资格有效 | 进入当前人物的破冰问题选择页 | none | 重复请求、已连接或资格失败时明确提示 |
+| `photo.openMe.click.1` | 左上头像 | 有效会话 | 进入自己的 Profile | none | 目标未就绪时留原页提示 |
+| `photo.openDiscoverFilters.click.1` | 右上筛选 | 有效会话 | 进入匹配偏好页 | none | 目标未就绪时留原页提示 |
+| `expanded.prevPhoto.click.1` / `expanded.nextPhoto.click.1` | 详情相册左右区域 | 当前人物至少两张照片 | 只切换同一人的照片与指示点 | none | 媒体失败显示可见错误 |
+| `expanded.voiceIntroPlay.click.1` | 语音介绍播放键 | 当前人物有有效音频 | 读取随包音频并播放；再次点击暂停 | none | 获取、解码或播放失败时显示错误，不显示虚假进度 |
 
-页面仅读 Store 派生 `discover_person`；首位可发现、未删除、双方未拉黑且允许 Discover 显示的用户，照片按该人 photo_ids / position 取首张。原型 collapsed 卡无左右换人或照片箭头，不新增轮播；真正多照片浏览在详情任务完成。标签遵守隐私设置。测试场景只能经 fixture 注入，不暴露生产 URL 后门。
+左右甩卡都表示继续浏览下一位，不创建喜欢、跳过、关系、连接请求或金币记录。只有后续介绍发送流程可以改变请求与关系状态。
 
-## 完整验收依赖
+## 媒体与生命周期
 
-Profile、Match Preferences、Expanded、Icebreaker Select/Text/Voice/Preview、全局通知基础层及其目标页面、既有 WKWebView 宿主。依赖齐备后重开本页完整回归；只通过本页检查不得标记 verified。
+- 图片与音频 URL 由人物实体提供；页面不硬编码替代人物或替代图片。
+- 照片使用每张资源自己的 focal point；加载失败保留当前实体并允许重试。
+- 语音组件通过工具层取得 MP3 Blob URL，离开详情立即停止播放器并释放 URL；iOS 包内服务同时支持 `audio/mpeg` 与单段 HTTP Range。
+- 拖拽动画、导航定时器、音频句柄在 `onHide` / `onUnmounted` 清理；从详情返回时解除导航锁并保留当前牌序。
+
+## 验收要求
+
+- 320×568、375×667、375×812、390×844、393×852、402×874、414×896、430×932 八组视口中，卡片内容、CTA 与 Tabbar 必须在一屏内且滚动位置恒为 0。
+- 验证短拖回弹、左右离场、循环六人、点击详情、三图切换、精确语音文案、真实播放、返回牌序、当前人物 Send shot、拉黑过滤、空态、损坏存储、会话过期和安全区。
+- 普通浏览器使用用户手势验证音频播放；iPhone 17 Pro WKWebView 验证包内资源传输、Range、iOS 解码时长、安全区和卡片闭环。宿主继续要求媒体由用户操作触发。

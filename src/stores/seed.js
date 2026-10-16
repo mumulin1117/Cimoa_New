@@ -45,6 +45,76 @@ const profile = (user_id, user_name, university, avatar, extra = {}) => ({
   photo_ids: [], goal_ids: [], interest_ids: [], icebreaker_ids: [], song_id: null,
   verification_status: 'verified', discoverable: false, deleted: false, ...extra,
 })
+const discover_asset = (slug, filename) => `/static/assets/discover/${slug}/${filename}`
+const DISCOVER_PROFILE_CONFIGS = [
+  {
+    user_id: 'user_zane', slug: 'zane', user_name: 'Zane', age: 22, university: 'HKUST', major: 'Engineering', mbti: 'ESTP', height_cm: 184,
+    country: ['United States'], year: 'Year 3', graduation_year: '2027', gender: 'Man', pronouns: 'he / him', languages: ['English'], clubs: 'Sports Team',
+    religion: 'Prefer not to say', drinking: 'Socially', smoking: 'Never', location: 'Clear Water Bay',
+    bio: 'Basketball, running, weekend hikes, and the search for the best post-workout meal.',
+    goal_ids: ['activity', 'food', 'friends'], interest_ids: ['sports', 'fitness', 'hiking', 'food'],
+    questions: ['What hidden food spot should I try next?', 'What is your ideal weekend hike?', 'Which sport could you play all afternoon?'],
+    duration_ms: 16728,
+    transcript: "Hey, I'm Zane. I'm usually on the basketball court or out for a run, and I love a good weekend hike. The best part after a workout? Finding a cozy little place for a great meal. Got any hidden gems? Come tell me about them.",
+    focal_points: ['50% 30%', '50% 32%', '50% 26%'],
+  },
+  {
+    user_id: 'user_linden', slug: 'linden', user_name: 'Linden', age: 21, university: 'HKU', major: 'Design', mbti: 'INFP', height_cm: 181,
+    country: ['United Kingdom'], year: 'Year 2', graduation_year: '2028', gender: 'Man', pronouns: 'he / him', languages: ['English'], clubs: 'Photo Society',
+    religion: 'Non-religious', drinking: 'Occasionally', smoking: 'Never', location: 'Pok Fu Lam',
+    bio: 'Usually carrying a camera, a pair of headphones, and no reason to rush sunset.',
+    goal_ids: ['coffee', 'music', 'friends'], interest_ids: ['photography', 'music', 'art', 'travel'],
+    questions: ['What song have you had on repeat lately?', 'Where is your favorite place to watch sunset?', 'What would you photograph on a free afternoon?'],
+    duration_ms: 14040,
+    transcript: "Hi, I'm Linden. I'm into photography, music, and slow walks around sunset. I can be a little quiet at first, but once I warm up, I always have plenty to say. What song have you had on repeat lately? Send it my way.",
+    focal_points: ['50% 24%', '50% 44%', '58% 35%'],
+  },
+  {
+    user_id: 'user_evan', slug: 'evan', user_name: 'Evan', age: 22, university: 'CUHK', major: 'Media', mbti: 'ENTP', height_cm: 179,
+    country: ['United Kingdom'], year: 'Year 3', graduation_year: '2027', gender: 'Man', pronouns: 'he / him', languages: ['English'], clubs: 'Film Society',
+    religion: 'Prefer not to say', drinking: 'Occasionally', smoking: 'Never', location: 'Sha Tin',
+    bio: 'Movie nights, improvised recipes, and spontaneous plans are my favorite combination.',
+    goal_ids: ['food', 'friends', 'activity'], interest_ids: ['films', 'cooking', 'travel', 'food'],
+    questions: ['Which film never gets old for you?', 'What dish should everyone know how to cook?', 'Are you more stay-in or spontaneous-day-out?'],
+    duration_ms: 18672,
+    transcript: "Hey, I'm Evan. I love movies and experimenting in the kitchen. My signature dish is scrambled eggs with tomatoes—still a work in progress. Some days I stay in; other days I take off on a whim. I'm hoping to meet someone who enjoys the little fun moments in life.",
+    focal_points: ['50% 32%', '50% 24%', '50% 32%'],
+  },
+  {
+    user_id: 'user_coco', slug: 'coco', user_name: 'Coco', age: 20, university: 'HKUST', major: 'Design', mbti: 'ESFP', height_cm: 166,
+    country: ['Singapore'], year: 'Year 2', graduation_year: '2028', gender: 'Woman', pronouns: 'she / her', languages: ['English'], clubs: 'Photography Club',
+    religion: 'Prefer not to say', drinking: 'Socially', smoking: 'Never', location: 'Clear Water Bay',
+    bio: 'Always ready for a new exhibition, a photo walk, or a place with something delicious.',
+    goal_ids: ['campus', 'food', 'friends'], interest_ids: ['art', 'photography', 'food', 'travel'],
+    questions: ['What is the funniest thing that happened to you lately?', 'Which exhibition would you visit twice?', 'Where should we go for a photo walk?'],
+    duration_ms: 14376,
+    transcript: "Hey! I'm Coco. I love checking out exhibitions, taking photos, and hunting down delicious food. My friends say I laugh at almost anything, so it doesn't take much to make my day. What's the funniest thing that's happened to you lately? Come share it with me!",
+    focal_points: ['50% 28%', '50% 30%', '50% 27%'],
+  },
+  {
+    user_id: 'user_anna', slug: 'anna', user_name: 'Anna', age: 21, university: 'HKU', major: 'Psychology', mbti: 'ISFJ', height_cm: 165,
+    country: ['Canada'], year: 'Year 3', graduation_year: '2027', gender: 'Woman', pronouns: 'she / her', languages: ['English'], clubs: 'Book Club',
+    religion: 'Christian', drinking: 'Never', smoking: 'Never', location: 'Pok Fu Lam',
+    bio: 'A quiet-day person who is happiest with a book, a playlist, and a good cup of coffee.',
+    goal_ids: ['coffee', 'friends', 'study'], interest_ids: ['books', 'music', 'coffee', 'study'],
+    questions: ['Which book stayed with you after you finished it?', 'What makes a conversation feel easy?', 'How do you spend a perfect quiet afternoon?'],
+    duration_ms: 18768,
+    transcript: "Hi, I'm Anna. On a quiet day, you'll find me reading, listening to music, or making myself a cup of coffee. I may seem a little reserved when we first meet, but give me time and you'll see another side of me. I'm hoping to meet someone I can talk to with ease.",
+    focal_points: ['50% 30%', '50% 28%', '50% 35%'],
+  },
+  {
+    user_id: 'user_bella', slug: 'bella', user_name: 'Bella', age: 22, university: 'CUHK', major: 'International Business', mbti: 'ISTP', height_cm: 170,
+    country: ['United Kingdom'], year: 'Year 3', graduation_year: '2027', gender: 'Woman', pronouns: 'she / her', languages: ['English'], clubs: 'Travel Club',
+    religion: 'Non-religious', drinking: 'Occasionally', smoking: 'Never', location: 'Sha Tin',
+    bio: 'Equally happy planning the next trip or wandering through town with nowhere to be.',
+    goal_ids: ['activity', 'friends', 'language'], interest_ids: ['travel', 'photography', 'food', 'hiking'],
+    questions: ['What new thing would you try this month?', 'Which city would you happily get lost in?', 'What deserves your full attention every time?'],
+    duration_ms: 16320,
+    transcript: "Hey, I'm Bella. I love traveling, but I also enjoy wandering around town on my own. I'm pretty easygoing, but when something matters to me, I give it my full attention. If you're into trying new things too, I think we'll have plenty to talk about.",
+    focal_points: ['50% 31%', '50% 28%', '50% 28%'],
+  },
+]
+export const DISCOVER_PROFILE_IDS = Object.freeze(DISCOVER_PROFILE_CONFIGS.map((item) => item.user_id))
 export function create_seed(now = Date.now()) {
   const me = TEST_USER_ID
   const common_goals = ['friends', 'study', 'coffee', 'language', 'campus']
@@ -66,17 +136,27 @@ export function create_seed(now = Date.now()) {
       location: 'Pok Fu Lam', bio: 'Psych student who loves long walks, podcasts, and trying every dessert place in Kennedy Town.' }),
     profile('user_jordan', 'Jordan Ellis', 'HKUST', 'jordan-av'),
     profile('user_alex', 'Alex', 'HKUST', 'participant-38b22b41'), profile('user_zoe', 'Zoe', 'HKUST', 'participant-92ddcb8c'),
+    ...DISCOVER_PROFILE_CONFIGS.map((item, discover_order) => profile(item.user_id, item.user_name, item.university, 'me', {
+      age: item.age, major: item.major, mbti: item.mbti, height_cm: item.height_cm, country: item.country, year: item.year, graduation_year: item.graduation_year,
+      gender: item.gender, pronouns: item.pronouns, languages: item.languages, clubs: item.clubs, religion: item.religion, drinking: item.drinking, smoking: item.smoking,
+      location: item.location, bio: item.bio, goal_ids: item.goal_ids, interest_ids: item.interest_ids, discoverable: true, discover_order,
+      avatar_url: discover_asset(item.slug, 'photo-1.jpg'),
+      voice_intro: { audio_url: discover_asset(item.slug, 'voice-intro.mp3'), duration_ms: item.duration_ms, transcript: item.transcript },
+    })),
   ]
   const profile_photos = []
   const icebreakers = []
   for (const user of users) {
-    const images = ['user_chloe', 'user_lina'].includes(user.user_id) ? ['maya-full', 'maya-card', 'maya-av'].map(head) : [user.avatar_url]
+    const discover_config = DISCOVER_PROFILE_CONFIGS.find((item) => item.user_id === user.user_id)
+    const images = discover_config
+      ? [1, 2, 3].map((index) => discover_asset(discover_config.slug, `photo-${index}.jpg`))
+      : ['user_chloe', 'user_lina'].includes(user.user_id) ? ['maya-full', 'maya-card', 'maya-av'].map(head) : [user.avatar_url]
     user.photo_ids = images.map((media_url, position) => {
       const photo_id = `${user.user_id}_photo_${position}`
-      profile_photos.push({ photo_id, user_id: user.user_id, media_url, position })
+      profile_photos.push({ photo_id, user_id: user.user_id, media_url, position, ...(discover_config ? { focal_point: discover_config.focal_points[position] } : {}) })
       return photo_id
     })
-    user.icebreaker_ids = ['What’s your ideal Sunday?', 'Which song is on repeat?', 'Best hidden spot on campus?'].map((text, position) => {
+    user.icebreaker_ids = (discover_config?.questions || ['What’s your ideal Sunday?', 'Which song is on repeat?', 'Best hidden spot on campus?']).map((text, position) => {
       const question_id = `${user.user_id}_q_${position}`
       icebreakers.push({ question_id, user_id: user.user_id, text: user.user_id === me && position === 0 ? 'How would you spend your ideal weekend?' : text, position })
       return question_id

@@ -3,11 +3,11 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
-import { create_seed, TEST_USER_ID, clone_data } from '../src/stores/seed.js'
+import { create_seed, TEST_USER_ID, clone_data, DISCOVER_PROFILE_IDS } from '../src/stores/seed.js'
 import { validate_data, home_cards, utc_date_key } from '../src/stores/selectors.js'
 import { SCENARIOS, create_scenario, create_source_scenario } from '../src/stores/scenarios.js'
 import { STATE_KEY, LEGACY_KEY } from '../src/utils/statePersistence.js'
-import { create_media_cache } from '../src/utils/mediaRepository.js'
+import { acquire_audio_media, create_media_cache } from '../src/utils/mediaRepository.js'
 import { create_recorder, read_permissions } from '../src/utils/mediaCapabilities.js'
 import { create_write_operation } from '../src/utils/writeOperation.js'
 import { create_waiting_call } from '../src/utils/waitingCall.js'
@@ -35,6 +35,18 @@ test('source fixtures and independent UI scenarios have valid references and can
   const multi = fixture('three_chats').store
   assert.equal(multi.current_conversations.length, 3)
   assert.ok(multi.current_conversations.every((row) => row.messages.length >= 3 && row.messages.length <= 6))
+})
+test('Discover deck is Store-backed with six complete profiles, three photos and playable introductions', () => {
+  const { store } = fixture()
+  assert.deepEqual(store.discover_people.map((row) => row.user_id), DISCOVER_PROFILE_IDS)
+  for (const [index, person] of store.discover_people.entries()) {
+    assert.equal(person.discover_order, index)
+    assert.equal(person.photos.length, 3)
+    assert.equal(store.questions_for_user(person.user_id).length, 3)
+    assert.match(person.voice_intro.audio_url, new RegExp(`/discover/${person.user_name.toLowerCase()}/voice-intro\\.mp3$`))
+    assert.ok(person.voice_intro.duration_ms >= 14000)
+    assert.ok(person.voice_intro.transcript.includes(person.user_name))
+  }
 })
 test('fixture login validates identity; logout/deletion and expired sessions hide private data', async () => {
   const { store } = fixture()
@@ -191,6 +203,12 @@ test('object URLs are reference counted, idle-expired and never revoke active re
   const clock = fake_clock(), revoked = [], cache = create_media_cache({ get: async () => new Blob(['image']) }, { createObjectURL: () => 'blob:fixture', revokeObjectURL: (url) => revoked.push(url) }, clock.now, clock)
   const a = await cache.acquire('indexeddb://test'), b = await cache.acquire('indexeddb://test'); a.release(); await clock.advance(120000); assert.equal(revoked.length, 0); b.release(); await clock.advance(119999); assert.equal(revoked.length, 0); await clock.advance(1); assert.deepEqual(revoked, ['blob:fixture']); assert.equal(clock.pending(), 0)
 })
+test('bundled audio is materialized as a validated, releasable Blob URL', async () => {
+  const revoked = [], audio = await acquire_audio_media('/voice.mp3', async () => ({ ok: true, blob: async () => new Blob(['mp3'], { type: 'audio/mpeg' }) }), { createObjectURL: () => 'blob:voice', revokeObjectURL: (url) => revoked.push(url) })
+  assert.equal(audio.url, 'blob:voice'); audio.release(); audio.release(); assert.deepEqual(revoked, ['blob:voice'])
+  await assert.rejects(acquire_audio_media('/missing.mp3', async () => ({ ok: false })), /could not be loaded/)
+  await assert.rejects(acquire_audio_media('/image.jpg', async () => ({ ok: true, blob: async () => new Blob(['image'], { type: 'image/jpeg' }) })), /invalid/)
+})
 test('microphone denial/no-device/unavailable and permission queries report real failures', async () => {
   for (const name of ['NotAllowedError', 'NotFoundError', 'NotReadableError']) await assert.rejects(create_recorder({ Recorder: class {}, devices: { getUserMedia: async () => { throw { name } } } }), /denied|found|opened/)
   await assert.rejects(create_recorder({ devices: {}, Recorder: null }), /unavailable/)
@@ -221,7 +239,7 @@ test('hydration is read-only, preserves legacy custom content and rejects corrup
 
 test('all seeded local media resolve offline; defaults never reference invented image files', () => {
   const data = create_seed(now)
-  const paths = JSON.stringify(data).match(/\/static\/assets\/[^"\s]+\.(?:png|jpg|woff2)/g) || []
+  const paths = JSON.stringify(data).match(/\/static\/assets\/[^"\s]+\.(?:png|jpg|mp3|woff2)/g) || []
   assert.ok(paths.length > 30)
   for (const path of paths) assert.ok(fs.existsSync(path.slice(1)), path)
 })

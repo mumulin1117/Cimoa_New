@@ -1,0 +1,59 @@
+{
+  "provided_root": "/Users/linqian/Downloads/大学生交友素材/Discover资源/",
+  "profiles": [
+    {
+      "user_id": "user_zane",
+      "photos": [
+        { "path": "zane/photo-1.jpg", "sha256": "e5861e2072fb023015651c1c45b841d59c0ec262400a1c68355b26c9ec346564" },
+        { "path": "zane/photo-2.jpg", "sha256": "6636f967d540c72be5beb45a31362ed8210b4783e874711a58410d8ff04fe088" },
+        { "path": "zane/photo-3.jpg", "sha256": "1ea2d9cebaa7fd598a2f66808d7111d2d82d7de647b98930efb9e28d7d1de4a1" }
+      ],
+      "audio": { "path": "zane/voice-intro.mp3", "duration_ms": 16728, "sha256": "49c8add36af804293b4a11b040bad26c910aeabe56298034fe95ca04c84ef3bd" }
+    },
+    {
+      "user_id": "user_linden",
+      "photos": [
+        { "path": "linden/photo-1.jpg", "sha256": "cfd67fa34eccf8f4d25011d50fb1f52c75ecb1be1680a1e363ef3a9bd5836f49" },
+        { "path": "linden/photo-2.jpg", "sha256": "86e071c0e9bea79935e4ad74a0c85e14da3a4f14ce293079f291756a6a23c6c4" },
+        { "path": "linden/photo-3.jpg", "sha256": "442d0bfe2c43610e51118a13256d01b4650c14b7f6a9184310c0297b6f448bd6" }
+      ],
+      "audio": { "path": "linden/voice-intro.mp3", "duration_ms": 14040, "sha256": "e71e4e70dbe0a032c744133e147a8352e7918465ab03a979afb9fbd66f039cb1" }
+    },
+    {
+      "user_id": "user_evan",
+      "photos": [
+        { "path": "evan/photo-1.jpg", "sha256": "37a5436927e4574beb03d387635a561d9e3aaa103f7b3655459f9b1f19842338" },
+        { "path": "evan/photo-2.jpg", "sha256": "bbd6a2810feffff0ef81758c900fc1217e8b1f97bb568c458576e88bf88c8935" },
+        { "path": "evan/photo-3.jpg", "sha256": "bd37abbe7ac48d3a17df7c08a794a8cef44793dd09f8ee891039465849800e18" }
+      ],
+      "audio": { "path": "evan/voice-intro.mp3", "duration_ms": 18672, "sha256": "bd12daa7b4dd69a74bc7b712dc1d4396b2e2243a6543d4f697a2c3364cacfb25" }
+    },
+    {
+      "user_id": "user_coco",
+      "photos": [
+        { "path": "coco/photo-1.jpg", "sha256": "68484df3f655ba035dd92a61b71567458e8421fd5e245ce8384987574f96a1a8" },
+        { "path": "coco/photo-2.jpg", "sha256": "c441e0c704b54cc7fb2df8022f77908629fd84fc892ca1fd1b2fd35a7e210a6c" },
+        { "path": "coco/photo-3.jpg", "sha256": "4e1055fddc395a967d8dffad745dc45cb405cd8b6a7553db9b61af27f3f0b62e" }
+      ],
+      "audio": { "path": "coco/voice-intro.mp3", "duration_ms": 14376, "sha256": "396c8dcbcf9c4ced789e632ba59cdf8a80542621350c38975aaf26ae06896144" }
+    },
+    {
+      "user_id": "user_anna",
+      "photos": [
+        { "path": "anna/photo-1.jpg", "sha256": "7885a62371dd5066b4970ff9634da00d7d71dee2df2bc2d035a163ea62400a41" },
+        { "path": "anna/photo-2.jpg", "sha256": "a3a086753730d8b0fe7763c3f06406d2a6884dcfdab647044408fc7298913c2f" },
+        { "path": "anna/photo-3.jpg", "sha256": "ff866e197e9107e72594596808e8506c573ff1e8a2955b8343a9aad0fabaed34" }
+      ],
+      "audio": { "path": "anna/voice-intro.mp3", "duration_ms": 18768, "sha256": "7a55b2c6da6e6a100213596ee5161d6df9f70cb35746f79d7dffde001a4b56d4" }
+    },
+    {
+      "user_id": "user_bella",
+      "photos": [
+        { "path": "bella/photo-1.jpg", "sha256": "b6434d3bf1914af14eb91e43c2d2d10a281d89c9aef6474eed10ed79043f39d0" },
+        { "path": "bella/photo-2.jpg", "sha256": "019974e4235e2e59def66492a309115d7fdf841d51db923a260b095a66c67a63" },
+        { "path": "bella/photo-3.jpg", "sha256": "97184d33eabce505628eb64b582b394e17bd55b162acdf41ebc81c7fec6b54e3" }
+      ],
+      "audio": { "path": "bella/voice-intro.mp3", "duration_ms": 16320, "sha256": "9a6973033bd21163a8e14146a7632b51c36a599ae641e938e1da1efb4a9bf66e" }
+    }
+  ]
+}

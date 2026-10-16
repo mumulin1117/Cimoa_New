@@ -65,3 +65,16 @@ export function create_media_cache(repository = media_repository, url_api = glob
   }
 }
 export const media_cache = create_media_cache()
+
+export async function acquire_audio_media(media_url, fetch_api = globalThis.fetch, url_api = globalThis.URL) {
+  if (!media_url) throw new Error('This audio is unavailable.')
+  if (media_url.startsWith('indexeddb://')) return media_cache.acquire(media_url)
+  if (typeof fetch_api !== 'function') throw new Error('Audio loading is unavailable.')
+  const response = await fetch_api(media_url)
+  if (!response?.ok) throw new Error('This audio could not be loaded.')
+  const blob = await response.blob()
+  if (!(blob instanceof Blob) || !blob.size || !blob.type.startsWith('audio/')) throw new Error('This audio file is invalid.')
+  const url = url_api.createObjectURL(blob)
+  let released = false
+  return { url, release() { if (released) return; released = true; url_api.revokeObjectURL(url) } }
+}
