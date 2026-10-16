@@ -1,6 +1,6 @@
 # 固定本地验证码
 
-用户明确验证码为`009789`，本轮按该新请求优先实施固定验证码。Login既有TEST STATES视觉决策仍pending，不并行施工、不升级验收；Code本地提交10c2154后才开始Success。两页本页检查已通过，均恢复pending（待依赖），无页面in_progress，不升级verified。
+用户明确验证码为`009789`，本轮按该请求实施固定验证码。Login 与 Email Verification 已完成严格像素封版；Code 现已按新流程补齐来源锁定、确定性像素证据与真实 iOS 数字键盘验收并升级为 `verified`，Success 仍需独立来源锁定后才可升级。
 
 ## 字段与边界
 
@@ -15,9 +15,9 @@ Code来源2735–2774，路由`/pages/auth/verification/code`；源46返回/16�
 | interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | verCode.goBack.click.1 | Code2738 | Back | 非提交 | 180ms返回 | 来源页；直达Login | 留原页错误 | none | route | 无Loading、栈不重复、清理输入/定时器 |
-| verCode.input（补齐原型无输入绑定的格子） | Code2754 | 输入/粘贴 | 有当前账号 | 六格同步 | 仅内存字符串 | 非六位/非数字提示 | none | none | 009789前导零；7位/空/错码拒绝 |
+| verCode.input（补齐原型无输入绑定的格子） | Code2754 | 输入/粘贴 | 有当前账号 | 六格同步 | 只保留前六个 ASCII 数字的内存字符串 | 少于六位提示 | none | none | 009789前导零；混合字符过滤；全角数字不接受 |
 | verCode.goVerSuccess.click.1 | Code2773 | Verify | 六位数字、当前账号 | 自定义500ms Loading锁重复 | Store原子写local_verification；进入Success | 错码/存储失败保留草稿，状态不变 | account local metadata | Code/Success/Login | 正确/错误、500ms前不写、刷新、双击、切号与离开取消 |
-| verCode.changeEmail.click.1 | Code2763 | Change email | 目标Email页就绪 | push无Loading | Email页 | 依赖未实现明确提示，不悄改账号 | none | account | 当前deferred；Email恢复后真实入口/返回 |
+| verCode.changeEmail.click.1 | Code2763 | Change email | 真实账号 context | push无Loading | 同账号 Email correction | 缺 context 不泄露账号 | none | account | 真实入口与返回已闭环、零写入 |
 | verCode.login（缺账号补齐） | Code空态 | Log In | 无有效账号 | 纯路由 | Login | 原地错误 | none | session | 访客/过期/删除无账号信息泄漏 |
 | verSuccess.goObBasic.click.1 | Success2790 | Continue Profile Setup | 本地验证成功且资料页就绪 | 纯路由 | 正确onboarding/basic | 缺依赖明确提示；验证结果保留 | none | account/profile | 不跳错误旧页、不伪造资料完成 |
 

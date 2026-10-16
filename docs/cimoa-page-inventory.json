@@ -593,7 +593,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/auth/verification/code",
-    "component": null,
+    "component": "src/pages/auth/verification/code.vue",
     "parent_route": "/pages/auth/verification/email",
     "allowed_origin_routes": [
       "/pages/auth/login",
@@ -627,7 +627,7 @@
         2773
       ],
       "fonts": "static/assets/fonts/source-fonts.css",
-      "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+      "dynamic_media": "none"
     },
     "states": {
       "required_checks": [
@@ -640,11 +640,17 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/verification-code/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/verification-code/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source + authorized fixed local code implemented; initial 9 browser checks and final 14-check Code/Success flow passed; Email/onboarding dependencies pending; contract docs/cimoa-local-verification.md"
+    "mapping_status": "Verification Code source locked; pixel restoration automatically confirmed after deterministic browser and iPhone 17 Pro WKWebView acceptance; final checks and local specialty commit complete",
+    "acceptance_evidence": "docs/ui-restoration/verification-code/acceptance.json",
+    "acceptance_notes": "Pixel browser 10/10, existing flow 15/15, Store 10/10 and WKWebView 1/1 passed, including exact source SVGs, digit sanitization, fixed 009789 atomic verification, rollback, cancellation, missing/verified context, refresh, 62/34 safe area and real iOS numeric keyboard."
   },
   {
     "source_screen": "Auth / Email Verification / Success",

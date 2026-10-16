@@ -48,7 +48,7 @@ try {
     await field().fill(value)
     // uni-input publishes its value asynchronously. Wait for the actual six
     // visible cells before acting, rather than clicking against the old input.
-    await page.waitForFunction(value => [...document.querySelectorAll('.verification-cell')].map(el => el.textContent).join('') === value.slice(0, 6), value)
+    await page.waitForFunction(value => [...document.querySelectorAll('.verification-cell')].map(el => el.textContent).join('') === value.replace(/[^0-9]/g, '').slice(0, 6), value)
   }
   const submit = () => page.locator('[data-interaction="verCode.goVerSuccess.click.1"]')
   const finish = () => page.locator('.verification-success-page').waitFor()
@@ -67,12 +67,12 @@ try {
   assert.ok(Math.abs((await page.locator('.verification-cell').first().boundingBox()).height - 60) < 1)
   await page.screenshot({ path: path.join(output, 'verification-code.png') })
   check('source six 44x60 cells and local-only copy render without a native host')
-  for (const value of ['', '9789', '0097890', '００９７８９']) {
+  for (const value of ['', '9789', '００９７８９']) {
     await enter(value); await submit().click()
     assert.match(await page.getByRole('alert').innerText(), /exactly six/)
     assert.equal(await saved(), before); assert.equal(await page.locator('.loading').count(), 0)
   }
-  await enter('000000'); await submit().click(); await page.locator('.loading').waitFor()
+  await enter('0000000'); assert.deepEqual(await page.locator('.verification-cell').allTextContents(), ['0', '0', '0', '0', '0', '0']); await submit().click(); await page.locator('.loading').waitFor()
   assert.equal(await saved(), before); await page.locator('.loading').waitFor({ state: 'detached' })
   assert.match(await page.getByRole('alert').innerText(), /incorrect/i); assert.equal(await field().inputValue(), '000000'); assert.equal(await saved(), before)
   check('empty, short, long, non-ASCII and wrong six-digit values fail with zero writes')
@@ -147,11 +147,11 @@ try {
   await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.login-page').waitFor()
   check('small-screen error content scrolls; fixed CTA respects 62/34 safe areas and direct Back returns Login')
   // Verification alone must not bypass the now-restored profile setup.
-  await page.getByRole('button', { name: 'Continue verification' }).click(); await page.locator('.verification-page').waitFor()
+  await page.locator('[data-interaction="login.loginNow.click.1"]').click(); await page.locator('.verification-page').waitFor()
   await enter('009789'); await submit().click(); await finish()
   const signedVerified = await saved()
   await page.goto(`${origin}/#/pages/auth/login`); await page.locator('.login-page').waitFor()
-  await page.getByRole('button', { name: 'Continue profile setup' }).click(); await page.locator('.onboarding-basic-page').waitFor()
+  await page.locator('[data-interaction="login.loginNow.click.1"]').click(); await page.locator('.onboarding-basic-page').waitFor()
   assert.equal(await page.locator('.main-skeleton').count(), 0)
   assert.equal(await saved(), signedVerified)
   check('verified but incomplete local session resumes Basic, never a premature Home or Tab skeleton')

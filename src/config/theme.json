@@ -111,7 +111,9 @@
       }
     },
     "icon": {
-      "primary": "#0b1b3a"
+      "primary": "#0b1b3a",
+      "verification_university_gold": "#f2b90c",
+      "verification_university_navy": "#0b3a7a"
     },
     "status": {
       "success": "#15803d",

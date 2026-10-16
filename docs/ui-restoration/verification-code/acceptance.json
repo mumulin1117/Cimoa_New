@@ -1,0 +1,68 @@
+{
+  "phase": "verification-code-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-16",
+  "auto_confirmation_basis": "User authorized automatic confirmation and immediate next-page source locking when all source, browser, WKWebView, behavior and final-gate evidence passes without unresolved uncertainty.",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 10,
+    "existing_flow_checks_passed": 15,
+    "store_checks_passed": 10,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": { "top": 54, "bottom": 0 },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": { "top": 62, "bottom": 34 },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/verification-code/browser-acceptance.json",
+    "comparison": {
+      "pixels_different": 95494,
+      "pixels_above_channel_delta_8": 21044,
+      "mean_absolute_channel_delta": 3.0542900106320707,
+      "max_channel_delta": 244
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testVerificationCodePixelRestoration",
+    "result_bundle": "ios/cimoaNeapo/build/VerificationCodeAcceptance.xcresult",
+    "tests": 1,
+    "failures": 0,
+    "screenshots": [
+      "docs/ui-restoration/verification-code/actual-wkwebview.png",
+      "docs/ui-restoration/verification-code/actual-wkwebview-keyboard.png",
+      "docs/ui-restoration/verification-code/actual-wkwebview-error.png"
+    ]
+  },
+  "verified_flows": [
+    "locked source geometry, approved truthful fixed-code copy, exact source emblem and university SVG, all three interaction IDs and the finished cRise frame",
+    "input retains only the first six ASCII digits, preserves leading zeroes and clears prior errors",
+    "wrong code shows Loading then writes nothing; exact 009789 commits once after Loading despite double tap",
+    "injected persistence failure keeps the digits and rolls back the entire verification write",
+    "missing context exposes no account email or input; verified recovery does not repeat verification",
+    "Change email and Back restore the same account and page instance without writing",
+    "320x568 scrolling, 62/34 safe areas, long email, cancellation, refresh and direct-entry Back remain valid",
+    "iPhone 17 Pro WKWebView real numeric keyboard folds the fixed footer and keeps all six cells visible"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/verification-code/reference.png",
+    "docs/ui-restoration/verification-code/actual-browser.png",
+    "docs/ui-restoration/verification-code/overlay.png",
+    "docs/ui-restoration/verification-code/diff.png",
+    "docs/ui-restoration/verification-code/source-contract.json",
+    "docs/ui-restoration/verification-code/difference-audit.md"
+  ],
+  "final_gates": {
+    "check_conventions": "passed",
+    "git_diff_check": "passed",
+    "build_h5": "passed"
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "page": "Verification Code",
+  "route": "/pages/auth/verification/code",
+  "source_screen": "Auth / Email Verification / Code",
+  "source_query": "route=verCode",
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isVerCode",
+    "visual_lines": "2735-2774",
+    "visual_fragment_sha256": "0471c1e01a96eb9b60e53fddc65f24f80232a9b55b57841295871fb5d1d102d7",
+    "behavior_lines": [4689, 5224, 5535, 5566, 5567, 5592, 5625, 5626, 5627, 5628, 5629, 5630, 5631, 5632, 5633],
+    "behavior_fragment_sha256": "6a9f3731611c624f436fbb7ae992709719eb3f9a0bfa98225755e4212b437308"
+  },
+  "reference_viewport": {
+    "width_css_px": 393,
+    "height_css_px": 852,
+    "scale": 1
+  },
+  "structure": {
+    "root": "absolute inset 0; cRise entry",
+    "source_system_chrome": "source header begins at y=58; project replaces prototype system chrome with measured TopSafeArea plus 4px source inset",
+    "fixed_regions": "compact header at source y=58; Verify Email footer left/right 20px and bottom 34px",
+    "scroll_region": "source absolute top 122px, left/right 0, bottom 0; overflow-y auto; padding 0 20px 210px",
+    "project_skeleton": "TopSafeArea; fixed AuthPageFrame header; one flex scroll region; fixed auth footer; BottomSafeArea",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "header": {
+    "frame": "top 58px; left/right 20px; height 46px; z-index 20",
+    "back": {
+      "interaction_id": "verCode.goBack.click.1",
+      "size_css_px": "46x46",
+      "border_radius_css_px": 23,
+      "background": "#fff",
+      "shadow": "0 6px 18px rgba(16,36,74,0.10)",
+      "svg_css_px": "22x22",
+      "path": "M15 5l-7 7 7 7"
+    },
+    "title": {
+      "source_copy": "University verification",
+      "approved_local_copy": "Local verification",
+      "top_css_px": 12,
+      "font_size_css_px": 16,
+      "font_weight": 600,
+      "color": "#5b6b85"
+    }
+  },
+  "content": {
+    "hero": {
+      "margin_top_css_px": 6,
+      "frame_css_px": "120x120",
+      "shield_css_px": "86x94",
+      "university_css_px": "30x30",
+      "check_css_px": "26x26",
+      "source_svg_lines": [2747, 2748, 2749]
+    },
+    "heading": {
+      "source_copy": "Check your email",
+      "approved_local_copy": "Enter your code",
+      "margin_top_css_px": 8,
+      "font_size_css_px": 33,
+      "font_weight": 800,
+      "letter_spacing": "-0.035em",
+      "line_height": 1.1,
+      "text_align": "center"
+    },
+    "description": {
+      "source_copy": "We sent a 6-digit code to<br>{{ maskedEmail }}",
+      "approved_local_copy": "Verify this local account on this device.<br>{{ actual account email }}",
+      "margin_top_css_px": 10,
+      "font_size_css_px": 17,
+      "color": "#5b6b85",
+      "line_height": 1.4,
+      "text_align": "center"
+    },
+    "code_cells": {
+      "count": 6,
+      "margin_top_css_px": 22,
+      "gap_css_px": 10,
+      "cell_css_px": "44x60",
+      "border_radius_css_px": 16,
+      "background": "#fff",
+      "shadow": "0 8px 20px rgba(16,36,74,0.08)",
+      "font_size_css_px": 26,
+      "font_weight": 800,
+      "behavior": "ASCII digits only; keep the leading zero; clear previous code error while editing"
+    },
+    "error": {
+      "margin_top_css_px": 14,
+      "padding_css_px": "14 16",
+      "border_radius_css_px": 16,
+      "background": "#fee2e2",
+      "font_size_css_px": 15.5,
+      "font_weight": 600,
+      "color": "#991b1b"
+    },
+    "resend_slot": {
+      "source_copy": "Resend code in 00:{{ seconds }} / Resend code",
+      "approved_local_copy": "Local code: 009789 · No email is sent.",
+      "margin_top_css_px": 18,
+      "font_size_css_px": 16,
+      "color": "#6b7a93",
+      "text_align": "center"
+    },
+    "change_email": {
+      "interaction_id": "verCode.changeEmail.click.1",
+      "copy": "Change email",
+      "margin_top_css_px": 6,
+      "font_size_css_px": 16,
+      "font_weight": 600,
+      "color": "#4a7bf7",
+      "text_decoration": "underline"
+    },
+    "info_card": {
+      "margin_top_css_px": 22,
+      "padding_css_px": 18,
+      "border_radius_css_px": 24,
+      "background": "#fff",
+      "shadow": "0 8px 24px rgba(16,36,74,0.07)",
+      "gap_css_px": 16,
+      "source_icon_css_px": "46x46",
+      "source_title": "HKUST",
+      "source_copy": "Verification keeps CIRCA limited to real university students.",
+      "approved_local_title": "Local verification",
+      "approved_local_copy": "This fixed code does not confirm email ownership or student status."
+    }
+  },
+  "footer": {
+    "frame": "absolute left/right 20px; bottom 34px; z-index 20",
+    "primary": {
+      "interaction_id": "verCode.goVerSuccess.click.1",
+      "source_copy": "Verify Email",
+      "approved_local_copy": "Verify Code",
+      "height_css_px": 60,
+      "border_radius_css_px": 30,
+      "gap_css_px": 8,
+      "arrow_css_px": "18x18",
+      "background": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+      "shadow": "0 12px 26px rgba(168,85,247,0.24)",
+      "font_size_css_px": 19,
+      "font_weight": 700,
+      "color": "#fff"
+    }
+  },
+  "approved_deltas": [
+    {
+      "id": "verification-code-safe-area-and-skeleton",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.1",
+      "delta": "Replace prototype system chrome and footer compensation with measured safe areas, fixed header/footer and one flex middle scroll region while preserving reference coordinates."
+    },
+    {
+      "id": "verification-code-fixed-local-code",
+      "source": "User authorized fixed local verification code 009789 and explicitly deferred real email verification",
+      "delta": "Do not claim that an email was sent, resent, owned or that student status was verified. Use the locked approved local title, heading, description, code hint, info copy and button copy while preserving source geometry."
+    },
+    {
+      "id": "verification-code-entity-guard",
+      "source": "DEVELOPMENT_CONVENTIONS.md 5 and INTERACTION_CONVENTIONS.md 9.2",
+      "delta": "Only a real pending or authenticated local account may be verified. Missing or expired context discloses no email, writes nothing and routes to Login."
+    },
+    {
+      "id": "verification-code-atomic-write",
+      "source": "Existing Store apply_verification contract",
+      "delta": "The exact string 009789 shows custom 400-600ms Loading before one atomic local_verification write. Wrong format, wrong code, cancellation, account switch or persistence failure stays here with no partial write."
+    },
+    {
+      "id": "verification-code-return-ownership",
+      "source": "DEVELOPMENT_CONVENTIONS.md 11.2.1",
+      "delta": "Back restores the actual auth origin and direct entry falls back to Login. Change email opens the real correction page for the same account."
+    },
+    {
+      "id": "verification-code-keyboard-viewport",
+      "source": "DEVELOPMENT_CONVENTIONS.md 14 and 15.1.2",
+      "delta": "When the real keyboard reduces visualViewport height, keep the six-digit input region visible in the only scroll region and fold the fixed footer until the keyboard closes."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      { "path": "src/pages/auth/verification/code.vue", "sha256": "5cc38cc05ffc4960caa86535c203dc179701e5d88414b81c1d861d8aaeae13d6" },
+      { "path": "src/pages/auth/auth.css", "sha256": "5a9fb0f2cd57ea93c6f7a631e33fe8e8388f592877a8b229a1601601a03cd7f8" },
+      { "path": "src/components/AuthPageFrame.vue", "sha256": "b50277b8759f5c4719dbf99db8e3d1930120e284f266d4ebf292668b3d09a47c" },
+      { "path": "src/components/VerificationEmblem.vue", "sha256": "4592d0f2a08ee292746829652c0297ca75a49c77dbb1d4047cc209637a84875b" },
+      { "path": "src/components/SourceIcon.vue", "sha256": "dfc0d944c1ebac5efc759d8cd1455f3621b86c515f953f057fb727f254164468" },
+      { "path": "src/config/theme.json", "sha256": "ca1a695f12a6575d6d1e857b8f6d70873e4dc694afe8c60306e874a889ad6d8b" },
+      { "path": "src/utils/localVerification.js", "sha256": "57066b996d41aa63eb4eb05a9a9d5ef517a3f3b3b72bbcb3d906fa042122a632" },
+      { "path": "src/utils/authNavigation.js", "sha256": "f9730bfc3048a8377ee57f0f728f3ae49ef8f28ae717aedf92cfc7a16377119a" },
+      { "path": "src/stores/store.js", "sha256": "38a83693fd60e06b8b742c56388f2e81173d0dfd89f4703d27d9edd249ebe501" }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/verification-code/reference.png",
+    "actual_browser_png": "docs/ui-restoration/verification-code/actual-browser.png",
+    "actual_browser_error_png": "docs/ui-restoration/verification-code/actual-browser-error.png",
+    "actual_browser_keyboard_png": "docs/ui-restoration/verification-code/actual-browser-keyboard.png",
+    "actual_browser_small_png": "docs/ui-restoration/verification-code/actual-browser-small.png",
+    "overlay_png": "docs/ui-restoration/verification-code/overlay.png",
+    "diff_png": "docs/ui-restoration/verification-code/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/verification-code/actual-wkwebview.png",
+    "actual_wkwebview_keyboard_png": "docs/ui-restoration/verification-code/actual-wkwebview-keyboard.png",
+    "actual_wkwebview_error_png": "docs/ui-restoration/verification-code/actual-wkwebview-error.png",
+    "browser_report": "docs/ui-restoration/verification-code/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/verification-code/acceptance.json",
+    "visual_acceptance": "passed"
+  }
+}

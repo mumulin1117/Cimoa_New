@@ -677,6 +677,68 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Verification Email WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
     }
+    func testVerificationCodePixelRestoration() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationCode=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        var stage = "prepare pending local account"
+        do {
+            _ = try await script(host, "const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),account=envelope.data.accounts.find(row=>row.account_id===envelope.data.session.account_id);delete account.local_verification;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationCode=native#/pages/auth/verification/code")!))
+            try await waitFor(host, ".verification-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}},root=box('.verification-page'),header=box('.auth-header'),back=box('.auth-back'),hero=box('.verification-hero'),emblem=box('.verification-emblem'),heading=box('.verification-heading'),description=box('.verification-description'),cells=[...document.querySelectorAll('.verification-cell')].map(element=>{const rect=element.getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height}}),hint=box('.verification-code-hint'),change=box('.verification-change'),info=box('.verification-info'),mark=box('.verification-info>.source-icon'),primary=box('.verification-submit'),safes=[...document.querySelectorAll('.verification-page>.safe-area')].map(element=>element.getBoundingClientRect().height);
+                return {root,header,back,hero,emblem,heading,description,cells,hint,change,info,mark,primary,safes,text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.verification-heading').textContent,description:document.querySelector('.verification-description').innerText,hint:document.querySelector('.verification-code-hint').textContent,change:document.querySelector('.verification-change').textContent.trim(),info:document.querySelector('.verification-info-copy').innerText,primary:document.querySelector('.verification-submit').textContent.trim()},backInteraction:document.querySelector('.auth-back').dataset.interaction};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], header = metrics["header"] as! [String: Double], back = metrics["back"] as! [String: Double], hero = metrics["hero"] as! [String: Double], emblem = metrics["emblem"] as! [String: Double], heading = metrics["heading"] as! [String: Double], description = metrics["description"] as! [String: Double], cells = metrics["cells"] as! [[String: Double]], hint = metrics["hint"] as! [String: Double], change = metrics["change"] as! [String: Double], info = metrics["info"] as! [String: Double], mark = metrics["mark"] as! [String: Double], primary = metrics["primary"] as! [String: Double], safes = metrics["safes"] as! [Double], text = metrics["text"] as! [String: String]
+            let scale = root["width"]! / 393
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(header["y"]!, safes[0] + 4 * scale, accuracy: 1); XCTAssertEqual(back["width"]!, 46 * scale, accuracy: 1); XCTAssertEqual(hero["y"]!, safes[0] + 74 * scale, accuracy: 1); XCTAssertEqual(emblem["width"]!, 120 * scale, accuracy: 1); XCTAssertEqual(heading["y"]!, emblem["bottom"]! + 8 * scale, accuracy: 1); XCTAssertEqual(description["y"]!, heading["bottom"]! + 10 * scale, accuracy: 1)
+            XCTAssertEqual(cells.count, 6); for cell in cells { XCTAssertEqual(cell["width"]!, 44 * scale, accuracy: 1); XCTAssertEqual(cell["height"]!, 60 * scale, accuracy: 1) }; XCTAssertEqual(cells[0]["y"]!, description["bottom"]! + 22 * scale, accuracy: 1); XCTAssertEqual(hint["y"]!, cells[0]["y"]! + 78 * scale, accuracy: 1); XCTAssertEqual(change["y"]!, hint["bottom"]! + 6 * scale, accuracy: 1); XCTAssertEqual(info["y"]!, change["bottom"]! + 22 * scale, accuracy: 1); XCTAssertEqual(mark["width"]!, 46 * scale, accuracy: 1); XCTAssertEqual(primary["height"]!, 60 * scale, accuracy: 1); XCTAssertEqual(primary["bottom"]!, root["height"]! - safes[1] - 34 * scale, accuracy: 2)
+            XCTAssertEqual(text["header"], "Local verification"); XCTAssertEqual(text["heading"], "Enter your code"); XCTAssertTrue(text["description"]?.contains("Verify this local account on this device.") == true); XCTAssertEqual(text["hint"], "Local code: 009789 · No email is sent."); XCTAssertEqual(text["change"], "Change email"); XCTAssertEqual(text["info"], "Local verification\nThis fixed code does not confirm email ownership or student status."); XCTAssertEqual(text["primary"], "Verify Code"); XCTAssertEqual(metrics["backInteraction"] as? String, "verCode.goBack.click.1")
+            let defaultShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); defaultShot.name = "WKWebView Verification Code default"; defaultShot.lifetime = .keepAlways; add(defaultShot)
+
+            stage = "wrong code and real numeric keyboard"
+            _ = try await script(host, "const input=document.querySelector('.verification-input input'),set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(input,'000000');input.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-interaction=\"verCode.goVerSuccess.click.1\"]').click();return true")
+            try await waitFor(host, ".loading"); try await waitFor(host, ".verification-page [role=alert]")
+            let wrong = try await script(host, "return {error:document.querySelector('.verification-page [role=alert]').textContent,cells:[...document.querySelectorAll('.verification-cell')].map(element=>element.textContent).join('')}") as! [String: Any]
+            XCTAssertTrue((wrong["error"] as? String)?.contains("incorrect") == true); XCTAssertEqual(wrong["cells"] as? String, "000000")
+            let errorShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); errorShot.name = "WKWebView Verification Code invalid"; errorShot.lifetime = .keepAlways; add(errorShot)
+            let viewportBefore = try await script(host, "return visualViewport.height") as! Double
+            _ = try await script(host, "const input=document.querySelector('.verification-input input'),set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(input,'009789');input.dispatchEvent(new Event('input',{bubbles:true}));input.click();input.focus();return true")
+            var keyboard: [String: Any] = [:]
+            for _ in 0..<50 {
+                keyboard = try await script(host, "const cells=document.querySelector('.verification-cells').getBoundingClientRect();return {height:visualViewport.height,open:document.querySelector('.verification-page').classList.contains('verification-page--keyboard'),footer:getComputedStyle(document.querySelector('.auth-footer')).display,cellsTop:cells.top,cellsBottom:cells.bottom}") as! [String: Any]
+                if keyboard["open"] as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            XCTAssertLessThan(keyboard["height"] as! Double, viewportBefore - 120); XCTAssertEqual(keyboard["open"] as? Bool, true); XCTAssertEqual(keyboard["footer"] as? String, "none"); XCTAssertGreaterThanOrEqual(keyboard["cellsTop"] as! Double, 0); XCTAssertLessThanOrEqual(keyboard["cellsBottom"] as! Double, keyboard["height"] as! Double)
+            let keyboardShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); keyboardShot.name = "WKWebView Verification Code keyboard"; keyboardShot.lifetime = .keepAlways; add(keyboardShot)
+            _ = try await script(host, "document.querySelector('.verification-input input').blur();return true"); try await Task.sleep(nanoseconds: 350_000_000)
+
+            stage = "atomic fixed-code persistence"
+            let failureBefore = try await script(host, "const original=Storage.prototype.setItem;window.__restoreVerificationCodeStorage=()=>Storage.prototype.setItem=original;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw new DOMException('Injected code storage failure','QuotaExceededError');return original.call(this,key,value)};return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host, "document.querySelector('[data-interaction=\"verCode.goVerSuccess.click.1\"]').click();return true"); try await waitFor(host, ".loading"); try await waitFor(host, ".verification-page [role=alert]")
+            let failed = try await script(host, "const result={error:document.querySelector('.verification-page [role=alert]').textContent,state:localStorage.getItem('cimoa_app_state_v2')};window.__restoreVerificationCodeStorage();return result") as! [String: Any]
+            XCTAssertTrue((failed["error"] as? String)?.contains("saved") == true || (failed["error"] as? String)?.contains("storage") == true); XCTAssertEqual(failed["state"] as? String, failureBefore)
+            _ = try await script(host, "const original=Storage.prototype.setItem;window.__verificationCodeWrites=0;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')window.__verificationCodeWrites++;return original.call(this,key,value)};const action=document.querySelector('[data-interaction=\"verCode.goVerSuccess.click.1\"]');action.click();action.click();return true")
+            try await waitFor(host, ".loading"); try await waitFor(host, ".verification-success-page")
+            let committed = try await script(host, "const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,account=data.accounts.find(row=>row.account_id===data.session.account_id);return {status:account.local_verification.status,writes:window.__verificationCodeWrites}") as! [String: Any]
+            XCTAssertEqual(committed["status"] as? String, "verified"); XCTAssertEqual(committed["writes"] as? Int, 1)
+            try await restore()
+        } catch { XCTFail("Verification Code WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

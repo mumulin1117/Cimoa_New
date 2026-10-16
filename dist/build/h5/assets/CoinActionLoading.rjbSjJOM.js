@@ -1,1 +1,0 @@
-import{e as i,c as e}from"./index-Dp9mn6pr.js";import{A as l}from"./AppLoading.EUg1stol.js";const o={__name:"CoinActionLoading",props:{visible:Boolean,label:{type:String,default:"Confirming your purchase…"}},setup:o=>(a,s)=>(i(),e(l,{visible:o.visible,label:o.label},null,8,["visible","label"]))};export{o as _};

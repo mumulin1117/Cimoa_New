@@ -1,0 +1,180 @@
+{
+  "phase": "verification-code-pixel-restoration",
+  "result": "passed",
+  "server_pid": 56750,
+  "reference": {
+    "kind": "source-derived locked reference with approved fixed-local-code, entity-guard, safe-area and keyboard deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "0471c1e01a96eb9b60e53fddc65f24f80232a9b55b57841295871fb5d1d102d7",
+    "behavior_fragment_sha256": "6a9f3731611c624f436fbb7ae992709719eb3f9a0bfa98225755e4212b437308",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "right": 65.984375,
+      "bottom": 104.984375
+    },
+    "hero": {
+      "x": 20,
+      "y": 127.953125,
+      "width": 353,
+      "height": 120,
+      "right": 373,
+      "bottom": 247.953125
+    },
+    "emblem": {
+      "x": 136.5,
+      "y": 127.953125,
+      "width": 120,
+      "height": 120,
+      "right": 256.5,
+      "bottom": 247.953125
+    },
+    "heading": {
+      "x": 20,
+      "y": 255.9375,
+      "width": 353,
+      "height": 36.296875,
+      "right": 373,
+      "bottom": 292.234375
+    },
+    "description": {
+      "x": 20,
+      "y": 302.234375,
+      "width": 353,
+      "height": 47.59375,
+      "right": 373,
+      "bottom": 349.828125
+    },
+    "cells": [
+      {
+        "x": 39.546875,
+        "y": 371.828125,
+        "width": 43.984375,
+        "height": 60
+      },
+      {
+        "x": 93.53125,
+        "y": 371.828125,
+        "width": 43.984375,
+        "height": 60
+      },
+      {
+        "x": 147.515625,
+        "y": 371.828125,
+        "width": 43.984375,
+        "height": 60
+      },
+      {
+        "x": 201.5,
+        "y": 371.828125,
+        "width": 43.984375,
+        "height": 60
+      },
+      {
+        "x": 255.484375,
+        "y": 371.828125,
+        "width": 43.984375,
+        "height": 60
+      },
+      {
+        "x": 309.46875,
+        "y": 371.828125,
+        "width": 43.984375,
+        "height": 60
+      }
+    ],
+    "hint": {
+      "x": 20,
+      "y": 449.8125,
+      "width": 353,
+      "height": 22.390625,
+      "right": 373,
+      "bottom": 472.203125
+    },
+    "change": {
+      "x": 20,
+      "y": 478.1875,
+      "width": 353,
+      "height": 18,
+      "right": 373,
+      "bottom": 496.1875
+    },
+    "info": {
+      "x": 20,
+      "y": 518.1875,
+      "width": 353,
+      "height": 108.5625,
+      "right": 373,
+      "bottom": 626.75
+    },
+    "mark": {
+      "x": 37.984375,
+      "y": 549.46875,
+      "width": 45.984375,
+      "height": 45.984375,
+      "right": 83.96875,
+      "bottom": 595.453125
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 818.015625
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "text": {
+      "header": "Local verification",
+      "heading": "Enter your code",
+      "description": "Verify this local account on this device.\ncode.pixel@campus.edu",
+      "hint": "Local code: 009789 · No email is sent.",
+      "change": "Change email",
+      "info": "Local verification\nThis fixed code does not confirm email ownership or student status.",
+      "primary": "Verify Code"
+    },
+    "backInteraction": "verCode.goBack.click.1"
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 95494,
+    "pixels_above_channel_delta_8": 21044,
+    "mean_absolute_channel_delta": 3.0542900106320707,
+    "max_channel_delta": 244
+  },
+  "checks": [
+    "393x852 pending account restores locked geometry, approved copy, exact source SVGs and interaction IDs",
+    "reference, actual, overlay and absolute diff were generated from one hash-locked state",
+    "input keeps only six ASCII digits with the leading zero; wrong code shows Loading then rolls back",
+    "009789 commits once after Loading despite double tap and opens guarded Success",
+    "persistence failure preserves the six digits and produces no partial verification",
+    "missing context discloses no email or code field, writes nothing and opens real Login",
+    "Change email and Back restore the same account and page instance without writing",
+    "verified recovery does not expose or repeat the code write and continues to Success",
+    "320x568 safe-area scrolling keeps the fixed footer; keyboard reduction folds it and leaves all six cells visible",
+    "direct-entry Back falls back to Login without mutating the pending account"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

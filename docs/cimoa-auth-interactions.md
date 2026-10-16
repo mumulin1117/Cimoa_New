@@ -1,6 +1,6 @@
 # Cimoa 认证入口逐页交互契约
 
-Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版，Age Confirmation 已由本地提交 `9e6b318f` 封版，Community Agreement 已由本地提交 `047e4c1d` 封版，Signup 已由本地提交 `4adc0b9a` 封版。Email Verification 的来源差异、浏览器/WKWebView 证据和本地验证码入口闭环均已通过，已按用户授权自动确认为 `verified / passed`；专项本地提交完成后立即锁定 Verification Code。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在全部证据通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
+Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版，Age Confirmation 已由本地提交 `9e6b318f` 封版，Community Agreement 已由本地提交 `047e4c1d` 封版，Signup 已由本地提交 `4adc0b9a` 封版，Email Verification 已由本地提交 `250ab834` 封版。Verification Code 的来源差异、浏览器/WKWebView 证据和固定码闭环均已通过，已按用户授权自动确认为 `verified / passed`；专项本地提交完成后立即锁定 Verification Success。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在全部证据通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
 
 ## Splash
 
@@ -87,3 +87,15 @@ Welcome 本轮像素专项已完成并获用户视觉确认：[来源契约](./u
 | verEmail.goVerCode.click.1 | Email2730 | Continue to Local Code | context 存在；email 合法且唯一 | changed email 显示 AuthActionLoading 500ms；unchanged 不伪造写入 | changed 时 Store 原子更正账号 email，随后进入固定码 Code；unchanged 直接进入 Code | 格式/冲突/存储失败留本页且零部分写入；缺 context 明确转 Login | account.email only when changed | Signup/Login/Code | 连点单次、刷新恢复、Change Email 返回同一账号 |
 
 证据见 [Email Verification 来源契约](./ui-restoration/verification-email/source-contract.json)、[差异审计](./ui-restoration/verification-email/difference-audit.md) 与 [验收摘要](./ui-restoration/verification-email/acceptance.json)。浏览器确定性测试 9/9、iPhone 17 Pro WKWebView 专项 1/1 均通过；覆盖来源几何、批准本地文案、三项 interaction ID、真实软键盘、unchanged 零写、changed 单次原子写入、重复/存储失败回滚、缺/已验证 context、刷新和返回归属。依据用户授权，本页已自动确认为 `verified / passed`。
+
+## Verification Code
+
+来源内层 2735–2774 行，`/pages/auth/verification/code`；精确保留紧凑 Header、120 hero、六个 44×60 数字格、错误卡、说明卡和 bottom 34 的 CTA。邮件发送、重发倒计时、HKUST 和学生认证承诺按已批准固定本地码范围替换为真实本机说明，结构与间距不变。
+
+| interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| verCode.goBack.click.1 | Code2738 | Back | 非提交 | 反向过渡 | 恢复真实 auth 来源；直达 fallback Login | 留原页错误 | none | navigation | 清输入、零写入、不黑屏 |
+| verCode.changeEmail.click.1 | Code2763 | Change email | 真实 account context | push/cRise | 打开同账号 Email correction；Back 恢复 Code | 缺 context 不泄露账号 | none | Email/Code | 往返不写入、不创建重复账号 |
+| verCode.goVerSuccess.click.1 | Code2773 | Verify Code | context 存在；页面只保留前六个 ASCII 数字 | exact 009789 显示 AuthActionLoading 500ms | Store 原子写 local_verification 一次并进入 guarded Success | 格式错零 Loading；错码、持久化失败、离开取消均无半状态 | account.local_verification | Login/Code/Success | 连点单次、刷新恢复、不提升学生身份 |
+
+证据见 [来源契约](./ui-restoration/verification-code/source-contract.json)、[差异审计](./ui-restoration/verification-code/difference-audit.md) 与 [验收摘要](./ui-restoration/verification-code/acceptance.json)。浏览器像素专项 10/10、既有联合回归 15/15、Store 10/10、iPhone 17 Pro WKWebView 1/1 均通过；真实数字键盘下六格可见且 footer 折叠。依据用户授权，本页已自动确认为 `verified / passed`。

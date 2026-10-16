@@ -8,6 +8,7 @@ defineProps({ name: { type: String, required: true }, strokeWidth: { type: Numbe
     <svg v-if="name === 'lightning'" viewBox="0 0 12 18" fill="currentColor"><path d="M7.5 0 0 10h4l-1 8 8-10.5H7z" /></svg>
     <svg v-else-if="name === 'verified'" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" class="verified-circle" /><path d="m7.5 12.4 3 3 6-6.4" class="verified-check" :stroke-width="strokeWidth || 2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
     <svg v-else-if="name === 'apple'" viewBox="0 0 24 24" fill="currentColor"><path d="M16.2 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.9-1.5-.1-2.8.8-3.5.8-.7 0-1.8-.8-3-.8-1.6 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.3 3 2.3 1.2 0 1.6-.8 3.1-.8 1.4 0 1.8.8 3 .7 1.2 0 2-1.1 2.8-2.2.9-1.3 1.3-2.5 1.3-2.6-.1 0-2.5-1-2.7-3.6zM14.3 5.6c.6-.8 1.1-1.9 1-3-1 0-2.2.7-2.9 1.5-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4z" /></svg>
+    <svg v-else-if="name === 'verification-university'" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="18" r="9" class="verification-university-gold" /><rect x="14" y="27" width="32" height="4" rx="1.5" class="verification-university-navy" /><rect x="17" y="31" width="4.5" height="18" class="verification-university-navy" /><rect x="27.7" y="31" width="4.5" height="18" class="verification-university-navy" /><rect x="38" y="31" width="4.5" height="18" class="verification-university-navy" /><path d="M17 49 30 58 43 49Z" class="verification-university-navy" /></svg>
     <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" :stroke-width="strokeWidth || 2" stroke-linecap="round" stroke-linejoin="round">
       <template v-if="name === 'settings'"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" /><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.4-2-3.4-2.3.7a7.6 7.6 0 0 0-1.7-1L15 3h-6l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.3-.7-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.4 2 3.4 2.3-.7a7.6 7.6 0 0 0 1.7 1L9 21h6l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.3.7 2-3.4z" /></template>
       <template v-else-if="name === 'edit'"><path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4" /></template>
@@ -52,4 +53,6 @@ defineProps({ name: { type: String, required: true }, strokeWidth: { type: Numbe
 svg { display: block; width: 100%; height: 100%; }
 .verified-circle { fill: var(--cimoa-status-verified); }
 .verified-check { stroke: var(--cimoa-text-inverse); }
+.verification-university-gold { fill: var(--cimoa-icon-verification-university-gold); }
+.verification-university-navy { fill: var(--cimoa-icon-verification-university-navy); }
 </style>

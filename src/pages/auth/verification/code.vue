@@ -3,6 +3,7 @@ import { computed, ref, onUnmounted } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
+import { use_visual_viewport } from '@/composables/useEventViewport.js'
 import { auth_destination } from '@/utils/authNavigation.js'
 import AuthPageFrame from '@/components/AuthPageFrame.vue'
 import AuthActionLoading from '@/components/AuthActionLoading.vue'
@@ -11,7 +12,9 @@ import SourceIcon from '@/components/SourceIcon.vue'
 const store = use_app_store(), frame = ref(null), code = ref(''), error = ref('')
 const context = computed(() => store.local_verification)
 const cells = computed(() => Array.from({ length: 6 }, (_, index) => code.value[index] || ''))
+const code_model = computed({ get: () => code.value, set: value => { code.value = String(value).replace(/[^0-9]/g, '').slice(0, 6) } })
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
+const { height: viewport_height, keyboard_open } = use_visual_viewport()
 let active = true
 onShow(() => { active = true; store.tick() })
 const hide = () => { active = false; cancel_loading(); code.value = '' }
@@ -32,20 +35,20 @@ const verify = async () => {
 }
 </script>
 <template>
-  <AuthPageFrame ref="frame" class="verification-page" title="Local verification" :busy="is_loading" @back="back">
+  <AuthPageFrame ref="frame" class="verification-page" :class="{ 'verification-page--keyboard': keyboard_open }" title="Local verification" back-interaction="verCode.goBack.click.1" :busy="is_loading" :style="{ height: viewport_height }" @back="back">
     <view class="verification-hero"><VerificationEmblem /></view>
     <text class="auth-heading verification-heading">Enter your code</text>
     <template v-if="context">
       <text class="verification-description">Verify this local account on this device.<text class="verification-email">{{ context.email }}</text></text>
       <view v-if="!context.verified" class="verification-input-region">
         <view class="verification-cells" aria-hidden="true"><view v-for="(digit, index) in cells" :key="index" class="verification-cell">{{ digit }}</view></view>
-        <input v-model="code" class="verification-input" type="text" :maxlength="7" aria-label="Six-digit local verification code" :disabled="is_loading" @input="error = ''" @confirm="verify" />
+        <input v-model="code_model" class="verification-input" type="text" inputmode="numeric" aria-label="Six-digit local verification code" :disabled="is_loading" @input="error = ''" @confirm="verify" />
       </view>
       <text v-else class="verification-saved" role="status">Local verification complete.</text>
       <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
       <text class="verification-code-hint">Local code: {{ store.local_verification_code }} · No email is sent.</text>
       <view class="auth-link verification-change" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verCode.changeEmail.click.1" @click="go('/pages/auth/verification/email')" @keydown.enter="go('/pages/auth/verification/email')">Change email</view>
-      <view class="verification-info"><SourceIcon name="university" /><view class="verification-info-copy"><text class="verification-info-title">Local verification</text><text>This fixed code does not confirm email ownership or student status.</text></view></view>
+      <view class="verification-info"><SourceIcon name="verification-university" /><view class="verification-info-copy"><text class="verification-info-title">Local verification</text><text>This fixed code does not confirm email ownership or student status.</text></view></view>
     </template>
     <text v-else class="auth-error-box" role="alert">{{ store.hydration_error || 'Log in or create a local account first. No verification has been saved.' }}</text>
     <template #footer><view v-if="context" class="auth-primary verification-submit" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verCode.goVerSuccess.click.1" @click="verify" @keydown.enter="verify"><text>{{ context.verified ? 'Continue' : 'Verify Code' }}</text><SourceIcon name="arrow-right" :stroke-width="2.4" /></view><view v-else class="auth-primary" role="button" tabindex="0" @click="go('/pages/auth/login')" @keydown.enter="go('/pages/auth/login')">Log In</view></template>
@@ -58,6 +61,7 @@ const verify = async () => {
 <style scoped>
 .verification-page :deep(.auth-header-title) { font-size: 30.534rpx; color: var(--cimoa-text-secondary); font-weight: 600; }
 .verification-page :deep(.auth-footer) { padding-bottom: 64.885rpx; }
+.verification-page.verification-page--keyboard :deep(.auth-footer) { display: none; }
 .verification-hero { display: flex; justify-content: center; margin-top: 11.45rpx; }
 .verification-heading { margin-top: 15.267rpx; text-align: center; }
 .verification-description {
