@@ -1,0 +1,192 @@
+{
+  "phase": "signup-pixel-restoration",
+  "result": "passed",
+  "server_pid": 9615,
+  "reference": {
+    "kind": "source-derived locked reference with approved safe-area, truthful-local-registration and password-security deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "1dd450b4af5757e4209adf68490bd33a8c23cfd8eb74f071294fabd433b5db4c",
+    "behavior_fragment_sha256": "98e45193388bacdf9b0c475c890e20d47351101990949f2ff0b7900b5bd2cef2",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "right": 393,
+      "bottom": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "right": 65.984375,
+      "bottom": 104.984375
+    },
+    "heading": {
+      "x": 20,
+      "y": 121.96875,
+      "width": 353,
+      "height": 36.296875,
+      "right": 373,
+      "bottom": 158.265625
+    },
+    "apple": {
+      "x": 20,
+      "y": 176.25,
+      "width": 353,
+      "height": 55.984375,
+      "right": 373,
+      "bottom": 232.234375
+    },
+    "divider": {
+      "x": 20,
+      "y": 250.21875,
+      "width": 353,
+      "height": 17,
+      "right": 373,
+      "bottom": 267.21875
+    },
+    "fields": [
+      {
+        "x": 20,
+        "y": 281.21875,
+        "width": 353,
+        "height": 79.984375,
+        "bottom": 361.203125
+      },
+      {
+        "x": 20,
+        "y": 375.203125,
+        "width": 353,
+        "height": 102.96875,
+        "bottom": 478.171875
+      },
+      {
+        "x": 20,
+        "y": 492.171875,
+        "width": 353,
+        "height": 79.984375,
+        "bottom": 572.15625
+      }
+    ],
+    "note": {
+      "x": 20,
+      "y": 588.140625,
+      "width": 353,
+      "height": 34,
+      "right": 373,
+      "bottom": 622.140625
+    },
+    "footer": {
+      "x": 0,
+      "y": 710.03125,
+      "width": 393,
+      "height": 141.96875,
+      "right": 393,
+      "bottom": 852
+    },
+    "primary": {
+      "x": 20,
+      "y": 710.03125,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 770.03125
+    },
+    "secondary": {
+      "x": 20,
+      "y": 776.015625,
+      "width": 353,
+      "height": 45.984375,
+      "right": 373,
+      "bottom": 822
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "text": {
+      "header": "Sign up",
+      "heading": "Create your account",
+      "apple": "Continue with Apple",
+      "divider": "or",
+      "labels": [
+        "University email",
+        "Password",
+        "Confirm password"
+      ],
+      "hint": "At least 8 characters with a number",
+      "note": "Your university email is only used for this local account. It is never shown on your profile.",
+      "primary": "Create Account",
+      "secondary": "Already have an account? Log in"
+    },
+    "inputs": [
+      {
+        "interaction": "signup.onEmail.change.1",
+        "placeholder": "you@university.edu",
+        "type": "text",
+        "value": ""
+      },
+      {
+        "interaction": "signup.onPw.change.1",
+        "placeholder": "At least 8 characters",
+        "type": "password",
+        "value": ""
+      },
+      {
+        "interaction": "signup.onPw2.change.1",
+        "placeholder": "Repeat your password",
+        "type": "password",
+        "value": ""
+      }
+    ],
+    "backInteraction": "signup.goBack.click.1",
+    "appleInteraction": "signup.appleAuth.click.1",
+    "toggleInteraction": "signup.togglePw.click.1",
+    "primaryInteraction": "signup.createAccount.click.1",
+    "secondaryInteraction": "signup.goLogin.click.1",
+    "primaryDisabled": "true",
+    "alertVisible": false,
+    "mismatchVisible": false,
+    "noteStyle": {
+      "fontSize": "15px",
+      "lineHeight": "normal",
+      "marginTop": "15.9999px"
+    }
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 62290,
+    "pixels_above_channel_delta_8": 13936,
+    "mean_absolute_channel_delta": 1.3619891528987325,
+    "max_channel_delta": 162
+  },
+  "checks": [
+    "393x852 empty default restores locked source geometry, exact controls, approved truthful note, disabled CTA and finished cRise frame",
+    "reference, actual, overlay and absolute diff were generated from one hash-locked default state",
+    "short, missing-number and mismatch hints are truthful; keyboard Show/Hide controls both real password fields",
+    "Apple fails with zero write; editing clears stale error; 320x568 scrolling and keyboard-height reduction keep the focused field visible",
+    "duplicate email rolls back; one Loading creates one salted local account; no plaintext/session/student certification; refresh recovers verification with blank passwords",
+    "injected persistence failure leaves the Store unchanged, preserves retryable credentials and never opens verification",
+    "Login round-trip restores Signup and direct-entry Back falls back to Community without a guest-state write"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

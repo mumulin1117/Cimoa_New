@@ -1,0 +1,75 @@
+{
+  "phase": "signup-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-16",
+  "auto_confirmation_basis": "User authorized automatic confirmation and immediate next-page source locking when all source, browser, WKWebView, behavior and final-gate evidence passes without unresolved uncertainty.",
+  "browser": {
+    "result": "passed",
+    "checks_passed": 7,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": {
+      "top": 54,
+      "bottom": 0
+    },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/signup/browser-acceptance.json",
+    "comparison": {
+      "pixels_different": 62290,
+      "pixels_above_channel_delta_8": 13936,
+      "mean_absolute_channel_delta": 1.3619891528987325,
+      "max_channel_delta": 162
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": {
+      "top": 62,
+      "bottom": 34
+    },
+    "test": "cimoaNeapoTests.HostTests.testSignupPixelRestoration",
+    "result_bundle": "/tmp/cimoa-signup-xc.qfb2zt/Signup.xcresult",
+    "tests": 1,
+    "failures": 0,
+    "screenshots": [
+      "docs/ui-restoration/signup/actual-wkwebview.png",
+      "docs/ui-restoration/signup/actual-wkwebview-keyboard.png",
+      "docs/ui-restoration/signup/actual-wkwebview-error.png"
+    ]
+  },
+  "verified_flows": [
+    "locked source geometry, exact copy, source back and Apple SVGs, all eight interaction IDs and the finished cRise frame",
+    "empty default contains three empty inputs, the exact password hint, the shortest truthful local disclosure and a disabled Create Account with no error or test control",
+    "short, missing-number and confirmation-mismatch states are truthful; Show and Hide operate both real password fields by pointer and keyboard",
+    "Apple reports the missing service explicitly with zero account write and zero verification navigation",
+    "Age to Community to Signup reuses the persisted registration draft; duplicate fixture email fails after custom Loading with a complete rollback",
+    "one 500ms Loading and repeated tap create exactly one salted PBKDF2 local account with no plaintext password, authenticated session or false student certification",
+    "refresh resumes the pending account as Continue verification while password and confirmation remain blank",
+    "injected persistence failure leaves Store and storage unchanged, preserves retryable credentials and never opens Email Verification",
+    "Login round-trip restores Signup; direct-entry Back falls back to Community without creating guest state",
+    "320x568 scrolling and the real iOS keyboard keep the focused field visible, temporarily fold the fixed footer and preserve one scroll owner"
+  ],
+  "regressions": {
+    "registration_store": "10/10 passed",
+    "registration_browser_signup_phase": "3/3 passed"
+  },
+  "final_checks": {
+    "status": "passed",
+    "corepack pnpm check:conventions": "passed with no warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; H5 packaged into ios/cimoaNeapo/Resources/H5"
+  },
+  "commit": "included in the Signup local specialty commit"
+}

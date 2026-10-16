@@ -499,6 +499,118 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Community WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
     }
+    func testSignupPixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        func restore() async throws {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?signupPixel=restore#/pages/auth/welcome")!))
+            try await waitFor(host, ".welcome-page")
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?signupPixel=restored#/pages/auth/splash")!))
+        }
+        func loadFresh(_ route: String, _ suffix: String, _ selector: String) async throws {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');window.__signupOldDocument=true;return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?signupPixel=\(suffix)#\(route)")!))
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__signupOldDocument&&!!document.querySelector('\(selector)')")) as? Bool == true { return }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            throw NSError(domain: "CimoaTests", code: 7, userInfo: [NSLocalizedDescriptionKey: "Missing new Signup document"])
+        }
+        func reachSignup(_ suffix: String) async throws {
+            try await loadFresh("/pages/auth/age", suffix, ".age-page")
+            _ = try await script(host, "const input=document.querySelector('.age-page input'),set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(input,'2000-01-01');input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true")
+            try await waitFor(host, ".community-page")
+            _ = try await script(host, "for(const id of ['agree.tTerms.click.1','agree.tPrivacy.click.1','agree.tGuides.click.1'])document.querySelector('[data-interaction=\"'+id+'\"]').click();document.querySelector('[data-interaction=\"agree.goSignup.click.1\"]').click();return true")
+            try await waitFor(host, ".signup-page")
+        }
+        var stage = "prepare Signup default"
+        do {
+            try await loadFresh("/pages/auth/signup", "native", ".signup-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=value=>{const element=typeof value==='string'?document.querySelector(value):value,rect=element.getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}},fields=[...document.querySelectorAll('.auth-field')],inputs=[...document.querySelectorAll('.signup-page .auth-input')];
+                return {root:box('.signup-page'),header:box('.auth-header'),back:box('.auth-back'),heading:box('.auth-heading'),apple:box('.auth-apple'),divider:box('.auth-divider'),fields:fields.map(box),note:box('.signup-note'),primary:box('.auth-primary'),secondary:box('.auth-secondary'),safes:[...document.querySelectorAll('.signup-page > .safe-area')].map(element=>element.getBoundingClientRect().height),text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.auth-heading').textContent,apple:document.querySelector('.auth-apple').textContent.trim(),divider:document.querySelector('.auth-divider').textContent.trim(),labels:[...document.querySelectorAll('.auth-label')].map(element=>element.textContent),hint:document.querySelector('.signup-hint').textContent,note:document.querySelector('.signup-note').textContent,primary:document.querySelector('.auth-primary').textContent.trim(),secondary:document.querySelector('.auth-secondary').textContent.trim()},interactions:{back:document.querySelector('.auth-back').dataset.interaction,apple:document.querySelector('.auth-apple').dataset.interaction,inputs:inputs.map(element=>element.dataset.interaction),toggle:document.querySelector('.auth-show').dataset.interaction,primary:document.querySelector('.auth-primary').dataset.interaction,secondary:document.querySelector('.auth-secondary').dataset.interaction},placeholders:inputs.map(element=>element.querySelector('.uni-input-placeholder')?.textContent||element.getAttribute('placeholder')),types:inputs.map(element=>element.querySelector('input')?.type||element.type),disabled:document.querySelector('.auth-primary').getAttribute('aria-disabled'),alert:!!document.querySelector('.signup-page [role=alert]'),storage:localStorage.getItem('cimoa_app_state_v2')};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], header = metrics["header"] as! [String: Double], back = metrics["back"] as! [String: Double]
+            let heading = metrics["heading"] as! [String: Double], apple = metrics["apple"] as! [String: Double], divider = metrics["divider"] as! [String: Double]
+            let fields = metrics["fields"] as! [[String: Double]], primary = metrics["primary"] as! [String: Double], secondary = metrics["secondary"] as! [String: Double], safes = metrics["safes"] as! [Double], sourceScale = root["width"]! / 393
+            let text = metrics["text"] as! [String: Any], interactions = metrics["interactions"] as! [String: Any]
+            XCTAssertEqual(root["x"]!, 0, accuracy: 1); XCTAssertEqual(root["y"]!, 0, accuracy: 1); XCTAssertEqual(root["width"]!, Double(host.webView.bounds.width), accuracy: 1); XCTAssertEqual(root["height"]!, Double(host.webView.bounds.height), accuracy: 1)
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(header["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(header["y"]!, safes[0] + 4 * sourceScale, accuracy: 1); XCTAssertEqual(header["height"]!, 48 * sourceScale, accuracy: 1); XCTAssertEqual(back["width"]!, 46 * sourceScale, accuracy: 1); XCTAssertEqual(back["height"]!, 46 * sourceScale, accuracy: 1)
+            XCTAssertEqual(heading["y"]!, safes[0] + 68 * sourceScale, accuracy: 1); XCTAssertEqual(apple["y"]!, heading["bottom"]! + 18 * sourceScale, accuracy: 1); XCTAssertEqual(apple["height"]!, 56 * sourceScale, accuracy: 1); XCTAssertEqual(divider["y"]!, apple["bottom"]! + 18 * sourceScale, accuracy: 1)
+            XCTAssertEqual(fields[0]["y"]!, divider["bottom"]! + 14 * sourceScale, accuracy: 1.5); XCTAssertEqual(fields[1]["y"]!, fields[0]["bottom"]! + 14 * sourceScale, accuracy: 1.5); XCTAssertEqual(fields[2]["y"]!, fields[1]["bottom"]! + 14 * sourceScale, accuracy: 1.5)
+            XCTAssertEqual(primary["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(primary["height"]!, 60 * sourceScale, accuracy: 1); XCTAssertEqual(secondary["height"]!, 46 * sourceScale, accuracy: 1); XCTAssertEqual(secondary["bottom"]!, root["height"]! - safes[1] - 30 * sourceScale, accuracy: 2)
+            XCTAssertEqual(text["header"] as? String, "Sign up"); XCTAssertEqual(text["heading"] as? String, "Create your account"); XCTAssertEqual(text["apple"] as? String, "Continue with Apple"); XCTAssertEqual(text["divider"] as? String, "or")
+            XCTAssertEqual(text["labels"] as? [String], ["University email", "Password", "Confirm password"]); XCTAssertEqual(text["hint"] as? String, "At least 8 characters with a number"); XCTAssertEqual(text["note"] as? String, "Your university email is only used for this local account. It is never shown on your profile."); XCTAssertEqual(text["primary"] as? String, "Create Account"); XCTAssertEqual(text["secondary"] as? String, "Already have an account? Log in")
+            XCTAssertEqual(interactions["back"] as? String, "signup.goBack.click.1"); XCTAssertEqual(interactions["apple"] as? String, "signup.appleAuth.click.1"); XCTAssertEqual(interactions["inputs"] as? [String], ["signup.onEmail.change.1", "signup.onPw.change.1", "signup.onPw2.change.1"]); XCTAssertEqual(interactions["toggle"] as? String, "signup.togglePw.click.1"); XCTAssertEqual(interactions["primary"] as? String, "signup.createAccount.click.1"); XCTAssertEqual(interactions["secondary"] as? String, "signup.goLogin.click.1")
+            let placeholders = (metrics["placeholders"] as? [Any])?.compactMap { $0 as? String }
+            XCTAssertEqual(placeholders, ["you@university.edu", "At least 8 characters", "Repeat your password"]); XCTAssertEqual(metrics["types"] as? [String], ["text", "password", "password"]); XCTAssertEqual(metrics["disabled"] as? String, "true"); XCTAssertEqual(metrics["alert"] as? Bool, false); XCTAssertTrue(metrics["storage"] is NSNull)
+            let defaultShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); defaultShot.name = "WKWebView Signup deterministic"; defaultShot.lifetime = .keepAlways; add(defaultShot)
+            print("CIMOA_SIGNUP_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+
+            stage = "input, unavailable Apple and real keyboard"
+            let inputStates = try await script(host, """
+            const inputs=[...document.querySelectorAll('.signup-page input')],set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set,fill=(index,value)=>{set.call(inputs[index],value);inputs[index].dispatchEvent(new Event('input',{bubbles:true}))};
+            fill(1,'short');await new Promise(resolve=>setTimeout(resolve,60));const short=document.querySelector('.signup-hint').textContent;fill(1,'longpassword');await new Promise(resolve=>setTimeout(resolve,60));const noNumber=document.querySelector('.signup-hint').textContent;fill(2,'different');await new Promise(resolve=>setTimeout(resolve,60));const mismatch=document.querySelector('.signup-mismatch').textContent;document.querySelector('[data-interaction=\"signup.togglePw.click.1\"]').click();await new Promise(resolve=>requestAnimationFrame(resolve));const shown=[inputs[1].type,inputs[2].type];document.querySelector('[data-interaction=\"signup.togglePw.click.1\"]').click();await new Promise(resolve=>requestAnimationFrame(resolve));const hidden=[inputs[1].type,inputs[2].type];document.querySelector('[data-interaction=\"signup.appleAuth.click.1\"]').click();await new Promise(resolve=>requestAnimationFrame(resolve));return {short,noNumber,mismatch,shown,hidden,error:document.querySelector('[role=alert]').textContent,storage:localStorage.getItem('cimoa_app_state_v2')};
+            """) as! [String: Any]
+            XCTAssertEqual(inputStates["short"] as? String, "Too short — 8 characters minimum"); XCTAssertEqual(inputStates["noNumber"] as? String, "Include at least one number"); XCTAssertEqual(inputStates["mismatch"] as? String, "Passwords don’t match yet"); XCTAssertEqual(inputStates["shown"] as? [String], ["text", "text"]); XCTAssertEqual(inputStates["hidden"] as? [String], ["password", "password"]); XCTAssertTrue((inputStates["error"] as? String)?.contains("not configured") == true); XCTAssertTrue(inputStates["storage"] is NSNull)
+            let viewportBefore = try await script(host, "return window.visualViewport.height") as! Double
+            _ = try await script(host, "const input=document.querySelectorAll('.signup-page input')[2];input.click();input.focus();return true")
+            var keyboard: [String: Any] = [:]
+            for _ in 0..<50 {
+                keyboard = try await script(host, "const input=document.querySelectorAll('.signup-page input')[2].getBoundingClientRect();return {height:window.visualViewport.height,open:document.querySelector('.signup-page').classList.contains('signup-page--keyboard'),footer:getComputedStyle(document.querySelector('.auth-footer')).display,inputTop:input.top,inputBottom:input.bottom}") as! [String: Any]
+                if keyboard["open"] as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            XCTAssertLessThan(keyboard["height"] as! Double, viewportBefore - 120); XCTAssertEqual(keyboard["open"] as? Bool, true); XCTAssertEqual(keyboard["footer"] as? String, "none"); XCTAssertGreaterThanOrEqual(keyboard["inputTop"] as! Double, 0); XCTAssertLessThanOrEqual(keyboard["inputBottom"] as! Double, keyboard["height"] as! Double)
+            let keyboardShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); keyboardShot.name = "WKWebView Signup keyboard"; keyboardShot.lifetime = .keepAlways; add(keyboardShot)
+            _ = try await script(host, "document.querySelectorAll('.signup-page input')[2].blur();return true"); try await Task.sleep(nanoseconds: 350_000_000)
+
+            stage = "duplicate, Loading, atomic local account and refresh"
+            try await reachSignup("flow")
+            _ = try await script(host, "const values=['cimoa@gmail.com','localpass123','localpass123'],inputs=[...document.querySelectorAll('.signup-page input')],set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;inputs.forEach((input,index)=>{set.call(input,values[index]);input.dispatchEvent(new Event('input',{bubbles:true}))});window.__signupBefore=localStorage.getItem('cimoa_app_state_v2');document.querySelector('[data-interaction=\"signup.createAccount.click.1\"]').click();return true")
+            try await waitFor(host, ".loading"); let duplicateLoading = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===window.__signupBefore") as? Bool; XCTAssertEqual(duplicateLoading, true); try await waitFor(host, ".signup-page [role=alert]")
+            let duplicate = try await script(host, "return {error:document.querySelector('.signup-page [role=alert]').textContent,unchanged:localStorage.getItem('cimoa_app_state_v2')===window.__signupBefore}") as! [String: Any]
+            XCTAssertEqual(duplicate["error"] as? String, "This email is already registered. Log in instead."); XCTAssertEqual(duplicate["unchanged"] as? Bool, true)
+            let errorShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); errorShot.name = "WKWebView Signup duplicate error"; errorShot.lifetime = .keepAlways; add(errorShot)
+            _ = try await script(host, "const input=document.querySelectorAll('.signup-page input')[0],set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(input,'signup.native@campus.edu');input.dispatchEvent(new Event('input',{bubbles:true}));const action=document.querySelector('[data-interaction=\"signup.createAccount.click.1\"]');action.click();action.click();return true")
+            try await waitFor(host, ".loading"); let accountLoading = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===window.__signupBefore") as? Bool; XCTAssertEqual(accountLoading, true); try await waitFor(host, ".verification-email-page")
+            let committed = try await script(host, "const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,accounts=data.accounts.filter(row=>row.email==='signup.native@campus.edu'),account=accounts[0],user=data.users.find(row=>row.user_id===account.user_id);return {count:accounts.length,provider:account.auth_provider,algorithm:account.credential_algorithm,plaintext:JSON.stringify(data).includes('localpass123'),session:data.session.current_user_id,pending:data.auth_flow.pending_registration_account_id===account.account_id,verification:user.verification_status}") as! [String: Any]
+            XCTAssertEqual(committed["count"] as? Int, 1); XCTAssertEqual(committed["provider"] as? String, "local"); XCTAssertEqual(committed["algorithm"] as? String, "pbkdf2_sha256"); XCTAssertEqual(committed["plaintext"] as? Bool, false); XCTAssertTrue(committed["session"] is NSNull); XCTAssertEqual(committed["pending"] as? Bool, true); XCTAssertEqual(committed["verification"] as? String, "pending")
+            _ = try await script(host, "window.__signupOldDocument=true;return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?signupPixel=recovery#/pages/auth/signup")!))
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__signupOldDocument&&document.querySelector('[data-interaction=\"signup.createAccount.click.1\"]')?.textContent.trim()==='Continue verification'")) as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let recovery = try await script(host, "const inputs=[...document.querySelectorAll('.signup-page input')];return {button:document.querySelector('[data-interaction=\"signup.createAccount.click.1\"]').textContent.trim(),password:inputs[1].value,confirmation:inputs[2].value,email:inputs[0].value}") as! [String: Any]
+            XCTAssertEqual(recovery["button"] as? String, "Continue verification"); XCTAssertEqual(recovery["password"] as? String, ""); XCTAssertEqual(recovery["confirmation"] as? String, ""); XCTAssertEqual(recovery["email"] as? String, "signup.native@campus.edu")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"signup.createAccount.click.1\"]').click();return true"); try await waitFor(host, ".verification-email-page")
+
+            stage = "persistence failure rollback"
+            try await reachSignup("failure")
+            let failureBefore = try await script(host, "const values=['failure.native@campus.edu','localpass123','localpass123'],inputs=[...document.querySelectorAll('.signup-page input')],set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;inputs.forEach((input,index)=>{set.call(input,values[index]);input.dispatchEvent(new Event('input',{bubbles:true}))});const original=Storage.prototype.setItem;window.__restoreSignupStorage=()=>Storage.prototype.setItem=original;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw new DOMException('Injected signup storage failure','QuotaExceededError');return original.call(this,key,value)};return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host, "document.querySelector('[data-interaction=\"signup.createAccount.click.1\"]').click();return true"); try await waitFor(host, ".loading"); try await waitFor(host, ".signup-page [role=alert]")
+            let failure = try await script(host, "const inputs=[...document.querySelectorAll('.signup-page input')],result={error:document.querySelector('.signup-page [role=alert]').textContent,storage:localStorage.getItem('cimoa_app_state_v2'),password:inputs[1].value,confirmation:inputs[2].value,verification:!!document.querySelector('.verification-email-page')};window.__restoreSignupStorage();return result") as! [String: Any]
+            XCTAssertEqual(failure["error"] as? String, "Injected signup storage failure"); XCTAssertEqual(failure["storage"] as? String, failureBefore); XCTAssertEqual(failure["password"] as? String, "localpass123"); XCTAssertEqual(failure["confirmation"] as? String, "localpass123"); XCTAssertEqual(failure["verification"] as? Bool, false)
+
+            stage = "Login round-trip and direct Back fallback"
+            try await loadFresh("/pages/auth/signup", "back", ".signup-page")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"signup.goLogin.click.1\"]').click();return true"); try await waitFor(host, ".login-page")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"login.goBack.click.1\"]').click();return true"); try await waitFor(host, ".signup-page")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"signup.goBack.click.1\"]').click();return true"); try await waitFor(host, ".community-page")
+            let backStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')"); XCTAssertTrue(backStorage is NSNull)
+            try await restore()
+        } catch { XCTFail("Signup WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

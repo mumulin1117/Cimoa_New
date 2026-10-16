@@ -1,0 +1,331 @@
+{
+  "schema_version": 1,
+  "page": "Sign Up",
+  "route": "/pages/auth/signup",
+  "source_screen": "Auth / Sign Up / Default",
+  "source_query": "route=signup",
+  "source_lock": "locked",
+  "locked_at": "2026-10-15",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isSignup",
+    "visual_lines": "2606-2656",
+    "visual_fragment_sha256": "1dd450b4af5757e4209adf68490bd33a8c23cfd8eb74f071294fabd433b5db4c",
+    "behavior_lines": [
+      4689,
+      5224,
+      5532,
+      5563,
+      5564,
+      5605,
+      5606,
+      5607,
+      5608,
+      5609,
+      5610,
+      5611,
+      5612,
+      5613,
+      5614,
+      5615,
+      5616,
+      5617,
+      5618,
+      5619,
+      5620,
+      5621,
+      5622,
+      5623
+    ],
+    "behavior_fragment_sha256": "98e45193388bacdf9b0c475c890e20d47351101990949f2ff0b7900b5bd2cef2"
+  },
+  "reference_viewport": {
+    "width_css_px": 393,
+    "height_css_px": 852,
+    "scale": 1
+  },
+  "structure": {
+    "root": "absolute inset 0; cRise entry",
+    "source_system_chrome": "source header begins at y=58; project replaces prototype system chrome with measured TopSafeArea plus 4px source inset",
+    "fixed_regions": "header at source y=58; footer left/right 20px and bottom 30px",
+    "scroll_region": "source absolute top 122px, left/right 0, bottom 0; overflow-y auto; padding 0 20px 200px",
+    "project_skeleton": "TopSafeArea; fixed AuthPageFrame header; one flex scroll region; fixed auth footer; BottomSafeArea",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "header": {
+    "frame": "top 58px; left/right 20px; height 48px; gap 12px; z-index 20",
+    "back": {
+      "interaction_id": "signup.goBack.click.1",
+      "size_css_px": "46x46",
+      "border_radius_css_px": 23,
+      "background": "#fff",
+      "shadow": "0 6px 18px rgba(16,36,74,0.10)",
+      "svg_css_px": "22x22",
+      "path": "M15 5l-7 7 7 7"
+    },
+    "title": {
+      "copy": "Sign up",
+      "font_size_css_px": 21,
+      "font_weight": 700,
+      "letter_spacing": "-0.025em",
+      "line_height": 1.15
+    }
+  },
+  "content": {
+    "heading": {
+      "copy": "Create your account",
+      "font_size_css_px": 33,
+      "font_weight": 800,
+      "letter_spacing": "-0.035em",
+      "line_height": 1.1
+    },
+    "apple": {
+      "interaction_id": "signup.appleAuth.click.1",
+      "copy": "Continue with Apple",
+      "margin_top_css_px": 18,
+      "height_css_px": 56,
+      "border_radius_css_px": 28,
+      "gap_css_px": 10,
+      "background": "#0b1b3a",
+      "icon_css_px": "26x26",
+      "icon_margin_top_css_px": -3,
+      "font_size_css_px": 18,
+      "font_weight": 600,
+      "color": "#fff"
+    },
+    "divider": {
+      "copy": "or",
+      "margin_top_css_px": 18,
+      "gap_css_px": 12,
+      "line_height_css_px": 1,
+      "font_size_css_px": 14.5,
+      "color": "#8b95a6"
+    },
+    "fields": {
+      "margin_top_css_px": 14,
+      "label_margin_bottom_css_px": 7,
+      "label_font_size_css_px": 14.5,
+      "label_font_weight": 600,
+      "label_color": "#5b6b85",
+      "box_height_css_px": 56,
+      "box_padding_css_px": "0 18",
+      "box_border_radius_css_px": 18,
+      "box_background": "#fff",
+      "box_shadow": "0 8px 22px rgba(16,36,74,0.06)",
+      "input_font_size_css_px": 17,
+      "input_color": "#0b1b3a",
+      "rows": [
+        {
+          "key": "email",
+          "label": "University email",
+          "placeholder": "you@university.edu",
+          "interaction_id": "signup.onEmail.change.1"
+        },
+        {
+          "key": "password",
+          "label": "Password",
+          "placeholder": "At least 8 characters",
+          "interaction_id": "signup.onPw.change.1",
+          "toggle_interaction_id": "signup.togglePw.click.1"
+        },
+        {
+          "key": "confirmation",
+          "label": "Confirm password",
+          "placeholder": "Repeat your password",
+          "interaction_id": "signup.onPw2.change.1"
+        }
+      ]
+    },
+    "password_hint": {
+      "margin_top_css_px": 6,
+      "font_size_css_px": 14,
+      "font_weight": 600,
+      "default_copy": "At least 8 characters with a number",
+      "short_copy": "Too short — 8 characters minimum",
+      "source_strong_copy": "Strong enough",
+      "source_logic": "the prototype switches to Strong enough at eight characters without checking for a number",
+      "default_color": "#8b95a6",
+      "error_color": "#dc2626",
+      "success_color": "#15803d"
+    },
+    "mismatch": {
+      "copy": "Passwords don’t match yet",
+      "visible_when": "confirmation is non-empty and differs from password",
+      "margin_top_css_px": 6,
+      "font_size_css_px": 14,
+      "font_weight": 600,
+      "color": "#dc2626"
+    },
+    "error": {
+      "source_fixture": "That email is already registered. Log in instead.",
+      "margin_top_css_px": 14,
+      "padding_css_px": "14 16",
+      "border_radius_css_px": 16,
+      "background": "#fee2e2",
+      "font_size_css_px": 15.5,
+      "font_weight": 600,
+      "color": "#991b1b",
+      "line_height": "source does not override the inherited normal line height"
+    },
+    "note": {
+      "source_copy": "Your university email is only used to confirm you are a student. It is never shown on your profile.",
+      "margin_top_css_px": 16,
+      "font_size_css_px": 15,
+      "color": "#5b6b85",
+      "line_height": "source does not override the inherited normal line height",
+      "text_wrap": "pretty"
+    }
+  },
+  "footer": {
+    "frame": "absolute left/right 20px; bottom 30px; flex column; gap 6px; z-index 20",
+    "primary": {
+      "interaction_id": "signup.createAccount.click.1",
+      "copy": "Create Account",
+      "height_css_px": 60,
+      "border_radius_css_px": 30,
+      "enabled_gradient": "linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)",
+      "disabled_background": "#dfe5ee",
+      "disabled_color": "#96a1b4",
+      "font_size_css_px": 19,
+      "font_weight": 700
+    },
+    "secondary": {
+      "interaction_id": "signup.goLogin.click.1",
+      "copy": "Already have an account? Log in",
+      "height_css_px": 46,
+      "font_size_css_px": 16,
+      "font_weight": 600,
+      "color": "#6b7a93"
+    }
+  },
+  "source_states": {
+    "default": "email, password, confirmation and signup error are empty; password hidden flag false; default hint; Create Account disabled",
+    "too_short": "a non-empty password below eight characters displays the exact short hint in red",
+    "mismatch": "a non-empty unequal confirmation displays the exact mismatch copy",
+    "ready": "source requires an at-sign, at least eight password characters and equal confirmation",
+    "duplicate_fixture": "an email containing taken@ displays the exact source error",
+    "apple": "source shows a toast and navigates to Email Verification",
+    "create": "source navigates to Email Verification and does not persist an account"
+  },
+  "motion": {
+    "entry": "cRise 240ms ease both; opacity 0 and translateY(14px) to opacity 1 and translateY(0)"
+  },
+  "approved_deltas": [
+    {
+      "id": "signup-safe-area-and-skeleton",
+      "source": "DEVELOPMENT_CONVENTIONS.md 15.1",
+      "delta": "Replace prototype system chrome and footer compensation with measured safe areas, fixed header/footer and one flex middle scroll region while preserving reference coordinates."
+    },
+    {
+      "id": "signup-real-local-registration",
+      "source": "User-authorized local-login scope and DEVELOPMENT_CONVENTIONS.md 5",
+      "delta": "Create Account validates the prior age and consent draft plus a valid email, an 8-128 character password containing a number and matching confirmation; then shows the custom 400-600ms Loading, derives a salted PBKDF2 credential, atomically creates the local account and enters fixed-code verification. No plaintext password, session or student certification is written."
+    },
+    {
+      "id": "signup-apple-unavailable",
+      "source": "User instruction that missing services must fail explicitly and never fake success",
+      "delta": "Apple remains visually present but reports that it is not configured, creates no account and does not navigate to verification."
+    },
+    {
+      "id": "signup-local-disclosure",
+      "source": "User-authorized local authentication scope",
+      "delta": "The source statement that email confirms student status must be replaced by the shortest truthful local-account disclosure while keeping the source note geometry; production student verification must not be claimed."
+    },
+    {
+      "id": "signup-password-security",
+      "source": "Existing local credential contract in docs/cimoa-registration-onboarding.md",
+      "delta": "Password and confirmation use real masked fields, Show/Hide is functional, and the hint must not say Strong enough until the configured number rule also passes. Passwords remain memory-only and clear on hide/unmount."
+    },
+    {
+      "id": "signup-recovery-state",
+      "source": "Existing local verification recovery contract",
+      "delta": "When an unverified local account already exists, the page may show Continue verification and preserve its email instead of creating a duplicate account. This state is separate from the default pixel reference."
+    },
+    {
+      "id": "signup-return-ownership",
+      "source": "DEVELOPMENT_CONVENTIONS.md 11.2.1",
+      "delta": "Back restores Community; direct entry falls back to Community. Log in pushes Login and Login Back restores Signup."
+    },
+    {
+      "id": "signup-keyboard-viewport",
+      "source": "DEVELOPMENT_CONVENTIONS.md 14 and 15.1.2",
+      "delta": "When the real keyboard reduces visualViewport height, keep the focused input in the only scroll region and temporarily fold the fixed source footer; restore it when the keyboard closes. Default output is unchanged."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-15",
+    "files": [
+      {
+        "path": "src/pages/auth/signup.vue",
+        "sha256": "9f812b5ac71f7c38c98c254a3b7548018e65136397df6f27a3bf16e9e40ca7e4"
+      },
+      {
+        "path": "src/pages/auth/auth.css",
+        "sha256": "5a9fb0f2cd57ea93c6f7a631e33fe8e8388f592877a8b229a1601601a03cd7f8"
+      },
+      {
+        "path": "src/components/AuthPageFrame.vue",
+        "sha256": "b50277b8759f5c4719dbf99db8e3d1930120e284f266d4ebf292668b3d09a47c"
+      },
+      {
+        "path": "src/components/SecondaryPageFrame.vue",
+        "sha256": "016c3405dc8dd670390e2626d6ea495bca779393d024f2ce614098eb021362da"
+      },
+      {
+        "path": "src/components/SourceIcon.vue",
+        "sha256": "ef1f4858b18cd2caa9e960f3e5ca229a2d546cbe10ef3430a37c77959f1c4081"
+      },
+      {
+        "path": "src/utils/localAuth.js",
+        "sha256": "7133d736a3ce4653c75d657a5881a2f1779b151721257f142d0c0c3d752845c8"
+      },
+      {
+        "path": "src/utils/authNavigation.js",
+        "sha256": "f9730bfc3048a8377ee57f0f728f3ae49ef8f28ae717aedf92cfc7a16377119a"
+      },
+      {
+        "path": "src/stores/store.js",
+        "sha256": "9543551e5780fe9cfd486c5c89ca9dc6a2813b79b8c22696299990eedb4fddf7"
+      }
+    ]
+  },
+  "capture": {
+    "reference_png": "docs/ui-restoration/signup/reference.png",
+    "reference_sha256": "b93e8b317e74b8e701009382fd508cfa73e975c9560d08d2e9b212e9bd25c020",
+    "actual_browser_png": "docs/ui-restoration/signup/actual-browser.png",
+    "actual_browser_sha256": "6facc193e0392026f90cd9b475f39ada193bf2f7278292badaf92d4177bbf169",
+    "actual_browser_short_png": "docs/ui-restoration/signup/actual-browser-short.png",
+    "actual_browser_short_sha256": "df7769e4758ed28e84526c35cc423210b4ece801ca78effc2b904bfcb60ba8b1",
+    "actual_browser_mismatch_png": "docs/ui-restoration/signup/actual-browser-mismatch.png",
+    "actual_browser_mismatch_sha256": "d2997185542c9e884216a9b236a91fa668a569c506ce28d1d122ec15dc0b2a28",
+    "actual_browser_error_png": "docs/ui-restoration/signup/actual-browser-error.png",
+    "actual_browser_error_sha256": "39026d34f4fa02297bef3562fe275e67a38e3785fff41b8be613c9c8df59f42b",
+    "actual_browser_small_png": "docs/ui-restoration/signup/actual-browser-small.png",
+    "actual_browser_small_sha256": "26cff2def3d9c64d16d3ade7ba213fccf1a3307466eaeafabd4b3c44c0c7855b",
+    "actual_browser_small_scrolled_png": "docs/ui-restoration/signup/actual-browser-small-scrolled.png",
+    "actual_browser_small_scrolled_sha256": "902c4f40be990b32f9e90a32cd1ddf1eae4068346fa00b78867a8be205b96de4",
+    "overlay_png": "docs/ui-restoration/signup/overlay.png",
+    "overlay_sha256": "54f8d3d1235a5b5d87ada841fe2e5c2feb2c85ffdf72461ef86ba0f155829c72",
+    "diff_png": "docs/ui-restoration/signup/diff.png",
+    "diff_sha256": "232e1fa1aa3fba6b09bdf42a31121fb718f11474f19c4a74bf14236ed65789e9",
+    "actual_wkwebview_png": "docs/ui-restoration/signup/actual-wkwebview.png",
+    "actual_wkwebview_sha256": "46c7770f91280144d435b5ab4c15245224eaca9ea37d488f08c2f1d053d91696",
+    "actual_wkwebview_keyboard_png": "docs/ui-restoration/signup/actual-wkwebview-keyboard.png",
+    "actual_wkwebview_keyboard_sha256": "58e469659006b247367326a34edc5d874390bd30e24206b1ff29feeb29134d46",
+    "actual_wkwebview_error_png": "docs/ui-restoration/signup/actual-wkwebview-error.png",
+    "actual_wkwebview_error_sha256": "0f2b8254b7384c79277237b8c41cabb987e0b4c0ccf0cec3612f936bccfeb959",
+    "browser_report": "docs/ui-restoration/signup/browser-acceptance.json",
+    "browser_report_sha256": "96b93e1cb7e4ffd48f6e58082e3e0ad3bc33ffc23c52876bbf0afc5e4abead03",
+    "acceptance_report": "docs/ui-restoration/signup/acceptance.json",
+    "visual_acceptance": "passed; automatically confirmed under the user-authorized evidence policy on 2026-10-16",
+    "reference_method": "The deterministic reference is rendered from this hash-verified contract after resolving the first-audit differences. The application does not embed or load the prototype."
+  },
+  "historical_evidence": {
+    "actual_png": "docs/evidence/registration/signup.png",
+    "actual_sha256": "462d2f2402b7b1a9bcc69e3b22edd77738b942c948671639ab201fa2022f6bc8",
+    "browser_report": "docs/evidence/registration/signup-browser.json",
+    "browser_report_sha256": "36cf2807fa4756e14d156d5fd72e440d5f0508dffe227540550c9b254917ecc2",
+    "limit": "The historical screenshot contains filled credentials, enabled state and a long local disclosure. It is regression history only and cannot serve as the empty default pixel reference."
+  }
+}

@@ -1,6 +1,6 @@
 # Cimoa 认证入口逐页交互契约
 
-Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版，Age Confirmation 已由本地提交 `9e6b318f` 封版。Community Agreement 已通过来源、浏览器、WKWebView、行为与最终门禁，按用户授权自动确认为 `verified / passed`。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在全部证据通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
+Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版，Age Confirmation 已由本地提交 `9e6b318f` 封版，Community Agreement 已由本地提交 `047e4c1d` 封版。Signup 的来源差异、浏览器/WKWebView 证据和完整注册闭环均已通过，已按用户授权自动确认为 `verified / passed`；专项本地提交完成后立即锁定 Email Verification。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在全部证据通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
 
 ## Splash
 
@@ -60,3 +60,18 @@ Welcome 本轮像素专项已完成并获用户视觉确认：[来源契约](./u
 | agree.goSignup.click.1 | Community2603 | Continue | 三项都明确同意 | AuthActionLoading 500ms | 通过 Store 原子写入完整 agreements，只进入一个 Signup | 未勾选零写入；持久化失败保留三项可重试选择 | auth_flow.agreements | registration flow | Loading 前零写、连点单次、刷新恢复、失败不进 Signup |
 
 证据见 [来源契约](./ui-restoration/community/source-contract.json)、[差异审计](./ui-restoration/community/difference-audit.md) 与 [验收摘要](./ui-restoration/community/acceptance.json)。浏览器 8/8，固定 393×852 并输出 reference/actual/overlay/diff；iPhone 17 Pro WKWebView 专项 1/1，实测视口 402×874、安全区 62/34。默认/partial/ready、Sheet 首次/再次、320×568 滚动、原子写入、失败回滚、刷新和返回归属均通过。依据用户授权，本页已自动确认为 `verified / passed`。
+
+## Signup
+
+来源内层 2606–2656 行，`/pages/auth/signup`；只允许 Community 进入，普通返回恢复 Community 实例，直达时 fallback Community。页面精确保留来源标题、Apple 按钮、分割线、三个输入框、密码提示、固定 footer 和禁用/启用外观；来源错误声称邮箱用于学生认证，按批准差异替换为最短真实本地账号说明。
+
+| interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| signup.goBack.click.1 | Signup2610 | Back | 非保存中 | 反向过渡 | 恢复 Community；直达 fallback Community | 保留当前页错误 | none | navigation | 不写游客状态、不黑屏 |
+| signup.onEmail.change.1 / signup.onPw.change.1 / signup.onPw2.change.1 | Signup2628/2634/2646 | input | none | 来源输入与提示实时变化；清旧提交错误 | 只更新内存表单 | none | none | current form | 刷新不保留密码；无明文 storage |
+| signup.togglePw.click.1 | Signup2637 | click / Enter / Space | 非保存中 | Show/Hide 同时切换两个真实 password 字段 | 可见状态改变但值不丢失 | none | none | current form | 默认隐藏；隐藏/卸载清密码 |
+| signup.appleAuth.click.1 | Signup2617 | Continue with Apple | Apple 服务未配置 | 明确英文错误 | 不伪造授权、不进验证 | 保持原页、零写入 | none | none | 浏览器/WKWebView 同一真实失败 |
+| signup.createAccount.click.1 | Signup2652 | Create Account | 合法邮箱；8–128 字符且含数字；密码一致；成人与三项协议草稿有效 | AuthActionLoading 500ms | Store 原子创建一个 salted PBKDF2 本地账号，再进入 Email Verification | 重复邮箱、持久化/加密失败完整回滚；保留可重试表单 | accounts + pending auth_flow | registration flow | Loading 前零写、连点单次、无 session/学生认证/明文密码 |
+| signup.goLogin.click.1 | Signup2653 | Already have an account? Log in | 非保存中 | push/cRise | Login；Login Back 恢复原 Signup | 导航失败留原页并显示错误 | none | navigation | 往返栈深正确；直达返回归属正确 |
+
+证据见 [来源契约](./ui-restoration/signup/source-contract.json)、[差异审计](./ui-restoration/signup/difference-audit.md) 与 [验收摘要](./ui-restoration/signup/acceptance.json)。浏览器确定性测试 7/7、注册 Store 10/10、注册浏览器回归 3/3、iPhone 17 Pro WKWebView 专项 1/1 均通过；实测原生视口 402×874、安全区 62/34，并覆盖真实系统键盘。重复邮箱、Apple 与注入存储失败均不产生半成品；成功只创建一个本地账号，刷新恢复待验证状态且密码为空。依据用户授权，本页已自动确认为 `verified / passed`。

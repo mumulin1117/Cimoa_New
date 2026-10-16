@@ -1,7 +1,7 @@
 {
   "phase": "signup",
   "result": "passed",
-  "server_pid": 74434,
+  "server_pid": 9726,
   "checks": [
     "Splash → Welcome → Age; invalid/underage zero writes; custom Loading before adult draft save",
     "Community exact six rules; Read sheet closes without accepting; all three explicit agreements persist after Loading",
