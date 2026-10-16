@@ -1146,7 +1146,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/onboarding/major",
-    "component": null,
+    "component": "src/pages/onboarding/major.vue",
     "parent_route": "/pages/onboarding/uni",
     "allowed_origin_routes": [
       "/pages/onboarding/uni"
@@ -1202,12 +1202,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/major-browser.json"
+    "mapping_status": "source-locked; pixel-restored; verified in browser and iPhone 17 Pro WKWebView with exact 3 / 9 progress, 15 source-ordered choices, Store-only persistence, failure rollback, refresh restoration and fixed-footer long-content scrolling",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-major/source-contract.json",
+      "docs/ui-restoration/onboarding-major/difference-audit.md"
+    ],
+    "acceptance_evidence": "docs/ui-restoration/onboarding-major/acceptance.json"
   },
   {
     "source_screen": "Onboarding / Photos / Empty",

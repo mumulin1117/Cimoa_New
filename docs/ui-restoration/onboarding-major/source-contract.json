@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "page": "Onboarding Major",
+  "route": "/pages/onboarding/major",
+  "source_screen": "Onboarding / Major / Default",
+  "source_query": "route=obMajor",
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isObMajor",
+    "visual_lines": "2990-3015",
+    "visual_fragment_sha256": "aa897efb3bc3ae9c0c350a9ce9769b79c5ab1ce99542e4e00021e4057a300f2f",
+    "behavior_lines": [5224, 5570, 5571, 5572, 5573, 5574, 5575, 5576, 5577, 5578, 5579, 5580, 5581],
+    "behavior_fragment_sha256": "57e09651e14db961f748fcf7029fd0fe0405509508fcb3b0f881de0d1706de4a"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "header": "top 58px; left/right 20px; height 48px; 14px gap",
+    "scroll_region": "top 124px; padding 0 20px 140px; one vertical scroll owner",
+    "footer": "left/right 20px; bottom 34px; height 60px",
+    "grid": "three equal columns; 12px gap; 20px top margin"
+  },
+  "content": {
+    "progress": { "source_index": 3, "source_total": 9, "source_percent": 39 },
+    "title": "I am studying…",
+    "description": "Pick the major closest to yours.",
+    "description_margin_top_css_px": 8,
+    "card": { "aspect_ratio": 1, "radius_css_px": 22, "padding_css_px": 8, "gap_css_px": 8, "emoji_font_size_css_px": 30, "label_font_size_css_px": 14.5 },
+    "choices": ["Business", "Computer Science", "Engineering", "Medicine", "Finance", "Sciences", "Data Science", "Economics", "Information Technology", "Psychology", "Nursing", "Law", "Public Health", "Education", "Arts"]
+  },
+  "interactions": ["obMajor.goBack.click.1", "obMajor.m.pick.click.1", "obMajor.goObPhotos.click.1"],
+  "approved_deltas": [
+    {
+      "id": "major-safe-area-persistence",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 5, 9.2 and 15.1",
+      "delta": "Measured safe areas are consumed by the shared frame; Continue validates before Loading and performs one Store transaction, with failure and page-leave cancellation preserving the draft."
+    },
+    {
+      "id": "major-source-step-count",
+      "source": "CIRCA lines 2996-2999",
+      "delta": "Preserve the source's explicit 3 / 9 and 39 percent independently from the internal ten-step workflow."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      { "path": "src/components/OnboardingFrame.vue", "sha256": "ce50af131bf2dbb07296d96fbb64c88d13cc652b78e7cfada1af95ab0ff09108" },
+      { "path": "src/composables/useOnboarding.js", "sha256": "a6d4d6ee57a442577f0f3869a167ab53c1baf43c42e614c6e9060d4d56af5728" },
+      { "path": "src/pages/onboarding/major.vue", "sha256": "b79c4f07dd5b14029f2e24954ab49d4097fecbf394a00b1d5708cb31808b0630" },
+      { "path": "src/pages/onboarding/onboarding.css", "sha256": "4c03a71518bd4fde55f8303f7304c5c7a4f3f39f427ac1559af43cc76c86f090" }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/onboarding-major/reference.png",
+    "actual_browser_png": "docs/ui-restoration/onboarding-major/actual-browser.png",
+    "actual_browser_error_png": "docs/ui-restoration/onboarding-major/actual-browser-error.png",
+    "overlay_png": "docs/ui-restoration/onboarding-major/overlay.png",
+    "diff_png": "docs/ui-restoration/onboarding-major/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/onboarding-major/actual-wkwebview.png",
+    "actual_wkwebview_error_png": "docs/ui-restoration/onboarding-major/actual-wkwebview-error.png",
+    "browser_report": "docs/ui-restoration/onboarding-major/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/onboarding-major/acceptance.json",
+    "actual_browser_sha256": "c995ad8f24246fe6aae8d8d4be07c8903b479097595d59f025ab2e4151fbaae9",
+    "actual_browser_error_sha256": "6ab12647e43f7393496a92e9d8596f40d68633ed916bb8599324bd1559e2443b",
+    "actual_wkwebview_sha256": "0b25a00b51870f4c73783d9d8e9de7d96f69fea706bb84d9a766a42ef46cfa88",
+    "actual_wkwebview_error_sha256": "b651ea0c4a483ae9dfdad1c08f487c2354cbf7f7153583713d782d7d52a8cfcf",
+    "visual_acceptance": "passed"
+  }
+}

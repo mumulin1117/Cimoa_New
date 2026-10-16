@@ -3,11 +3,16 @@ import { ref, watch } from 'vue'
 import { use_onboarding } from '@/composables/useOnboarding.js'
 import OnboardingFrame from '@/components/OnboardingFrame.vue'
 const frame = ref(null), { context, catalog, error, access_error, is_loading, back, recover, save } = use_onboarding('major', frame)
-const major = ref(context.value?.profile.major || '')
+const major = ref(''), restored_account_id = ref('')
+watch(context, value => {
+  if (!value?.account_id || restored_account_id.value === value.account_id) return
+  major.value = value.profile?.major || ''
+  restored_account_id.value = value.account_id
+}, { immediate: true })
 watch(major, () => { error.value = '' })
 </script>
 <template>
-  <OnboardingFrame ref="frame" step="major" :busy="is_loading" :error="error" :access-error="access_error" interaction="obMajor.goObPhotos.click.1" @back="back" @recover="recover" @continue="save({ major })">
+  <OnboardingFrame ref="frame" step="major" :busy="is_loading" :error="error" :access-error="access_error" interaction="obMajor.goObPhotos.click.1" back-interaction="obMajor.goBack.click.1" :source-index="3" :source-total="9" :source-progress="39" @back="back" @recover="recover" @continue="save({ major })">
     <text class="onboarding-title">I am studying…</text><text class="auth-description">Pick the major closest to yours.</text>
     <view class="major-grid"><view v-for="row in catalog.majors" :key="row.label" class="major-card" :class="{ selected: major === row.label }" role="button" tabindex="0" :aria-label="row.label" :aria-pressed="major === row.label" data-interaction="obMajor.m.pick.click.1" @click="major = row.label" @keydown.enter="major = row.label"><text class="major-emoji">{{ row.emoji }}</text><text class="major-label">{{ row.label }}</text></view></view>
   </OnboardingFrame>
@@ -21,4 +26,5 @@ watch(major, () => { error.value = '' })
 .major-card.selected { background: var(--cimoa-gradient-card-fill) padding-box, var(--cimoa-gradient-primary) border-box; border-color: var(--cimoa-surface-transparent); }
 .major-emoji { font-size: 57.252rpx; line-height: 1; }
 .major-label { font-size: 27.672rpx; font-weight: 700; line-height: 1.2; }
+.onboarding-major-page :deep(.auth-description) { margin-top: 15.267rpx; line-height: normal; }
 </style>

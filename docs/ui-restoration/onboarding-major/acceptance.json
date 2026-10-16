@@ -1,0 +1,52 @@
+{
+  "phase": "onboarding-major-pixel-restoration",
+  "result": "passed",
+  "accepted_at": "2026-10-16",
+  "source_lock": "passed",
+  "visual_acceptance": "passed",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 7,
+    "report": "docs/ui-restoration/onboarding-major/browser-acceptance.json",
+    "comparison": {
+      "viewport": "393x852",
+      "pixels_different": 94839,
+      "pixels_above_channel_delta_8": 7197,
+      "mean_absolute_channel_delta": 0.607616863180781,
+      "max_channel_delta": 244
+    },
+    "registration_regression": "8/8 passed",
+    "store_regression": "10/10 passed"
+  },
+  "wkwebview": {
+    "result": "passed",
+    "tests": "1/1",
+    "device": "iPhone 17 Pro",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "result_bundle": "ios/cimoaNeapo/build/OnboardingMajorAcceptance-2.xcresult"
+  },
+  "covered": [
+    "source-locked 3 / 9 and 39 percent progress",
+    "exact source title, description spacing, three-column geometry and 15-card order",
+    "unselected empty validation with zero Loading and zero write",
+    "custom Loading before one atomic Store write and double-tap protection",
+    "persistence failure rollback with retry draft retained",
+    "page-leave cancellation with no hidden navigation",
+    "refresh restoration from the shared profile entity",
+    "Back ownership to University",
+    "iOS safe areas and long-content scrolling above the fixed footer"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/onboarding-major/source-contract.json",
+    "docs/ui-restoration/onboarding-major/difference-audit.md",
+    "docs/ui-restoration/onboarding-major/reference.png",
+    "docs/ui-restoration/onboarding-major/actual-browser.png",
+    "docs/ui-restoration/onboarding-major/actual-browser-error.png",
+    "docs/ui-restoration/onboarding-major/overlay.png",
+    "docs/ui-restoration/onboarding-major/diff.png",
+    "docs/ui-restoration/onboarding-major/actual-wkwebview.png",
+    "docs/ui-restoration/onboarding-major/actual-wkwebview-error.png"
+  ]
+}
