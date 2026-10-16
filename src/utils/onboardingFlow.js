@@ -11,7 +11,7 @@ export const onboarding_catalog = {
 export const ONBOARDING_GOALS = [['friends', '🙋', 'New Friends'], ['study', '📖', 'Study Partners'], ['activity', '🏃', 'Activity Buddies'], ['campus', '🎉', 'Campus Events'], ['conversations', '💬', 'Meaningful Conversations'], ['language', '🗣️', 'Language Exchange'], ['gym', '🏋️', 'Gym & Sports'], ['coffee', '☕', 'Coffee Chats'], ['project', '🛠️', 'Project Teammates'], ['music', '🎸', 'Music & Gigs'], ['food', '🍜', 'Food Explorers'], ['travel', '✈️', 'Travel Buddies'], ['gaming', '🎮', 'Gaming'], ['career', '💼', 'Career Networking'], ['dating', '💘', 'Dating']].map(([item_id, emoji, label]) => ({ item_id, emoji, label }))
 export const ONBOARDING_INTEREST_IDS = ['photography', 'coffee', 'music', 'sports', 'gaming', 'travel', 'art', 'films', 'books', 'volunteering', 'study', 'food', 'fitness', 'hiking', 'cooking', 'dance', 'kpop']
 const text = (value, max) => typeof value === 'string' && !!value.trim() && value.trim().length <= max
-export const question_error = value => !text(value, 160) ? 'Write a question between 1 and 160 characters.' : /address|phone|password|money|hot|sexy/i.test(value) ? 'Keep questions safe and non-personal. This local filter cannot approve every question.' : ''
+export const question_error = value => !String(value || '').trim() ? 'Write your question first.' : String(value).trim().length > 160 ? 'Keep your question within 160 characters.' : /address|phone|password|money|hot|sexy/i.test(value) ? 'That question can’t be used — keep it safe and non-personal.' : ''
 export function onboarding_error(step, value, now) {
   if (step === 'basic') {
     if (!text(value.user_name, 50)) return 'Enter a display name of 1–50 characters.'

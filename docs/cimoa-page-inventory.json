@@ -1636,7 +1636,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/onboarding/ice",
-    "component": null,
+    "component": "src/pages/onboarding/ice.vue",
     "parent_route": "/pages/onboarding/goal",
     "allowed_origin_routes": [
       "/pages/onboarding/goal"
@@ -1717,12 +1717,19 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/ice-browser.json"
+    "mapping_status": "source-locked; pixel-restored; browser and WKWebView acceptance passed",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-ice/source-contract.json",
+      "docs/ui-restoration/onboarding-ice/difference-audit.md",
+      "docs/ui-restoration/onboarding-ice/acceptance.json"
+    ],
+    "acceptance_evidence": "docs/ui-restoration/onboarding-ice/acceptance.json"
   },
   {
     "source_screen": "Onboarding / Icebreakers / Completed",
@@ -1732,7 +1739,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/onboarding/ice",
-    "component": null,
+    "component": "src/pages/onboarding/ice.vue",
     "parent_route": "/pages/onboarding/goal",
     "allowed_origin_routes": [
       "/pages/onboarding/goal"
@@ -1814,12 +1821,19 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/ice-browser.json"
+    "mapping_status": "source-locked; pixel-restored; browser and WKWebView acceptance passed",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-ice/source-contract.json",
+      "docs/ui-restoration/onboarding-ice/difference-audit.md",
+      "docs/ui-restoration/onboarding-ice/acceptance.json"
+    ],
+    "acceptance_evidence": "docs/ui-restoration/onboarding-ice/acceptance.json"
   },
   {
     "source_screen": "Onboarding / Notifications / Pre-Permission",
@@ -12230,12 +12244,19 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work",
-    "acceptance_evidence": "docs/evidence/registration/ice-browser.json"
+    "mapping_status": "source-locked; pixel-restored with host page; browser and WKWebView acceptance passed",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-ice/source-contract.json",
+      "docs/ui-restoration/onboarding-ice/difference-audit.md",
+      "docs/ui-restoration/onboarding-ice/acceptance.json"
+    ],
+    "acceptance_evidence": "docs/ui-restoration/onboarding-ice/acceptance.json"
   },
   {
     "source_screen": "Onboarding / Icebreakers / Write My Own",
@@ -12327,12 +12348,19 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work",
-    "acceptance_evidence": "docs/evidence/registration/ice-browser.json"
+    "mapping_status": "source-locked; pixel-restored with host page; browser and WKWebView acceptance passed",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-ice/source-contract.json",
+      "docs/ui-restoration/onboarding-ice/difference-audit.md",
+      "docs/ui-restoration/onboarding-ice/acceptance.json"
+    ],
+    "acceptance_evidence": "docs/ui-restoration/onboarding-ice/acceptance.json"
   },
   {
     "source_screen": "Safety / User Actions / Profile Menu",

@@ -1,0 +1,185 @@
+{
+  "phase": "onboarding-ice-pixel-restoration",
+  "result": "passed",
+  "server_pid": 963,
+  "reference": {
+    "kind": "source-derived locked reference with approved persistence, explicit-error and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "e7a82c22731207331fc56cf4d861fd653f3b9c56e238a0c4182ac7834e849ae4",
+    "sheet_fragment_sha256": "3b6abc8609859733ea6f360895a06000a2a63f899a7e3e0c895e29cbf09ed183",
+    "behavior_fragment_sha256": "a92563a5926683c658af9b307a6affdcd7f89670a651e6def8e2ada087a49daa",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 70,
+      "right": 373,
+      "bottom": 128
+    },
+    "track": {
+      "x": 20,
+      "y": 87,
+      "width": 353,
+      "height": 5.984375,
+      "right": 373,
+      "bottom": 92.984375
+    },
+    "progress": {
+      "x": 20,
+      "y": 87,
+      "width": 289.453125,
+      "height": 5.984375,
+      "right": 309.453125,
+      "bottom": 92.984375
+    },
+    "title": {
+      "x": 20,
+      "y": 145.984375,
+      "width": 353,
+      "height": 36.296875,
+      "right": 373,
+      "bottom": 182.28125
+    },
+    "description": {
+      "x": 20,
+      "y": 192.28125,
+      "width": 353,
+      "height": 49.28125,
+      "right": 373,
+      "bottom": 241.5625
+    },
+    "list": {
+      "x": 20,
+      "y": 263.5625,
+      "width": 353,
+      "height": 255.953125,
+      "right": 373,
+      "bottom": 519.515625
+    },
+    "first": {
+      "x": 20,
+      "y": 263.5625,
+      "width": 353,
+      "height": 75.984375,
+      "right": 373,
+      "bottom": 339.546875
+    },
+    "browse": {
+      "x": 20,
+      "y": 539.515625,
+      "width": 353,
+      "height": 58,
+      "right": 373,
+      "bottom": 597.515625
+    },
+    "custom": {
+      "x": 20,
+      "y": 611.515625,
+      "width": 353,
+      "height": 18,
+      "right": 373,
+      "bottom": 629.515625
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 818.015625
+    },
+    "text": {
+      "progress": "Profile setup · 6 of 7",
+      "title": "Your icebreakers",
+      "description": "Choose three questions people can answer when they say hi.",
+      "questions": [
+        "1\nChoose a question",
+        "2\nChoose a question",
+        "3\nChoose a question"
+      ],
+      "browse": "Browse more questions",
+      "custom": "Write my own",
+      "primary": "Continue"
+    },
+    "interactions": [
+      "obIce.goBack.click.1",
+      "obIce.e.tap.click.1",
+      "obIce.e.tap.click.1",
+      "obIce.e.tap.click.1",
+      "obIce.browseQuestions.click.1",
+      "obIce.writeOwnQuestion.click.1",
+      "obIce.goObNotif.click.1",
+      "sheetIceLibrary.closeSheet.click.1",
+      "sheetIceLibrary.q.pick.click.1",
+      "sheetIceLibrary.q.pick.click.1",
+      "sheetIceLibrary.q.pick.click.1",
+      "sheetIceLibrary.q.pick.click.1",
+      "sheetIceLibrary.q.pick.click.1",
+      "sheetIceLibrary.q.pick.click.1",
+      "sheetIceCustom.closeSheet.click.1",
+      "sheetIceCustom.onObCustom.change.1",
+      "sheetIceCustom.addCustom.click.1"
+    ]
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 39703,
+    "pixels_above_channel_delta_8": 8420,
+    "mean_absolute_channel_delta": 0.6628588323836146,
+    "max_channel_delta": 212
+  },
+  "checks": [
+    "393x852 empty source frame, 6 of 7 progress, 82 percent track, disabled Continue and exact main interactions pass",
+    "library and custom sheets match source controls, copy, geometry, six questions, limit, validation, success and backdrop close behavior",
+    "completed source frame restores three exact questions and Edit follows source remove-then-library behavior",
+    "double Continue performs one atomic Store write, refresh restores shared questions and direct Back returns Goal with zero write",
+    "persistence failure rolls back progress, retains the three-question draft and never opens Notifications",
+    "leaving during Loading cancels the delayed write and hidden-page navigation",
+    "320x568 exposes all main controls above the fixed footer and the library scroll region reaches the sixth question"
+  ],
+  "errors": [],
+  "sheet": {
+    "panel": {
+      "y": 119.984375,
+      "bottom": 852
+    },
+    "title": "Question library",
+    "rows": [
+      "What’s your ideal Sunday?",
+      "Which song is on repeat?",
+      "Best hidden spot on campus?",
+      "What could you talk about for hours?",
+      "What’s one thing you want to try this semester?",
+      "Coffee, tea, or something else?"
+    ],
+    "done": false,
+    "closeId": "sheetIceLibrary.closeSheet.click.1"
+  },
+  "small_scroll": {
+    "clientHeight": 427,
+    "scrollHeight": 427,
+    "overflowY": "visible",
+    "descendants": [
+      {
+        "tag": "DIV",
+        "className": "uni-scroll-view uni-scroll-view-scrollbar-hidden",
+        "clientHeight": 378,
+        "scrollHeight": 378,
+        "overflowY": "auto"
+      }
+    ]
+  },
+  "cleaned_up": true
+}

@@ -222,18 +222,18 @@ try {
     assert.equal(await page.locator('.library-question').count(), 6)
     for (let i = 0; i < 3; i++) await page.locator('.library-question').nth(i).click()
     await page.locator('.library-question').nth(3).click(); assert.match(await page.getByRole('dialog').innerText(), /Three questions is the limit/)
-    await shot('ice-library'); await page.getByRole('button', { name: 'Done', exact: true }).click()
+    await shot('ice-library'); await page.locator('[data-interaction="sheetIceLibrary.closeSheet.click.1"]').dispatchEvent('click'); await page.getByRole('dialog').waitFor({ state: 'hidden' })
     await page.getByRole('button', { name: 'Remove question 3', exact: true }).click()
     await click('obIce.writeOwnQuestion.click.1'); await fill('Custom question', 'What is your password?'); await click('sheetIceCustom.addCustom.click.1')
     assert.match(await page.getByRole('dialog').innerText(), /friendly|personal/i)
     await fill('Custom question', 'Where would you explore on campus?'); await shot('ice-custom'); await click('sheetIceCustom.addCustom.click.1')
-    await page.getByRole('dialog').waitFor({ state: 'hidden' })
-    await page.getByRole('button', { name: 'Edit question 3', exact: true }).click(); await fill('Custom question', 'Discard this draft?')
-    await page.getByRole('button', { name: 'Cancel', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' }); assert.match(await page.locator('.ice-list').innerText(), /Where would you explore/)
+    assert.match(await page.getByRole('status').innerText(), /Question added/); await page.locator('[data-interaction="sheetIceCustom.closeSheet.click.1"]').dispatchEvent('click'); await page.getByRole('dialog').waitFor({ state: 'hidden' })
+    await page.getByRole('button', { name: 'Edit question 3', exact: true }).click(); await page.getByRole('dialog').waitFor(); assert.doesNotMatch(await page.locator('.ice-list').innerText(), /Where would you explore/)
+    await page.locator('.library-question').nth(2).click(); await page.locator('[data-interaction="sheetIceLibrary.closeSheet.click.1"]').dispatchEvent('click'); await page.getByRole('dialog').waitFor({ state: 'hidden' })
     await shot('ice'); await click('obIce.goObNotif.click.1')
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='notif' })
     const d = await snapshot(); assert.equal(d.icebreakers.filter(q => q.user_id === d.session.current_user_id).length, 3)
-    check('Ice library six source questions, three-item limit, remove, local custom validation, edit cancellation and shared question persistence')
+    check('Ice library six source questions, three-item limit, source custom validation, source edit-replace behavior and shared question persistence')
     if (phase === 'ice') { await revisit('/pages/onboarding/ice'); await page.locator('.onboarding-ice-page').waitFor(); assert.equal(await page.locator('.ice-question:not(.ice-empty)').count(), 3); await shot('ice'); check('Three chosen questions restore after refresh') }
   }
   if (['notif', 'notification-access', 'complete'].includes(phase)) {

@@ -7,36 +7,33 @@ import OnboardingFrame from '@/components/OnboardingFrame.vue'
 import IceLibrarySheet from '@/components/IceLibrarySheet.vue'
 import IceCustomSheet from '@/components/IceCustomSheet.vue'
 const frame = ref(null), { context, catalog, error, access_error, is_loading, back, recover, save } = use_onboarding('ice', frame)
-const selected = ref([...(context.value?.profile.questions || [])]), sheet = ref(''), sheet_error = ref(''), editing = ref(null), custom = ref('')
+const selected = ref([...(context.value?.profile.questions || [])]), sheet = ref(''), sheet_error = ref(''), sheet_notice = ref(''), custom = ref(''), custom_reset = ref(0)
 const empty_slots = computed(() => 3 - selected.value.length)
-const open = (type, index = null) => { error.value = ''; sheet_error.value = ''; editing.value = index; custom.value = index == null ? '' : selected.value[index]; sheet.value = type }
-const close = () => { sheet.value = ''; sheet_error.value = ''; editing.value = null; custom.value = '' }
+const open = type => { error.value = ''; sheet_error.value = ''; sheet_notice.value = ''; custom.value = ''; sheet.value = type }
+const close = () => { sheet.value = ''; sheet_error.value = ''; sheet_notice.value = ''; custom.value = '' }
 const choose = (question, is_custom = false) => {
-  sheet_error.value = ''
+  sheet_error.value = ''; sheet_notice.value = ''
   const value = question.trim(), message = question_error(value)
   if (message) { sheet_error.value = message; return }
   const existing = selected.value.indexOf(value)
-  if (editing.value != null) {
-    if (existing >= 0 && existing !== editing.value) { sheet_error.value = 'Choose a different question for each slot.'; return }
-    selected.value = selected.value.map((item, index) => index === editing.value ? value : item); close(); return
-  }
   if (existing >= 0) { if (is_custom) { sheet_error.value = 'This question is already selected.'; return }; selected.value = selected.value.filter(item => item !== value); return }
   if (selected.value.length >= 3) { sheet_error.value = 'Three questions is the limit — remove one first.'; return }
   selected.value = [...selected.value, value]
-  if (is_custom) close()
+  if (is_custom) { custom.value = ''; custom_reset.value++; sheet_notice.value = 'Question added · checked automatically' }
 }
-const edit = index => open(catalog.value.questions.includes(selected.value[index]) ? 'library' : 'custom', index)
+const edit = index => { selected.value = selected.value.filter((_, row) => row !== index); open('library') }
 const remove = index => { error.value = ''; selected.value = selected.value.filter((_, row) => row !== index) }
 onHide(close)
 </script>
 <template>
-  <OnboardingFrame ref="frame" step="ice" :busy="is_loading" :error="error" :access-error="access_error" :disabled="selected.length !== 3" interaction="obIce.goObNotif.click.1" @back="back" @recover="recover" @continue="save({ questions: [...selected] })">
+  <OnboardingFrame ref="frame" step="ice" :busy="is_loading" :error="error" :access-error="access_error" :disabled="selected.length !== 3" :source-index="6" :source-total="7" :source-progress="82" interaction="obIce.goObNotif.click.1" back-interaction="obIce.goBack.click.1" @back="back" @recover="recover" @continue="save({ questions: [...selected] })">
     <text class="auth-heading">Your icebreakers</text><text class="auth-description">Choose three questions people can answer when they say hi.</text>
     <view class="ice-list"><view v-for="(question, index) in selected" :key="index" class="ice-question"><view class="ice-number">{{ index + 1 }}</view><text class="ice-text">{{ question }}</text><view class="ice-icon" role="button" tabindex="0" :aria-label="`Edit question ${index + 1}`" data-interaction="obIce.q.edit.click.1" @click="edit(index)" @keydown.enter="edit(index)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 3.5 20 8l-11 11H4.5v-4.5z" /></svg></view><view class="ice-icon ice-remove" role="button" tabindex="0" :aria-label="`Remove question ${index + 1}`" data-interaction="obIce.q.drop.click.1" @click="remove(index)" @keydown.enter="remove(index)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18" /></svg></view></view>
       <view v-for="index in empty_slots" :key="`empty-${index}`" class="ice-question ice-empty" role="button" tabindex="0" data-interaction="obIce.e.tap.click.1" @click="open('library')" @keydown.enter="open('library')"><view class="ice-number">{{ selected.length + index }}</view><text class="ice-text">Choose a question</text><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg></view>
     </view>
     <view class="ice-browse" role="button" tabindex="0" data-interaction="obIce.browseQuestions.click.1" @click="open('library')" @keydown.enter="open('library')">Browse more questions</view><view class="ice-custom" role="button" tabindex="0" data-interaction="obIce.writeOwnQuestion.click.1" @click="open('custom')" @keydown.enter="open('custom')">Write my own</view>
-    <template #overlays><IceLibrarySheet :open="sheet === 'library'" :questions="catalog.questions" :selected="selected" :error="sheet_error" @close="close" @choose="choose" /><IceCustomSheet v-model="custom" :open="sheet === 'custom'" :editing="editing != null" :error="sheet_error" @close="close" @add="choose(custom, true)" /></template>
+    <template #button-icon><svg class="ice-continue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></template>
+    <template #overlays><IceLibrarySheet :open="sheet === 'library'" :questions="catalog.questions" :selected="selected" :error="sheet_error" @close="close" @choose="choose" /><IceCustomSheet v-model="custom" :open="sheet === 'custom'" :error="sheet_error" :notice="sheet_notice" :reset-key="custom_reset" @close="close" @add="choose(custom, true)" /></template>
   </OnboardingFrame>
 </template>
 <style>
@@ -56,4 +53,7 @@ onHide(close)
 .ice-empty > svg { flex: none; width: 41.985rpx; height: 41.985rpx; color: var(--cimoa-text-onboarding-muted); }
 .ice-browse { display: flex; align-items: center; justify-content: center; height: 110.687rpx; margin-top: 38.168rpx; border-radius: 55.344rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-auth-secondary); font-size: 32.443rpx; font-weight: 700; }
 .ice-custom { margin-top: 26.718rpx; text-align: center; font-size: 30.534rpx; font-weight: 600; color: var(--cimoa-text-auth-muted); text-decoration: underline; }
+.onboarding-ice-page :deep(.onboarding-content) { padding-bottom: 286.26rpx; }
+.onboarding-ice-page :deep(.onboarding-footer) { padding-bottom: 64.885rpx; }
+.ice-continue-arrow { width: 34.351rpx; height: 34.351rpx; margin-left: 15.267rpx; }
 </style>

@@ -1,0 +1,74 @@
+{
+  "phase": "onboarding-icebreakers-pixel-restoration",
+  "result": "passed",
+  "accepted_at": "2026-10-16",
+  "source_lock": "passed",
+  "visual_acceptance": "passed",
+  "browser": {
+    "result": "passed",
+    "pixel_and_flow_checks": "7/7",
+    "report": "docs/ui-restoration/onboarding-ice/browser-acceptance.json",
+    "viewport_css_px": "393x852",
+    "safe_area_css_px": { "top": 54, "bottom": 0 },
+    "comparison": {
+      "pixels_different": 39703,
+      "pixels_above_channel_delta_8": 8420,
+      "mean_absolute_channel_delta": 0.6628588323836146,
+      "max_channel_delta": 212
+    },
+    "registration_regression": "14/14 passed through Icebreakers and refresh restore",
+    "store_regression": "10/10 passed"
+  },
+  "wkwebview": {
+    "result": "passed",
+    "tests": "1/1",
+    "host": "cimoaNeapo",
+    "device": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testOnboardingIcePixelRestoration",
+    "result_bundle": "ios/cimoaNeapo/build/OnboardingIceAcceptance-8.xcresult"
+  },
+  "covered": [
+    "source-locked empty and completed 6 of 7 frames, exact copy, 82 percent track, cards and fixed footer",
+    "source-locked Question Library with six ordered rows, top geometry, no invented Done control and backdrop-only close",
+    "source-locked Write My Own sheet with exact copy, validation, success notice, cleared field and no invented Cancel control",
+    "edit removes the selected question before opening the library, matching source behavior",
+    "exactly three unique safe questions gate Continue; over-limit, empty and unsafe input stay explicit",
+    "custom 400-600ms Loading precedes one atomic Store persistence",
+    "double Continue writes and navigates once; persistence failure rolls back progress and preserves the draft",
+    "leaving during Loading cancels the delayed write and hidden-page navigation",
+    "refresh restores the same user entity without page-level duplicate data",
+    "Back ownership returns to Connection Goal and success enters Notifications",
+    "393x852, 320x568 and iPhone 17 Pro preserve the single page scroll owner, internal sheet scroll and safe areas",
+    "offline bundled WKWebView execution uses the packaged H5 and real host safe-area bridge"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/onboarding-ice/source-contract.json",
+    "docs/ui-restoration/onboarding-ice/difference-audit.md",
+    "docs/ui-restoration/onboarding-ice/reference.png",
+    "docs/ui-restoration/onboarding-ice/actual-browser.png",
+    "docs/ui-restoration/onboarding-ice/actual-browser-library.png",
+    "docs/ui-restoration/onboarding-ice/actual-browser-custom.png",
+    "docs/ui-restoration/onboarding-ice/actual-browser-completed.png",
+    "docs/ui-restoration/onboarding-ice/actual-browser-failure.png",
+    "docs/ui-restoration/onboarding-ice/actual-browser-small.png",
+    "docs/ui-restoration/onboarding-ice/overlay.png",
+    "docs/ui-restoration/onboarding-ice/diff.png",
+    "docs/ui-restoration/onboarding-ice/actual-wkwebview.png",
+    "docs/ui-restoration/onboarding-ice/actual-wkwebview-library.png",
+    "docs/ui-restoration/onboarding-ice/actual-wkwebview-custom.png",
+    "docs/ui-restoration/onboarding-ice/actual-wkwebview-completed.png",
+    "docs/ui-restoration/onboarding-ice/actual-wkwebview-failure.png"
+  ],
+  "final_checks": {
+    "status": "passed",
+    "corepack pnpm check:conventions": "passed with no warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; H5 packaged into ios/cimoaNeapo/Resources/H5"
+  },
+  "commit": "included in the Onboarding Icebreakers local specialty commit"
+}

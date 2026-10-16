@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "page": "Onboarding Icebreakers",
+  "route": "/pages/onboarding/ice",
+  "source_screens": [
+    "Onboarding / Icebreakers / Empty",
+    "Onboarding / Icebreakers / Completed",
+    "Onboarding / Icebreakers / Library",
+    "Onboarding / Icebreakers / Write My Own"
+  ],
+  "source_queries": [
+    "route=obIce",
+    "route=obIce&ice=1",
+    "route=obIce&sheet=iceLibrary",
+    "route=obIce&sheet=iceCustom"
+  ],
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isObIce",
+    "visual_lines": "3137-3177",
+    "visual_fragment_sha256": "e7a82c22731207331fc56cf4d861fd653f3b9c56e238a0c4182ac7834e849ae4",
+    "sheet_lines": "4468-4496",
+    "sheet_fragment_sha256": "3b6abc8609859733ea6f360895a06000a2a63f899a7e3e0c895e29cbf09ed183",
+    "behavior_lines": [4686, 5224, 5586, 5588, 5727, 5728, 5729, 5730, 5731, 5732, 5733, 5734, 5735, 5736, 5737, 5738, 5739, 5740, 5741, 5742, 5743, 5744, 5745, 5746, 5747, 5749, 5750, 5751, 5752, 5755, 5756, 5757, 5758, 5759, 5760, 5761, 5762, 5763, 5764, 5765, 5766],
+    "behavior_fragment_sha256": "a92563a5926683c658af9b307a6affdcd7f89670a651e6def8e2ada087a49daa"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "header": "top 58px; left/right 20px; height 70px; centered progress copy; 6px track at 29px",
+    "scroll_region": "top 146px; left/right 0; padding 0 20px 150px; one vertical scroll owner",
+    "footer": "left/right 20px; bottom 34px; 60px primary with 18px arrow",
+    "selected_card": "18px padding; 14px gap; 24px radius; 38px number; 40px edit/remove targets",
+    "empty_card": "minimum 76px; 1.5px dashed border; 24px radius",
+    "library_sheet": "top 120px; 32px top radii; padding 26px 22px 34px; six 16px/18px question cards; backdrop is the only close control",
+    "custom_sheet": "bottom sheet; padding 26px 22px 34px; 56px input and 56px Add Question; backdrop is the only close control"
+  },
+  "content": {
+    "progress": { "source_index": 6, "source_total": 7, "source_percent": 82 },
+    "title": "Your icebreakers",
+    "description": "Choose three questions people can answer when they say hi.",
+    "empty_label": "Choose a question",
+    "library_questions": [
+      "What’s your ideal Sunday?",
+      "Which song is on repeat?",
+      "Best hidden spot on campus?",
+      "What could you talk about for hours?",
+      "What’s one thing you want to try this semester?",
+      "Coffee, tea, or something else?"
+    ],
+    "source_completed": [
+      "What’s your ideal Sunday?",
+      "If you could have dinner with anyone, who would it be?",
+      "Best hidden spot on campus?"
+    ],
+    "actions": ["Browse more questions", "Write my own", "Continue", "Add Question"]
+  },
+  "interactions": [
+    "obIce.goBack.click.1",
+    "obIce.q.edit.click.1",
+    "obIce.q.drop.click.1",
+    "obIce.e.tap.click.1",
+    "obIce.browseQuestions.click.1",
+    "obIce.writeOwnQuestion.click.1",
+    "obIce.goObNotif.click.1",
+    "sheetIceLibrary.closeSheet.click.1",
+    "sheetIceLibrary.q.pick.click.1",
+    "sheetIceCustom.closeSheet.click.1",
+    "sheetIceCustom.onObCustom.change.1",
+    "sheetIceCustom.addCustom.click.1"
+  ],
+  "approved_deltas": [
+    {
+      "id": "ice-owned-persistence",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 5 and 6",
+      "delta": "Question selection is draft-only; Continue shows the custom 400-600ms Loading and atomically writes exactly three unique safe questions through the Store before navigating."
+    },
+    {
+      "id": "ice-safe-area",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 2, 11 and 15",
+      "delta": "Source coordinates are applied relative to the real top and bottom safe areas; sheets add the real bottom inset while preserving source content padding."
+    },
+    {
+      "id": "ice-explicit-errors",
+      "source": "INTERACTION_CONVENTIONS.md",
+      "delta": "Source ping messages are rendered as explicit in-sheet error or status text; persistence failure retains the draft and does not navigate."
+    },
+    {
+      "id": "ice-custom-length",
+      "source": "project input safety contract",
+      "delta": "Custom questions have a 160-character limit with an explicit error; source empty, unsafe, limit and success copy remain exact."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      { "path": "src/pages/onboarding/ice.vue", "sha256_before_restoration": "b126d2459d9ac8192a4bc6c13282ed2209dd243daef62fee3a82700e0e5fe69e", "sha256_after_restoration": "37d5ed65a19b67d5e6f58c1f84cf51424438ef2510bcdc7f2c9c9fcfd5827b7d" },
+      { "path": "src/components/OnboardingFrame.vue", "sha256_before_restoration": "fc049999f83a687c6400a7d50096a8e89c6c6f4ab611936f543dd326db26b979", "sha256_after_restoration": "300abf802eef7f5842dbb10820e0dba43d3f04e01a6bea0ace80fd52e7ebb99c" },
+      { "path": "src/components/OnboardingSheet.vue", "sha256_before_restoration": "a416863091a73e51c48f2fcb988393c8473fee301aca569a3385253d62abdb26", "sha256_after_restoration": "dfd26fde152195c825fc5f97f13a074407efc66284a6cc4425f69241d226187e" },
+      { "path": "src/components/IceLibrarySheet.vue", "sha256_before_restoration": "a5691de8ec3fc965629f8a722f3964da5c3d8dfa89084dc4a29479a7ea892151", "sha256_after_restoration": "c7be179a854149d600b6e1e0e8881e6b77fac7a64f00124a417c093b5cadde8c" },
+      { "path": "src/components/IceCustomSheet.vue", "sha256_before_restoration": "a9fca71aa5810bc606cfc114a8dd8706d304471f7f746a22e19849fede358826", "sha256_after_restoration": "03c908f612a770e7f981c02d11178d696ab9f419ffd43c1b026a0f012da392bc" },
+      { "path": "src/utils/onboardingFlow.js", "sha256_before_restoration": "37ce1d9a663f1caf564a99e94acdeb9cde26c8f03750431afb0bc7eef928ea4c", "sha256_after_restoration": "472a75af0ff4587dc059e32a8fd66b3502e4bd755f3897ef350262d1571b2ff2" }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/onboarding-ice/reference.png",
+    "actual_browser_png": "docs/ui-restoration/onboarding-ice/actual-browser.png",
+    "actual_browser_library_png": "docs/ui-restoration/onboarding-ice/actual-browser-library.png",
+    "actual_browser_custom_png": "docs/ui-restoration/onboarding-ice/actual-browser-custom.png",
+    "actual_browser_completed_png": "docs/ui-restoration/onboarding-ice/actual-browser-completed.png",
+    "actual_browser_failure_png": "docs/ui-restoration/onboarding-ice/actual-browser-failure.png",
+    "actual_browser_small_png": "docs/ui-restoration/onboarding-ice/actual-browser-small.png",
+    "overlay_png": "docs/ui-restoration/onboarding-ice/overlay.png",
+    "diff_png": "docs/ui-restoration/onboarding-ice/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/onboarding-ice/actual-wkwebview.png",
+    "actual_wkwebview_library_png": "docs/ui-restoration/onboarding-ice/actual-wkwebview-library.png",
+    "actual_wkwebview_custom_png": "docs/ui-restoration/onboarding-ice/actual-wkwebview-custom.png",
+    "actual_wkwebview_completed_png": "docs/ui-restoration/onboarding-ice/actual-wkwebview-completed.png",
+    "actual_wkwebview_failure_png": "docs/ui-restoration/onboarding-ice/actual-wkwebview-failure.png",
+    "browser_report": "docs/ui-restoration/onboarding-ice/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/onboarding-ice/acceptance.json",
+    "visual_acceptance": "passed",
+    "artifact_sha256": {
+      "reference_png": "810cc849c5d745c3e23154dc0a43fb4b41e770212c1baea1173dd13ac1ba3f6e",
+      "actual_browser_png": "59d0d778517998596e7016c48ca3db4560e0c3b66a5bbaa988154b129b6e2665",
+      "actual_browser_library_png": "665ed0e3791a3ef443930ed95a7237c4c614f326028e62b640cc5d3faa5f5fd6",
+      "actual_browser_custom_png": "1b1cd1f3455448ad724466c4796c437b33349646eca6a6898c6d96b884632fca",
+      "actual_browser_completed_png": "1ba4153ec878c940e3c0f8d0f974d939d70a912f06cd06fec471fee06d3bce97",
+      "actual_browser_failure_png": "0dd9da13d2397786881be6398cb2653e5a52e31ae0f9476ccd8df11b1edf8d33",
+      "actual_browser_small_png": "118845d0a29150a89ccb25af181ec2ac8889c1452c9b5a7c1bf57dd9229544f5",
+      "overlay_png": "2537c1dc635fbeb380d4819bc858ca1edd6374c31f32e06cb6af4e32fe60abda",
+      "diff_png": "5b036f5c1c056c81b93c810de82d76da782106d4f545c513e23df771e4d9472c",
+      "actual_wkwebview_png": "18dfab619c332208e5d792b3990972ff9643df894a2aa7cb66c830297d81d8ce",
+      "actual_wkwebview_library_png": "fc4930fa244e7fa9937947e1d809a4a568045e67ea4dc97215dff3de78372dc8",
+      "actual_wkwebview_custom_png": "6c3a700ca3fe31761c50d7160cef2c98823759216ac87cfed16bd4818d8d9f01",
+      "actual_wkwebview_completed_png": "1a81f5a445b1f25878f4a77412b33f0e5539f3128a637990ce69860c3f7f90df",
+      "actual_wkwebview_failure_png": "a90741d61417ff4adac9b77850cbf821eded366ca49c166443e6f883e0924e7b"
+    }
+  },
+  "visual_acceptance": "passed"
+}
