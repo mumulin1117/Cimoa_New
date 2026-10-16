@@ -1,0 +1,136 @@
+{
+  "phase": "onboarding-about-pixel-restoration",
+  "result": "passed",
+  "server_pid": 85208,
+  "reference": {
+    "kind": "source-derived locked reference with approved persistence, safe-area and keyboard deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "36e4afdc117dd98eab8e98d6642c00071278a3f7b5798ea78cd72045bb596b3d",
+    "behavior_fragment_sha256": "7d98e1063ce16a926beb8352480dcc3e4f3070270754cd145e063d43da4c9e13",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375
+    },
+    "track": {
+      "x": 79.984375,
+      "y": 79,
+      "width": 249.46875,
+      "height": 5.984375,
+      "right": 329.453125,
+      "bottom": 84.984375
+    },
+    "progress": {
+      "x": 79.984375,
+      "y": 79,
+      "width": 124.734375,
+      "height": 5.984375,
+      "right": 204.71875,
+      "bottom": 84.984375
+    },
+    "title": {
+      "x": 20,
+      "y": 123.96875,
+      "width": 353,
+      "height": 34.09375,
+      "right": 373,
+      "bottom": 158.0625
+    },
+    "description": {
+      "x": 20,
+      "y": 168.0625,
+      "width": 353,
+      "height": 49.28125,
+      "right": 373,
+      "bottom": 217.34375
+    },
+    "card": {
+      "x": 20,
+      "y": 235.328125,
+      "width": 353,
+      "height": 210.953125,
+      "right": 373,
+      "bottom": 446.28125
+    },
+    "textarea": {
+      "x": 37.984375,
+      "y": 253.3125,
+      "width": 317.03125,
+      "height": 150,
+      "right": 355.015625,
+      "bottom": 403.3125
+    },
+    "counter": {
+      "x": 37.984375,
+      "y": 411.296875,
+      "width": 317.03125,
+      "height": 17,
+      "right": 355.015625,
+      "bottom": 428.296875
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 818.015625
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "card_style": {
+      "padding": "17.9999px",
+      "radius": "24.0002px"
+    },
+    "textarea_style": {
+      "fontSize": "17.0001px",
+      "lineHeight": "24.6501px"
+    },
+    "text": {
+      "step": "4 / 8",
+      "title": "A line about you",
+      "description": "Optional, but it makes conversations easier to start.",
+      "placeholder": "Design student who loves quiet cafés, live music, and spontaneous photowalks.",
+      "counter": "Keep it short 0 / 300",
+      "primary": "Continue"
+    },
+    "value": "",
+    "interactions": [
+      "obAbout.goBack.click.1",
+      "obAbout.onObBio.change.1",
+      "obAbout.goObInterests.click.1"
+    ]
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 61563,
+    "pixels_above_channel_delta_8": 7770,
+    "mean_absolute_channel_delta": 0.7989015518044654,
+    "max_channel_delta": 138
+  },
+  "checks": [
+    "393x852 source geometry, exact empty optional copy, 4 / 8 progress and all three interaction IDs match the finished cRise frame",
+    "textarea enforces the source 300-character boundary and counter without writing business state",
+    "empty optional biography shows Loading, performs one atomic progress write and navigates once to Interests",
+    "300-character biography refreshes from the same shared user entity without page-level duplicate data",
+    "direct-refresh Back belongs to Photos and performs zero business writes",
+    "persistence failure rolls back progress, preserves the retry biography and never opens Interests",
+    "leaving during Loading cancels the delayed write and hidden-page navigation",
+    "320x568 has one scroll owner and keeps long biography content reachable above the fixed footer"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

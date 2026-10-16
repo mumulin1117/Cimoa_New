@@ -1,0 +1,67 @@
+{
+  "phase": "onboarding-about-pixel-restoration",
+  "result": "passed",
+  "accepted_at": "2026-10-16",
+  "source_lock": "passed",
+  "visual_acceptance": "passed",
+  "browser": {
+    "result": "passed",
+    "pixel_and_flow_checks": "8/8",
+    "report": "docs/ui-restoration/onboarding-about/browser-acceptance.json",
+    "viewport_css_px": "393x852",
+    "safe_area_css_px": { "top": 54, "bottom": 0 },
+    "comparison": {
+      "pixels_different": 61563,
+      "pixels_above_channel_delta_8": 7770,
+      "mean_absolute_channel_delta": 0.7989015518044654,
+      "max_channel_delta": 138
+    },
+    "registration_regression": "11/11 passed through About",
+    "store_regression": "10/10 passed"
+  },
+  "wkwebview": {
+    "result": "passed",
+    "tests": "1/1",
+    "host": "cimoaNeapo",
+    "device": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testOnboardingAboutPixelRestoration",
+    "result_bundle": "ios/cimoaNeapo/build/OnboardingAboutAcceptance.xcresult"
+  },
+  "covered": [
+    "source-locked 4 / 8 frame, exact copy, spacing, card, textarea and footer geometry",
+    "optional empty biography and exact 300-character boundary",
+    "custom Loading before atomic Store persistence",
+    "double Continue writes and navigates once",
+    "persistence failure rolls back progress and preserves the retry draft",
+    "leaving during Loading cancels the delayed write and navigation",
+    "refresh restores the same user entity without page-level duplicate data",
+    "Back ownership returns to Photos and success enters Interests",
+    "small viewport scroll reachability and iPhone 17 Pro software-keyboard folding",
+    "offline bundled WKWebView execution with real safe-area ownership"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/onboarding-about/source-contract.json",
+    "docs/ui-restoration/onboarding-about/difference-audit.md",
+    "docs/ui-restoration/onboarding-about/reference.png",
+    "docs/ui-restoration/onboarding-about/actual-browser.png",
+    "docs/ui-restoration/onboarding-about/overlay.png",
+    "docs/ui-restoration/onboarding-about/diff.png",
+    "docs/ui-restoration/onboarding-about/actual-browser-keyboard.png",
+    "docs/ui-restoration/onboarding-about/actual-browser-failure.png",
+    "docs/ui-restoration/onboarding-about/actual-wkwebview.png",
+    "docs/ui-restoration/onboarding-about/actual-wkwebview-keyboard.png",
+    "docs/ui-restoration/onboarding-about/actual-wkwebview-failure.png"
+  ],
+  "final_checks": {
+    "status": "passed",
+    "corepack pnpm check:conventions": "passed with no warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; 342 H5 files packaged into ios/cimoaNeapo/Resources/H5"
+  },
+  "commit": "included in the Onboarding About local specialty commit"
+}

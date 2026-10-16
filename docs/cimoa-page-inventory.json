@@ -1397,7 +1397,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/onboarding/about",
-    "component": null,
+    "component": "src/pages/onboarding/about.vue",
     "parent_route": "/pages/onboarding/photos",
     "allowed_origin_routes": [
       "/pages/onboarding/photos"
@@ -1458,12 +1458,19 @@
         "back"
       ]
     },
-    "status": "pending",
+      "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+      "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/about-browser.json"
+      "mapping_status": "source-locked; pixel-restored; browser and WKWebView acceptance passed",
+    "source_lock": "locked",
+      "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-about/source-contract.json",
+        "docs/ui-restoration/onboarding-about/difference-audit.md",
+        "docs/ui-restoration/onboarding-about/acceptance.json"
+    ],
+      "acceptance_evidence": "docs/ui-restoration/onboarding-about/acceptance.json"
   },
   {
     "source_screen": "Onboarding / Interests / Default",

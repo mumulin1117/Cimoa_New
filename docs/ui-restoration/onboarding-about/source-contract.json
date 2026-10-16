@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "page": "Onboarding About",
+  "route": "/pages/onboarding/about",
+  "source_screen": "Onboarding / About / Default",
+  "source_query": "route=obAbout",
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isObAbout",
+    "visual_lines": "3056-3080",
+    "visual_fragment_sha256": "36e4afdc117dd98eab8e98d6642c00071278a3f7b5798ea78cd72045bb596b3d",
+    "behavior_lines": [5224, 5582, 5583, 5652, 5653, 5654],
+    "behavior_fragment_sha256": "7d98e1063ce16a926beb8352480dcc3e4f3070270754cd145e063d43da4c9e13"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "header": "top 58px; left/right 20px; height 48px; 14px gap",
+    "scroll_region": "top 124px; left/right 0; padding 0 20px 160px; one vertical scroll owner",
+    "footer": "left/right 20px; bottom 34px; 60px primary",
+    "card": "margin-top 18px; padding 18px; radius 24px",
+    "textarea": "width 100%; min-height 150px; 17px font; 1.45 line-height",
+    "counter": "margin-top 8px; 14.5px; split alignment"
+  },
+  "content": {
+    "progress": { "source_index": 4, "source_total": 8, "source_percent": 50 },
+    "title": "A line about you",
+    "description": "Optional, but it makes conversations easier to start.",
+    "placeholder": "Design student who loves quiet cafés, live music, and spontaneous photowalks.",
+    "helper": "Keep it short",
+    "counter": "0 / 300 through 300 / 300",
+    "button": "Continue"
+  },
+  "interactions": [
+    "obAbout.goBack.click.1",
+    "obAbout.onObBio.change.1",
+    "obAbout.goObInterests.click.1"
+  ],
+  "approved_deltas": [
+    {
+      "id": "about-owned-persistence",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 5 and 6",
+      "delta": "Continue shows the custom 400-600ms write Loading and atomically saves the optional biography through the Store before navigating. Empty biography remains a valid explicit choice."
+    },
+    {
+      "id": "about-safe-area-keyboard",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 2, 11 and 15",
+      "delta": "Source coordinates are applied below the real top safe area; the fixed footer folds while the real software keyboard is open so the focused textarea remains visible."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      { "path": "src/pages/onboarding/about.vue", "sha256_before_restoration": "7981557de5196669d77021320daee931c0399348b3c4315ba3f6f89c983ec0ed", "sha256_after_restoration": "137397408b4729056128d9e55807e79960120036449b19480c52536c2fcff285" },
+      { "path": "src/pages/onboarding/onboarding.css", "sha256": "4c03a71518bd4fde55f8303f7304c5c7a4f3f39f427ac1559af43cc76c86f090" },
+      { "path": "src/components/OnboardingFrame.vue", "sha256": "ce50af131bf2dbb07296d96fbb64c88d13cc652b78e7cfada1af95ab0ff09108" },
+      { "path": "src/composables/useOnboarding.js", "sha256": "a6d4d6ee57a442577f0f3869a167ab53c1baf43c42e614c6e9060d4d56af5728" },
+      { "path": "src/stores/onboarding.js", "sha256": "7604fb7105c04cad8c702af2d48543884a85953327a435fe188fe7a5989fd509" }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/onboarding-about/reference.png",
+    "actual_browser_png": "docs/ui-restoration/onboarding-about/actual-browser.png",
+    "actual_browser_keyboard_png": "docs/ui-restoration/onboarding-about/actual-browser-keyboard.png",
+    "actual_browser_failure_png": "docs/ui-restoration/onboarding-about/actual-browser-failure.png",
+    "overlay_png": "docs/ui-restoration/onboarding-about/overlay.png",
+    "diff_png": "docs/ui-restoration/onboarding-about/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/onboarding-about/actual-wkwebview.png",
+    "actual_wkwebview_keyboard_png": "docs/ui-restoration/onboarding-about/actual-wkwebview-keyboard.png",
+    "actual_wkwebview_failure_png": "docs/ui-restoration/onboarding-about/actual-wkwebview-failure.png",
+    "browser_report": "docs/ui-restoration/onboarding-about/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/onboarding-about/acceptance.json",
+    "visual_acceptance": "passed"
+  },
+  "captured_artifact_sha256": {
+    "reference_png": "9dc6e5ec0389949a6b3bb3b6994007db1300d476b6dd76bfbcf05ef884328aa8",
+    "actual_browser_png": "df557561cc92f17de939c9224a0cff7161ad8741cad72c283823b8d489d7446f",
+    "actual_browser_keyboard_png": "8a0f9d4853e272a1508707102610997300225eca72acd72dff10f5b19be589e6",
+    "actual_browser_failure_png": "da6f30722b6b90e22bf47f3fdc8afe9d91335a45ec8b9f74b11bdfc6911e4b15",
+    "overlay_png": "720e03fac88241889fc1ec5d8753de087d0c4658134ec669a4dfdcd79a36b48d",
+    "diff_png": "2e81bf4fdc7ab4c55e5dd21a0a2df7aa4ce88475c33164b39f377ff02744b9df",
+    "actual_wkwebview_png": "70e35afeebc03411cd9d59489429b273c069613392cca932534e4031411f5cc2",
+    "actual_wkwebview_keyboard_png": "e418b1aac628b788245e3412fbfe3feea64805cc76ed99623234caa37eef3caa",
+    "actual_wkwebview_failure_png": "fcbad35a55191849038ecaebde07b0f14d20fc2e2e8bd9dc53e427d7ea38e808"
+  }
+}

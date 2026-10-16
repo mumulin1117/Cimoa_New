@@ -6,9 +6,9 @@ const frame = ref(null), { context, error, access_error, is_loading, back, recov
 watch(bio, () => { error.value = '' })
 </script>
 <template>
-  <OnboardingFrame ref="frame" step="about" :busy="is_loading" :error="error" :access-error="access_error" interaction="obAbout.goObInterests.click.1" @back="back" @recover="recover" @continue="save({ bio })">
+  <OnboardingFrame ref="frame" step="about" :busy="is_loading" :error="error" :access-error="access_error" interaction="obAbout.goObInterests.click.1" back-interaction="obAbout.goBack.click.1" :source-index="4" :source-total="8" :source-progress="50" @back="back" @recover="recover" @continue="save({ bio })">
     <text class="onboarding-title">A line about you</text><text class="auth-description">Optional, but it makes conversations easier to start.</text>
-    <view class="auth-card about-card"><textarea v-model="bio" aria-label="About you" placeholder="Design student who loves quiet cafés, live music, and spontaneous photowalks." :maxlength="300" :disabled="is_loading" /><view class="about-counter"><text>Keep it short</text><text>{{ bio.length }} / 300</text></view></view>
+    <view class="auth-card about-card"><textarea v-model="bio" aria-label="About you" data-interaction="obAbout.onObBio.change.1" placeholder="Design student who loves quiet cafés, live music, and spontaneous photowalks." :maxlength="300" :disabled="is_loading" /><view class="about-counter"><text>Keep it short</text><text>{{ bio.length }} / 300</text></view></view>
   </OnboardingFrame>
 </template>
 <style>
