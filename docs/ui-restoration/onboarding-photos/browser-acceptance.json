@@ -1,0 +1,377 @@
+{
+  "phase": "onboarding-photos-pixel-restoration",
+  "result": "passed",
+  "server_pid": 77754,
+  "reference": {
+    "kind": "source-derived locked Empty, Added and photo-library permission references with approved brand, two-photo, persistence and action-closure deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "photos_visual_fragment_sha256": "cacb9a46403645215149db84dd5b0dc605987fc9984b9b9bc03f31fe4da201bf",
+    "photos_behavior_fragment_sha256": "b971e53a9c7adf46769b58e207bdc8e6f5ebea010233e4e87007b845a7639151",
+    "permission_visual_fragment_sha256": "651d8eefe7a39152e1e0e0073d9f21bf3c04825d8e31eac13518c5b7347b3661",
+    "permission_behavior_fragment_sha256": "389cecb9915ffb78c0d483571d37d849be40670301e9adc441b9c807de6f6f4e",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "empty": {
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "root": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "header": {
+        "x": 20,
+        "y": 58,
+        "width": 353,
+        "height": 47.984375,
+        "right": 373,
+        "bottom": 105.984375
+      },
+      "track": {
+        "x": 79.984375,
+        "y": 79,
+        "width": 249.71875,
+        "height": 5.984375,
+        "right": 329.703125,
+        "bottom": 84.984375
+      },
+      "progress": {
+        "x": 79.984375,
+        "y": 79,
+        "width": 94.890625,
+        "height": 5.984375,
+        "right": 174.875,
+        "bottom": 84.984375
+      },
+      "title": {
+        "x": 20,
+        "y": 123.96875,
+        "width": 353,
+        "height": 34.09375,
+        "right": 373,
+        "bottom": 158.0625
+      },
+      "description": {
+        "x": 20,
+        "y": 168.0625,
+        "width": 353,
+        "height": 24.640625,
+        "right": 373,
+        "bottom": 192.703125
+      },
+      "fan": {
+        "x": 20,
+        "y": 218.6875,
+        "width": 353,
+        "height": 279.984375,
+        "right": 373,
+        "bottom": 498.671875
+      },
+      "cards": [
+        {
+          "x": 7.905326843261719,
+          "y": 249.72471618652344,
+          "width": 185.20501708984375,
+          "height": 229.87867736816406,
+          "layout_width": 146,
+          "layout_height": 204,
+          "top": 43.9997
+        },
+        {
+          "x": 123.515625,
+          "y": 218.6875,
+          "width": 145.984375,
+          "height": 203.984375,
+          "layout_width": 146,
+          "layout_height": 204,
+          "top": 0
+        },
+        {
+          "x": 199.90528869628906,
+          "y": 249.72471618652344,
+          "width": 185.2050018310547,
+          "height": 229.87867736816406,
+          "layout_width": 146,
+          "layout_height": 204,
+          "top": 43.9997
+        }
+      ],
+      "hint": {
+        "x": 20,
+        "y": 729.015625,
+        "width": 353,
+        "height": 17,
+        "right": 373,
+        "bottom": 746.015625
+      },
+      "primary": {
+        "x": 20,
+        "y": 758.015625,
+        "width": 353,
+        "height": 60,
+        "right": 373,
+        "bottom": 818.015625
+      },
+      "safe": [
+        54,
+        0
+      ],
+      "text": {
+        "step": "3 / 8",
+        "title": "Add your photos",
+        "description": "Add at least 2 photos",
+        "hint": "Add at least 2 photos to continue",
+        "primary": "Continue"
+      },
+      "interactions": [
+        "obPhotos.goBack.click.1",
+        "obPhotos.p.tap.click.1",
+        "obPhotos.p.tap.click.1",
+        "obPhotos.p.tap.click.1",
+        "obPhotos.goObAbout.click.1"
+      ]
+    },
+    "permission": {
+      "root": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "content": {
+        "x": 0,
+        "y": 54,
+        "width": 393,
+        "height": 377.328125,
+        "right": 393,
+        "bottom": 431.328125
+      },
+      "icon": {
+        "x": 150.5,
+        "y": 172,
+        "width": 91.984375,
+        "height": 91.984375,
+        "right": 242.484375,
+        "bottom": 263.984375
+      },
+      "title": {
+        "x": 24,
+        "y": 279.96875,
+        "width": 345,
+        "height": 62.09375,
+        "right": 369,
+        "bottom": 342.0625
+      },
+      "copy": {
+        "x": 24,
+        "y": 358.046875,
+        "width": 345,
+        "height": 49.28125,
+        "right": 369,
+        "bottom": 407.328125
+      },
+      "primary": {
+        "x": 20,
+        "y": 710.03125,
+        "width": 353,
+        "height": 60,
+        "right": 373,
+        "bottom": 770.03125
+      },
+      "secondary": {
+        "x": 20,
+        "y": 776.015625,
+        "width": 353,
+        "height": 45.984375,
+        "right": 373,
+        "bottom": 822
+      },
+      "safe": [
+        54,
+        0
+      ],
+      "text": {
+        "title": "Choose photos from your library",
+        "copy": "Cimoa only sees the photos you pick for your profile. Nothing else is read.",
+        "primary": "Allow Photo Access",
+        "secondary": "Not Now"
+      },
+      "interactions": [
+        "permPhotos.allowPhotos.click.1",
+        "permPhotos.denyPhotos.click.1"
+      ]
+    },
+    "added": {
+      "viewport": {
+        "width": 393,
+        "height": 852
+      },
+      "root": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "header": {
+        "x": 20,
+        "y": 58,
+        "width": 353,
+        "height": 47.984375,
+        "right": 373,
+        "bottom": 105.984375
+      },
+      "track": {
+        "x": 79.984375,
+        "y": 79,
+        "width": 249.71875,
+        "height": 5.984375,
+        "right": 329.703125,
+        "bottom": 84.984375
+      },
+      "progress": {
+        "x": 79.984375,
+        "y": 79,
+        "width": 94.890625,
+        "height": 5.984375,
+        "right": 174.875,
+        "bottom": 84.984375
+      },
+      "title": {
+        "x": 20,
+        "y": 123.96875,
+        "width": 353,
+        "height": 34.09375,
+        "right": 373,
+        "bottom": 158.0625
+      },
+      "description": {
+        "x": 20,
+        "y": 168.0625,
+        "width": 353,
+        "height": 24.640625,
+        "right": 373,
+        "bottom": 192.703125
+      },
+      "fan": {
+        "x": 20,
+        "y": 218.6875,
+        "width": 353,
+        "height": 279.984375,
+        "right": 373,
+        "bottom": 498.671875
+      },
+      "cards": [
+        {
+          "x": 7.905326843261719,
+          "y": 249.72471618652344,
+          "width": 185.20501708984375,
+          "height": 229.87867736816406,
+          "layout_width": 146,
+          "layout_height": 204,
+          "top": 43.9997
+        },
+        {
+          "x": 123.515625,
+          "y": 218.6875,
+          "width": 145.984375,
+          "height": 203.984375,
+          "layout_width": 146,
+          "layout_height": 204,
+          "top": 0
+        },
+        {
+          "x": 199.90528869628906,
+          "y": 249.72471618652344,
+          "width": 185.2050018310547,
+          "height": 229.87867736816406,
+          "layout_width": 146,
+          "layout_height": 204,
+          "top": 43.9997
+        }
+      ],
+      "hint": {
+        "x": 20,
+        "y": 712.015625,
+        "width": 353,
+        "height": 34,
+        "right": 373,
+        "bottom": 746.015625
+      },
+      "primary": {
+        "x": 20,
+        "y": 758.015625,
+        "width": 353,
+        "height": 60,
+        "right": 373,
+        "bottom": 818.015625
+      },
+      "safe": [
+        54,
+        0
+      ],
+      "text": {
+        "step": "3 / 8",
+        "title": "Add your photos",
+        "description": "Add at least 2 photos",
+        "hint": "Tap a photo to replace, reorder, delete, or set it as your primary.",
+        "primary": "Continue"
+      },
+      "interactions": [
+        "obPhotos.goBack.click.1",
+        "obPhotos.p.tap.click.1",
+        "obPhotos.p.tap.click.1",
+        "obPhotos.p.tap.click.1",
+        "obPhotos.goObAbout.click.1"
+      ]
+    }
+  },
+  "comparisons": {
+    "empty": {
+      "width": 393,
+      "height": 852,
+      "pixels_different": 50925,
+      "pixels_above_channel_delta_8": 4318,
+      "mean_absolute_channel_delta": 0.31520878878017894,
+      "max_channel_delta": 127
+    },
+    "permission": {
+      "width": 393,
+      "height": 852,
+      "pixels_different": 37179,
+      "pixels_above_channel_delta_8": 8102,
+      "mean_absolute_channel_delta": 1.2211545353546214,
+      "max_channel_delta": 225
+    },
+    "added": {
+      "width": 393,
+      "height": 852,
+      "pixels_different": 114640,
+      "pixels_above_channel_delta_8": 13921,
+      "mean_absolute_channel_delta": 0.9176059324564861,
+      "max_channel_delta": 210
+    }
+  },
+  "checks": [
+    "393x852 Empty source geometry, 3 / 8 progress, disabled two-photo gate and three interactions match the finished cRise frame",
+    "photo-library pre-prompt source geometry, Cimoa brand delta and Allow/Not Now interactions match at 393x852",
+    "Not Now and no-host Settings report explicit source/error states with zero media or profile write",
+    "real three-file selection decodes, shows Loading before one Store commit, renders the source Added frame and owns three IndexedDB media entities",
+    "action sheet set-primary, reorder and confirmed deletion update one shared profile; Keep Photo performs zero writes",
+    "replacement and refresh recover the same photo entities and visible media without page-level duplicate data",
+    "double Continue preserves media, performs one progress write and navigates once to About",
+    "direct-refresh Back belongs to Major and does not mutate media or profile progress",
+    "invalid image decoding fails explicitly before persistence and retains the permission page for retry"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

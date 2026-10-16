@@ -1,0 +1,76 @@
+{
+  "phase": "onboarding-photos-pixel-restoration",
+  "result": "passed",
+  "accepted_at": "2026-10-16",
+  "source_lock": "passed",
+  "visual_acceptance": "passed",
+  "browser": {
+    "result": "passed",
+    "pixel_and_flow_checks": "9/9",
+    "report": "docs/ui-restoration/onboarding-photos/browser-acceptance.json",
+    "viewport_css_px": "393x852",
+    "safe_area_css_px": { "top": 54, "bottom": 0 },
+    "comparisons": {
+      "empty_mean_absolute_channel_delta": 0.31520878878017894,
+      "added_mean_absolute_channel_delta": 0.9176059324564861,
+      "permission_mean_absolute_channel_delta": 1.2211545353546214
+    },
+    "registration_regressions": {
+      "photos": "8/8 passed",
+      "photo_access": "9/9 passed"
+    },
+    "store_regression": "10/10 passed"
+  },
+  "wkwebview": {
+    "result": "passed",
+    "tests": "1/1",
+    "host": "cimoaNeapo",
+    "device": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testOnboardingPhotosPixelRestoration",
+    "result_bundle": "ios/cimoaNeapo/build/OnboardingPhotosAcceptance-6.xcresult",
+    "file_picker_coverage": "Controlled real bundled image files exercise the production WebKit decode, IndexedDB, refresh and Store path; no claim is made that XCTest operated the system Photos picker chrome."
+  },
+  "covered": [
+    "source-locked Empty and Added frames with exact 3 / 8 and 38 percent progress",
+    "source-locked photo-library pre-prompt with Cimoa-only approved brand delta",
+    "two-photo gate, three-photo source frame and no fake permission or media success",
+    "custom Loading before atomic IndexedDB and Store persistence",
+    "cancel, denial, no-host Settings and invalid-decode paths retain state",
+    "set-primary, reorder, confirmed delete, replacement and shared profile synchronization",
+    "refresh recovery of the same owned media entities without page-level duplicate data",
+    "double Continue writes and navigates once; Back ownership returns to Major",
+    "iPhone 17 Pro safe areas and offline bundled WKWebView execution"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/onboarding-photos/source-contract.json",
+    "docs/ui-restoration/onboarding-photos/difference-audit.md",
+    "docs/ui-restoration/onboarding-photos/reference-empty.png",
+    "docs/ui-restoration/onboarding-photos/actual-browser-empty.png",
+    "docs/ui-restoration/onboarding-photos/overlay-empty.png",
+    "docs/ui-restoration/onboarding-photos/diff-empty.png",
+    "docs/ui-restoration/onboarding-photos/reference-added.png",
+    "docs/ui-restoration/onboarding-photos/actual-browser-added.png",
+    "docs/ui-restoration/onboarding-photos/overlay-added.png",
+    "docs/ui-restoration/onboarding-photos/diff-added.png",
+    "docs/ui-restoration/onboarding-photos/reference-permission.png",
+    "docs/ui-restoration/onboarding-photos/actual-browser-permission.png",
+    "docs/ui-restoration/onboarding-photos/actual-browser-permission-denied.png",
+    "docs/ui-restoration/onboarding-photos/overlay-permission.png",
+    "docs/ui-restoration/onboarding-photos/diff-permission.png",
+    "docs/ui-restoration/onboarding-photos/actual-wkwebview-empty.png",
+    "docs/ui-restoration/onboarding-photos/actual-wkwebview-added.png",
+    "docs/ui-restoration/onboarding-photos/actual-wkwebview-permission.png"
+  ],
+  "final_checks": {
+    "status": "passed",
+    "corepack pnpm check:conventions": "passed with no warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; 342 H5 files packaged into ios/cimoaNeapo/Resources/H5"
+  },
+  "commit": "included in the Onboarding Photos local specialty commit"
+}

@@ -38,7 +38,7 @@ const choose = async () => {
 <template>
   <SecondaryPageFrame ref="frame" class="permission-photos-page">
     <view class="permission-content"><view class="permission-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="2.5" y="5" width="19" height="15" rx="3" /><circle cx="12" cy="12" r="3.6" /></svg></view><text class="permission-title">Choose photos from your library</text><text class="permission-copy">Cimoa only sees the photos you pick for your profile. Nothing else is read.</text>
-      <view v-if="declined || error" class="auth-card permission-error"><text class="permission-error-title">Photos were not added</text><text class="permission-copy" role="alert">{{ error || 'Nothing was selected or saved. You can try again or return to your profile.' }}</text><view class="permission-settings" role="button" tabindex="0" data-interaction="permPhotos.openSettings.click.1" @click="settings" @keydown.enter="settings">Open Settings</view><view class="permission-settings" role="button" tabindex="0" @click="back" @keydown.enter="back">Back to Photos</view></view>
+      <view v-if="declined || error" class="auth-card permission-error"><text class="permission-error-title">{{ declined && !error ? 'Access is off' : 'Photos were not added' }}</text><text class="permission-copy" role="alert">{{ error || 'Without it you can’t add that kind of content here. You can turn it on in Settings, or use another method.' }}</text><view class="permission-settings" role="button" tabindex="0" data-interaction="permPhotos.openSettings.click.1" @click="settings" @keydown.enter="settings">Open Settings</view><view class="permission-settings" role="button" tabindex="0" data-interaction="permPhotos.back.click.1" @click="back" @keydown.enter="back">Back to Photos</view></view>
     </view>
     <template #footer><view class="permission-footer"><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading || selecting" data-interaction="permPhotos.allowPhotos.click.1" @click="choose" @keydown.enter="choose">{{ selecting ? 'Choosing Photos…' : 'Allow Photo Access' }}</view><view class="auth-secondary" role="button" tabindex="0" data-interaction="permPhotos.denyPhotos.click.1" @click="!is_loading && (declined = true)" @keydown.enter="!is_loading && (declined = true)">Not Now</view></view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Saving selected photos…" /></template>
@@ -48,7 +48,7 @@ const choose = async () => {
 @import '../auth/auth.css';
 </style>
 <style scoped>
-.permission-content { display: flex; flex-direction: column; align-items: center; gap: 30.534rpx; padding: 244.275rpx 45.802rpx 45.802rpx; }
+.permission-content { display: flex; flex-direction: column; align-items: center; gap: 30.534rpx; padding: 225.191rpx 45.802rpx 45.802rpx; }
 .permission-icon { display: flex; align-items: center; justify-content: center; width: 175.572rpx; height: 175.572rpx; flex: none; border-radius: 87.786rpx; background: var(--cimoa-surface-deep); color: var(--cimoa-text-inverse); box-shadow: var(--cimoa-shadow-auth-action); }
 .permission-icon svg { width: 76.336rpx; height: 76.336rpx; }
 .permission-title { font-size: 51.527rpx; font-weight: 800; letter-spacing: -.035em; line-height: 1.15; text-align: center; }

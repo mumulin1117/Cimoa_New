@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "page": "Onboarding Photos and Photo Library Permission",
+  "routes": ["/pages/onboarding/photos", "/pages/permissions/photos"],
+  "source_screens": ["Onboarding / Photos / Empty", "Onboarding / Photos / Added", "Permissions / Photos / Pre-Permission"],
+  "source_queries": ["route=obPhotos&photos=0", "route=obPhotos&photos=3", "route=permPhotos"],
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "photos_condition": "isObPhotos",
+    "photos_visual_lines": "3018-3053",
+    "photos_visual_fragment_sha256": "cacb9a46403645215149db84dd5b0dc605987fc9984b9b9bc03f31fe4da201bf",
+    "photos_behavior_lines": [5169, 5170, 5224, 5581, 5582, 5697, 5698, 5699, 5700, 5701, 5702, 5703, 5704, 5705, 5706, 5707, 5708, 5709, 5710, 5711, 5712, 5713, 5714, 5715, 5716, 5717, 5718, 5719, 5720, 5721, 5722, 5723, 5724, 5725],
+    "photos_behavior_fragment_sha256": "b971e53a9c7adf46769b58e207bdc8e6f5ebea010233e4e87007b845a7639151",
+    "permission_condition": "isPermPhotos",
+    "permission_visual_lines": "3208-3227",
+    "permission_visual_fragment_sha256": "651d8eefe7a39152e1e0e0073d9f21bf3c04825d8e31eac13518c5b7347b3661",
+    "permission_behavior_lines": [5209, 5210, 5713, 5717, 5718, 5719, 5720, 5721],
+    "permission_behavior_fragment_sha256": "389cecb9915ffb78c0d483571d37d849be40670301e9adc441b9c807de6f6f4e"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "photos_structure": {
+    "header": "top 58px; left/right 20px; height 48px; 14px gap",
+    "scroll_region": "top 124px; padding 0 20px 200px; one vertical scroll owner",
+    "footer": "left/right 20px; bottom 34px; 12px vertical gap",
+    "fan": "height 280px; margin-top 26px; 146x204 cards; side cards top 44px and translate 96px with 12 degree rotation"
+  },
+  "photos_content": {
+    "progress": { "source_index": 3, "source_total": 8, "source_percent": 38 },
+    "title": "Add your photos",
+    "description": "Add at least 2 photos",
+    "empty_hint": "Add at least 2 photos to continue",
+    "added_hint": "Tap a photo to replace, reorder, delete, or set it as your primary.",
+    "primary_label": "Primary",
+    "button": "Continue"
+  },
+  "permission_structure": {
+    "content": "top 172px in the 393x852 source viewport; left/right 24px; 16px vertical gap",
+    "icon": "92x92px circle; 40x40px camera-library glyph",
+    "footer": "left/right 20px; bottom 30px; 60px primary; 46px secondary; 6px gap"
+  },
+  "permission_content": {
+    "title": "Choose photos from your library",
+    "copy": "Cimoa only sees the photos you pick for your profile. Nothing else is read.",
+    "declined_title": "Access is off",
+    "declined_copy": "Without it you can’t add that kind of content here. You can turn it on in Settings, or use another method.",
+    "primary": "Allow Photo Access",
+    "secondary": "Not Now"
+  },
+  "interactions": [
+    "obPhotos.goBack.click.1",
+    "obPhotos.p.tap.click.1",
+    "obPhotos.goObAbout.click.1",
+    "permPhotos.openSettings.click.1",
+    "permPhotos.allowPhotos.click.1",
+    "permPhotos.denyPhotos.click.1",
+    "permPhotos.back.click.1"
+  ],
+  "approved_deltas": [
+    {
+      "id": "photos-brand",
+      "source": "INTERACTION_CONVENTIONS.md section 1.1",
+      "delta": "Replace the source brand CIRCA with Cimoa on the photo permission copy only."
+    },
+    {
+      "id": "photos-two-photo-gate",
+      "source": "Source visible copy and DEVELOPMENT_CONVENTIONS.md no-fake-feedback rule",
+      "delta": "The source state enables Continue after one photo even though both visible instructions require at least two. The project enforces two decoded owned photos and keeps Continue disabled below that threshold."
+    },
+    {
+      "id": "photos-real-media-persistence",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 5, 9.2 and 12.3",
+      "delta": "The browser or WKWebView chooser must return real image blobs. Cimoa decodes and stores selected media in IndexedDB, shows custom Loading before the Store transaction, and reports cancellation, permission, decode and persistence failures without fake success."
+    },
+    {
+      "id": "photos-action-closure",
+      "source": "User authorization for missing album interactions and INTERACTION_CONVENTIONS.md section 1.1",
+      "delta": "The source only shows a toast for a filled card. A custom bottom sheet completes replace, reorder, delete and set-primary actions named by the source hint, with confirmation before deletion."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      { "path": "src/components/OnboardingFrame.vue", "sha256": "ce50af131bf2dbb07296d96fbb64c88d13cc652b78e7cfada1af95ab0ff09108" },
+      { "path": "src/components/PhotoActionsConfirmDialog.vue", "sha256": "e2bfa847cde8bbae281e51132f8cfc3589f22efcd5173c1d1b1bf4616bbfae83" },
+      { "path": "src/composables/useOnboarding.js", "sha256": "a6d4d6ee57a442577f0f3869a167ab53c1baf43c42e614c6e9060d4d56af5728" },
+      { "path": "src/pages/onboarding/photos.vue", "sha256": "274b307e01ab4ff1b4fb4ef103b7e6e2659c8ff7b2490cfa673099f9fd705d5d" },
+      { "path": "src/pages/onboarding/onboarding.css", "sha256": "4c03a71518bd4fde55f8303f7304c5c7a4f3f39f427ac1559af43cc76c86f090" },
+      { "path": "src/pages/permissions/photos.vue", "sha256": "84f38b8d60b6c4f18477da7151ee648089c8ed87e63d3cf8c80c7471c07b70ef" },
+      { "path": "src/stores/onboarding.js", "sha256": "7604fb7105c04cad8c702af2d48543884a85953327a435fe188fe7a5989fd509" },
+      { "path": "src/utils/mediaCapabilities.js", "sha256": "77a8a4729182459388744e61c61f0ea625fc3d355f9a1385c4f1cb7f26beefcd" }
+    ]
+  },
+  "planned_capture": {
+    "reference_empty_png": "docs/ui-restoration/onboarding-photos/reference-empty.png",
+    "actual_browser_empty_png": "docs/ui-restoration/onboarding-photos/actual-browser-empty.png",
+    "overlay_empty_png": "docs/ui-restoration/onboarding-photos/overlay-empty.png",
+    "diff_empty_png": "docs/ui-restoration/onboarding-photos/diff-empty.png",
+    "reference_added_png": "docs/ui-restoration/onboarding-photos/reference-added.png",
+    "actual_browser_added_png": "docs/ui-restoration/onboarding-photos/actual-browser-added.png",
+    "overlay_added_png": "docs/ui-restoration/onboarding-photos/overlay-added.png",
+    "diff_added_png": "docs/ui-restoration/onboarding-photos/diff-added.png",
+    "reference_permission_png": "docs/ui-restoration/onboarding-photos/reference-permission.png",
+    "actual_browser_permission_png": "docs/ui-restoration/onboarding-photos/actual-browser-permission.png",
+    "overlay_permission_png": "docs/ui-restoration/onboarding-photos/overlay-permission.png",
+    "diff_permission_png": "docs/ui-restoration/onboarding-photos/diff-permission.png",
+    "actual_browser_permission_denied_png": "docs/ui-restoration/onboarding-photos/actual-browser-permission-denied.png",
+    "actual_wkwebview_empty_png": "docs/ui-restoration/onboarding-photos/actual-wkwebview-empty.png",
+    "actual_wkwebview_added_png": "docs/ui-restoration/onboarding-photos/actual-wkwebview-added.png",
+    "actual_wkwebview_permission_png": "docs/ui-restoration/onboarding-photos/actual-wkwebview-permission.png",
+    "browser_report": "docs/ui-restoration/onboarding-photos/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/onboarding-photos/acceptance.json",
+    "visual_acceptance": "passed"
+  },
+  "captured_artifact_sha256": {
+    "reference_empty_png": "3d14bf927aa3d5a6c1941efb10fb23382d101c69457b6bc817a1e55d9849e440",
+    "actual_browser_empty_png": "592c4ea5d89c621383c29f25c729845ac43039d28bea25fb23e0cc19a0e66cf0",
+    "actual_wkwebview_empty_png": "53406f814a5a15e2e82d20491a01af76f90d433a653a4547272809e3479231bf",
+    "reference_added_png": "85cedf64228268fc712c5579731a881d292ce9045cf989471b64822e137740f7",
+    "actual_browser_added_png": "fd07db12dca8358a2e1a52cfd7b511a9d3d8866ddb61abcecba1e1bfdfed85e0",
+    "actual_wkwebview_added_png": "22c3f23c7cbe8181e92d0591a61f125a3db695431ba49a85d0ed84cd2482f70d",
+    "reference_permission_png": "1463a55d73b21ef982b716983740bc24f8a0384cbf36302e3189eb3cad99b8cd",
+    "actual_browser_permission_png": "724bf19ef81c44c837bf000c8ffc42def92b42a043f06e80407d50773207ca19",
+    "actual_wkwebview_permission_png": "3f971eb8bdc3a004861ab2d417c2b326ecfe13ddbb298dc3db5af0c114bac1b6"
+  }
+}

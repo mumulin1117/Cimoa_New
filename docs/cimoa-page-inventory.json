@@ -1223,7 +1223,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/onboarding/photos",
-    "component": null,
+    "component": "src/pages/onboarding/photos.vue",
     "parent_route": "/pages/onboarding/major",
     "allowed_origin_routes": [
       "/pages/onboarding/major",
@@ -1289,12 +1289,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/photo-access-browser.json"
+    "mapping_status": "source-locked; pixel-restored; verified in browser and iPhone 17 Pro WKWebView with exact Empty and Added frames, owned IndexedDB media, action-sheet closure, rollback, refresh recovery and one-write navigation",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-photos/source-contract.json",
+      "docs/ui-restoration/onboarding-photos/difference-audit.md"
+    ],
+    "acceptance_evidence": "docs/ui-restoration/onboarding-photos/acceptance.json"
   },
   {
     "source_screen": "Onboarding / Photos / Added",
@@ -1304,7 +1310,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/onboarding/photos",
-    "component": null,
+    "component": "src/pages/onboarding/photos.vue",
     "parent_route": "/pages/onboarding/major",
     "allowed_origin_routes": [
       "/pages/onboarding/major",
@@ -1370,12 +1376,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/photo-access-browser.json"
+    "mapping_status": "source-locked; pixel-restored; verified in browser and iPhone 17 Pro WKWebView with exact Empty and Added frames, owned IndexedDB media, action-sheet closure, rollback, refresh recovery and one-write navigation",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-photos/source-contract.json",
+      "docs/ui-restoration/onboarding-photos/difference-audit.md"
+    ],
+    "acceptance_evidence": "docs/ui-restoration/onboarding-photos/acceptance.json"
   },
   {
     "source_screen": "Onboarding / About / Default",
@@ -2088,7 +2100,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/permissions/photos",
-    "component": null,
+    "component": "src/pages/permissions/photos.vue",
     "parent_route": "/pages/onboarding/photos",
     "allowed_origin_routes": [
       "/pages/onboarding/photos",
@@ -2110,7 +2122,8 @@
     "interaction_ids": [
       "permPhotos.openSettings.click.1",
       "permPhotos.allowPhotos.click.1",
-      "permPhotos.denyPhotos.click.1"
+      "permPhotos.denyPhotos.click.1",
+      "permPhotos.back.click.1"
     ],
     "entities": "permissions; media_files",
     "assets": {
@@ -2148,12 +2161,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/photo-access-browser.json"
+    "mapping_status": "source-locked; pixel-restored; verified in browser and iPhone 17 Pro WKWebView with exact pre-prompt geometry, decline/no-host failure states, zero-write cancellation and real media return to Photos",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-photos/source-contract.json",
+      "docs/ui-restoration/onboarding-photos/difference-audit.md"
+    ],
+    "acceptance_evidence": "docs/ui-restoration/onboarding-photos/acceptance.json"
   },
   {
     "source_screen": "Permissions / Camera / Pre-Permission",

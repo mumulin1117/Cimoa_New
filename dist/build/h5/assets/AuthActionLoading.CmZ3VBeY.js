@@ -1,1 +1,0 @@
-import{e as i,c as e}from"./index-DmIhxU0K.js";import{A as l}from"./AppLoading.DN2Bv3IY.js";const s={__name:"AuthActionLoading",props:{visible:Boolean,label:{type:String,default:"Signing in on this device…"}},setup:s=>(a,n)=>(i(),e(l,{visible:s.visible,label:s.label},null,8,["visible","label"]))};export{s as _};
