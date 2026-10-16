@@ -1,0 +1,205 @@
+{
+  "phase": "onboarding-basic-pixel-restoration",
+  "result": "passed",
+  "server_pid": 65576,
+  "reference": {
+    "kind": "source-derived locked reference with approved safe-area, keyboard, persistence and custom-choice deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "dbb6b4be3b92e25c4bcc6c172bf1051c1e0fc98c260fbc39c9aa3755ed90dccb",
+    "behavior_fragment_sha256": "1de81620834220a67777e84344814378c849f1e45ca269ca9e0b277cc45c609e",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "right": 393,
+      "bottom": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "right": 65.984375,
+      "bottom": 104.984375
+    },
+    "track": {
+      "x": 79.984375,
+      "y": 79,
+      "width": 251.84375,
+      "height": 5.984375,
+      "right": 331.828125,
+      "bottom": 84.984375
+    },
+    "progress": {
+      "x": 79.984375,
+      "y": 79,
+      "width": 35.25,
+      "height": 5.984375,
+      "right": 115.234375,
+      "bottom": 84.984375
+    },
+    "content": {
+      "x": 0,
+      "y": 123.96875,
+      "width": 393,
+      "height": 625.25,
+      "right": 393,
+      "bottom": 749.21875
+    },
+    "title": {
+      "x": 20,
+      "y": 123.96875,
+      "width": 353,
+      "height": 34.09375,
+      "right": 373,
+      "bottom": 158.0625
+    },
+    "description": {
+      "x": 20,
+      "y": 168.0625,
+      "width": 353,
+      "height": 49.28125,
+      "right": 373,
+      "bottom": 217.34375
+    },
+    "nameField": {
+      "x": 20,
+      "y": 233.328125,
+      "width": 353,
+      "height": 79.984375,
+      "right": 373,
+      "bottom": 313.3125
+    },
+    "nameInput": {
+      "x": 20,
+      "y": 257.328125,
+      "width": 353,
+      "height": 55.984375,
+      "right": 373,
+      "bottom": 313.3125
+    },
+    "dobField": {
+      "x": 20,
+      "y": 329.296875,
+      "width": 353,
+      "height": 79.984375,
+      "right": 373,
+      "bottom": 409.28125
+    },
+    "gender": {
+      "x": 20,
+      "y": 431.28125,
+      "width": 353,
+      "height": 135.96875,
+      "right": 373,
+      "bottom": 567.25
+    },
+    "firstChip": {
+      "x": 20,
+      "y": 461.28125,
+      "width": 94.375,
+      "height": 47.984375,
+      "right": 114.375,
+      "bottom": 509.265625
+    },
+    "footer": {
+      "x": 0,
+      "y": 758.015625,
+      "width": 393,
+      "height": 93.984375,
+      "right": 393,
+      "bottom": 852
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 818.015625
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "text": {
+      "step": "1 / 8",
+      "title": "About you",
+      "description": "Your name and age are public. Your date of birth and email stay private.",
+      "genders": [
+        "Woman",
+        "Man",
+        "Non-binary",
+        "Self-describe",
+        "Prefer not to say"
+      ],
+      "pronouns": [
+        "she / her",
+        "he / him",
+        "they / them",
+        "Add your own"
+      ],
+      "primary": "Continue"
+    },
+    "interactions": [
+      "obBasic.goBack.click.1",
+      "obBasic.onObName.change.1",
+      "obBasic.onObDob.change.1",
+      "obBasic.o.pick.click.1",
+      "obBasic.o.pick.click.1",
+      "obBasic.o.pick.click.1",
+      "obBasic.o.pick.click.1",
+      "obBasic.o.pick.click.1",
+      "obBasic.o.pick.click.2",
+      "obBasic.o.pick.click.2",
+      "obBasic.o.pick.click.2",
+      "obBasic.o.pick.click.2",
+      "obBasic.goObUni.click.1"
+    ]
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 103733,
+    "pixels_above_channel_delta_8": 10701,
+    "mean_absolute_channel_delta": 1.048144464752894,
+    "max_channel_delta": 227
+  },
+  "checks": [
+    "393x852 source geometry, 1 / 8 progress, exact copy, choices and all six interaction IDs match the finished cRise frame",
+    "reference, actual, overlay and absolute diff were generated from one hash-locked state",
+    "visualViewport keyboard state folds the footer and keeps one scroll owner with the focused field reachable",
+    "empty, long-boundary and underage validation produce explicit errors with zero Loading and zero persistence",
+    "approved supplemental custom gender and pronoun choices have real editable closure without changing the default source state",
+    "double tap shows Loading before one atomic Store write and advances the same account to University",
+    "refresh restores all four submitted fields from the shared account profile",
+    "persistence failure rolls back profile/progress, preserves the retry draft and never navigates",
+    "leaving during Loading cancels the delayed write and hidden-page navigation",
+    "direct-entry Back uses Verification Success fallback with zero business write"
+  ],
+  "errors": [],
+  "refresh": {
+    "href": "http://127.0.0.1:53480/?basicPixel=refresh#/pages/onboarding/basic",
+    "hydration": "",
+    "account_step": "uni",
+    "saved_name": "Morgan",
+    "visible_name": "Morgan"
+  },
+  "cleaned_up": true
+}

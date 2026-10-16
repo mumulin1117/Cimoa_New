@@ -1,17 +1,21 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { use_app_store } from '@/stores/store.js'
+import { use_visual_viewport } from '@/composables/useEventViewport.js'
 import SecondaryPageFrame from './SecondaryPageFrame.vue'
 import SourceIcon from './SourceIcon.vue'
 import AuthActionLoading from './AuthActionLoading.vue'
-const props = defineProps({ step: String, busy: Boolean, error: String, accessError: String, interaction: String, disabled: Boolean, button: { type: String, default: 'Continue' } })
+const props = defineProps({ step: String, busy: Boolean, error: String, accessError: String, interaction: String, backInteraction: String, sourceIndex: Number, sourceTotal: Number, sourceProgress: Number, disabled: Boolean, button: { type: String, default: 'Continue' } })
 const emit = defineEmits(['back', 'continue', 'recover']), store = use_app_store(), frame = ref(null)
 const steps = computed(() => store.onboarding_catalog.steps), index = computed(() => steps.value.indexOf(props.step) + 1)
+const display_index = computed(() => props.sourceIndex ?? index.value), display_total = computed(() => props.sourceTotal ?? steps.value.length)
+const progress = computed(() => props.sourceProgress ?? display_index.value / display_total.value * 100)
+const { height: viewport_height, keyboard_open } = use_visual_viewport()
 defineExpose({ navigate_forward: url => frame.value.navigate_forward(url), navigate_back: fallback => frame.value.navigate_back(fallback) })
 </script>
 <template>
-  <SecondaryPageFrame ref="frame" class="onboarding-page" :class="`onboarding-${step}-page`">
-    <template #header><view class="onboarding-header" :class="{ 'onboarding-header--ice': step === 'ice' }"><view class="onboarding-back" role="button" tabindex="0" aria-label="Back" :aria-disabled="busy" @click="!busy && emit('back')" @keydown.enter="!busy && emit('back')"><SourceIcon name="back" /></view><text v-if="step === 'ice'" class="ice-progress">Profile setup · {{ index }} of {{ steps.length }}</text><view class="onboarding-track"><view :style="{ width: `${index / steps.length * 100}%` }" /></view><text v-if="step !== 'ice'" class="onboarding-step">{{ index }} / {{ steps.length }}</text></view></template>
+  <SecondaryPageFrame ref="frame" class="onboarding-page" :class="[`onboarding-${step}-page`, { 'onboarding-page--keyboard': keyboard_open }]" :style="{ height: viewport_height }">
+    <template #header><view class="onboarding-header" :class="{ 'onboarding-header--ice': step === 'ice' }"><view class="onboarding-back" role="button" tabindex="0" aria-label="Back" :aria-disabled="busy" :data-interaction="backInteraction" @click="!busy && emit('back')" @keydown.enter="!busy && emit('back')"><SourceIcon name="back" /></view><text v-if="step === 'ice'" class="ice-progress">Profile setup · {{ display_index }} of {{ display_total }}</text><view class="onboarding-track"><view :style="{ width: `${progress}%` }" /></view><text v-if="step !== 'ice'" class="onboarding-step">{{ display_index }} / {{ display_total }}</text></view></template>
     <view class="onboarding-content"><template v-if="!accessError"><slot /><text v-if="error" class="auth-error-box" role="alert">{{ error }}</text></template><text v-else class="auth-error-box" role="alert">{{ accessError }}</text></view>
     <template #footer><view class="onboarding-footer"><slot name="hint" /><view v-if="!accessError" class="auth-primary" :class="{ 'is-disabled': disabled }" role="button" tabindex="0" :aria-disabled="busy || disabled" :data-interaction="interaction" @click="!busy && emit('continue')" @keydown.enter="!busy && emit('continue')">{{ button }}</view><view v-else class="auth-primary" role="button" tabindex="0" @click="emit('recover')" @keydown.enter="emit('recover')">Continue account setup</view></view></template>
     <template #overlays><slot name="overlays" /><AuthActionLoading :visible="busy" label="Saving profile…" /></template>
@@ -33,4 +37,5 @@ defineExpose({ navigate_forward: url => frame.value.navigate_forward(url), navig
 .onboarding-header--ice .onboarding-track { position: absolute; bottom: 26.718rpx; left: 0; width: 100%; }
 .onboarding-content { padding: 0 38.168rpx 45.802rpx; }
 .onboarding-footer { display: flex; flex-direction: column; gap: 22.901rpx; padding: 0 38.168rpx 64.885rpx; }
+.onboarding-page.onboarding-page--keyboard .onboarding-footer { display: none; }
 </style>

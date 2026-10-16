@@ -794,6 +794,78 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Verification Success WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
     }
+    func testOnboardingBasicPixelRestoration() async throws {
+        let host = try await host()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try? await script(host, "document.activeElement?.blur();return true")
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?onboardingBasic=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header")
+        }
+        var stage = "prepare basic account"
+        do {
+            _ = try await script(host, """
+            const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),data=envelope.data,account=data.accounts.find(row=>row.account_id===data.session.account_id),user=data.users.find(row=>row.user_id===data.session.current_user_id);
+            account.auth_provider='local';account.local_verification={method:'fixed_code',status:'verified',verified_at:Date.now()};account.date_of_birth='2000-01-01';account.onboarding={step:'basic',completed_steps:[]};user.user_name='New member';user.age=26;user.gender='';user.pronouns='';user.onboarding_status='in_progress';user.verification_status='pending';data.auth_flow.pending_registration_account_id=account.account_id;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true
+            """)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?onboardingBasic=native#/pages/onboarding/basic")!))
+            try await waitFor(host, ".onboarding-basic-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}},root=box('.onboarding-basic-page'),header=box('.onboarding-header'),back=box('.onboarding-back'),track=box('.onboarding-track'),progress=box('.onboarding-track>uni-view'),title=box('.onboarding-title'),name=box('.onboarding-content>.auth-field .auth-input-box'),chip=box('.onboarding-section .onboarding-chip'),primary=box('[data-interaction="obBasic.goObUni.click.1"]'),safes=[...document.querySelectorAll('.onboarding-basic-page>.safe-area')].map(element=>element.getBoundingClientRect().height),values=selector=>[...document.querySelectorAll(selector)].map(element=>element.textContent.trim());
+                return {root,header,back,track,progress,title,name,chip,primary,safes,text:{step:document.querySelector('.onboarding-step').textContent.trim(),title:document.querySelector('.onboarding-title').textContent,description:document.querySelector('.auth-description').textContent,genders:values('[data-interaction="obBasic.o.pick.click.1"]'),pronouns:values('[data-interaction="obBasic.o.pick.click.2"]'),primary:document.querySelector('[data-interaction="obBasic.goObUni.click.1"]').textContent.trim()},interactions:[...document.querySelectorAll('[data-interaction]')].map(element=>element.dataset.interaction)};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], header = metrics["header"] as! [String: Double], back = metrics["back"] as! [String: Double], track = metrics["track"] as! [String: Double], progress = metrics["progress"] as! [String: Double], title = metrics["title"] as! [String: Double], name = metrics["name"] as! [String: Double], chip = metrics["chip"] as! [String: Double], primary = metrics["primary"] as! [String: Double], safes = metrics["safes"] as! [Double], text = metrics["text"] as! [String: Any], interactions = metrics["interactions"] as! [String]
+            let scale = root["width"]! / 393
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(header["x"]!, 20 * scale, accuracy: 1); XCTAssertEqual(header["y"]!, safes[0] + 4 * scale, accuracy: 1); XCTAssertEqual(header["height"]!, 48 * scale, accuracy: 1); XCTAssertEqual(back["width"]!, 46 * scale, accuracy: 1); XCTAssertEqual(track["height"]!, 6 * scale, accuracy: 1); XCTAssertEqual(progress["width"]! / track["width"]!, 0.14, accuracy: 0.003)
+            XCTAssertEqual(title["y"]!, safes[0] + 70 * scale, accuracy: 1.5); XCTAssertEqual(name["height"]!, 56 * scale, accuracy: 1); XCTAssertEqual(chip["height"]!, 48 * scale, accuracy: 1); XCTAssertEqual(primary["height"]!, 60 * scale, accuracy: 1); XCTAssertEqual(primary["bottom"]!, root["height"]! - safes[1] - 34 * scale, accuracy: 2)
+            XCTAssertEqual(text["step"] as? String, "1 / 8"); XCTAssertEqual(text["title"] as? String, "About you"); XCTAssertEqual(text["description"] as? String, "Your name and age are public. Your date of birth and email stay private."); XCTAssertEqual(text["genders"] as? [String], ["Woman", "Man", "Non-binary", "Self-describe", "Prefer not to say"]); XCTAssertEqual(text["pronouns"] as? [String], ["she / her", "he / him", "they / them", "Add your own"]); XCTAssertEqual(text["primary"] as? String, "Continue")
+            for id in ["obBasic.goBack.click.1", "obBasic.onObName.change.1", "obBasic.onObDob.change.1", "obBasic.o.pick.click.1", "obBasic.o.pick.click.2", "obBasic.goObUni.click.1"] { XCTAssertTrue(interactions.contains(id), "Missing \(id)") }
+            let defaultShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); defaultShot.name = "WKWebView Onboarding Basic default"; defaultShot.lifetime = .keepAlways; add(defaultShot)
+            print("CIMOA_ONBOARDING_BASIC_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+
+            stage = "real keyboard viewport"
+            let viewportBefore = try await script(host, "return visualViewport.height") as! Double
+            _ = try await script(host, "const input=document.querySelector('uni-input[aria-label=\"Display name\"] input');input.click();input.focus();return true")
+            var keyboard: [String: Any] = [:]
+            for _ in 0..<50 {
+                keyboard = try await script(host, "const input=document.querySelector('uni-input[aria-label=\"Display name\"] input').getBoundingClientRect(),footer=document.querySelector('.onboarding-footer');return {height:visualViewport.height,open:document.querySelector('.onboarding-basic-page').classList.contains('onboarding-page--keyboard'),footer:getComputedStyle(footer).display,inputTop:input.top,inputBottom:input.bottom}") as! [String: Any]
+                if keyboard["open"] as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            XCTAssertLessThan(keyboard["height"] as! Double, viewportBefore - 120); XCTAssertEqual(keyboard["open"] as? Bool, true); XCTAssertEqual(keyboard["footer"] as? String, "none"); XCTAssertGreaterThanOrEqual(keyboard["inputTop"] as! Double, 0); XCTAssertLessThanOrEqual(keyboard["inputBottom"] as! Double, keyboard["height"] as! Double)
+            let keyboardShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); keyboardShot.name = "WKWebView Onboarding Basic keyboard"; keyboardShot.lifetime = .keepAlways; add(keyboardShot)
+            _ = try await script(host, "document.activeElement?.blur();return true"); try await Task.sleep(nanoseconds: 350_000_000)
+
+            stage = "validation and rollback"
+            let before = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host, "document.querySelector('[data-interaction=\"obBasic.goObUni.click.1\"]').click();return true"); try await waitFor(host, ".onboarding-basic-page [role=alert]")
+            let invalid = try await script(host, "return {message:document.querySelector('.onboarding-basic-page [role=alert]').textContent,state:localStorage.getItem('cimoa_app_state_v2'),loading:!!document.querySelector('.loading')}") as! [String: Any]
+            XCTAssertTrue((invalid["message"] as? String)?.contains("display name") == true); XCTAssertEqual(invalid["state"] as? String, before); XCTAssertEqual(invalid["loading"] as? Bool, false)
+            _ = try await script(host, """
+            const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set,name=document.querySelector('uni-input[aria-label="Display name"] input'),choice=label=>[...document.querySelectorAll('[role=button]')].find(element=>element.textContent.trim()===label);set.call(name,'Native Morgan');name.dispatchEvent(new Event('input',{bubbles:true}));choice('Non-binary').click();const original=Storage.prototype.setItem;window.__restoreOnboardingBasicStorage=()=>Storage.prototype.setItem=original;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw new DOMException('Injected basic storage failure','QuotaExceededError');return original.call(this,key,value)};document.querySelector('[data-interaction="obBasic.goObUni.click.1"]').click();return true
+            """); try await waitFor(host, ".loading"); try await waitFor(host, ".onboarding-basic-page [role=alert]")
+            let failed = try await script(host, "const result={message:document.querySelector('.onboarding-basic-page [role=alert]').textContent,state:localStorage.getItem('cimoa_app_state_v2'),name:document.querySelector('uni-input[aria-label=\"Display name\"] input').value,uni:!!document.querySelector('.onboarding-uni-page')};window.__restoreOnboardingBasicStorage();return result") as! [String: Any]
+            XCTAssertTrue((failed["message"] as? String)?.contains("Injected basic storage failure") == true); XCTAssertEqual(failed["state"] as? String, before); XCTAssertEqual(failed["name"] as? String, "Native Morgan"); XCTAssertEqual(failed["uni"] as? Bool, false)
+            _ = try await script(host, "const scroller=[...document.querySelectorAll('.onboarding-basic-page .uni-scroll-view')].at(-1);scroller.scrollTop=scroller.scrollHeight;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));return true")
+            let errorShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); errorShot.name = "WKWebView Onboarding Basic failure"; errorShot.lifetime = .keepAlways; add(errorShot)
+
+            stage = "atomic basic persistence"
+            _ = try await script(host, "const original=Storage.prototype.setItem;window.__onboardingBasicBefore=localStorage.getItem('cimoa_app_state_v2');window.__onboardingBasicWrites=0;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')window.__onboardingBasicWrites++;return original.call(this,key,value)};[...document.querySelectorAll('[role=button]')].find(element=>element.textContent.trim()==='they / them').click();const action=document.querySelector('[data-interaction=\"obBasic.goObUni.click.1\"]');action.click();action.click();return true")
+            try await waitFor(host, ".loading"); let unchanged = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===window.__onboardingBasicBefore") as? Bool; XCTAssertEqual(unchanged, true); try await waitFor(host, ".onboarding-uni-page")
+            let committed = try await script(host, "const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,account=data.accounts.find(row=>row.account_id===data.session.account_id),user=data.users.find(row=>row.user_id===data.session.current_user_id);return {step:account.onboarding.step,name:user.user_name,gender:user.gender,pronouns:user.pronouns,writes:window.__onboardingBasicWrites,student:user.verification_status}") as! [String: Any]
+            XCTAssertEqual(committed["step"] as? String, "uni"); XCTAssertEqual(committed["name"] as? String, "Native Morgan"); XCTAssertEqual(committed["gender"] as? String, "Non-binary"); XCTAssertEqual(committed["pronouns"] as? String, "they / them"); XCTAssertEqual(committed["writes"] as? Int, 1); XCTAssertEqual(committed["student"] as? String, "pending")
+            try await restore()
+        } catch { XCTFail("Onboarding Basic WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

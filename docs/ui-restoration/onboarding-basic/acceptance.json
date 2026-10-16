@@ -1,0 +1,61 @@
+{
+  "phase": "onboarding-basic-pixel-restoration",
+  "result": "passed",
+  "accepted_at": "2026-10-16",
+  "source_lock": "passed",
+  "visual_acceptance": "passed",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 10,
+    "report": "docs/ui-restoration/onboarding-basic/browser-acceptance.json",
+    "comparison": {
+      "viewport": "393x852",
+      "pixels_different": 103733,
+      "pixels_above_channel_delta_8": 10701,
+      "mean_absolute_channel_delta": 1.048144464752894,
+      "max_channel_delta": 227
+    },
+    "registration_regression": "6/6 passed",
+    "store_regression": "10/10 passed"
+  },
+  "wkwebview": {
+    "result": "passed",
+    "tests": "1/1",
+    "device": "iPhone 17 Pro",
+    "os": "iOS 26.5",
+    "viewport_css_px": "402x874",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "real_software_keyboard": {
+      "opened": true,
+      "visual_viewport_reduced": true,
+      "footer_folded": true,
+      "focused_input_visible": true
+    },
+    "result_bundle": "ios/cimoaNeapo/build/OnboardingBasicAcceptance-2.xcresult"
+  },
+  "covered": [
+    "source-locked 1 / 8 and 14 percent progress",
+    "exact default copy, labels, placeholders, source choice order and interaction IDs",
+    "18+ and required-field validation with zero write",
+    "approved custom gender and pronoun closure",
+    "custom Loading before one atomic Store write and double-tap protection",
+    "persistence failure rollback with retry draft retained",
+    "page-leave cancellation with no hidden navigation",
+    "refresh restoration from the shared profile entity",
+    "direct Back fallback to Verification Success",
+    "iOS safe areas, real keyboard and pending student-verification identity"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/onboarding-basic/source-contract.json",
+    "docs/ui-restoration/onboarding-basic/difference-audit.md",
+    "docs/ui-restoration/onboarding-basic/reference.png",
+    "docs/ui-restoration/onboarding-basic/actual-browser.png",
+    "docs/ui-restoration/onboarding-basic/actual-browser-keyboard.png",
+    "docs/ui-restoration/onboarding-basic/actual-browser-error.png",
+    "docs/ui-restoration/onboarding-basic/overlay.png",
+    "docs/ui-restoration/onboarding-basic/diff.png",
+    "docs/ui-restoration/onboarding-basic/actual-wkwebview.png",
+    "docs/ui-restoration/onboarding-basic/actual-wkwebview-keyboard.png",
+    "docs/ui-restoration/onboarding-basic/actual-wkwebview-error.png"
+  ]
+}

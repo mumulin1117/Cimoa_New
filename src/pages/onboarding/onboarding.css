@@ -2,6 +2,7 @@
 .onboarding-title { display: block; font-size: 59.16rpx; font-weight: 800; letter-spacing: -.035em; line-height: 1.1; }
 .onboarding-section { margin-top: 41.985rpx; }
 .onboarding-label-row { display: flex; align-items: center; justify-content: space-between; gap: 19.084rpx; margin-bottom: 13.359rpx; }
+.onboarding-label-row .auth-label { margin-bottom: 0; }
 .onboarding-label { font-size: 32.443rpx; font-weight: 700; }
 .onboarding-private { font-size: 24.809rpx; font-weight: 600; color: var(--cimoa-text-auth-placeholder); }
 .onboarding-chips { display: flex; flex-wrap: wrap; gap: 19.084rpx; margin-top: 19.084rpx; }

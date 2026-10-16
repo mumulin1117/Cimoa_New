@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "page": "Onboarding Basic Info",
+  "route": "/pages/onboarding/basic",
+  "source_screen": "Onboarding / Basic Info / Default",
+  "source_query": "route=obBasic",
+  "source_lock": "locked",
+  "locked_at": "2026-10-16",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isObBasic",
+    "visual_lines": "2892-2944",
+    "visual_fragment_sha256": "dbb6b4be3b92e25c4bcc6c172bf1051c1e0fc98c260fbc39c9aa3755ed90dccb",
+    "behavior_lines": [4785, 5155, 5541, 5568, 5569, 5649, 5651, 5657, 5661],
+    "behavior_fragment_sha256": "1de81620834220a67777e84344814378c849f1e45ca269ca9e0b277cc45c609e"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "root": "absolute inset 0; cRise 240ms ease both",
+    "header": "top 58px; left/right 20px; height 48px; 14px gap",
+    "scroll_region": "top 124px; left/right 0; bottom 0; padding 0 20px 140px; vertical scroll",
+    "footer": "left/right 20px; bottom 34px; fixed above the source bottom edge",
+    "project_skeleton": "TopSafeArea; fixed SecondaryPageHeader; one middle scroll-view; fixed footer; BottomSafeArea"
+  },
+  "content": {
+    "progress": { "source_index": 1, "source_total": 8, "source_percent": 14, "track_height_css_px": 6 },
+    "title": { "copy": "About you", "font_size_css_px": 31, "font_weight": 800, "letter_spacing": "-0.035em", "line_height": 1.1 },
+    "description": { "copy": "Your name and age are public. Your date of birth and email stay private.", "font_size_css_px": 17, "margin_top_css_px": 10, "line_height": 1.45 },
+    "fields": {
+      "margin_top_css_px": 16,
+      "label_font_size_css_px": 14.5,
+      "privacy_font_size_css_px": 13,
+      "input_height_css_px": 56,
+      "input_padding_css_px": "0 18",
+      "input_radius_css_px": 18,
+      "name_placeholder": "Alex",
+      "date_placeholder": "2004-03-12"
+    },
+    "choices": {
+      "section_margin_top_css_px": 22,
+      "gap_css_px": 10,
+      "chip_height_css_px": 48,
+      "chip_padding_css_px": "0 18",
+      "chip_radius_css_px": 24,
+      "gender": ["Woman", "Man", "Non-binary", "Self-describe", "Prefer not to say"],
+      "pronouns": ["she / her", "he / him", "they / them", "Add your own"]
+    }
+  },
+  "interactions": [
+    "obBasic.goBack.click.1",
+    "obBasic.onObName.change.1",
+    "obBasic.onObDob.change.1",
+    "obBasic.o.pick.click.1",
+    "obBasic.o.pick.click.2",
+    "obBasic.goObUni.click.1"
+  ],
+  "approved_deltas": [
+    {
+      "id": "basic-safe-area-and-keyboard",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 15.1 and 15.4",
+      "delta": "Use measured safe areas and visualViewport height; while the software keyboard is open the fixed footer folds away and the one middle scroll region retains the focused field."
+    },
+    {
+      "id": "basic-real-persistence",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 5 and 9.2",
+      "delta": "Continue validates the real local-account draft, shows custom 400-600ms Loading, then atomically persists through the Store; failure or page leave writes nothing."
+    },
+    {
+      "id": "basic-custom-choice-closure",
+      "source": "User authorization to complete missing interactions",
+      "delta": "Selecting Self-describe or Add your own reveals an inline input so the source choice has a truthful completion path; the default source state and source chip styling remain unchanged."
+    },
+    {
+      "id": "basic-source-step-count",
+      "source": "CIRCA lines 2898-2901",
+      "delta": "Preserve this page's explicit 1 / 8 and 14 percent even though later source pages contain inconsistent totals and the implemented data workflow contains ten internal steps."
+    }
+  ],
+  "implementation_baseline": {
+    "captured_at": "2026-10-16",
+    "files": [
+      { "path": "src/components/OnboardingFrame.vue", "sha256": "ce50af131bf2dbb07296d96fbb64c88d13cc652b78e7cfada1af95ab0ff09108" },
+      { "path": "src/composables/useOnboarding.js", "sha256": "a6d4d6ee57a442577f0f3869a167ab53c1baf43c42e614c6e9060d4d56af5728" },
+      { "path": "src/pages/onboarding/basic.vue", "sha256": "e134d91aff6211bfbc114705790a4f477c999941908289d6e108f164da860e44" },
+      { "path": "src/pages/onboarding/onboarding.css", "sha256": "4c03a71518bd4fde55f8303f7304c5c7a4f3f39f427ac1559af43cc76c86f090" },
+      { "path": "src/pages/auth/auth.css", "sha256": "5a9fb0f2cd57ea93c6f7a631e33fe8e8388f592877a8b229a1601601a03cd7f8" },
+      { "path": "src/utils/onboardingFlow.js", "sha256": "37ce1d9a663f1caf564a99e94acdeb9cde26c8f03750431afb0bc7eef928ea4c" },
+      { "path": "src/stores/onboarding.js", "sha256": "7604fb7105c04cad8c702af2d48543884a85953327a435fe188fe7a5989fd509" }
+    ]
+  },
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/onboarding-basic/reference.png",
+    "actual_browser_png": "docs/ui-restoration/onboarding-basic/actual-browser.png",
+    "actual_browser_keyboard_png": "docs/ui-restoration/onboarding-basic/actual-browser-keyboard.png",
+    "actual_browser_error_png": "docs/ui-restoration/onboarding-basic/actual-browser-error.png",
+    "overlay_png": "docs/ui-restoration/onboarding-basic/overlay.png",
+    "diff_png": "docs/ui-restoration/onboarding-basic/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/onboarding-basic/actual-wkwebview.png",
+    "actual_wkwebview_keyboard_png": "docs/ui-restoration/onboarding-basic/actual-wkwebview-keyboard.png",
+    "actual_wkwebview_error_png": "docs/ui-restoration/onboarding-basic/actual-wkwebview-error.png",
+    "browser_report": "docs/ui-restoration/onboarding-basic/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/onboarding-basic/acceptance.json",
+    "actual_browser_sha256": "8fbf7edb225aed38f1e47c1bfef999304a1914c922c29fdbe048df27ad69578e",
+    "actual_browser_keyboard_sha256": "6c7384b3ef5e56c8636c018f2fd6841e290608a911187eb62bd4d0a652c020ec",
+    "actual_browser_error_sha256": "af440a183241f7756510dd4cde8a0654ee723d677a98eb11172de94f3047e937",
+    "actual_wkwebview_sha256": "245e3b0559f0dedb6f06e1ee5433ac868e2cf6aaa912463c7ab887c73ec86a39",
+    "actual_wkwebview_keyboard_sha256": "9fe4368608398b9f4deec1e8307d0ab990638e5da3b6575e0a0cf40fdaafd0b4",
+    "actual_wkwebview_error_sha256": "c6a30f8f89b9c39af7f24cc3207c5eeec0596bb548e47acc9562bc8d5e5e7202",
+    "visual_acceptance": "passed"
+  }
+}
