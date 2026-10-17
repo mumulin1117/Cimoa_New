@@ -17,6 +17,7 @@ import { event_group, event_message_actions } from './eventMessaging.js'
 import { direct_conversation, direct_message_actions } from './directMessaging.js'
 import { connection_for, connection_request } from './connectionEntities.js'
 import { home_feed } from './homeFeed.js'
+import { introduction_context } from './discoverFlow.js'
 import { STATE_KEY, LEGACY_KEY } from '../utils/statePersistence.js'
 import { get_runtime, transact, operation, make_id, failure, unavailable, require_target, require_student, password_hash, add_transaction, connect_users, disconnect_for_block } from './transactions.js'
 export { configure_store_runtime, make_id as make_operation_id } from './transactions.js'
@@ -81,6 +82,7 @@ export const use_app_store = defineStore('app', {
       return this.discover_people[0] || null
     },
     introduction_blocker: (state) => (id) => state.hydration_status === 'ready' ? s.introduction_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
+    introduction_context: state => (id, draft_id = null) => introduction_context(state.data, id, draft_id, state.clock_ms, state.hydration_status),
     social_eligible: state => ready(state) && s.social_eligible(state.data),
     relationship_state: state => id => ready(state) ? clone_data(s.relationship_state(state.data, id, state.clock_ms)) : null,
     connection_by_user: state => id => ready(state) ? connection_for(state.data, id, state.clock_ms) : null,
@@ -375,6 +377,31 @@ export const use_app_store = defineStore('app', {
         Object.assign(row, { payload: clone_data(payload), updated_at: now }); return row.draft_id
       })
     },
+    prepare_introduction(user_id, question_id, mode = 'text') {
+      return transact(this, null, (data, now) => {
+        const blocker = s.introduction_blocker(data, user_id, now); s.ensure(!blocker, blocker)
+        s.ensure(['text', 'voice'].includes(mode) && data.users.find(row => row.user_id === user_id)?.icebreaker_ids.includes(question_id), 'Choose one of this person’s current questions.')
+        let draft = own(data, data.drafts).find(row => row.kind === 'introduction' && row.target_id === user_id)
+        if (!draft) { draft = { draft_id: make_id('draft'), owner_user_id: s.owner_id(data), kind: 'introduction', target_id: user_id, payload: {} }; data.drafts.push(draft) }
+        if (draft.payload.completed_request_id) draft.payload = {}
+        draft.payload = { text: '', ...draft.payload, user_id, question_id, mode, operation_id: draft.payload.operation_id || make_id('intro') }
+        draft.updated_at = now
+        return draft.draft_id
+      })
+    },
+    update_introduction_draft(id, patch) {
+      return transact(this, null, (data, now) => {
+        const draft = require_owned(data, data.drafts, 'draft_id', id)
+        s.ensure(draft.kind === 'introduction' && !draft.payload.completed_request_id, 'This introduction draft is unavailable.')
+        const blocker = s.introduction_blocker(data, draft.target_id, now); s.ensure(!blocker, blocker)
+        s.ensure(data.users.find(row => row.user_id === draft.target_id)?.icebreaker_ids.includes(draft.payload.question_id), 'Choose one of this person’s current questions.')
+        s.ensure(patch && Object.keys(patch).every(key => ['text','mode'].includes(key)), 'Unsupported introduction field.')
+        if (patch.text !== undefined) s.ensure(typeof patch.text === 'string' && patch.text.length <= 300, 'Write an introduction up to 300 characters.')
+        if (patch.mode !== undefined) s.ensure(['text','voice'].includes(patch.mode), 'Choose text or voice.')
+        Object.assign(draft.payload, clone_data(patch)); draft.updated_at = now
+        return draft.draft_id
+      })
+    },
     discard_draft(id) { return transact(this, null, (data) => { require_owned(data, data.drafts, 'draft_id', id); data.drafts = data.drafts.filter((row) => row.draft_id !== id) }) },
     save_auth_draft(patch) { return transact(this, null, (data) => { s.ensure(Object.keys(patch).every((key) => ['step', 'email', 'agreements', 'profile_draft'].includes(key)) && !/"(?:password|pw|code|credential_hash)"|data:[^;]+;base64/.test(JSON.stringify(patch)), 'Unsupported signup field.'); Object.assign(data.auth_flow, clone_data(patch)) }, { public: true }) },
     save_registration_age(date_of_birth) {
@@ -396,7 +423,7 @@ export const use_app_store = defineStore('app', {
         data.auth_flow.step = 'signup'
       }, { public: true })
     },
-    async save_media(blob, kind, duration_ms = 0, { is_current = () => true } = {}) {
+    async save_media(blob, kind, duration_ms = 0, { is_current = () => true, introduction_draft_id = null } = {}) {
       const owner = s.owner_id(this.data), media_id = make_id('media'), rt = get_runtime(this)
       let wrote_blob = false, published = false
       try {
@@ -410,7 +437,17 @@ export const use_app_store = defineStore('app', {
         await rt.media.put(media_id, blob)
         wrote_blob = true
         if (!is_current()) return failure('cancelled', 'Media save was cancelled.')
-        const result = transact(this, null, (data) => { const row = { media_id, owner_user_id: owner, kind, media_url: `indexeddb://${media_id}`, mime: blob.type, duration_ms, byte_size: blob.size }; data.media_files.push(row); return row }, { expected_owner: owner })
+        const result = transact(this, null, (data, now) => {
+          const row = { media_id, owner_user_id: owner, kind, media_url: `indexeddb://${media_id}`, mime: blob.type, duration_ms, byte_size: blob.size }
+          if (introduction_draft_id) {
+            const draft = require_owned(data, data.drafts, 'draft_id', introduction_draft_id)
+            s.ensure(kind === 'audio' && draft.kind === 'introduction' && !draft.payload.completed_request_id, 'This introduction draft is unavailable.')
+            const blocker = s.introduction_blocker(data, draft.target_id, now); s.ensure(!blocker, blocker)
+            s.ensure(data.users.find(row => row.user_id === draft.target_id)?.icebreaker_ids.includes(draft.payload.question_id), 'Choose one of this person’s current questions.')
+            draft.payload.audio_id = media_id; draft.payload.mode = 'voice'; draft.updated_at = now
+          }
+          data.media_files.push(row); return row
+        }, { expected_owner: owner })
         published = result.success
         return result
       } catch (error) { return failure('media_failed', error.message || 'Media could not be saved.') }
@@ -426,7 +463,11 @@ export const use_app_store = defineStore('app', {
       try {
         blob = await rt.media.get(id)
         await rt.media.delete(id)
-        const result = transact(this, null, data => { data.media_files = data.media_files.filter(item => item.media_id !== id) }, { expected_owner: owner })
+        const result = transact(this, null, data => {
+          data.media_files = data.media_files.filter(item => item.media_id !== id)
+          for (const draft of own(data, data.drafts)) if (draft.kind === 'introduction' && draft.payload.audio_id === id) delete draft.payload.audio_id
+          data.drafts = data.drafts.filter(draft => !(draft.owner_user_id === owner && draft.kind === 'coin_spend' && draft.payload.audio_id === id))
+        }, { expected_owner: owner })
         if (!result.success && blob instanceof Blob) await rt.media.put(id, blob)
         return result
       } catch (error) { return failure('media_failed', error.message || 'The recording could not be discarded.') }

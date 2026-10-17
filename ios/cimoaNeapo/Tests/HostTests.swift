@@ -5,6 +5,48 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    private func discoverRequestPixel(_ phase: String) async throws {
+        let host = try await rawHost()
+        let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/discover-request-\(phase)")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("native-fixture.json"))) as! [String: Any]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}return true", arguments: ["saved": snapshot], in: nil, contentWorld: .page)
+        }
+        do {
+            _ = try await host.webView.callAsyncJavaScript("const data=fixture.data;data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture], in: nil, contentWorld: .page)
+            let selector = phase == "deck" ? ".discover-photo-card--front" : phase == "profile" ? ".expanded-profile-page" : ".ice-\(phase)-page"
+            try await loadFreshConnection(host, route: fixture["route"] as! String, selector: selector)
+            host.publishSafeArea()
+            let metrics = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms));await document.fonts.ready;await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));for(const a of document.getAnimations())if(a.effect.getComputedTiming().iterations!==Infinity)a.finish();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));await delay(200);
+            const root=document.querySelector('\(selector)'),box=s=>{const e=document.querySelector(s);if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};
+            return {viewport:{width:innerWidth,height:innerHeight},origin:location.origin,safe:[getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-top'),getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom')],overflow:document.documentElement.scrollWidth>innerWidth,images:[...root.querySelectorAll('img')].every(i=>i.complete&&i.naturalWidth>0),header:box('.discover-toolbar,.expanded-header,.ice-header'),card:box('.discover-photo-card--front,.ice-person,.ice-question'),footer:box('.discover-send,.ice-footer'),text:root.innerText};
+            """) as! [String: Any]
+            XCTAssertEqual(metrics["overflow"] as? Bool, false); XCTAssertEqual(metrics["images"] as? Bool, true)
+            XCTAssertEqual(metrics["origin"] as? String, BundleHTTPServer.origin)
+            let image = try await host.webView.takeSnapshot(configuration: nil)
+            try image.pngData()!.write(to: folder.appendingPathComponent("actual-wkwebview.png"))
+            try JSONSerialization.data(withJSONObject: metrics, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-geometry.json"))
+            if phase == "deck" {
+                let result = try await script(host, """
+                const delay=ms=>new Promise(r=>setTimeout(r,ms)),wait=async s=>{for(let i=0;i<150;i++){const e=[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0);if(e)return e;await delay(40)}throw Error(s)};
+                const before=localStorage.getItem('cimoa_app_state_v2'),card=document.querySelector('.discover-photo-card--front'),id=card.dataset.userId;card.click();await wait('.expanded-profile-page');await delay(300);(await wait('[data-interaction="expanded.collapse.click.1"]')).click();const returned=(await wait('.discover-photo-card--front')).dataset.userId;await delay(300);(await wait('[data-interaction="photo.sayHi.click.1"]')).click();await wait('[data-interaction="ibSelect.answerGo.click.1"]');return {id,returned,user:location.hash.includes('user_zane'),read_only:before===localStorage.getItem('cimoa_app_state_v2')};
+                """) as! [String: Any]
+                XCTAssertEqual(result["returned"] as? String, result["id"] as? String); XCTAssertEqual(result["user"] as? Bool, true); XCTAssertEqual(result["read_only"] as? Bool, true)
+                try JSONSerialization.data(withJSONObject: result, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-acceptance.json"))
+            }
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
+    func testDiscoverRequestDeckPixel() async throws { try await discoverRequestPixel("deck") }
+    func testDiscoverRequestProfilePixel() async throws { try await discoverRequestPixel("profile") }
+    func testDiscoverRequestSelectPixel() async throws { try await discoverRequestPixel("select") }
+    func testDiscoverRequestTextPixel() async throws { try await discoverRequestPixel("text") }
+    func testDiscoverRequestVoicePixel() async throws { try await discoverRequestPixel("voice") }
+    func testDiscoverRequestPreviewPixel() async throws { try await discoverRequestPixel("preview") }
     private func installConnectionChatFixture(_ host: WebViewController) async throws {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<4 { root.deleteLastPathComponent() }

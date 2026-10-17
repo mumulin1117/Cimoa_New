@@ -2807,10 +2807,14 @@
       ]
     },
     "status": "pending",
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-deck/source-contract.json",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
+    "mapping_status": "Discover deck read-only canonical primary and responsive UI passed browser/native local checks; final full request dependency regression deferred.",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-deck/acceptance.json"
   },
   {
     "source_screen": "Discover / Profile / Expanded",

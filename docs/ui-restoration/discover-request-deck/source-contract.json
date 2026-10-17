@@ -1,0 +1,199 @@
+{
+  "page": "deck",
+  "component": "src/pages/discover/index.vue",
+  "route": "/pages/discover/index",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=photo",
+    "condition": "isPhoto",
+    "lines": [
+      360,
+      399
+    ],
+    "fragment_sha256": "219a556be24818478ba25830133f30f410e1c803bc6f3f280b98ec451311018a",
+    "fragment": "    <!-- ===================== DISCOVER · PHOTO ===================== -->\n    <sc-if value=\"{{ isPhoto }}\" hint-placeholder-val=\"{{ true }}\">\n      <div data-screen-label=\"Discover / Profile / Photo\" style=\"position:absolute;inset:0;animation:cRise 260ms ease both\">\n        <div style=\"position:absolute;top:60px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between;z-index:20\">\n          <div sc-camel-on-click=\"{{ openMe }}\" style=\"width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.18);display:flex;align-items:center;justify-content:center;cursor:pointer\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8.5\" r=\"3.8\"></circle><path d=\"M4.5 20c1.4-4.2 5-6 7.5-6s6.1 1.8 7.5 6\"></path></svg></div>\n          <div sc-camel-on-click=\"{{ openDiscoverFilters }}\" style=\"position:relative;width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer\">\n            <svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 7h16M7 12h10M10 17h4\"></path></svg>\n          </div>\n        </div>\n\n        <div sc-camel-on-click=\"{{ expand }}\" style=\"position:absolute;top:130px;left:20px;right:20px;height:542px;border-radius:28px;overflow:hidden;background:#0b1b3a;box-shadow:0 18px 44px rgba(16,36,74,0.22);cursor:pointer\">\n          <img src=\"be199ee7-6704-4324-98d1-52394676c49a\" alt=\"Chloe on campus\" style=\"width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block\">\n          <div style=\"position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(to top,rgba(6,14,28,0.86) 0%,rgba(6,14,28,0.55) 42%,rgba(6,14,28,0) 100%)\"></div>\n          <div style=\"position:absolute;left:22px;right:22px;bottom:16px;color:#fff\">\n            <div style=\"display:flex;align-items:center;gap:10px\">\n              <div style=\"font-size:31px;font-weight:800;letter-spacing:-0.03em\">Chloe, 21</div>\n              <svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>\n            </div>\n            <div style=\"display:flex;flex-wrap:nowrap;gap:7px;margin-top:12px\">\n              <div style=\"display:flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:18px;flex:none;background:rgba(14,16,22,0.72);border:1px solid rgba(255,255,255,0.10);backdrop-filter:blur(8px)\">\n                <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg>\n                <div style=\"font-size:15px;font-weight:600;color:#fff;white-space:nowrap\">HKUST</div>\n              </div>\n              <div style=\"display:flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:18px;flex:none;background:rgba(14,16,22,0.72);border:1px solid rgba(255,255,255,0.10);backdrop-filter:blur(8px)\">\n                <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 5.5c3.2-1 6.3-.7 9.5 1.2 3.2-1.9 6.3-2.2 9.5-1.2v13c-3.2-1-6.3-.7-9.5 1.2-3.2-1.9-6.3-2.2-9.5-1.2z\"></path><path d=\"M12 6.7v13\"></path></svg>\n                <div style=\"font-size:15px;font-weight:600;color:#fff;white-space:nowrap\">Business</div>\n              </div>\n              <div style=\"display:flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:18px;flex:none;background:rgba(14,16,22,0.72);border:1px solid rgba(255,255,255,0.10);backdrop-filter:blur(8px)\">\n                <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.2 3.8a2.3 2.3 0 0 1 4.6 0V5H17a1 1 0 0 1 1 1v3.3h1.2a2.3 2.3 0 0 1 0 4.6H18V18a1 1 0 0 1-1 1h-3.3v-1.2a2.3 2.3 0 0 0-4.6 0V19H6a1 1 0 0 1-1-1v-3.4h1.2a2.3 2.3 0 0 0 0-4.6H5V6a1 1 0 0 1 1-1h3.2z\"></path></svg>\n                <div style=\"font-size:15px;font-weight:600;color:#fff;white-space:nowrap\">ENFP</div>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <div sc-camel-on-click=\"{{ sayHi }}\" style=\"position:absolute;left:20px;right:20px;bottom:104px;height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);box-shadow:0 12px 28px rgba(168,85,247,0.32);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20\">\n          <div style=\"font-size:21px;font-weight:700;color:#fff\">Send shot</div>\n        </div>\n      </div>\n    </sc-if>",
+    "geometry": [
+      {
+        "line": 362,
+        "tag": "div",
+        "style": "position:absolute;inset:0;animation:cRise 260ms ease both"
+      },
+      {
+        "line": 363,
+        "tag": "div",
+        "style": "position:absolute;top:60px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between;z-index:20"
+      },
+      {
+        "line": 364,
+        "tag": "div",
+        "style": "width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.18);display:flex;align-items:center;justify-content:center;cursor:pointer"
+      },
+      {
+        "line": 365,
+        "tag": "div",
+        "style": "position:relative;width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer"
+      },
+      {
+        "line": 370,
+        "tag": "div",
+        "style": "position:absolute;top:130px;left:20px;right:20px;height:542px;border-radius:28px;overflow:hidden;background:#0b1b3a;box-shadow:0 18px 44px rgba(16,36,74,0.22);cursor:pointer"
+      },
+      {
+        "line": 371,
+        "tag": "img",
+        "style": "width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block"
+      },
+      {
+        "line": 372,
+        "tag": "div",
+        "style": "position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(to top,rgba(6,14,28,0.86) 0%,rgba(6,14,28,0.55) 42%,rgba(6,14,28,0) 100%)"
+      },
+      {
+        "line": 373,
+        "tag": "div",
+        "style": "position:absolute;left:22px;right:22px;bottom:16px;color:#fff"
+      },
+      {
+        "line": 374,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:10px"
+      },
+      {
+        "line": 375,
+        "tag": "div",
+        "style": "font-size:31px;font-weight:800;letter-spacing:-0.03em"
+      },
+      {
+        "line": 378,
+        "tag": "div",
+        "style": "display:flex;flex-wrap:nowrap;gap:7px;margin-top:12px"
+      },
+      {
+        "line": 379,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:18px;flex:none;background:rgba(14,16,22,0.72);border:1px solid rgba(255,255,255,0.10);backdrop-filter:blur(8px)"
+      },
+      {
+        "line": 381,
+        "tag": "div",
+        "style": "font-size:15px;font-weight:600;color:#fff;white-space:nowrap"
+      },
+      {
+        "line": 383,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:18px;flex:none;background:rgba(14,16,22,0.72);border:1px solid rgba(255,255,255,0.10);backdrop-filter:blur(8px)"
+      },
+      {
+        "line": 385,
+        "tag": "div",
+        "style": "font-size:15px;font-weight:600;color:#fff;white-space:nowrap"
+      },
+      {
+        "line": 387,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:18px;flex:none;background:rgba(14,16,22,0.72);border:1px solid rgba(255,255,255,0.10);backdrop-filter:blur(8px)"
+      },
+      {
+        "line": 389,
+        "tag": "div",
+        "style": "font-size:15px;font-weight:600;color:#fff;white-space:nowrap"
+      },
+      {
+        "line": 395,
+        "tag": "div",
+        "style": "position:absolute;left:20px;right:20px;bottom:104px;height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);box-shadow:0 12px 28px rgba(168,85,247,0.32);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20"
+      },
+      {
+        "line": 396,
+        "tag": "div",
+        "style": "font-size:21px;font-weight:700;color:#fff"
+      }
+    ],
+    "copy": [
+      {
+        "line": 375,
+        "text": "Chloe, 21"
+      },
+      {
+        "line": 381,
+        "text": "HKUST"
+      },
+      {
+        "line": 385,
+        "text": "Business"
+      },
+      {
+        "line": 389,
+        "text": "ENFP"
+      },
+      {
+        "line": 396,
+        "text": "Send shot"
+      }
+    ],
+    "svg": [
+      {
+        "line": 364,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8.5\" r=\"3.8\"></circle><path d=\"M4.5 20c1.4-4.2 5-6 7.5-6s6.1 1.8 7.5 6\"></path></svg>"
+      },
+      {
+        "line": 366,
+        "fragment": "<svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 7h16M7 12h10M10 17h4\"></path></svg>"
+      },
+      {
+        "line": 376,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>"
+      },
+      {
+        "line": 380,
+        "fragment": "<svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg>"
+      },
+      {
+        "line": 384,
+        "fragment": "<svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 5.5c3.2-1 6.3-.7 9.5 1.2 3.2-1.9 6.3-2.2 9.5-1.2v13c-3.2-1-6.3-.7-9.5 1.2-3.2-1.9-6.3-2.2-9.5-1.2z\"></path><path d=\"M12 6.7v13\"></path></svg>"
+      },
+      {
+        "line": 388,
+        "fragment": "<svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.2 3.8a2.3 2.3 0 0 1 4.6 0V5H17a1 1 0 0 1 1 1v3.3h1.2a2.3 2.3 0 0 1 0 4.6H18V18a1 1 0 0 1-1 1h-3.3v-1.2a2.3 2.3 0 0 0-4.6 0V19H6a1 1 0 0 1-1-1v-3.4h1.2a2.3 2.3 0 0 0 0-4.6H5V6a1 1 0 0 1 1-1h3.2z\"></path></svg>"
+      }
+    ]
+  },
+  "source_lock": "locked",
+  "reference_viewport": {
+    "width": 393,
+    "height": 852,
+    "top": 54,
+    "bottom": 0
+  },
+  "animation": {
+    "name": "cRise",
+    "duration_ms": 260,
+    "capture": "end frame; no fake audio progress or wave animation"
+  },
+  "approved_deltas": [
+    "Cimoa brand; canonical six user identities/photos/questions/audio replace conflicting source names",
+    "Actual safe areas, fixed header/footer and one scroll region; deck remains non-scrolling/responsive per user",
+    "Text is free, 300 characters; no payment branch",
+    "Actual recording/decoded duration replaces hardcoded playing 00:12; missing capability fails",
+    "Existing connection/pending request/match routes to canonical entity; never creates on navigation",
+    "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply"
+  ],
+  "states": [
+    "default",
+    "loading",
+    "empty",
+    "error",
+    "long",
+    "refresh",
+    "back",
+    "blocked",
+    "session_expired"
+  ],
+  "interaction_ids": [
+    "photo.openMe.click.1",
+    "photo.openDiscoverFilters.click.1",
+    "photo.expand.click.1",
+    "photo.sayHi.click.1"
+  ]
+}

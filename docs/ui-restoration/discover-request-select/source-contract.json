@@ -1,0 +1,275 @@
+{
+  "page": "select",
+  "component": "src/pages/discover/icebreaker/select.vue",
+  "route": "/pages/discover/icebreaker/select?user_id=user_zane",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=ibSelect",
+    "condition": "isIbSelect",
+    "lines": [
+      609,
+      654
+    ],
+    "fragment_sha256": "9ed7e189f115c2e37264753255b57099db737e1a6c34085afc5dc355e7fc1c00",
+    "fragment": "    <!-- ===================== ICEBREAKER · SELECT QUESTION ===================== -->\n    <sc-if value=\"{{ isIbSelect }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Discover / Icebreaker / Select Question\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Say Hi to Chloe</div>\n          \n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:120px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box\">\n          <div style=\"display:flex;align-items:center;gap:14px;padding:16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"Chloe Lin\" style=\"width:64px;height:64px;border-radius:32px;object-fit:cover;flex:none;display:block\">\n            <div style=\"flex:1;min-width:0\">\n              <div style=\"display:flex;align-items:center;gap:7px\"><div style=\"font-size:20px;font-weight:800;letter-spacing:-0.025em\">Chloe, 21</div><svg width=\"19\" height=\"19\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></div>\n              <div style=\"font-size:15px;color:#5b6b85;margin-top:2px\">HKUST · Year 3</div>\n            </div>\n          </div>\n          <div style=\"font-size:28px;font-weight:800;letter-spacing:-0.03em;margin-top:26px\">Pick a question</div>\n          <div style=\"font-size:17px;color:#5b6b85;margin-top:4px\">Start the conversation with something fun.</div>\n          <div style=\"display:flex;flex-direction:column;gap:12px;margin-top:16px\">\n            <sc-for list=\"{{ questionList }}\" as=\"q\" hint-placeholder-count=\"3\">\n              <div sc-camel-on-click=\"{{ q.pick }}\" style=\"display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px;border-radius:22px;background:{{ q.bg }};border:{{ q.border }};box-shadow:{{ q.shadow }};cursor:pointer\">\n                <div style=\"font-size:18px;font-weight:{{ q.weight }};letter-spacing:-0.015em;color:#0b1b3a\">{{ q.text }}</div>\n                <div style=\"width:32px;height:32px;border-radius:16px;flex:none;background:{{ q.indBg }};border:{{ q.indBorder }};display:flex;align-items:center;justify-content:center\">\n                  <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"{{ q.checkColor }}\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12.5l4.5 4.5L19 7\"></path></svg>\n                </div>\n              </div>\n            </sc-for>\n          </div>\n          <div style=\"font-size:17px;font-weight:600;color:#5b6b85;margin-top:24px\">Answer with</div>\n          <div style=\"display:flex;margin-top:12px;height:64px;border-radius:32px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);padding:4px;box-sizing:border-box\">\n            <div sc-camel-on-click=\"{{ pickText }}\" style=\"flex:1;border-radius:28px;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;background:{{ modeTextBg }};color:{{ modeTextInk }}\">\n              <svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" style=\"flex:none\"><rect x=\"2\" y=\"6\" width=\"20\" height=\"12\" rx=\"2.5\"></rect><path d=\"M6 10h0M10 10h0M14 10h0M18 10h0M6 14h12\"></path></svg>\n              <div style=\"font-size:17px;font-weight:600\">Text</div>\n            </div>\n            <div sc-camel-on-click=\"{{ pickVoice }}\" style=\"flex:1;border-radius:28px;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;background:{{ modeVoiceBg }};color:{{ modeVoiceInk }}\">\n              <svg width=\"25\" height=\"25\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" style=\"flex:none\"><rect x=\"9\" y=\"2.5\" width=\"6\" height=\"11\" rx=\"3\"></rect><path d=\"M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5\"></path></svg>\n              <div style=\"font-size:17px;font-weight:600\">Voice</div>\n            </div>\n          </div>\n          <div style=\"margin-top:26px\"><div sc-camel-on-click=\"{{ answerGo }}\" style=\"height:60px;border-radius:30px;background:{{ answerBtnBg }};display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:{{ answerBtnInk }}\">Answer This Question</div></div></div>\n          <div style=\"font-size:14.5px;color:#6b7a93;text-align:center;margin-top:12px\">Introduction costs {{ costText }} · balance {{ balanceText }}</div>\n        </div>\n      </div>\n    </sc-if>",
+    "geometry": [
+      {
+        "line": 611,
+        "tag": "div",
+        "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+      },
+      {
+        "line": 612,
+        "tag": "div",
+        "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+      },
+      {
+        "line": 613,
+        "tag": "div",
+        "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+      },
+      {
+        "line": 616,
+        "tag": "div",
+        "style": "flex:1"
+      },
+      {
+        "line": 616,
+        "tag": "div",
+        "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+      },
+      {
+        "line": 619,
+        "tag": "div",
+        "style": "position:absolute;top:120px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box"
+      },
+      {
+        "line": 620,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:14px;padding:16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+      },
+      {
+        "line": 621,
+        "tag": "img",
+        "style": "width:64px;height:64px;border-radius:32px;object-fit:cover;flex:none;display:block"
+      },
+      {
+        "line": 622,
+        "tag": "div",
+        "style": "flex:1;min-width:0"
+      },
+      {
+        "line": 623,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:7px"
+      },
+      {
+        "line": 623,
+        "tag": "div",
+        "style": "font-size:20px;font-weight:800;letter-spacing:-0.025em"
+      },
+      {
+        "line": 624,
+        "tag": "div",
+        "style": "font-size:15px;color:#5b6b85;margin-top:2px"
+      },
+      {
+        "line": 627,
+        "tag": "div",
+        "style": "font-size:28px;font-weight:800;letter-spacing:-0.03em;margin-top:26px"
+      },
+      {
+        "line": 628,
+        "tag": "div",
+        "style": "font-size:17px;color:#5b6b85;margin-top:4px"
+      },
+      {
+        "line": 629,
+        "tag": "div",
+        "style": "display:flex;flex-direction:column;gap:12px;margin-top:16px"
+      },
+      {
+        "line": 631,
+        "tag": "div",
+        "style": "display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px;border-radius:22px;background:{{ q.bg }};border:{{ q.border }};box-shadow:{{ q.shadow }};cursor:pointer"
+      },
+      {
+        "line": 632,
+        "tag": "div",
+        "style": "font-size:18px;font-weight:{{ q.weight }};letter-spacing:-0.015em;color:#0b1b3a"
+      },
+      {
+        "line": 633,
+        "tag": "div",
+        "style": "width:32px;height:32px;border-radius:16px;flex:none;background:{{ q.indBg }};border:{{ q.indBorder }};display:flex;align-items:center;justify-content:center"
+      },
+      {
+        "line": 639,
+        "tag": "div",
+        "style": "font-size:17px;font-weight:600;color:#5b6b85;margin-top:24px"
+      },
+      {
+        "line": 640,
+        "tag": "div",
+        "style": "display:flex;margin-top:12px;height:64px;border-radius:32px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);padding:4px;box-sizing:border-box"
+      },
+      {
+        "line": 641,
+        "tag": "div",
+        "style": "flex:1;border-radius:28px;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;background:{{ modeTextBg }};color:{{ modeTextInk }}"
+      },
+      {
+        "line": 642,
+        "tag": "svg",
+        "style": "flex:none"
+      },
+      {
+        "line": 643,
+        "tag": "div",
+        "style": "font-size:17px;font-weight:600"
+      },
+      {
+        "line": 645,
+        "tag": "div",
+        "style": "flex:1;border-radius:28px;display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;background:{{ modeVoiceBg }};color:{{ modeVoiceInk }}"
+      },
+      {
+        "line": 646,
+        "tag": "svg",
+        "style": "flex:none"
+      },
+      {
+        "line": 647,
+        "tag": "div",
+        "style": "font-size:17px;font-weight:600"
+      },
+      {
+        "line": 650,
+        "tag": "div",
+        "style": "margin-top:26px"
+      },
+      {
+        "line": 650,
+        "tag": "div",
+        "style": "height:60px;border-radius:30px;background:{{ answerBtnBg }};display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+      },
+      {
+        "line": 650,
+        "tag": "div",
+        "style": "font-size:19px;font-weight:700;color:{{ answerBtnInk }}"
+      },
+      {
+        "line": 651,
+        "tag": "div",
+        "style": "font-size:14.5px;color:#6b7a93;text-align:center;margin-top:12px"
+      }
+    ],
+    "copy": [
+      {
+        "line": 616,
+        "text": "Say Hi to Chloe"
+      },
+      {
+        "line": 623,
+        "text": "Chloe, 21"
+      },
+      {
+        "line": 624,
+        "text": "HKUST · Year 3"
+      },
+      {
+        "line": 627,
+        "text": "Pick a question"
+      },
+      {
+        "line": 628,
+        "text": "Start the conversation with something fun."
+      },
+      {
+        "line": 639,
+        "text": "Answer with"
+      },
+      {
+        "line": 643,
+        "text": "Text"
+      },
+      {
+        "line": 647,
+        "text": "Voice"
+      },
+      {
+        "line": 650,
+        "text": "Answer This Question"
+      },
+      {
+        "line": 651,
+        "text": "Introduction costs"
+      },
+      {
+        "line": 651,
+        "text": "· balance"
+      }
+    ],
+    "svg": [
+      {
+        "line": 614,
+        "fragment": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+      },
+      {
+        "line": 623,
+        "fragment": "<svg width=\"19\" height=\"19\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>"
+      },
+      {
+        "line": 634,
+        "fragment": "<svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"{{ q.checkColor }}\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12.5l4.5 4.5L19 7\"></path></svg>"
+      },
+      {
+        "line": 642,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" style=\"flex:none\"><rect x=\"2\" y=\"6\" width=\"20\" height=\"12\" rx=\"2.5\"></rect><path d=\"M6 10h0M10 10h0M14 10h0M18 10h0M6 14h12\"></path></svg>"
+      },
+      {
+        "line": 646,
+        "fragment": "<svg width=\"25\" height=\"25\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" style=\"flex:none\"><rect x=\"9\" y=\"2.5\" width=\"6\" height=\"11\" rx=\"3\"></rect><path d=\"M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5\"></path></svg>"
+      }
+    ]
+  },
+  "source_lock": "locked",
+  "reference_viewport": {
+    "width": 393,
+    "height": 852,
+    "top": 54,
+    "bottom": 0
+  },
+  "animation": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "capture": "end frame; no fake audio progress or wave animation"
+  },
+  "approved_deltas": [
+    "Cimoa brand; canonical six user identities/photos/questions/audio replace conflicting source names",
+    "Actual safe areas, fixed header/footer and one scroll region; deck remains non-scrolling/responsive per user",
+    "Text is free, 300 characters; no payment branch",
+    "Actual recording/decoded duration replaces hardcoded playing 00:12; missing capability fails",
+    "Existing connection/pending request/match routes to canonical entity; never creates on navigation",
+    "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply"
+  ],
+  "states": [
+    "default",
+    "loading",
+    "empty",
+    "error",
+    "long",
+    "refresh",
+    "back",
+    "blocked",
+    "session_expired"
+  ],
+  "interaction_ids": [
+    "ibSelect.goBack.click.1",
+    "ibSelect.q.pick.click.1",
+    "ibSelect.pickText.click.1",
+    "ibSelect.pickVoice.click.1",
+    "ibSelect.answerGo.click.1"
+  ]
+}

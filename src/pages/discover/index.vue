@@ -21,6 +21,7 @@ const resetting = ref(false)
 const people = computed(() => store.discover_people)
 const person = computed(() => people.value.length ? people.value[card_index.value % people.value.length] : null)
 const next_person = computed(() => people.value.length > 1 ? people.value[(card_index.value + 1) % people.value.length] : null)
+const primary = computed(() => person.value ? store.introduction_context(person.value.user_id).primary : null)
 const target = (kind, id) => { try { return discover_destination(store, kind, id) } catch { return '' } }
 
 let pointer_id = null
@@ -36,11 +37,14 @@ onShow(() => { navigating.value = false; stop_interaction() })
 onHide(stop_interaction)
 onUnmounted(stop_interaction)
 
-watch(() => people.value.map((item) => item.user_id).join(':'), () => {
-  card_index.value = people.value.length ? card_index.value % people.value.length : 0
+watch(() => people.value.map((item) => item.user_id), (ids, previous = []) => {
+  const current_id = previous.length ? previous[card_index.value % previous.length] : null
+  const retained = ids.indexOf(current_id)
+  card_index.value = retained >= 0 ? retained : ids.length ? card_index.value % ids.length : 0
   navigation_error.value = ''
   stop_interaction()
 })
+watch(() => store.session.current_user_id, () => { card_index.value = 0; navigation_error.value = ''; stop_interaction() })
 
 const navigate = async (kind, id) => {
   if (navigating.value || settling.value) return
@@ -151,7 +155,7 @@ const back_style = computed(() => {
     <template #footer="{ ready }">
       <view class="discover-footer">
         <text v-if="navigation_error" class="discover-error" role="alert">{{ navigation_error }}</text>
-        <view class="discover-send" role="button" tabindex="0" :aria-disabled="!ready || !person" data-interaction="photo.sayHi.click.1" :data-target="person ? target('icebreaker', person.user_id) : ''" @click="ready && person && navigate('icebreaker', person.user_id)" @keydown.enter="ready && person && navigate('icebreaker', person.user_id)" @keydown.space.prevent="ready && person && navigate('icebreaker', person.user_id)">Send shot</view>
+        <view class="discover-send" role="button" tabindex="0" :aria-disabled="!ready || !person || navigating" data-interaction="photo.sayHi.click.1" :data-target="person ? target('primary', person.user_id) : ''" @click="ready && person && navigate('primary', person.user_id)" @keydown.enter="ready && person && navigate('primary', person.user_id)" @keydown.space.prevent="ready && person && navigate('primary', person.user_id)">{{ primary?.label || 'Send shot' }}</view>
       </view>
     </template>
   </MainTabFrame>

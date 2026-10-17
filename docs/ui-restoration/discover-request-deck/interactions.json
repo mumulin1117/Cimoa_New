@@ -1,0 +1,50 @@
+[
+  {
+    "interaction_id": "photo.openMe.click.1",
+    "source_screen": "photo decoded HTML 360–399",
+    "trigger": "click",
+    "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
+    "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
+    "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
+    "failure_result": "Readable inline error; no partial request, consent or ledger mutation; cancelled/obsolete work cannot submit.",
+    "persistence": "Store metadata for saved draft/request; IndexedDB for recorded Blob; browsing/selection/navigation none.",
+    "sync_scope": "Discover, profile, Home, sent/received, Connection and authorized Conversation; current account only.",
+    "acceptance": "scripts/discover-request-browser.test.mjs --page=deck; corresponding HostTests native pixel/flow test; source/actual/overlay/diff in this folder."
+  },
+  {
+    "interaction_id": "photo.openDiscoverFilters.click.1",
+    "source_screen": "photo decoded HTML 360–399",
+    "trigger": "click",
+    "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
+    "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
+    "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
+    "failure_result": "Readable inline error; no partial request, consent or ledger mutation; cancelled/obsolete work cannot submit.",
+    "persistence": "Store metadata for saved draft/request; IndexedDB for recorded Blob; browsing/selection/navigation none.",
+    "sync_scope": "Discover, profile, Home, sent/received, Connection and authorized Conversation; current account only.",
+    "acceptance": "scripts/discover-request-browser.test.mjs --page=deck; corresponding HostTests native pixel/flow test; source/actual/overlay/diff in this folder."
+  },
+  {
+    "interaction_id": "photo.expand.click.1",
+    "source_screen": "photo decoded HTML 360–399",
+    "trigger": "click",
+    "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
+    "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
+    "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
+    "failure_result": "Readable inline error; no partial request, consent or ledger mutation; cancelled/obsolete work cannot submit.",
+    "persistence": "Store metadata for saved draft/request; IndexedDB for recorded Blob; browsing/selection/navigation none.",
+    "sync_scope": "Discover, profile, Home, sent/received, Connection and authorized Conversation; current account only.",
+    "acceptance": "scripts/discover-request-browser.test.mjs --page=deck; corresponding HostTests native pixel/flow test; source/actual/overlay/diff in this folder."
+  },
+  {
+    "interaction_id": "photo.sayHi.click.1",
+    "source_screen": "photo decoded HTML 360–399",
+    "trigger": "click",
+    "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
+    "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
+    "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
+    "failure_result": "Readable inline error; no partial request, consent or ledger mutation; cancelled/obsolete work cannot submit.",
+    "persistence": "Store metadata for saved draft/request; IndexedDB for recorded Blob; browsing/selection/navigation none.",
+    "sync_scope": "Discover, profile, Home, sent/received, Connection and authorized Conversation; current account only.",
+    "acceptance": "scripts/discover-request-browser.test.mjs --page=deck; corresponding HostTests native pixel/flow test; source/actual/overlay/diff in this folder."
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "page": "deck",
+  "result": "passed",
+  "checks": [
+    "Source geometry and exact user entry/Back are read-only, with preserved deck order",
+    "Eight iPhone viewports keep the whole card, CTA and Tabbar in one non-scrolling view",
+    "Repeated Tab changes retain root depth, fixed bar and no repeated skeleton",
+    "An existing request opens its canonical result instead of duplicate send or an eligibility dead end"
+  ],
+  "errors": [],
+  "deferred": [],
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "server_pid": 34779,
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 254060,
+    "pixels_above_channel_delta_8": 84282,
+    "mean_absolute_channel_delta": 4.475533544780131,
+    "max_channel_delta": 236
+  },
+  "geometry": {
+    "card": {
+      "x": 20,
+      "y": 129.953125,
+      "width": 353,
+      "height": 541.984375
+    },
+    "cta": {
+      "x": 20,
+      "y": 688,
+      "width": 353,
+      "height": 60
+    }
+  },
+  "cleaned_up": true
+}

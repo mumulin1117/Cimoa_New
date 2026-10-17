@@ -1,0 +1,197 @@
+{
+  "page": "text",
+  "component": "src/pages/discover/icebreaker/text.vue",
+  "route": "/pages/discover/icebreaker/text?user_id=user_zane&draft_id=draft_discover",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=ibText",
+    "condition": "isIbText",
+    "lines": [
+      656,
+      689
+    ],
+    "fragment_sha256": "cb96c68b3eacd5afe3dd30d856424e96d653a5e744fe919569c147ae34ec8685",
+    "fragment": "    <!-- ===================== ICEBREAKER · TEXT REPLY ===================== -->\n    <sc-if value=\"{{ isIbText }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Discover / Icebreaker / Text Reply\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:46px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;position:absolute;left:0;top:0\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"position:absolute;top:11px;left:0;right:0;text-align:center;font-size:22px;font-weight:700;letter-spacing:-0.025em\">Your answer</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:120px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 170px;box-sizing:border-box\">\n          <div style=\"display:flex;align-items:center;gap:14px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"position:relative;flex:none\">\n              <img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"Chloe Lin\" style=\"width:56px;height:56px;border-radius:28px;object-fit:cover;display:block\">\n              <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" style=\"position:absolute;right:-2px;bottom:-2px\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\" stroke=\"#fff\" stroke-width=\"2\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>\n            </div>\n            <div style=\"flex:1;min-width:0\">\n              <div style=\"font-size:19px;font-weight:700;color:#0b1b3a\">Chloe, 21</div>\n              <div style=\"font-size:23px;font-weight:800;letter-spacing:-0.02em;margin-top:3px;text-wrap:pretty\">{{ qText }}</div>\n            </div>\n          </div>\n          <div style=\"font-size:32px;font-weight:800;letter-spacing:-0.03em;margin-top:24px\">Write something real</div>\n          <div style=\"margin-top:14px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <textarea sc-camel-on-change=\"{{ onReply }}\" value=\"{{ replyText }}\" placeholder=\"Write your reply to Chloe…\" style=\"width:100%;min-height:170px;border:0;outline:0;resize:none;background:transparent;font-family:inherit;font-size:23px;line-height:1.4;color:#0b1b3a;box-sizing:border-box\"></textarea>\n            <div style=\"display:flex;justify-content:flex-end;align-items:center;margin-top:8px\">\n              <div style=\"font-size:16px;color:#8b95a6\">{{ replyCount }}</div>\n            </div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;align-items:center;gap:14px;z-index:20\">\n          <div sc-camel-on-click=\"{{ continueText }}\" style=\"width:100%;height:60px;border-radius:30px;background:{{ continueBg }};display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:{{ continueInk }}\">Continue</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"{{ continueInk }}\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M13 6l6 6-6 6\"></path></svg></div>\n          <div sc-camel-on-click=\"{{ switchToVoice }}\" style=\"font-size:16px;font-weight:600;color:#6b7a93;cursor:pointer\">Switch to voice</div>\n        </div>\n      </div>\n    </sc-if>",
+    "geometry": [
+      {
+        "line": 658,
+        "tag": "div",
+        "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+      },
+      {
+        "line": 659,
+        "tag": "div",
+        "style": "position:absolute;top:58px;left:20px;right:20px;height:46px;z-index:20"
+      },
+      {
+        "line": 660,
+        "tag": "div",
+        "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;position:absolute;left:0;top:0"
+      },
+      {
+        "line": 663,
+        "tag": "div",
+        "style": "position:absolute;top:11px;left:0;right:0;text-align:center;font-size:22px;font-weight:700;letter-spacing:-0.025em"
+      },
+      {
+        "line": 665,
+        "tag": "div",
+        "style": "position:absolute;top:120px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 170px;box-sizing:border-box"
+      },
+      {
+        "line": 666,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:14px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+      },
+      {
+        "line": 667,
+        "tag": "div",
+        "style": "position:relative;flex:none"
+      },
+      {
+        "line": 668,
+        "tag": "img",
+        "style": "width:56px;height:56px;border-radius:28px;object-fit:cover;display:block"
+      },
+      {
+        "line": 669,
+        "tag": "svg",
+        "style": "position:absolute;right:-2px;bottom:-2px"
+      },
+      {
+        "line": 671,
+        "tag": "div",
+        "style": "flex:1;min-width:0"
+      },
+      {
+        "line": 672,
+        "tag": "div",
+        "style": "font-size:19px;font-weight:700;color:#0b1b3a"
+      },
+      {
+        "line": 673,
+        "tag": "div",
+        "style": "font-size:23px;font-weight:800;letter-spacing:-0.02em;margin-top:3px;text-wrap:pretty"
+      },
+      {
+        "line": 676,
+        "tag": "div",
+        "style": "font-size:32px;font-weight:800;letter-spacing:-0.03em;margin-top:24px"
+      },
+      {
+        "line": 677,
+        "tag": "div",
+        "style": "margin-top:14px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+      },
+      {
+        "line": 678,
+        "tag": "textarea",
+        "style": "width:100%;min-height:170px;border:0;outline:0;resize:none;background:transparent;font-family:inherit;font-size:23px;line-height:1.4;color:#0b1b3a;box-sizing:border-box"
+      },
+      {
+        "line": 679,
+        "tag": "div",
+        "style": "display:flex;justify-content:flex-end;align-items:center;margin-top:8px"
+      },
+      {
+        "line": 680,
+        "tag": "div",
+        "style": "font-size:16px;color:#8b95a6"
+      },
+      {
+        "line": 684,
+        "tag": "div",
+        "style": "position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;align-items:center;gap:14px;z-index:20"
+      },
+      {
+        "line": 685,
+        "tag": "div",
+        "style": "width:100%;height:60px;border-radius:30px;background:{{ continueBg }};display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+      },
+      {
+        "line": 685,
+        "tag": "div",
+        "style": "font-size:19px;font-weight:700;color:{{ continueInk }}"
+      },
+      {
+        "line": 686,
+        "tag": "div",
+        "style": "font-size:16px;font-weight:600;color:#6b7a93;cursor:pointer"
+      }
+    ],
+    "copy": [
+      {
+        "line": 663,
+        "text": "Your answer"
+      },
+      {
+        "line": 672,
+        "text": "Chloe, 21"
+      },
+      {
+        "line": 676,
+        "text": "Write something real"
+      },
+      {
+        "line": 685,
+        "text": "Continue"
+      },
+      {
+        "line": 686,
+        "text": "Switch to voice"
+      }
+    ],
+    "svg": [
+      {
+        "line": 661,
+        "fragment": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+      },
+      {
+        "line": 669,
+        "fragment": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" style=\"position:absolute;right:-2px;bottom:-2px\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\" stroke=\"#fff\" stroke-width=\"2\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>"
+      },
+      {
+        "line": 685,
+        "fragment": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"{{ continueInk }}\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M13 6l6 6-6 6\"></path></svg>"
+      }
+    ]
+  },
+  "source_lock": "locked",
+  "reference_viewport": {
+    "width": 393,
+    "height": 852,
+    "top": 54,
+    "bottom": 0
+  },
+  "animation": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "capture": "end frame; no fake audio progress or wave animation"
+  },
+  "approved_deltas": [
+    "Cimoa brand; canonical six user identities/photos/questions/audio replace conflicting source names",
+    "Actual safe areas, fixed header/footer and one scroll region; deck remains non-scrolling/responsive per user",
+    "Text is free, 300 characters; no payment branch",
+    "Actual recording/decoded duration replaces hardcoded playing 00:12; missing capability fails",
+    "Existing connection/pending request/match routes to canonical entity; never creates on navigation",
+    "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply"
+  ],
+  "states": [
+    "default",
+    "loading",
+    "empty",
+    "error",
+    "long",
+    "refresh",
+    "back",
+    "blocked",
+    "session_expired"
+  ],
+  "interaction_ids": [
+    "ibText.goBack.click.1",
+    "ibText.onReply.change.1",
+    "ibText.continueText.click.1",
+    "ibText.switchToVoice.click.1"
+  ]
+}

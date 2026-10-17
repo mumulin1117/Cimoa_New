@@ -3,6 +3,11 @@ export function discover_destination(store, kind, id) {
   if (!store.session.is_authenticated) throw new Error('Your session has expired. Please sign in again.')
   if (kind === 'profile') return '/pages/profile/index'
   if (kind === 'preferences') return '/pages/auto-match/preferences'
+  if (kind === 'primary') {
+    const context = store.introduction_context(id)
+    if (context.error || context.primary?.error || !context.primary?.destination) throw new Error(context.error || context.primary?.error || 'This profile is no longer available.')
+    return context.primary.destination
+  }
   if (kind === 'chat') {
     if (!id || !store.user_by_id(id)) throw new Error('This profile is no longer available.')
     const conversation = store.current_conversations.find((row) => row.participant_id === id)

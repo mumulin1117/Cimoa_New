@@ -1,0 +1,317 @@
+{
+  "page": "voice",
+  "component": "src/pages/discover/icebreaker/voice.vue",
+  "route": "/pages/discover/icebreaker/voice?user_id=user_zane&draft_id=draft_discover",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=ibVoice",
+    "condition": "isIbVoice",
+    "lines": [
+      691,
+      745
+    ],
+    "fragment_sha256": "984bf844cd5de899331cf6a7bdd48f44674c8446538b904d5d5766e7bb252e59",
+    "fragment": "    <!-- ===================== ICEBREAKER · VOICE REPLY ===================== -->\n    <sc-if value=\"{{ isIbVoice }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Discover / Icebreaker Answer / Voice\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:46px;display:flex;align-items:center;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1;text-align:center;font-size:21px;font-weight:800;letter-spacing:-0.02em\">Answer an Icebreaker</div>\n          <div sc-camel-on-click=\"{{ openVoiceMenu }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"#0b1b3a\"><circle cx=\"5\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"12\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"19\" cy=\"12\" r=\"1.9\"></circle></svg>\n          </div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 150px;box-sizing:border-box\">\n          <div style=\"display:flex;align-items:flex-start;gap:14px\">\n            <img src=\"6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30\" alt=\"Ethan\" style=\"width:64px;height:64px;border-radius:32px;object-fit:cover;flex:none;display:block\">\n            <div style=\"flex:1;min-width:0;padding-top:2px\">\n              <div style=\"display:flex;align-items:center;gap:7px\"><div style=\"font-size:20px;font-weight:800;letter-spacing:-0.02em\">Ethan · 22</div><svg width=\"19\" height=\"19\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></div>\n              <div style=\"display:flex;align-items:center;gap:6px;margin-top:3px\"><svg width=\"15\" height=\"15\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#5b6b85\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg><div style=\"font-size:15.5px;color:#5b6b85\">Same university</div></div>\n              <div style=\"font-size:15.5px;color:#8b95a6;margin-top:1px\">Chongqing, China</div>\n            </div>\n          </div>\n          <div style=\"margin-top:18px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"display:flex;align-items:center;justify-content:space-between\">\n              <div style=\"display:flex;align-items:center;gap:8px\"><div style=\"width:28px;height:28px;border-radius:14px;background:#e5f0ff;display:flex;align-items:center;justify-content:center\"><svg width=\"14\" height=\"14\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3.8c4.8 0 8.5 3.3 8.5 7.6s-3.7 7.6-8.5 7.6c-1.1 0-2.2-.2-3.2-.5-.4-.1-.8-.1-1.2.1l-2.4 1.2c-.6.3-1.2-.2-1-.8l.6-2c.1-.4 0-.8-.2-1.1C3.9 14.6 3.5 13 3.5 11.4 3.5 7.1 7.2 3.8 12 3.8z\"></path></svg></div><div style=\"font-size:16px;color:#5b6b85;font-weight:600\">Icebreaker</div></div>\n              <div style=\"font-size:15px;color:#8b95a6;font-weight:600\">{{ qIndex }}/3</div>\n            </div>\n            <div style=\"font-size:23px;font-weight:800;letter-spacing:-0.02em;margin-top:12px;text-wrap:pretty\">{{ qText }}</div>\n          </div>\n          <div style=\"margin-top:14px;padding:26px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);display:flex;flex-direction:column;align-items:center;gap:16px\">\n            <div style=\"display:flex;align-items:center;gap:2px;height:44px;width:100%\">\n              <sc-for list=\"{{ waveBars }}\" as=\"b\" hint-placeholder-count=\"30\">\n                <div style=\"flex:1;height:{{ b.h }}px;border-radius:3px;background:{{ b.c }}\"></div>\n              </sc-for>\n            </div>\n            <div style=\"font-size:20px;font-weight:700;letter-spacing:-0.01em;font-variant-numeric:tabular-nums\">00:12</div>\n            <div sc-camel-on-click=\"{{ toggleVoicePlay }}\" style=\"position:relative;width:84px;height:84px;border-radius:42px;display:flex;align-items:center;justify-content:center;cursor:pointer\">\n              <div style=\"position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(78,142,247,0.28),rgba(248,28,229,0.2) 60%,transparent 75%);filter:blur(4px)\"></div>\n              <div style=\"position:relative;width:84px;height:84px;border-radius:50%;box-sizing:border-box;flex:none;background:#fff;border:3.5px solid transparent;background-image:linear-gradient(#ffffff,#ffffff), linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);background-origin:border-box;background-clip:padding-box, border-box;display:flex;align-items:center;justify-content:center\">\n                <sc-if value=\"{{ voicePlaying }}\" hint-placeholder-val=\"{{ true }}\"><svg width=\"36\" height=\"36\" sc-camel-view-box=\"0 0 24 24\" fill=\"#c026d3\"><rect x=\"6\" y=\"4\" width=\"4.5\" height=\"16\" rx=\"1.6\"></rect><rect x=\"13.5\" y=\"4\" width=\"4.5\" height=\"16\" rx=\"1.6\"></rect></svg></sc-if>\n                <sc-if value=\"{{ voicePaused }}\" hint-placeholder-val=\"{{ false }}\"><svg width=\"38\" height=\"38\" sc-camel-view-box=\"0 0 24 24\" fill=\"#4a7bf7\" style=\"margin-left:4px\"><path d=\"M7.5 5 18.5 12 7.5 19z\"></path></svg></sc-if>\n              </div>\n            </div>\n            <div sc-camel-on-click=\"{{ switchToTextReply }}\" style=\"display:flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:22px;background:#eef2f8;cursor:pointer\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2.5\" y=\"6\" width=\"19\" height=\"13\" rx=\"3\"></rect><path d=\"M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8\"></path></svg>\n              <div style=\"font-size:16px;font-weight:600;color:#0b1b3a\">Switch to text</div>\n            </div>\n          </div>\n          <div style=\"display:flex;align-items:center;gap:10px;margin-top:14px;padding:14px 18px;background:#eef2f8;border-radius:20px\">\n            <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#5b6b85\" stroke-width=\"1.8\"><circle cx=\"12\" cy=\"12\" r=\"9.2\"></circle><path d=\"M12 11v5.5M12 8v.01\" stroke-linecap=\"round\"></path></svg>\n            <div style=\"font-size:14.5px;color:#5b6b85;text-wrap:pretty\">Your answer will be sent with the connection request</div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20\"><div sc-camel-on-click=\"{{ sendVoiceRequest }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Send Request · 10 Coins</div></div></div>\n      </div>\n    </sc-if>",
+    "geometry": [
+      {
+        "line": 693,
+        "tag": "div",
+        "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+      },
+      {
+        "line": 694,
+        "tag": "div",
+        "style": "position:absolute;top:58px;left:20px;right:20px;height:46px;display:flex;align-items:center;z-index:20"
+      },
+      {
+        "line": 695,
+        "tag": "div",
+        "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+      },
+      {
+        "line": 698,
+        "tag": "div",
+        "style": "flex:1;text-align:center;font-size:21px;font-weight:800;letter-spacing:-0.02em"
+      },
+      {
+        "line": 699,
+        "tag": "div",
+        "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+      },
+      {
+        "line": 703,
+        "tag": "div",
+        "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 150px;box-sizing:border-box"
+      },
+      {
+        "line": 704,
+        "tag": "div",
+        "style": "display:flex;align-items:flex-start;gap:14px"
+      },
+      {
+        "line": 705,
+        "tag": "img",
+        "style": "width:64px;height:64px;border-radius:32px;object-fit:cover;flex:none;display:block"
+      },
+      {
+        "line": 706,
+        "tag": "div",
+        "style": "flex:1;min-width:0;padding-top:2px"
+      },
+      {
+        "line": 707,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:7px"
+      },
+      {
+        "line": 707,
+        "tag": "div",
+        "style": "font-size:20px;font-weight:800;letter-spacing:-0.02em"
+      },
+      {
+        "line": 708,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:6px;margin-top:3px"
+      },
+      {
+        "line": 708,
+        "tag": "div",
+        "style": "font-size:15.5px;color:#5b6b85"
+      },
+      {
+        "line": 709,
+        "tag": "div",
+        "style": "font-size:15.5px;color:#8b95a6;margin-top:1px"
+      },
+      {
+        "line": 712,
+        "tag": "div",
+        "style": "margin-top:18px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+      },
+      {
+        "line": 713,
+        "tag": "div",
+        "style": "display:flex;align-items:center;justify-content:space-between"
+      },
+      {
+        "line": 714,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:8px"
+      },
+      {
+        "line": 714,
+        "tag": "div",
+        "style": "width:28px;height:28px;border-radius:14px;background:#e5f0ff;display:flex;align-items:center;justify-content:center"
+      },
+      {
+        "line": 714,
+        "tag": "div",
+        "style": "font-size:16px;color:#5b6b85;font-weight:600"
+      },
+      {
+        "line": 715,
+        "tag": "div",
+        "style": "font-size:15px;color:#8b95a6;font-weight:600"
+      },
+      {
+        "line": 717,
+        "tag": "div",
+        "style": "font-size:23px;font-weight:800;letter-spacing:-0.02em;margin-top:12px;text-wrap:pretty"
+      },
+      {
+        "line": 719,
+        "tag": "div",
+        "style": "margin-top:14px;padding:26px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);display:flex;flex-direction:column;align-items:center;gap:16px"
+      },
+      {
+        "line": 720,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:2px;height:44px;width:100%"
+      },
+      {
+        "line": 722,
+        "tag": "div",
+        "style": "flex:1;height:{{ b.h }}px;border-radius:3px;background:{{ b.c }}"
+      },
+      {
+        "line": 725,
+        "tag": "div",
+        "style": "font-size:20px;font-weight:700;letter-spacing:-0.01em;font-variant-numeric:tabular-nums"
+      },
+      {
+        "line": 726,
+        "tag": "div",
+        "style": "position:relative;width:84px;height:84px;border-radius:42px;display:flex;align-items:center;justify-content:center;cursor:pointer"
+      },
+      {
+        "line": 727,
+        "tag": "div",
+        "style": "position:absolute;inset:-8px;border-radius:50%;background:radial-gradient(circle,rgba(78,142,247,0.28),rgba(248,28,229,0.2) 60%,transparent 75%);filter:blur(4px)"
+      },
+      {
+        "line": 728,
+        "tag": "div",
+        "style": "position:relative;width:84px;height:84px;border-radius:50%;box-sizing:border-box;flex:none;background:#fff;border:3.5px solid transparent;background-image:linear-gradient(#ffffff,#ffffff), linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);background-origin:border-box;background-clip:padding-box, border-box;display:flex;align-items:center;justify-content:center"
+      },
+      {
+        "line": 730,
+        "tag": "svg",
+        "style": "margin-left:4px"
+      },
+      {
+        "line": 733,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:22px;background:#eef2f8;cursor:pointer"
+      },
+      {
+        "line": 735,
+        "tag": "div",
+        "style": "font-size:16px;font-weight:600;color:#0b1b3a"
+      },
+      {
+        "line": 738,
+        "tag": "div",
+        "style": "display:flex;align-items:center;gap:10px;margin-top:14px;padding:14px 18px;background:#eef2f8;border-radius:20px"
+      },
+      {
+        "line": 740,
+        "tag": "div",
+        "style": "font-size:14.5px;color:#5b6b85;text-wrap:pretty"
+      },
+      {
+        "line": 743,
+        "tag": "div",
+        "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20"
+      },
+      {
+        "line": 743,
+        "tag": "div",
+        "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+      },
+      {
+        "line": 743,
+        "tag": "div",
+        "style": "font-size:19px;font-weight:700;color:#fff"
+      }
+    ],
+    "copy": [
+      {
+        "line": 698,
+        "text": "Answer an Icebreaker"
+      },
+      {
+        "line": 707,
+        "text": "Ethan · 22"
+      },
+      {
+        "line": 708,
+        "text": "Same university"
+      },
+      {
+        "line": 709,
+        "text": "Chongqing, China"
+      },
+      {
+        "line": 714,
+        "text": "Icebreaker"
+      },
+      {
+        "line": 715,
+        "text": "/3"
+      },
+      {
+        "line": 725,
+        "text": "00:12"
+      },
+      {
+        "line": 735,
+        "text": "Switch to text"
+      },
+      {
+        "line": 740,
+        "text": "Your answer will be sent with the connection request"
+      },
+      {
+        "line": 743,
+        "text": "Send Request · 10 Coins"
+      }
+    ],
+    "svg": [
+      {
+        "line": 696,
+        "fragment": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+      },
+      {
+        "line": 700,
+        "fragment": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"#0b1b3a\"><circle cx=\"5\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"12\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"19\" cy=\"12\" r=\"1.9\"></circle></svg>"
+      },
+      {
+        "line": 707,
+        "fragment": "<svg width=\"19\" height=\"19\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>"
+      },
+      {
+        "line": 708,
+        "fragment": "<svg width=\"15\" height=\"15\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#5b6b85\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg>"
+      },
+      {
+        "line": 714,
+        "fragment": "<svg width=\"14\" height=\"14\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3.8c4.8 0 8.5 3.3 8.5 7.6s-3.7 7.6-8.5 7.6c-1.1 0-2.2-.2-3.2-.5-.4-.1-.8-.1-1.2.1l-2.4 1.2c-.6.3-1.2-.2-1-.8l.6-2c.1-.4 0-.8-.2-1.1C3.9 14.6 3.5 13 3.5 11.4 3.5 7.1 7.2 3.8 12 3.8z\"></path></svg>"
+      },
+      {
+        "line": 729,
+        "fragment": "<svg width=\"36\" height=\"36\" sc-camel-view-box=\"0 0 24 24\" fill=\"#c026d3\"><rect x=\"6\" y=\"4\" width=\"4.5\" height=\"16\" rx=\"1.6\"></rect><rect x=\"13.5\" y=\"4\" width=\"4.5\" height=\"16\" rx=\"1.6\"></rect></svg>"
+      },
+      {
+        "line": 730,
+        "fragment": "<svg width=\"38\" height=\"38\" sc-camel-view-box=\"0 0 24 24\" fill=\"#4a7bf7\" style=\"margin-left:4px\"><path d=\"M7.5 5 18.5 12 7.5 19z\"></path></svg>"
+      },
+      {
+        "line": 734,
+        "fragment": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2.5\" y=\"6\" width=\"19\" height=\"13\" rx=\"3\"></rect><path d=\"M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8\"></path></svg>"
+      },
+      {
+        "line": 739,
+        "fragment": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#5b6b85\" stroke-width=\"1.8\"><circle cx=\"12\" cy=\"12\" r=\"9.2\"></circle><path d=\"M12 11v5.5M12 8v.01\" stroke-linecap=\"round\"></path></svg>"
+      }
+    ]
+  },
+  "source_lock": "locked",
+  "reference_viewport": {
+    "width": 393,
+    "height": 852,
+    "top": 54,
+    "bottom": 0
+  },
+  "animation": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "capture": "end frame; no fake audio progress or wave animation"
+  },
+  "approved_deltas": [
+    "Cimoa brand; canonical six user identities/photos/questions/audio replace conflicting source names",
+    "Actual safe areas, fixed header/footer and one scroll region; deck remains non-scrolling/responsive per user",
+    "Text is free, 300 characters; no payment branch",
+    "Actual recording/decoded duration replaces hardcoded playing 00:12; missing capability fails",
+    "Existing connection/pending request/match routes to canonical entity; never creates on navigation",
+    "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply"
+  ],
+  "states": [
+    "default",
+    "loading",
+    "empty",
+    "error",
+    "long",
+    "refresh",
+    "back",
+    "blocked",
+    "session_expired"
+  ],
+  "interaction_ids": [
+    "ibVoice.goBack.click.1",
+    "ibVoice.openVoiceMenu.click.1",
+    "ibVoice.toggleVoicePlay.click.1",
+    "ibVoice.switchToTextReply.click.1",
+    "ibVoice.sendVoiceRequest.click.1"
+  ]
+}
