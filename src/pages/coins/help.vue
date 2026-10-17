@@ -7,6 +7,7 @@ import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import { COIN_ROUTES } from '@/utils/coinNavigation.js'
 import { coin_center_route } from '@/utils/coinReturnContext.js'
+import { legal_document_route } from '@/utils/legalNavigation.js'
 
 const faqs = Object.freeze([
   ['What are coins?', 'Coins are a virtual currency inside Cimoa. They have no cash value. Text introductions are free; coins are used for voice introductions and Priority Match.'],
@@ -38,7 +39,7 @@ const navigate = async route => {
   navigating.value = true; error.value = ''
   try {
     if (!route) await frame.value.navigate_back(coin_center_route(store, return_context_id.value))
-    else await frame.value.navigate_forward(route)
+    else await frame.value.navigate_forward(route === '/pages/legal/terms' ? legal_document_route(store, 'terms', 'coins', return_context_id.value) : route)
   } catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }

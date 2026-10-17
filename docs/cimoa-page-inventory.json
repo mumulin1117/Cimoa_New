@@ -129,7 +129,7 @@
     "source_screen": "Legal / Terms of Service / Default",
     "source_query": "route=legalTerms",
     "source_lines": [
-      1035
+      1034
     ],
     "page_level": "三级",
     "route": "/pages/legal/terms",
@@ -138,7 +138,8 @@
     "allowed_origin_routes": [
       "/pages/settings/legal",
       "/pages/auth/welcome",
-      "/pages/auth/signup"
+      "/pages/auth/signup",
+      "/pages/coins/help"
     ],
     "required_parameters": [],
     "entry_points": [
@@ -173,16 +174,16 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "source_lock": "locked",
-    "visual_acceptance": "passed",
-    "source_lock_artifact": "docs/ui-restoration/legal-terms/source-contract.json",
-    "visual_audit_artifact": "docs/ui-restoration/legal-terms/difference-audit.md",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-legal-terms/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-legal-terms/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source locked; Terms of Service title and long-document geometry restored; truthful unpublished local terms retained; browser pixel, refresh/back, small-screen/safe-area and iPhone 17 Pro WKWebView checks passed",
-    "acceptance_evidence": "docs/ui-restoration/legal-terms/acceptance.json"
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "acceptance_evidence": "docs/evidence/settings-safety/legal-terms-acceptance.json"
   },
   {
     "source_screen": "Legal / Privacy Policy / Default",

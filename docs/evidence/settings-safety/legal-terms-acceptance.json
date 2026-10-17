@@ -1,7 +1,7 @@
 {
   "phase": "legal-terms",
   "result": "passed",
-  "server_pid": 36509,
+  "server_pid": 11360,
   "checks": [
     "Welcome opens the independent local Terms page with eight truthful sections and no invented operator or contact",
     "Terms restores after refresh, scrolls on a small viewport and returns to the unauthenticated Welcome owner",
