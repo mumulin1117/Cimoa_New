@@ -1,18 +1,23 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { onHide } from '@dcloudio/uni-app'
+import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { build_coin_history } from '@/utils/coinHistory.js'
+import { coin_child_route, coin_center_route } from '@/utils/coinReturnContext.js'
 
 const filters = Object.freeze([{ id: 'all', label: 'All' }, { id: 'purchases', label: 'Purchases' }, { id: 'used', label: 'Used' }])
 const store = use_app_store(), frame = ref(null), active_filter = ref('all'), navigating = ref(false), error = ref('')
 const account_id = store.session.account_id
+const return_context_id = ref('')
+onLoad(options => { return_context_id.value = String(options?.return_context_id || '') })
+const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved coin data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const history = computed(() => build_coin_history(store.coin_transactions, store.current_purchase_requests, store.coin_packages))
@@ -22,8 +27,8 @@ const navigate = async route => {
   if (navigating.value) return
   navigating.value = true; error.value = ''
   try {
-    if (!route) await frame.value.navigate_back(COIN_ROUTES.center)
-    else await frame.value.navigate_forward(require_coin_route_ready(route))
+    if (!route) await frame.value.navigate_back(coin_center_route(store, return_context_id.value))
+    else if (!access_error.value) await frame.value.navigate_forward(require_coin_route_ready(coin_child_route(store, route, return_context_id.value)))
   } catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }

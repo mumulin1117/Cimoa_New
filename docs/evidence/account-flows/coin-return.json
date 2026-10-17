@@ -1,0 +1,11 @@
+{
+  "phase": "coin-return",
+  "result": "passed",
+  "checks": [
+    "Coin Center → History → reload → fallback Back preserves the owned Auto Match return context and never writes navigation state"
+  ],
+  "errors": [],
+  "physical_microphone": "not tested: controlled browser media device",
+  "server_pid": 6052,
+  "cleaned_up": true
+}

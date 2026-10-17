@@ -1,0 +1,3 @@
+# Coin history audit — 2026-10-17
+
+HTML 2341–2376 locked. Canonical completed ledger and owned request statuses drive filters/rows; no page seeds or arbitrary URLs. Fix full auth-context isolation and carry the owned voice/priority return_context_id through history, detail/help and no-stack reload fallbacks. Refunds must not be titled as new purchases; starting credits must not claim a verified App Store receipt. Keep real unchanged balance, no fake payment success. Browser transaction/request filter/detail/back/refresh/empty regression and domain tests required; source pixel/full acceptance remains pending.

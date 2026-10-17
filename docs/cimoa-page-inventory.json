@@ -8930,7 +8930,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/coins/history",
-    "component": "src/pages/coins/history.vue; src/utils/coinHistory.js",
+    "component": "src/pages/coins/history.vue",
     "parent_route": "/pages/coins/index",
     "allowed_origin_routes": [
       "/pages/coins/index"
@@ -8987,7 +8987,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented with Store-ledger balance, All/Purchases/Used filters, non-duplicated terminal purchase requests, fixture disclosure, empty state, refresh restoration, guarded detail dependencies and Coin Center return ownership"
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-coin-history/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-coin-history/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/coins/history-acceptance.json"
   },
   {
     "source_screen": "Coins / History / Purchase Detail",

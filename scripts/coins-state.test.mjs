@@ -5,6 +5,8 @@ import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_seed, clone_data } from '../src/stores/seed.js'
 import { create_purchase_bridge } from '../src/utils/iapBridge.js'
 import { fake_clock } from './lib/fake-clock.mjs'
+import { coin_child_route, coin_center_route } from '../src/utils/coinReturnContext.js'
+import { build_coin_history } from '../src/utils/coinHistory.js'
 const payload = { request_id: 'purchase_test', owner_user_id: 'user_cimoa', package_id: 'pkg_60', product_id: 'test.cimoa.60' }
 test('initial dispatch before navigation creates no orphan page timer and caches an early callback', async () => {
   const clock = fake_clock(), sent = [], b = create_purchase_bridge({ timers: clock, clock: clock.now, send: p => sent.push(p) })
@@ -55,4 +57,13 @@ test('receipt verification cannot publish into a replacement session and malform
   assert.equal((await pending).success, false); assert.deepEqual(clone_data(store.data), before)
   configure_store_runtime(store, { services: { verify_purchase: async () => true } })
   assert.equal((await store.settle_purchase(id, receipt, { received_at: clock.now() + 1 })).success, false); assert.equal(store.coin_balance, 260)
+})
+test('history keeps only validated owned return context and a refund never claims a new purchase', () => {
+  const { store } = fixture(), id = store.save_draft('match_return', 'entry', { kind: 'match_entry', match_id: null }).data
+  assert.equal(coin_center_route(store, id), '/pages/coins/index?return_context_id=' + id)
+  assert.equal(coin_child_route(store, '/pages/coins/history?filter=all', id), '/pages/coins/history?filter=all&return_context_id=' + id)
+  assert.equal(coin_child_route(store, '/pages/coins/history', 'forged'), '/pages/coins/history')
+  const [refund] = build_coin_history([{ transaction_id: 'refund', kind: 'refund', amount: 10, status: 'completed', created_at: 1 }], [], [])
+  assert.equal(refund.title, 'Coin refund'); assert.equal(refund.subtitle, 'Returned coins'); assert.equal(refund.filter, 'used')
+  store.logout(); assert.equal(coin_child_route(store, '/pages/coins/history', id), '/pages/coins/history')
 })

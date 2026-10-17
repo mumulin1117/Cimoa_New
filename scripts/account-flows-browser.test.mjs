@@ -61,6 +61,13 @@ try {
     await page.goBack(); await page.locator('.coin-failed-page:visible').waitFor()
     assert.equal((await state()).purchase_requests.find(p => p.request_id === pending.request_id).status, 'failure'); assert.equal(posted.length, 2)
     check('A controlled native callback while the page is hidden cannot write or navigate; returning consumes the same callback once after custom Loading')
+  } else if (phase === 'coin-return') {
+    await go('/pages/home/index'); await page.locator('.home-header').waitFor()
+    await page.evaluate(() => { const e = JSON.parse(localStorage.getItem('cimoa_app_state_v2')); e.data.drafts.push({ draft_id: 'coin_return_test', owner_user_id: e.data.session.current_user_id, kind: 'match_return', target_id: 'entry', payload: { kind: 'match_entry', match_id: null }, updated_at: Date.now() }); localStorage.setItem('cimoa_app_state_v2', JSON.stringify(e)) })
+    await page.goto(server.origin + '/?flow=coin-return#/pages/coins/index?return_context_id=coin_return_test'); await click('coinStore.openHistory2.click.1'); await page.locator('.coin-history-page').waitFor()
+    assert.match(page.url(), /return_context_id=coin_return_test/); const before = await state(); await page.reload(); await click('coinHistory.goBack.click.1'); await page.locator('.coin-center-page').waitFor(); assert.match(page.url(), /return_context_id=coin_return_test/)
+    await click('coinStore.goBack.click.1'); await page.locator('.auto-match-index').waitFor(); assert.deepEqual(await state(), before)
+    check('Coin Center → History → reload → fallback Back preserves the owned Auto Match return context and never writes navigation state')
   } else throw Error('Unknown phase: ' + phase)
   assert.deepEqual(report.errors, []); await context.close(); report.result = 'passed'
 } catch (error) { report.failure = String(error.stack || error); throw error }

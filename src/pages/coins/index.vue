@@ -10,7 +10,7 @@ import CoinActionLoading from '@/components/CoinActionLoading.vue'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { COIN_FEATURES, package_image } from '@/utils/coinPresentation.js'
-import { coin_source_route } from '@/utils/coinReturnContext.js'
+import { coin_source_route, coin_child_route } from '@/utils/coinReturnContext.js'
 import { watch_purchase } from '@/utils/iapBridge.js'
 
 const store = use_app_store(), frame = ref(null), navigating = ref(false), error = ref('')
@@ -36,7 +36,7 @@ const navigate = async route => {
     if (!route) await frame.value.navigate_back(coin_source_route(store, return_context_id.value))
     else {
       if (access_error.value) throw Error(access_error.value)
-      await frame.value.navigate_forward(require_coin_route_ready(route))
+      await frame.value.navigate_forward(require_coin_route_ready(coin_child_route(store, route, return_context_id.value)))
     }
   } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }

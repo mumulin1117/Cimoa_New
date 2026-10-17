@@ -10,3 +10,9 @@ export function coin_source_route(store, context_id) {
 export function coin_center_route(store, context_id) {
   return coin_source_route(store, context_id) === '/pages/profile/index' ? '/pages/coins/index' : `/pages/coins/index?return_context_id=${encodeURIComponent(context_id)}`
 }
+export function coin_child_route(store, route, context_id) {
+  if (!route.startsWith('/pages/coins/') || coin_source_route(store, context_id) === '/pages/profile/index') return route
+  const [path, query = ''] = route.split('?'), params = new URLSearchParams(query)
+  params.set('return_context_id', context_id)
+  return `${path}?${params.toString()}`
+}
