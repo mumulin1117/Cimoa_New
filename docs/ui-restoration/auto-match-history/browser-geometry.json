@@ -1,0 +1,205 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1892": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match history"
+    },
+    "1893": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1894": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1896": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match history"
+    },
+    "1898": {
+      "x": 0,
+      "y": 118,
+      "width": 393,
+      "height": 158,
+      "text": "Connected matches, pending decisions, and expired matches from the last 30 days.Liam ParkOct 17 · StanfordDecision pending"
+    },
+    "1899": {
+      "x": 20,
+      "y": 118,
+      "width": 353,
+      "height": 36,
+      "text": "Connected matches, pending decisions, and expired matches from the last 30 days."
+    },
+    "1900": {
+      "x": 20,
+      "y": 172,
+      "width": 353,
+      "height": 80,
+      "text": "Liam ParkOct 17 · StanfordDecision pending"
+    },
+    "1902": {
+      "x": 20,
+      "y": 172,
+      "width": 353,
+      "height": 80,
+      "text": "Liam ParkOct 17 · StanfordDecision pending"
+    },
+    "1903": {
+      "x": 34,
+      "y": 186,
+      "width": 52,
+      "height": 52,
+      "text": ""
+    },
+    "1905": {
+      "x": 98,
+      "y": 192,
+      "width": 114.09375,
+      "height": 40,
+      "text": "Liam ParkOct 17 · Stanford"
+    },
+    "1906": {
+      "x": 98,
+      "y": 192,
+      "width": 114.09375,
+      "height": 21,
+      "text": "Liam Park"
+    },
+    "1907": {
+      "x": 98,
+      "y": 215,
+      "width": 114.09375,
+      "height": 17,
+      "text": "Oct 17 · Stanford"
+    },
+    "1909": {
+      "x": 224.09375,
+      "y": 197,
+      "width": 134.90625,
+      "height": 30,
+      "text": "Decision pending"
+    }
+  },
+  "actual": {
+    "1892": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match history"
+    },
+    "1893": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1894": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1896": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match history"
+    },
+    "1898": {
+      "x": 0,
+      "y": 118,
+      "width": 393,
+      "height": 158,
+      "text": "Connected matches, pending decisions, and expired matches from the last 30 days.Liam ParkOct 17 · StanfordDecision pending"
+    },
+    "1899": {
+      "x": 20,
+      "y": 118,
+      "width": 353,
+      "height": 36,
+      "text": "Connected matches, pending decisions, and expired matches from the last 30 days."
+    },
+    "1900": {
+      "x": 20,
+      "y": 172,
+      "width": 353,
+      "height": 80,
+      "text": "Liam ParkOct 17 · StanfordDecision pending"
+    },
+    "1902": {
+      "x": 20,
+      "y": 172,
+      "width": 353,
+      "height": 80,
+      "text": "Liam ParkOct 17 · StanfordDecision pending"
+    },
+    "1903": {
+      "x": 34,
+      "y": 186,
+      "width": 52,
+      "height": 52,
+      "text": ""
+    },
+    "1905": {
+      "x": 98,
+      "y": 192,
+      "width": 114.1875,
+      "height": 40,
+      "text": "Liam ParkOct 17 · Stanford"
+    },
+    "1906": {
+      "x": 98,
+      "y": 192,
+      "width": 114.1875,
+      "height": 21,
+      "text": "Liam Park"
+    },
+    "1907": {
+      "x": 98,
+      "y": 215,
+      "width": 114.1875,
+      "height": 17,
+      "text": "Oct 17 · Stanford"
+    },
+    "1909": {
+      "x": 224.1875,
+      "y": 197,
+      "width": 134.8125,
+      "height": 30,
+      "text": "Decision pending"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 20431,
+    "pixels_above_channel_delta_8": 2604,
+    "mean_absolute_channel_delta": 0.2063861114097648,
+    "max_channel_delta": 137
+  }
+}

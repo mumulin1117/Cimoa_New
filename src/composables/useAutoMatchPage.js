@@ -14,7 +14,7 @@ export function use_auto_match_page(page) {
   watch(guard,value=>{if(value){modal.value='';cancel_loading()}})
   const go=async(url,kind='forward')=>{if(busy.value||!visible||!frame.value)return;error.value='';navigating.value=true;try{await frame.value[`navigate_${kind}`](url)}catch(cause){error.value=cause.message}finally{navigating.value=false}}
   const home=()=>go('/pages/home/index','relaunch')
-  const back=async()=>{if(busy.value)return;if(page==='searching'||page==='paused'){modal.value='leaving';return}if(page==='found'){modal.value='found-leave';return}if(!['index','preferences','history'].includes(page)){await home();return}await go(page==='preferences'?c.value.active?.route||'/pages/auto-match/index':'/pages/home/index','back')}
+  const back=async()=>{if(busy.value)return;if(page==='searching'||page==='paused'){modal.value='leaving';return}if(page==='found'){modal.value='found-leave';return}if(!['index','preferences','history'].includes(page)){await home();return}await go(page==='preferences'?c.value.active?.route||'/pages/auto-match/index':page==='history'?'/pages/auto-match/index':'/pages/home/index','back')}
   const follow=async()=>{if(!visible||!ready||!frame.value||busy.value||guard.value||['index','preferences','history'].includes(page))return;const row=c.value.match,route=c.value.route;if(options_view.value&&page==='no-match'&&['searching','paused','no_match'].includes(row.status))return;const target=route?.split('/').pop()?.split('?')[0];if(target&&target!==page){modal.value='';await go(route,'replace')}}
   watch(()=>[c.value.match?.status,c.value.error,store.session.account_id],follow)
   onReady(()=>{ready=true;follow()});onShow(()=>{visible=true;store.tick();nextTick(follow)})

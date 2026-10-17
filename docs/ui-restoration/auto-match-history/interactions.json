@@ -1,7 +1,7 @@
 [
   {
     "interaction_id": "amHistory.goBack.click.1",
-    "source_screen": "amHistory:1890",
+    "source_screen": "amHistory:1893",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -13,7 +13,7 @@
   },
   {
     "interaction_id": "amHistory.h.go.click.1",
-    "source_screen": "amHistory:1890",
+    "source_screen": "amHistory:1902",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",

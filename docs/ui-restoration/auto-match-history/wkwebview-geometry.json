@@ -1,0 +1,24 @@
+{
+  "errors" : [
+
+  ],
+  "footer" : null,
+  "header" : {
+    "height" : 65.4375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Auto Match history\nConnected matches, pending decisions, and expired matches from the last 30 days.\n\n\nLiam Park\nOct 17 · Stanford\nDecision pending\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

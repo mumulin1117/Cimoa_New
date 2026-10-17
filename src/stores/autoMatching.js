@@ -146,5 +146,5 @@ export function matching_context(data,id,now,hydration='ready') {
     const connection=connection_for(data,match.candidate_id,now)
     if(!connection?.conversation_id||connection.source_match_id!==match.match_id)return empty('This connection is no longer available. Return Home to view your current connections.')
   }
-  return clone_data({error:'',match,route:match?match_route(match):null,active,preferences:data.match_preferences.find(p=>p.owner_user_id===s.owner_id(data)),candidate:match?.candidate_id?s.user_by_id(data,match.candidate_id):null,history:s.owned_matches(data,now).filter(m=>m.created_at>=now-30*86400000),pool:[]})
+  return clone_data({error:'',match,route:match?match_route(match):null,active,preferences:data.match_preferences.find(p=>p.owner_user_id===s.owner_id(data)),candidate:match?.candidate_id?s.user_by_id(data,match.candidate_id):null,history:s.owned_matches(data,now).filter(m=>m.created_at>=now-30*86400000&&m.created_at<=now),pool:[]})
 }
