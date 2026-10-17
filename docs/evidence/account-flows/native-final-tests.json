@@ -1,0 +1,89 @@
+{
+  "devices": [
+    {
+      "architecture": "arm64",
+      "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "deviceName": "iPhone 17 Pro",
+      "modelName": "iPhone 17 Pro",
+      "osBuildNumber": "23F77",
+      "osVersion": "26.5",
+      "platform": "iOS Simulator"
+    }
+  ],
+  "testNodes": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "duration": "12秒",
+                  "durationInSeconds": 12.713079929351807,
+                  "name": "testAccountSettingsSafetyAndCoinRecovery()",
+                  "nodeIdentifier": "HostTests/testAccountSettingsSafetyAndCoinRecovery()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testAccountSettingsSafetyAndCoinRecovery",
+                  "nodeType": "Test Case",
+                  "result": "Passed"
+                },
+                {
+                  "duration": "3秒",
+                  "durationInSeconds": 3.450461983680725,
+                  "name": "testBundledH5AndMeasuredSafeAreas()",
+                  "nodeIdentifier": "HostTests/testBundledH5AndMeasuredSafeAreas()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testBundledH5AndMeasuredSafeAreas",
+                  "nodeType": "Test Case",
+                  "result": "Passed"
+                },
+                {
+                  "duration": "55秒",
+                  "durationInSeconds": 55.76409304141998,
+                  "name": "testFreshRegistrationToHomeWithOwnedPhotos()",
+                  "nodeIdentifier": "HostTests/testFreshRegistrationToHomeWithOwnedPhotos()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testFreshRegistrationToHomeWithOwnedPhotos",
+                  "nodeType": "Test Case",
+                  "result": "Passed"
+                },
+                {
+                  "duration": "0.037s",
+                  "durationInSeconds": 0.03653991222381592,
+                  "name": "testNativeRequestReplyAndFailureBoundaries()",
+                  "nodeIdentifier": "HostTests/testNativeRequestReplyAndFailureBoundaries()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testNativeRequestReplyAndFailureBoundaries",
+                  "nodeType": "Test Case",
+                  "result": "Passed"
+                },
+                {
+                  "duration": "3秒",
+                  "durationInSeconds": 3.73150897026062,
+                  "name": "testProfilePushPopAndMainTabsInRealWebKit()",
+                  "nodeIdentifier": "HostTests/testProfilePushPopAndMainTabsInRealWebKit()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testProfilePushPopAndMainTabsInRealWebKit",
+                  "nodeType": "Test Case",
+                  "result": "Passed"
+                }
+              ],
+              "name": "HostTests",
+              "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests",
+              "nodeType": "Test Suite",
+              "result": "Passed"
+            }
+          ],
+          "name": "cimoaNeapoTests",
+          "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests",
+          "nodeType": "Unit test bundle",
+          "result": "Passed"
+        }
+      ],
+      "name": "cimoaNeapo",
+      "nodeType": "Test Plan",
+      "result": "Passed"
+    }
+  ],
+  "testPlanConfigurations": [
+    {
+      "configurationId": "1",
+      "configurationName": "Test Scheme Action"
+    }
+  ]
+}

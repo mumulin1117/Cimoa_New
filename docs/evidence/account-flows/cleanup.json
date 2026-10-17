@@ -1,0 +1,9 @@
+{
+  "result": "passed",
+  "temporary_preview_servers": "No account/profile/settings/coins browser test or xcodebuild process remains after completion",
+  "browsers": "Each isolated test closes its browser/context in finally",
+  "other_projects": "Existing Eluva preview services on 4173/4174/4175/4176 preserved",
+  "extracted_archive": "Exact mkdtemp extraction directory removed in finally",
+  "git_locks": "Two stale empty unowned locks moved to documented recoverable temporary paths",
+  "production_app": "cimoaNeapo intentionally launched on the requested iPhone 17 Pro; its bundled loopback HTTP adapter is not a development preview service"
+}

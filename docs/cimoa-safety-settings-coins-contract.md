@@ -1,5 +1,7 @@
 # Cimoa 安全、设置、金币与本地账号契约
 
+2026-10-17实现增量见[本轮记录](./cimoa-profile-settings-coins-acceptance.md)。用户已决定移除Apple登录/注册UI，本轮不恢复这些入口；下文早期Apple登录契约不代表当前页面。金币请求使用原created_at+8000ms窗口和精确请求/产品/账号绑定，隐藏页停止观察与写入、恢复不重复派发。初始余额与经过验证的购买在统一详情getter中区分。Terms/Privacy现还支持Coin Help来源，刷新回退只携带Store验证过的本人draft ID。注销成功页由本次auth_flow.deleted_account_id归属，不能展示旧注销。
+
 本契约在阶段 5 开始前补齐本轮页面的阶段 1–3 信息。UI 来源为 `CIRCA All Screens (interactive).html`；涉及服务承诺的演示脚本不作为真实结果。所有页面使用当前账号 Store、统一路由过渡、固定 Header/底部安全区和唯一滚动区。
 
 ## 本地能力边界

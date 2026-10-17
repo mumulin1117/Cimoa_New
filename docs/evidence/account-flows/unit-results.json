@@ -1,0 +1,8 @@
+{
+  "tests": 154,
+  "failures": 0,
+  "skipped": 0,
+  "result": "passed",
+  "report_source": "/tmp/cimoa-account-unit-results.xml",
+  "scope": "Explicit 16 non-browser suites; no browser/watch glob"
+}

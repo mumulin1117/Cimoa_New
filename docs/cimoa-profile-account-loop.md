@@ -1,5 +1,7 @@
 # Cimoa 个人资料与账号闭环
 
+2026-10-17更新：本轮已补齐语音简介录制/试听/暂存/最终原子Save和媒体刷新、源12组偏好、脱敏认证页，以及设置/安全/金币子页的账号与恢复边界。最新结论见[当前验收记录](./cimoa-profile-settings-coins-acceptance.md)；下文的80项与“语音/Coins/设置子页未完成”属于2026-10-14历史范围，不覆盖本轮。尚未配置的真实服务仍保持失败，完整视觉与生产验收不冒标通过。
+
 本轮范围为当前账号的资料编辑、照片、兴趣、目标、破冰问题、预览，以及设置主页面的退出和重新登录。来源为原型 Edit All、Basic Info、Interests、Connection Goals、Icebreakers、Preview、Settings 与 Logout；不扩展支付、学生认证、客服和删除账号服务。
 
 ## 当前执行

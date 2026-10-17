@@ -1,5 +1,7 @@
 # Cimoa 整体验收状态
 
+2026-10-17 Profile、设置、安全、金币增量：154项数据测试与本轮浏览器功能回归通过，H5继续由独立项目构建并打包到WKWebView；当前原生结果、资源校验和仍待验收项见[本轮记录](./cimoa-profile-settings-coins-acceptance.md)。未配置支付、大学认证和客服服务不会假成功。本轮不宣告完整视觉或全App验收通过；以下旧的阶段范围与数字仅用于历史追溯。
+
 2026-10-17 Auto Match 增量：[本轮报告](./cimoa-auto-match-acceptance.md)。146项数据测试、11页浏览器来源对照、6组跨页、15组边界和原生12/12通过，含真实后台恢复与双账号明确接受。金币相关依赖页仍pending，Auto Match全量验收与全App完成不冒标verified。下文较早统计和服务范围均为历史记录。
 
 2026-10-14增量：同一H5在普通浏览器完成本轮依赖页无宿主降级验证，并在iPhone 17 Pro Simulator（iOS 26.5）由`cimoaNeapo`包内HTTP origin加载，完整HostTests 11/11通过。新增覆盖免费文字连接请求、Profile偏好、认证/Auto Match真实失败边界、权限说明、金币失败与系统状态；既有套件继续覆盖安全区、键盘、三Tab、媒体刷新、持久化与桥接白名单。实体麦克风/相机、真实matching service和大学认证服务未配置，生产成功路径仍pending，不能声明全App还原完成。详见[阶段5依赖流程](./cimoa-stage5-dependency-flows.md)。

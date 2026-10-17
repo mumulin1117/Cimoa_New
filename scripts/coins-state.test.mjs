@@ -7,6 +7,7 @@ import { create_purchase_bridge } from '../src/utils/iapBridge.js'
 import { fake_clock } from './lib/fake-clock.mjs'
 import { coin_child_route, coin_center_route } from '../src/utils/coinReturnContext.js'
 import { build_coin_history } from '../src/utils/coinHistory.js'
+import { legal_document_route, legal_return_route } from '../src/utils/legalNavigation.js'
 const payload = { request_id: 'purchase_test', owner_user_id: 'user_cimoa', package_id: 'pkg_60', product_id: 'test.cimoa.60' }
 test('initial dispatch before navigation creates no orphan page timer and caches an early callback', async () => {
   const clock = fake_clock(), sent = [], b = create_purchase_bridge({ timers: clock, clock: clock.now, send: p => sent.push(p) })
@@ -76,4 +77,14 @@ test('ledger detail projects provenance, exact verified amount and real feature 
   store.data.coin_transactions.find(t => t.transaction_id === transaction.transaction_id).amount++
   assert.equal(store.coin_ledger_detail(transaction.transaction_id).verified_purchase, false)
   assert.equal(store.coin_ledger_detail('missing'), null)
+})
+test('public legal navigation keeps only a named app origin and owned coin draft, never an arbitrary redirect', () => {
+  const { store } = fixture(), id = store.save_draft('match_return', 'entry', { kind: 'match_entry', match_id: null }).data
+  assert.equal(legal_document_route(store, 'terms', 'coins', id), '/pages/legal/terms?origin=coins&return_context_id=' + id)
+  assert.equal(legal_return_route(store, 'coins', id), '/pages/coins/help?return_context_id=' + id)
+  assert.equal(legal_document_route(store, 'privacy', 'coins', 'foreign'), '/pages/legal/privacy?origin=coins')
+  assert.equal(legal_return_route(store, 'https://example.com', id), '/pages/settings/legal')
+  store.logout()
+  assert.equal(legal_return_route(store, 'coins', id), '/pages/auth/welcome')
+  assert.equal(legal_return_route(store, 'signup', id), '/pages/auth/signup')
 })

@@ -2495,6 +2495,64 @@ final class HostTests: XCTestCase {
     private func home(_ host: WebViewController) async throws {
         _ = try await script(host, "location.hash = '#/pages/home/index'; await new Promise((resolve,reject) => { let tries=0; const t=setInterval(() => { const el=document.querySelector('.home-header'); if(el && el.getBoundingClientRect().height>0) {clearInterval(t);resolve(true)} else if(++tries>100) {clearInterval(t);reject(Error('Home unavailable'))}},50)}); return true")
     }
+    func testAccountSettingsSafetyAndCoinRecovery() async throws {
+        let host = try await rawHost()
+        let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        let originalScripts = host.webView.configuration.userContentController.userScripts
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/evidence/account-flows")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("native-fixture.json"))) as! [String:Any]
+        let fixtureData = fixture["data"] as! [String:Any]
+        let fixtureOwner = (fixtureData["session"] as! [String:Any])["current_user_id"] as! String
+        let remainingBlocks = (fixtureData["blocked_users"] as! [[String:Any]]).filter { $0["owner_user_id"] as? String == fixtureOwner }.count - 1
+        func resetScripts() {
+            host.webView.configuration.userContentController.removeAllUserScripts()
+            for item in originalScripts { host.webView.configuration.userContentController.addUserScript(item) }
+        }
+        func restore() async throws {
+            resetScripts()
+            let encoded = String(data: try JSONSerialization.data(withJSONObject: snapshot), encoding: .utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const saved=\(encoded);for(const[k,v]of[['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)};", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            try await loadFreshConnection(host, route: "/pages/auth/splash", selector: ".splash-page")
+            resetScripts()
+        }
+        do {
+            let encoded = String(data: try JSONSerialization.data(withJSONObject: fixture["data"]!), encoding: .utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const fixture=\(encoded);fixture.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data:fixture}));", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            try await loadFreshConnection(host, route: "/pages/profile/index", selector: ".profile-name")
+            resetScripts(); host.publishSafeArea()
+            let result = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,visible=s=>[...document.querySelectorAll(s)].find(e=>e.closest('uni-page')===[...document.querySelectorAll('uni-page')].at(-1)&&e.getBoundingClientRect().height>0&&getComputedStyle(e).visibility!=='hidden');
+            const wait=async fn=>{for(let i=0;i<200;i++){const v=fn();if(v)return v;await delay(50)}throw Error('Account flow timeout '+location.hash+' '+document.body.innerText)};
+            const open=async(route,selector)=>{location.hash='#'+route;await wait(()=>visible(selector));await delay(360)},click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));e.scrollIntoView({block:'center'});await delay(280);e.click();await delay(60)};
+            window.__accountChecks=[];const checks=window.__accountChecks,record=(name,pass)=>{if(!pass)throw Error(name);checks.push(name)};
+            await open('/pages/profile/edit','.score-card');await click('editAll.eaOpenDegree.click.1');visible('.profile-field-sheet [aria-label="Business"]').click();await click('profileEdit.basic.click.1');await wait(()=>visible('.profile-basic-page input'));const major=visible('uni-input[aria-label="Field of study"] input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(major,'Interdisciplinary Design');major.dispatchEvent(new Event('input',{bubbles:true}));await click('editBasic.saveBasic.click.1');await wait(()=>visible('.score-card'));await click('editAll.eaSave.click.1');await wait(()=>visible('.profile-name'));record('parent draft cannot overwrite a newer child profile save',state().users.find(u=>u.user_id===state().session.current_user_id).major==='Interdisciplinary Design');
+            await open('/pages/settings/privacy','.settings-privacy-page');const before=localStorage.getItem('cimoa_app_state_v2'),sw=visible('[role=switch]'),checked=sw.getAttribute('aria-checked');sw.click();await delay(80);record('privacy pre-write Loading',!!visible('.loading')&&localStorage.getItem('cimoa_app_state_v2')===before);await wait(()=>!visible('.loading')&&sw.getAttribute('aria-checked')!==checked);record('privacy canonical save',localStorage.getItem('cimoa_app_state_v2')!==before);
+            await open('/pages/settings/blocked','.settings-blocked-page');const block=state().blocked_users.find(b=>b.owner_user_id===state().session.current_user_id),balance=JSON.stringify(state().coin_transactions);await click('blockedList.b.unblock.click.1');await click('unblockOpen.confirmUnblock.click.1');await wait(()=>!state().blocked_users.some(b=>b.block_id===block.block_id));record('unblock does not restore old connection or chat',!state().relationships.some(r=>[r.from_user_id,r.to_user_id].includes(block.user_id)&&[r.from_user_id,r.to_user_id].includes(state().session.current_user_id))&&JSON.stringify(state().coin_transactions)===balance);
+            await open('/pages/profile/prefs','.preferences-groups');record('twelve source preference groups',document.querySelectorAll('.preferences-groups [role=radiogroup]').length===12);const travel=[...document.querySelectorAll('[role=radio]')].find(e=>e.textContent.trim()==='Travel buddies');travel.click();await click('editPrefs.savePrefs.click.1');await wait(()=>state().match_preferences.find(p=>p.owner_user_id===state().session.current_user_id).goal_id==='travel'&&!visible('.loading')&&!visible('.preferences-groups'));await delay(360);record('preferences share matching entity',state().match_preferences.find(p=>p.owner_user_id===state().session.current_user_id).goal_id==='travel');
+            await open('/pages/profile/verification','.verification-summary');record('verification masks email and fabricates no date',visible('.verification-details').textContent.includes('ci•••@gmail.com')&&visible('.verification-details').textContent.includes('Not recorded'));await click('verified.openReverify.click.1');await wait(()=>visible('.reverify-body'));const verifyBefore=localStorage.getItem('cimoa_app_state_v2');await click('reverify.goVerEmail.click.1');await wait(()=>visible('[role=alert]'));record('unconfigured student service fails without mutation',visible('[role=alert]').textContent.includes('not configured')&&localStorage.getItem('cimoa_app_state_v2')===verifyBefore);
+            await open('/pages/coins/index','.coin-center-page');const coins=JSON.stringify(state().coin_transactions);await click('coinStore.continuePurchase.click.1');await wait(()=>visible('.coin-failed-page'));record('real native purchase failure does not credit coins',state().purchase_requests.at(-1).status==='failure'&&JSON.stringify(state().coin_transactions)===coins);
+            return {checks,origin:location.origin,overflow:document.documentElement.scrollWidth>innerWidth,safe:[getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-top'),getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom')]}
+            """) as! [String:Any]
+            XCTAssertEqual((result["checks"] as? [String])?.count, 9)
+            XCTAssertEqual(result["origin"] as? String, BundleHTTPServer.origin)
+            XCTAssertEqual(result["overflow"] as? Bool, false)
+            try await loadFreshConnection(host, route: "/pages/coins/history", selector: ".coin-history-page")
+            let refreshed = try await script(host, "const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return {failed:d.purchase_requests.at(-1).status,credits:document.querySelector('.history-list')?.textContent||document.querySelector('.coin-history-page').textContent,groups:d.match_preferences.find(p=>p.owner_user_id===d.session.current_user_id).goal_id,blocks:d.blocked_users.filter(b=>b.owner_user_id===d.session.current_user_id).length}") as! [String:Any]
+            XCTAssertEqual(refreshed["failed"] as? String, "failure"); XCTAssertEqual(refreshed["groups"] as? String, "travel"); XCTAssertEqual(refreshed["blocks"] as? Int, remainingBlocks)
+            XCTAssertTrue((refreshed["credits"] as? String ?? "").contains("Coin credit"))
+            _ = try await script(host, "await document.fonts.ready;for(const a of document.getAnimations())if(a.effect?.getComputedTiming().iterations!==Infinity)a.finish();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return true")
+            try await Task.sleep(nanoseconds: 250_000_000)
+            let image = try await host.webView.takeSnapshot(configuration: nil)
+            try image.pngData()!.write(to: folder.appendingPathComponent("actual-wkwebview-coins.png"))
+            try JSONSerialization.data(withJSONObject: ["result":"passed","module":result,"refresh":refreshed,"scope":"real WKWebView DOM/bridge; not manual OS touch, microphone or payment success"], options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("native-module.json"))
+            try await restore()
+        } catch {
+            if let failure = try? await script(host, "return {url:location.href,text:document.body.innerText,checks:window.__accountChecks||[]}") { try? JSONSerialization.data(withJSONObject: failure, options: [.prettyPrinted]).write(to: folder.appendingPathComponent("native-module-failure.json")) }
+            try? await restore(); throw error
+        }
+    }
     func testBundledH5AndMeasuredSafeAreas() async throws {
         let host = try await host(); try await home(host); host.publishSafeArea()
         let result = try await script(host, "await document.fonts.ready; await new Promise(r=>setTimeout(r,300)); const frame=document.querySelector('.main-tab-frame'); const bar=document.querySelector('.tabbar').getBoundingClientRect(); return {origin:location.origin,title:document.title,top:frame.querySelector('.safe-area').getBoundingClientRect().height,bottom:parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom')),images:[...frame.querySelectorAll('img')].filter(i=>i.src.includes('/static/')).every(i=>i.complete&&i.naturalWidth>0),barBottom:bar.bottom,height:innerHeight,secure:isSecureContext}") as! [String: Any]

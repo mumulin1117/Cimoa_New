@@ -1,0 +1,95 @@
+{
+  "devices": [
+    {
+      "architecture": "arm64",
+      "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "deviceName": "iPhone 17 Pro",
+      "modelName": "iPhone 17 Pro",
+      "osBuildNumber": "23F77",
+      "osVersion": "26.5",
+      "platform": "iOS Simulator"
+    }
+  ],
+  "testNodes": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "name": "HostTests.swift:2547: failed: caught error: \"Error Domain=WKErrorDomain Code=4 \"A JavaScript exception occurred\" UserInfo={WKJavaScriptExceptionLineNumber=0, WKJavaScriptExceptionMessage=Error: Account flow timeout #/pages/settings/blocked Blocked accounts\n\n\nChloe Lin\nHKUST\nUnblock\n, WKJavaScriptExceptionColumnNumber=0, NSLocalizedDescription=A JavaScript exception occurred}\"",
+                      "nodeType": "Failure Message"
+                    }
+                  ],
+                  "duration": "15秒",
+                  "durationInSeconds": 15.834505081176758,
+                  "name": "testAccountSettingsSafetyAndCoinRecovery()",
+                  "nodeIdentifier": "HostTests/testAccountSettingsSafetyAndCoinRecovery()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testAccountSettingsSafetyAndCoinRecovery",
+                  "nodeType": "Test Case",
+                  "result": "Failed"
+                },
+                {
+                  "duration": "3秒",
+                  "durationInSeconds": 3.48408305644989,
+                  "name": "testBundledH5AndMeasuredSafeAreas()",
+                  "nodeIdentifier": "HostTests/testBundledH5AndMeasuredSafeAreas()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testBundledH5AndMeasuredSafeAreas",
+                  "nodeType": "Test Case",
+                  "result": "Passed"
+                },
+                {
+                  "duration": "56秒",
+                  "durationInSeconds": 56.096811056137085,
+                  "name": "testFreshRegistrationToHomeWithOwnedPhotos()",
+                  "nodeIdentifier": "HostTests/testFreshRegistrationToHomeWithOwnedPhotos()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testFreshRegistrationToHomeWithOwnedPhotos",
+                  "nodeType": "Test Case",
+                  "result": "Passed"
+                },
+                {
+                  "duration": "0.055s",
+                  "durationInSeconds": 0.05472898483276367,
+                  "name": "testNativeRequestReplyAndFailureBoundaries()",
+                  "nodeIdentifier": "HostTests/testNativeRequestReplyAndFailureBoundaries()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testNativeRequestReplyAndFailureBoundaries",
+                  "nodeType": "Test Case",
+                  "result": "Passed"
+                },
+                {
+                  "duration": "3秒",
+                  "durationInSeconds": 3.7538360357284546,
+                  "name": "testProfilePushPopAndMainTabsInRealWebKit()",
+                  "nodeIdentifier": "HostTests/testProfilePushPopAndMainTabsInRealWebKit()",
+                  "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testProfilePushPopAndMainTabsInRealWebKit",
+                  "nodeType": "Test Case",
+                  "result": "Passed"
+                }
+              ],
+              "name": "HostTests",
+              "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests",
+              "nodeType": "Test Suite",
+              "result": "Failed"
+            }
+          ],
+          "name": "cimoaNeapoTests",
+          "nodeIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests",
+          "nodeType": "Unit test bundle",
+          "result": "Failed"
+        }
+      ],
+      "name": "cimoaNeapo",
+      "nodeType": "Test Plan",
+      "result": "Failed"
+    }
+  ],
+  "testPlanConfigurations": [
+    {
+      "configurationId": "1",
+      "configurationName": "Test Scheme Action"
+    }
+  ]
+}

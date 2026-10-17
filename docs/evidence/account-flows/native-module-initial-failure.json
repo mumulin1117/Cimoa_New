@@ -1,0 +1,10 @@
+{
+  "url" : "http:\/\/127.0.0.1:18765\/index.html?connectionRegression=FFF78B3E-EE4B-4814-BB94-0916B9AC78C3#\/pages\/settings\/blocked",
+  "text" : "Blocked accounts\n\n\nChloe Lin\nHKUST\nUnblock\n",
+  "checks" : [
+    "privacy pre-write Loading",
+    "privacy canonical save",
+    "unblock does not restore old connection or chat",
+    "twelve source preference groups"
+  ]
+}

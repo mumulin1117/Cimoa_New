@@ -1,0 +1,45 @@
+{
+  "devicesAndConfigurations": [
+    {
+      "device": {
+        "architecture": "arm64",
+        "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+        "deviceName": "iPhone 17 Pro",
+        "modelName": "iPhone 17 Pro",
+        "osBuildNumber": "23F77",
+        "osVersion": "26.5",
+        "platform": "iOS Simulator"
+      },
+      "expectedFailures": 0,
+      "failedTests": 1,
+      "passedTests": 4,
+      "skippedTests": 0,
+      "testPlanConfiguration": {
+        "configurationId": "1",
+        "configurationName": "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription": "cimoaNeapo · Built with macOS 26.5.1",
+  "expectedFailures": 0,
+  "failedTests": 1,
+  "finishTime": 1792238793.826,
+  "passedTests": 4,
+  "result": "Failed",
+  "skippedTests": 0,
+  "startTime": 1792238696.47,
+  "statistics": [],
+  "testFailures": [
+    {
+      "failureText": "failed: caught error: \"Error Domain=WKErrorDomain Code=4 \"A JavaScript exception occurred\" UserInfo={WKJavaScriptExceptionLineNumber=0, WKJavaScriptExceptionMessage=Error: Account flow timeout #/pages/settings/blocked Blocked accounts\n\n\nChloe Lin\nHKUST\nUnblock\n, WKJavaScriptExceptionColumnNumber=0, NSLocalizedDescription=A JavaScript exception occurred}\"",
+      "targetName": "cimoaNeapoTests",
+      "testIdentifier": 1,
+      "testIdentifierString": "HostTests/testAccountSettingsSafetyAndCoinRecovery()",
+      "testIdentifierURL": "test://com.apple.xcode/cimoaNeapo/cimoaNeapoTests/HostTests/testAccountSettingsSafetyAndCoinRecovery",
+      "testName": "testAccountSettingsSafetyAndCoinRecovery()"
+    }
+  ],
+  "title": "Test - cimoaNeapo",
+  "topInsights": [],
+  "totalTestCount": 5
+}

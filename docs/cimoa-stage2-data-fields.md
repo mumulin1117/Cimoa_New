@@ -1,5 +1,7 @@
 # Cimoa 阶段二数据字段与状态契约
 
+2026-10-17 Profile/设置/安全/金币增量：users.bio_audio_id 为可空、本人所有的可解码音频ID，duration_ms必须大于0且不超过30000，save_profile_edit在最终Save时与Blob一起发布；取消/失败清理本次新Blob，历史引用保留。auth_flow.deleted_account_id仅由本次成功注销写入，last_deleted_account据此只读投影完成页。新增profile_verification（脱敏邮箱、实际状态/可选日期）、profile_preference_groups（12组到共用match_preferences字段）、coin_ledger_detail（本人记录及购买证明/实际功能）均为derived，不持久化副本。购买沿用created_at+8000ms窗口；回调received_at只由桥接器本机接收时间产生，不信任载荷时间。字段、实现及证据见[本轮记录](./cimoa-profile-settings-coins-acceptance.md)。
+
 2026-10-17 Home 增量：统一只读 home_feed 已组合三核心实体、匹配与 UTC 配额；字段类型/来源/默认/关联/不落盘策略见 [Home 字段契约](./cimoa-home-feed.md)。旧 home_connections/home_match_card 仅转发，验收见 [本轮结果](./ui-restoration/home-aggregate-acceptance.md)。
 
 2026-10-17 增量已实现：[账号、人物与关系实体统一](./cimoa-account-social-entities.md)。本次用户决定移除 Apple 登录/注册入口；固定码与资料完成的账号可使用本机社交、活动与匹配，但不授予官方学生认证。新增 23 位头像人物、共享关系读取、Home 发送状态及本机匹配时间字段；以下旧的外部服务缺失记录保留历史语境，以该增量记录说明当前本机范围。

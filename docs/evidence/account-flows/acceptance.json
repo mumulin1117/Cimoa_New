@@ -1,0 +1,918 @@
+{
+  "date": "2026-10-17",
+  "base_commit": "8055a493",
+  "result": "Local functional regression passed; full visual and production-service acceptance pending",
+  "unit": {
+    "tests": 154,
+    "failures": 0,
+    "skipped": 0,
+    "result": "passed",
+    "report_source": "/tmp/cimoa-account-unit-results.xml",
+    "scope": "Explicit 16 non-browser suites; no browser/watch glob"
+  },
+  "browser": {
+    "reports": [
+      {
+        "file": "docs/evidence/account-flows/coin-processing.json",
+        "checks": 3,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/account-flows/coin-refund.json",
+        "checks": 1,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/account-flows/coin-return.json",
+        "checks": 2,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/account-flows/coin-spend-failed.json",
+        "checks": 3,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/account-flows/preferences.json",
+        "checks": 1,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/account-flows/profile-child-merge.json",
+        "checks": 1,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/account-flows/purchase-recovery.json",
+        "checks": 2,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/account-flows/voice.json",
+        "checks": 4,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/coins/cancelled-acceptance.json",
+        "checks": 5,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/coins/center-acceptance.json",
+        "checks": 4,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/coins/failed-acceptance.json",
+        "checks": 5,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/coins/help-acceptance.json",
+        "checks": 6,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/coins/history-acceptance.json",
+        "checks": 7,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/coins/purchase-detail-acceptance.json",
+        "checks": 5,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/coins/purchasing-acceptance.json",
+        "checks": 4,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/coins/spend-detail-acceptance.json",
+        "checks": 5,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/coins/success-acceptance.json",
+        "checks": 4,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/profile-browser.json",
+        "checks": 20,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/profile-edit/edit-acceptance.json",
+        "checks": 9,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/profile-edit/preview-acceptance.json",
+        "checks": 14,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/profile-edit/settings-acceptance.json",
+        "checks": 3,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/blocked-acceptance.json",
+        "checks": 3,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/delete-final-acceptance.json",
+        "checks": 6,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/delete-info-acceptance.json",
+        "checks": 4,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/delete-reason-acceptance.json",
+        "checks": 5,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/delete-success-acceptance.json",
+        "checks": 5,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/language-acceptance.json",
+        "checks": 2,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/legal-landing-acceptance.json",
+        "checks": 5,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/legal-privacy-acceptance.json",
+        "checks": 3,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/legal-terms-acceptance.json",
+        "checks": 3,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/notifications-acceptance.json",
+        "checks": 6,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/permissions-acceptance.json",
+        "checks": 3,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/privacy-acceptance.json",
+        "checks": 6,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/report-detail-acceptance.json",
+        "checks": 5,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/report-user-acceptance.json",
+        "checks": 5,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/reports-list-acceptance.json",
+        "checks": 4,
+        "result": "passed"
+      },
+      {
+        "file": "docs/evidence/settings-safety/support-acceptance.json",
+        "checks": 8,
+        "result": "passed"
+      },
+      {
+        "file": "docs/ui-restoration/account-coin-spend-failed/source-browser-acceptance.json",
+        "checks": 2,
+        "result": "passed"
+      },
+      {
+        "file": "docs/ui-restoration/account-coins/source-browser-acceptance.json",
+        "checks": 2,
+        "result": "passed"
+      },
+      {
+        "file": "docs/ui-restoration/account-profile/source-browser-acceptance.json",
+        "checks": 2,
+        "result": "passed"
+      },
+      {
+        "file": "docs/ui-restoration/account-reverify/source-browser-acceptance.json",
+        "checks": 3,
+        "result": "passed"
+      },
+      {
+        "file": "docs/ui-restoration/account-settings/source-browser-acceptance.json",
+        "checks": 2,
+        "result": "passed"
+      },
+      {
+        "file": "docs/ui-restoration/account-verification/source-browser-acceptance.json",
+        "checks": 3,
+        "result": "passed"
+      }
+    ],
+    "recorded_checks_including_repeated_cross_page_coverage": 195
+  },
+  "native": {
+    "summary": "docs/evidence/account-flows/native-final-summary.json",
+    "result": {
+      "devicesAndConfigurations": [
+        {
+          "device": {
+            "architecture": "arm64",
+            "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+            "deviceName": "iPhone 17 Pro",
+            "modelName": "iPhone 17 Pro",
+            "osBuildNumber": "23F77",
+            "osVersion": "26.5",
+            "platform": "iOS Simulator"
+          },
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "passedTests": 5,
+          "skippedTests": 0,
+          "testPlanConfiguration": {
+            "configurationId": "1",
+            "configurationName": "Test Scheme Action"
+          }
+        }
+      ],
+      "environmentDescription": "cimoaNeapo · Built with macOS 26.5.1",
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "finishTime": 1792239492.415,
+      "passedTests": 5,
+      "result": "Passed",
+      "skippedTests": 0,
+      "startTime": 1792239412.456,
+      "statistics": [],
+      "testFailures": [],
+      "title": "Test - cimoaNeapo",
+      "topInsights": [],
+      "totalTestCount": 5
+    },
+    "module": "docs/evidence/account-flows/native-module.json",
+    "initial_failures": "Three harness assumptions repaired: actual pop owner, navigation-settle timing/current page, and retaining unrelated blocked accounts. Original assertions remain, with fixture-derived counts. Final five-case suite rerun without failures."
+  },
+  "h5": {
+    "files": 414,
+    "every_test_bundle_file_matches": true,
+    "prototype_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "prototype_not_packaged": true
+  },
+  "page_status": [
+    {
+      "query": "route=legalTerms",
+      "component": "src/pages/legal/terms.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=legalPrivacy",
+      "component": "src/pages/legal/privacy.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinStore",
+      "component": "src/pages/coins/index.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinPurchasing&pkg=1",
+      "component": "src/pages/coins/purchasing.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinApple&pkg=1",
+      "component": "src/pages/coins/purchasing.vue; src/utils/iapBridge.js",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinSuccess&pkg=1&coins=200",
+      "component": "src/pages/coins/success.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinFailed&pkg=1",
+      "component": "src/pages/coins/failed.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinCancelled&pkg=1",
+      "component": "src/pages/coins/cancelled.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinProcessing",
+      "component": "src/pages/coins/processing.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinSpendFailed",
+      "component": "src/pages/coins/spend-failed.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinHistory",
+      "component": "src/pages/coins/history.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinPurchaseDetail",
+      "component": "src/pages/coins/purchase-detail.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinSpendDetail",
+      "component": "src/pages/coins/spend-detail.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=coinHelp",
+      "component": "src/pages/coins/help.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=profile",
+      "component": "src/pages/profile/index.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=profilePreview",
+      "component": "src/pages/profile/preview.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=editAll",
+      "component": "src/pages/profile/edit.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=editBasic",
+      "component": "src/pages/profile/basic.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=editInterests",
+      "component": "src/pages/profile/interests.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=editGoals",
+      "component": "src/pages/profile/goals.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=editPrefs",
+      "component": "src/pages/profile/prefs.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=editIce",
+      "component": "src/pages/profile/ice.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=verified",
+      "component": "src/pages/profile/verification.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=reverify",
+      "component": "src/pages/profile/reverify.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=settings",
+      "component": "src/pages/settings/index.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=setNotif",
+      "component": "src/pages/settings/notif.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=setPrivacy",
+      "component": "src/pages/settings/privacy.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=setPerm",
+      "component": "src/pages/settings/perm.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=setLang",
+      "component": "src/pages/settings/lang.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=blockedList",
+      "component": "src/pages/settings/blocked.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=blockedList&blocked=0",
+      "component": "src/pages/settings/blocked.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=setSupport",
+      "component": "src/pages/settings/support.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=setLegal",
+      "component": "src/pages/settings/legal.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=delInfo",
+      "component": "src/pages/settings/delete/info.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=delReason",
+      "component": "src/pages/settings/delete/reason.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=delFinal",
+      "component": "src/pages/settings/delete/final.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=delSuccess",
+      "component": "src/pages/settings/delete/success.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=reportsSubmitted",
+      "component": "src/pages/safety/reports.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=reportDetail",
+      "component": "src/pages/safety/report-detail.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    },
+    {
+      "query": "route=safetyReport",
+      "component": "src/pages/safety/report-user.vue",
+      "status": "pending",
+      "local_acceptance": "passed",
+      "visual_acceptance": "pending",
+      "full_acceptance": "pending"
+    }
+  ],
+  "in_progress": [],
+  "remaining": [
+    "Full independent visual approval for this increment",
+    "Manual OS touch, keyboard, picker, hardware permission and physical background recovery for this increment",
+    "No microphone input device: browser recording uses controlled input",
+    "StoreKit products/receipt verification, university verification, support delivery, formal legal and signing configuration"
+  ],
+  "preserved_user_files": [
+    "docs/evidence/registration/interests.png",
+    "docs/evidence/registration/major.png",
+    "docs/evidence/registration/notif.png",
+    "docs/evidence/registration/notification-access.png",
+    "docs/evidence/registration/photo-access.png",
+    "docs/evidence/registration/photos-added.png",
+    "docs/evidence/registration/photos-restored.png",
+    "docs/evidence/registration/signup.png",
+    "docs/evidence/registration/uni.png",
+    "docs/evidence/registration/verification-email.png"
+  ],
+  "task_files": [
+    "docs/cimoa-page-inventory.json",
+    "docs/evidence/account-flows/coin-processing.json",
+    "docs/evidence/account-flows/coin-refund.json",
+    "docs/evidence/account-flows/coin-return.json",
+    "docs/evidence/account-flows/coin-spend-failed.json",
+    "docs/evidence/account-flows/preferences.json",
+    "docs/evidence/account-flows/preferences.png",
+    "docs/evidence/account-flows/profile-child-merge.json",
+    "docs/evidence/account-flows/purchase-recovery.json",
+    "docs/evidence/account-flows/spend-failed.png",
+    "docs/evidence/account-flows/voice-draft.png",
+    "docs/evidence/account-flows/voice.json",
+    "docs/evidence/coins/cancelled-acceptance.json",
+    "docs/evidence/coins/cancelled-default.png",
+    "docs/evidence/coins/center-acceptance.json",
+    "docs/evidence/coins/center-default.png",
+    "docs/evidence/coins/center-small.png",
+    "docs/evidence/coins/failed-acceptance.json",
+    "docs/evidence/coins/failed-timeout.png",
+    "docs/evidence/coins/help-acceptance.json",
+    "docs/evidence/coins/history-acceptance.json",
+    "docs/evidence/coins/history-default.png",
+    "docs/evidence/coins/purchase-detail-acceptance.json",
+    "docs/evidence/coins/purchase-detail-fixture.png",
+    "docs/evidence/coins/purchasing-acceptance.json",
+    "docs/evidence/coins/purchasing-browser-timeout.png",
+    "docs/evidence/coins/purchasing-browser-waiting.png",
+    "docs/evidence/coins/spend-detail-acceptance.json",
+    "docs/evidence/coins/spend-detail-fixture.png",
+    "docs/evidence/coins/success-acceptance.json",
+    "docs/evidence/profile-browser.json",
+    "docs/evidence/profile-dependency-error.png",
+    "docs/evidence/profile-edit/basic.png",
+    "docs/evidence/profile-edit/edit-acceptance.json",
+    "docs/evidence/profile-edit/edit-default.png",
+    "docs/evidence/profile-edit/edit-empty.png",
+    "docs/evidence/profile-edit/edit-expired.png",
+    "docs/evidence/profile-edit/edit-small.png",
+    "docs/evidence/profile-edit/goals.png",
+    "docs/evidence/profile-edit/ice.png",
+    "docs/evidence/profile-edit/interests.png",
+    "docs/evidence/profile-edit/preview-acceptance.json",
+    "docs/evidence/profile-edit/preview.png",
+    "docs/evidence/profile-edit/settings-acceptance.json",
+    "docs/evidence/profile-edit/settings.png",
+    "docs/evidence/profile-empty.png",
+    "docs/evidence/profile-long-safe-area.png",
+    "docs/evidence/profile-photo-loading.png",
+    "docs/evidence/settings-safety/blocked-acceptance.json",
+    "docs/evidence/settings-safety/blocked-confirm.png",
+    "docs/evidence/settings-safety/blocked-empty.png",
+    "docs/evidence/settings-safety/delete-final-acceptance.json",
+    "docs/evidence/settings-safety/delete-final-small.png",
+    "docs/evidence/settings-safety/delete-info-acceptance.json",
+    "docs/evidence/settings-safety/delete-info-small.png",
+    "docs/evidence/settings-safety/delete-info.png",
+    "docs/evidence/settings-safety/delete-reason-acceptance.json",
+    "docs/evidence/settings-safety/delete-reason-small.png",
+    "docs/evidence/settings-safety/delete-reason.png",
+    "docs/evidence/settings-safety/delete-success-acceptance.json",
+    "docs/evidence/settings-safety/delete-success-small.png",
+    "docs/evidence/settings-safety/delete-success.png",
+    "docs/evidence/settings-safety/language-acceptance.json",
+    "docs/evidence/settings-safety/language-default.png",
+    "docs/evidence/settings-safety/legal-landing-acceptance.json",
+    "docs/evidence/settings-safety/legal-landing.png",
+    "docs/evidence/settings-safety/legal-privacy-acceptance.json",
+    "docs/evidence/settings-safety/legal-terms-acceptance.json",
+    "docs/evidence/settings-safety/notifications-acceptance.json",
+    "docs/evidence/settings-safety/notifications-default.png",
+    "docs/evidence/settings-safety/permissions-acceptance.json",
+    "docs/evidence/settings-safety/permissions-browser.png",
+    "docs/evidence/settings-safety/privacy-acceptance.json",
+    "docs/evidence/settings-safety/privacy-default.png",
+    "docs/evidence/settings-safety/privacy-small.png",
+    "docs/evidence/settings-safety/report-detail-acceptance.json",
+    "docs/evidence/settings-safety/report-detail-long.png",
+    "docs/evidence/settings-safety/report-user-acceptance.json",
+    "docs/evidence/settings-safety/report-user-form.png",
+    "docs/evidence/settings-safety/reports-empty.png",
+    "docs/evidence/settings-safety/reports-list-acceptance.json",
+    "docs/evidence/settings-safety/reports-populated.png",
+    "docs/evidence/settings-safety/support-acceptance.json",
+    "docs/evidence/settings-safety/support-form.png",
+    "docs/evidence/settings-safety/support-small.png",
+    "docs/ui-restoration/account-blocked/difference-audit.md",
+    "docs/ui-restoration/account-blocked/source-contract.json",
+    "docs/ui-restoration/account-coin-cancelled/difference-audit.md",
+    "docs/ui-restoration/account-coin-cancelled/source-contract.json",
+    "docs/ui-restoration/account-coin-failed/difference-audit.md",
+    "docs/ui-restoration/account-coin-failed/source-contract.json",
+    "docs/ui-restoration/account-coin-help/difference-audit.md",
+    "docs/ui-restoration/account-coin-help/source-contract.json",
+    "docs/ui-restoration/account-coin-history/difference-audit.md",
+    "docs/ui-restoration/account-coin-history/source-contract.json",
+    "docs/ui-restoration/account-coin-processing/difference-audit.md",
+    "docs/ui-restoration/account-coin-processing/source-contract.json",
+    "docs/ui-restoration/account-coin-purchase-detail/difference-audit.md",
+    "docs/ui-restoration/account-coin-purchase-detail/source-contract.json",
+    "docs/ui-restoration/account-coin-spend-detail/difference-audit.md",
+    "docs/ui-restoration/account-coin-spend-detail/source-contract.json",
+    "docs/ui-restoration/account-coin-spend-failed/actual-browser.png",
+    "docs/ui-restoration/account-coin-spend-failed/diff.png",
+    "docs/ui-restoration/account-coin-spend-failed/difference-audit.md",
+    "docs/ui-restoration/account-coin-spend-failed/overlay.png",
+    "docs/ui-restoration/account-coin-spend-failed/reference.png",
+    "docs/ui-restoration/account-coin-spend-failed/source-browser-acceptance.json",
+    "docs/ui-restoration/account-coin-spend-failed/source-contract.json",
+    "docs/ui-restoration/account-coin-success/difference-audit.md",
+    "docs/ui-restoration/account-coin-success/source-contract.json",
+    "docs/ui-restoration/account-coins/actual-browser.png",
+    "docs/ui-restoration/account-coins/diff.png",
+    "docs/ui-restoration/account-coins/difference-audit.md",
+    "docs/ui-restoration/account-coins/overlay.png",
+    "docs/ui-restoration/account-coins/reference.png",
+    "docs/ui-restoration/account-coins/source-browser-acceptance.json",
+    "docs/ui-restoration/account-coins/source-contract.json",
+    "docs/ui-restoration/account-delete-final/difference-audit.md",
+    "docs/ui-restoration/account-delete-final/source-contract.json",
+    "docs/ui-restoration/account-delete-info/difference-audit.md",
+    "docs/ui-restoration/account-delete-info/source-contract.json",
+    "docs/ui-restoration/account-delete-reason/difference-audit.md",
+    "docs/ui-restoration/account-delete-reason/source-contract.json",
+    "docs/ui-restoration/account-delete-success/difference-audit.md",
+    "docs/ui-restoration/account-delete-success/source-contract.json",
+    "docs/ui-restoration/account-edit/acceptance.json",
+    "docs/ui-restoration/account-edit/difference-audit.md",
+    "docs/ui-restoration/account-edit/source-contract.json",
+    "docs/ui-restoration/account-language/difference-audit.md",
+    "docs/ui-restoration/account-language/source-contract.json",
+    "docs/ui-restoration/account-legal-privacy/difference-audit.md",
+    "docs/ui-restoration/account-legal-privacy/source-contract.json",
+    "docs/ui-restoration/account-legal-terms/difference-audit.md",
+    "docs/ui-restoration/account-legal-terms/source-contract.json",
+    "docs/ui-restoration/account-legal/difference-audit.md",
+    "docs/ui-restoration/account-legal/source-contract.json",
+    "docs/ui-restoration/account-notifications/difference-audit.md",
+    "docs/ui-restoration/account-notifications/source-contract.json",
+    "docs/ui-restoration/account-permissions/difference-audit.md",
+    "docs/ui-restoration/account-permissions/source-contract.json",
+    "docs/ui-restoration/account-preferences/difference-audit.md",
+    "docs/ui-restoration/account-preferences/source-contract.json",
+    "docs/ui-restoration/account-preview/difference-audit.md",
+    "docs/ui-restoration/account-preview/source-contract.json",
+    "docs/ui-restoration/account-privacy/difference-audit.md",
+    "docs/ui-restoration/account-privacy/source-contract.json",
+    "docs/ui-restoration/account-profile/actual-browser.png",
+    "docs/ui-restoration/account-profile/diff.png",
+    "docs/ui-restoration/account-profile/difference-audit.md",
+    "docs/ui-restoration/account-profile/overlay.png",
+    "docs/ui-restoration/account-profile/reference.png",
+    "docs/ui-restoration/account-profile/source-browser-acceptance.json",
+    "docs/ui-restoration/account-profile/source-contract.json",
+    "docs/ui-restoration/account-purchasing/acceptance.json",
+    "docs/ui-restoration/account-purchasing/difference-audit.md",
+    "docs/ui-restoration/account-purchasing/source-contract.json",
+    "docs/ui-restoration/account-report-detail/difference-audit.md",
+    "docs/ui-restoration/account-report-detail/source-contract.json",
+    "docs/ui-restoration/account-report-user/difference-audit.md",
+    "docs/ui-restoration/account-report-user/source-contract.json",
+    "docs/ui-restoration/account-reports/difference-audit.md",
+    "docs/ui-restoration/account-reports/source-contract.json",
+    "docs/ui-restoration/account-reverify/actual-browser.png",
+    "docs/ui-restoration/account-reverify/diff.png",
+    "docs/ui-restoration/account-reverify/difference-audit.md",
+    "docs/ui-restoration/account-reverify/overlay.png",
+    "docs/ui-restoration/account-reverify/reference.png",
+    "docs/ui-restoration/account-reverify/source-browser-acceptance.json",
+    "docs/ui-restoration/account-reverify/source-contract.json",
+    "docs/ui-restoration/account-settings/actual-browser.png",
+    "docs/ui-restoration/account-settings/diff.png",
+    "docs/ui-restoration/account-settings/difference-audit.md",
+    "docs/ui-restoration/account-settings/overlay.png",
+    "docs/ui-restoration/account-settings/reference.png",
+    "docs/ui-restoration/account-settings/source-browser-acceptance.json",
+    "docs/ui-restoration/account-settings/source-contract.json",
+    "docs/ui-restoration/account-support/difference-audit.md",
+    "docs/ui-restoration/account-support/source-contract.json",
+    "docs/ui-restoration/account-verification/actual-browser.png",
+    "docs/ui-restoration/account-verification/diff.png",
+    "docs/ui-restoration/account-verification/difference-audit.md",
+    "docs/ui-restoration/account-verification/overlay.png",
+    "docs/ui-restoration/account-verification/reference.png",
+    "docs/ui-restoration/account-verification/source-browser-acceptance.json",
+    "docs/ui-restoration/account-verification/source-contract.json",
+    "scripts/account-flows-browser.test.mjs",
+    "scripts/account-scope.test.mjs",
+    "scripts/account-source-browser.test.mjs",
+    "scripts/coins-browser.test.mjs",
+    "scripts/coins-state.test.mjs",
+    "scripts/lib/profile-browser.mjs",
+    "scripts/profile-edit.test.mjs",
+    "scripts/settings-safety-browser.test.mjs",
+    "scripts/settings-safety.test.mjs",
+    "src/components/ProfileBioConfirmDialog.vue",
+    "src/components/ProfileEditorFrame.vue",
+    "src/composables/useAccountScope.js",
+    "src/composables/useEventMedia.js",
+    "src/composables/useProfileEditor.js",
+    "src/config/navigation.js",
+    "src/config/theme.json",
+    "src/pages/coins/cancelled.vue",
+    "src/pages/coins/failed.vue",
+    "src/pages/coins/help.vue",
+    "src/pages/coins/history.vue",
+    "src/pages/coins/index.vue",
+    "src/pages/coins/processing.vue",
+    "src/pages/coins/purchase-detail.vue",
+    "src/pages/coins/purchasing.vue",
+    "src/pages/coins/spend-detail.vue",
+    "src/pages/coins/spend-failed.vue",
+    "src/pages/coins/success.vue",
+    "src/pages/legal/privacy.vue",
+    "src/pages/legal/terms.vue",
+    "src/pages/profile/edit.vue",
+    "src/pages/profile/editor.css",
+    "src/pages/profile/index.vue",
+    "src/pages/profile/prefs.vue",
+    "src/pages/profile/preview.vue",
+    "src/pages/profile/reverify.vue",
+    "src/pages/profile/verification.vue",
+    "src/pages/safety/report-detail.vue",
+    "src/pages/safety/report-user.vue",
+    "src/pages/safety/reports.vue",
+    "src/pages/settings/blocked.vue",
+    "src/pages/settings/delete/final.vue",
+    "src/pages/settings/delete/info.vue",
+    "src/pages/settings/delete/reason.vue",
+    "src/pages/settings/delete/success.vue",
+    "src/pages/settings/index.vue",
+    "src/pages/settings/lang.vue",
+    "src/pages/settings/legal.vue",
+    "src/pages/settings/notif.vue",
+    "src/pages/settings/perm.vue",
+    "src/pages/settings/privacy.vue",
+    "src/pages/settings/support.vue",
+    "src/stores/coinSelectors.js",
+    "src/stores/profileEditing.js",
+    "src/stores/profilePreferences.js",
+    "src/stores/selectors.js",
+    "src/stores/store.js",
+    "src/utils/coinHistory.js",
+    "src/utils/coinReturnContext.js",
+    "src/utils/iapBridge.js",
+    "src/utils/legalNavigation.js",
+    "docs/cimoa-profile-account-loop.md",
+    "docs/cimoa-profile-settings-coins-acceptance.md",
+    "docs/cimoa-safety-settings-coins-contract.md",
+    "docs/cimoa-stage2-data-fields.md",
+    "docs/cimoa-stage5-page-status.md",
+    "docs/cimoa-stage6-acceptance.md",
+    "docs/evidence/account-flows/acceptance.json",
+    "docs/evidence/account-flows/actual-wkwebview-coins.png",
+    "docs/evidence/account-flows/cleanup.json",
+    "docs/evidence/account-flows/native-final-summary.json",
+    "docs/evidence/account-flows/native-final-tests.json",
+    "docs/evidence/account-flows/native-fixture-expectation-failure.json",
+    "docs/evidence/account-flows/native-fixture.json",
+    "docs/evidence/account-flows/native-initial-summary.json",
+    "docs/evidence/account-flows/native-initial-tests.json",
+    "docs/evidence/account-flows/native-module-initial-failure.json",
+    "docs/evidence/account-flows/native-module-second-failure.json",
+    "docs/evidence/account-flows/native-module.json",
+    "docs/evidence/account-flows/normal-run.json",
+    "docs/evidence/account-flows/package.json",
+    "docs/evidence/account-flows/unit-results.json",
+    "docs/evidence/account-flows/unit-results.xml",
+    "docs/evidence/profile-edit/edit-long.png",
+    "docs/evidence/profile-edit/logout.png",
+    "docs/evidence/profile-edit/preview-small.png",
+    "docs/evidence/settings-safety/legal-privacy-small.png",
+    "docs/evidence/settings-safety/legal-privacy.png",
+    "docs/evidence/settings-safety/legal-terms-small.png",
+    "docs/evidence/settings-safety/legal-terms.png",
+    "ios/cimoaNeapo/README.md",
+    "ios/cimoaNeapo/Tests/HostTests.swift",
+    "scripts/account-acceptance-report.mjs"
+  ],
+  "conventions": {
+    "gates": [
+      "corepack pnpm check:conventions",
+      "git diff --check",
+      "corepack pnpm build:h5"
+    ],
+    "result": "passed in order before this one-shot report",
+    "new_warnings": 0,
+    "changed_source_theme_variables_all_defined": true,
+    "convention_files_unchanged": true,
+    "git": "local commits only; no push",
+    "data": "canonical Store/getters, custom 500ms pre-write Loading, atomic media/ledger compensation and full-auth-context scope"
+  },
+  "cleanup": {
+    "temporary_browser_servers": "closed in each test finally; final PID audit separately recorded",
+    "unrelated_project_servers": "untouched",
+    "stale_empty_git_locks": "moved recoverably after no Git process/lsof owner was found"
+  }
+}

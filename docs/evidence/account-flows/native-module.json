@@ -1,0 +1,29 @@
+{
+  "module" : {
+    "checks" : [
+      "parent draft cannot overwrite a newer child profile save",
+      "privacy pre-write Loading",
+      "privacy canonical save",
+      "unblock does not restore old connection or chat",
+      "twelve source preference groups",
+      "preferences share matching entity",
+      "verification masks email and fabricates no date",
+      "unconfigured student service fails without mutation",
+      "real native purchase failure does not credit coins"
+    ],
+    "origin" : "http:\/\/127.0.0.1:18765",
+    "overflow" : false,
+    "safe" : [
+      "62px",
+      "34px"
+    ]
+  },
+  "refresh" : {
+    "blocks" : 1,
+    "credits" : "Purchase failed300 Coins · $3.99Oct 17, 2026 at 8:17 PM · failureNo coinsCoins usedRecorded coin activityOct 16, 2026 at 8:04 PM · Completed−10Coins usedRecorded coin activityOct 15, 2026 at 8:04 PM · Completed−10Coins usedRecorded coin activityOct 14, 2026 at 8:04 PM · Completed−20Coin creditStarting coin balanceOct 13, 2026 at 8:04 PM · Completed+300",
+    "failed" : "failure",
+    "groups" : "travel"
+  },
+  "result" : "passed",
+  "scope" : "real WKWebView DOM\/bridge; not manual OS touch, microphone or payment success"
+}

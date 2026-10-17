@@ -1,0 +1,12 @@
+{
+  "result": "passed",
+  "device": "iPhone 17 Pro",
+  "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+  "bundle_id": "com.cimoa.neapo.dev",
+  "pid": 19424,
+  "origin": "http://127.0.0.1:18765",
+  "entry_sha256": "7efa39a8e067c5ed6d6e9cb6d65323202deec83d4b18e3ded0b32b1787c05b77",
+  "entry_matches_final_dist": true,
+  "preview_server_required": false,
+  "data_preserved": "Native test fixtures restore both current/legacy state before normal launch; original account state was not reset"
+}
