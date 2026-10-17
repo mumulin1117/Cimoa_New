@@ -88,7 +88,7 @@ watch(() => store.session.current_user_id, reset_transient)
           <view class="event-cover" role="button" tabindex="0" :aria-label="`View ${event.title}`" :data-interaction="!index ? 'events.openEvent.click.1' : null" @click.stop="navigate('detail', event.event_id)" @keydown.enter.stop="navigate('detail', event.event_id)"><ProfilePhoto :src="event.image_url" :name="event.title" event-cover /></view>
           <view class="event-body">
             <text class="event-title" role="button" tabindex="0" :data-interaction="!index ? 'events.openEvent.click.2' : null" @click.stop="navigate('detail', event.event_id)" @keydown.enter.stop="navigate('detail', event.event_id)">{{ event.title }}</text>
-            <view class="event-info"><view class="events-icon"><SourceIcon name="events" /></view><text>{{ event.date_label }}</text></view>
+            <view class="event-info"><view class="events-icon"><SourceIcon name="events" :stroke-width="1.9" /></view><text>{{ event.date_label }}</text></view>
             <view class="event-info event-location"><view class="events-icon"><SourceIcon name="location" /></view><text>{{ event.location }}</text></view>
             <view class="event-participants" :role="index ? undefined : 'button'" :tabindex="index ? undefined : 0" :data-interaction="!index ? 'events.openParticipants.click.1' : null" :data-target="!index ? target('participants', event.event_id) : null" @click="!index && navigate('participants', event.event_id)" @keydown.enter="!index && navigate('participants', event.event_id)">
               <view v-if="event.participants.length" class="event-avatars"><view v-for="person in event.participants" :key="person.user_id" class="event-avatar"><UserAvatar :src="person.avatar_url" :name="person.user_name" /></view></view>
@@ -186,7 +186,7 @@ watch(() => store.session.current_user_id, reset_transient)
 }
 .event-cover { position: relative; flex: none; height: 408.397rpx; cursor: pointer; }
 .event-body { display: flex; flex-direction: column; flex: 1; min-width: 0; padding: 26.718rpx 30.534rpx 30.534rpx; }
-.event-title { font-size: 43.893rpx; font-weight: 800; letter-spacing: -0.03em; overflow-wrap: anywhere; cursor: pointer; }
+.event-title { font-size: 43.893rpx; font-weight: 800; letter-spacing: -0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
 .event-info { display: flex; align-items: center; gap: 17.176rpx; margin-top: 15.267rpx; font-size: 32.443rpx; }
 .event-info text { min-width: 0; overflow-wrap: anywhere; }
 .event-location { margin-top: 13.359rpx; }
@@ -195,7 +195,7 @@ watch(() => store.session.current_user_id, reset_transient)
 .event-avatars { display: flex; flex: none; }
 .event-avatar { width: 68.702rpx; height: 68.702rpx; border-radius: 50%; border: 2px solid var(--cimoa-surface-card); }
 .event-avatar + .event-avatar { margin-left: -20.992rpx; }
-.event-count { min-width: 0; font-size: 28.626rpx; color: var(--cimoa-text-secondary); overflow-wrap: anywhere; }
+.event-count { min-width: 0; font-size: 28.626rpx; color: var(--cimoa-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .event-actions { margin-top: auto; padding-top: 26.718rpx; }
 .event-join {
   display: flex;

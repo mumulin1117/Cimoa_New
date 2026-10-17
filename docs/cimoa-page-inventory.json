@@ -3103,7 +3103,8 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending",
+    "visual_acceptance": "pending"
   },
   {
     "source_screen": "Discover / Icebreaker / Select Question",
