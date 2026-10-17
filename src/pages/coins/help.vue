@@ -1,10 +1,12 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { onHide } from '@dcloudio/uni-app'
+import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import { COIN_ROUTES } from '@/utils/coinNavigation.js'
+import { coin_center_route } from '@/utils/coinReturnContext.js'
 
 const faqs = Object.freeze([
   ['What are coins?', 'Coins are a virtual currency inside Cimoa. They have no cash value. Text introductions are free; coins are used for voice introductions and Priority Match.'],
@@ -22,17 +24,20 @@ const links = Object.freeze([
 ])
 const store = use_app_store(), frame = ref(null), open_faq = ref(-1), navigating = ref(false), error = ref('')
 const account_id = store.session.account_id
+const return_context_id = ref('')
+onLoad(options => { return_context_id.value = String(options?.return_context_id || '') })
+const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved coin data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const toggle_faq = index => { if (!navigating.value) { open_faq.value = open_faq.value === index ? -1 : index; error.value = '' } }
 const navigate = async route => {
-  if (navigating.value) return
+  if (navigating.value || route && access_error.value) return
   navigating.value = true; error.value = ''
   try {
-    if (!route) await frame.value.navigate_back(COIN_ROUTES.center)
+    if (!route) await frame.value.navigate_back(coin_center_route(store, return_context_id.value))
     else await frame.value.navigate_forward(route)
   } catch (cause) { error.value = cause.message }
   finally { navigating.value = false }

@@ -9214,7 +9214,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented with seven truthful FAQ accordions, user-approved free text and 10/20 coin pricing, explicit missing StoreKit and support delivery, independent legal document routes, local support route and origin-aware back"
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-coin-help/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-coin-help/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/coins/help-acceptance.json"
   },
   {
     "source_screen": "Profile / Personal / Default",

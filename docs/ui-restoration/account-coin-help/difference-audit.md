@@ -1,0 +1,3 @@
+# Coin help audit — 2026-10-17
+
+HTML 2466–2495 locked. Retain source FAQs and legal/support links, with accurate current free text/10-coin voice/20-coin priority costs. Actual payment/refund/support availability is disclosed; no fake tickets or refunds. Bind full auth scope and preserve owned return_context_id through History/detail/help reload fallback. Keep legal origins on an enum whitelist, never arbitrary redirect URLs; public Terms/Privacy remain accessible to guests. Any explanatory capability copy is a known delta, not source pixel identity. Browser accordion/pricing/links/no-charge/refresh/back required; real payment success and full pixel acceptance pending.
