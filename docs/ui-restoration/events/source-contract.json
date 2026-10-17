@@ -1,0 +1,828 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isEvents",
+    "source_query": "route=events",
+    "lines": [
+      517,
+      606
+    ],
+    "fragment_sha256": "fa2b6a2b179d72ac0b6e8a865228ba0e004ea624bd665a51f733e92af72c6267",
+    "fragment": "<sc-if value=\"{{ isEvents }}\" hint-placeholder-val=\"{{ true }}\">\n      <div data-screen-label=\"{{ eventsLabel }}\" style=\"position:absolute;inset:0;animation:cRise 260ms ease both\">\n        <div class=\"cscroll\" style=\"position:absolute;top:54px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box\">\n\n          <div style=\"display:flex;align-items:center;justify-content:space-between;padding-top:6px\">\n            <div sc-camel-on-click=\"{{ openMe }}\" style=\"width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8.5\" r=\"3.8\"></circle><path d=\"M4.5 20c1.4-4.2 5-6 7.5-6s6.1 1.8 7.5 6\"></path></svg></div>\n            <div sc-camel-on-click=\"{{ openMyEvents }}\" style=\"display:flex;align-items:center;gap:8px;height:48px;padding:0 18px;border-radius:24px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);cursor:pointer;flex:none\">\n              <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"3\"></rect><path d=\"M8 3v3M16 3v3M3 10h18\"></path><path d=\"m9 15 2 2 4-4\"></path></svg>\n              <div style=\"font-size:16px;font-weight:700;color:#0b1b3a;white-space:nowrap\">My Events</div>\n            </div>\n          </div>\n\n          <div style=\"margin-top:14px\">\n            <div style=\"font-size:38px;line-height:1.04;font-weight:800;letter-spacing:-0.035em\">Campus events</div>\n          </div>\n          <div style=\"font-size:17px;color:#5b6b85;margin-top:8px\">Meet around something you enjoy.</div>\n\n          <div style=\"display:flex;gap:10px;margin-top:18px\">\n            <div sc-camel-on-click=\"{{ chipToday }}\" style=\"height:52px;padding:0 20px;border-radius:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;font-weight:600;white-space:nowrap;background:{{ chipTodayBg }};color:{{ chipTodayInk }};box-shadow:0 6px 18px rgba(16,36,74,0.08)\">Today</div>\n            <div sc-camel-on-click=\"{{ chipWeek }}\" style=\"height:52px;padding:0 20px;border-radius:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;font-weight:600;white-space:nowrap;background:{{ chipWeekBg }};color:{{ chipWeekInk }};box-shadow:0 6px 18px rgba(16,36,74,0.08)\">This week</div>\n            <div sc-camel-on-click=\"{{ chipCampus }}\" style=\"height:52px;padding:0 20px;border-radius:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;font-weight:600;white-space:nowrap;background:{{ chipCampusBg }};color:{{ chipCampusInk }};box-shadow:0 6px 18px rgba(16,36,74,0.08)\">My campus</div>\n          </div>\n\n          <div class=\"cscroll\" style=\"display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:14px -20px 0;padding:4px 20px 18px;box-sizing:border-box\">\n          <div style=\"flex:none;width:calc(100% - 44px);scroll-snap-align:start;scroll-margin-left:20px;border-radius:26px;background:#fff;box-shadow:0 12px 30px rgba(16,36,74,0.09);overflow:hidden\">\n            <img sc-camel-on-click=\"{{ openEvent }}\" src=\"b8e65a72-456c-4c6d-ac60-b015015a3ac4\" alt=\"{{ featuredTitle }}\" style=\"width:100%;height:214px;object-fit:cover;display:block;cursor:pointer\">\n            <div style=\"padding:14px 16px 16px\">\n              <div sc-camel-on-click=\"{{ openEvent }}\" style=\"font-size:23px;font-weight:800;letter-spacing:-0.03em;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ featuredTitle }}</div>\n              <div style=\"display:flex;align-items:center;gap:9px;margin-top:8px\">\n                <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"3\"></rect><path d=\"M8 3v3M16 3v3M3 10h18\"></path></svg>\n                <div style=\"font-size:17px\">{{ featuredWhen }}</div>\n              </div>\n              <div style=\"display:flex;align-items:center;gap:9px;margin-top:7px\">\n                <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z\"></path><circle cx=\"12\" cy=\"10\" r=\"2.6\"></circle></svg>\n                <div style=\"font-size:17px\">{{ featuredPlace }}</div>\n              </div>\n              <div sc-camel-on-click=\"{{ openParticipants }}\" style=\"display:flex;align-items:center;gap:12px;margin-top:12px;cursor:pointer\">\n                <div style=\"display:flex\">\n                  <img src=\"ceafb32c-3d48-4ad1-a03e-d45b4d907d80\" alt=\"\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;display:block\">\n                  <img src=\"e8bd8155-5a13-4ecb-a022-bcadf12ae5f6\" alt=\"\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block\">\n                  <img src=\"38b22b41-ac8f-43cc-8bf0-37a8b75c93b4\" alt=\"\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block\">\n                  <img src=\"92ddcb8c-721c-4960-a8e8-51926692ee27\" alt=\"\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block\">\n                </div>\n                <div style=\"font-size:15px;color:#5b6b85;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ featuredGoing }} · {{ evSpots }}</div>\n              </div>\n              <div sc-camel-on-click=\"{{ evJoinTap }}\" style=\"margin-top:14px;height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;background:{{ joinBg }};box-shadow:{{ joinShadow }}\">\n                <div style=\"font-size:19px;font-weight:700;color:{{ joinInk }}\">{{ joinLabel }}</div>\n              </div>\n              <sc-if value=\"{{ joined }}\" hint-placeholder-val=\"{{ false }}\">\n                <div style=\"display:flex;gap:12px;margin-top:12px;justify-content:center\">\n                  <div sc-camel-on-click=\"{{ openGroup }}\" style=\"font-size:16px;font-weight:600;color:#2563eb;cursor:pointer\">Event group chat</div>\n                  <div style=\"width:1px;background:#e2e8f0\"></div>\n                  <div sc-camel-on-click=\"{{ manageAttendance }}\" style=\"font-size:16px;font-weight:600;color:#64748b;cursor:pointer\">Manage</div>\n                </div>\n              </sc-if>\n            </div>\n          </div>\n            <sc-for list=\"{{ moreFeatured }}\" as=\"m\" hint-placeholder-count=\"2\">\n              <div sc-camel-on-click=\"{{ m.open }}\" style=\"flex:none;width:calc(100% - 44px);scroll-snap-align:start;scroll-margin-left:20px;border-radius:26px;background:#fff;box-shadow:0 12px 30px rgba(16,36,74,0.09);overflow:hidden;cursor:pointer;display:flex;flex-direction:column\">\n                <div style=\"height:214px;background:{{ m.cover }};display:flex;align-items:center;justify-content:center;font-size:64px\">{{ m.emoji }}</div>\n                <div style=\"padding:14px 16px 16px;display:flex;flex-direction:column;flex:1\">\n                  <div style=\"font-size:23px;font-weight:800;letter-spacing:-0.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ m.title }}</div>\n                  <div style=\"display:flex;align-items:center;gap:9px;margin-top:8px\">\n                    <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"3\"></rect><path d=\"M8 3v3M16 3v3M3 10h18\"></path></svg>\n                    <div style=\"font-size:17px\">{{ m.when }}</div>\n                  </div>\n                  <div style=\"display:flex;align-items:center;gap:9px;margin-top:7px\">\n                    <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z\"></path><circle cx=\"12\" cy=\"10\" r=\"2.6\"></circle></svg>\n                    <div style=\"font-size:17px\">{{ m.place }}</div>\n                  </div>\n                  <div style=\"display:flex;align-items:center;gap:12px;margin-top:12px\">\n                    <div style=\"display:flex\">\n                      <img src=\"ceafb32c-3d48-4ad1-a03e-d45b4d907d80\" alt=\"\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;display:block\">\n                      <img src=\"e8bd8155-5a13-4ecb-a022-bcadf12ae5f6\" alt=\"\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block\">\n                      <img src=\"38b22b41-ac8f-43cc-8bf0-37a8b75c93b4\" alt=\"\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block\">\n                      <img src=\"92ddcb8c-721c-4960-a8e8-51926692ee27\" alt=\"\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block\">\n                    </div>\n                    <div style=\"font-size:15px;color:#5b6b85;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ m.going }} · {{ m.spots }}</div>\n                  </div>\n                  <div style=\"margin-top:auto;padding-top:14px\">\n                    <div sc-camel-on-click=\"{{ m.join }}\" style=\"height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;background:{{ m.btnBg }};box-shadow:{{ m.btnShadow }}\"><div style=\"font-size:19px;font-weight:700;color:{{ m.btnInk }}\">{{ m.btnLabel }}</div></div>\n                  </div>\n                </div>\n              </div>\n            </sc-for>\n          </div>\n\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/events/index",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "styles": [
+    {
+      "line": 518,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 260ms ease both"
+    },
+    {
+      "line": 519,
+      "tag": "div",
+      "style": "position:absolute;top:54px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box"
+    },
+    {
+      "line": 521,
+      "tag": "div",
+      "style": "display:flex;align-items:center;justify-content:space-between;padding-top:6px"
+    },
+    {
+      "line": 522,
+      "tag": "div",
+      "style": "width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 523,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:8px;height:48px;padding:0 18px;border-radius:24px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);cursor:pointer;flex:none"
+    },
+    {
+      "line": 525,
+      "tag": "div",
+      "style": "font-size:16px;font-weight:700;color:#0b1b3a;white-space:nowrap"
+    },
+    {
+      "line": 529,
+      "tag": "div",
+      "style": "margin-top:14px"
+    },
+    {
+      "line": 530,
+      "tag": "div",
+      "style": "font-size:38px;line-height:1.04;font-weight:800;letter-spacing:-0.035em"
+    },
+    {
+      "line": 532,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85;margin-top:8px"
+    },
+    {
+      "line": 534,
+      "tag": "div",
+      "style": "display:flex;gap:10px;margin-top:18px"
+    },
+    {
+      "line": 535,
+      "tag": "div",
+      "style": "height:52px;padding:0 20px;border-radius:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;font-weight:600;white-space:nowrap;background:{{ chipTodayBg }};color:{{ chipTodayInk }};box-shadow:0 6px 18px rgba(16,36,74,0.08)"
+    },
+    {
+      "line": 536,
+      "tag": "div",
+      "style": "height:52px;padding:0 20px;border-radius:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;font-weight:600;white-space:nowrap;background:{{ chipWeekBg }};color:{{ chipWeekInk }};box-shadow:0 6px 18px rgba(16,36,74,0.08)"
+    },
+    {
+      "line": 537,
+      "tag": "div",
+      "style": "height:52px;padding:0 20px;border-radius:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;font-weight:600;white-space:nowrap;background:{{ chipCampusBg }};color:{{ chipCampusInk }};box-shadow:0 6px 18px rgba(16,36,74,0.08)"
+    },
+    {
+      "line": 540,
+      "tag": "div",
+      "style": "display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:14px -20px 0;padding:4px 20px 18px;box-sizing:border-box"
+    },
+    {
+      "line": 541,
+      "tag": "div",
+      "style": "flex:none;width:calc(100% - 44px);scroll-snap-align:start;scroll-margin-left:20px;border-radius:26px;background:#fff;box-shadow:0 12px 30px rgba(16,36,74,0.09);overflow:hidden"
+    },
+    {
+      "line": 542,
+      "tag": "img",
+      "style": "width:100%;height:214px;object-fit:cover;display:block;cursor:pointer"
+    },
+    {
+      "line": 543,
+      "tag": "div",
+      "style": "padding:14px 16px 16px"
+    },
+    {
+      "line": 544,
+      "tag": "div",
+      "style": "font-size:23px;font-weight:800;letter-spacing:-0.03em;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 545,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:9px;margin-top:8px"
+    },
+    {
+      "line": 547,
+      "tag": "div",
+      "style": "font-size:17px"
+    },
+    {
+      "line": 549,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:9px;margin-top:7px"
+    },
+    {
+      "line": 551,
+      "tag": "div",
+      "style": "font-size:17px"
+    },
+    {
+      "line": 553,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:12px;margin-top:12px;cursor:pointer"
+    },
+    {
+      "line": 554,
+      "tag": "div",
+      "style": "display:flex"
+    },
+    {
+      "line": 555,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;display:block"
+    },
+    {
+      "line": 556,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block"
+    },
+    {
+      "line": 557,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block"
+    },
+    {
+      "line": 558,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block"
+    },
+    {
+      "line": 560,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 562,
+      "tag": "div",
+      "style": "margin-top:14px;height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;background:{{ joinBg }};box-shadow:{{ joinShadow }}"
+    },
+    {
+      "line": 563,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:{{ joinInk }}"
+    },
+    {
+      "line": 566,
+      "tag": "div",
+      "style": "display:flex;gap:12px;margin-top:12px;justify-content:center"
+    },
+    {
+      "line": 567,
+      "tag": "div",
+      "style": "font-size:16px;font-weight:600;color:#2563eb;cursor:pointer"
+    },
+    {
+      "line": 568,
+      "tag": "div",
+      "style": "width:1px;background:#e2e8f0"
+    },
+    {
+      "line": 569,
+      "tag": "div",
+      "style": "font-size:16px;font-weight:600;color:#64748b;cursor:pointer"
+    },
+    {
+      "line": 575,
+      "tag": "div",
+      "style": "flex:none;width:calc(100% - 44px);scroll-snap-align:start;scroll-margin-left:20px;border-radius:26px;background:#fff;box-shadow:0 12px 30px rgba(16,36,74,0.09);overflow:hidden;cursor:pointer;display:flex;flex-direction:column"
+    },
+    {
+      "line": 576,
+      "tag": "div",
+      "style": "height:214px;background:{{ m.cover }};display:flex;align-items:center;justify-content:center;font-size:64px"
+    },
+    {
+      "line": 577,
+      "tag": "div",
+      "style": "padding:14px 16px 16px;display:flex;flex-direction:column;flex:1"
+    },
+    {
+      "line": 578,
+      "tag": "div",
+      "style": "font-size:23px;font-weight:800;letter-spacing:-0.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 579,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:9px;margin-top:8px"
+    },
+    {
+      "line": 581,
+      "tag": "div",
+      "style": "font-size:17px"
+    },
+    {
+      "line": 583,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:9px;margin-top:7px"
+    },
+    {
+      "line": 585,
+      "tag": "div",
+      "style": "font-size:17px"
+    },
+    {
+      "line": 587,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:12px;margin-top:12px"
+    },
+    {
+      "line": 588,
+      "tag": "div",
+      "style": "display:flex"
+    },
+    {
+      "line": 589,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;display:block"
+    },
+    {
+      "line": 590,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block"
+    },
+    {
+      "line": 591,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block"
+    },
+    {
+      "line": 592,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;border:2px solid #fff;margin-left:-11px;display:block"
+    },
+    {
+      "line": 594,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 596,
+      "tag": "div",
+      "style": "margin-top:auto;padding-top:14px"
+    },
+    {
+      "line": 597,
+      "tag": "div",
+      "style": "height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;background:{{ m.btnBg }};box-shadow:{{ m.btnShadow }}"
+    },
+    {
+      "line": 597,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:{{ m.btnInk }}"
+    }
+  ],
+  "texts": [
+    {
+      "line": 525,
+      "text": "My Events"
+    },
+    {
+      "line": 530,
+      "text": "Campus events"
+    },
+    {
+      "line": 532,
+      "text": "Meet around something you enjoy."
+    },
+    {
+      "line": 535,
+      "text": "Today"
+    },
+    {
+      "line": 536,
+      "text": "This week"
+    },
+    {
+      "line": 537,
+      "text": "My campus"
+    },
+    {
+      "line": 560,
+      "text": " · "
+    },
+    {
+      "line": 567,
+      "text": "Event group chat"
+    },
+    {
+      "line": 569,
+      "text": "Manage"
+    },
+    {
+      "line": 594,
+      "text": " · "
+    }
+  ],
+  "svg": [
+    {
+      "line": 522,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "26"
+        ],
+        [
+          "height",
+          "26"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#0b1b3a"
+        ],
+        [
+          "stroke-width",
+          "2"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 522,
+      "tag": "circle",
+      "attrs": [
+        [
+          "cx",
+          "12"
+        ],
+        [
+          "cy",
+          "8.5"
+        ],
+        [
+          "r",
+          "3.8"
+        ]
+      ]
+    },
+    {
+      "line": 522,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M4.5 20c1.4-4.2 5-6 7.5-6s6.1 1.8 7.5 6"
+        ]
+      ]
+    },
+    {
+      "line": 524,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "20"
+        ],
+        [
+          "height",
+          "20"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#0b1b3a"
+        ],
+        [
+          "stroke-width",
+          "2"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 524,
+      "tag": "rect",
+      "attrs": [
+        [
+          "x",
+          "3"
+        ],
+        [
+          "y",
+          "5"
+        ],
+        [
+          "width",
+          "18"
+        ],
+        [
+          "height",
+          "16"
+        ],
+        [
+          "rx",
+          "3"
+        ]
+      ]
+    },
+    {
+      "line": 524,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M8 3v3M16 3v3M3 10h18"
+        ]
+      ]
+    },
+    {
+      "line": 524,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "m9 15 2 2 4-4"
+        ]
+      ]
+    },
+    {
+      "line": 546,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "20"
+        ],
+        [
+          "height",
+          "20"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#0b1b3a"
+        ],
+        [
+          "stroke-width",
+          "1.9"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 546,
+      "tag": "rect",
+      "attrs": [
+        [
+          "x",
+          "3"
+        ],
+        [
+          "y",
+          "5"
+        ],
+        [
+          "width",
+          "18"
+        ],
+        [
+          "height",
+          "16"
+        ],
+        [
+          "rx",
+          "3"
+        ]
+      ]
+    },
+    {
+      "line": 546,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M8 3v3M16 3v3M3 10h18"
+        ]
+      ]
+    },
+    {
+      "line": 550,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "20"
+        ],
+        [
+          "height",
+          "20"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#0b1b3a"
+        ],
+        [
+          "stroke-width",
+          "1.9"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 550,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"
+        ]
+      ]
+    },
+    {
+      "line": 550,
+      "tag": "circle",
+      "attrs": [
+        [
+          "cx",
+          "12"
+        ],
+        [
+          "cy",
+          "10"
+        ],
+        [
+          "r",
+          "2.6"
+        ]
+      ]
+    },
+    {
+      "line": 580,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "20"
+        ],
+        [
+          "height",
+          "20"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#0b1b3a"
+        ],
+        [
+          "stroke-width",
+          "1.9"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 580,
+      "tag": "rect",
+      "attrs": [
+        [
+          "x",
+          "3"
+        ],
+        [
+          "y",
+          "5"
+        ],
+        [
+          "width",
+          "18"
+        ],
+        [
+          "height",
+          "16"
+        ],
+        [
+          "rx",
+          "3"
+        ]
+      ]
+    },
+    {
+      "line": 580,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M8 3v3M16 3v3M3 10h18"
+        ]
+      ]
+    },
+    {
+      "line": 584,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "20"
+        ],
+        [
+          "height",
+          "20"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#0b1b3a"
+        ],
+        [
+          "stroke-width",
+          "1.9"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 584,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"
+        ]
+      ]
+    },
+    {
+      "line": 584,
+      "tag": "circle",
+      "attrs": [
+        [
+          "cx",
+          "12"
+        ],
+        [
+          "cy",
+          "10"
+        ],
+        [
+          "r",
+          "2.6"
+        ]
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "line": 542,
+      "source": "b8e65a72-456c-4c6d-ac60-b015015a3ac4"
+    },
+    {
+      "line": 555,
+      "source": "ceafb32c-3d48-4ad1-a03e-d45b4d907d80"
+    },
+    {
+      "line": 556,
+      "source": "e8bd8155-5a13-4ecb-a022-bcadf12ae5f6"
+    },
+    {
+      "line": 557,
+      "source": "38b22b41-ac8f-43cc-8bf0-37a8b75c93b4"
+    },
+    {
+      "line": 558,
+      "source": "92ddcb8c-721c-4960-a8e8-51926692ee27"
+    },
+    {
+      "line": 589,
+      "source": "ceafb32c-3d48-4ad1-a03e-d45b4d907d80"
+    },
+    {
+      "line": 590,
+      "source": "e8bd8155-5a13-4ecb-a022-bcadf12ae5f6"
+    },
+    {
+      "line": 591,
+      "source": "38b22b41-ac8f-43cc-8bf0-37a8b75c93b4"
+    },
+    {
+      "line": 592,
+      "source": "92ddcb8c-721c-4960-a8e8-51926692ee27"
+    }
+  ],
+  "interaction_ids": [
+    "events.openMe.click.1",
+    "events.openMyEvents.click.1",
+    "events.chipToday.click.1",
+    "events.chipWeek.click.1",
+    "events.chipCampus.click.1",
+    "events.openEvent.click.1",
+    "events.openEvent.click.2",
+    "events.openParticipants.click.1",
+    "events.evJoinTap.click.1",
+    "events.openGroup.click.1",
+    "events.manageAttendance.click.1",
+    "events.m.open.click.1",
+    "events.m.join.click.1",
+    "showTabs.selectTab.select.1",
+    "hasNotif.openNotif.click.1",
+    "hasNotif.dismissNotif.click.1",
+    "sheetEvJoin.closeSheet.click.1",
+    "sheetEvJoin.confirmJoin.click.1",
+    "sheetEvJoin.closeSheet.click.2",
+    "sheetEvCancel.closeSheet.click.1",
+    "sheetEvCancel.keepSpot.click.1",
+    "sheetEvCancel.cancelAttendance.click.1"
+  ],
+  "approved_deltas": [
+    "Real safe area, fixed shared page skeleton, rpx responsive conversion and source cRise",
+    "Canonical user profiles, actual counts/relationships/event times instead of fake prototype totals",
+    "Explicit error/empty/expired state; local-only reports do not claim delivery",
+    "Media capture/preview/menu are user-authorized supplements; no fabricated peer messages",
+    "No source screenshot yet: visual_acceptance stays pending"
+  ],
+  "acceptance": {
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "full_acceptance": "pending"
+  }
+}

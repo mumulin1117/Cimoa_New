@@ -22,7 +22,7 @@ const person = async id => {
     <view v-if="access_error" class="event-page-state" role="alert">{{ access_error }}</view>
     <view v-else class="event-page-body">
       <view class="event-people-search"><view class="event-page-icon"><SourceIcon name="discover" /></view><input v-model="query" aria-label="Search participants" placeholder="Search participants" :maxlength="120" data-interaction="evParticipants.onSearch.change.1" /></view>
-      <text class="event-people-caption">{{ event.participant_count }} going · joining an event does not connect you automatically.</text>
+      <text class="event-people-caption">{{ event.participant_count }} going · joining an event does not connect you automatically</text>
       <view v-for="user in people" :key="user.user_id" class="event-page-card event-person" role="button" tabindex="0" :data-user-id="user.user_id" data-interaction="evParticipants.p.go.click.1" @click="person(user.user_id)" @keydown.enter="person(user.user_id)">
         <view class="event-person-avatar"><UserAvatar :src="user.avatar_url" :name="user.user_name" /></view><view class="event-person-copy"><text class="event-person-name">{{ user.user_name }}</text><text class="event-person-meta">{{ user.meta }}</text></view><text class="event-person-badge" :class="{ 'event-person-badge--connected': user.relationship_label === 'Connected' }">{{ user.relationship_label }}</text>
       </view>
@@ -31,3 +31,11 @@ const person = async id => {
     <template #footer><text v-if="error" class="event-page-error" role="alert">{{ error }}</text></template>
   </SecondaryPageFrame>
 </template>
+
+<style scoped>
+.event-person-name { font-weight: 800; letter-spacing: -0.02em; }
+.event-person-meta { margin-top: 3.817rpx; }
+.event-person-badge { font-weight: 600; }
+.event-people-search { gap: 19.084rpx; }
+.event-people-search .event-page-icon { width: 38.168rpx; height: 38.168rpx; }
+</style>

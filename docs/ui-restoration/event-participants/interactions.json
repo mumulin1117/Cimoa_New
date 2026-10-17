@@ -1,0 +1,38 @@
+[
+  {
+    "interaction_id": "evParticipants.goBack.click.1",
+    "source_screen": "route=evParticipants&joined=1",
+    "trigger": "click / keyboard activation",
+    "preconditions": "ready authenticated owner; exact event identity; group requires current active membership and matching conversation",
+    "visible_feedback": "source navigation or controlled sheet, no navigation Loading",
+    "success_result": "Exact canonical event/user/group context; relevant membership, report, message or preference is atomically saved; real Back origin restored",
+    "failure_result": "Readable error with no partial message, Blob, seat or relationship change; no fabricated remote success",
+    "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
+    "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",
+    "acceptance": "scripts/events.test.mjs; scripts/event-pages.test.mjs; browser per-page evidence; native event regression; visual evidence remains pending"
+  },
+  {
+    "interaction_id": "evParticipants.onSearch.change.1",
+    "source_screen": "route=evParticipants&joined=1",
+    "trigger": "input change",
+    "preconditions": "ready authenticated owner; exact event identity; group requires current active membership and matching conversation",
+    "visible_feedback": "source navigation or controlled sheet, no navigation Loading",
+    "success_result": "Exact canonical event/user/group context; relevant membership, report, message or preference is atomically saved; real Back origin restored",
+    "failure_result": "Readable error with no partial message, Blob, seat or relationship change; no fabricated remote success",
+    "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
+    "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",
+    "acceptance": "scripts/events.test.mjs; scripts/event-pages.test.mjs; browser per-page evidence; native event regression; visual evidence remains pending"
+  },
+  {
+    "interaction_id": "evParticipants.p.go.click.1",
+    "source_screen": "route=evParticipants&joined=1",
+    "trigger": "click / keyboard activation",
+    "preconditions": "ready authenticated owner; exact event identity; group requires current active membership and matching conversation",
+    "visible_feedback": "source navigation or controlled sheet, no navigation Loading",
+    "success_result": "Exact canonical event/user/group context; relevant membership, report, message or preference is atomically saved; real Back origin restored",
+    "failure_result": "Readable error with no partial message, Blob, seat or relationship change; no fabricated remote success",
+    "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
+    "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",
+    "acceptance": "scripts/events.test.mjs; scripts/event-pages.test.mjs; browser per-page evidence; native event regression; visual evidence remains pending"
+  }
+]

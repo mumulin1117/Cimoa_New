@@ -1,0 +1,1156 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isEvDetail",
+    "source_query": "route=evDetail",
+    "lines": [
+      1919,
+      1996
+    ],
+    "fragment_sha256": "78813b09ab658175043e7d6fdc9923c0d0a010ef2b28ad82327499f3b9326ee5",
+    "fragment": "<sc-if value=\"{{ isEvDetail }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"{{ screenName }}\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div class=\"cscroll\" style=\"position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;padding:0 0 200px;box-sizing:border-box\">\n          <div style=\"position:relative;width:100%;height:330px\">\n            <img src=\"b8e65a72-456c-4c6d-ac60-b015015a3ac4\" alt=\"{{ evTitle }}\" style=\"width:100%;height:100%;object-fit:cover;display:block\">\n            <div sc-camel-on-click=\"{{ goBack }}\" style=\"position:absolute;top:58px;left:20px;width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.16);display:flex;align-items:center;justify-content:center;cursor:pointer\">\n              <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n            </div>\n            <div sc-camel-on-click=\"{{ openEventMore }}\" style=\"position:absolute;top:58px;right:20px;width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.16);display:flex;align-items:center;justify-content:center;cursor:pointer\">\n              <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"#0b1b3a\"><circle cx=\"5\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"12\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"19\" cy=\"12\" r=\"1.9\"></circle></svg>\n            </div>\n          </div>\n          <div style=\"padding:0 20px\">\n          <div style=\"font-size:32px;font-weight:800;letter-spacing:-0.035em;margin-top:20px;line-height:1.1\">{{ evTitle }}</div>\n          <div style=\"display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;background:#fff;border-radius:20px;box-shadow:0 6px 18px rgba(16,36,74,0.06)\">\n            <div style=\"width:44px;height:44px;border-radius:14px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:15px;font-weight:800;color:#1e4b8f\">SU</div>\n            <div style=\"flex:1;min-width:0\"><div style=\"font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#8b95a6\">HOSTED BY</div><div style=\"display:flex;align-items:center;gap:6px;margin-top:2px\"><div style=\"font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">HKUST Student Union</div><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" style=\"flex:none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></div></div></div>\n\n          <div style=\"margin-top:18px;padding:8px 4px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"display:flex;align-items:center;gap:14px;padding:10px 14px\">\n              <div style=\"width:40px;height:40px;border-radius:20px;background:#efe9fb;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"19\" height=\"19\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"1.9\" stroke-linecap=\"round\" style=\"flex:none\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"3\"></rect><path d=\"M8 3v3M16 3v3M3 10h18\"></path></svg></div>\n              <div style=\"font-size:17px;font-weight:600\">{{ evWhen }}</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:14px;padding:10px 14px\">\n              <div style=\"width:40px;height:40px;border-radius:20px;background:#e5f0ff;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"19\" height=\"19\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z\"></path><circle cx=\"12\" cy=\"10\" r=\"2.6\"></circle></svg></div>\n              <div style=\"font-size:17px;font-weight:600\">{{ evPlace }}</div>\n            </div>\n            <div style=\"display:flex;align-items:flex-start;gap:14px;padding:10px 14px\">\n              <div style=\"width:40px;height:40px;border-radius:20px;background:#fbe6f7;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"19\" height=\"19\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#b6249e\" stroke-width=\"1.9\" stroke-linecap=\"round\" style=\"flex:none\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg></div>\n              <div style=\"flex:1;min-width:0\">\n                <div style=\"font-size:17px;font-weight:600\">{{ evAttendance }}</div>\n                <div sc-camel-on-click=\"{{ openParticipantsList }}\" style=\"display:flex;align-items:center;gap:10px;margin-top:8px;cursor:pointer\">\n                  <div style=\"display:flex\">\n                    <img src=\"ceafb32c-3d48-4ad1-a03e-d45b4d907d80\" alt=\"\" style=\"width:32px;height:32px;border-radius:16px;object-fit:cover;border:2px solid #fff;display:block\">\n                    <img src=\"e8bd8155-5a13-4ecb-a022-bcadf12ae5f6\" alt=\"\" style=\"width:32px;height:32px;border-radius:16px;object-fit:cover;border:2px solid #fff;margin-left:-10px;display:block\">\n                    <img src=\"38b22b41-ac8f-43cc-8bf0-37a8b75c93b4\" alt=\"\" style=\"width:32px;height:32px;border-radius:16px;object-fit:cover;border:2px solid #fff;margin-left:-10px;display:block\">\n                    <img src=\"92ddcb8c-721c-4960-a8e8-51926692ee27\" alt=\"\" style=\"width:32px;height:32px;border-radius:16px;object-fit:cover;border:2px solid #fff;margin-left:-10px;display:block\">\n                  </div>\n                  <div style=\"font-size:15px;color:#8b95a6\">+{{ evExtra }}</div>\n                  <div style=\"font-size:16px;font-weight:700;color:#4a7bf7\">View participants ›</div>\n                </div>\n              </div>\n            </div>\n          </div>\n\n          <div style=\"font-size:17px;line-height:1.5;color:#26364f;margin-top:18px;text-wrap:pretty\">Bring a snack, meet someone new, and watch the sunset together.</div>\n\n          <div style=\"margin-top:22px;font-size:20px;font-weight:800;letter-spacing:-0.02em\">Schedule</div>\n          <div style=\"margin-top:12px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"display:flex;gap:14px\"><div style=\"display:flex;flex-direction:column;align-items:center;flex:none;width:12px\"><div style=\"width:10px;height:10px;border-radius:5px;background:linear-gradient(135deg,#1ec8f5,#a855f7);margin-top:6px\"></div><div style=\"flex:1;width:2px;background:#eef1f6;margin-top:4px\"></div></div><div style=\"flex:1;min-width:0;padding-bottom:16px\"><div style=\"font-size:14px;font-weight:700;color:#8b95a6\">5:30 PM</div><div style=\"font-size:17px;font-weight:700;margin-top:2px\">Meet &amp; mingle</div><div style=\"font-size:15px;color:#5b6b85;margin-top:2px\">Grab a spot on the lawn and say hi</div></div></div>\n            <div style=\"display:flex;gap:14px\"><div style=\"display:flex;flex-direction:column;align-items:center;flex:none;width:12px\"><div style=\"width:10px;height:10px;border-radius:5px;background:linear-gradient(135deg,#1ec8f5,#a855f7);margin-top:6px\"></div><div style=\"flex:1;width:2px;background:#eef1f6;margin-top:4px\"></div></div><div style=\"flex:1;min-width:0;padding-bottom:16px\"><div style=\"font-size:14px;font-weight:700;color:#8b95a6\">6:00 PM</div><div style=\"font-size:17px;font-weight:700;margin-top:2px\">Icebreaker games</div><div style=\"font-size:15px;color:#5b6b85;margin-top:2px\">Small groups of 4–5, mixed faculties</div></div></div>\n            <div style=\"display:flex;gap:14px\"><div style=\"display:flex;flex-direction:column;align-items:center;flex:none;width:12px\"><div style=\"width:10px;height:10px;border-radius:5px;background:linear-gradient(135deg,#1ec8f5,#a855f7);margin-top:6px\"></div></div><div style=\"flex:1;min-width:0;padding-bottom:0px\"><div style=\"font-size:14px;font-weight:700;color:#8b95a6\">6:35 PM</div><div style=\"font-size:17px;font-weight:700;margin-top:2px\">Sunset</div><div style=\"font-size:15px;color:#5b6b85;margin-top:2px\">Golden hour over Clear Water Bay</div></div></div>\n          </div>\n          <div style=\"margin-top:22px;font-size:20px;font-weight:800;letter-spacing:-0.02em\">Good to know</div>\n          <div style=\"margin-top:12px;display:flex;flex-wrap:wrap;gap:8px\"><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)\"><div style=\"font-size:17px;line-height:1\">🆓</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">Free to join</div></div><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)\"><div style=\"font-size:17px;line-height:1\">🧺</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">Bring a picnic mat</div></div><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)\"><div style=\"font-size:17px;line-height:1\">🗣️</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">English &amp; Cantonese</div></div><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)\"><div style=\"font-size:17px;line-height:1\">♿</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">Step-free access</div></div><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)\"><div style=\"font-size:17px;line-height:1\">🌧️</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">Moves indoors if it rains</div></div></div>\n          <sc-if value=\"{{ evJoinedFlag }}\" hint-placeholder-val=\"{{ false }}\">\n            <div style=\"margin-top:18px;padding:16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n              <div style=\"display:flex;align-items:center;gap:10px\">\n                <div style=\"width:32px;height:32px;border-radius:16px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:12px;font-weight:800;color:#1e4b8f\">SU</div>\n                <div style=\"flex:1;min-width:0\"><div style=\"font-size:16px;font-weight:700\">HKUST Student Union</div><div style=\"font-size:14px;color:#8b95a6\">Organizer update</div></div>\n                <div style=\"font-size:14px;color:#8b95a6;flex:none\">2h ago</div>\n              </div>\n              <div style=\"font-size:16px;color:#26364f;margin-top:10px\">Meet by the sculpture at 5:20 PM.</div>\n            </div>\n          </sc-if>\n          </div>\n        </div>\n        <sc-if value=\"{{ evNotJoined }}\" hint-placeholder-val=\"{{ true }}\">\n          <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20\"><div sc-camel-on-click=\"{{ askJoin }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Join Event</div></div></div>\n        </sc-if>\n        <sc-if value=\"{{ evJoinedFlag }}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;gap:12px;z-index:20\">\n            <div sc-camel-on-click=\"{{ openGroup }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3.8c4.8 0 8.5 3.3 8.5 7.6s-3.7 7.6-8.5 7.6c-1.1 0-2.2-.2-3.2-.5-.4-.1-.8-.1-1.2.1l-2.4 1.2c-.6.3-1.2-.2-1-.8l.6-2c.1-.4 0-.8-.2-1.1C3.9 14.6 3.5 13 3.5 11.4 3.5 7.1 7.2 3.8 12 3.8z\"></path></svg><div style=\"font-size:19px;font-weight:700;color:#fff\">Open Group Chat</div></div>\n            <div sc-camel-on-click=\"{{ manageAttendance }}\" style=\"height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">Manage Attendance</div></div>\n          </div>\n        </sc-if>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/events/detail",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "styles": [
+    {
+      "line": 1920,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 1921,
+      "tag": "div",
+      "style": "position:absolute;inset:0;overflow-y:auto;scrollbar-width:none;padding:0 0 200px;box-sizing:border-box"
+    },
+    {
+      "line": 1922,
+      "tag": "div",
+      "style": "position:relative;width:100%;height:330px"
+    },
+    {
+      "line": 1923,
+      "tag": "img",
+      "style": "width:100%;height:100%;object-fit:cover;display:block"
+    },
+    {
+      "line": 1924,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.16);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 1927,
+      "tag": "div",
+      "style": "position:absolute;top:58px;right:20px;width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.16);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 1931,
+      "tag": "div",
+      "style": "padding:0 20px"
+    },
+    {
+      "line": 1932,
+      "tag": "div",
+      "style": "font-size:32px;font-weight:800;letter-spacing:-0.035em;margin-top:20px;line-height:1.1"
+    },
+    {
+      "line": 1933,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;background:#fff;border-radius:20px;box-shadow:0 6px 18px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 1934,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:14px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:15px;font-weight:800;color:#1e4b8f"
+    },
+    {
+      "line": 1935,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 1935,
+      "tag": "div",
+      "style": "font-size:12.5px;font-weight:700;letter-spacing:0.06em;color:#8b95a6"
+    },
+    {
+      "line": 1935,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;margin-top:2px"
+    },
+    {
+      "line": 1935,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 1935,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1937,
+      "tag": "div",
+      "style": "margin-top:18px;padding:8px 4px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1938,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;padding:10px 14px"
+    },
+    {
+      "line": 1939,
+      "tag": "div",
+      "style": "width:40px;height:40px;border-radius:20px;background:#efe9fb;display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 1939,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1940,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:600"
+    },
+    {
+      "line": 1942,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;padding:10px 14px"
+    },
+    {
+      "line": 1943,
+      "tag": "div",
+      "style": "width:40px;height:40px;border-radius:20px;background:#e5f0ff;display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 1943,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1944,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:600"
+    },
+    {
+      "line": 1946,
+      "tag": "div",
+      "style": "display:flex;align-items:flex-start;gap:14px;padding:10px 14px"
+    },
+    {
+      "line": 1947,
+      "tag": "div",
+      "style": "width:40px;height:40px;border-radius:20px;background:#fbe6f7;display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 1947,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1948,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 1949,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:600"
+    },
+    {
+      "line": 1950,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px;margin-top:8px;cursor:pointer"
+    },
+    {
+      "line": 1951,
+      "tag": "div",
+      "style": "display:flex"
+    },
+    {
+      "line": 1952,
+      "tag": "img",
+      "style": "width:32px;height:32px;border-radius:16px;object-fit:cover;border:2px solid #fff;display:block"
+    },
+    {
+      "line": 1953,
+      "tag": "img",
+      "style": "width:32px;height:32px;border-radius:16px;object-fit:cover;border:2px solid #fff;margin-left:-10px;display:block"
+    },
+    {
+      "line": 1954,
+      "tag": "img",
+      "style": "width:32px;height:32px;border-radius:16px;object-fit:cover;border:2px solid #fff;margin-left:-10px;display:block"
+    },
+    {
+      "line": 1955,
+      "tag": "img",
+      "style": "width:32px;height:32px;border-radius:16px;object-fit:cover;border:2px solid #fff;margin-left:-10px;display:block"
+    },
+    {
+      "line": 1957,
+      "tag": "div",
+      "style": "font-size:15px;color:#8b95a6"
+    },
+    {
+      "line": 1958,
+      "tag": "div",
+      "style": "font-size:16px;font-weight:700;color:#4a7bf7"
+    },
+    {
+      "line": 1964,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1.5;color:#26364f;margin-top:18px;text-wrap:pretty"
+    },
+    {
+      "line": 1966,
+      "tag": "div",
+      "style": "margin-top:22px;font-size:20px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1967,
+      "tag": "div",
+      "style": "margin-top:12px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1968,
+      "tag": "div",
+      "style": "display:flex;gap:14px"
+    },
+    {
+      "line": 1968,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:center;flex:none;width:12px"
+    },
+    {
+      "line": 1968,
+      "tag": "div",
+      "style": "width:10px;height:10px;border-radius:5px;background:linear-gradient(135deg,#1ec8f5,#a855f7);margin-top:6px"
+    },
+    {
+      "line": 1968,
+      "tag": "div",
+      "style": "flex:1;width:2px;background:#eef1f6;margin-top:4px"
+    },
+    {
+      "line": 1968,
+      "tag": "div",
+      "style": "flex:1;min-width:0;padding-bottom:16px"
+    },
+    {
+      "line": 1968,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:700;color:#8b95a6"
+    },
+    {
+      "line": 1968,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;margin-top:2px"
+    },
+    {
+      "line": 1968,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;margin-top:2px"
+    },
+    {
+      "line": 1969,
+      "tag": "div",
+      "style": "display:flex;gap:14px"
+    },
+    {
+      "line": 1969,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:center;flex:none;width:12px"
+    },
+    {
+      "line": 1969,
+      "tag": "div",
+      "style": "width:10px;height:10px;border-radius:5px;background:linear-gradient(135deg,#1ec8f5,#a855f7);margin-top:6px"
+    },
+    {
+      "line": 1969,
+      "tag": "div",
+      "style": "flex:1;width:2px;background:#eef1f6;margin-top:4px"
+    },
+    {
+      "line": 1969,
+      "tag": "div",
+      "style": "flex:1;min-width:0;padding-bottom:16px"
+    },
+    {
+      "line": 1969,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:700;color:#8b95a6"
+    },
+    {
+      "line": 1969,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;margin-top:2px"
+    },
+    {
+      "line": 1969,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;margin-top:2px"
+    },
+    {
+      "line": 1970,
+      "tag": "div",
+      "style": "display:flex;gap:14px"
+    },
+    {
+      "line": 1970,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:center;flex:none;width:12px"
+    },
+    {
+      "line": 1970,
+      "tag": "div",
+      "style": "width:10px;height:10px;border-radius:5px;background:linear-gradient(135deg,#1ec8f5,#a855f7);margin-top:6px"
+    },
+    {
+      "line": 1970,
+      "tag": "div",
+      "style": "flex:1;min-width:0;padding-bottom:0px"
+    },
+    {
+      "line": 1970,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:700;color:#8b95a6"
+    },
+    {
+      "line": 1970,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;margin-top:2px"
+    },
+    {
+      "line": 1970,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;margin-top:2px"
+    },
+    {
+      "line": 1972,
+      "tag": "div",
+      "style": "margin-top:22px;font-size:20px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "margin-top:12px;display:flex;flex-wrap:wrap;gap:8px"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1"
+    },
+    {
+      "line": 1973,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1975,
+      "tag": "div",
+      "style": "margin-top:18px;padding:16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1976,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px"
+    },
+    {
+      "line": 1977,
+      "tag": "div",
+      "style": "width:32px;height:32px;border-radius:16px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:12px;font-weight:800;color:#1e4b8f"
+    },
+    {
+      "line": 1978,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 1978,
+      "tag": "div",
+      "style": "font-size:16px;font-weight:700"
+    },
+    {
+      "line": 1978,
+      "tag": "div",
+      "style": "font-size:14px;color:#8b95a6"
+    },
+    {
+      "line": 1979,
+      "tag": "div",
+      "style": "font-size:14px;color:#8b95a6;flex:none"
+    },
+    {
+      "line": 1981,
+      "tag": "div",
+      "style": "font-size:16px;color:#26364f;margin-top:10px"
+    },
+    {
+      "line": 1987,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20"
+    },
+    {
+      "line": 1987,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 1987,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 1990,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;gap:12px;z-index:20"
+    },
+    {
+      "line": 1991,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 1991,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 1992,
+      "tag": "div",
+      "style": "height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 1992,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:600;color:#0b1b3a"
+    }
+  ],
+  "texts": [
+    {
+      "line": 1934,
+      "text": "SU"
+    },
+    {
+      "line": 1935,
+      "text": "HOSTED BY"
+    },
+    {
+      "line": 1935,
+      "text": "HKUST Student Union"
+    },
+    {
+      "line": 1957,
+      "text": "+"
+    },
+    {
+      "line": 1958,
+      "text": "View participants ›"
+    },
+    {
+      "line": 1964,
+      "text": "Bring a snack, meet someone new, and watch the sunset together."
+    },
+    {
+      "line": 1966,
+      "text": "Schedule"
+    },
+    {
+      "line": 1968,
+      "text": "5:30 PM"
+    },
+    {
+      "line": 1968,
+      "text": "Meet & mingle"
+    },
+    {
+      "line": 1968,
+      "text": "Grab a spot on the lawn and say hi"
+    },
+    {
+      "line": 1969,
+      "text": "6:00 PM"
+    },
+    {
+      "line": 1969,
+      "text": "Icebreaker games"
+    },
+    {
+      "line": 1969,
+      "text": "Small groups of 4–5, mixed faculties"
+    },
+    {
+      "line": 1970,
+      "text": "6:35 PM"
+    },
+    {
+      "line": 1970,
+      "text": "Sunset"
+    },
+    {
+      "line": 1970,
+      "text": "Golden hour over Clear Water Bay"
+    },
+    {
+      "line": 1972,
+      "text": "Good to know"
+    },
+    {
+      "line": 1973,
+      "text": "🆓"
+    },
+    {
+      "line": 1973,
+      "text": "Free to join"
+    },
+    {
+      "line": 1973,
+      "text": "🧺"
+    },
+    {
+      "line": 1973,
+      "text": "Bring a picnic mat"
+    },
+    {
+      "line": 1973,
+      "text": "🗣️"
+    },
+    {
+      "line": 1973,
+      "text": "English & Cantonese"
+    },
+    {
+      "line": 1973,
+      "text": "♿"
+    },
+    {
+      "line": 1973,
+      "text": "Step-free access"
+    },
+    {
+      "line": 1973,
+      "text": "🌧️"
+    },
+    {
+      "line": 1973,
+      "text": "Moves indoors if it rains"
+    },
+    {
+      "line": 1977,
+      "text": "SU"
+    },
+    {
+      "line": 1978,
+      "text": "HKUST Student Union"
+    },
+    {
+      "line": 1978,
+      "text": "Organizer update"
+    },
+    {
+      "line": 1979,
+      "text": "2h ago"
+    },
+    {
+      "line": 1981,
+      "text": "Meet by the sculpture at 5:20 PM."
+    },
+    {
+      "line": 1987,
+      "text": "Join Event"
+    },
+    {
+      "line": 1991,
+      "text": "Open Group Chat"
+    },
+    {
+      "line": 1992,
+      "text": "Manage Attendance"
+    }
+  ],
+  "svg": [
+    {
+      "line": 1925,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "22"
+        ],
+        [
+          "height",
+          "22"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#0b1b3a"
+        ],
+        [
+          "stroke-width",
+          "2.4"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 1925,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M15 5l-7 7 7 7"
+        ]
+      ]
+    },
+    {
+      "line": 1928,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "20"
+        ],
+        [
+          "height",
+          "20"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "#0b1b3a"
+        ]
+      ]
+    },
+    {
+      "line": 1928,
+      "tag": "circle",
+      "attrs": [
+        [
+          "cx",
+          "5"
+        ],
+        [
+          "cy",
+          "12"
+        ],
+        [
+          "r",
+          "1.9"
+        ]
+      ]
+    },
+    {
+      "line": 1928,
+      "tag": "circle",
+      "attrs": [
+        [
+          "cx",
+          "12"
+        ],
+        [
+          "cy",
+          "12"
+        ],
+        [
+          "r",
+          "1.9"
+        ]
+      ]
+    },
+    {
+      "line": 1928,
+      "tag": "circle",
+      "attrs": [
+        [
+          "cx",
+          "19"
+        ],
+        [
+          "cy",
+          "12"
+        ],
+        [
+          "r",
+          "1.9"
+        ]
+      ]
+    },
+    {
+      "line": 1935,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "17"
+        ],
+        [
+          "height",
+          "17"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "style",
+          "flex:none"
+        ]
+      ]
+    },
+    {
+      "line": 1935,
+      "tag": "circle",
+      "attrs": [
+        [
+          "cx",
+          "12"
+        ],
+        [
+          "cy",
+          "12"
+        ],
+        [
+          "r",
+          "11"
+        ],
+        [
+          "fill",
+          "#1d9bf0"
+        ]
+      ]
+    },
+    {
+      "line": 1935,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "m7.5 12.4 3 3 6-6.4"
+        ],
+        [
+          "stroke",
+          "#fff"
+        ],
+        [
+          "stroke-width",
+          "2.6"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 1939,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "19"
+        ],
+        [
+          "height",
+          "19"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#7c3aed"
+        ],
+        [
+          "stroke-width",
+          "1.9"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "style",
+          "flex:none"
+        ]
+      ]
+    },
+    {
+      "line": 1939,
+      "tag": "rect",
+      "attrs": [
+        [
+          "x",
+          "3"
+        ],
+        [
+          "y",
+          "5"
+        ],
+        [
+          "width",
+          "18"
+        ],
+        [
+          "height",
+          "16"
+        ],
+        [
+          "rx",
+          "3"
+        ]
+      ]
+    },
+    {
+      "line": 1939,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M8 3v3M16 3v3M3 10h18"
+        ]
+      ]
+    },
+    {
+      "line": 1943,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "19"
+        ],
+        [
+          "height",
+          "19"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#2563eb"
+        ],
+        [
+          "stroke-width",
+          "1.9"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ],
+        [
+          "style",
+          "flex:none"
+        ]
+      ]
+    },
+    {
+      "line": 1943,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"
+        ]
+      ]
+    },
+    {
+      "line": 1943,
+      "tag": "circle",
+      "attrs": [
+        [
+          "cx",
+          "12"
+        ],
+        [
+          "cy",
+          "10"
+        ],
+        [
+          "r",
+          "2.6"
+        ]
+      ]
+    },
+    {
+      "line": 1947,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "19"
+        ],
+        [
+          "height",
+          "19"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#b6249e"
+        ],
+        [
+          "stroke-width",
+          "1.9"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "style",
+          "flex:none"
+        ]
+      ]
+    },
+    {
+      "line": 1947,
+      "tag": "circle",
+      "attrs": [
+        [
+          "cx",
+          "9"
+        ],
+        [
+          "cy",
+          "8"
+        ],
+        [
+          "r",
+          "3.4"
+        ]
+      ]
+    },
+    {
+      "line": 1947,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4"
+        ]
+      ]
+    },
+    {
+      "line": 1991,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "24"
+        ],
+        [
+          "height",
+          "24"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#fff"
+        ],
+        [
+          "stroke-width",
+          "2"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 1991,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M12 3.8c4.8 0 8.5 3.3 8.5 7.6s-3.7 7.6-8.5 7.6c-1.1 0-2.2-.2-3.2-.5-.4-.1-.8-.1-1.2.1l-2.4 1.2c-.6.3-1.2-.2-1-.8l.6-2c.1-.4 0-.8-.2-1.1C3.9 14.6 3.5 13 3.5 11.4 3.5 7.1 7.2 3.8 12 3.8z"
+        ]
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "line": 1923,
+      "source": "b8e65a72-456c-4c6d-ac60-b015015a3ac4"
+    },
+    {
+      "line": 1952,
+      "source": "ceafb32c-3d48-4ad1-a03e-d45b4d907d80"
+    },
+    {
+      "line": 1953,
+      "source": "e8bd8155-5a13-4ecb-a022-bcadf12ae5f6"
+    },
+    {
+      "line": 1954,
+      "source": "38b22b41-ac8f-43cc-8bf0-37a8b75c93b4"
+    },
+    {
+      "line": 1955,
+      "source": "92ddcb8c-721c-4960-a8e8-51926692ee27"
+    }
+  ],
+  "interaction_ids": [
+    "evDetail.goBack.click.1",
+    "evDetail.openEventMore.click.1",
+    "evDetail.openParticipantsList.click.1",
+    "evDetail.askJoin.click.1",
+    "evDetail.openGroup.click.1",
+    "evDetail.manageAttendance.click.1",
+    "sheetEvMore.closeSheet.click.1",
+    "sheetEvMore.shareEvent.click.1",
+    "sheetEvMore.openEventReport.click.1",
+    "sheetEvMore.blockOrganizer.click.1",
+    "sheetEvMore.closeSheet.click.2",
+    "sheetEvJoin.closeSheet.click.1",
+    "sheetEvJoin.confirmJoin.click.1",
+    "sheetEvJoin.closeSheet.click.2",
+    "sheetEvCancel.closeSheet.click.1",
+    "sheetEvCancel.keepSpot.click.1",
+    "sheetEvCancel.cancelAttendance.click.1"
+  ],
+  "approved_deltas": [
+    "Real safe area, fixed shared page skeleton, rpx responsive conversion and source cRise",
+    "Canonical user profiles, actual counts/relationships/event times instead of fake prototype totals",
+    "Explicit error/empty/expired state; local-only reports do not claim delivery",
+    "Media capture/preview/menu are user-authorized supplements; no fabricated peer messages",
+    "No source screenshot yet: visual_acceptance stays pending"
+  ],
+  "acceptance": {
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "full_acceptance": "pending"
+  }
+}
