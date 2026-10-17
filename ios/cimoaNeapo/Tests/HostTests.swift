@@ -19,13 +19,22 @@ final class HostTests: XCTestCase {
         do {
             _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data:fixture}));window.__connectionOld=true;return true", arguments: ["fixture": fixture["data"]!], in: nil, contentWorld: .page)
             let route = fixture["route"] as! String
-            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?connectionPixel=\(page)#\(route)")!))
+            await WKWebsiteDataStore.default().removeData(ofTypes: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache], modifiedSince: .distantPast)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?connectionPixel=\(page)-\(UUID().uuidString)#\(route)")!, cachePolicy: .reloadIgnoringLocalCacheData))
             let selector = page == "chat" ? ".direct-chat-page" : ".connection-\(page)-page"
             for _ in 0..<100 {
                 if (try? await script(host, "return !window.__connectionOld&&!!document.querySelector('\(selector)')")) as? Bool == true { break }
                 try await Task.sleep(nanoseconds: 100_000_000)
             }
+            let freshDocument = try await script(host, "return !window.__connectionOld") as? Bool
+            XCTAssertEqual(freshDocument, true, "A fresh bundled document is required; an old visible route is not evidence.")
             try await waitFor(host, selector); host.publishSafeArea()
+            if page == "chat" {
+                for _ in 0..<30 {
+                    if (try? await script(host, "return ![...document.querySelectorAll('.event-loading')].some(el=>el.getBoundingClientRect().height>0&&getComputedStyle(el).display!=='none')")) as? Bool == true { break }
+                    try await Task.sleep(nanoseconds: 100_000_000)
+                }
+            }
             let metrics = try await script(host, """
             await document.fonts.ready;await Promise.all([...document.images].map(image=>image.decode().catch(()=>{})));for(const animation of document.getAnimations())if(animation.effect.getComputedTiming().iterations!==Infinity)animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
             const root=document.querySelector('\(selector)'),box=selector=>{const el=document.querySelector(selector);if(!el)return null;const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};

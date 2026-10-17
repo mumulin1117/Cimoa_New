@@ -1,0 +1,29 @@
+{
+  "footer" : {
+    "bottom" : 805.234375,
+    "height" : 57.28125,
+    "width" : 369.28125,
+    "x" : 16.359375,
+    "y" : 747.953125
+  },
+  "header" : {
+    "bottom" : 129.484375,
+    "height" : 65.453125,
+    "width" : 365.1875,
+    "x" : 18.40625,
+    "y" : 64.03125
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "photo" : null,
+  "safe" : [
+    62,
+    34
+  ],
+  "text" : "\n\nChloe\nConnected\nToday, 1:58 PM\n\n\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\n\n\nThe garden near the library is underrated.\nTomorrow after class?\n\n\nI’m in ✨\nMessage Chloe\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

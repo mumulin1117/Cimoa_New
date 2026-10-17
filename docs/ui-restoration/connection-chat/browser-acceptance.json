@@ -1,0 +1,41 @@
+{
+  "page": "chat",
+  "result": "passed",
+  "checks": [
+    "Source header/composer/icons/message geometry; real send→refresh, same profile Chat CTA and waiting-call return",
+    "Narrow iPhone width with real safe-area budget has no horizontal clipping"
+  ],
+  "geometry": {
+    "header": {
+      "x": 17.984375,
+      "y": 56,
+      "width": 357.03125,
+      "height": 63.984375,
+      "bottom": 119.984375
+    },
+    "footer": {
+      "x": 15.984375,
+      "y": 762.03125,
+      "width": 361.03125,
+      "height": 55.984375,
+      "bottom": 818.015625
+    },
+    "hero": null,
+    "question": null,
+    "answer": null,
+    "photo": null,
+    "text": "Chloe\nConnected\nToday, 1:58 PM\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\nThe garden near the library is underrated.\nTomorrow after class?\nI’m in ✨\nMessage Chloe"
+  },
+  "errors": [],
+  "reference": "Offline HTML AST, original inline styles, no prototype script/runtime",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 94037,
+    "pixels_above_channel_delta_8": 9430,
+    "mean_absolute_channel_delta": 0.8209444324982976,
+    "max_channel_delta": 228
+  },
+  "cleaned_up": true
+}

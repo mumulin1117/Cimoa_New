@@ -34,6 +34,7 @@ const escape = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll(
 function reference_markup(origin) {
   let root; walk_html(source.html, node => { if (node.tag === 'sc-if' && attribute(node, 'value').includes(contract.source.condition)) root = node })
   const context = { qText: 'How would you spend your ideal weekend?', answerPreview: 'A long walk and coffee by the sea.', isPhoto0: true, isPhoto1: false, isPhoto2: false, otherPlayingNot: true, otherPlaying: false, liamPlaying: false, liamNotPlaying: true, profileDots: [{ bg: '#fff' }, { bg: 'rgba(255,255,255,.4)' }, { bg: 'rgba(255,255,255,.4)' }] }
+  context.msgs = data.messages.filter(row => row.conversation_id === 'conversation_chloe').map(row => ({ text: row.body, them: row.sender_id !== 'user_cimoa', align: row.sender_id === 'user_cimoa' ? 'flex-end' : 'flex-start', bg: row.sender_id === 'user_cimoa' ? 'linear-gradient(100deg,#1ec8f5 0%,#8b5cf6 55%,#f845f0 100%)' : '#fff', ink: row.sender_id === 'user_cimoa' ? '#fff' : '#0b1b3a', shadow: row.sender_id === 'user_cimoa' ? '0 10px 24px rgba(139,92,246,.22)' : '0 8px 22px rgba(16,36,74,.07)' }))
   const interpolate = (value, scope) => value.replace(/{{\s*([\w.]+)\s*}}/g, (_, key) => escape(key.split('.').reduce((row, field) => row?.[field], scope)))
   const render = (node, scope = context) => {
     if (node.type === 2) return interpolate(node.content, scope)
@@ -42,7 +43,7 @@ function reference_markup(origin) {
     // Source's voice card has an authorized text-answer variant; no fake 18s media.
     if (phase === 'received' && node.loc.start.line === 953) return '<div style="font-size:17px;line-height:1.45;margin-top:6px;color:#26364f;text-wrap:pretty">A long walk and coffee by the sea.</div>'
     const children = () => (node.children || []).map(child => render(child, scope)).join('')
-    if (node.tag === 'sc-if') { const key = attribute(node, 'value').replace(/[{}\s]/g, ''); return (key in scope ? scope[key] : attribute(node, 'hint-placeholder-val').includes('true')) ? children() : '' }
+    if (node.tag === 'sc-if') { const key = attribute(node, 'value').replace(/[{}\s]/g, ''), value = key.split('.').reduce((row,field) => row?.[field], scope); return (value === undefined ? attribute(node, 'hint-placeholder-val').includes('true') : value) ? children() : '' }
     if (node.tag === 'sc-for') { const key = attribute(node, 'list').replace(/[{}\s]/g, ''); return (scope[key] || []).map(value => (node.children || []).map(child => render(child, { ...scope, [attribute(node, 'as')]: value })).join('')).join('') }
     const attrs = (node.props || []).filter(prop => prop.type === 6 && !prop.name.startsWith('sc-camel-on-')).map(prop => {
       const name = prop.name.replace('sc-camel-view-box', 'viewBox').replace('sc-camel-gradient-units', 'gradientUnits')
@@ -55,6 +56,7 @@ function reference_markup(origin) {
   let content = (root.children || []).map(node => render(node)).join('')
   if (phase === 'accepted') content = content.replaceAll('Chloe', 'Lina').replaceAll('/head/maya-av.png', '/head/maya-full.png').replaceAll('Alex Chan', 'Ethan')
   if (phase === 'declined') content = content.replace('No introduction was shared and no reason is passed on.', 'No connection was created and no reason is passed on.')
+  if (phase === 'chat') content = content.replace('Online', 'Connected').replace('Today, 2:14 PM', 'Today, ' + new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(data.messages[0].sent_at))
   return `<!doctype html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box}html,body{height:100%;width:100%;margin:0;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;color:#0b1b3a;background:linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%);-webkit-font-smoothing:antialiased}::-webkit-scrollbar{display:none}</style></head><body>${content}</body></html>`
 }
 let browser, server
@@ -65,7 +67,7 @@ try {
   const context = await context_for(browser, STATE_KEY, data), page = await context.newPage(); page.setDefaultTimeout(12000); page.on('pageerror', error => report.errors.push(error.message))
   const open = target_route => page.goto(`${server.origin}/#${target_route}`)
   const freeze = async () => { await set_safe_area(page, 54, 0); await page.evaluate(async () => { await document.fonts.ready; for (const animation of document.getAnimations()) if (animation.effect.getComputedTiming().iterations !== Infinity) animation.finish(); await Promise.all([...document.images].map(image => image.decode().catch(() => {}))); await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))) }) }
-  await open(route); await page.locator(`.connection-${phase}-page${phase === 'chat' ? ',.direct-chat-page' : ''}`).waitFor(); await freeze()
+  await open(route); await page.locator(`.connection-${phase}-page${phase === 'chat' ? ',.direct-chat-page' : ''}`).waitFor(); if (phase === 'chat') await page.locator('.event-loading:visible').waitFor({ state: 'hidden' }); await freeze()
   report.geometry = await page.evaluate(() => {
     const box = selector => { const element = document.querySelector(selector); if (!element) return null; const r = element.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height, bottom: r.bottom } }
     return { header: box('.connection-header,.chat-header'), footer: box('.connection-footer,.chat-composer'), hero: box('.sent-check,.accepted-content,.declined-content'), question: box('.sent-question'), answer: box('.sent-answer'), photo: box('.received-photo-card'), text: document.querySelector('uni-page-body').innerText }
@@ -101,6 +103,16 @@ try {
     assert.ok(close_to(report.geometry.hero.y, 170)); assert.match(report.geometry.text, /No connection was created and no reason is passed on/)
     for (const id of ['reqDeclined.backToDiscover.click.1','reqDeclined.backToDiscover.click.2']) { await open(route); await page.locator(`[data-interaction="${id}"]`).click(); await page.locator('.discover-header').waitFor(); assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1') }
     check('Source closed result, truthful no-connection copy and both completion actions clear-stack to Discover')
+  }
+  if (phase === 'chat') {
+    assert.ok(close_to(report.geometry.header.y, 56)); assert.ok(close_to(report.geometry.header.height, 64)); assert.ok(close_to(report.geometry.footer.height, 56)); assert.ok(close_to(report.geometry.footer.bottom, 818)); assert.equal(await page.locator('.chat-message').count(), 5)
+    assert.ok(!report.geometry.text.includes('stored locally')); assert.equal(await page.locator('.chat-time').count(), 0)
+    const message = page.locator('uni-input[aria-label="Message"] input'); await message.fill('See you at the library after class.'); await page.locator('[data-interaction="chat.send.click.1"]').click(); assert.ok(await page.locator('.event-loading:visible').count())
+    await page.waitForFunction(() => document.querySelector('.chat-messages').textContent.includes('See you at the library after class.')); await page.waitForFunction(() => document.querySelector('uni-input[aria-label="Message"] input').value === '')
+    await page.reload(); await page.locator('.chat-composer').waitFor(); assert.match(await page.locator('.chat-messages').innerText(), /See you at the library after class/)
+    await page.locator('[data-interaction="chat.viewProfile.click.1"]').click(); await page.locator('.expanded-profile-page').waitFor(); await page.locator('[data-interaction="expanded.sayHi.click.1"]').click(); await page.locator('.chat-composer').waitFor(); assert.ok(page.url().includes('conversation_chloe'))
+    await page.locator('[data-interaction="chat.startCall.click.1"]').click(); await page.locator('.waiting-call-page').waitFor(); await page.locator('[data-interaction="callActive.endCall.click.1"]').click(); await page.locator('.chat-composer').waitFor()
+    check('Source header/composer/icons/message geometry; real send→refresh, same profile Chat CTA and waiting-call return')
   }
   await page.evaluate(({ key, data: fixture }) => localStorage.setItem(key, JSON.stringify({ type: 'object', data: fixture })), { key: STATE_KEY, data })
   await page.setViewportSize({ width: 320, height: 568 }); await open(route); await set_safe_area(page, 62, 34); await page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))))

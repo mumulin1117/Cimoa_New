@@ -1,0 +1,22 @@
+{
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "browser": "browser-acceptance.json",
+  "wkwebview": {
+    "result": "passed",
+    "device": "iPhone 17 Pro",
+    "os": "26.5",
+    "geometry": "wkwebview-geometry.json"
+  },
+  "visual_review": "Source AST reference, actual, overlay and diff inspected; original regions/copy/resources restored with approved entity and system safe-area deltas.",
+  "deferred": [
+    "complete cross-page/media regression after sequential page restoration"
+  ],
+  "gates": [
+    "check:conventions passed without warning",
+    "git diff --check passed",
+    "build:h5 passed"
+  ]
+}

@@ -4,6 +4,7 @@ import UserNotifications
 import AVFoundation
 import Photos
 import CoreLocation
+import CryptoKit
 
 final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     private(set) var webView: WKWebView!
@@ -67,7 +68,11 @@ final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDeleg
         }
     }
     private func loadContent() {
-        webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html#/pages/auth/splash")!))
+        // Each installed H5 build gets a distinct entry URL. Keep account/Blob
+        // storage at the same origin while refusing an older cached app shell.
+        let manifest = Bundle.main.url(forResource: "build-manifest", withExtension: "json").flatMap { try? Data(contentsOf: $0) } ?? Data()
+        let version = SHA256.hash(data: manifest).map { String(format: "%02x", $0) }.joined()
+        webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?build=\(version)#/pages/auth/splash")!, cachePolicy: .reloadIgnoringLocalCacheData))
     }
     func publishSafeArea() {
         guard isViewLoaded, webView != nil, isTrustedURL(webView.url) else { return }

@@ -6013,7 +6013,11 @@
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; text/photo/voice, Loading, failure rollback, empty/error/long/refresh/back, safety actions, Home entry and WKWebView acceptance passed; full verified waits for the still-pending Profile Say Hi dependency",
     "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
-    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
+    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "visual_evidence": "docs/ui-restoration/connection-chat",
+    "acceptance_notes": "2026-10-17: source AST overlay and real iPhone 17 Pro WKWebView geometry inspected; browser interactions passed. Full cross-page/media regression deferred to task final pass."
   },
   {
     "source_screen": "Video Call / Incoming / Default",

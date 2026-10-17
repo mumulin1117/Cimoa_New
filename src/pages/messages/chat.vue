@@ -4,6 +4,7 @@ import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store, make_operation_id } from '@/stores/store.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { use_event_media } from '@/composables/useEventMedia.js'
+import { use_visual_viewport } from '@/composables/useEventViewport.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
@@ -12,8 +13,10 @@ import EventAudio from '@/components/EventAudio.vue'
 import EventConfirmDialog from '@/components/EventConfirmDialog.vue'
 import EventActionLoading from '@/components/EventActionLoading.vue'
 import SafetyActionsSheet from '@/components/SafetyActionsSheet.vue'
+import ConnectionIcon from '@/components/ConnectionIcon.vue'
 
 const store = use_app_store()
+const { height: viewport_height, keyboard_open } = use_visual_viewport()
 const frame = ref(null)
 const conversation_id = ref('')
 const draft = ref('')
@@ -52,6 +55,7 @@ const scroll_last = async () => {
   if (active.value && conversation.value) scroll_target.value = conversation.value.messages.at(-1)?.message_id || ''
 }
 watch(() => conversation.value?.messages.at(-1)?.message_id, scroll_last, { immediate: true })
+watch(viewport_height, scroll_last)
 onShow(async () => {
   active.value = true
   error.value = ''
@@ -119,26 +123,27 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
 </script>
 
 <template>
-  <SecondaryPageFrame ref="frame" class="direct-chat-page" :scroll-locked="locked" :scroll-into-view="scroll_target">
+  <SecondaryPageFrame ref="frame" class="direct-chat-page" :class="{ 'direct-chat-page--keyboard': keyboard_open }" :style="{ height: viewport_height, '--app-safe-bottom': keyboard_open ? '0px' : undefined }" :scroll-locked="locked" :scroll-into-view="scroll_target">
     <template #header>
       <view class="chat-header">
         <view class="chat-round" role="button" tabindex="0" aria-label="Back" data-interaction="chat.goBack.click.1" @click="back" @keydown.enter="back"><view class="chat-icon"><SourceIcon name="back" /></view></view>
         <template v-if="participant">
           <view class="chat-person" role="button" tabindex="0" :aria-label="`View ${participant.user_name} profile`" data-interaction="chat.viewProfile.click.1" @click="open_profile" @keydown.enter="open_profile">
             <view class="chat-avatar"><UserAvatar :src="participant.avatar_url" :name="participant.user_name" /><view class="chat-online-dot" /></view>
-            <view class="chat-heading"><text>{{ participant_first_name }}</text><text><view class="chat-status-dot" />Connected{{ muted ? ' · Muted' : '' }}</text></view>
+            <view class="chat-heading"><text>{{ participant_first_name }}</text><view class="chat-connection-status"><view class="chat-status-dot" /><text>Connected{{ muted ? ' · Muted' : '' }}</text></view></view>
           </view>
-          <view class="chat-round chat-call" role="button" tabindex="0" aria-label="Start video call" data-interaction="chat.startCall.click.1" @click="start_call" @keydown.enter="start_call"><svg viewBox="0 0 24 24"><rect x="1.5" y="5.5" width="14.5" height="13" rx="3.2" /><path d="M17 10.2 22 7v10l-5-3.2z" /></svg></view>
-          <view class="chat-round" role="button" tabindex="0" aria-label="Safety actions" data-interaction="chat.openSafety.click.1" @click="sheet = 'safety'; error = ''" @keydown.enter="sheet = 'safety'; error = ''"><view class="chat-icon"><SourceIcon name="more" /></view></view>
+          <view class="chat-round chat-call" role="button" tabindex="0" aria-label="Start video call" data-interaction="chat.startCall.click.1" @click="start_call" @keydown.enter="start_call"><view class="chat-icon"><ConnectionIcon name="video" /></view></view>
+          <view class="chat-round" role="button" tabindex="0" aria-label="Safety actions" data-interaction="chat.openSafety.click.1" @click="!locked && (sheet = 'safety'); error = ''" @keydown.enter="!locked && (sheet = 'safety'); error = ''"><view class="chat-icon"><ConnectionIcon name="more" /></view></view>
         </template>
       </view>
     </template>
 
     <view v-if="access_error" class="chat-state" role="alert">{{ access_error }}</view>
     <view v-else class="chat-messages">
-      <text class="chat-day">Messages are stored locally on this device.</text>
       <view v-if="!conversation.messages.length" class="chat-state" role="status">No messages yet. Start the conversation when you’re ready.</view>
-      <view v-for="message in conversation.messages" :id="message.message_id" :key="message.message_id" class="chat-message" :class="{ 'chat-message--mine': message.mine }">
+      <template v-for="(message,index) in conversation.messages" :key="message.message_id">
+      <text v-if="!index || message.day_label !== conversation.messages[index - 1].day_label" class="chat-day">{{ message.day_label }}, {{ message.time_label }}</text>
+      <view :id="message.message_id" class="chat-message" :class="{ 'chat-message--mine': message.mine }">
         <view v-if="!message.mine" class="chat-message-avatar"><UserAvatar :src="participant.avatar_url" :name="participant.user_name" /></view>
         <view class="chat-message-main">
           <view class="chat-bubble">
@@ -146,17 +151,17 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
             <view v-else-if="message.kind === 'image'" class="chat-image"><ProfilePhoto :src="message.media?.media_url || ''" name="Shared photo" portrait /></view>
             <EventAudio v-else :src="message.media?.media_url || ''" :duration="message.media?.duration_ms" interaction="chat.media.play.click.1" />
           </view>
-          <text class="chat-time">{{ message.time_label }}</text>
         </view>
       </view>
+      </template>
     </view>
 
     <template #footer>
       <text v-if="error && !sheet" class="chat-error" role="alert">{{ error }}</text>
       <view v-if="!access_error" class="chat-composer">
-        <view class="chat-round" role="button" tabindex="0" aria-label="Send photo" :aria-disabled="locked" data-interaction="chat.sendPhoto.click.1" @click="pick_photo" @keydown.enter="pick_photo"><view class="chat-icon"><SourceIcon name="photo" /></view></view>
-        <view class="chat-input"><input v-model="draft" :disabled="locked" :maxlength="2000" :placeholder="`Message ${participant_first_name}`" aria-label="Message" data-interaction="chat.onDraft.change.1" @confirm="send(false)" /><view class="chat-mic" role="button" tabindex="0" aria-label="Record voice message" :aria-disabled="locked" data-interaction="chat.sendVoiceMsg.click.1" @click="open_voice" @keydown.enter="open_voice"><SourceIcon name="mic" /></view></view>
-        <view class="chat-send" role="button" tabindex="0" aria-label="Send message" :aria-disabled="locked || !draft.trim()" data-interaction="chat.send.click.1" @click="send(false)" @keydown.enter="send(false)"><view class="chat-icon"><SourceIcon name="send" /></view></view>
+        <view class="chat-round chat-photo-button" role="button" tabindex="0" aria-label="Send photo" :aria-disabled="locked" data-interaction="chat.sendPhoto.click.1" @click="pick_photo" @keydown.enter="pick_photo"><view class="chat-icon"><ConnectionIcon name="photo" /></view></view>
+        <view class="chat-input"><input v-model="draft" :disabled="locked" :maxlength="2000" :placeholder="`Message ${participant_first_name}`" aria-label="Message" data-interaction="chat.onDraft.change.1" @confirm="send(false)" /><view class="chat-mic" role="button" tabindex="0" aria-label="Record voice message" :aria-disabled="locked" data-interaction="chat.sendVoiceMsg.click.1" @click="open_voice" @keydown.enter="open_voice"><view><ConnectionIcon name="mic" /></view></view></view>
+        <view class="chat-send" role="button" tabindex="0" aria-label="Send message" :aria-disabled="locked || !draft.trim()" data-interaction="chat.send.click.1" @click="send(false)" @keydown.enter="send(false)"><view class="chat-icon"><ConnectionIcon name="send" /></view></view>
       </view>
     </template>
 
@@ -181,35 +186,176 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
 
 <style scoped>
 .direct-chat-page { background: var(--cimoa-page-gradient); }
-.chat-header { display: flex; align-items: center; gap: 22.901rpx; min-height: 122.137rpx; padding: 11.45rpx 34.351rpx 7.634rpx; }
-.chat-round { flex: none; display: flex; align-items: center; justify-content: center; width: 99.237rpx; height: 99.237rpx; border-radius: 50%; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-header); color: var(--cimoa-text-title); cursor: pointer; }
+.chat-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 22.901rpx;
+  height: 122.137rpx;
+  margin: 3.817rpx 34.351rpx 22.901rpx;
+}
+.chat-round {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 99.237rpx;
+  height: 99.237rpx;
+  border-radius: 50%;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-header);
+  color: var(--cimoa-text-title);
+  cursor: pointer;
+}
 .chat-icon { width: 41.985rpx; height: 41.985rpx; }
-.chat-person { display: flex; align-items: center; flex: 1; min-width: 0; gap: 19.084rpx; cursor: pointer; }
-.chat-avatar { position: relative; flex: none; width: 110.687rpx; height: 110.687rpx; border: 5.725rpx solid var(--cimoa-surface-card); border-radius: 50%; box-shadow: var(--cimoa-shadow-header); }
-.chat-online-dot { position: absolute; right: -1.908rpx; bottom: 1.908rpx; width: 28.626rpx; height: 28.626rpx; border: 4.771rpx solid var(--cimoa-surface-card); border-radius: 50%; background: var(--cimoa-status-success); }
+.chat-person {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 22.901rpx;
+  cursor: pointer;
+}
+.chat-avatar {
+  position: relative;
+  flex: none;
+  width: 110.687rpx;
+  height: 110.687rpx;
+  margin-left: 7.634rpx;
+  border: 5.725rpx solid var(--cimoa-surface-card);
+  border-radius: 50%;
+  box-shadow: var(--cimoa-shadow-connection-chat-avatar);
+}
+.chat-online-dot {
+  position: absolute;
+  right: -7.634rpx;
+  bottom: -3.817rpx;
+  width: 28.626rpx;
+  height: 28.626rpx;
+  border: 4.771rpx solid var(--cimoa-surface-card);
+  border-radius: 50%;
+  background: var(--cimoa-status-connection-indicator);
+}
 .chat-heading { flex: 1; min-width: 0; }
-.chat-heading > text:first-child { display: block; overflow: hidden; color: var(--cimoa-text-title); font-size: 45.802rpx; font-weight: 800; letter-spacing: -0.03em; text-overflow: ellipsis; white-space: nowrap; }
-.chat-heading > text:last-child { display: flex; align-items: center; gap: 11.45rpx; margin-top: 1.908rpx; color: var(--cimoa-text-secondary); font-size: 28.626rpx; }
-.chat-status-dot { width: 17.176rpx; height: 17.176rpx; border-radius: 50%; background: var(--cimoa-status-success); }
-.chat-call svg { width: 64.885rpx; height: 64.885rpx; fill: var(--cimoa-button-primary); }
-.chat-messages { display: flex; flex-direction: column; gap: 34.351rpx; padding: 30.534rpx 34.351rpx 41.985rpx; }
+.chat-heading > text:first-child {
+  display: block;
+  overflow: hidden;
+  color: var(--cimoa-text-title);
+  font-size: 45.802rpx;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chat-connection-status {
+  display: flex;
+  align-items: center;
+  gap: 11.45rpx;
+  margin-top: 1.908rpx;
+  color: var(--cimoa-text-secondary);
+  font-size: 28.626rpx;
+}
+.chat-status-dot { width: 17.176rpx; height: 17.176rpx; border-radius: 50%; background: var(--cimoa-status-connection-indicator); }
+.chat-call .chat-icon { width: 64.885rpx; height: 64.885rpx; }
+.chat-messages { display: flex; flex-direction: column; gap: 34.351rpx; padding: 30.534rpx 34.351rpx; }
 .chat-day { color: var(--cimoa-text-auth-placeholder); font-size: 27.672rpx; text-align: center; }
-.chat-message { display: flex; align-items: flex-end; gap: 19.084rpx; justify-content: flex-start; }
+.chat-message { display: flex; align-items: center; gap: 19.084rpx; justify-content: flex-start; }
 .chat-message--mine { justify-content: flex-end; }
-.chat-message-avatar { flex: none; width: 80.153rpx; height: 80.153rpx; border: 3.817rpx solid var(--cimoa-surface-card); border-radius: 50%; box-shadow: var(--cimoa-shadow-card); }
-.chat-message-main { display: flex; flex-direction: column; align-items: flex-start; max-width: 68%; }
-.chat-message--mine .chat-message-main { align-items: flex-end; }
-.chat-bubble { max-width: 100%; padding: 26.718rpx 34.351rpx; border-radius: 49.618rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); color: var(--cimoa-text-title); font-size: 34.351rpx; font-weight: 500; line-height: 1.35; overflow-wrap: anywhere; }
-.chat-message--mine .chat-bubble { color: var(--cimoa-text-inverse); background: var(--cimoa-gradient-primary); box-shadow: var(--cimoa-shadow-primary); }
-.chat-time { margin-top: 7.634rpx; color: var(--cimoa-text-tertiary); font-size: 24.809rpx; }
+.chat-message-avatar {
+  flex: none;
+  width: 80.153rpx;
+  height: 80.153rpx;
+  border: 3.817rpx solid var(--cimoa-surface-card);
+  border-radius: 50%;
+  box-shadow: var(--cimoa-shadow-connection-chat-person);
+}
+.chat-message-main { display: flex; flex-direction: column; align-items: flex-start; max-width: min(480.916rpx, calc(100% - 99.237rpx)); }
+.chat-message--mine .chat-message-main { align-items: flex-end; max-width: min(480.916rpx, 100%); }
+.chat-bubble {
+  max-width: 100%;
+  padding: 26.718rpx 34.351rpx;
+  border-radius: 49.618rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-auth-secondary);
+  color: var(--cimoa-text-title);
+  font-size: 34.351rpx;
+  font-weight: 500;
+  line-height: 1.35;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.chat-message--mine .chat-bubble { color: var(--cimoa-text-inverse); background: var(--cimoa-gradient-chat-message); box-shadow: var(--cimoa-shadow-connection-chat-mine); }
 .chat-image { position: relative; width: 343.511rpx; height: 343.511rpx; overflow: hidden; border-radius: 30.534rpx; }
-.chat-state { margin: 45.802rpx 38.168rpx; padding: 45.802rpx; border-radius: 45.802rpx; color: var(--cimoa-text-secondary); background: var(--cimoa-surface-empty); font-size: 30.534rpx; line-height: 1.5; }
+.chat-state {
+  margin: 45.802rpx 38.168rpx;
+  padding: 45.802rpx;
+  border-radius: 45.802rpx;
+  color: var(--cimoa-text-secondary);
+  background: var(--cimoa-surface-empty);
+  font-size: 30.534rpx;
+  line-height: 1.5;
+}
 .chat-error { display: block; padding: 15.267rpx 34.351rpx 0; color: var(--cimoa-status-danger); font-size: 26.718rpx; overflow-wrap: anywhere; }
-.chat-composer { display: flex; align-items: center; gap: 19.084rpx; min-height: 137.405rpx; padding: 15.267rpx 30.534rpx; background: var(--cimoa-surface-event-group-composer); }
-.chat-input { display: flex; align-items: center; flex: 1; min-width: 0; height: 103.053rpx; padding: 0 19.084rpx 0 38.168rpx; border-radius: 51.527rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-auth-input); }
+.chat-composer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 19.084rpx;
+  height: 106.87rpx;
+  margin: 0 30.534rpx 64.885rpx;
+}
+.chat-photo-button { width: 103.053rpx; height: 103.053rpx; }
+.chat-composer .chat-icon { width: 45.802rpx; height: 45.802rpx; }
+.chat-input {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 15.267rpx;
+  height: 103.053rpx;
+  padding: 0 19.084rpx 0 38.168rpx;
+  border-radius: 51.527rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-event-chip);
+}
 .chat-input input { flex: 1; min-width: 0; color: var(--cimoa-text-title); font-size: 32.443rpx; }
-.chat-mic { flex: none; width: 45.802rpx; height: 45.802rpx; color: var(--cimoa-text-title); cursor: pointer; }
-.chat-send { flex: none; display: flex; align-items: center; justify-content: center; width: 106.87rpx; height: 106.87rpx; border: 5.725rpx solid var(--cimoa-surface-card); border-radius: 50%; background: var(--cimoa-gradient-primary); box-shadow: var(--cimoa-shadow-primary); color: var(--cimoa-text-inverse); cursor: pointer; }
+.chat-input :deep(.uni-input-placeholder) { left: 3.817rpx; color: var(--cimoa-text-chat-placeholder); font-size: 32.443rpx; font-weight: 400; }
+.chat-input :deep(.uni-input-input) { padding: 0 3.817rpx; }
+.chat-mic {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 72.519rpx;
+  height: 72.519rpx;
+  color: var(--cimoa-text-title);
+  cursor: pointer;
+}
+.chat-mic > view { width: 45.802rpx; height: 45.802rpx; }
+.chat-send {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 106.87rpx;
+  height: 106.87rpx;
+  border: 5.725rpx solid var(--cimoa-surface-card);
+  border-radius: 50%;
+  background: var(--cimoa-gradient-chat-send);
+  box-shadow: var(--cimoa-shadow-connection-chat-send);
+  color: var(--cimoa-text-inverse);
+  cursor: pointer;
+}
 .chat-send[aria-disabled="true"], .chat-round[aria-disabled="true"], .chat-mic[aria-disabled="true"] { opacity: 0.5; cursor: default; }
-.chat-media-preview { position: relative; width: 100%; height: 572.519rpx; margin-top: 30.534rpx; overflow: hidden; border-radius: 38.168rpx; }
+.chat-send[aria-disabled="true"] { opacity: 1; }
+.direct-chat-page--keyboard .chat-composer { margin-bottom: 15.267rpx; }
+.chat-media-preview {
+  position: relative;
+  width: 100%;
+  height: 572.519rpx;
+  margin-top: 30.534rpx;
+  overflow: hidden;
+  border-radius: 38.168rpx;
+}
 </style>

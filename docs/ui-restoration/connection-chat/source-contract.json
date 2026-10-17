@@ -1,0 +1,266 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "source_query": "route=chat",
+    "condition": "isChat",
+    "lines": [
+      1230,
+      1277
+    ],
+    "fragment": "    <sc-if value=\"{{ isChat }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Messages / Chat / Connected\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:56px;left:18px;right:18px;height:64px;display:flex;align-items:center;gap:12px;z-index:25\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:52px;height:52px;border-radius:26px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div sc-camel-on-click=\"{{ viewProfile }}\" style=\"position:relative;flex:none;cursor:pointer;margin-left:4px\">\n            <img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"Chloe\" style=\"width:58px;height:58px;border-radius:29px;object-fit:cover;display:block;border:3px solid #fff;box-shadow:0 6px 16px rgba(16,36,74,0.12)\">\n            <div style=\"position:absolute;right:-1px;bottom:1px;width:15px;height:15px;border-radius:8px;background:#22c55e;border:2.5px solid #fff\"></div>\n          </div>\n          <div style=\"flex:1;min-width:0\">\n            <div style=\"font-size:24px;font-weight:800;letter-spacing:-0.03em;color:#0b1b3a\">Chloe</div>\n            <div style=\"display:flex;align-items:center;gap:6px;margin-top:1px\"><div style=\"width:9px;height:9px;border-radius:5px;background:#22c55e\"></div><div style=\"font-size:15px;color:#5b6b85\">Online</div></div>\n          </div>\n          <div sc-camel-on-click=\"{{ startCall }}\" style=\"width:52px;height:52px;border-radius:26px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"34\" height=\"34\" sc-camel-view-box=\"0 0 24 24\"><defs><linearGradient id=\"vidg\" x1=\"0\" y1=\"0\" x2=\"24\" y2=\"0\" sc-camel-gradient-units=\"userSpaceOnUse\"><stop stop-color=\"#1ec8f5\"></stop><stop offset=\"0.55\" stop-color=\"#8b5cf6\"></stop><stop offset=\"1\" stop-color=\"#f81ce5\"></stop></linearGradient></defs><rect x=\"1.5\" y=\"5.5\" width=\"14.5\" height=\"13\" rx=\"3.2\" fill=\"url(#vidg)\"></rect><path d=\"M17 10.2 22 7v10l-5-3.2z\" fill=\"url(#vidg)\"></path></svg>\n          </div>\n          <div sc-camel-on-click=\"{{ openSafety }}\" style=\"width:52px;height:52px;border-radius:26px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"#0b1b3a\"><circle cx=\"12\" cy=\"5\" r=\"2\"></circle><circle cx=\"12\" cy=\"12\" r=\"2\"></circle><circle cx=\"12\" cy=\"19\" r=\"2\"></circle></svg>\n          </div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:132px;left:0;right:0;bottom:104px;overflow-y:auto;scrollbar-width:none;padding:16px 18px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px\">\n          <div style=\"font-size:14.5px;color:#8b95a6;text-align:center\">Today, 2:14 PM</div>\n          <sc-for list=\"{{ msgs }}\" as=\"m\" hint-placeholder-count=\"5\">\n            <div style=\"display:flex;align-items:center;gap:10px;justify-content:{{ m.align }}\">\n              <sc-if value=\"{{ m.them }}\" hint-placeholder-val=\"{{ true }}\">\n                <img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"\" style=\"width:42px;height:42px;border-radius:21px;object-fit:cover;display:block;flex:none;border:2px solid #fff;box-shadow:0 4px 12px rgba(16,36,74,0.10)\">\n              </sc-if>\n              <div style=\"max-width:252px;padding:14px 18px;border-radius:26px;background:{{ m.bg }};color:{{ m.ink }};font-size:18px;font-weight:500;line-height:1.35;box-shadow:{{ m.shadow }};text-wrap:pretty\">{{ m.text }}</div>\n            </div>\n          </sc-for>\n        </div>\n        <div style=\"position:absolute;left:16px;right:16px;bottom:34px;height:56px;display:flex;align-items:center;gap:10px;z-index:25\">\n          <div sc-camel-on-click=\"{{ sendPhoto }}\" style=\"width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"4\"></rect><circle cx=\"9\" cy=\"9\" r=\"1.8\"></circle><path d=\"M21 15.5 16 11 6 20.5\"></path></svg>\n          </div>\n          <div style=\"flex:1;min-width:0;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.08);display:flex;align-items:center;gap:8px;padding:0 10px 0 20px;box-sizing:border-box\">\n            <input sc-camel-on-change=\"{{ onDraft }}\" value=\"{{ draft }}\" placeholder=\"Message Chloe\" style=\"flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-size:17px;color:#0b1b3a\">\n            <div sc-camel-on-click=\"{{ sendVoiceMsg }}\" style=\"width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n              <svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\"><rect x=\"9\" y=\"2.5\" width=\"6\" height=\"11\" rx=\"3\"></rect><path d=\"M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5\"></path></svg>\n            </div>\n          </div>\n          <div sc-camel-on-click=\"{{ send }}\" style=\"width:56px;height:56px;border-radius:28px;background:linear-gradient(135deg,#1ec8f5 0%,#8b5cf6 55%,#f81ce5 100%);border:3px solid #fff;box-sizing:border-box;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;box-shadow:0 8px 20px rgba(168,85,247,0.30)\">\n            <svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"#fff\"><path d=\"M3.4 20.4 21 12 3.4 3.6l1.8 7.1L14 12l-8.8 1.3z\"></path></svg>\n          </div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "scale": 1,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "route": "/pages/messages/chat",
+  "parameters": [
+    "conversation_id"
+  ],
+  "entry_points": [
+    "openMaya@5242",
+    "startChat@5801",
+    "openChat@5813",
+    "declineCall@5841",
+    "remindCall@5842",
+    "returnToChat@5845",
+    "go@6187"
+  ],
+  "return_owner": "Pop exact origin; direct entry fallback Home",
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; MessageComposer",
+  "scroll_region": "Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0",
+  "styles": [
+    {
+      "line": 1231,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 1232,
+      "tag": "div",
+      "style": "position:absolute;top:56px;left:18px;right:18px;height:64px;display:flex;align-items:center;gap:12px;z-index:25"
+    },
+    {
+      "line": 1233,
+      "tag": "div",
+      "style": "width:52px;height:52px;border-radius:26px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1236,
+      "tag": "div",
+      "style": "position:relative;flex:none;cursor:pointer;margin-left:4px"
+    },
+    {
+      "line": 1237,
+      "tag": "img",
+      "style": "width:58px;height:58px;border-radius:29px;object-fit:cover;display:block;border:3px solid #fff;box-shadow:0 6px 16px rgba(16,36,74,0.12)"
+    },
+    {
+      "line": 1238,
+      "tag": "div",
+      "style": "position:absolute;right:-1px;bottom:1px;width:15px;height:15px;border-radius:8px;background:#22c55e;border:2.5px solid #fff"
+    },
+    {
+      "line": 1240,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 1241,
+      "tag": "div",
+      "style": "font-size:24px;font-weight:800;letter-spacing:-0.03em;color:#0b1b3a"
+    },
+    {
+      "line": 1242,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;margin-top:1px"
+    },
+    {
+      "line": 1242,
+      "tag": "div",
+      "style": "width:9px;height:9px;border-radius:5px;background:#22c55e"
+    },
+    {
+      "line": 1242,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85"
+    },
+    {
+      "line": 1244,
+      "tag": "div",
+      "style": "width:52px;height:52px;border-radius:26px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1247,
+      "tag": "div",
+      "style": "width:52px;height:52px;border-radius:26px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1251,
+      "tag": "div",
+      "style": "position:absolute;top:132px;left:0;right:0;bottom:104px;overflow-y:auto;scrollbar-width:none;padding:16px 18px;box-sizing:border-box;display:flex;flex-direction:column;gap:18px"
+    },
+    {
+      "line": 1252,
+      "tag": "div",
+      "style": "font-size:14.5px;color:#8b95a6;text-align:center"
+    },
+    {
+      "line": 1254,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px;justify-content:{{ m.align }}"
+    },
+    {
+      "line": 1256,
+      "tag": "img",
+      "style": "width:42px;height:42px;border-radius:21px;object-fit:cover;display:block;flex:none;border:2px solid #fff;box-shadow:0 4px 12px rgba(16,36,74,0.10)"
+    },
+    {
+      "line": 1258,
+      "tag": "div",
+      "style": "max-width:252px;padding:14px 18px;border-radius:26px;background:{{ m.bg }};color:{{ m.ink }};font-size:18px;font-weight:500;line-height:1.35;box-shadow:{{ m.shadow }};text-wrap:pretty"
+    },
+    {
+      "line": 1262,
+      "tag": "div",
+      "style": "position:absolute;left:16px;right:16px;bottom:34px;height:56px;display:flex;align-items:center;gap:10px;z-index:25"
+    },
+    {
+      "line": 1263,
+      "tag": "div",
+      "style": "width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1266,
+      "tag": "div",
+      "style": "flex:1;min-width:0;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.08);display:flex;align-items:center;gap:8px;padding:0 10px 0 20px;box-sizing:border-box"
+    },
+    {
+      "line": 1267,
+      "tag": "input",
+      "style": "flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-size:17px;color:#0b1b3a"
+    },
+    {
+      "line": 1268,
+      "tag": "div",
+      "style": "width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1272,
+      "tag": "div",
+      "style": "width:56px;height:56px;border-radius:28px;background:linear-gradient(135deg,#1ec8f5 0%,#8b5cf6 55%,#f81ce5 100%);border:3px solid #fff;box-sizing:border-box;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;box-shadow:0 8px 20px rgba(168,85,247,0.30)"
+    }
+  ],
+  "content": [
+    {
+      "line": 1241,
+      "text": "Chloe"
+    },
+    {
+      "line": 1242,
+      "text": "Online"
+    },
+    {
+      "line": 1252,
+      "text": "Today, 2:14 PM"
+    }
+  ],
+  "svg": [
+    {
+      "line": 1234,
+      "source": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+    },
+    {
+      "line": 1245,
+      "source": "<svg width=\"34\" height=\"34\" sc-camel-view-box=\"0 0 24 24\"><defs><linearGradient id=\"vidg\" x1=\"0\" y1=\"0\" x2=\"24\" y2=\"0\" sc-camel-gradient-units=\"userSpaceOnUse\"><stop stop-color=\"#1ec8f5\"></stop><stop offset=\"0.55\" stop-color=\"#8b5cf6\"></stop><stop offset=\"1\" stop-color=\"#f81ce5\"></stop></linearGradient></defs><rect x=\"1.5\" y=\"5.5\" width=\"14.5\" height=\"13\" rx=\"3.2\" fill=\"url(#vidg)\"></rect><path d=\"M17 10.2 22 7v10l-5-3.2z\" fill=\"url(#vidg)\"></path></svg>"
+    },
+    {
+      "line": 1248,
+      "source": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"#0b1b3a\"><circle cx=\"12\" cy=\"5\" r=\"2\"></circle><circle cx=\"12\" cy=\"12\" r=\"2\"></circle><circle cx=\"12\" cy=\"19\" r=\"2\"></circle></svg>"
+    },
+    {
+      "line": 1264,
+      "source": "<svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"4\"></rect><circle cx=\"9\" cy=\"9\" r=\"1.8\"></circle><path d=\"M21 15.5 16 11 6 20.5\"></path></svg>"
+    },
+    {
+      "line": 1269,
+      "source": "<svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\"><rect x=\"9\" y=\"2.5\" width=\"6\" height=\"11\" rx=\"3\"></rect><path d=\"M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5\"></path></svg>"
+    },
+    {
+      "line": 1273,
+      "source": "<svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"#fff\"><path d=\"M3.4 20.4 21 12 3.4 3.6l1.8 7.1L14 12l-8.8 1.3z\"></path></svg>"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a13",
+        "local_path": "static/assets/head/maya-av.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a6",
+        "local_path": "static/assets/songs/love-me-not.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      1234,
+      1245,
+      1248,
+      1264,
+      1269,
+      1273
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "motion": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "phase": "finished"
+  },
+  "states": [
+    "default",
+    "loading",
+    "error",
+    "empty",
+    "long-content",
+    "refresh",
+    "resolved",
+    "blocked",
+    "session-expired"
+  ],
+  "interaction_ids": [
+    "chat.goBack.click.1",
+    "chat.viewProfile.click.1",
+    "chat.startCall.click.1",
+    "chat.openSafety.click.1",
+    "chat.sendPhoto.click.1",
+    "chat.onDraft.change.1",
+    "chat.sendVoiceMsg.click.1",
+    "chat.send.click.1",
+    "sheetSafety.closeSheet.click.1",
+    "sheetSafety.viewProfile.click.1",
+    "sheetSafety.muteNotifs.click.1",
+    "sheetSafety.openReport.click.1",
+    "sheetSafety.openBlock.click.1",
+    "sheetSafety.closeSheet.click.2",
+    "sheetBlock.closeSheet.click.1",
+    "sheetBlock.confirmBlock.click.1",
+    "sheetBlock.closeSheet.click.2"
+  ],
+  "approved_deltas": [
+    "Cimoa branding and unified actual participant IDs",
+    "Real system safe areas; one scroll container and fixed footer",
+    "No invented online, music or voice success",
+    "Only real shared interests and verified badges",
+    "Store writes use confirmation and 500ms loading; no automatic peer acceptance",
+    "Resolved/blocked requests show actual state; decline does not claim delivered content was never shared",
+    "Date label is calculated from the real message timestamp"
+  ]
+}
