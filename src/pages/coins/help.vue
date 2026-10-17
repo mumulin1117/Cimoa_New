@@ -39,7 +39,7 @@ const navigate = async route => {
   navigating.value = true; error.value = ''
   try {
     if (!route) await frame.value.navigate_back(coin_center_route(store, return_context_id.value))
-    else await frame.value.navigate_forward(route === '/pages/legal/terms' ? legal_document_route(store, 'terms', 'coins', return_context_id.value) : route)
+    else await frame.value.navigate_forward(route.startsWith('/pages/legal/') ? legal_document_route(store, route.endsWith('/privacy') ? 'privacy' : 'terms', 'coins', return_context_id.value) : route)
   } catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }
