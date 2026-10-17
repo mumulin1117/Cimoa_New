@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import { COIN_ROUTES } from '@/utils/coinNavigation.js'
@@ -12,9 +13,10 @@ const account_id = store.session.account_id
 onLoad(options => { request_id.value = String(options?.purchase_request_id || '') })
 const request = computed(() => store.purchase_by_id(request_id.value))
 const pack = computed(() => store.coin_package_by_id(request.value?.package_id))
+const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved purchase data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !request_id.value || !request.value
       ? 'This purchase request is unavailable. No balance change was made.'

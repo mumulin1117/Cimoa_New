@@ -1,7 +1,7 @@
 {
   "phase": "cancelled",
   "result": "passed",
-  "server_pid": 71109,
+  "server_pid": 6493,
   "checks": [
     "Cancelling Purchasing opens the owned Cancelled result and leaves the ledger unchanged",
     "Cancelled restores the terminal request after refresh without replaying cancellation",
