@@ -1,0 +1,29 @@
+{
+  "errors" : [
+
+  ],
+  "footer" : {
+    "height" : 165.671875,
+    "width" : 402,
+    "x" : 0,
+    "y" : 674.328125
+  },
+  "header" : {
+    "height" : 65.4375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Auto Match\n\n\n\n\nYou both connected\nYou and Zane can now start a conversation.\nMatched via Auto Match\nStart Chatting\nView Profile\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

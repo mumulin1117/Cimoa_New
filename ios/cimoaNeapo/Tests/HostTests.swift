@@ -25,6 +25,7 @@ final class HostTests: XCTestCase {
         }
         do {
             _ = try await host.webView.callAsyncJavaScript("const data=fixture.data;data.session.expires_at=at+86400000;for(const m of data.match_sessions)if(m.match_id==='match_pixel'&&m.status==='found')m.expires_at=at+45000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture,"at":matchTime], in: nil, contentWorld: .page)
+            await WKWebsiteDataStore.default().removeData(ofTypes: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache], modifiedSince: .distantPast)
             try await loadFreshConnection(host, route: fixture["route"] as! String, selector: ".auto-match-\(phase)")
             host.publishSafeArea()
             let metrics = try await script(host, """

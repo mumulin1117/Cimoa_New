@@ -11,6 +11,7 @@ export function use_auto_match_page(page) {
   onLoad(o=>{match_id.value=String(o?.match_id||'');options_view.value=o?.view==='options';if(page==='preferences')draft.value=store.match_preferences?structuredCloneSafe(store.match_preferences):null})
   const c=computed(()=>store.match_presentation(match_id.value,draft.value,query.value)),busy=computed(()=>is_loading.value||navigating.value)
   const guard=computed(()=>c.value.error||(store.session.account_id!==owner?'Your session has ended. Please sign in again.':!['index','preferences','history'].includes(page)&&!c.value.match?'This match session is unavailable.':''))
+  watch(guard,value=>{if(value){modal.value='';cancel_loading()}})
   const go=async(url,kind='forward')=>{if(busy.value||!visible||!frame.value)return;error.value='';navigating.value=true;try{await frame.value[`navigate_${kind}`](url)}catch(cause){error.value=cause.message}finally{navigating.value=false}}
   const home=()=>go('/pages/home/index','relaunch')
   const back=async()=>{if(busy.value)return;if(page==='searching'||page==='paused'){modal.value='leaving';return}if(page==='found'){modal.value='found-leave';return}if(!['index','preferences','history'].includes(page)){await home();return}await go(page==='preferences'?c.value.active?.route||'/pages/auto-match/index':'/pages/home/index','back')}

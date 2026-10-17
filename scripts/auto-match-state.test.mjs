@@ -61,3 +61,7 @@ test('authorized campus-area distances are persisted, symmetric and genuinely fi
   assert.ok(f.store.start_match('nearby').success)
   const g=fixture(f.saved());assert.deepEqual(g.store.data.match_distances,f.store.data.match_distances)
 })
+test('a connected Boolean without current consent provenance and a Conversation cannot claim a valid result',()=>{
+  const f=fixture(),id=f.store.start_match('start').data;f.advance(9000);const row=f.store.data.match_sessions.find(m=>m.match_id===id);row.status='connected';row.self_accepted=true;row.peer_accepted=true
+  assert.match(f.store.matching_context(id).error,/connection is no longer available/);assert.equal(f.store.match_presentation(id).candidate, null)
+})

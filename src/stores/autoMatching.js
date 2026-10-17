@@ -2,6 +2,7 @@ import { clone_data } from './seed.js'
 import * as s from './selectors.js'
 import { choose_match_candidate } from './localMatching.js'
 import { matching_distance } from './matchingCatalog.js'
+import { connection_for } from './connectionEntities.js'
 import { apply_priority, match_route } from './matchState.js'
 import { get_runtime, transact, operation, make_id, failure, unavailable, require_student, require_target, add_transaction, connect_users } from './transactions.js'
 const own_match = (data,id) => { const row=data.match_sessions.find(m=>m.match_id===id&&m.owner_user_id===s.owner_id(data));s.ensure(row,'This match session is unavailable.');return row }
@@ -113,5 +114,9 @@ export function matching_context(data,id,now,hydration='ready') {
   if(!s.authenticated(data,now))return empty('Your session has expired. Please sign in again.')
   const active=s.active_match(data,now),match=id?s.owned_matches(data,now).find(m=>m.match_id===id):null
   if(id&&!match)return empty('This match session is unavailable.')
+  if(match?.status==='connected'){
+    const connection=connection_for(data,match.candidate_id,now)
+    if(!connection?.conversation_id||connection.source_match_id!==match.match_id)return empty('This connection is no longer available. Return Home to view your current connections.')
+  }
   return clone_data({error:'',match,route:match?match_route(match):null,active,preferences:data.match_preferences.find(p=>p.owner_user_id===s.owner_id(data)),candidate:match?.candidate_id?s.user_by_id(data,match.candidate_id):null,history:s.owned_matches(data,now).filter(m=>m.created_at>=now-30*86400000),pool:[]})
 }

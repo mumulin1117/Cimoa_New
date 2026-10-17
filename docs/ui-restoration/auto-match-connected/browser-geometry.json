@@ -1,0 +1,219 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1797": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1798": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1799": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1801": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1803": {
+      "x": 0,
+      "y": 180,
+      "width": 393,
+      "height": 259,
+      "text": "You both connectedYou and Zane can now start a conversation.Matched via Auto Match"
+    },
+    "1804": {
+      "x": 116.5,
+      "y": 180,
+      "width": 160,
+      "height": 92,
+      "text": ""
+    },
+    "1805": {
+      "x": 116.5,
+      "y": 180,
+      "width": 92,
+      "height": 92,
+      "text": ""
+    },
+    "1806": {
+      "x": 184.5,
+      "y": 180,
+      "width": 92,
+      "height": 92,
+      "text": ""
+    },
+    "1808": {
+      "x": 53.859375,
+      "y": 288,
+      "width": 285.265625,
+      "height": 38,
+      "text": "You both connected"
+    },
+    "1809": {
+      "x": 51.5,
+      "y": 342,
+      "width": 290,
+      "height": 40,
+      "text": "You and Zane can now start a conversation."
+    },
+    "1810": {
+      "x": 118.28125,
+      "y": 398,
+      "width": 156.421875,
+      "height": 17,
+      "text": "Matched via Auto Match"
+    },
+    "1812": {
+      "x": 0,
+      "y": 690,
+      "width": 393,
+      "height": 162,
+      "text": "Start ChattingView Profile"
+    },
+    "1813": {
+      "x": 20,
+      "y": 690,
+      "width": 353,
+      "height": 60,
+      "text": "Start Chatting"
+    },
+    "1814": {
+      "x": 20,
+      "y": 762,
+      "width": 353,
+      "height": 56,
+      "text": "View Profile"
+    }
+  },
+  "actual": {
+    "1797": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1798": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1799": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1801": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1803": {
+      "x": 0,
+      "y": 180,
+      "width": 393,
+      "height": 259,
+      "text": "You both connectedYou and Zane can now start a conversation.Matched via Auto Match"
+    },
+    "1804": {
+      "x": 116.484375,
+      "y": 180,
+      "width": 160.015625,
+      "height": 92,
+      "text": ""
+    },
+    "1805": {
+      "x": 116.484375,
+      "y": 180,
+      "width": 92,
+      "height": 92,
+      "text": ""
+    },
+    "1806": {
+      "x": 184.5,
+      "y": 180,
+      "width": 92,
+      "height": 92,
+      "text": ""
+    },
+    "1808": {
+      "x": 53.90625,
+      "y": 288,
+      "width": 285.171875,
+      "height": 38,
+      "text": "You both connected"
+    },
+    "1809": {
+      "x": 51.5,
+      "y": 342,
+      "width": 290,
+      "height": 40,
+      "text": "You and Zane can now start a conversation."
+    },
+    "1810": {
+      "x": 118.34375,
+      "y": 398,
+      "width": 156.3125,
+      "height": 17,
+      "text": "Matched via Auto Match"
+    },
+    "1812": {
+      "x": 0,
+      "y": 690,
+      "width": 393,
+      "height": 162,
+      "text": "Start ChattingView Profile"
+    },
+    "1813": {
+      "x": 20,
+      "y": 690,
+      "width": 353,
+      "height": 60,
+      "text": "Start Chatting"
+    },
+    "1814": {
+      "x": 20,
+      "y": 762,
+      "width": 353,
+      "height": 56,
+      "text": "View Profile"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 46930,
+    "pixels_above_channel_delta_8": 8772,
+    "mean_absolute_channel_delta": 0.7417593986309716,
+    "max_channel_delta": 250
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "status": "pending",
+  "automatic_confirmation": "Source/actual overlay reviewed, <=1 CSS px geometry, current browser and WKWebView evidence, no unresolved visual differences",
+  "browser": "browser-acceptance.json",
+  "native": "wkwebview-geometry.json",
+  "native_result": "/tmp/cimoa-match-connected-cache-20261017.xcresult",
+  "native_tests": 1,
+  "unresolved_visual_differences": [],
+  "deferred": [
+    "Final complete module cross-page restoration/regression"
+  ],
+  "git": "local commit only; no push",
+  "notes": [
+    "Connected requires valid current reciprocal consent and same-match conversation provenance.",
+    "Earlier stale test-cache diagnostic retained; fresh WKWebView cache fixture passed."
+  ]
+}
