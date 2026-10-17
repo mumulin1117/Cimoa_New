@@ -59,6 +59,10 @@ export const choose_images = (count = 6) => new Promise((resolve, reject) => {
   if (typeof uni === 'undefined') { reject(new Error('Photo selection is unavailable.')); return }
   uni.chooseImage({ count, sourceType: ['album'], success: (result) => resolve(result.tempFiles), fail: () => reject(new Error('No photos were selected. Check photo access and try again.')) })
 })
+export const choose_camera_image = () => new Promise((resolve, reject) => {
+  if (typeof uni === 'undefined') { reject(new Error('Camera capture is unavailable.')); return }
+  uni.chooseImage({ count: 1, sourceType: ['camera'], success: (result) => resolve(result.tempFiles), fail: () => reject(new Error('No photo was captured. Check camera access and try again.')) })
+})
 export async function read_permissions(navigator_api = globalThis.navigator) {
   const result = {}
   for (const name of ['camera', 'microphone', 'notifications', 'geolocation']) {

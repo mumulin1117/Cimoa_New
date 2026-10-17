@@ -1,0 +1,114 @@
+{
+  "phase": "permission-camera-pixel-restoration",
+  "result": "passed",
+  "server_pid": 48135,
+  "reference": {
+    "kind": "source-derived locked reference with approved safe-area, truthful-copy and real-media deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "6d6938cc2ad81c6b685befa5715dbac02a634c0dee92dec45939407be34426c6",
+    "behavior_fragment_sha256": "e49e8a64db323d2b63d9da3c9d6b86428ac2a2c3167faa1b98e77cb25320dd3a",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "default": {
+      "root": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852,
+        "right": 393,
+        "bottom": 852
+      },
+      "header": {
+        "x": 0,
+        "y": 54,
+        "width": 393,
+        "height": 0,
+        "right": 393,
+        "bottom": 54
+      },
+      "content": {
+        "x": 0,
+        "y": 54,
+        "width": 393,
+        "height": 370.921875,
+        "right": 393,
+        "bottom": 424.921875
+      },
+      "icon": {
+        "x": 150.5,
+        "y": 172,
+        "width": 91.984375,
+        "height": 91.984375,
+        "right": 242.484375,
+        "bottom": 263.984375
+      },
+      "title": {
+        "x": 79.953125,
+        "y": 279.96875,
+        "width": 233.078125,
+        "height": 31.046875,
+        "right": 313.03125,
+        "bottom": 311.015625
+      },
+      "copy": {
+        "x": 24,
+        "y": 327,
+        "width": 345,
+        "height": 73.921875,
+        "right": 369,
+        "bottom": 400.921875
+      },
+      "primary": {
+        "x": 20,
+        "y": 710.03125,
+        "width": 353,
+        "height": 60,
+        "right": 373,
+        "bottom": 770.03125
+      },
+      "secondary": {
+        "x": 20,
+        "y": 776.015625,
+        "width": 353,
+        "height": 45.984375,
+        "right": 373,
+        "bottom": 822
+      },
+      "safes": [
+        54,
+        0
+      ],
+      "text": {
+        "title": "Take a profile photo",
+        "copy": "The camera is used only while you take a photo. Cimoa does not record in the background.",
+        "primary": "Allow Camera",
+        "secondary": "Not Now"
+      },
+      "interactions": [
+        "permCamera.allowPhotos.click.1",
+        "permCamera.denyPhotos.click.1"
+      ],
+      "card": false,
+      "overflow": false
+    }
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 35068,
+    "pixels_above_channel_delta_8": 5651,
+    "mean_absolute_channel_delta": 0.418572077076539,
+    "max_channel_delta": 244
+  },
+  "checks": [
+    "393x852 restores the source no-header camera pre-prompt, 172px content and fixed footer with truthful copy",
+    "double Not Now reveals one source denied card; no-host Settings fails explicitly and both paths are zero-write",
+    "refresh restores the default pre-prompt and preserves the same onboarding entities",
+    "camera file result shows Loading before one Store commit, creates one owned IndexedDB image and survives refresh",
+    "invalid camera media fails before persistence and remains on the permission page for retry",
+    "320x568 with 62/34 safe areas keeps scaled source content and footer visible without horizontal overflow"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

@@ -2262,7 +2262,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/permissions/camera",
-    "component": null,
+    "component": "src/pages/permissions/camera.vue",
     "parent_route": "/pages/onboarding/photos",
     "allowed_origin_routes": [
       "/pages/onboarding/photos",
@@ -2321,12 +2321,17 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/permission-camera/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/permission-camera/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; browser and WKWebView permission states passed, but entity camera/microphone grant and capture remain pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "source locked; no-header camera pre-permission geometry restored; browser real capture, Loading-before-write, IndexedDB/Store persistence, denial/error/refresh and iPhone 17 Pro WKWebView production input checks passed",
+    "acceptance_notes": "iPhone Simulator has no physical camera feed; WKWebView validates source geometry, NSCameraUsageDescription, trusted-origin permission delegate and bundled sourceType camera input. Real file capture and persistence are verified in the same H5 browser runtime without fabricated grant.",
+    "acceptance_evidence": "docs/ui-restoration/permission-camera/acceptance.json"
   },
   {
     "source_screen": "Permissions / Microphone / Pre-Permission",

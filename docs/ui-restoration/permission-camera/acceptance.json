@@ -1,0 +1,41 @@
+{
+  "phase": "permission-camera-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-17",
+  "browser": {
+    "result": "passed",
+    "checks_passed": 6,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": { "top": 54, "bottom": 0 },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": { "top": 62, "bottom": 34 },
+    "report": "docs/ui-restoration/permission-camera/browser-acceptance.json",
+    "comparison": { "pixels_different": 35068, "pixels_above_channel_delta_8": 5651, "mean_absolute_channel_delta": 0.418572077076539, "max_channel_delta": 244 }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testCameraPermissionPixelRestoration",
+    "tests": 1,
+    "failures": 0,
+    "verified": ["source geometry", "Not Now zero-write", "refresh reset", "NSCameraUsageDescription", "trusted-origin WKUIDelegate prompt", "bundled sourceType camera input"],
+    "hardware_boundary": "iPhone Simulator has no physical camera feed; no capture success is claimed on simulator",
+    "screenshot": "docs/ui-restoration/permission-camera/actual-wkwebview.png"
+  },
+  "unit": { "command": "node --test scripts/permissions.test.mjs", "tests": 4, "failures": 0 },
+  "verified_flows": [
+    "source no-header geometry, 172px content and fixed safe-area-aware footer",
+    "Not Now reveals one denied card and performs zero Store writes",
+    "ordinary-browser Settings failure is explicit and never reports a grant",
+    "camera image shows Loading before one Store/IndexedDB commit and survives refresh",
+    "invalid image decoding fails before persistence and stays available for retry"
+  ],
+  "final_gates": { "check_conventions": "passed", "git_diff_check": "passed", "build_h5": "passed" }
+}

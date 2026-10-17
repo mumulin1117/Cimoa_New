@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "page": "Camera Permission",
+  "route": "/pages/permissions/camera",
+  "source_screen": "Permissions / Camera / Pre-Permission",
+  "source_query": "route=permCamera",
+  "source_lock": "locked",
+  "locked_at": "2026-10-17",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isPermCamera",
+    "visual_lines": "3229-3248",
+    "visual_fragment_sha256": "6d6938cc2ad81c6b685befa5715dbac02a634c0dee92dec45939407be34426c6",
+    "behavior_lines": [5714, 5717, 5718, 5719, 5720, 5721],
+    "behavior_fragment_sha256": "e49e8a64db323d2b63d9da3c9d6b86428ac2a2c3167faa1b98e77cb25320dd3a"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "content": "top 172px; left/right 24px; centered; 16px gaps",
+    "icon": "92px circle; 40px camera glyph",
+    "title": "27px extra-bold; Take a profile photo",
+    "copy": "17px secondary; centered",
+    "denied_card": "18px padding; 24px radius; 48px Settings action",
+    "footer": "left/right 20px; bottom 30px; 60px primary; 6px gap; 46px secondary"
+  },
+  "approved_deltas": [
+    { "id": "camera-safe-area-skeleton", "source": "DEVELOPMENT_CONVENTIONS.md sections 2 and 15", "delta": "The 172px source content offset is measured below the real top safe area; the footer is measured above the real bottom safe area." },
+    { "id": "camera-truthful-copy", "source": "User-authorized local-only scope", "delta": "The source claims camera use for video calls, but calls are waiting-state simulations. Copy is limited to real profile-photo capture and explicit no-background-recording behavior." },
+    { "id": "camera-real-media", "source": "DEVELOPMENT_CONVENTIONS.md data and interaction rules", "delta": "Allow Camera opens the device camera picker and persists the returned image through the onboarding Store after Loading instead of incrementing a fake photo count." },
+    { "id": "camera-decline", "source": "Source permDenied state", "delta": "Not Now reveals the source denied card without mutating Store state; Settings failure is explicit in an ordinary browser." }
+  ],
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/permission-camera/reference.png",
+    "actual_browser_png": "docs/ui-restoration/permission-camera/actual-browser.png",
+    "actual_browser_denied_png": "docs/ui-restoration/permission-camera/actual-browser-denied.png",
+    "overlay_png": "docs/ui-restoration/permission-camera/overlay.png",
+    "diff_png": "docs/ui-restoration/permission-camera/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/permission-camera/actual-wkwebview.png",
+    "visual_acceptance": "passed"
+  }
+}

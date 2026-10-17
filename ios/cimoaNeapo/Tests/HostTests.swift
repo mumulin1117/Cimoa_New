@@ -1622,6 +1622,56 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { try? await restore(); throw error }
     }
+    func testCameraPermissionPixelRestoration() async throws {
+        let host = try await rawHost()
+        var saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+        if saved is NSNull {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?cameraPermission=fixture#/pages/auth/welcome")!)); try await waitFor(host, ".welcome-page"); try await signIn(host)
+            saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+        }
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("if(snapshot===null)localStorage.removeItem('cimoa_app_state_v2');else localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?cameraPermission=restored#/pages/auth/welcome")!)); try await waitFor(host, ".welcome-page")
+        }
+        do {
+            _ = try await script(host, """
+            const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),data=envelope.data,account=data.accounts.find(row=>row.account_id===data.session.account_id),user=data.users.find(row=>row.user_id===data.session.current_user_id);account.onboarding={step:'photos',completed_steps:['basic','uni','major']};user.onboarding_status='in_progress';user.photo_ids=[];user.avatar_url='';data.profile_photos=data.profile_photos.filter(row=>row.user_id!==user.user_id);localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true
+            """)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?cameraPermission=native#/pages/permissions/camera")!)); try await waitFor(host, ".permission-camera-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,bottom:rect.bottom}},root=box('.permission-camera-page'),header=box('.permission-camera-page .secondary-page-header'),icon=box('.permission-camera-icon'),title=box('.permission-camera-title'),copy=box('.permission-camera-copy'),primary=box('[data-interaction="permCamera.allowPhotos.click.1"]'),secondary=box('[data-interaction="permCamera.denyPhotos.click.1"]'),safes=[...document.querySelectorAll('.permission-camera-page>.safe-area')].map(element=>element.getBoundingClientRect().height);return {root,header,icon,title,copy,primary,secondary,safes,text:{title:document.querySelector('.permission-camera-title').textContent,copy:document.querySelector('.permission-camera-copy').textContent,primary:document.querySelector('[data-interaction="permCamera.allowPhotos.click.1"]').textContent.trim(),secondary:document.querySelector('[data-interaction="permCamera.denyPhotos.click.1"]').textContent.trim()},interactions:[...document.querySelectorAll('.permission-camera-page [data-interaction]')].map(element=>element.dataset.interaction),card:!!document.querySelector('.permission-camera-error')}
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root=metrics["root"] as! [String:Double],header=metrics["header"] as! [String:Double],icon=metrics["icon"] as! [String:Double],title=metrics["title"] as! [String:Double],copy=metrics["copy"] as! [String:Double],primary=metrics["primary"] as! [String:Double],secondary=metrics["secondary"] as! [String:Double],safes=metrics["safes"] as! [Double],text=metrics["text"] as! [String:String],interactions=metrics["interactions"] as! [String],scale=root["width"]!/393
+            XCTAssertEqual(safes[0],Double(host.view.safeAreaInsets.top),accuracy:1); XCTAssertEqual(safes[1],Double(host.view.safeAreaInsets.bottom),accuracy:1); XCTAssertEqual(header["height"]!,0,accuracy:1); XCTAssertEqual(icon["y"]!,safes[0]+118*scale,accuracy:1.5); XCTAssertEqual(icon["width"]!,92*scale,accuracy:1); XCTAssertEqual(icon["height"]!,92*scale,accuracy:1); XCTAssertEqual(title["y"]!-icon["bottom"]!,16*scale,accuracy:1); XCTAssertEqual(copy["y"]!-title["bottom"]!,16*scale,accuracy:1); XCTAssertEqual(primary["height"]!,60*scale,accuracy:1); XCTAssertEqual(secondary["height"]!,46*scale,accuracy:1); XCTAssertEqual(secondary["bottom"]!,root["height"]!-safes[1]-30*scale,accuracy:2)
+            XCTAssertEqual(text["title"],"Take a profile photo"); XCTAssertEqual(text["copy"],"The camera is used only while you take a photo. Cimoa does not record in the background."); XCTAssertEqual(text["primary"],"Allow Camera"); XCTAssertEqual(text["secondary"],"Not Now"); XCTAssertEqual(interactions,["permCamera.allowPhotos.click.1","permCamera.denyPhotos.click.1"]); XCTAssertEqual(metrics["card"] as? Bool,false)
+            let shot=XCTAttachment(image:try await host.webView.takeSnapshot(configuration:nil)); shot.name="WKWebView Camera permission default"; shot.lifetime = .keepAlways; add(shot); print("CIMOA_CAMERA_PERMISSION_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+            let before=try await script(host,"return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host,"const action=document.querySelector('[data-interaction=\"permCamera.denyPhotos.click.1\"]');action.click();action.click();return true"); try await waitFor(host,".permission-camera-error")
+            let denied=try await script(host,"return {title:document.querySelector('.permission-camera-error-title').textContent,message:document.querySelector('[role=alert]').textContent,settings:document.querySelectorAll('[data-interaction=\"permCamera.openSettings.click.1\"]').length,state:localStorage.getItem('cimoa_app_state_v2')}") as! [String:Any]
+            XCTAssertEqual(denied["title"] as? String,"Access is off"); XCTAssertTrue((denied["message"] as? String)?.contains("Without it you can’t add a photo") == true); XCTAssertEqual(denied["settings"] as? Int,1); XCTAssertEqual(denied["state"] as? String,before)
+            _ = try await script(host,"window.__cameraOldDocument=true;return true"); host.webView.reload()
+            var refreshed = false
+            for _ in 0..<100 {
+                if (try? await script(host,"return !window.__cameraOldDocument&&!!document.querySelector('.permission-camera-page')")) as? Bool == true { refreshed = true; break }
+                try await Task.sleep(nanoseconds:100_000_000)
+            }
+            XCTAssertTrue(refreshed)
+            XCTAssertFalse((Bundle.main.object(forInfoDictionaryKey: "NSCameraUsageDescription") as? String ?? "").isEmpty)
+            let h5Root = Bundle.main.resourceURL!.appendingPathComponent("H5"), files = FileManager.default.enumerator(at: h5Root, includingPropertiesForKeys: nil)!.compactMap { $0 as? URL }.filter { $0.pathExtension == "js" }
+            let bundledCapture = try files.contains { try String(contentsOf: $0, encoding: .utf8).contains("sourceType:[\"camera\"]") }
+            XCTAssertTrue(bundledCapture, "The production H5 bundle must request a real camera-backed image input.")
+            let restoredDefault=try await script(host,"return {label:document.querySelector('[data-interaction=\"permCamera.allowPhotos.click.1\"]').textContent.trim(),card:!!document.querySelector('.permission-camera-error')}")
+            let afterReload = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual((restoredDefault as? [String:Any])?["label"] as? String,"Allow Camera"); XCTAssertEqual((restoredDefault as? [String:Any])?["card"] as? Bool,false); XCTAssertEqual(afterReload,before)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testResetCodePixelRestoration() async throws {
         let host = try await rawHost()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
