@@ -5,12 +5,12 @@ import { use_write_loading } from './useWriteLoading.js'
 import { events_destination, require_events_destination_ready } from '@/utils/eventsNavigation.js'
 
 export function use_event_page(frame, { needsEvent = true, joinedOnly = false } = {}) {
-  const store = use_app_store(), owner = store.session.current_user_id
+  const store = use_app_store(), owner = store.session.current_user_id, auth_context = store.auth_context
   const event_id = ref(''), conversation_id = ref(''), error = ref(''), sheet = ref(''), locked = ref(false), navigating = ref(false)
   const { is_loading, run_with_loading: run, cancel_loading: cancel } = use_write_loading()
   onLoad(options => { event_id.value = String(options.event_id || ''); conversation_id.value = String(options.conversation_id || '') })
   const event = computed(() => store.event_detail(event_id.value))
-  const access_error = computed(() => store.hydration_status !== 'ready' ? 'Saved data is unavailable. Return and retry loading.' : !store.session.is_authenticated || store.session.current_user_id !== owner ? 'Your session changed. Reopen this page after signing in.' : needsEvent && !event.value ? 'This event is no longer available.' : joinedOnly && !event.value?.joined ? 'Join this event before opening this page.' : '')
+  const access_error = computed(() => store.hydration_status !== 'ready' ? 'Saved data is unavailable. Return and retry loading.' : !store.session.is_authenticated || store.session.current_user_id !== owner || store.auth_context !== auth_context ? 'Your session changed. Reopen this page after signing in.' : needsEvent && !event.value ? 'This event is no longer available.' : joinedOnly && !event.value?.joined ? 'Join this event before opening this page.' : '')
   const close = () => { if (!is_loading.value) { sheet.value = ''; error.value = '' } }
   const reset = () => { cancel(); sheet.value = ''; locked.value = false; error.value = '' }
   onHide(reset); watch(access_error, value => { if (value) reset() })

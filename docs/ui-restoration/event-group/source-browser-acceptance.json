@@ -1,0 +1,48 @@
+{
+  "result": "passed",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "checks": [
+    "500ms custom Loading precedes visible group unread persistence, without changing peer read state",
+    "Independent original HTML styles/SVG reference plus fixed 393×852 actual, overlay and diff; source header/composer/right avatar geometry",
+    "Refresh does not rewrite read receipts; narrow layout and actual bottom-safe owner preserve the fixed composer"
+  ],
+  "errors": [],
+  "approved_deltas": [
+    "Canonical fixture users/messages, not prototype peer delivery",
+    "No organizer update is fabricated when saved organizer has none",
+    "Real safe area and keyboard-aware fixed skeleton"
+  ],
+  "geometry": {
+    "header": {
+      "x": 0,
+      "y": 54,
+      "width": 393,
+      "height": 80,
+      "bottom": 134
+    },
+    "footer": {
+      "x": 0,
+      "y": 734,
+      "width": 393,
+      "height": 118,
+      "bottom": 852
+    },
+    "mine_avatar": {
+      "x": 337.015625,
+      "y": 268.125,
+      "width": 35.984375,
+      "height": 35.984375,
+      "bottom": 304.109375
+    },
+    "input": "Message the group"
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 32005,
+    "pixels_above_channel_delta_8": 5572,
+    "mean_absolute_channel_delta": 0.5721285942969095,
+    "max_channel_delta": 241
+  },
+  "cleaned_up": true
+}

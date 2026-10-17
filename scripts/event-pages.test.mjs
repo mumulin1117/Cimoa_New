@@ -43,13 +43,41 @@ test('group media publishes Blob and message metadata together, refreshes and re
   assert.equal((await store.send_event_message('event_picnic','group_picnic','',payload,'photo-once')).repeated,true);assert.equal(blobs.size,1);store.hydration_status='idle';store.hydrate();assert.equal(store.event_group('event_picnic','group_picnic').messages[0].media.media_id,meta.media_id)
 })
 test('group media failure/cancellation/attendance change compensates only its new Blob',async()=>{
-  for(const mode of ['storage','cancel','left','account']) {
+  for(const mode of ['storage','cancel','left','account','rejoin','reauth']) {
     const {store,blobs,persistence}=make();store.join_event('event_picnic');blobs.set('unrelated',new Blob(['keep']));const before=clone_data(store.data);let current=true
-    configure_store_runtime(store,{media:{put:async(id,blob)=>{blobs.set(id,blob);if(mode==='cancel')current=false;if(mode==='left')store.leave_event('event_picnic');if(mode==='account'){store.data.session.current_user_id='user_chloe';store.data.session.account_id='changed'}},delete:async id=>blobs.delete(id)},...(mode==='storage'?{persistence:{...persistence,write(){throw Error('Storage full')}}}:{})})
+    configure_store_runtime(store,{media:{put:async(id,blob)=>{blobs.set(id,blob);if(mode==='cancel')current=false;if(mode==='left')store.leave_event('event_picnic');if(mode==='account'){store.data.session.current_user_id='user_chloe';store.data.session.account_id='changed'}if(mode==='rejoin'){store.leave_event('event_picnic');store.join_event('event_picnic')}if(mode==='reauth'){store.logout();await store.login('cimoa@gmail.com','12341234')}},delete:async id=>blobs.delete(id)},...(mode==='storage'?{persistence:{...persistence,write(){throw Error('Storage full')}}}:{})})
     const result=await store.send_event_message('event_picnic','group_picnic','',{kind:'image',blob:new Blob(['decoded fixture'],{type:'image/png'})},'failure',{is_current:()=>current});assert.equal(result.success,false);assert.deepEqual([...blobs.keys()],['unrelated']);assert.deepEqual(store.data.messages,before.messages);assert.deepEqual(store.data.media_files,before.media_files)
     if(mode==='storage')assert.deepEqual(store.data,before)
   }
 })
 test('mute is owned, persistent and does not imply push delivery or alter other preferences',()=>{
   const {store}=make();store.join_event('event_picnic');const before=clone_data(store.data.event_preferences[0]);assert.equal(store.set_event_group_muted('event_picnic','group_picnic',true).success,true);assert.equal(store.event_group('event_picnic','group_picnic').muted,true);assert.deepEqual(store.data.event_preferences[0].filters,before.filters);store.hydration_status='idle';store.hydrate();assert.equal(store.event_group('event_picnic','group_picnic').muted,true);store.leave_event('event_picnic');assert.equal(store.set_event_group_muted('event_picnic','group_picnic',false).success,false)
+})
+
+test('each admission has a stable unique generation; group read state derives only visible messages',()=>{
+  const {store}=make();store.join_event('event_picnic')
+  const first=store.event_group('event_picnic','group_picnic').access_key
+  store.set_event_group_muted('event_picnic','group_picnic',true)
+  assert.equal(store.event_group('event_picnic','group_picnic').access_key,first)
+  store.leave_event('event_picnic');store.join_event('event_picnic')
+  assert.notEqual(store.event_group('event_picnic','group_picnic').access_key,first)
+  const stamp=store.data.memberships.find(m=>m.user_id==='user_cimoa'&&m.event_id==='event_picnic').admission_id
+  store.hydration_status='idle';assert.equal(store.hydrate().success,true)
+  assert.equal(store.data.memberships.find(m=>m.admission_id===stamp).status,'joined')
+  store.data.messages.push({message_id:'unread_group',conversation_id:'group_picnic',sender_id:'user_zoe',body:'Hello everyone',kind:'text',media_id:null,sent_at:now,read_by:['user_zoe']})
+  assert.equal(store.event_group('event_picnic','group_picnic').unread_count,1)
+  assert.equal(store.mark_read('group_picnic').success,true)
+  assert.equal(store.event_group('event_picnic','group_picnic').unread_count,0)
+  assert.equal(store.data.messages.find(m=>m.message_id==='unread_group').read_by.includes('user_cimoa'),true)
+  store.hydration_status='idle';store.hydrate();assert.equal(store.event_group('event_picnic','group_picnic').unread_count,0)
+})
+test('duplicate event groups and invalid admission metadata are recoverable read failures',()=>{
+  for(const mode of ['duplicate','admission']){
+    let disk=create_seed(now)
+    if(mode==='duplicate')disk.conversations.push({...disk.conversations.find(c=>c.kind==='group'),conversation_id:'duplicate_group'})
+    else disk.memberships[0].admission_id=123
+    const store=use_app_store(createPinia())
+    configure_store_runtime(store,{clock:()=>now,persistence:{read:()=>disk,write(){throw Error('Must not overwrite')}}})
+    assert.equal(store.hydrate().success,false);assert.equal(store.hydration_status,'error')
+  }
 })

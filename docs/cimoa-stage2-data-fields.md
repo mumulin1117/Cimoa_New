@@ -60,7 +60,7 @@
 | events | starts_at, ends_at, capacity, university, category, price | number/number/integer/string/string/number | 列表筛选、My Events | none | store_seed | derived |
 | events | location, address, latitude, longitude, schedule, notes, accessibility, weather_plan | string/nullable number/array | evDetail, evLocation | none | store_seed | derived |
 | organizers | organizer_id, name, avatar_url, description, update_text | string | evOrganizer, evDetail | events | store_seed | derived |
-| memberships | membership_id, event_id, user_id, status, joined_at | ID/ID/ID/joined或left/number | evParticipants, evUpcoming | events, users | local_storage_metadata | join_event, leave_event |
+| memberships | membership_id, event_id, user_id, status, joined_at, admission_id | ID/ID/ID/joined或left/number/optional ID | evParticipants, evUpcoming, evGroup | events, users | local_storage_metadata | join_event, leave_event；每次重新报名产生新 admission_id，阻止旧媒体发送跨入新报名周期；旧记录回退 membership_id + joined_at |
 | event_preferences | owner_user_id, filters, saved_event_ids, reminder_by_event | ID/object/ID[]/object | evFilterSheet, evReminder | events | local_storage_metadata | update_event_preferences |
 | conversations | conversation_id, participant_ids, kind, event_id | ID/ID[]/direct或group/nullable ID | chat, evGroup | users, events | local_storage_metadata | accept_request, join_event |
 | messages | message_id, conversation_id, sender_id, kind, body, media_id, sent_at, read_by | ID/ID/ID/text或image或audio/string/nullable ID/number/ID[] | chat, evGroup | conversations, users, media_files | local_storage_metadata | send_message, mark_read |
@@ -122,6 +122,8 @@ Discover 本页补充（2026-10-13）：`discover_person` 为只读 getter，从
 私聊/等待增量（2026-10-17）：旧 v2 缺失 call_sessions 时仅在内存补空表，hydration 不写磁盘。显式开始通话经 500ms Loading 后原子创建或复用同会话等待，截止为 started_at + 8–12 秒；刷新/后台/页面恢复不延长。timeout 由截止推导，不写假接通；主动挂断原子保存 ended_at。账号登录有效期、双方视频隐私、连接代际共同约束读取；退出结束本账号等待，拉黑/注销移除关联行。私聊媒体发送异步解码期间固定 owner/session/Connection，失效则回滚新增 Blob；成功才发布 Message，Home 预览和未读从同一实体派生。完整交互契约与证据见 [私聊专项验收](./cimoa-messaging-acceptance.md)。
 
 Events 本页补充（2026-10-13）：新增可选 `events.time_zone`（新 HKUST fixture 为 Asia/Hong_Kong，旧记录缺失回退 UTC）、`featured_tab` / `feed_order`（先真实筛选，再源编排排序）、owner 范围 `event_preferences.active_tab`（缺失只读回退 Today）。`event_feed`、`event_by_id`、`event_join_blocker` 共用日期、成员和资格；`select_event_tab` 单事务保存，绝不覆盖旧高级 filters、收藏或提醒。Today 当日、This week 周一至周日、My campus 按当前账号大学，均排除结束活动。`event_card` 头像/人数只含可见成员，余位按所有报名计算；取消撤销群权限。字段和十字段入口契约见 [Events](./cimoa-events-interactions.md)。旧 v2 时间、图片与用户自定义文本完整保留，不因新 fixture 自动重置。
+
+Events 群聊恢复补充（2026-10-17）：一个 event_id 只允许一个 group Conversation；每个 event_id + user_id 只保留一个 Membership，重新报名更新 admission_id。`event_group.access_key` 是认证上下文（含登录 flow_id）与本次报名的只读派生值，不额外存储。媒体解码、Blob 写入后及消息事务提交前均重验该上下文；会话更换或重新报名不得继续旧发送，失败只补偿本次新建 Blob。`unread_count` 从当前可见消息的 read_by 派生；进入群聊经 500ms 自定义 Loading 后调用已有 mark_read，只写自己的已读，不推断对方已读。刷新不重复写已消费的已读状态。
 
 v2 使用新存储键，原 v1 键不删除。首次读取保留完整 legacy_archive（所有旧用户、帖子、消息与未知字段），只在一次成功业务写入后连同 v2 一次落盘。首次 hydration 本身不写磁盘、不显示虚假加载流程。
 

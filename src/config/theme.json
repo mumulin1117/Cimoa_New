@@ -191,6 +191,8 @@
     "auto_match_17": "linear-gradient(to top,rgba(6,14,28,0.8) 0%,rgba(6,14,28,0.35) 55%,rgba(6,14,28,0) 100%)"
   },
   "shadows": {
+    "event_group_menu": "0 11.45rpx 30.534rpx rgba(16,36,74,0.10)",
+    "event_group_send": "0 15.267rpx 38.168rpx rgba(168,85,247,0.28)",
     "call_end": "0 19.084rpx 45.802rpx rgba(239,68,68,0.4)",
     "ice_question": "0 15.267rpx 41.985rpx rgba(16,36,74,0.06)",
     "ice_question_selected": "0 19.084rpx 49.618rpx rgba(168,85,247,0.18)",
@@ -208,7 +210,7 @@
     "connection_pink": "0 0 49.618rpx rgba(248,28,229,0.35)",
     "connection_photo": "0 22.901rpx 57.252rpx rgba(16,36,74,0.12)",
     "connection_answer": "0 19.084rpx 53.435rpx rgba(16,36,74,0.12)",
-    "event_group_header": "0 1px 0 rgba(16,36,74,0.06)",
+    "event_group_header": "0 1px 0 rgba(16,36,74,0.07)",
     "event_message": "0 11.45rpx 34.351rpx rgba(16,36,74,0.07)",
     "onboarding_photo_side": "0 19.084rpx 41.985rpx rgba(16,36,74,0.12)",
     "onboarding_photo_main": "0 34.351rpx 64.885rpx rgba(16,36,74,0.20)",

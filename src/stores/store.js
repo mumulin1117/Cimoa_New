@@ -62,6 +62,7 @@ export const use_app_store = defineStore('app', {
     last_deleted_account: state => state.hydration_status === 'ready' ? clone_data(state.data.accounts.filter(row => row.status === 'deleted' && Number.isFinite(row.deleted_at)).sort((a, b) => b.deleted_at - a.deleted_at)[0] || null) : null,
     requires_local_verification() { return this.session.is_authenticated && this.data.accounts.find(row => row.account_id === this.data.session.account_id)?.auth_provider === 'local' && !this.local_verification?.verified },
     session: (state) => ({ ...state.data.session, is_authenticated: ready(state) }),
+    auth_context: state => auth_context_key(state.data),
     current_user: (state) => ready(state) ? { ...profile(state.data, s.owner_id(state.data)), email: state.data.accounts.find((row) => row.account_id === state.data.session.account_id)?.email, coin_balance: s.balance(state.data) } : { user_name: '', interests: [], coin_balance: 0 },
     current_user_profile() { return this.current_user },
     current_interests: (state) => ready(state) ? clone_data((s.user_by_id(state.data, s.owner_id(state.data))?.interest_ids || []).map(id => state.data.interests.find(row => row.item_id === id)).filter(Boolean)) : [],
@@ -609,7 +610,7 @@ export const use_app_store = defineStore('app', {
         s.ensure(!blocker, blocker)
         let row = data.memberships.find((entry) => entry.event_id === id && entry.user_id === s.owner_id(data))
         if (!row) { row = { membership_id: make_id('member'), event_id: id, user_id: s.owner_id(data) }; data.memberships.push(row) }
-        Object.assign(row, { status: 'joined', joined_at: now })
+        Object.assign(row, { status: 'joined', joined_at: now, admission_id: make_id('admission') })
         let group = data.conversations.find((entry) => entry.kind === 'group' && entry.event_id === id)
         if (!group) { group = { conversation_id: make_id('group'), kind: 'group', participant_ids: [], event_id: id }; data.conversations.push(group) }
         return group.conversation_id

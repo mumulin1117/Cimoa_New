@@ -2511,6 +2511,61 @@ final class HostTests: XCTestCase {
         let attachment = XCTAttachment(image: image); attachment.name = "WKWebView Home with measured insets"; attachment.lifetime = .keepAlways; add(attachment)
         print("CIMOA_NATIVE_SAFE_AREA top=\(host.view.safeAreaInsets.top) bottom=\(host.view.safeAreaInsets.bottom)")
     }
+    func testEventGroupSourceAndReadRecovery() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let output = root.appendingPathComponent("docs/ui-restoration/event-group")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: output.appendingPathComponent("native-fixture.json"))) as! [String:Any]
+        let originalScripts = host.webView.configuration.userContentController.userScripts
+        func resetScripts() {
+            host.webView.configuration.userContentController.removeAllUserScripts()
+            for item in originalScripts { host.webView.configuration.userContentController.addUserScript(item) }
+        }
+        func restore() async throws {
+            resetScripts()
+            let encoded = String(data: try JSONSerialization.data(withJSONObject: saved), encoding: .utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const snapshot=\(encoded);for(const[key,value]of[['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            try await loadFreshConnection(host, route: "/pages/auth/splash", selector: ".splash-page")
+            resetScripts()
+        }
+        do {
+            let encoded = String(data: try JSONSerialization.data(withJSONObject: fixture["data"]!), encoding: .utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const fixture=\(encoded);fixture.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data:fixture}));", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            try await loadFreshConnection(host, route: fixture["route"] as! String, selector: ".event-group-composer")
+            resetScripts()
+            _ = try await script(host, "const delay=ms=>new Promise(r=>setTimeout(r,ms));for(let i=0;i<40;i++){if(!document.querySelector('.event-loading'))break;await delay(50)}await document.fonts.ready;await Promise.all([...document.images].map(i=>i.decode()));for(const a of document.getAnimations())if(a.effect?.getComputedTiming().iterations!==Infinity)a.finish();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return true")
+            let metrics = try await script(host, """
+            const box=s=>{const r=document.querySelector(s).getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};
+            const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            return {header:box('.event-group-header'),footer:box('.event-group-composer'),safeTop:box('.event-group-page > .safe-area').height,width:innerWidth,height:innerHeight,mineAvatars:document.querySelectorAll('.event-message--mine .event-message-avatar').length,read:data.messages.find(m=>m.message_id==='group_pixel_1').read_by,placeholder:document.querySelector('.event-group-composer .uni-input-placeholder').textContent,state:localStorage.getItem('cimoa_app_state_v2')}
+            """) as! [String:Any]
+            let footer = metrics["footer"] as! [String:Double], header = metrics["header"] as! [String:Double]
+            XCTAssertEqual(header["height"]!, 80 * (metrics["width"] as! Double) / 393, accuracy: 1)
+            XCTAssertEqual(metrics["safeTop"] as! Double, Double(host.view.safeAreaInsets.top), accuracy: 1)
+            XCTAssertLessThanOrEqual(footer["bottom"]!, (metrics["height"] as! Double) - Double(host.view.safeAreaInsets.bottom) + 1)
+            XCTAssertEqual(metrics["mineAvatars"] as? Int, 1)
+            XCTAssertEqual(metrics["placeholder"] as? String, "Message the group")
+            XCTAssertTrue((metrics["read"] as! [String]).contains("user_cimoa"))
+            let image = try await host.webView.takeSnapshot(configuration: nil)
+            try image.pngData()!.write(to: output.appendingPathComponent("actual-wkwebview.png"))
+            try JSONSerialization.data(withJSONObject: metrics.filter { $0.key != "state" }, options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent("wkwebview-metrics.json"))
+            let attachment = XCTAttachment(image: image); attachment.name = "Events group source layout and native safe area"; attachment.lifetime = .keepAlways; add(attachment)
+            try await loadFreshConnection(host, route: fixture["route"] as! String, selector: ".event-group-composer")
+            try await Task.sleep(nanoseconds: 650_000_000)
+            let recovered = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            XCTAssertEqual(recovered, metrics["state"] as? String)
+            let result = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),wait=async fn=>{for(let i=0;i<120;i++){if(fn())return;await delay(50)}throw Error('Group regression timeout '+location.hash)},click=async id=>{await delay(350);visible('[data-interaction="'+id+'"]').click();await delay(60)};
+            await click('evGroup.openGroupMenu.click.1');await click('eventGroup.menu.participants.click.1');await wait(()=>visible('.event-participants-page'));const count=document.querySelectorAll('.event-person').length;
+            await click('evParticipants.goBack.click.1');await wait(()=>visible('.event-group-page'));await click('evGroup.openGroupMenu.click.1');await click('eventGroup.menu.manage.click.1');await click('sheetEvCancel.cancelAttendance.click.1');await wait(()=>visible('.event-group-page [role=alert]'));
+            return {count,messages:document.querySelectorAll('.event-message').length,composer:!!visible('.event-group-composer')}
+            """) as! [String:Any]
+            XCTAssertEqual(result["count"] as? Int, 4); XCTAssertEqual(result["messages"] as? Int, 0); XCTAssertEqual(result["composer"] as? Bool, false)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testEventAttendanceGroupAndMediaRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
