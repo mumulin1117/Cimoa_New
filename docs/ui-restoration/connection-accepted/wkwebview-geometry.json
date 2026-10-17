@@ -1,0 +1,23 @@
+{
+  "footer" : {
+    "bottom" : 840,
+    "height" : 165.671875,
+    "width" : 402,
+    "x" : 0,
+    "y" : 674.328125
+  },
+  "header" : null,
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "photo" : null,
+  "safe" : [
+    62,
+    34
+  ],
+  "text" : "\n\n\n\nYou’re connected\nYou and Lina can now start a conversation.\nYOU BOTH LIKE\n📷\nPhotography\n☕\nCoffee\n🎵\nLive Music\nStart Chatting\nView Lina’s Profile\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

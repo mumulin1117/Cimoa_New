@@ -1,0 +1,398 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "source_query": "route=reqAccepted",
+    "condition": "isReqAccepted",
+    "lines": [
+      975,
+      1014
+    ],
+    "fragment": "    <sc-if value=\"{{ isReqAccepted }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Connection / Request / Accepted\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;inset:0;overflow:hidden;pointer-events:none\">\n          <div style=\"position:absolute;left:18%;top:16%;width:8px;height:8px;border-radius:4px;background:#f81ce5;opacity:0.5\"></div>\n          <div style=\"position:absolute;left:76%;top:20%;width:7px;height:7px;border-radius:4px;background:#4a7bf7;opacity:0.4\"></div>\n          <div style=\"position:absolute;left:6%;top:36%;width:7px;height:7px;border-radius:4px;background:#1ec8f5;opacity:0.4\"></div>\n          <div style=\"position:absolute;left:92%;top:32%;width:7px;height:7px;border-radius:4px;background:#8a6ff0;opacity:0.4\"></div>\n          <div style=\"position:absolute;left:12%;top:56%;width:6px;height:6px;border-radius:3px;background:#8a6ff0;opacity:0.4\"></div>\n          <div style=\"position:absolute;left:93%;top:46%;width:6px;height:6px;border-radius:3px;background:#f81ce5;opacity:0.4\"></div>\n          <div style=\"position:absolute;left:4%;top:78%;width:8px;height:8px;border-radius:4px;background:#f81ce5;opacity:0.4\"></div>\n          <div style=\"position:absolute;left:28%;top:88%;width:6px;height:6px;border-radius:3px;background:#4a7bf7;opacity:0.35\"></div>\n          <div style=\"position:absolute;left:11%;top:90%;width:6px;height:6px;border-radius:3px;background:#1ec8f5;opacity:0.4\"></div>\n          <div style=\"position:absolute;left:78%;top:93%;width:7px;height:7px;border-radius:4px;background:#a855f7;opacity:0.4\"></div>\n        </div>\n        <div sc-camel-on-click=\"{{ closeAccepted }}\" style=\"position:absolute;top:58px;right:20px;width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20\">\n          <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg>\n        </div>\n        <div style=\"position:absolute;top:150px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:16px\">\n          <svg width=\"30\" height=\"18\" sc-camel-view-box=\"0 0 30 18\" fill=\"none\" stroke-linecap=\"round\"><path d=\"M7 14 3 2\" stroke=\"#1ec8f5\" stroke-width=\"2.4\"></path><path d=\"M15 11V1\" stroke=\"#8a6ff0\" stroke-width=\"2.4\"></path><path d=\"M23 14l4-12\" stroke=\"#f81ce5\" stroke-width=\"2.4\"></path></svg>\n          <div style=\"display:flex;align-items:center\">\n            <div style=\"position:relative;border-radius:52px;box-shadow:0 0 26px rgba(30,200,245,0.35)\"><img src=\"6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30\" alt=\"Alex Chan\" style=\"width:96px;height:96px;border-radius:48px;object-fit:cover;border:4px solid #fff;display:block\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" style=\"position:absolute;right:0;bottom:0\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\" stroke=\"#fff\" stroke-width=\"2\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></div>\n            <div style=\"position:relative;border-radius:52px;margin-left:-26px;box-shadow:0 0 26px rgba(248,28,229,0.35)\"><img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"Chloe Lin\" style=\"width:96px;height:96px;border-radius:48px;object-fit:cover;border:4px solid #fff;display:block\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" style=\"position:absolute;right:0;bottom:0\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\" stroke=\"#fff\" stroke-width=\"2\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></div>\n          </div>\n          <div style=\"font-size:32px;font-weight:800;letter-spacing:-0.035em\">You’re connected</div>\n          <div style=\"font-size:17px;color:#5b6b85;text-align:center;max-width:290px;text-wrap:pretty\">You and Chloe can now start a conversation.</div>\n          <div style=\"width:100%;box-sizing:border-box;padding:20px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"font-size:13px;font-weight:700;letter-spacing:0.08em;color:#8b95a6\">YOU BOTH LIKE</div>\n            <div style=\"display:flex;justify-content:space-around;margin-top:14px\">\n              <div style=\"display:flex;flex-direction:column;align-items:center;gap:8px\"><div style=\"width:56px;height:56px;border-radius:28px;background:#e5f0ff;display:flex;align-items:center;justify-content:center\"><div style=\"font-size:26px;line-height:1;flex:none\">📷</div></div><div style=\"font-size:15px;font-weight:600\">Photography</div></div>\n              <div style=\"display:flex;flex-direction:column;align-items:center;gap:8px\"><div style=\"width:56px;height:56px;border-radius:28px;background:#fbe6f7;display:flex;align-items:center;justify-content:center\"><div style=\"font-size:26px;line-height:1;flex:none\">☕</div></div><div style=\"font-size:15px;font-weight:600\">Coffee</div></div>\n              <div style=\"display:flex;flex-direction:column;align-items:center;gap:8px\"><div style=\"width:56px;height:56px;border-radius:28px;background:#fbe6f7;display:flex;align-items:center;justify-content:center\"><div style=\"font-size:26px;line-height:1;flex:none\">🎵</div></div><div style=\"font-size:15px;font-weight:600\">Live Music</div></div>\n            </div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ startChat }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Start Chatting</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M13 6l6 6-6 6\"></path></svg></div>\n          <div sc-camel-on-click=\"{{ viewProfile }}\" style=\"height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">View Chloe’s Profile</div></div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "scale": 1,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "route": "/pages/connections/accepted",
+  "parameters": [
+    "request_id"
+  ],
+  "entry_points": [
+    "accept@5015"
+  ],
+  "return_owner": "Close clears to Home; Chat/Profile push correct entity; pop restores result",
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "styles": [
+    {
+      "line": 976,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 977,
+      "tag": "div",
+      "style": "position:absolute;inset:0;overflow:hidden;pointer-events:none"
+    },
+    {
+      "line": 978,
+      "tag": "div",
+      "style": "position:absolute;left:18%;top:16%;width:8px;height:8px;border-radius:4px;background:#f81ce5;opacity:0.5"
+    },
+    {
+      "line": 979,
+      "tag": "div",
+      "style": "position:absolute;left:76%;top:20%;width:7px;height:7px;border-radius:4px;background:#4a7bf7;opacity:0.4"
+    },
+    {
+      "line": 980,
+      "tag": "div",
+      "style": "position:absolute;left:6%;top:36%;width:7px;height:7px;border-radius:4px;background:#1ec8f5;opacity:0.4"
+    },
+    {
+      "line": 981,
+      "tag": "div",
+      "style": "position:absolute;left:92%;top:32%;width:7px;height:7px;border-radius:4px;background:#8a6ff0;opacity:0.4"
+    },
+    {
+      "line": 982,
+      "tag": "div",
+      "style": "position:absolute;left:12%;top:56%;width:6px;height:6px;border-radius:3px;background:#8a6ff0;opacity:0.4"
+    },
+    {
+      "line": 983,
+      "tag": "div",
+      "style": "position:absolute;left:93%;top:46%;width:6px;height:6px;border-radius:3px;background:#f81ce5;opacity:0.4"
+    },
+    {
+      "line": 984,
+      "tag": "div",
+      "style": "position:absolute;left:4%;top:78%;width:8px;height:8px;border-radius:4px;background:#f81ce5;opacity:0.4"
+    },
+    {
+      "line": 985,
+      "tag": "div",
+      "style": "position:absolute;left:28%;top:88%;width:6px;height:6px;border-radius:3px;background:#4a7bf7;opacity:0.35"
+    },
+    {
+      "line": 986,
+      "tag": "div",
+      "style": "position:absolute;left:11%;top:90%;width:6px;height:6px;border-radius:3px;background:#1ec8f5;opacity:0.4"
+    },
+    {
+      "line": 987,
+      "tag": "div",
+      "style": "position:absolute;left:78%;top:93%;width:7px;height:7px;border-radius:4px;background:#a855f7;opacity:0.4"
+    },
+    {
+      "line": 989,
+      "tag": "div",
+      "style": "position:absolute;top:58px;right:20px;width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20"
+    },
+    {
+      "line": 992,
+      "tag": "div",
+      "style": "position:absolute;top:150px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:16px"
+    },
+    {
+      "line": 994,
+      "tag": "div",
+      "style": "display:flex;align-items:center"
+    },
+    {
+      "line": 995,
+      "tag": "div",
+      "style": "position:relative;border-radius:52px;box-shadow:0 0 26px rgba(30,200,245,0.35)"
+    },
+    {
+      "line": 995,
+      "tag": "img",
+      "style": "width:96px;height:96px;border-radius:48px;object-fit:cover;border:4px solid #fff;display:block"
+    },
+    {
+      "line": 995,
+      "tag": "svg",
+      "style": "position:absolute;right:0;bottom:0"
+    },
+    {
+      "line": 996,
+      "tag": "div",
+      "style": "position:relative;border-radius:52px;margin-left:-26px;box-shadow:0 0 26px rgba(248,28,229,0.35)"
+    },
+    {
+      "line": 996,
+      "tag": "img",
+      "style": "width:96px;height:96px;border-radius:48px;object-fit:cover;border:4px solid #fff;display:block"
+    },
+    {
+      "line": 996,
+      "tag": "svg",
+      "style": "position:absolute;right:0;bottom:0"
+    },
+    {
+      "line": 998,
+      "tag": "div",
+      "style": "font-size:32px;font-weight:800;letter-spacing:-0.035em"
+    },
+    {
+      "line": 999,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85;text-align:center;max-width:290px;text-wrap:pretty"
+    },
+    {
+      "line": 1000,
+      "tag": "div",
+      "style": "width:100%;box-sizing:border-box;padding:20px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1001,
+      "tag": "div",
+      "style": "font-size:13px;font-weight:700;letter-spacing:0.08em;color:#8b95a6"
+    },
+    {
+      "line": 1002,
+      "tag": "div",
+      "style": "display:flex;justify-content:space-around;margin-top:14px"
+    },
+    {
+      "line": 1003,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:center;gap:8px"
+    },
+    {
+      "line": 1003,
+      "tag": "div",
+      "style": "width:56px;height:56px;border-radius:28px;background:#e5f0ff;display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 1003,
+      "tag": "div",
+      "style": "font-size:26px;line-height:1;flex:none"
+    },
+    {
+      "line": 1003,
+      "tag": "div",
+      "style": "font-size:15px;font-weight:600"
+    },
+    {
+      "line": 1004,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:center;gap:8px"
+    },
+    {
+      "line": 1004,
+      "tag": "div",
+      "style": "width:56px;height:56px;border-radius:28px;background:#fbe6f7;display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 1004,
+      "tag": "div",
+      "style": "font-size:26px;line-height:1;flex:none"
+    },
+    {
+      "line": 1004,
+      "tag": "div",
+      "style": "font-size:15px;font-weight:600"
+    },
+    {
+      "line": 1005,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:center;gap:8px"
+    },
+    {
+      "line": 1005,
+      "tag": "div",
+      "style": "width:56px;height:56px;border-radius:28px;background:#fbe6f7;display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 1005,
+      "tag": "div",
+      "style": "font-size:26px;line-height:1;flex:none"
+    },
+    {
+      "line": 1005,
+      "tag": "div",
+      "style": "font-size:15px;font-weight:600"
+    },
+    {
+      "line": 1009,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;gap:12px;z-index:20"
+    },
+    {
+      "line": 1010,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 1010,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 1011,
+      "tag": "div",
+      "style": "height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 1011,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:600;color:#0b1b3a"
+    }
+  ],
+  "content": [
+    {
+      "line": 998,
+      "text": "You’re connected"
+    },
+    {
+      "line": 999,
+      "text": "You and Chloe can now start a conversation."
+    },
+    {
+      "line": 1001,
+      "text": "YOU BOTH LIKE"
+    },
+    {
+      "line": 1003,
+      "text": "📷"
+    },
+    {
+      "line": 1003,
+      "text": "Photography"
+    },
+    {
+      "line": 1004,
+      "text": "☕"
+    },
+    {
+      "line": 1004,
+      "text": "Coffee"
+    },
+    {
+      "line": 1005,
+      "text": "🎵"
+    },
+    {
+      "line": 1005,
+      "text": "Live Music"
+    },
+    {
+      "line": 1010,
+      "text": "Start Chatting"
+    },
+    {
+      "line": 1011,
+      "text": "View Chloe’s Profile"
+    }
+  ],
+  "svg": [
+    {
+      "line": 990,
+      "source": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg>"
+    },
+    {
+      "line": 993,
+      "source": "<svg width=\"30\" height=\"18\" sc-camel-view-box=\"0 0 30 18\" fill=\"none\" stroke-linecap=\"round\"><path d=\"M7 14 3 2\" stroke=\"#1ec8f5\" stroke-width=\"2.4\"></path><path d=\"M15 11V1\" stroke=\"#8a6ff0\" stroke-width=\"2.4\"></path><path d=\"M23 14l4-12\" stroke=\"#f81ce5\" stroke-width=\"2.4\"></path></svg>"
+    },
+    {
+      "line": 995,
+      "source": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" style=\"position:absolute;right:0;bottom:0\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\" stroke=\"#fff\" stroke-width=\"2\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>"
+    },
+    {
+      "line": 996,
+      "source": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" style=\"position:absolute;right:0;bottom:0\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\" stroke=\"#fff\" stroke-width=\"2\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>"
+    },
+    {
+      "line": 1010,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M13 6l6 6-6 6\"></path></svg>"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a13",
+        "local_path": "static/assets/head/maya-av.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a15",
+        "local_path": "static/assets/head/me.png",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a0",
+        "local_path": "static/assets/songs/beautiful-things.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a3",
+        "local_path": "static/assets/songs/good-luck-babe.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a2",
+        "local_path": "static/assets/songs/birds.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a6",
+        "local_path": "static/assets/songs/love-me-not.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      990,
+      993,
+      995,
+      996,
+      1010
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "motion": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "phase": "finished"
+  },
+  "states": [
+    "default",
+    "loading",
+    "error",
+    "empty",
+    "long-content",
+    "refresh",
+    "resolved",
+    "blocked",
+    "session-expired"
+  ],
+  "interaction_ids": [
+    "reqAccepted.closeAccepted.click.1",
+    "reqAccepted.startChat.click.1",
+    "reqAccepted.viewProfile.click.1"
+  ],
+  "approved_deltas": [
+    "Cimoa branding and unified actual participant IDs",
+    "Real system safe areas; one scroll container and fixed footer",
+    "No invented online, music or voice success",
+    "Only real shared interests and verified badges",
+    "Store writes use confirmation and 500ms loading; no automatic peer acceptance",
+    "Resolved/blocked requests show actual state; decline does not claim delivered content was never shared",
+    "Date label is calculated from the real message timestamp"
+  ]
+}

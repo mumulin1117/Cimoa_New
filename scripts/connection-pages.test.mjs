@@ -53,7 +53,7 @@ function reference_markup(origin) {
     return `<${node.tag}${attrs}>${children()}${['img','input','br'].includes(node.tag) ? '' : `</${node.tag}>`}`
   }
   let content = (root.children || []).map(node => render(node)).join('')
-  if (phase === 'accepted') content = content.replaceAll('Chloe', 'Lina').replaceAll('/head/maya-av.png', '/head/jordan-av.png').replaceAll('Alex Chan', 'Ethan')
+  if (phase === 'accepted') content = content.replaceAll('Chloe', 'Lina').replaceAll('/head/maya-av.png', '/head/maya-full.png').replaceAll('Alex Chan', 'Ethan')
   if (phase === 'declined') content = content.replace('No introduction was shared and no reason is passed on.', 'No connection was created and no reason is passed on.')
   return `<!doctype html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box}html,body{height:100%;width:100%;margin:0;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;color:#0b1b3a;background:linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%);-webkit-font-smoothing:antialiased}::-webkit-scrollbar{display:none}</style></head><body>${content}</body></html>`
 }
@@ -89,6 +89,13 @@ try {
     await page.locator('[data-interaction="reqAccepted.startChat.click.1"]').waitFor(); const accepted = await saved()
     assert.equal(accepted.requests.find(row => row.request_id === 'request_pixel').status, 'accepted'); assert.equal(accepted.conversations.filter(row => row.kind === 'direct' && row.participant_ids.includes('user_lina')).length, 1)
     check('Decline cancellation keeps pending; Accept writes after business Loading and creates one real conversation')
+  }
+  if (phase === 'accepted') {
+    assert.ok(close_to(report.geometry.hero.y, 150)); assert.match(report.geometry.text, /View Lina’s Profile/); assert.match(report.geometry.text, /YOU BOTH LIKE/)
+    await page.locator('[data-interaction="reqAccepted.viewProfile.click.1"]').click(); await page.locator('.expanded-profile-page').waitFor(); assert.equal(await page.locator('[data-interaction="expanded.sayHi.click.1"]').innerText(), 'Chat'); await page.locator('[data-interaction="expanded.collapse.click.1"]').click(); await page.locator('.connection-accepted-page').waitFor()
+    await page.locator('[data-interaction="reqAccepted.startChat.click.1"]').click(); await page.locator('.chat-composer').waitFor(); assert.ok(page.url().includes('conversation_pixel')); await page.locator('[data-interaction="chat.goBack.click.1"]').click(); await page.locator('.connection-accepted-page').waitFor()
+    await page.locator('[data-interaction="reqAccepted.closeAccepted.click.1"]').click(); await page.locator('.home-header').waitFor(); assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1')
+    check('Real counterpart/shared interests; profile Chat CTA and chat use unique conversation; both Back owners correct; Close clears Home')
   }
   await page.evaluate(({ key, data: fixture }) => localStorage.setItem(key, JSON.stringify({ type: 'object', data: fixture })), { key: STATE_KEY, data })
   await page.setViewportSize({ width: 320, height: 568 }); await open(route); await set_safe_area(page, 62, 34); await page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))))

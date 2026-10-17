@@ -1,0 +1,41 @@
+{
+  "page": "accepted",
+  "result": "passed",
+  "checks": [
+    "Real counterpart/shared interests; profile Chat CTA and chat use unique conversation; both Back owners correct; Close clears Home",
+    "Narrow iPhone width with real safe-area budget has no horizontal clipping"
+  ],
+  "geometry": {
+    "header": null,
+    "footer": {
+      "x": 0,
+      "y": 690.03125,
+      "width": 393,
+      "height": 161.96875,
+      "bottom": 852
+    },
+    "hero": {
+      "x": 0,
+      "y": 149.984375,
+      "width": 393,
+      "height": 430.875,
+      "bottom": 580.859375
+    },
+    "question": null,
+    "answer": null,
+    "photo": null,
+    "text": "You’re connected\nYou and Lina can now start a conversation.\nYOU BOTH LIKE\n📷\nPhotography\n☕\nCoffee\n🎵\nLive Music\nStart Chatting\nView Lina’s Profile"
+  },
+  "errors": [],
+  "reference": "Offline HTML AST, original inline styles, no prototype script/runtime",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 67047,
+    "pixels_above_channel_delta_8": 11828,
+    "mean_absolute_channel_delta": 0.9149613542151979,
+    "max_channel_delta": 244
+  },
+  "cleaned_up": true
+}

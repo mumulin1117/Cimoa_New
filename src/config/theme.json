@@ -155,6 +155,8 @@
     "coin_hero": "linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%)"
   },
   "shadows": {
+    "connection_cyan": "0 0 49.618rpx rgba(30,200,245,0.35)",
+    "connection_pink": "0 0 49.618rpx rgba(248,28,229,0.35)",
     "connection_photo": "0 22.901rpx 57.252rpx rgba(16,36,74,0.12)",
     "connection_answer": "0 19.084rpx 53.435rpx rgba(16,36,74,0.12)",
     "event_group_header": "0 1px 0 rgba(16,36,74,0.06)",
