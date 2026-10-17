@@ -2,6 +2,7 @@
 import { computed, ref, onUnmounted } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { relaunch_route } from '@/utils/routeTransition.js'
 import { startup_destination } from '@/utils/authNavigation.js'
@@ -18,9 +19,10 @@ const account_id = store.session.account_id
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 let active = true
 
+const account_scope = use_account_scope(store, () => { cancel_loading(); target_id.value = null; dialog_error.value = '' })
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const blocked = computed(() => store.blocked_accounts)
