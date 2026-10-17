@@ -1,0 +1,230 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isReportDetail",
+    "source_query": "route=reportDetail",
+    "lines": [
+      4109,
+      4138
+    ],
+    "fragment_sha256": "dc6dc16d84d67342795711e4e21a83aad2bf5a038507a11b03c0fb11befe7ae0",
+    "fragment": "<sc-if value=\"{{ isReportDetail }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Safety / Report Detail / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Report detail</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 120px;box-sizing:border-box\">\n          <div style=\"padding:6px 18px 12px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n              <div style=\"font-size:17px;color:#5b6b85\">Category</div>\n              <div style=\"font-size:17px;font-weight:700\">{{ selReportCategory }}</div>\n            </div>\n            <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n              <div style=\"font-size:17px;color:#5b6b85\">Submitted</div>\n              <div style=\"font-size:17px;font-weight:700\">{{ selReportWhen }}</div>\n            </div>\n            <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n              <div style=\"font-size:17px;color:#5b6b85\">Status</div>\n              <div style=\"font-size:17px;font-weight:700\">{{ selReportStatus }}</div>\n            </div>\n          </div>\n          <div style=\"font-size:17px;font-weight:700;margin-top:18px\">Your description</div>\n          <div style=\"font-size:16.5px;line-height:1.5;color:#26364f;margin-top:8px;text-wrap:pretty\">{{ selReportDesc }}</div>\n          <div style=\"font-size:15px;color:#8b95a6;margin-top:16px;text-wrap:pretty\">Moderation decisions and other users’ private information aren’t shown here.</div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20\"><div sc-camel-on-click=\"{{ openSetSupport }}\" style=\"height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">Contact Support</div></div></div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/safety/report-detail",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/safety/reports）；无历史实例时 replace /pages/safety/reports，不创建伪造实体",
+  "styles": [
+    {
+      "line": 4110,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 4111,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 4112,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 4115,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 4115,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 4117,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 120px;box-sizing:border-box"
+    },
+    {
+      "line": 4118,
+      "tag": "div",
+      "style": "padding:6px 18px 12px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 4119,
+      "tag": "div",
+      "style": "display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6"
+    },
+    {
+      "line": 4120,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85"
+    },
+    {
+      "line": 4121,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 4123,
+      "tag": "div",
+      "style": "display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6"
+    },
+    {
+      "line": 4124,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85"
+    },
+    {
+      "line": 4125,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 4127,
+      "tag": "div",
+      "style": "display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6"
+    },
+    {
+      "line": 4128,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85"
+    },
+    {
+      "line": 4129,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 4132,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;margin-top:18px"
+    },
+    {
+      "line": 4133,
+      "tag": "div",
+      "style": "font-size:16.5px;line-height:1.5;color:#26364f;margin-top:8px;text-wrap:pretty"
+    },
+    {
+      "line": 4134,
+      "tag": "div",
+      "style": "font-size:15px;color:#8b95a6;margin-top:16px;text-wrap:pretty"
+    },
+    {
+      "line": 4136,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20"
+    },
+    {
+      "line": 4136,
+      "tag": "div",
+      "style": "height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 4136,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:600;color:#0b1b3a"
+    }
+  ],
+  "texts": [
+    {
+      "line": 4115,
+      "text": "Report detail"
+    },
+    {
+      "line": 4120,
+      "text": "Category"
+    },
+    {
+      "line": 4124,
+      "text": "Submitted"
+    },
+    {
+      "line": 4128,
+      "text": "Status"
+    },
+    {
+      "line": 4132,
+      "text": "Your description"
+    },
+    {
+      "line": 4134,
+      "text": "Moderation decisions and other users’ private information aren’t shown here."
+    },
+    {
+      "line": 4136,
+      "text": "Contact Support"
+    }
+  ],
+  "svg": [
+    {
+      "line": 4113,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a6",
+        "local_path": "static/assets/songs/love-me-not.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      4113
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 4112,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 4136,
+      "event": "sc-camel-on-click",
+      "handler": "openSetSupport"
+    }
+  ],
+  "interaction_ids": [
+    "reportDetail.goBack.click.1",
+    "reportDetail.openSetSupport.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "reportDetail.goBack.click.1",
+      "source": "route=reportDetail",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "reports; blocked_users; users",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "reportDetail.openSetSupport.click.1",
+      "source": "route=reportDetail",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "reports; blocked_users; users",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}
