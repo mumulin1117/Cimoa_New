@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
@@ -15,9 +16,10 @@ const center_route = computed(() => coin_center_route(store, request.value?.retu
 const pack = computed(() => store.coin_package_by_id(request.value?.package_id))
 const transaction = computed(() => store.coin_transactions.find(item => item.kind === 'purchase' && item.related_id === request_id.value && item.status === 'completed') || null)
 const verified = computed(() => !!request.value && request.value.status === 'success' && !!request.value.receipt_id && !!pack.value?.product_id && !!transaction.value && transaction.value.amount === pack.value.coins)
+const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved purchase data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !request_id.value || !request.value
       ? 'A verified purchase request is required. No coins were added.'
@@ -31,7 +33,7 @@ const navigate = async route => {
   catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }
-const view_transaction = () => navigate(`${COIN_ROUTES.purchaseDetail}?transaction_id=${encodeURIComponent(transaction.value.transaction_id)}`)
+const view_transaction = () => !access_error.value && transaction.value && navigate(`${COIN_ROUTES.purchaseDetail}?transaction_id=${encodeURIComponent(transaction.value.transaction_id)}`)
 onHide(() => { navigating.value = false; error.value = '' })
 </script>
 

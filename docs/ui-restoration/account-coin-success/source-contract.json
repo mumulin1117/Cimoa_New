@@ -1,0 +1,234 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isCoinSuccess",
+    "source_query": "route=coinSuccess&pkg=1&coins=200",
+    "lines": [
+      2253,
+      2274
+    ],
+    "fragment_sha256": "2d33a0cc13ab89bc350903b3022aa86700f2d50dbc89e55f485c0d1a5ff855cb",
+    "fragment": "<sc-if value=\"{{ isCoinSuccess }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Coins / Purchase / Success\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:176px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:14px\">\n          <div style=\"width:92px;height:92px;border-radius:46px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(168,85,247,0.28)\">\n            <svg width=\"42\" height=\"42\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m5 12.5 4.5 4.5L19 7.5\"></path></svg>\n          </div>\n          <div style=\"font-size:30px;font-weight:800;letter-spacing:-0.035em;text-align:center\">{{ txnCoins }} added</div>\n          <div style=\"font-size:19px;font-weight:700\">New balance: {{ balanceText }}</div>\n          <div style=\"font-size:16px;color:#5b6b85\">{{ txnTitle }} · {{ txnPrice }}</div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:10px;z-index:20\">\n          <sc-if value=\"{{ hasSpendCtx }}\" hint-placeholder-val=\"{{ false }}\">\n            <div sc-camel-on-click=\"{{ resumeSpend }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">{{ resumeLabel }}</div></div>\n          </sc-if>\n          <sc-if value=\"{{ noSpendCtx }}\" hint-placeholder-val=\"{{ true }}\">\n            <div sc-camel-on-click=\"{{ purchaseDone }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Done</div></div>\n          </sc-if>\n          <div sc-camel-on-click=\"{{ viewTxn }}\" style=\"height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">View Transaction</div></div>\n          <div sc-camel-on-click=\"{{ backToStore }}\" style=\"height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:600;color:#6b7a93\">Back to Coin Store</div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/coins/success",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/coins/index）；无历史实例时 replace /pages/coins/index，不创建伪造实体",
+  "styles": [
+    {
+      "line": 2254,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 2255,
+      "tag": "div",
+      "style": "position:absolute;top:176px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:14px"
+    },
+    {
+      "line": 2256,
+      "tag": "div",
+      "style": "width:92px;height:92px;border-radius:46px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(168,85,247,0.28)"
+    },
+    {
+      "line": 2259,
+      "tag": "div",
+      "style": "font-size:30px;font-weight:800;letter-spacing:-0.035em;text-align:center"
+    },
+    {
+      "line": 2260,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700"
+    },
+    {
+      "line": 2261,
+      "tag": "div",
+      "style": "font-size:16px;color:#5b6b85"
+    },
+    {
+      "line": 2263,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:10px;z-index:20"
+    },
+    {
+      "line": 2265,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 2265,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 2268,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 2268,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 2270,
+      "tag": "div",
+      "style": "height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 2270,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:600;color:#0b1b3a"
+    },
+    {
+      "line": 2271,
+      "tag": "div",
+      "style": "height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:600;color:#6b7a93"
+    }
+  ],
+  "texts": [
+    {
+      "line": 2259,
+      "text": "added"
+    },
+    {
+      "line": 2260,
+      "text": "New balance:"
+    },
+    {
+      "line": 2261,
+      "text": "·"
+    },
+    {
+      "line": 2268,
+      "text": "Done"
+    },
+    {
+      "line": 2270,
+      "text": "View Transaction"
+    },
+    {
+      "line": 2271,
+      "text": "Back to Coin Store"
+    }
+  ],
+  "svg": [
+    {
+      "line": 2257,
+      "sha256": "52e11a0534ec34afd589fddb0ee2fb97bffa581360f65b327d0bd5747756f019"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a9",
+        "local_path": "static/assets/songs/beauty-beat.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      2257
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 2265,
+      "event": "sc-camel-on-click",
+      "handler": "resumeSpend"
+    },
+    {
+      "line": 2268,
+      "event": "sc-camel-on-click",
+      "handler": "purchaseDone"
+    },
+    {
+      "line": 2270,
+      "event": "sc-camel-on-click",
+      "handler": "viewTxn"
+    },
+    {
+      "line": 2271,
+      "event": "sc-camel-on-click",
+      "handler": "backToStore"
+    }
+  ],
+  "interaction_ids": [
+    "coinSuccess.resumeSpend.click.1",
+    "coinSuccess.purchaseDone.click.1",
+    "coinSuccess.viewTxn.click.1",
+    "coinSuccess.backToStore.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "coinSuccess.resumeSpend.click.1",
+      "source": "route=coinSuccess&pkg=1&coins=200",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "coinSuccess.purchaseDone.click.1",
+      "source": "route=coinSuccess&pkg=1&coins=200",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "coinSuccess.viewTxn.click.1",
+      "source": "route=coinSuccess&pkg=1&coins=200",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "coinSuccess.backToStore.click.1",
+      "source": "route=coinSuccess&pkg=1&coins=200",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}
