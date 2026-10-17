@@ -5249,7 +5249,10 @@
     "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
     "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
     "dependency_navigation_evidence": "docs/ui-restoration/home/browser-acceptance.json (four consumers) and wkwebview-acceptance.json (Pass → root)",
-    "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance"
+    "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "evidence": "docs/ui-restoration/auto-match-expired/acceptance.json"
   },
   {
     "source_screen": "Auto Match / Queue / No Match",

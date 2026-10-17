@@ -1,0 +1,191 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1845": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1846": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1847": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1849": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1851": {
+      "x": 0,
+      "y": 190,
+      "width": 393,
+      "height": 226,
+      "text": "This match has expiredThe response window closed. No connection was made."
+    },
+    "1852": {
+      "x": 148.5,
+      "y": 190,
+      "width": 96,
+      "height": 96,
+      "text": ""
+    },
+    "1853": {
+      "x": 175.5,
+      "y": 217,
+      "width": 42,
+      "height": 42,
+      "text": ""
+    },
+    "1855": {
+      "x": 47.375,
+      "y": 302,
+      "width": 298.234375,
+      "height": 34,
+      "text": "This match has expired"
+    },
+    "1856": {
+      "x": 46.5,
+      "y": 352,
+      "width": 300,
+      "height": 40,
+      "text": "The response window closed. No connection was made."
+    },
+    "1858": {
+      "x": 0,
+      "y": 690,
+      "width": 393,
+      "height": 162,
+      "text": "Find Another MatchReturn Home"
+    },
+    "1859": {
+      "x": 20,
+      "y": 690,
+      "width": 353,
+      "height": 60,
+      "text": "Find Another Match"
+    },
+    "1860": {
+      "x": 20,
+      "y": 762,
+      "width": 353,
+      "height": 56,
+      "text": "Return Home"
+    }
+  },
+  "actual": {
+    "1845": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1846": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1847": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1849": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1851": {
+      "x": 0,
+      "y": 190,
+      "width": 393,
+      "height": 226,
+      "text": "This match has expiredThe response window closed. No connection was made."
+    },
+    "1852": {
+      "x": 148.5,
+      "y": 190,
+      "width": 96,
+      "height": 96,
+      "text": ""
+    },
+    "1853": {
+      "x": 175.5,
+      "y": 217,
+      "width": 42,
+      "height": 42,
+      "text": ""
+    },
+    "1855": {
+      "x": 47.4375,
+      "y": 302,
+      "width": 298.125,
+      "height": 34,
+      "text": "This match has expired"
+    },
+    "1856": {
+      "x": 46.5,
+      "y": 352,
+      "width": 300,
+      "height": 40,
+      "text": "The response window closed. No connection was made."
+    },
+    "1858": {
+      "x": 0,
+      "y": 690,
+      "width": 393,
+      "height": 162,
+      "text": "Find Another MatchReturn Home"
+    },
+    "1859": {
+      "x": 20,
+      "y": 690,
+      "width": 353,
+      "height": 60,
+      "text": "Find Another Match"
+    },
+    "1860": {
+      "x": 20,
+      "y": 762,
+      "width": 353,
+      "height": 56,
+      "text": "Return Home"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 26977,
+    "pixels_above_channel_delta_8": 1114,
+    "mean_absolute_channel_delta": 0.0962038132100491,
+    "max_channel_delta": 86
+  }
+}
