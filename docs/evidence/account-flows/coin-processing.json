@@ -1,0 +1,13 @@
+{
+  "phase": "coin-processing",
+  "result": "passed",
+  "checks": [
+    "Hiding during the pre-write Loading cancels the debit; returning resumes the same operation once and opens its owned match",
+    "A fresh document replays the persisted operation receipt without another debit",
+    "Missing or foreign spend context fails closed, without fabricating a draft or transaction"
+  ],
+  "errors": [],
+  "physical_microphone": "not tested: controlled browser media device",
+  "server_pid": 12539,
+  "cleaned_up": true
+}

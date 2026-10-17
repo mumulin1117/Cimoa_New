@@ -1,0 +1,82 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isCoinProcessing",
+    "source_query": "route=coinProcessing",
+    "lines": [
+      2312,
+      2320
+    ],
+    "fragment_sha256": "250a95df9b1fcfdd728584dfb64a498de762fd7b455d56052aa7f7e99d40242b",
+    "fragment": "<sc-if value=\"{{ isCoinProcessing }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Coins / Spend / Processing\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:300px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:16px\">\n          <div style=\"width:74px;height:74px;border-radius:37px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);opacity:0.9;animation:cPulse 1600ms ease-in-out infinite\"></div>\n          <div style=\"font-size:20px;font-weight:700\">Confirming your coin balance…</div>\n          <div style=\"font-size:16px;color:#5b6b85;text-align:center;max-width:270px;text-wrap:pretty\">Hold on a moment. We only deduct coins once this is confirmed.</div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/coins/processing",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/discover/icebreaker/preview、/pages/auto-match/searching）；无历史实例时 replace /pages/discover/icebreaker/preview，不创建伪造实体",
+  "styles": [
+    {
+      "line": 2313,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 2314,
+      "tag": "div",
+      "style": "position:absolute;top:300px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:16px"
+    },
+    {
+      "line": 2315,
+      "tag": "div",
+      "style": "width:74px;height:74px;border-radius:37px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);opacity:0.9;animation:cPulse 1600ms ease-in-out infinite"
+    },
+    {
+      "line": 2316,
+      "tag": "div",
+      "style": "font-size:20px;font-weight:700"
+    },
+    {
+      "line": 2317,
+      "tag": "div",
+      "style": "font-size:16px;color:#5b6b85;text-align:center;max-width:270px;text-wrap:pretty"
+    }
+  ],
+  "texts": [
+    {
+      "line": 2316,
+      "text": "Confirming your coin balance…"
+    },
+    {
+      "line": 2317,
+      "text": "Hold on a moment. We only deduct coins once this is confirmed."
+    }
+  ],
+  "svg": [],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [],
+  "interaction_ids": [],
+  "contracts": []
+}

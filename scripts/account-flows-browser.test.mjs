@@ -3,6 +3,7 @@ import path from 'node:path'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { create_seed } from '../src/stores/seed.js'
+import { create_scenario } from '../src/stores/scenarios.js'
 import { serve_h5, context_for, set_safe_area } from './lib/pixel-acceptance.mjs'
 const require = createRequire(import.meta.url), { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const phase = process.argv.find(a => a.startsWith('--phase='))?.slice(8) || 'voice'
@@ -68,6 +69,24 @@ try {
     assert.match(page.url(), /return_context_id=coin_return_test/); const before = await state(); await page.reload(); await click('coinHistory.goBack.click.1'); await page.locator('.coin-center-page').waitFor(); assert.match(page.url(), /return_context_id=coin_return_test/)
     await click('coinStore.goBack.click.1'); await page.locator('.auto-match-index').waitFor(); assert.deepEqual(await state(), before)
     check('Coin Center → History → reload → fallback Back preserves the owned Auto Match return context and never writes navigation state')
+  } else if (phase === 'coin-processing') {
+    await go('/pages/home/index'); await page.locator('.home-header').waitFor()
+    const fixture = create_scenario('match_searching', Date.now())
+    fixture.drafts.push({ draft_id: 'spend_restore', owner_user_id: fixture.session.current_user_id, kind: 'coin_spend', target_id: 'match_liam', payload: { kind: 'priority_match', match_id: 'match_liam', operation_id: 'account_priority_restore' }, updated_at: Date.now() })
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), fixture)
+    await page.goto(server.origin + '/?flow=spend-resume#/pages/coins/processing?return_context_id=spend_restore')
+    await page.locator('.loading:visible').waitFor(); assert.equal((await state()).coin_transactions.length, fixture.coin_transactions.length)
+    await page.evaluate(() => { location.hash = '#/pages/settings/index' }); await page.locator('.settings-page:visible').waitFor(); await page.waitForTimeout(650)
+    assert.equal((await state()).coin_transactions.length, fixture.coin_transactions.length)
+    await page.goBack(); await page.locator('.auto-match-searching:visible').waitFor()
+    const completed = await state(); assert.equal(completed.coin_transactions.length, fixture.coin_transactions.length + 1); assert.equal(completed.coin_transactions.at(-1).amount, -20)
+    check('Hiding during the pre-write Loading cancels the debit; returning resumes the same operation once and opens its owned match')
+    await page.goto(server.origin + '/?flow=spend-replay#/pages/coins/processing?return_context_id=spend_restore'); await page.locator('.auto-match-searching:visible').waitFor()
+    assert.deepEqual((await state()).coin_transactions, completed.coin_transactions)
+    check('A fresh document replays the persisted operation receipt without another debit')
+    await page.goto(server.origin + '/?flow=spend-invalid#/pages/coins/processing?return_context_id=foreign'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /unavailable/)
+    assert.deepEqual((await state()).coin_transactions, completed.coin_transactions)
+    check('Missing or foreign spend context fails closed, without fabricating a draft or transaction')
   } else if (phase === 'coin-refund') {
     await go('/pages/home/index'); await page.locator('.home-header').waitFor()
     await page.evaluate(() => { const e = JSON.parse(localStorage.getItem('cimoa_app_state_v2')); e.data.coin_transactions.push({ transaction_id: 'refund_test', owner_user_id: e.data.session.current_user_id, amount: 20, business_key: 'refund:txn_seed_1', kind: 'refund', status: 'completed', related_id: 'txn_seed_1', created_at: Date.now() }); localStorage.setItem('cimoa_app_state_v2', JSON.stringify(e)) })
