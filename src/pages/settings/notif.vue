@@ -2,6 +2,7 @@
 import { computed, ref, onUnmounted } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { notification_permission, open_app_settings } from '@/utils/nativePermissions.js'
 import { relaunch_route } from '@/utils/routeTransition.js'
@@ -19,9 +20,10 @@ const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 let active = true
 let generation = 0
 
+const account_scope = use_account_scope(store, () => { generation += 1; reading.value = false; cancel_loading() })
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const notifications = computed(() => store.current_settings.notifications || {})
@@ -59,7 +61,7 @@ onUnmounted(leave)
 const recover = async () => { try { await relaunch_route(startup_destination(store)) } catch (cause) { error.value = cause.message } }
 const back = async () => { if (is_loading.value) return; try { await frame.value.navigate_back('/pages/settings/index') } catch (cause) { error.value = cause.message } }
 const persist = async action => {
-  if (is_loading.value || access_error.value) return
+  if (!active || is_loading.value || access_error.value) return
   error.value = ''
   const result = await run_with_loading(action)
   if (!active || result.reason === 'cancelled') return
@@ -68,14 +70,18 @@ const persist = async action => {
 const toggle_master = async () => {
   if (is_loading.value || reading.value || access_error.value) return
   error.value = ''
-  if (!notifications.value.master) {
+  const next = !notifications.value.master, token = ++generation
+  if (next) {
+    reading.value = true
     try {
       const status = await notification_permission(true)
+      if (!active || token !== generation || access_error.value) return
       system_status.value = status
       if (status !== 'granted') { error.value = status === 'denied' ? 'Notification permission was denied. Your preference remains off.' : 'System notifications are unavailable. Your preference remains off.'; return }
-    } catch (cause) { error.value = cause.message || 'Notification permission could not be requested.'; return }
+    } catch (cause) { if (active && token === generation) error.value = cause.message || 'Notification permission could not be requested.'; return }
+    finally { if (token === generation) reading.value = false }
   }
-  await persist(() => store.update_settings('notifications', { master: !notifications.value.master }))
+  await persist(() => store.update_settings('notifications', { master: next }))
 }
 const toggle_row = row => {
   if (!notifications.value.master) { error.value = 'Turn on All notifications before changing individual notification types.'; return }

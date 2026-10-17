@@ -173,6 +173,12 @@ try {
     await click('setNotif.goBack.click.1')
     await page.locator('.settings-page').waitFor()
     check('Former simulation control refreshes real system state; browser Settings failure is explicit and Back is correct')
+    await click('settings.openSetNotif.click.1'); await page.getByRole('switch', { name: 'All notifications' }).click(); await page.locator('.loading').waitFor({ state: 'detached' })
+    await page.evaluate(() => { Notification.requestPermission = () => new Promise(resolve => { window.__lateNotificationPermission = resolve }) })
+    const pending_before = await state(); await page.getByRole('switch', { name: 'All notifications' }).click(); await page.waitForFunction(() => !!window.__lateNotificationPermission)
+    await click('setNotif.goBack.click.1'); await page.locator('.settings-page').waitFor(); await page.evaluate(() => window.__lateNotificationPermission('granted')); await page.waitForTimeout(650)
+    assert.deepEqual(await state(), pending_before); assert.equal(await page.locator('.loading:visible').count(), 0)
+    check('A controlled late permission response after Back cannot write hidden-page preferences or reopen Loading')
   }
 
   if (phase === 'language') {

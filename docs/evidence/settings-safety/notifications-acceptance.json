@@ -1,13 +1,14 @@
 {
   "phase": "notifications",
   "result": "passed",
-  "server_pid": 59500,
+  "server_pid": 90090,
   "checks": [
     "Notifications opens with source master and eight canonical preference rows",
     "Master switch requests a real granted permission, then waits for Loading before each Store write",
     "Individual preference persists and restores after refresh",
     "Notification persistence failure leaves the preference entity unchanged",
-    "Former simulation control refreshes real system state; browser Settings failure is explicit and Back is correct"
+    "Former simulation control refreshes real system state; browser Settings failure is explicit and Back is correct",
+    "A controlled late permission response after Back cannot write hidden-page preferences or reopen Loading"
   ],
   "errors": []
 }

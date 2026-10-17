@@ -1,0 +1,3 @@
+# Notifications audit — 2026-10-17
+
+Lock HTML 3783–3813. Keep source master/eight type switches; replace source Simulate iOS Off demonstration with a clearly labelled actual status refresh, as existing capability boundary requires. No simulated notification success. Found late permission promise can start a new 500ms write after page hide; duplicate permission requests can race and flip the intended value. Capture requested value and generation, lock during permission request, discard stale/hide results, full auth context cancels writes. Existing real system status reads refresh on show and failure preserves stored values. Browser controlled permission regression is not native grant evidence; full acceptance remains pending.
