@@ -2,6 +2,7 @@
 // These records are test data, not claims of live users, payments or services.
 import { ONBOARDING_FLOW } from '../utils/onboardingFlow.js'
 import { AVATAR_PROFILES } from './peopleCatalog.js'
+import { generated_match_distances } from './matchingCatalog.js'
 export const SCHEMA_VERSION = 2
 export const TEST_USER_ID = 'user_cimoa'
 export const TEST_EMAIL = 'cimoa@gmail.com'
@@ -216,7 +217,7 @@ export function create_seed(now = Date.now()) {
     requests: [{ request_id: 'request_lina', sender_id: 'user_lina', recipient_id: me, question_id: `${me}_q_0`, question_text: 'How would you spend your ideal weekend?', kind: 'voice', text: '', audio_id: null, status: 'pending', fixture_media_unavailable: true, created_at: now - 3600000, resolved_at: null }],
     match_sessions: [{ match_id: 'match_liam', owner_user_id: me, candidate_id: 'user_liam', status: 'found', created_at: now, started_at: now, expires_at: now + 45000, priority_until: null, paused_at: null, self_accepted: false, peer_accepted: false, queue_position: null, estimated_wait_seconds: null, fixture: true }],
     match_preferences: [{ owner_user_id: me, age_min: 18, age_max: 30, height_min: 150, height_max: 190, distance_max: 100, university: 'All', major: 'All', interest_ids: ['kpop'], interest_mode: 'Similar interests', mbti: 'All', religion: 'All', drinking: 'All', gender: 'Everyone', language: 'English', goal_id: 'friends' }],
-    quota_policy: QUOTA_POLICY, match_quota: [],
+    quota_policy: QUOTA_POLICY, match_quota: [], match_distances: generated_match_distances(),
     events, memberships, organizers: [{ organizer_id: 'organizer_hkust', name: 'HKUST Student Union', avatar_url: '', description: '', update_text: '' }],
     event_preferences: [{ owner_user_id: me, filters: { date: 'Today', university: 'All', category: 'All', price: 'Free', availability: 'All', accessibility: 'All' }, saved_event_ids: [], reminder_by_event: {} }],
     conversations: [{ conversation_id: 'conversation_chloe', kind: 'direct', participant_ids: [me, 'user_chloe'], event_id: null }, { conversation_id: 'group_picnic', kind: 'group', participant_ids: [], event_id: 'event_picnic' }],

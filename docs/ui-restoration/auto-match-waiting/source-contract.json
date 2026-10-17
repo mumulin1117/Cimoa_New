@@ -1,0 +1,148 @@
+{
+  "page": "waiting",
+  "component": "src/pages/auto-match/waiting.vue",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=amWaiting",
+    "condition": "isAmWaiting",
+    "lines": [
+      1767,
+      1792
+    ],
+    "fragment_sha256": "8f4ab1ab8b14fbcdacceb0e2929b96c3654d3388b827d880bf15435b514dffc1",
+    "fragment": "    <sc-if value=\"{{ isAmWaiting }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Auto Match / Found / Waiting\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Request sent</div>\n        </div>\n        <div style=\"position:absolute;top:172px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:16px\">\n          <div style=\"display:flex;align-items:center;justify-content:center\">\n            <img src=\"6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30\" alt=\"Alex Chan\" style=\"width:92px;height:92px;border-radius:46px;object-fit:cover;border:4px solid #fff;display:block;box-shadow:0 10px 26px rgba(16,36,74,0.14)\">\n            <img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"Chloe Lin\" style=\"width:92px;height:92px;border-radius:46px;object-fit:cover;border:4px solid #fff;margin-left:-24px;display:block;box-shadow:0 10px 26px rgba(16,36,74,0.14)\">\n          </div>\n          <div style=\"font-size:29px;font-weight:800;letter-spacing:-0.035em;text-align:center\">Waiting for Chloe</div>\n          <div style=\"font-size:17px;color:#5b6b85;text-align:center;max-width:300px;text-wrap:pretty\">We’ll let you know when Chloe responds. You can leave this screen — your request stays active.</div>\n          <div style=\"display:flex;align-items:center;gap:9px;height:44px;padding:0 18px;border-radius:22px;background:#e8edf7\">\n            <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#44536b\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M12 7.5V12l3 2\"></path></svg>\n            <div style=\"font-size:16px;font-weight:600;color:#44536b\">Chat unlocks when you both accept</div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:6px;z-index:20\">\n          <div sc-camel-on-click=\"{{ returnHome }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Return Home</div></div>\n          <div sc-camel-on-click=\"{{ cancelRequest }}\" style=\"height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:600;color:#6b7a93\">Cancel Request</div>\n        </div>\n      </div>\n    </sc-if>",
+    "styles": [
+      {
+        "line": 1768,
+        "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+      },
+      {
+        "line": 1769,
+        "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+      },
+      {
+        "line": 1770,
+        "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+      },
+      {
+        "line": 1773,
+        "style": "flex:1"
+      },
+      {
+        "line": 1773,
+        "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+      },
+      {
+        "line": 1775,
+        "style": "position:absolute;top:172px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:16px"
+      },
+      {
+        "line": 1776,
+        "style": "display:flex;align-items:center;justify-content:center"
+      },
+      {
+        "line": 1777,
+        "style": "width:92px;height:92px;border-radius:46px;object-fit:cover;border:4px solid #fff;display:block;box-shadow:0 10px 26px rgba(16,36,74,0.14)"
+      },
+      {
+        "line": 1778,
+        "style": "width:92px;height:92px;border-radius:46px;object-fit:cover;border:4px solid #fff;margin-left:-24px;display:block;box-shadow:0 10px 26px rgba(16,36,74,0.14)"
+      },
+      {
+        "line": 1780,
+        "style": "font-size:29px;font-weight:800;letter-spacing:-0.035em;text-align:center"
+      },
+      {
+        "line": 1781,
+        "style": "font-size:17px;color:#5b6b85;text-align:center;max-width:300px;text-wrap:pretty"
+      },
+      {
+        "line": 1782,
+        "style": "display:flex;align-items:center;gap:9px;height:44px;padding:0 18px;border-radius:22px;background:#e8edf7"
+      },
+      {
+        "line": 1784,
+        "style": "font-size:16px;font-weight:600;color:#44536b"
+      },
+      {
+        "line": 1787,
+        "style": "position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:6px;z-index:20"
+      },
+      {
+        "line": 1788,
+        "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+      },
+      {
+        "line": 1788,
+        "style": "font-size:19px;font-weight:700;color:#fff"
+      },
+      {
+        "line": 1789,
+        "style": "height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:600;color:#6b7a93"
+      }
+    ],
+    "copy": [
+      {
+        "line": 1773,
+        "text": "Request sent"
+      },
+      {
+        "line": 1780,
+        "text": "Waiting for Chloe"
+      },
+      {
+        "line": 1781,
+        "text": "We’ll let you know when Chloe responds. You can leave this screen — your request stays active."
+      },
+      {
+        "line": 1784,
+        "text": "Chat unlocks when you both accept"
+      },
+      {
+        "line": 1788,
+        "text": "Return Home"
+      },
+      {
+        "line": 1789,
+        "text": "Cancel Request"
+      }
+    ],
+    "svg": [
+      {
+        "line": 1771,
+        "fragment": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+      },
+      {
+        "line": 1783,
+        "fragment": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#44536b\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M12 7.5V12l3 2\"></path></svg>"
+      }
+    ]
+  },
+  "source_lock": "locked",
+  "reference_viewport": {
+    "width": 393,
+    "height": 852,
+    "top": 54,
+    "bottom": 0
+  },
+  "animation": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "phase": "end",
+    "pulse_phase_ms": 0
+  },
+  "approved_deltas": [
+    "Cimoa brand and canonical current/candidate identities",
+    "Actual safe areas and fixed header/footer; one scrolling content region",
+    "Local-account matching engine; no timer grants peer consent; no fabricated online count",
+    "UTC daily quota and atomic costs; restarting a terminal session reviews the entry cost",
+    "User-authorized persisted campus-area distances, not GPS or real-time location; unknown distance fails; 100+ km is unrestricted",
+    "Source options screen does not falsify an active session as no_match"
+  ],
+  "interaction_ids": [
+    "amWaiting.goBack.click.1",
+    "amWaiting.returnHome.click.1",
+    "amWaiting.cancelRequest.click.1"
+  ]
+}

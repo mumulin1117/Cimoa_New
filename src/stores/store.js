@@ -2,7 +2,8 @@ import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { create_seed, clone_data } from './seed.js'
 import { ensure_account_defaults, registration_profile, session_for, auth_context_key } from './accountDefaults.js'
-import { choose_match_candidate } from './localMatching.js'
+import { auto_match_actions, matching_context } from './autoMatching.js'
+import { apply_priority } from './matchState.js'
 import { migrate_legacy, upgrade_additive_data } from './migration.js'
 import { normalize_email, valid_email, password_error, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
 import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
@@ -103,6 +104,7 @@ export const use_app_store = defineStore('app', {
       return { ...request, other: this.user_by_id(other_id) }
     } },
     match_by_id: (state) => (id) => ready(state) ? s.owned_matches(state.data, state.clock_ms).find((row) => row.match_id === id) || null : null,
+    matching_context: state => id => matching_context(state.data,id,state.clock_ms,state.hydration_status),
     match_detail() { return id => { const match = this.match_by_id(id); return match ? { ...match, candidate: match.candidate_id ? this.user_by_id(match.candidate_id) : null } : null } },
     match_invitation: state => id => {
       if (!ready(state)) return null
@@ -552,9 +554,11 @@ export const use_app_store = defineStore('app', {
           return { kind: payload.kind, destination_id: request_id }
         }
         const match = require_owned(data, data.match_sessions, 'match_id', payload.match_id)
-        s.ensure(['searching', 'paused'].includes(match.status) && !(match.priority_until > now), 'Priority Match is not available for this session.')
+        require_student(data)
+        s.ensure(s.privacy_for(data, owner).auto_match_visible !== false, 'Enable Auto Match visibility in Privacy before joining the pool.')
+        s.ensure(['searching', 'paused'].includes(s.match_status(match, now)) && !(match.priority_until > now), 'Priority Match is not available for this session.')
         add_transaction(data, -20, `priority:${payload.operation_id}`, 'spend', match.match_id, now)
-        match.priority_until = now + 900000
+        apply_priority(match, now)
         return { kind: payload.kind, destination_id: match.match_id }
       }, { expected_owner: owner })
     },
@@ -580,61 +584,7 @@ export const use_app_store = defineStore('app', {
     accept_request(id, operation_id) { return this.resolve_request(id, 'accepted', operation_id) },
     decline_request(id, operation_id) { return this.resolve_request(id, 'declined', operation_id) },
     cancel_request(id, operation_id) { return this.resolve_request(id, 'cancelled', operation_id) },
-    start_match(operation_id) {
-      const availability = get_runtime(this).services.matching_available
-      if (availability === false) return unavailable('Auto Match service')
-      return transact(this, operation(operation_id, 'match', []), (data, now) => {
-        require_student(data); s.ensure(s.privacy_for(data, s.owner_id(data)).auto_match_visible !== false, 'Enable Auto Match visibility in Privacy before joining the queue.'); s.ensure(!s.active_match(data, now), 'A match session is already active.')
-        const match_id = make_id('match'), date_key = s.utc_date_key(now)
-        let quota = own(data, data.match_quota).find((row) => row.date_key === date_key)
-        if (!quota) { quota = { owner_user_id: s.owner_id(data), date_key, used_count: 0 }; data.match_quota.push(quota) }
-        if (quota.used_count < 3) quota.used_count += 1
-        else add_transaction(data, -10, `match:${match_id}`, 'spend', match_id, now)
-        const candidate = availability === undefined ? choose_match_candidate(data) : null
-        data.match_sessions.push({ match_id, owner_user_id: s.owner_id(data), candidate_id: candidate?.user_id || null, status: 'searching', created_at: now, started_at: now, paused_at: null, expires_at: availability === undefined && candidate ? now + 54000 : null, priority_until: null, self_accepted: false, peer_accepted: false, queue_position: null, estimated_wait_seconds: availability === undefined ? 9 : null, fixture: false, ...(availability === undefined ? { engine: 'device', search_ready_at: now + 9000, preference_snapshot: clone_data(data.match_preferences.find(row => row.owner_user_id === s.owner_id(data))) } : {}) }); return match_id
-      })
-    },
-    transition_match(id, status) {
-      return transact(this, null, (data, now) => {
-        const row = require_owned(data, data.match_sessions, 'match_id', id)
-        const allowed = { searching: ['paused', 'left'], paused: ['searching', 'left'], found: ['waiting', 'passed', 'left'], waiting: ['left'] }
-        s.ensure(allowed[s.match_status(row, now)]?.includes(status), 'This match action is no longer available.')
-        if (row.engine === 'device' && status === 'paused') row.search_remaining_ms = Math.max(0, row.search_ready_at - now)
-        if (row.engine === 'device' && row.status === 'paused' && status === 'searching') { row.search_ready_at = now + row.search_remaining_ms; row.expires_at = row.candidate_id ? row.search_ready_at + 45000 : null }
-        row.status = status; row.paused_at = status === 'paused' ? now : null
-        if (status === 'waiting') { require_student(data); require_target(data, row.candidate_id); s.ensure(s.match_visible(data, row.candidate_id) && s.social_eligible(data, row.candidate_id) && !s.connected(data, row.candidate_id), 'This person is no longer available for a new match.'); s.ensure(!data.requests.some(request => request.status === 'pending' && [request.sender_id, request.recipient_id].includes(s.owner_id(data)) && [request.sender_id, request.recipient_id].includes(row.candidate_id)), 'An introduction is already pending.'); row.self_accepted = true }
-        return id
-      })
-    },
-    respond_to_match(id, decision) {
-      return transact(this, null, (data, now) => {
-        const row = data.match_sessions.find(match => match.match_id === id && match.candidate_id === s.owner_id(data))
-        s.ensure(row?.status === 'waiting' && row.self_accepted && ['accepted', 'declined'].includes(decision), 'This match invitation is no longer available.')
-        require_target(data, row.owner_user_id)
-        s.ensure(decision !== 'accepted' || s.social_eligible(data) && s.social_eligible(data, row.owner_user_id), 'Both profiles must be available for a new connection.')
-        row.status = decision === 'accepted' ? 'connected' : 'passed'
-        row.peer_accepted = decision === 'accepted'; row.resolved_at = now
-        return decision === 'accepted' ? connect_users(data, row.owner_user_id, now, { match_id: id }) : id
-      })
-    },
-    async apply_match_event(event) {
-      const owner = s.owner_id(this.data)
-      let valid = false
-      try { valid = !!await get_runtime(this).services.verify_match_event?.(event) } catch { /* Fail closed. */ }
-      if (!valid) return unavailable('Verified matching events')
-      return transact(this, operation(event.event_id, 'match-event', event), (data, now) => {
-        const row = require_owned(data, data.match_sessions, 'match_id', event.match_id)
-        if (event.type === 'queue') {
-          s.ensure(row.status === 'searching' && Number.isInteger(event.queue_position) && event.queue_position > 0 && (event.estimated_wait_seconds == null || Number.isFinite(event.estimated_wait_seconds) && event.estimated_wait_seconds >= 0), 'Invalid queue update.')
-          row.queue_position = event.queue_position; row.estimated_wait_seconds = event.estimated_wait_seconds ?? null
-        }
-        else if (event.type === 'found') { s.ensure(row.status === 'searching' && s.match_visible(data, event.user_id), 'This person is unavailable for Auto Match.'); require_target(data, event.user_id); row.candidate_id = event.user_id; row.status = 'found'; row.expires_at = now + 45000 }
-        else if (event.type === 'accepted') { s.ensure(row.status === 'waiting' && row.self_accepted && row.candidate_id === event.user_id, 'The candidate does not match.'); require_student(data); require_target(data, event.user_id); s.ensure(s.social_eligible(data, event.user_id), 'This person is not available for a new connection.'); row.peer_accepted = true; row.status = 'connected'; row.resolved_at = now; connect_users(data, event.user_id, now, { match_id: row.match_id }) }
-        else { s.ensure(event.type === 'no_match' && row.status === 'searching', 'Invalid queue event.'); row.status = 'no_match' }
-      }, { expected_owner: owner })
-    },
-    boost_match(id, operation_id) { return transact(this, operation(operation_id, 'priority', id), (data, now) => { const row = require_owned(data, data.match_sessions, 'match_id', id); s.ensure(['searching', 'paused'].includes(row.status) && !(row.priority_until > now), 'Priority Match is not available for this session.'); add_transaction(data, -20, `priority:${operation_id}`, 'spend', id, now); row.priority_until = now + 900000 }) },
-    update_match_preferences(patch) { return transact(this, null, (data) => { const row = data.match_preferences.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(row && Object.keys(patch).every((key) => key !== 'owner_user_id' && key in row), 'Invalid matching preference.'); Object.assign(row, clone_data(patch)); s.ensure(row.age_min >= 18 && row.age_min <= row.age_max && row.age_max <= 100 && row.height_min <= row.height_max && row.distance_max > 0 && row.interest_ids.every((id) => data.interests.some((item) => item.item_id === id)), 'Check your matching preferences.') }) },
+    ...auto_match_actions,
     start_student_reverification() { return unavailable('University verification service') },
     join_event(id) {
       return transact(this, null, (data, now) => {

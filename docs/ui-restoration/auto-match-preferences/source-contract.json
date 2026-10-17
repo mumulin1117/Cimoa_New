@@ -1,0 +1,418 @@
+{
+  "page": "preferences",
+  "component": "src/pages/auto-match/preferences.vue",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=amPrefs",
+    "condition": "isAmPrefs",
+    "lines": [
+      1511,
+      1608
+    ],
+    "fragment_sha256": "f92fb5e7cd989bcbdb82cabd9cd51affe3d4560bcc8a20428c2bcf0e08ec64c1",
+    "fragment": "    <sc-if value=\"{{ isAmPrefs }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Auto Match / Preferences / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg>\n          </div>\n          <div style=\"flex:1;text-align:center;font-size:21px;font-weight:800;letter-spacing:-0.025em;margin-right:46px\">Match Preferences</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box\">\n\n          <div style=\"display:flex;align-items:center;justify-content:space-between;margin-top:6px\">\n            <div style=\"display:flex;align-items:center;gap:10px\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"3\"></rect><path d=\"M8 3v3M16 3v3M3 10h18\"></path></svg><div style=\"font-size:19px;font-weight:700\">Age Range</div></div>\n            <div style=\"font-size:15px;color:#8b95a6\">{{ ageLabel }}</div>\n          </div>\n          <div sc-camel-on-click=\"{{ onAgeTrack }}\" style=\"position:relative;height:56px;margin-top:12px;padding:0 20px;border-radius:28px;background:#f4f7fb;display:flex;align-items:center;cursor:pointer\">\n            <div style=\"position:relative;width:100%;height:5px;border-radius:3px;background:#dfe5ee\">\n              <div style=\"position:absolute;height:5px;border-radius:3px;background:linear-gradient(95deg,#1ec8f5,#a855f7);left:{{ ageMinPct }}%;right:{{ ageMaxPctInv }}%\"></div>\n              <div style=\"position:absolute;top:50%;left:{{ ageMinPct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)\"></div>\n              <div style=\"position:absolute;top:50%;left:{{ ageMaxPct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)\"></div>\n            </div>\n          </div>\n\n          <div sc-camel-on-click=\"{{ openUniPicker }}\" style=\"display:flex;align-items:center;gap:10px;margin-top:26px;cursor:pointer\">\n            <svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg><div style=\"font-size:19px;font-weight:700\">University</div>\n          </div>\n          <div sc-camel-on-click=\"{{ openUniPicker }}\" style=\"display:flex;align-items:center;height:56px;padding:0 18px;margin-top:12px;border-radius:28px;background:#f4f7fb;cursor:pointer\">\n            <div style=\"flex:1;font-size:17px;font-weight:600\">{{ prefUniversity }}</div>\n            <svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n          </div>\n\n          <div style=\"display:flex;align-items:center;gap:10px;margin-top:26px\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 6l10 4 10-4-10-4z\"></path><path d=\"M2 6v12l10 4 10-4V6\"></path><path d=\"M12 10v10\"></path></svg><div style=\"font-size:19px;font-weight:700\">Degree / Major</div></div>\n          <div style=\"display:flex;flex-wrap:wrap;gap:10px;margin-top:12px\">\n            <sc-for list=\"{{ majorChips }}\" as=\"o\" hint-placeholder-count=\"8\">\n              <div sc-camel-on-click=\"{{ o.pick }}\" style=\"height:46px;padding:0 18px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.05)\">{{ o.label }}</div>\n            </sc-for>\n          </div>\n\n          <div style=\"display:flex;align-items:center;justify-content:space-between;margin-top:26px\">\n            <div style=\"display:flex;align-items:center;gap:10px\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8.5\" r=\"3.8\"></circle><path d=\"M4.5 20c1.4-4.2 5-6 7.5-6s6.1 1.8 7.5 6\"></path></svg><div style=\"font-size:19px;font-weight:700\">Height Range</div></div>\n            <div style=\"font-size:15px;color:#8b95a6\">{{ heightLabel }}</div>\n          </div>\n          <div sc-camel-on-click=\"{{ onHeightTrack }}\" style=\"position:relative;height:56px;margin-top:12px;padding:0 20px;border-radius:28px;background:#f4f7fb;display:flex;align-items:center;cursor:pointer\">\n            <div style=\"position:relative;width:100%;height:5px;border-radius:3px;background:#dfe5ee\">\n              <div style=\"position:absolute;height:5px;border-radius:3px;background:linear-gradient(95deg,#1ec8f5,#a855f7);left:{{ heightMinPct }}%;right:{{ heightMaxPctInv }}%\"></div>\n              <div style=\"position:absolute;top:50%;left:{{ heightMinPct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)\"></div>\n              <div style=\"position:absolute;top:50%;left:{{ heightMaxPct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)\"></div>\n            </div>\n          </div>\n\n          <div style=\"display:flex;align-items:center;justify-content:space-between;margin-top:26px\">\n            <div style=\"display:flex;align-items:center;gap:10px\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z\"></path></svg><div style=\"font-size:19px;font-weight:700\">Interests</div></div>\n            <div style=\"display:flex;align-items:center;gap:10px\"><div style=\"font-size:15px;color:#8b95a6\">{{ interestCount2 }}/5 selected</div><div sc-camel-on-click=\"{{ clearInterests }}\" style=\"font-size:15px;font-weight:600;color:#4a7bf7;cursor:pointer\">Clear</div></div>\n          </div>\n          <div sc-camel-on-click=\"{{ openInterestsPicker }}\" style=\"display:flex;align-items:center;height:56px;padding:0 18px;margin-top:12px;border-radius:28px;background:#f4f7fb;cursor:pointer\">\n            <div style=\"flex:1;font-size:17px;font-weight:600\">{{ interestCount2 }}/5 selected</div>\n            <svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n          </div>\n          <div style=\"display:flex;flex-wrap:wrap;gap:10px;margin-top:10px\">\n            <sc-for list=\"{{ selectedInterestChips }}\" as=\"o\" hint-placeholder-count=\"1\">\n              <div style=\"height:44px;padding:0 16px;border-radius:22px;background:#fff;box-shadow:0 6px 16px rgba(16,36,74,0.05);display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600\">{{ o.emoji }} {{ o.label }}</div>\n            </sc-for>\n          </div>\n\n          <div style=\"display:flex;align-items:center;gap:10px;margin-top:26px\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 4h16l-2 8a6 6 0 0 1-12 0z\"></path><path d=\"M12 16v5M8 21h8\"></path></svg><div style=\"font-size:19px;font-weight:700\">MBTI Personality</div></div>\n          <div style=\"display:flex;flex-wrap:wrap;gap:10px;margin-top:12px\">\n            <sc-for list=\"{{ mbtiChips }}\" as=\"o\" hint-placeholder-count=\"8\">\n              <div sc-camel-on-click=\"{{ o.pick }}\" style=\"height:46px;padding:0 18px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.05)\">{{ o.label }}</div>\n            </sc-for>\n          </div>\n\n          <div style=\"display:flex;align-items:center;gap:10px;margin-top:26px\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.9z\"></path></svg><div style=\"font-size:19px;font-weight:700\">Religion</div></div>\n          <div style=\"display:flex;flex-wrap:wrap;gap:10px;margin-top:12px\">\n            <sc-for list=\"{{ religionChips }}\" as=\"o\" hint-placeholder-count=\"4\">\n              <div sc-camel-on-click=\"{{ o.pick }}\" style=\"height:46px;padding:0 18px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.05)\">{{ o.label }}</div>\n            </sc-for>\n          </div>\n\n          <div style=\"display:flex;align-items:center;gap:10px;margin-top:26px\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 3h8l-1 6-3 3-3-3z\"></path><path d=\"M12 12v8M8 20h8\"></path></svg><div style=\"font-size:19px;font-weight:700\">Drinking Habits</div></div>\n          <div style=\"display:flex;flex-wrap:wrap;gap:10px;margin-top:12px\">\n            <sc-for list=\"{{ drinkChips }}\" as=\"o\" hint-placeholder-count=\"4\">\n              <div sc-camel-on-click=\"{{ o.pick }}\" style=\"height:46px;padding:0 18px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.05)\">{{ o.label }}</div>\n            </sc-for>\n          </div>\n\n          <div style=\"display:flex;align-items:center;justify-content:space-between;margin-top:26px\">\n            <div style=\"display:flex;align-items:center;gap:10px\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z\"></path><circle cx=\"12\" cy=\"10\" r=\"2.6\"></circle></svg><div style=\"font-size:19px;font-weight:700\">Distance</div></div>\n            <div style=\"font-size:15px;color:#8b95a6\">{{ distanceLabel }}</div>\n          </div>\n          <div sc-camel-on-click=\"{{ onDistanceTrack }}\" style=\"position:relative;height:56px;margin-top:12px;padding:0 20px;border-radius:28px;background:#f4f7fb;display:flex;align-items:center;cursor:pointer\">\n            <div style=\"position:relative;width:100%;height:5px;border-radius:3px;background:#dfe5ee\">\n              <div style=\"position:absolute;height:5px;border-radius:3px;background:linear-gradient(95deg,#1ec8f5,#a855f7);left:0;right:{{ distancePctInv }}%\"></div>\n              <div style=\"position:absolute;top:50%;left:{{ distancePct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)\"></div>\n            </div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20\"><div sc-camel-on-click=\"{{ savePrefs }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Save</div></div></div>\n      </div>\n    </sc-if>",
+    "styles": [
+      {
+        "line": 1512,
+        "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+      },
+      {
+        "line": 1513,
+        "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;z-index:20"
+      },
+      {
+        "line": 1514,
+        "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+      },
+      {
+        "line": 1517,
+        "style": "flex:1;text-align:center;font-size:21px;font-weight:800;letter-spacing:-0.025em;margin-right:46px"
+      },
+      {
+        "line": 1519,
+        "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box"
+      },
+      {
+        "line": 1521,
+        "style": "display:flex;align-items:center;justify-content:space-between;margin-top:6px"
+      },
+      {
+        "line": 1522,
+        "style": "display:flex;align-items:center;gap:10px"
+      },
+      {
+        "line": 1522,
+        "style": "font-size:19px;font-weight:700"
+      },
+      {
+        "line": 1523,
+        "style": "font-size:15px;color:#8b95a6"
+      },
+      {
+        "line": 1525,
+        "style": "position:relative;height:56px;margin-top:12px;padding:0 20px;border-radius:28px;background:#f4f7fb;display:flex;align-items:center;cursor:pointer"
+      },
+      {
+        "line": 1526,
+        "style": "position:relative;width:100%;height:5px;border-radius:3px;background:#dfe5ee"
+      },
+      {
+        "line": 1527,
+        "style": "position:absolute;height:5px;border-radius:3px;background:linear-gradient(95deg,#1ec8f5,#a855f7);left:{{ ageMinPct }}%;right:{{ ageMaxPctInv }}%"
+      },
+      {
+        "line": 1528,
+        "style": "position:absolute;top:50%;left:{{ ageMinPct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)"
+      },
+      {
+        "line": 1529,
+        "style": "position:absolute;top:50%;left:{{ ageMaxPct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)"
+      },
+      {
+        "line": 1533,
+        "style": "display:flex;align-items:center;gap:10px;margin-top:26px;cursor:pointer"
+      },
+      {
+        "line": 1534,
+        "style": "font-size:19px;font-weight:700"
+      },
+      {
+        "line": 1536,
+        "style": "display:flex;align-items:center;height:56px;padding:0 18px;margin-top:12px;border-radius:28px;background:#f4f7fb;cursor:pointer"
+      },
+      {
+        "line": 1537,
+        "style": "flex:1;font-size:17px;font-weight:600"
+      },
+      {
+        "line": 1541,
+        "style": "display:flex;align-items:center;gap:10px;margin-top:26px"
+      },
+      {
+        "line": 1541,
+        "style": "font-size:19px;font-weight:700"
+      },
+      {
+        "line": 1542,
+        "style": "display:flex;flex-wrap:wrap;gap:10px;margin-top:12px"
+      },
+      {
+        "line": 1544,
+        "style": "height:46px;padding:0 18px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.05)"
+      },
+      {
+        "line": 1548,
+        "style": "display:flex;align-items:center;justify-content:space-between;margin-top:26px"
+      },
+      {
+        "line": 1549,
+        "style": "display:flex;align-items:center;gap:10px"
+      },
+      {
+        "line": 1549,
+        "style": "font-size:19px;font-weight:700"
+      },
+      {
+        "line": 1550,
+        "style": "font-size:15px;color:#8b95a6"
+      },
+      {
+        "line": 1552,
+        "style": "position:relative;height:56px;margin-top:12px;padding:0 20px;border-radius:28px;background:#f4f7fb;display:flex;align-items:center;cursor:pointer"
+      },
+      {
+        "line": 1553,
+        "style": "position:relative;width:100%;height:5px;border-radius:3px;background:#dfe5ee"
+      },
+      {
+        "line": 1554,
+        "style": "position:absolute;height:5px;border-radius:3px;background:linear-gradient(95deg,#1ec8f5,#a855f7);left:{{ heightMinPct }}%;right:{{ heightMaxPctInv }}%"
+      },
+      {
+        "line": 1555,
+        "style": "position:absolute;top:50%;left:{{ heightMinPct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)"
+      },
+      {
+        "line": 1556,
+        "style": "position:absolute;top:50%;left:{{ heightMaxPct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)"
+      },
+      {
+        "line": 1560,
+        "style": "display:flex;align-items:center;justify-content:space-between;margin-top:26px"
+      },
+      {
+        "line": 1561,
+        "style": "display:flex;align-items:center;gap:10px"
+      },
+      {
+        "line": 1561,
+        "style": "font-size:19px;font-weight:700"
+      },
+      {
+        "line": 1562,
+        "style": "display:flex;align-items:center;gap:10px"
+      },
+      {
+        "line": 1562,
+        "style": "font-size:15px;color:#8b95a6"
+      },
+      {
+        "line": 1562,
+        "style": "font-size:15px;font-weight:600;color:#4a7bf7;cursor:pointer"
+      },
+      {
+        "line": 1564,
+        "style": "display:flex;align-items:center;height:56px;padding:0 18px;margin-top:12px;border-radius:28px;background:#f4f7fb;cursor:pointer"
+      },
+      {
+        "line": 1565,
+        "style": "flex:1;font-size:17px;font-weight:600"
+      },
+      {
+        "line": 1568,
+        "style": "display:flex;flex-wrap:wrap;gap:10px;margin-top:10px"
+      },
+      {
+        "line": 1570,
+        "style": "height:44px;padding:0 16px;border-radius:22px;background:#fff;box-shadow:0 6px 16px rgba(16,36,74,0.05);display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600"
+      },
+      {
+        "line": 1574,
+        "style": "display:flex;align-items:center;gap:10px;margin-top:26px"
+      },
+      {
+        "line": 1574,
+        "style": "font-size:19px;font-weight:700"
+      },
+      {
+        "line": 1575,
+        "style": "display:flex;flex-wrap:wrap;gap:10px;margin-top:12px"
+      },
+      {
+        "line": 1577,
+        "style": "height:46px;padding:0 18px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.05)"
+      },
+      {
+        "line": 1581,
+        "style": "display:flex;align-items:center;gap:10px;margin-top:26px"
+      },
+      {
+        "line": 1581,
+        "style": "font-size:19px;font-weight:700"
+      },
+      {
+        "line": 1582,
+        "style": "display:flex;flex-wrap:wrap;gap:10px;margin-top:12px"
+      },
+      {
+        "line": 1584,
+        "style": "height:46px;padding:0 18px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.05)"
+      },
+      {
+        "line": 1588,
+        "style": "display:flex;align-items:center;gap:10px;margin-top:26px"
+      },
+      {
+        "line": 1588,
+        "style": "font-size:19px;font-weight:700"
+      },
+      {
+        "line": 1589,
+        "style": "display:flex;flex-wrap:wrap;gap:10px;margin-top:12px"
+      },
+      {
+        "line": 1591,
+        "style": "height:46px;padding:0 18px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.05)"
+      },
+      {
+        "line": 1595,
+        "style": "display:flex;align-items:center;justify-content:space-between;margin-top:26px"
+      },
+      {
+        "line": 1596,
+        "style": "display:flex;align-items:center;gap:10px"
+      },
+      {
+        "line": 1596,
+        "style": "font-size:19px;font-weight:700"
+      },
+      {
+        "line": 1597,
+        "style": "font-size:15px;color:#8b95a6"
+      },
+      {
+        "line": 1599,
+        "style": "position:relative;height:56px;margin-top:12px;padding:0 20px;border-radius:28px;background:#f4f7fb;display:flex;align-items:center;cursor:pointer"
+      },
+      {
+        "line": 1600,
+        "style": "position:relative;width:100%;height:5px;border-radius:3px;background:#dfe5ee"
+      },
+      {
+        "line": 1601,
+        "style": "position:absolute;height:5px;border-radius:3px;background:linear-gradient(95deg,#1ec8f5,#a855f7);left:0;right:{{ distancePctInv }}%"
+      },
+      {
+        "line": 1602,
+        "style": "position:absolute;top:50%;left:{{ distancePct }}%;width:24px;height:24px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(16,36,74,0.28);border:3px solid #a855f7;transform:translate(-50%,-50%)"
+      },
+      {
+        "line": 1606,
+        "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20"
+      },
+      {
+        "line": 1606,
+        "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+      },
+      {
+        "line": 1606,
+        "style": "font-size:19px;font-weight:700;color:#fff"
+      }
+    ],
+    "copy": [
+      {
+        "line": 1517,
+        "text": "Match Preferences"
+      },
+      {
+        "line": 1522,
+        "text": "Age Range"
+      },
+      {
+        "line": 1534,
+        "text": "University"
+      },
+      {
+        "line": 1541,
+        "text": "Degree / Major"
+      },
+      {
+        "line": 1549,
+        "text": "Height Range"
+      },
+      {
+        "line": 1561,
+        "text": "Interests"
+      },
+      {
+        "line": 1562,
+        "text": "/5 selected"
+      },
+      {
+        "line": 1562,
+        "text": "Clear"
+      },
+      {
+        "line": 1565,
+        "text": "/5 selected"
+      },
+      {
+        "line": 1574,
+        "text": "MBTI Personality"
+      },
+      {
+        "line": 1581,
+        "text": "Religion"
+      },
+      {
+        "line": 1588,
+        "text": "Drinking Habits"
+      },
+      {
+        "line": 1596,
+        "text": "Distance"
+      },
+      {
+        "line": 1606,
+        "text": "Save"
+      }
+    ],
+    "svg": [
+      {
+        "line": 1515,
+        "fragment": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg>"
+      },
+      {
+        "line": 1522,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"3\"></rect><path d=\"M8 3v3M16 3v3M3 10h18\"></path></svg>"
+      },
+      {
+        "line": 1534,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg>"
+      },
+      {
+        "line": 1538,
+        "fragment": "<svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M9 5l7 7-7 7\"></path></svg>"
+      },
+      {
+        "line": 1541,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 6l10 4 10-4-10-4z\"></path><path d=\"M2 6v12l10 4 10-4V6\"></path><path d=\"M12 10v10\"></path></svg>"
+      },
+      {
+        "line": 1549,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8.5\" r=\"3.8\"></circle><path d=\"M4.5 20c1.4-4.2 5-6 7.5-6s6.1 1.8 7.5 6\"></path></svg>"
+      },
+      {
+        "line": 1561,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z\"></path></svg>"
+      },
+      {
+        "line": 1566,
+        "fragment": "<svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M9 5l7 7-7 7\"></path></svg>"
+      },
+      {
+        "line": 1574,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 4h16l-2 8a6 6 0 0 1-12 0z\"></path><path d=\"M12 16v5M8 21h8\"></path></svg>"
+      },
+      {
+        "line": 1581,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8-4.3-4.1 5.9-.9z\"></path></svg>"
+      },
+      {
+        "line": 1588,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 3h8l-1 6-3 3-3-3z\"></path><path d=\"M12 12v8M8 20h8\"></path></svg>"
+      },
+      {
+        "line": 1596,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z\"></path><circle cx=\"12\" cy=\"10\" r=\"2.6\"></circle></svg>"
+      }
+    ]
+  },
+  "source_lock": "locked",
+  "reference_viewport": {
+    "width": 393,
+    "height": 852,
+    "top": 54,
+    "bottom": 0
+  },
+  "animation": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "phase": "end",
+    "pulse_phase_ms": 0
+  },
+  "approved_deltas": [
+    "Cimoa brand and canonical current/candidate identities",
+    "Actual safe areas and fixed header/footer; one scrolling content region",
+    "Local-account matching engine; no timer grants peer consent; no fabricated online count",
+    "UTC daily quota and atomic costs; restarting a terminal session reviews the entry cost",
+    "User-authorized persisted campus-area distances, not GPS or real-time location; unknown distance fails; 100+ km is unrestricted",
+    "Source options screen does not falsify an active session as no_match"
+  ],
+  "interaction_ids": [
+    "amPrefs.goBack.click.1",
+    "amPrefs.onAgeTrack.click.1",
+    "amPrefs.openUniPicker.click.1",
+    "amPrefs.openUniPicker.click.2",
+    "amPrefs.o.pick.click.1",
+    "amPrefs.onHeightTrack.click.1",
+    "amPrefs.clearInterests.click.1",
+    "amPrefs.openInterestsPicker.click.1",
+    "amPrefs.o.pick.click.2",
+    "amPrefs.o.pick.click.3",
+    "amPrefs.o.pick.click.4",
+    "amPrefs.onDistanceTrack.click.1",
+    "amPrefs.savePrefs.click.1"
+  ]
+}

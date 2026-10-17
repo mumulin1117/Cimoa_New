@@ -1,0 +1,288 @@
+{
+  "page": "index",
+  "component": "src/pages/auto-match/index.vue",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=amEntry",
+    "condition": "isAmEntry",
+    "lines": [
+      1460,
+      1508
+    ],
+    "fragment_sha256": "8adc56fce35ac63c02e8362e8a7681a1325bd2d8199b256bdee20c3ca2f40b9c",
+    "fragment": "    <sc-if value=\"{{ isAmEntry }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Auto Match / Entry / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Auto Match</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 180px;box-sizing:border-box\">\n          <div style=\"font-size:34px;font-weight:800;letter-spacing:-0.035em;line-height:1.08;margin-top:6px\">Meet someone new</div>\n          <div style=\"font-size:17px;color:#5b6b85;margin-top:10px;line-height:1.45;text-wrap:pretty\">Join the pool and we’ll introduce you to a compatible student who’s also available.</div>\n          <div style=\"display:flex;align-items:center;gap:8px;margin-top:16px;height:40px;padding:0 14px;border-radius:20px;background:#e8f1fd;width:fit-content\">\n            <svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>\n            <div style=\"font-size:14.5px;font-weight:600;color:#1e4b8f\">Verified students only</div>\n          </div>\n          <div style=\"display:flex;flex-direction:column;gap:14px;margin-top:24px;padding:20px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"display:flex;align-items:center;gap:14px\">\n              <div style=\"width:34px;height:34px;border-radius:17px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:16px;font-weight:800;color:#3b6bd8\">1</div>\n              <div style=\"font-size:17px;font-weight:600\">Join the pool</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:14px\">\n              <div style=\"width:34px;height:34px;border-radius:17px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:16px;font-weight:800;color:#3b6bd8\">2</div>\n              <div style=\"font-size:17px;font-weight:600\">Get matched</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:14px\">\n              <div style=\"width:34px;height:34px;border-radius:17px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:16px;font-weight:800;color:#3b6bd8\">3</div>\n              <div style=\"font-size:17px;font-weight:600\">Both choose to connect</div>\n            </div>\n          </div>\n          <div style=\"display:flex;flex-direction:column;gap:12px;margin-top:16px\">\n            <div style=\"display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n              <div style=\"width:46px;height:46px;border-radius:23px;background:#e5f0ff;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#4a7bf7\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M12 7.5V12l3 2\"></path></svg></div>\n              <div style=\"flex:1;min-width:0\"><div style=\"font-size:14.5px;color:#5b6b85\">Estimated wait</div><div style=\"font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-top:1px\">About 2 minutes</div></div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n              <div style=\"width:46px;height:46px;border-radius:23px;background:#f3e8ff;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#a855f7\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg></div>\n              <div style=\"flex:1;min-width:0\"><div style=\"font-size:14.5px;color:#5b6b85\">Available now</div><div style=\"font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-top:1px\">48 students</div></div>\n            </div>\n          </div>\n          <div style=\"margin-top:18px;padding:18px;border-radius:22px;background:rgba(255,255,255,0.7)\">\n            <div style=\"font-size:15.5px;color:#44536b;line-height:1.5;text-wrap:pretty\">{{ amCostNote }} You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first.</div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:6px;z-index:20\">\n          <div sc-camel-on-click=\"{{ joinPool }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"display:flex;align-items:center;gap:8px\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Join the Pool</div><div style=\"font-size:15px;font-weight:700;color:#fff;padding:4px 10px;border-radius:12px;background:rgba(255,255,255,0.22)\">{{ joinPoolTag }}</div></div></div>\n          <div sc-camel-on-click=\"{{ openPrefs }}\" style=\"height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:600;color:#6b7a93\">Match Preferences</div>\n        </div>\n      </div>\n    </sc-if>",
+    "styles": [
+      {
+        "line": 1461,
+        "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+      },
+      {
+        "line": 1462,
+        "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+      },
+      {
+        "line": 1463,
+        "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+      },
+      {
+        "line": 1466,
+        "style": "flex:1"
+      },
+      {
+        "line": 1466,
+        "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+      },
+      {
+        "line": 1468,
+        "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 180px;box-sizing:border-box"
+      },
+      {
+        "line": 1469,
+        "style": "font-size:34px;font-weight:800;letter-spacing:-0.035em;line-height:1.08;margin-top:6px"
+      },
+      {
+        "line": 1470,
+        "style": "font-size:17px;color:#5b6b85;margin-top:10px;line-height:1.45;text-wrap:pretty"
+      },
+      {
+        "line": 1471,
+        "style": "display:flex;align-items:center;gap:8px;margin-top:16px;height:40px;padding:0 14px;border-radius:20px;background:#e8f1fd;width:fit-content"
+      },
+      {
+        "line": 1473,
+        "style": "font-size:14.5px;font-weight:600;color:#1e4b8f"
+      },
+      {
+        "line": 1475,
+        "style": "display:flex;flex-direction:column;gap:14px;margin-top:24px;padding:20px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+      },
+      {
+        "line": 1476,
+        "style": "display:flex;align-items:center;gap:14px"
+      },
+      {
+        "line": 1477,
+        "style": "width:34px;height:34px;border-radius:17px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:16px;font-weight:800;color:#3b6bd8"
+      },
+      {
+        "line": 1478,
+        "style": "font-size:17px;font-weight:600"
+      },
+      {
+        "line": 1480,
+        "style": "display:flex;align-items:center;gap:14px"
+      },
+      {
+        "line": 1481,
+        "style": "width:34px;height:34px;border-radius:17px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:16px;font-weight:800;color:#3b6bd8"
+      },
+      {
+        "line": 1482,
+        "style": "font-size:17px;font-weight:600"
+      },
+      {
+        "line": 1484,
+        "style": "display:flex;align-items:center;gap:14px"
+      },
+      {
+        "line": 1485,
+        "style": "width:34px;height:34px;border-radius:17px;background:#e8f1fd;display:flex;align-items:center;justify-content:center;flex:none;font-size:16px;font-weight:800;color:#3b6bd8"
+      },
+      {
+        "line": 1486,
+        "style": "font-size:17px;font-weight:600"
+      },
+      {
+        "line": 1489,
+        "style": "display:flex;flex-direction:column;gap:12px;margin-top:16px"
+      },
+      {
+        "line": 1490,
+        "style": "display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+      },
+      {
+        "line": 1491,
+        "style": "width:46px;height:46px;border-radius:23px;background:#e5f0ff;display:flex;align-items:center;justify-content:center;flex:none"
+      },
+      {
+        "line": 1492,
+        "style": "flex:1;min-width:0"
+      },
+      {
+        "line": 1492,
+        "style": "font-size:14.5px;color:#5b6b85"
+      },
+      {
+        "line": 1492,
+        "style": "font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-top:1px"
+      },
+      {
+        "line": 1494,
+        "style": "display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+      },
+      {
+        "line": 1495,
+        "style": "width:46px;height:46px;border-radius:23px;background:#f3e8ff;display:flex;align-items:center;justify-content:center;flex:none"
+      },
+      {
+        "line": 1496,
+        "style": "flex:1;min-width:0"
+      },
+      {
+        "line": 1496,
+        "style": "font-size:14.5px;color:#5b6b85"
+      },
+      {
+        "line": 1496,
+        "style": "font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-top:1px"
+      },
+      {
+        "line": 1499,
+        "style": "margin-top:18px;padding:18px;border-radius:22px;background:rgba(255,255,255,0.7)"
+      },
+      {
+        "line": 1500,
+        "style": "font-size:15.5px;color:#44536b;line-height:1.5;text-wrap:pretty"
+      },
+      {
+        "line": 1503,
+        "style": "position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:6px;z-index:20"
+      },
+      {
+        "line": 1504,
+        "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+      },
+      {
+        "line": 1504,
+        "style": "display:flex;align-items:center;gap:8px"
+      },
+      {
+        "line": 1504,
+        "style": "font-size:19px;font-weight:700;color:#fff"
+      },
+      {
+        "line": 1504,
+        "style": "font-size:15px;font-weight:700;color:#fff;padding:4px 10px;border-radius:12px;background:rgba(255,255,255,0.22)"
+      },
+      {
+        "line": 1505,
+        "style": "height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:600;color:#6b7a93"
+      }
+    ],
+    "copy": [
+      {
+        "line": 1466,
+        "text": "Auto Match"
+      },
+      {
+        "line": 1469,
+        "text": "Meet someone new"
+      },
+      {
+        "line": 1470,
+        "text": "Join the pool and we’ll introduce you to a compatible student who’s also available."
+      },
+      {
+        "line": 1473,
+        "text": "Verified students only"
+      },
+      {
+        "line": 1477,
+        "text": "1"
+      },
+      {
+        "line": 1478,
+        "text": "Join the pool"
+      },
+      {
+        "line": 1481,
+        "text": "2"
+      },
+      {
+        "line": 1482,
+        "text": "Get matched"
+      },
+      {
+        "line": 1485,
+        "text": "3"
+      },
+      {
+        "line": 1486,
+        "text": "Both choose to connect"
+      },
+      {
+        "line": 1492,
+        "text": "Estimated wait"
+      },
+      {
+        "line": 1492,
+        "text": "About 2 minutes"
+      },
+      {
+        "line": 1496,
+        "text": "Available now"
+      },
+      {
+        "line": 1496,
+        "text": "48 students"
+      },
+      {
+        "line": 1500,
+        "text": "You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first."
+      },
+      {
+        "line": 1504,
+        "text": "Join the Pool"
+      },
+      {
+        "line": 1505,
+        "text": "Match Preferences"
+      }
+    ],
+    "svg": [
+      {
+        "line": 1464,
+        "fragment": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+      },
+      {
+        "line": 1472,
+        "fragment": "<svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>"
+      },
+      {
+        "line": 1491,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#4a7bf7\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M12 7.5V12l3 2\"></path></svg>"
+      },
+      {
+        "line": 1495,
+        "fragment": "<svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#a855f7\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg>"
+      }
+    ]
+  },
+  "source_lock": "locked",
+  "reference_viewport": {
+    "width": 393,
+    "height": 852,
+    "top": 54,
+    "bottom": 0
+  },
+  "animation": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "phase": "end",
+    "pulse_phase_ms": 0
+  },
+  "approved_deltas": [
+    "Cimoa brand and canonical current/candidate identities",
+    "Actual safe areas and fixed header/footer; one scrolling content region",
+    "Local-account matching engine; no timer grants peer consent; no fabricated online count",
+    "UTC daily quota and atomic costs; restarting a terminal session reviews the entry cost",
+    "User-authorized persisted campus-area distances, not GPS or real-time location; unknown distance fails; 100+ km is unrestricted",
+    "Source options screen does not falsify an active session as no_match"
+  ],
+  "interaction_ids": [
+    "amEntry.goBack.click.1",
+    "amEntry.joinPool.click.1",
+    "amEntry.openPrefs.click.1"
+  ]
+}

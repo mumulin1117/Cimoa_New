@@ -2,8 +2,10 @@ import { create_seed, clone_data, TEST_USER_ID, DISCOVER_PROFILE_IDS } from './s
 import { ensure, validate_data } from './selectors.js'
 import { AVATAR_PROFILE_IDS } from './peopleCatalog.js'
 import { ensure_account_defaults, registration_profile } from './accountDefaults.js'
+import { generated_match_distances } from './matchingCatalog.js'
 export function upgrade_additive_data(value) {
   const data = clone_data(value)
+  if(data.match_distances===undefined)data.match_distances=generated_match_distances()
   for (const row of data.settings || []) if (row.privacy && row.privacy.auto_match_visible === undefined) row.privacy.auto_match_visible = true
   for (const row of data.match_preferences || []) if (row.interest_mode === undefined) row.interest_mode = 'Similar interests'
   if (data.auth_flow && data.auth_flow.password_reset === undefined) data.auth_flow.password_reset = null

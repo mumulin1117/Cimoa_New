@@ -1,0 +1,123 @@
+{
+  "page": "history",
+  "component": "src/pages/auto-match/history.vue",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=amHistory",
+    "condition": "isAmHistory",
+    "lines": [
+      1890,
+      1915
+    ],
+    "fragment_sha256": "604a118b4689dc5a67dd6a4df1456db1a034f2f1cd2ee9d7aa8395c4ea5223f0",
+    "fragment": "    <sc-if value=\"{{ isAmHistory }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Auto Match / History / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Auto Match history</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box\">\n          <div style=\"font-size:16px;color:#5b6b85;text-wrap:pretty\">Connected matches, pending decisions, and expired matches from the last 30 days.</div>\n          <div style=\"display:flex;flex-direction:column;gap:12px;margin-top:18px\">\n            <sc-for list=\"{{ historyRows }}\" as=\"h\" hint-placeholder-count=\"3\">\n              <div sc-camel-on-click=\"{{ h.go }}\" style=\"display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n                <sc-if value=\"{{ h.img }}\" hint-placeholder-val=\"{{ false }}\"><img src=\"{{ h.img }}\" alt=\"{{ h.name }}\" style=\"width:52px;height:52px;border-radius:26px;object-fit:cover;flex:none;display:block\"></sc-if>\n                <sc-if value=\"{{ h.noImg }}\" hint-placeholder-val=\"{{ true }}\"><div style=\"width:52px;height:52px;border-radius:26px;background:#eef2f8;flex:none\"></div></sc-if>\n                <div style=\"flex:1;min-width:0\">\n                  <div style=\"font-size:18px;font-weight:800;letter-spacing:-0.02em;white-space:nowrap\">{{ h.name }}</div>\n                  <div style=\"font-size:14.5px;color:#5b6b85;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ h.meta }}</div>\n                </div>\n                <div style=\"padding:7px 11px;border-radius:16px;background:{{ h.pill }};flex:none\"><div style=\"font-size:13.5px;font-weight:600;color:{{ h.pillInk }}\">{{ h.pillText }}</div></div>\n              </div>\n            </sc-for>\n          </div>\n        </div>\n      </div>\n    </sc-if>",
+    "styles": [
+      {
+        "line": 1891,
+        "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+      },
+      {
+        "line": 1892,
+        "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+      },
+      {
+        "line": 1893,
+        "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+      },
+      {
+        "line": 1896,
+        "style": "flex:1"
+      },
+      {
+        "line": 1896,
+        "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+      },
+      {
+        "line": 1898,
+        "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box"
+      },
+      {
+        "line": 1899,
+        "style": "font-size:16px;color:#5b6b85;text-wrap:pretty"
+      },
+      {
+        "line": 1900,
+        "style": "display:flex;flex-direction:column;gap:12px;margin-top:18px"
+      },
+      {
+        "line": 1902,
+        "style": "display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+      },
+      {
+        "line": 1903,
+        "style": "width:52px;height:52px;border-radius:26px;object-fit:cover;flex:none;display:block"
+      },
+      {
+        "line": 1904,
+        "style": "width:52px;height:52px;border-radius:26px;background:#eef2f8;flex:none"
+      },
+      {
+        "line": 1905,
+        "style": "flex:1;min-width:0"
+      },
+      {
+        "line": 1906,
+        "style": "font-size:18px;font-weight:800;letter-spacing:-0.02em;white-space:nowrap"
+      },
+      {
+        "line": 1907,
+        "style": "font-size:14.5px;color:#5b6b85;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+      },
+      {
+        "line": 1909,
+        "style": "padding:7px 11px;border-radius:16px;background:{{ h.pill }};flex:none"
+      },
+      {
+        "line": 1909,
+        "style": "font-size:13.5px;font-weight:600;color:{{ h.pillInk }}"
+      }
+    ],
+    "copy": [
+      {
+        "line": 1896,
+        "text": "Auto Match history"
+      },
+      {
+        "line": 1899,
+        "text": "Connected matches, pending decisions, and expired matches from the last 30 days."
+      }
+    ],
+    "svg": [
+      {
+        "line": 1894,
+        "fragment": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+      }
+    ]
+  },
+  "source_lock": "locked",
+  "reference_viewport": {
+    "width": 393,
+    "height": 852,
+    "top": 54,
+    "bottom": 0
+  },
+  "animation": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "phase": "end",
+    "pulse_phase_ms": 0
+  },
+  "approved_deltas": [
+    "Cimoa brand and canonical current/candidate identities",
+    "Actual safe areas and fixed header/footer; one scrolling content region",
+    "Local-account matching engine; no timer grants peer consent; no fabricated online count",
+    "UTC daily quota and atomic costs; restarting a terminal session reviews the entry cost",
+    "User-authorized persisted campus-area distances, not GPS or real-time location; unknown distance fails; 100+ km is unrestricted",
+    "Source options screen does not falsify an active session as no_match"
+  ],
+  "interaction_ids": [
+    "amHistory.goBack.click.1",
+    "amHistory.h.go.click.1"
+  ]
+}

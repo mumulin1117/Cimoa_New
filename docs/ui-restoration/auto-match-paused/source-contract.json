@@ -1,0 +1,193 @@
+{
+  "page": "paused",
+  "component": "src/pages/auto-match/paused.vue",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=amPaused",
+    "condition": "isAmPaused",
+    "lines": [
+      1670,
+      1702
+    ],
+    "fragment_sha256": "aefadf7bf8eaa69da097e04e246e978460b5d9b083a7651cfb32440cf89f2960",
+    "fragment": "    <sc-if value=\"{{ isAmPaused }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Auto Match / Queue / Paused\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Matching paused</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:120px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 190px;box-sizing:border-box\">\n          <div style=\"display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:26px\">\n            <div style=\"width:120px;height:120px;border-radius:60px;background:#e8edf7;display:flex;align-items:center;justify-content:center\">\n              <svg width=\"44\" height=\"44\" sc-camel-view-box=\"0 0 24 24\" fill=\"#6b7a93\"><rect x=\"6\" y=\"4\" width=\"4.6\" height=\"16\" rx=\"1.8\"></rect><rect x=\"13.4\" y=\"4\" width=\"4.6\" height=\"16\" rx=\"1.8\"></rect></svg>\n            </div>\n            <div style=\"font-size:26px;font-weight:800;letter-spacing:-0.03em;text-align:center\">You’re not in the pool right now</div>\n            <div style=\"font-size:17px;color:#5b6b85;text-align:center;text-wrap:pretty\">Other students can’t see you as available. Your preferences and queue place are saved.</div>\n          </div>\n          <div style=\"display:flex;flex-direction:column;gap:12px;margin-top:24px\">\n            <div style=\"display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n              <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#a855f7\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg>\n              <div style=\"flex:1;min-width:0\"><div style=\"font-size:14.5px;color:#5b6b85\">Saved queue position</div><div style=\"font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-top:1px\">{{ queuePos }}</div></div>\n            </div>\n            <div sc-camel-on-click=\"{{ openPrefs }}\" style=\"display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n              <div style=\"flex:1;min-width:0\"><div style=\"font-size:14.5px;color:#5b6b85\">Saved preferences</div><div style=\"font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-top:1px\">{{ prefSummary }}</div></div>\n              <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n            </div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:6px;z-index:20\">\n          <div sc-camel-on-click=\"{{ resumeQueue }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Resume Matching</div></div>\n          <div sc-camel-on-click=\"{{ askLeave }}\" style=\"height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:600;color:#6b7a93\">Leave Pool</div>\n        </div>\n      </div>\n    </sc-if>",
+    "styles": [
+      {
+        "line": 1671,
+        "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+      },
+      {
+        "line": 1672,
+        "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+      },
+      {
+        "line": 1673,
+        "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+      },
+      {
+        "line": 1676,
+        "style": "flex:1"
+      },
+      {
+        "line": 1676,
+        "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+      },
+      {
+        "line": 1678,
+        "style": "position:absolute;top:120px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 190px;box-sizing:border-box"
+      },
+      {
+        "line": 1679,
+        "style": "display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:26px"
+      },
+      {
+        "line": 1680,
+        "style": "width:120px;height:120px;border-radius:60px;background:#e8edf7;display:flex;align-items:center;justify-content:center"
+      },
+      {
+        "line": 1683,
+        "style": "font-size:26px;font-weight:800;letter-spacing:-0.03em;text-align:center"
+      },
+      {
+        "line": 1684,
+        "style": "font-size:17px;color:#5b6b85;text-align:center;text-wrap:pretty"
+      },
+      {
+        "line": 1686,
+        "style": "display:flex;flex-direction:column;gap:12px;margin-top:24px"
+      },
+      {
+        "line": 1687,
+        "style": "display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+      },
+      {
+        "line": 1688,
+        "style": "flex:none"
+      },
+      {
+        "line": 1689,
+        "style": "flex:1;min-width:0"
+      },
+      {
+        "line": 1689,
+        "style": "font-size:14.5px;color:#5b6b85"
+      },
+      {
+        "line": 1689,
+        "style": "font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-top:1px"
+      },
+      {
+        "line": 1691,
+        "style": "display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+      },
+      {
+        "line": 1692,
+        "style": "flex:1;min-width:0"
+      },
+      {
+        "line": 1692,
+        "style": "font-size:14.5px;color:#5b6b85"
+      },
+      {
+        "line": 1692,
+        "style": "font-size:18px;font-weight:700;letter-spacing:-0.02em;margin-top:1px"
+      },
+      {
+        "line": 1693,
+        "style": "flex:none"
+      },
+      {
+        "line": 1697,
+        "style": "position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:6px;z-index:20"
+      },
+      {
+        "line": 1698,
+        "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+      },
+      {
+        "line": 1698,
+        "style": "font-size:19px;font-weight:700;color:#fff"
+      },
+      {
+        "line": 1699,
+        "style": "height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:600;color:#6b7a93"
+      }
+    ],
+    "copy": [
+      {
+        "line": 1676,
+        "text": "Matching paused"
+      },
+      {
+        "line": 1683,
+        "text": "You’re not in the pool right now"
+      },
+      {
+        "line": 1684,
+        "text": "Other students can’t see you as available. Your preferences and queue place are saved."
+      },
+      {
+        "line": 1689,
+        "text": "Saved queue position"
+      },
+      {
+        "line": 1692,
+        "text": "Saved preferences"
+      },
+      {
+        "line": 1698,
+        "text": "Resume Matching"
+      },
+      {
+        "line": 1699,
+        "text": "Leave Pool"
+      }
+    ],
+    "svg": [
+      {
+        "line": 1674,
+        "fragment": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+      },
+      {
+        "line": 1681,
+        "fragment": "<svg width=\"44\" height=\"44\" sc-camel-view-box=\"0 0 24 24\" fill=\"#6b7a93\"><rect x=\"6\" y=\"4\" width=\"4.6\" height=\"16\" rx=\"1.8\"></rect><rect x=\"13.4\" y=\"4\" width=\"4.6\" height=\"16\" rx=\"1.8\"></rect></svg>"
+      },
+      {
+        "line": 1688,
+        "fragment": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#a855f7\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg>"
+      },
+      {
+        "line": 1693,
+        "fragment": "<svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>"
+      }
+    ]
+  },
+  "source_lock": "locked",
+  "reference_viewport": {
+    "width": 393,
+    "height": 852,
+    "top": 54,
+    "bottom": 0
+  },
+  "animation": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "phase": "end",
+    "pulse_phase_ms": 0
+  },
+  "approved_deltas": [
+    "Cimoa brand and canonical current/candidate identities",
+    "Actual safe areas and fixed header/footer; one scrolling content region",
+    "Local-account matching engine; no timer grants peer consent; no fabricated online count",
+    "UTC daily quota and atomic costs; restarting a terminal session reviews the entry cost",
+    "User-authorized persisted campus-area distances, not GPS or real-time location; unknown distance fails; 100+ km is unrestricted",
+    "Source options screen does not falsify an active session as no_match"
+  ],
+  "interaction_ids": [
+    "amPaused.goBack.click.1",
+    "amPaused.openPrefs.click.1",
+    "amPaused.resumeQueue.click.1",
+    "amPaused.askLeave.click.1"
+  ]
+}

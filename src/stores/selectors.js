@@ -1,4 +1,5 @@
 import { ONBOARDING_FLOW } from '../utils/onboardingFlow.js'
+import { effective_match_status } from './matchState.js'
 import { clone_data } from './seed.js'
 export const owner_id = (data) => data.session.current_user_id
 export const authenticated = (data, now = Date.now()) => data.session.expires_at > now && data.accounts.some((account) => account.account_id === data.session.account_id && account.user_id === owner_id(data) && account.status === 'active')
@@ -47,10 +48,7 @@ export const introduction_blocker = (data, target, now = Date.now()) => {
 }
 export const utc_date_key = (now) => new Date(now).toISOString().slice(0, 10)
 export const remaining_quota = (data, now = Date.now()) => Math.max(0, data.quota_policy.free_daily_limit - (data.match_quota.find((row) => row.owner_user_id === owner_id(data) && row.date_key === utc_date_key(now))?.used_count || 0))
-export const match_status = (row, now) => {
-  const status = row.engine === 'device' && row.status === 'searching' && now >= row.search_ready_at ? row.candidate_id ? 'found' : 'no_match' : row.status
-  return status === 'found' && row.expires_at <= now ? 'expired' : status
-}
+export const match_status = effective_match_status
 export const owned_matches = (data, now = Date.now()) => data.match_sessions.filter((row) => row.owner_user_id === owner_id(data) && (!row.candidate_id || visible(data, row.candidate_id))).map((row) => ({ ...row, status: match_status(row, now) }))
 export const active_match = (data, now = Date.now()) => owned_matches(data, now).filter(row => !row.fixture && ['searching', 'paused', 'found', 'waiting'].includes(row.status) && (!row.candidate_id || !connected(data, row.candidate_id))).sort((a, b) => b.created_at - a.created_at || a.match_id.localeCompare(b.match_id))[0] || null
 export const members = (data, event_id) => data.memberships.filter((row) => row.event_id === event_id && row.status === 'joined')
@@ -106,8 +104,11 @@ export function validate_data(data) {
   for (const row of data.requests) ensure(Number.isFinite(row.created_at) && (row.resolved_at == null || Number.isFinite(row.resolved_at) && row.resolved_at >= row.created_at) && (row.question_text === undefined || typeof row.question_text === 'string' && row.question_text.trim()) && (row.kind !== 'text' || row.text.length <= 300 && !row.audio_id), 'Invalid introduction content or time.')
   for (const row of data.match_sessions) ensure(has('users', row.owner_user_id) && (!row.candidate_id || has('users', row.candidate_id)) && ['searching', 'paused', 'found', 'waiting', 'connected', 'passed', 'expired', 'no_match', 'left'].includes(row.status) && (row.status !== 'connected' || row.self_accepted && row.peer_accepted), 'Invalid match.')
   for (const row of data.match_sessions) ensure((row.queue_position == null || Number.isInteger(row.queue_position) && row.queue_position > 0) && (row.estimated_wait_seconds == null || Number.isFinite(row.estimated_wait_seconds) && row.estimated_wait_seconds >= 0), 'Invalid queue details.')
-  for (const row of data.match_sessions.filter(row => row.engine === 'device')) ensure(Number.isFinite(row.search_ready_at) && (row.candidate_id === null || Number.isFinite(row.expires_at)), 'Invalid device matching deadline.')
+  for (const row of data.match_sessions.filter(row => row.engine === 'device')) ensure(Number.isFinite(row.search_ready_at) && (row.status === 'paused' || row.candidate_id === null || Number.isFinite(row.expires_at)), 'Invalid device matching deadline.')
+  for (const row of data.match_sessions) ensure((row.search_remaining_ms == null || Number.isFinite(row.search_remaining_ms) && row.search_remaining_ms >= 0) && (row.priority_until == null || Number.isFinite(row.priority_until)) && (row.search_revision == null || Number.isInteger(row.search_revision) && row.search_revision >= 0) && (row.last_event_sequence == null || Number.isInteger(row.last_event_sequence) && row.last_event_sequence >= 0), 'Invalid matching recovery state.')
   for (const row of data.match_preferences) ensure(['Similar interests', 'A mix', 'Surprise me'].includes(row.interest_mode), 'Invalid interest matching preference.')
+  ensure(Array.isArray(data.match_distances) && unique(data.match_distances,row=>row.area_pair_id), 'Invalid campus distance identifiers.')
+  for(const row of data.match_distances) ensure(typeof row.area_pair_id==='string' && row.area_pair_id && typeof row.university_a==='string' && row.university_a && typeof row.university_b==='string' && row.university_b && Number.isFinite(row.distance_km) && row.distance_km>=0 && row.source==='generated_campus_region', 'Invalid campus distance.')
   ensure(data.quota_policy.timezone === 'UTC', 'The quota timezone must be UTC.')
   ensure(unique(data.match_quota, (row) => `${row.owner_user_id}:${row.date_key}`), 'Duplicate daily quota.')
   for (const row of data.match_quota) ensure(has('users', row.owner_user_id) && /^\d{4}-\d{2}-\d{2}$/.test(row.date_key) && Number.isInteger(row.used_count) && row.used_count >= 0 && row.used_count <= 3, 'Invalid daily quota.')

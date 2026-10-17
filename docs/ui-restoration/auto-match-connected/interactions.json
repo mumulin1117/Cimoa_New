@@ -1,0 +1,38 @@
+[
+  {
+    "interaction_id": "amConnected.goBack.click.1",
+    "source_screen": "amConnected:1795",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=connected; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "amConnected.startChat.click.1",
+    "source_screen": "amConnected:1795",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=connected; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "amConnected.viewProfile.click.1",
+    "source_screen": "amConnected:1795",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=connected; native HostTests; screenshots in this directory."
+  }
+]
