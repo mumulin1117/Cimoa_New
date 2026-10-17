@@ -26,7 +26,7 @@ export function discover_reference(phase, contract, origin, data) {
       if(line===678&&p.name==='placeholder')value=`Write your reply to ${user.user_name}…`
       return ` ${p.name.replace('sc-camel-view-box','viewBox')}="${fill(value,scope)}"`
     }).join('')
-    return `<${node.tag} data-source-line="${line}"${attrs}>${textByLine[line]!==undefined&&node.children.every(c=>c.type!==1)?escape(textByLine[line]):children()}${['img','input','br'].includes(node.tag)?'':`</${node.tag}>`}`
+    return `<${node.tag} data-source-line="${line}"${attrs}>${textByLine[line]!==undefined&&node.children.every(c=>c.type!==1)&&node.children.some(c=>c.type===2&&c.content.trim())?escape(textByLine[line]):children()}${['img','input','br'].includes(node.tag)?'':`</${node.tag}>`}`
   }
   let content=root.children.map(x=>render(x)).join('')
   if(phase==='deck'){

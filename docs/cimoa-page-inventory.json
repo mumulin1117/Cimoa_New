@@ -3181,7 +3181,11 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-select/source-contract.json",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-select/acceptance.json"
   },
   {
     "source_screen": "Discover / Icebreaker / Text Reply",

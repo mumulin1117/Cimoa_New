@@ -1,0 +1,85 @@
+{
+  "page": "select",
+  "result": "passed",
+  "checks": [
+    "Original selection geometry, target-specific questions, keyboard/segmented control are read-only",
+    "Continue writes only after Loading, retains one draft and Back restores saved question/mode",
+    "Saved selection refreshes and the full choice/continue content remains scrollable on a narrow iPhone"
+  ],
+  "errors": [],
+  "deferred": [],
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "server_pid": 41632,
+  "reference_geometry": {
+    "620": {
+      "x": 20,
+      "y": 120,
+      "width": 353,
+      "height": 96
+    },
+    "627": {
+      "x": 20,
+      "y": 242,
+      "width": 353,
+      "height": 33
+    },
+    "631": {
+      "x": 20,
+      "y": 315,
+      "width": 353,
+      "height": 86
+    },
+    "640": {
+      "x": 20,
+      "y": 653,
+      "width": 353,
+      "height": 64
+    },
+    "650": {
+      "x": 20,
+      "y": 743,
+      "width": 353,
+      "height": 60
+    },
+    "666": null,
+    "676": null,
+    "677": null,
+    "758": null,
+    "762": null
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 30848,
+    "pixels_above_channel_delta_8": 11551,
+    "mean_absolute_channel_delta": 0.8832547874183182,
+    "max_channel_delta": 244
+  },
+  "geometry": {
+    "620": {
+      "x": 20,
+      "y": 119.984375,
+      "width": 353,
+      "height": 95.953125
+    },
+    "627": {
+      "x": 20,
+      "y": 241.921875,
+      "width": 353,
+      "height": 33
+    },
+    "631": {
+      "x": 20,
+      "y": 314.90625,
+      "width": 353,
+      "height": 86
+    },
+    "640": {
+      "x": 20,
+      "y": 652.90625,
+      "width": 353,
+      "height": 63.984375
+    }
+  },
+  "cleaned_up": true
+}

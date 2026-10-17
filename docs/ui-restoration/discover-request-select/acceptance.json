@@ -1,0 +1,10 @@
+{
+  "source_lock": "locked",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "visual_acceptance": "pending",
+  "status": "pending",
+  "browser": "3 checks passed; original person/title/question/segment geometry <=1px, target questions, selection read-only, post-Loading one draft, Back/refresh restore, narrow scroll",
+  "gates": "Three mandatory checks passed without warning",
+  "deferred": ["Final bundled WebKit pixels and complete request chain"]
+}

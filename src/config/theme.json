@@ -5,6 +5,7 @@
       "gradient": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
     },
     "surface": {
+      "ice_indicator": "#d7dee8",
       "connection_wave": "#e2e8f0",
       "connection_waiting": "#e8edf7",
       "event_people": "#fbe6f7",
@@ -163,6 +164,8 @@
     "coin_hero": "linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%)"
   },
   "shadows": {
+    "ice_question": "0 15.267rpx 41.985rpx rgba(16,36,74,0.06)",
+    "ice_question_selected": "0 19.084rpx 49.618rpx rgba(168,85,247,0.18)",
     "connection_action": "0 22.901rpx 49.618rpx rgba(168,85,247,0.24)",
     "connection_secondary": "0 15.267rpx 41.985rpx rgba(16,36,74,0.07)",
     "connection_profile": "0 15.267rpx 45.802rpx rgba(16,36,74,0.06)",
