@@ -1,7 +1,7 @@
 {
   "phase": "purchase-detail",
   "result": "passed",
-  "server_pid": 60300,
+  "server_pid": 8617,
   "checks": [
     "Purchase Detail discloses fixture provenance and never fabricates price or StoreKit receipt data",
     "Purchase support opens Coin Help and Back restores detail without mutating the ledger",

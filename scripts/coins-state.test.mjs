@@ -67,3 +67,13 @@ test('history keeps only validated owned return context and a refund never claim
   assert.equal(refund.title, 'Coin refund'); assert.equal(refund.subtitle, 'Returned coins'); assert.equal(refund.filter, 'used')
   store.logout(); assert.equal(coin_child_route(store, '/pages/coins/history', id), '/pages/coins/history')
 })
+test('ledger detail projects provenance, exact verified amount and real feature references without exposing mutable Store entities', async () => {
+  const { store, id, receipt } = fixture(), credit = store.coin_ledger_detail('txn_seed_0')
+  assert.equal(credit.mode, 'credit'); assert.equal(credit.verified_purchase, false); credit.transaction.amount = 9999; assert.equal(store.coin_balance, 260)
+  assert.equal((await store.settle_purchase(id, receipt)).success, true)
+  const transaction = store.coin_transactions.find(t => t.related_id === id), detail = store.coin_ledger_detail(transaction.transaction_id)
+  assert.equal(detail.verified_purchase, true); assert.equal(detail.mode, 'purchase')
+  store.data.coin_transactions.find(t => t.transaction_id === transaction.transaction_id).amount++
+  assert.equal(store.coin_ledger_detail(transaction.transaction_id).verified_purchase, false)
+  assert.equal(store.coin_ledger_detail('missing'), null)
+})

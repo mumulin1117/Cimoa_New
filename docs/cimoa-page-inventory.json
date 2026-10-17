@@ -9009,7 +9009,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/coins/purchase-detail",
-    "component": "src/pages/coins/purchase-detail.vue; src/utils/coinHistory.js",
+    "component": "src/pages/coins/purchase-detail.vue",
     "parent_route": "/pages/coins/history",
     "allowed_origin_routes": [
       "/pages/coins/history"
@@ -9070,7 +9070,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented with owned positive-ledger validation, StoreKit receipt trust guard, explicit local-fixture disclosure, unavailable paid amount for fixture data, refresh restoration, support dependency gate and History return ownership"
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-coin-purchase-detail/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-coin-purchase-detail/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/coins/purchase-detail-acceptance.json"
   },
   {
     "source_screen": "Coins / History / Spending Detail",

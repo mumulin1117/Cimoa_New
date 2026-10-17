@@ -12,6 +12,7 @@ import { community_rules, registration_agreements } from '../utils/registrationC
 import { onboarding_context, onboarding_actions } from './onboarding.js'
 import { profile_context, profile_edit_actions } from './profileEditing.js'
 import { profile_preference_groups } from './profilePreferences.js'
+import { coin_ledger_detail } from './coinSelectors.js'
 import { ONBOARDING_FLOW, ONBOARDING_GOALS, ONBOARDING_INTEREST_IDS, onboarding_catalog } from '../utils/onboardingFlow.js'
 import { local_verification_context, valid_local_code } from '../utils/localVerification.js'
 import * as s from './selectors.js'
@@ -136,6 +137,7 @@ export const use_app_store = defineStore('app', {
     coin_balance: (state) => ready(state) ? s.balance(state.data) : 0,
     coin_transactions: (state) => ready(state) ? clone_data(own(state.data, state.data.coin_transactions)) : [],
     coin_transaction_by_id: (state) => (id) => ready(state) ? clone_data(own(state.data, state.data.coin_transactions).find((row) => row.transaction_id === id) || null) : null,
+    coin_ledger_detail: state => id => ready(state) ? coin_ledger_detail(state.data, id, state.clock_ms) : null,
     coin_packages: (state) => clone_data(state.data.coin_packages),
     coin_package_by_id: (state) => (id) => clone_data(state.data.coin_packages.find((row) => row.package_id === id) || null),
     current_purchase_requests: (state) => ready(state) ? clone_data(own(state.data, state.data.purchase_requests)) : [],

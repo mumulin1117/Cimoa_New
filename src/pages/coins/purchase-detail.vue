@@ -2,21 +2,26 @@
 import { computed, ref } from 'vue'
 import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { format_coin_date } from '@/utils/coinHistory.js'
+import { coin_child_route } from '@/utils/coinReturnContext.js'
 
 const store = use_app_store(), frame = ref(null), transaction_id = ref(''), navigating = ref(false), error = ref('')
 const account_id = store.session.account_id
-onLoad(options => { transaction_id.value = String(options?.transaction_id || '') })
-const transaction = computed(() => store.coin_transaction_by_id(transaction_id.value))
-const request = computed(() => transaction.value?.related_id ? store.purchase_by_id(transaction.value.related_id) : null)
-const pack = computed(() => request.value ? store.coin_package_by_id(request.value.package_id) : null)
-const is_verified_purchase = computed(() => !!transaction.value && !transaction.value.fixture && transaction.value.kind === 'purchase' && transaction.value.status === 'completed' && !!request.value?.receipt_id && request.value.status === 'success' && !!pack.value?.product_id)
+const return_context_id = ref('')
+onLoad(options => { transaction_id.value = String(options?.transaction_id || ''); return_context_id.value = String(options?.return_context_id || '') })
+const detail = computed(() => store.coin_ledger_detail(transaction_id.value))
+const transaction = computed(() => detail.value?.transaction)
+const request = computed(() => detail.value?.request)
+const pack = computed(() => detail.value?.pack)
+const is_verified_purchase = computed(() => detail.value?.verified_purchase)
+const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved coin data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !transaction_id.value || !transaction.value
       ? 'This purchase record is unavailable.'
@@ -24,18 +29,19 @@ const access_error = computed(() => store.hydration_status !== 'ready'
         ? 'This record is not a coin purchase.'
         : '')
 const detail_rows = computed(() => access_error.value ? [] : [
-  ['Package', pack.value ? `${pack.value.coins.toLocaleString('en-US')} Coins` : `${transaction.value.amount.toLocaleString('en-US')} demo coins`],
-  ['Amount paid', is_verified_purchase.value ? pack.value.price : 'Unavailable for local demo data'],
+  ['Package', pack.value ? `${pack.value.coins.toLocaleString('en-US')} Coins` : `${transaction.value.amount.toLocaleString('en-US')} Coins`],
+  ['Amount paid', is_verified_purchase.value ? pack.value.price : 'No Apple payment recorded'],
   ['Date', format_coin_date(transaction.value.created_at)],
   ['Transaction ID', transaction.value.transaction_id],
-  ['Status', is_verified_purchase.value ? 'Verified purchase' : 'Completed · Local demo'],
+  ['Status', is_verified_purchase.value ? 'Verified purchase' : 'Recorded credit'],
 ])
 const navigate = async route => {
-  if (navigating.value) return
+  if (navigating.value || route && access_error.value) return
   navigating.value = true; error.value = ''
   try {
-    if (!route) await frame.value.navigate_back(COIN_ROUTES.history)
-    else await frame.value.navigate_forward(require_coin_route_ready(route))
+    const context_id = return_context_id.value || request.value?.return_context_id
+    if (!route) await frame.value.navigate_back(coin_child_route(store, COIN_ROUTES.history, context_id))
+    else await frame.value.navigate_forward(require_coin_route_ready(coin_child_route(store, route, context_id)))
   } catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }
@@ -47,7 +53,7 @@ onHide(() => { navigating.value = false; error.value = '' })
     <template #header>
       <view class="detail-header">
         <view class="detail-back" role="button" aria-label="Back" :aria-disabled="navigating" data-interaction="coinPurchaseDetail.goBack.click.1" @click="navigate()"><SourceIcon name="back" /></view>
-        <text>Purchase</text>
+        <text>{{ detail?.mode === 'credit' ? 'Coin credit' : 'Purchase' }}</text>
       </view>
       <text v-if="error" class="detail-error" role="alert">{{ error }}</text>
     </template>
@@ -58,12 +64,12 @@ onHide(() => { navigating.value = false; error.value = '' })
         <view class="detail-hero">
           <image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" />
           <text>{{ transaction.amount.toLocaleString('en-US') }} Coins</text>
-          <text>{{ is_verified_purchase ? 'Verified App Store purchase' : 'Local demo ledger entry' }}</text>
+          <text>{{ is_verified_purchase ? 'Verified App Store purchase' : 'Starting coin balance' }}</text>
         </view>
         <view class="detail-card">
           <view v-for="row in detail_rows" :key="row[0]" class="detail-row"><text>{{ row[0] }}</text><text>{{ row[1] }}</text></view>
         </view>
-        <view class="detail-note"><SourceIcon name="shield" /><text>{{ is_verified_purchase ? 'Payment is handled by Apple. Cimoa does not store card or Apple account details.' : 'This fixture documents local coin UI only. It does not represent an Apple charge and has no StoreKit receipt.' }}</text></view>
+        <view class="detail-note"><SourceIcon name="shield" /><text>{{ is_verified_purchase ? 'Payment is handled by Apple. Cimoa does not store card or Apple account details.' : 'This balance entry does not represent an Apple charge and has no StoreKit receipt.' }}</text></view>
         <view class="detail-support" role="button" :aria-disabled="navigating" data-interaction="coinPurchaseDetail.openSupport.click.1" @click="navigate(COIN_ROUTES.help)"><SourceIcon name="support" /><text>Purchase support</text><SourceIcon name="chevron" /></view>
       </template>
     </view>

@@ -8,9 +8,9 @@ export function build_coin_history(transactions, requests, packages) {
   const ledger_rows = transactions.map(item => ({
     record_id: item.transaction_id,
     entity_type: 'transaction',
-    filter: item.kind === 'purchase' ? 'purchases' : 'used',
-    title: item.kind === 'refund' ? 'Coin refund' : item.amount > 0 ? 'Coin purchase' : 'Coins used',
-    subtitle: item.fixture ? 'Local demo ledger entry' : item.kind === 'refund' ? 'Returned coins' : item.kind === 'purchase' && item.amount > 0 ? 'Verified App Store purchase' : 'Completed coin activity',
+    filter: item.fixture && item.amount > 0 ? 'credits' : item.kind === 'purchase' ? 'purchases' : 'used',
+    title: item.kind === 'refund' ? 'Coin refund' : item.amount > 0 ? item.fixture ? 'Coin credit' : 'Coin purchase' : 'Coins used',
+    subtitle: item.fixture ? item.amount > 0 ? 'Starting coin balance' : 'Recorded coin activity' : item.kind === 'refund' ? 'Returned coins' : item.kind === 'purchase' && item.amount > 0 ? 'Verified App Store purchase' : 'Completed coin activity',
     when: format_coin_date(item.created_at),
     created_at: item.created_at,
     status: item.status === 'completed' ? 'Completed' : item.status,
