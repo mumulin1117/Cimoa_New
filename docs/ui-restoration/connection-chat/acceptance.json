@@ -21,5 +21,9 @@
   ],
   "interaction_contract": "interactions.json",
   "full_regression": "../../evidence/connection-core/final-acceptance.json",
-  "local_commit": "Final media/cancellation/region fixes are awaiting the task specialty commit; inventory remains pending until that commit is recorded."
+  "local_commit": {
+    "sha": "a3fbed70",
+    "scope": "final media and source-state corrections, browser/native full regression evidence; local only"
+  },
+  "status": "verified"
 }

@@ -3537,7 +3537,8 @@
     "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "reqSent.goBack.click.1",
-      "reqSent.doneSent.click.1"
+      "reqSent.doneSent.click.1",
+      "reqSent.togglePlay.click.1"
     ],
     "entities": "requests (ConnectionRequest); relationships (derived Connection generation); conversations/messages (Conversation); users/photos/audio; blocks; account-scoped privacy",
     "assets": {
@@ -3582,17 +3583,21 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "mapping_status": "Source locked; local/full/visual acceptance passed; final H5 and iPhone 17 Pro WKWebView 10/10 suite match the same build. Implementation and evidence committed locally at a3fbed70; no push.",
     "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "visual_evidence": "docs/ui-restoration/connection-sent",
     "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
-    "native_acceptance_evidence": "docs/ui-restoration/connection-sent/wkwebview-geometry.json"
+    "native_acceptance_evidence": "docs/ui-restoration/connection-sent/wkwebview-geometry.json",
+    "source_lock_artifact": "docs/ui-restoration/connection-sent/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/connection-sent/difference-audit.md",
+    "interaction_contract_artifact": "docs/ui-restoration/connection-sent/interactions.json",
+    "implementation_commit": "a3fbed70"
   },
   {
     "source_screen": "Connections / Request Detail / Default",
@@ -3634,7 +3639,14 @@
       "reqReceived.openDecline.click.1",
       "reqReceived.openGallery.click.1",
       "reqReceived.gallery.close.click.1",
-      "reqReceived.gallery.close.click.2"
+      "reqReceived.gallery.close.click.2",
+      "sheetSafetyMini.closeSheet.click.1",
+      "sheetSafetyMini.closeSheet.click.2",
+      "sheetBlock.closeSheet.click.1",
+      "sheetBlock.closeSheet.click.2",
+      "sheetSafetyMini.openReport.click.1",
+      "sheetSafetyMini.openBlock.click.1",
+      "sheetBlock.confirmBlock.click.1"
     ],
     "entities": "requests (ConnectionRequest); relationships (derived Connection generation); conversations/messages (Conversation); users/photos/audio; blocks; account-scoped privacy",
     "assets": {
@@ -3725,17 +3737,21 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "mapping_status": "Source locked; local/full/visual acceptance passed; final H5 and iPhone 17 Pro WKWebView 10/10 suite match the same build. Implementation and evidence committed locally at a3fbed70; no push.",
     "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "visual_evidence": "docs/ui-restoration/connection-received",
     "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
-    "native_acceptance_evidence": "docs/ui-restoration/connection-received/wkwebview-geometry.json"
+    "native_acceptance_evidence": "docs/ui-restoration/connection-received/wkwebview-geometry.json",
+    "source_lock_artifact": "docs/ui-restoration/connection-received/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/connection-received/difference-audit.md",
+    "interaction_contract_artifact": "docs/ui-restoration/connection-received/interactions.json",
+    "implementation_commit": "a3fbed70"
   },
   {
     "source_screen": "Connection / Request / Accepted",
@@ -3832,17 +3848,21 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "mapping_status": "Source locked; local/full/visual acceptance passed; final H5 and iPhone 17 Pro WKWebView 10/10 suite match the same build. Implementation and evidence committed locally at a3fbed70; no push.",
     "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "visual_evidence": "docs/ui-restoration/connection-accepted",
     "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
-    "native_acceptance_evidence": "docs/ui-restoration/connection-accepted/wkwebview-geometry.json"
+    "native_acceptance_evidence": "docs/ui-restoration/connection-accepted/wkwebview-geometry.json",
+    "source_lock_artifact": "docs/ui-restoration/connection-accepted/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/connection-accepted/difference-audit.md",
+    "interaction_contract_artifact": "docs/ui-restoration/connection-accepted/interactions.json",
+    "implementation_commit": "a3fbed70"
   },
   {
     "source_screen": "Connection / Request / Declined",
@@ -3907,17 +3927,21 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "mapping_status": "Source locked; local/full/visual acceptance passed; final H5 and iPhone 17 Pro WKWebView 10/10 suite match the same build. Implementation and evidence committed locally at a3fbed70; no push.",
     "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "visual_evidence": "docs/ui-restoration/connection-declined",
     "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
-    "native_acceptance_evidence": "docs/ui-restoration/connection-declined/wkwebview-geometry.json"
+    "native_acceptance_evidence": "docs/ui-restoration/connection-declined/wkwebview-geometry.json",
+    "source_lock_artifact": "docs/ui-restoration/connection-declined/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/connection-declined/difference-audit.md",
+    "interaction_contract_artifact": "docs/ui-restoration/connection-declined/interactions.json",
+    "implementation_commit": "a3fbed70"
   },
   {
     "source_screen": "Auto Match / Entry / Default",
@@ -5984,6 +6008,8 @@
       "sheetBlock.closeSheet.click.1",
       "sheetBlock.confirmBlock.click.1",
       "sheetBlock.closeSheet.click.2",
+      "chat.media.play.click.1",
+      "chat.media.preview.click.1",
       "chat.media.close.click.1",
       "chat.media.close.click.2",
       "chat.media.record.click.1",
@@ -6025,17 +6051,21 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "mapping_status": "Source locked; local/full/visual acceptance passed; final H5 and iPhone 17 Pro WKWebView 10/10 suite match the same build. Implementation and evidence committed locally at a3fbed70; no push.",
     "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
     "native_acceptance_evidence": "docs/ui-restoration/connection-chat/wkwebview-geometry.json",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "visual_evidence": "docs/ui-restoration/connection-chat",
-    "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md."
+    "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
+    "source_lock_artifact": "docs/ui-restoration/connection-chat/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/connection-chat/difference-audit.md",
+    "interaction_contract_artifact": "docs/ui-restoration/connection-chat/interactions.json",
+    "implementation_commit": "a3fbed70"
   },
   {
     "source_screen": "Video Call / Incoming / Default",

@@ -116,5 +116,30 @@
     "Calls remain the approved waiting-only simulation, not a real video connection",
     "Native tests cover actual playback and controlled fixture/bridge paths, not physical-device microphone/photo-picker/system-permission or manual native-keyboard acceptance",
     "Other App pages retain their own acceptance states"
-  ]
+  ],
+  "implementation_commit": "a3fbed70",
+  "page_status": "five scoped pages verified after source/local/full/visual acceptance and local implementation commit",
+  "verified_owned_components": [
+    {
+      "path": "src/components/ConnectionIcon.vue",
+      "status": "verified",
+      "scope": "the source-locked five-page connection task; shared existing consumers retain their own page acceptance"
+    },
+    {
+      "path": "src/components/ConnectionPageHeader.vue",
+      "status": "verified",
+      "scope": "the source-locked five-page connection task; shared existing consumers retain their own page acceptance"
+    },
+    {
+      "path": "src/components/ConnectionRequestProfile.vue",
+      "status": "verified",
+      "scope": "the source-locked five-page connection task; shared existing consumers retain their own page acceptance"
+    },
+    {
+      "path": "src/components/RequestAudioPlayer.vue",
+      "status": "verified",
+      "scope": "the source-locked five-page connection task; shared existing consumers retain their own page acceptance"
+    }
+  ],
+  "process_cleanup": "Ephemeral test servers, test browsers/children and xcodebuild finished; existing user services and unrelated simulators preserved"
 }
