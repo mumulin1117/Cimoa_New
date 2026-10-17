@@ -1564,6 +1564,35 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { try? await restore(); throw error }
     }
+    func testLegalTermsPixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("if(snapshot===null)localStorage.removeItem('cimoa_app_state_v2');else localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?legalTerms=restored#/pages/auth/welcome")!)); try await waitFor(host, ".welcome-page")
+        }
+        do {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?legalTerms=native#/pages/legal/terms")!)); try await waitFor(host, ".legal-terms-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,bottom:rect.bottom}},root=box('.legal-terms-page'),header=box('.event-page-header'),back=box('.event-page-round'),scroll=box('.secondary-page-scroll'),updated=box('.legal-document-updated'),intro=box('.legal-document-intro'),card=box('.legal-document-card'),heading=box('.legal-document-heading'),copy=box('.legal-document-copy'),safes=[...document.querySelectorAll('.legal-terms-page>.safe-area')].map(element=>element.getBoundingClientRect().height),scrolls=[...document.querySelectorAll('.legal-terms-page .secondary-page-scroll .uni-scroll-view')];return {root,header,back,scroll,updated,intro,card,heading,copy,safes,text:{title:document.querySelector('.event-page-header-title').textContent,updated:document.querySelector('.legal-document-updated').textContent,intro:document.querySelector('.legal-document-intro').textContent,firstHeading:document.querySelector('.legal-document-heading').textContent,footer:document.querySelector('.legal-document-footer').textContent},sections:document.querySelectorAll('.legal-document-section').length,interactions:[...document.querySelectorAll('.legal-terms-page [data-interaction]')].map(element=>element.dataset.interaction),scrollable:scrolls.some(element=>element.scrollHeight>element.clientHeight),overflow:document.querySelector('.legal-document-card').scrollWidth>document.querySelector('.legal-document-card').clientWidth}
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root=metrics["root"] as! [String:Double],header=metrics["header"] as! [String:Double],back=metrics["back"] as! [String:Double],scroll=metrics["scroll"] as! [String:Double],updated=metrics["updated"] as! [String:Double],intro=metrics["intro"] as! [String:Double],card=metrics["card"] as! [String:Double],heading=metrics["heading"] as! [String:Double],copy=metrics["copy"] as! [String:Double],safes=metrics["safes"] as! [Double],text=metrics["text"] as! [String:String],interactions=metrics["interactions"] as! [String],scale=root["width"]!/393
+            XCTAssertEqual(safes[0],Double(host.view.safeAreaInsets.top),accuracy:1); XCTAssertEqual(safes[1],Double(host.view.safeAreaInsets.bottom),accuracy:1); XCTAssertEqual(back["y"]!,safes[0]+4*scale,accuracy:1); XCTAssertEqual(back["width"]!,46*scale,accuracy:1); XCTAssertEqual(header["height"]!,64*scale,accuracy:1); XCTAssertEqual(scroll["y"]!,safes[0]+64*scale,accuracy:1); XCTAssertEqual(updated["x"]!,20*scale,accuracy:1); XCTAssertEqual(intro["y"]!-updated["bottom"]!,12*scale,accuracy:1); XCTAssertEqual(card["y"]!-intro["bottom"]!,18*scale,accuracy:1); XCTAssertEqual(heading["x"]!,40*scale,accuracy:1); XCTAssertEqual(copy["y"]!-heading["bottom"]!,6*scale,accuracy:1)
+            XCTAssertEqual(text["title"],"Terms of Service"); XCTAssertEqual(text["updated"],"Local draft · 14 October 2026"); XCTAssertTrue(text["intro"]?.contains("not published production terms") == true); XCTAssertEqual(text["firstHeading"],"1. Local build and eligibility"); XCTAssertTrue(text["footer"]?.contains("No production legal or support contact") == true); XCTAssertEqual(metrics["sections"] as? Int,8); XCTAssertEqual(interactions,["isLegalDoc.goBack.click.1"]); XCTAssertEqual(metrics["scrollable"] as? Bool,true); XCTAssertEqual(metrics["overflow"] as? Bool,false)
+            let shot=XCTAttachment(image:try await host.webView.takeSnapshot(configuration:nil)); shot.name="WKWebView Terms of Service default"; shot.lifetime = .keepAlways; add(shot); print("CIMOA_LEGAL_TERMS_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+            let before = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')")
+            _ = try await script(host,"const rows=[...document.querySelectorAll('.legal-terms-page .secondary-page-scroll .uni-scroll-view')],scroll=rows.find(element=>element.scrollHeight>element.clientHeight);scroll.scrollTop=scroll.scrollHeight;return document.querySelector('.legal-document-footer').textContent"); let afterScroll = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')"); XCTAssertEqual(String(describing: afterScroll),String(describing: before))
+            _ = try await script(host,"document.querySelector('[data-interaction=\"isLegalDoc.goBack.click.1\"]').click();return true"); try await waitFor(host,".welcome-page"); let afterBack = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')"); XCTAssertEqual(String(describing: afterBack),String(describing: before))
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testResetCodePixelRestoration() async throws {
         let host = try await rawHost()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")

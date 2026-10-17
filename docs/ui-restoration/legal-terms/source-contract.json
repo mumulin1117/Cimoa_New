@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "page": "Legal Terms",
+  "route": "/pages/legal/terms",
+  "source_screen": "Legal / Terms of Service / Default",
+  "source_query": "route=legalTerms",
+  "source_lock": "locked",
+  "locked_at": "2026-10-17",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isLegalDoc && legalTerms",
+    "visual_lines": "1034-1054",
+    "visual_fragment_sha256": "a171878786efdf2fb49242c975e772d1c1751f92bc9fed0f958000a85a2a5061",
+    "behavior_lines": [5155, 6011, 6012, 6013, 6014, 6015, 6016, 6017],
+    "behavior_fragment_sha256": "f77c89d1e379574d3f07d894b8befabe72a64ea00b06bee8a72cde82bd5812e6"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "header": "top 58px; 46px circular Back; centered 21px Terms of Service",
+    "scroll": "top 118px; left/right 20px; bottom padding 48px",
+    "metadata": "14px muted",
+    "intro": "12px top gap; 16px; line-height 1.55",
+    "card": "18px top gap; 6px/20px padding; 24px radius",
+    "sections": "16px vertical padding; 17px heading; 6px gap; 15.5px body",
+    "footer": "18px top gap; centered 14px"
+  },
+  "approved_deltas": [
+    { "id": "terms-safe-area-skeleton", "source": "DEVELOPMENT_CONVENTIONS.md sections 2 and 15", "delta": "Measured safe areas and one scroll-view preserve source coordinates and long-document scrolling." },
+    { "id": "terms-unpublished-truth", "source": "User-authorized local-only service scope", "delta": "Source copy invents a production operator, university verification, moderation, StoreKit purchases, organisers and support@circa.app. Keep the exact visual hierarchy but use the explicit unpublished local draft and no-contact disclosure." },
+    { "id": "terms-long-content", "source": "Local legal completeness requirement", "delta": "Eight truthful local sections replace seven production claims; the extra content remains inside the source scroll region and creates no additional control." },
+    { "id": "terms-zero-write", "source": "INTERACTION_CONVENTIONS.md legal navigation contract", "delta": "Reading, refreshing and returning never mutates agreements, account or session state." }
+  ],
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/legal-terms/reference.png",
+    "actual_browser_png": "docs/ui-restoration/legal-terms/actual-browser.png",
+    "actual_browser_small_png": "docs/ui-restoration/legal-terms/actual-browser-small.png",
+    "overlay_png": "docs/ui-restoration/legal-terms/overlay.png",
+    "diff_png": "docs/ui-restoration/legal-terms/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/legal-terms/actual-wkwebview.png",
+    "visual_acceptance": "passed"
+  }
+}

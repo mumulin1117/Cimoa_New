@@ -16,7 +16,7 @@ const back = async () => {
 
 <template>
   <SecondaryPageFrame ref="frame" class="event-page legal-terms-page">
-    <template #header><EventPageHeader :title="terms_document.title" back-interaction="isLegalDoc.goBack.click.1" @back="back" /><text v-if="error" class="event-page-error" role="alert">{{ error }}</text></template>
+    <template #header><EventPageHeader title="Terms of Service" back-interaction="isLegalDoc.goBack.click.1" @back="back" /><text v-if="error" class="event-page-error" role="alert">{{ error }}</text></template>
     <view class="legal-document-body">
       <text class="legal-document-updated">{{ terms_document.updated }}</text>
       <text class="legal-document-intro">{{ terms_document.intro }}</text>

@@ -1,4 +1,5 @@
 .legal-document-body { padding: 0 38.168rpx 45.802rpx; overflow-wrap: anywhere; }
+.legal-terms-page .event-page-header, .legal-privacy-page .event-page-header { min-height: 122.137rpx; padding: 7.634rpx 38.168rpx 26.718rpx; }
 .legal-document-updated { display: block; color: var(--cimoa-text-auth-placeholder); font-size: 26.718rpx; }
 .legal-document-intro { display: block; margin-top: 22.901rpx; color: var(--cimoa-text-profile-bio); font-size: 30.534rpx; line-height: 1.55; }
 .legal-document-card { margin-top: 34.351rpx; padding: 11.45rpx 38.168rpx; border-radius: 45.802rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); }
