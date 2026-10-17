@@ -56,9 +56,9 @@ try {
     await page.locator('uni-input[aria-label="Message"] input').fill('One message, shared everywhere.'); await click('chat.send.click.1'); await page.locator('.event-loading:visible').waitFor(); assert.equal((await state()).messages.some(m => m.body === 'One message, shared everywhere.'), false); await idle()
     const sent = await state(); assert.equal(sent.messages.filter(m => m.body === 'One message, shared everywhere.').length, 1)
     await click('chat.viewProfile.click.1'); await page.locator('.expanded-heading').waitFor(); assert.equal(await page.locator('[data-interaction="expanded.sayHi.click.1"]').innerText(), 'Chat'); await click('expanded.sayHi.click.1'); await page.locator('.chat-composer').waitFor(); assert.match(page.url(), /conversation_chloe/)
-    await go('/pages/home/index'); await page.locator('.home-header').waitFor(); assert.match(await page.locator('body').innerText(), /One message, shared everywhere\./)
+    await go('/pages/home/index'); await page.locator('.home-header').waitFor(); const home_card = page.locator('#connection-user_chloe'); assert.equal(await home_card.getAttribute('data-target'), '/pages/messages/chat?conversation_id=conversation_chloe'); await home_card.click(); await page.locator('.chat-composer:visible').waitFor(); await idle(); assert.equal(await page.getByText('One message, shared everywhere.', { exact: true }).count(), 1)
     await go('/pages/messages/chat?conversation_id=conversation_chloe'); await page.locator('.chat-composer').waitFor(); await idle(); await shot('chat-restored')
-    check('One Loading/write synchronizes the message, Home preview and same-conversation Chat CTA; return and refresh retain the same ID')
+    check('One Loading/write synchronizes the message and same-conversation Chat CTA; the unchanged source Home card opens that exact conversation, return and refresh retain its ID')
   } else if (phase === 'group') {
     await go('/pages/events/detail?event_id=event_picnic'); await page.locator('[data-event-count]').waitFor(); assert.match(await page.locator('[data-event-count]').innerText(), /^3 of 20 going$/)
     await click('evDetail.openParticipantsList.click.1'); await page.locator('.event-person').first().waitFor(); assert.equal(await page.locator('.event-person').count(), 3); assert.equal(await page.getByText('Zoe Wong', { exact: true }).count(), 0)

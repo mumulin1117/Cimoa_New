@@ -6413,17 +6413,18 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Implementation and browser/source/native chat regression passed. Native real microphone acquisition times out; full acceptance pending, not verified.",
-    "acceptance_evidence": "docs/cimoa-messaging-acceptance.md",
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "acceptance_evidence": "docs/evidence/sync-recovery/chat-browser.json",
     "native_acceptance_evidence": "docs/ui-restoration/call-waiting/native-chat-summary.json",
     "source_lock": "locked",
-    "visual_acceptance": "passed",
+    "visual_acceptance": "pending",
     "visual_evidence": "docs/ui-restoration/connection-chat",
     "acceptance_notes": "2026-10-17: 117 domain checks, 21 direct chat/media/safety checks, source pixel/keyboard regression and native 4 passing chat tests. Real microphone success is NOT passed; see report.",
     "source_lock_artifact": "docs/ui-restoration/connection-chat/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/connection-chat/difference-audit.md",
     "interaction_contract_artifact": "docs/ui-restoration/connection-chat/interactions.json",
-    "implementation_commit": "375dcdb5"
+    "implementation_commit": "375dcdb5",
+    "source_artifact": "docs/ui-restoration/sync-chat/source-contract.json"
   },
   {
     "source_screen": "Video Call / Incoming / Default",

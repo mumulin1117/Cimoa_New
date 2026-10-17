@@ -3,6 +3,7 @@ import { computed, nextTick, ref, watch, onUnmounted } from 'vue'
 import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store, make_operation_id } from '@/stores/store.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { use_event_media } from '@/composables/useEventMedia.js'
 import { use_visual_viewport } from '@/composables/useEventViewport.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
@@ -26,22 +27,23 @@ const scroll_target = ref('')
 const error = ref('')
 const active = ref(true)
 const was_available = ref(false)
+const photo_id = ref('')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 const { draft: media, recording, busy: media_busy, seconds, clear: clear_media, photo, start: start_recording, stop: stop_recording } = use_event_media(error)
+const account_scope = use_account_scope(store, () => { cancel_loading(); clear_media(); draft.value = ''; sheet.value = ''; photo_id.value = '' })
 
-const conversation = computed(() => store.direct_conversation(conversation_id.value))
+const conversation = computed(() => account_scope.is_current() ? store.direct_conversation(conversation_id.value) : null)
 const participant = computed(() => conversation.value?.participant || null)
 const participant_first_name = computed(() => participant.value?.user_name?.trim().split(/\s+/)[0] || 'student')
 const muted = computed(() => participant.value ? store.is_direct_muted(participant.value.user_id) : false)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated
+  : !store.session.is_authenticated || !account_scope.is_current()
     ? 'Your session has expired. Please sign in again.'
     : !conversation.value
       ? 'This conversation is unavailable. It may have ended or the account may be blocked.'
       : '')
 const locked = computed(() => !!sheet.value || is_loading.value || media_busy.value)
-const photo_id = ref('')
 const photo_src = computed(() => conversation.value?.messages.find(row => row.message_id === photo_id.value && row.kind === 'image')?.media?.media_url || '')
 watch(access_error, value => { if (value) { if (!(sheet.value === 'block' && is_loading.value)) cancel_loading(); clear_media(); sheet.value = ''; photo_id.value = '' } })
 
@@ -63,6 +65,7 @@ watch(viewport_height, scroll_last)
 onShow(async () => {
   active.value = true
   error.value = ''
+  if (!account_scope.is_current()) return
   if (was_available.value && store.hydration_status === 'ready' && !conversation.value) {
     try { await frame.value.navigate_back('/pages/home/index') } catch (cause) { error.value = cause.message }
     return

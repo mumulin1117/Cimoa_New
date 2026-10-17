@@ -1,0 +1,13 @@
+{
+  "phase": "chat",
+  "result": "passed",
+  "checks": [
+    "Persisted direct image and real encoded audio resolve after a fresh document; reads do not duplicate messages or read receipts",
+    "One Loading/write synchronizes the message and same-conversation Chat CTA; the unchanged source Home card opens that exact conversation, return and refresh retain its ID"
+  ],
+  "errors": [],
+  "visual_acceptance": "pending",
+  "media_scope": "Controlled message fixtures; encoded test tone, not a microphone recording or a real peer response",
+  "server_pid": 23205,
+  "cleaned_up": true
+}
