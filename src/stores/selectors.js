@@ -91,6 +91,7 @@ export function validate_data(data) {
     for (const [field, table] of [['goal_ids', 'goals'], ['interest_ids', 'interests'], ['photo_ids', 'profile_photos'], ['icebreaker_ids', 'icebreakers']]) ensure(Array.isArray(row[field]) && new Set(row[field]).size === row[field].length && row[field].every((id) => has(table, id)), `Invalid ${field}.`)
     ensure(row.photo_ids.every(id => data.profile_photos.some(photo => photo.photo_id === id && photo.user_id === row.user_id)) && row.icebreaker_ids.every(id => data.icebreakers.some(question => question.question_id === id && question.user_id === row.user_id)), 'Profile media or questions belong to another user.')
     ensure(!row.song_id || has('songs', row.song_id), 'Invalid song.')
+    if (row.bio_audio_id != null) ensure(data.media_files.some(m => m.media_id === row.bio_audio_id && m.owner_user_id === row.user_id && m.kind === 'audio' && Number.isFinite(m.duration_ms) && m.duration_ms > 0 && m.duration_ms <= 30000), 'Invalid profile voice bio.')
     if (row.voice_intro != null) ensure(typeof row.voice_intro.audio_url === 'string' && row.voice_intro.audio_url.startsWith('/static/assets/') && Number.isFinite(row.voice_intro.duration_ms) && row.voice_intro.duration_ms > 0 && typeof row.voice_intro.transcript === 'string' && row.voice_intro.transcript.trim(), 'Invalid voice introduction.')
     ensure(balance(data, row.user_id) >= 0, 'Not enough coins.')
   }

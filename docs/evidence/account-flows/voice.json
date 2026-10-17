@@ -1,0 +1,14 @@
+{
+  "phase": "voice",
+  "result": "passed",
+  "checks": [
+    "Controlled real MediaRecorder/decoder/player path stages without writes; final 500ms Save atomically publishes owned audio, without charging coins",
+    "Voice bio restores from IndexedDB after a real document reload and remains playable",
+    "Cancel keeps existing audio; confirmed draft deletion only takes effect at final Save",
+    "Microphone denial reports the real failure with no media metadata or profile writes"
+  ],
+  "errors": [],
+  "physical_microphone": "not tested: controlled browser media device",
+  "server_pid": 83395,
+  "cleaned_up": true
+}

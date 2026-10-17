@@ -1,13 +1,14 @@
 {
   "phase": "edit",
   "result": "passed",
-  "server_pid": 99090,
+  "server_pid": 83758,
   "checks": [
     "393px source geometry: 353px white card, 20px icon and correctly scoped shared styling",
     "Profile → Edit All → Back: unsaved bio/font do not alter public data",
     "500ms custom Loading precedes save; canonical Profile and refresh contain saved text",
     "Source picker Sheet opens, stages selection, closes and persists through Save",
     "Real photo chooser → decoded Blob → primary/order save → Profile avatar → IndexedDB refresh",
+    "Photo replacement and reordering stage without writes; removal confirmation cancels; zero photos fails before Loading; replacement saves stable IDs with new media",
     "Injected persistence failure preserves original entities and the retryable draft",
     "Missing song audio fails honestly; 320px viewport keeps fixed Save visible and body scrollable",
     "Empty/long/expired Store scenarios stay readable; expired session hides profile data and Save"

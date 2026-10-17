@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-17",
+  "local_acceptance": "passed",
+  "visual_acceptance": "pending",
+  "full_acceptance": "pending",
+  "checks": [
+    "Profile edit browser: 9 groups passed including photos/rollback/refresh/320px",
+    "Voice bio browser: 4 groups passed using controlled MediaRecorder input, real decoding/playback/IndexedDB",
+    "33 selected unit tests passed, including stale same-account session cancellation and audio rollback",
+    "Shared editor source skeleton corrected: header 48, start at safe top+64; no native loading"
+  ],
+  "evidence": [
+    "docs/evidence/profile-edit/edit-acceptance.json",
+    "docs/evidence/account-flows/voice.json"
+  ],
+  "pending": [
+    "Physical microphone and system prompt testing",
+    "Independent Edit All and all sheet pixel comparison",
+    "WKWebView module regression"
+  ],
+  "scope": "No source HTML/runtime embedding; no changes to two conventions; historical referenced media retained"
+}

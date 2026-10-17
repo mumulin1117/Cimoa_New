@@ -1,0 +1,2848 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isEditAll",
+    "source_query": "route=editAll",
+    "lines": [
+      1057,
+      1227
+    ],
+    "fragment_sha256": "7476b6eef434f87bf47b09fe268300df9566e21e33053b851a3d796df556f9ea",
+    "fragment": "<sc-if value=\"{{ isEditAll }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Profile / Edit / All\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg></div>\n          <div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Edit profile</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box\">\n          <div style=\"display:flex;align-items:center;gap:16px;padding:20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"flex:1;min-width:0\"><div style=\"font-size:20px;font-weight:800;letter-spacing:-0.02em\">Your profile score</div><div style=\"font-size:15px;color:#5b6b85;margin-top:4px;line-height:1.4\">A more complete profile helps CIRCA find you better matches.</div></div>\n            <div style=\"position:relative;width:76px;height:76px;flex:none\"><svg width=\"76\" height=\"76\" sc-camel-view-box=\"0 0 76 76\"><defs><linearGradient id=\"scg\" x1=\"0\" y1=\"0\" x2=\"76\" y2=\"76\" sc-camel-gradient-units=\"userSpaceOnUse\"><stop stop-color=\"#1ec8f5\"></stop><stop offset=\"0.5\" stop-color=\"#a855f7\"></stop><stop offset=\"1\" stop-color=\"#f81ce5\"></stop></linearGradient></defs><circle cx=\"38\" cy=\"38\" r=\"32\" fill=\"none\" stroke=\"#eef1f6\" stroke-width=\"7\"></circle><circle cx=\"38\" cy=\"38\" r=\"32\" fill=\"none\" stroke=\"url(#scg)\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-dasharray=\"173 201\" transform=\"rotate(-90 38 38)\"></circle></svg><div style=\"position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800\">86%</div></div>\n          </div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Student verification</div><div style=\"font-size:15.5px;color:#5b6b85;margin-top:3px\">Your university email is verified.</div></div>\n          <div sc-camel-on-click=\"{{ eaVerify }}\" style=\"margin-top:12px;display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\"><svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg><div style=\"flex:1;font-size:17px;font-weight:700\">HKUST · Verified</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Photos</div><div style=\"font-size:15.5px;color:#5b6b85;margin-top:3px\">Show your best self.</div></div>\n          <div sc-camel-on-click=\"{{ eaPhotos }}\" style=\"display:flex;gap:12px;margin-top:14px;cursor:pointer\"><div style=\"position:relative;flex:1;min-width:0;aspect-ratio:3/4\"><img src=\"6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30\" alt=\"\" style=\"width:100%;height:100%;object-fit:cover;border-radius:24px;display:block\"><div style=\"position:absolute;right:8px;bottom:8px;width:34px;height:34px;border-radius:17px;background:rgba(8,16,31,0.55);display:flex;align-items:center;justify-content:center\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"><rect x=\"2.5\" y=\"6.5\" width=\"19\" height=\"13.5\" rx=\"3\"></rect><circle cx=\"12\" cy=\"13.2\" r=\"3.6\"></circle></svg></div></div><div style=\"position:relative;flex:1;min-width:0;aspect-ratio:3/4\"><img src=\"7c94b5fa-a030-4722-860f-0d79d6dcfc3f\" alt=\"\" style=\"width:100%;height:100%;object-fit:cover;border-radius:24px;display:block\"><div style=\"position:absolute;right:8px;bottom:8px;width:34px;height:34px;border-radius:17px;background:rgba(8,16,31,0.55);display:flex;align-items:center;justify-content:center\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"><rect x=\"2.5\" y=\"6.5\" width=\"19\" height=\"13.5\" rx=\"3\"></rect><circle cx=\"12\" cy=\"13.2\" r=\"3.6\"></circle></svg></div><div style=\"position:absolute;top:-6px;right:-6px;width:28px;height:28px;border-radius:14px;background:#fff;box-shadow:0 3px 10px rgba(16,36,74,0.18);display:flex;align-items:center;justify-content:center\"><svg width=\"13\" height=\"13\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"3\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg></div></div><div style=\"position:relative;flex:1;min-width:0;aspect-ratio:3/4\"><div style=\"width:100%;height:100%;border-radius:24px;border:2px dashed #cfd8e4;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center\"><svg width=\"28\" height=\"28\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#8b95a6\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"></path></svg></div></div></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Profile song</div><div style=\"font-size:15.5px;color:#5b6b85;margin-top:3px\">Add a song to your profile.</div></div>\n          <div style=\"margin-top:12px;padding:18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <sc-if value=\"{{ eaNoSong }}\" hint-placeholder-val=\"{{ true }}\">\n              <div style=\"font-size:15.5px;color:#8b95a6\">No profile song selected yet.</div>\n              <div sc-camel-on-click=\"{{ eaOpenSong }}\" style=\"margin-top:14px;display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border-radius:27px;border:2px dashed #cfd8e4;cursor:pointer\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"7\" cy=\"17.5\" r=\"3\"></circle><circle cx=\"17.5\" cy=\"15\" r=\"3\"></circle><path d=\"M10 17.5V6l10.5-2.5V15\"></path></svg><div style=\"font-size:17px;font-weight:700\">Add song</div></div>\n            </sc-if>\n            <sc-if value=\"{{ eaHasSong }}\" hint-placeholder-val=\"{{ false }}\">\n              <div style=\"display:flex;align-items:center;gap:14px\">\n                <div style=\"width:64px;height:64px;border-radius:16px;background:{{ eaSongArt }};flex:none;display:flex;align-items:center;justify-content:center;font-size:28px\">{{ eaSongEmoji }}</div>\n                <div style=\"flex:1;min-width:0\"><div style=\"font-size:18px;font-weight:800;letter-spacing:-0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ eaSongTitle }}</div><div style=\"font-size:15px;color:#5b6b85;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ eaSongArtist }}</div></div>\n                <div sc-camel-on-click=\"{{ eaSongPlay }}\" style=\"width:46px;height:46px;border-radius:23px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><div style=\"font-size:15px;color:#fff\">{{ eaSongPlayIcon }}</div></div>\n              </div>\n              <div style=\"display:flex;align-items:center;gap:10px;margin-top:14px\"><div style=\"font-size:12.5px;color:#8b95a6;font-variant-numeric:tabular-nums;width:30px\">{{ eaSongPos }}</div><div style=\"flex:1;height:4px;border-radius:2px;background:#eef1f6;overflow:hidden\"><div style=\"width:{{ eaSongPct }};height:100%;border-radius:2px;background:linear-gradient(90deg,#1ec8f5,#a855f7,#f81ce5);transition:width 1s linear\"></div></div><div style=\"font-size:12.5px;color:#8b95a6;width:30px;text-align:right\">0:30</div></div>\n              <div style=\"display:flex;gap:10px;margin-top:16px\">\n                <div sc-camel-on-click=\"{{ eaOpenSong }}\" style=\"flex:1;display:flex;align-items:center;justify-content:center;height:50px;border-radius:25px;border:1.5px solid #e6ebf2;cursor:pointer\"><div style=\"font-size:16px;font-weight:700\">Change song</div></div>\n                <div sc-camel-on-click=\"{{ eaSongRemove }}\" style=\"flex:1;display:flex;align-items:center;justify-content:center;height:50px;border-radius:25px;border:1.5px solid #fde2e2;cursor:pointer\"><div style=\"font-size:16px;font-weight:700;color:#dc2626\">Remove</div></div>\n              </div>\n            </sc-if>\n          </div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Bio</div><div style=\"font-size:15.5px;color:#5b6b85;margin-top:3px\">Tell people who you are.</div></div>\n          <div style=\"margin-top:12px;padding:20px 18px 18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\"><sc-if value=\"{{ bioIsText }}\" hint-placeholder-val=\"{{ true }}\"><div style=\"font-family:{{ eaBioFontCss }};font-size:{{ eaBioSize }};font-weight:600;line-height:1.25;color:#26364f;text-align:center;text-wrap:balance\">{{ obBio }}</div></sc-if>\n            <sc-if value=\"{{ bioIsVoice }}\" hint-placeholder-val=\"{{ false }}\">\n              <div style=\"display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:22px;background:#f4f7fb\">\n                <div sc-camel-on-click=\"{{ evTogglePlay }}\" style=\"width:48px;height:48px;border-radius:24px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><sc-if value=\"{{ evNotPlaying }}\" hint-placeholder-val=\"{{ true }}\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" style=\"margin-left:2px\"><path d=\"M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z\" fill=\"#fff\"></path></svg></sc-if><sc-if value=\"{{ evPlaying }}\" hint-placeholder-val=\"{{ false }}\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\"><rect x=\"6\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#fff\"></rect><rect x=\"14\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#fff\"></rect></svg></sc-if></div>\n                <div style=\"flex:1;min-width:0;display:flex;align-items:center;gap:3px;height:40px;overflow:hidden\"><sc-for list=\"{{ evBars }}\" as=\"w\" hint-placeholder-count=\"28\"><div style=\"width:4px;height:{{ w.h }};border-radius:2px;background:{{ w.c }};flex:none\"></div></sc-for></div>\n                <div style=\"font-size:15px;font-weight:700;color:#5b6b85;font-variant-numeric:tabular-nums\">{{ evCardTime }}</div>\n              </div>\n              <div style=\"font-size:14px;color:#8b95a6;text-align:center;margin-top:10px\">Voice bio · shown instead of text</div>\n            </sc-if><div sc-camel-on-click=\"{{ eaOpenBio }}\" style=\"margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border-radius:27px;border:1.5px solid #e6ebf2;cursor:pointer\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 20h4L19 9l-4-4L4 16z\"></path><path d=\"M13.5 6.5l4 4\"></path></svg><div style=\"font-size:17px;font-weight:700\">Edit bio</div></div></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Looking for</div><div style=\"font-size:15.5px;color:#5b6b85;margin-top:3px\">What are you looking for?</div></div>\n          <div style=\"margin-top:12px;padding:18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\"><div style=\"display:flex;flex-wrap:wrap;gap:8px\"><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\"><div style=\"font-size:13px;line-height:1\">🙋</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">New Friends</div></div><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\"><div style=\"font-size:13px;line-height:1\">☕</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">Coffee Chats</div></div><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\"><div style=\"font-size:13px;line-height:1\">🗣️</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">Language Exchange</div></div></div><div sc-camel-on-click=\"{{ eaGoals }}\" style=\"margin-top:14px;display:flex;align-items:center;height:52px;padding:0 18px;border-radius:26px;border:1.5px solid #e6ebf2;cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:700\">3 selected</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg></div></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Interests</div><div style=\"font-size:15.5px;color:#5b6b85;margin-top:3px\">What are you interested in?</div></div>\n          <div style=\"margin-top:12px;padding:18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\"><div style=\"display:flex;flex-wrap:wrap;gap:8px\"><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\"><div style=\"font-size:13px;line-height:1\">📷</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">Photography</div></div><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\"><div style=\"font-size:13px;line-height:1\">☕</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">Coffee</div></div><div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\"><div style=\"font-size:13px;line-height:1\">🎵</div><div style=\"font-size:14px;font-weight:500;color:#26364f\">Live Music</div></div></div><div sc-camel-on-click=\"{{ eaInterests }}\" style=\"margin-top:14px;display:flex;align-items:center;height:52px;padding:0 18px;border-radius:26px;border:1.5px solid #e6ebf2;cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:700\">3 selected</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg></div></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Icebreakers</div><div style=\"font-size:15.5px;color:#5b6b85;margin-top:3px\">Choose 3 questions others can answer when they say hi.</div></div>\n          <div style=\"margin-top:12px;padding:24px 18px 18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\"><div sc-camel-on-pointer-down=\"{{ iceDown }}\" sc-camel-on-pointer-up=\"{{ iceUp }}\" sc-camel-on-pointer-cancel=\"{{ iceUp }}\" style=\"touch-action:pan-y;user-select:none;cursor:grab;min-height:96px;display:flex;align-items:center;justify-content:center\"><div key=\"{{ iceKey }}\" style=\"font-size:26px;font-weight:800;letter-spacing:-0.03em;line-height:1.2;text-align:center;text-wrap:balance;animation:cFade 220ms ease both\">{{ iceQ }}</div></div><div style=\"display:flex;justify-content:center;gap:7px;margin-top:16px\"><sc-for list=\"{{ iceDots }}\" as=\"d\" hint-placeholder-count=\"3\"><div sc-camel-on-click=\"{{ d.go }}\" style=\"width:{{ d.w }};height:8px;border-radius:4px;background:{{ d.bg }};cursor:pointer;transition:width 200ms ease\"></div></sc-for></div><div sc-camel-on-click=\"{{ eaIce }}\" style=\"margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border-radius:27px;border:1.5px solid #e6ebf2;cursor:pointer\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 20h4L19 9l-4-4L4 16z\"></path><path d=\"M13.5 6.5l4 4\"></path></svg><div style=\"font-size:17px;font-weight:700\">Edit icebreakers</div></div></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Height</div></div><div sc-camel-on-click=\"{{ eaOpenHeight }}\" style=\"margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:600\">{{ eaHeightTxt }}</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Degree / Major</div></div><div sc-camel-on-click=\"{{ eaOpenDegree }}\" style=\"margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:600\">{{ eaDegreeTxt }}</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Country / Region</div></div><div sc-camel-on-click=\"{{ eaOpenCountry }}\" style=\"margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:600\">{{ eaCountryTxt }}</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Clubs</div></div><div sc-camel-on-click=\"{{ eaOpenClubs }}\" style=\"margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:600\">{{ eaClubsTxt }}</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">MBTI type</div></div><div sc-camel-on-click=\"{{ eaOpenMbti }}\" style=\"margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:600\">{{ eaMbtiTxt }}</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Religion</div></div><div sc-camel-on-click=\"{{ eaOpenReligion }}\" style=\"margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:600\">{{ eaReligionTxt }}</div><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg></div>\n          <div style=\"margin-top:28px;padding:0 4px\"><div style=\"font-size:21px;font-weight:800;letter-spacing:-0.02em\">Habits</div><div style=\"font-size:15.5px;color:#5b6b85;margin-top:3px\">Share your drinking and smoking habits.</div></div>\n          <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px\"><div sc-camel-on-click=\"{{ eaOpenDrink }}\" style=\"padding:22px 12px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer\"><div style=\"font-size:48px;line-height:1\">🍷</div><div style=\"font-size:17px;font-weight:700\">{{ eaDrinkTxt }}</div></div><div sc-camel-on-click=\"{{ eaOpenSmoke }}\" style=\"padding:22px 12px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer\"><div style=\"font-size:48px;line-height:1\">🚭</div><div style=\"font-size:17px;font-weight:700\">{{ eaSmokeTxt }}</div></div></div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20\"><div sc-camel-on-click=\"{{ eaSave }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Save</div></div></div>\n\n        <sc-if value=\"{{ eaIsList }}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"position:absolute;inset:0;z-index:60\"><div sc-camel-on-click=\"{{ eaClose }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(3px);animation:cFade 200ms ease both\"></div>\n            <div style=\"position:absolute;left:0;right:0;bottom:0;background:#f7f9fc;border-radius:34px 34px 0 0;padding:24px 20px 36px;box-sizing:border-box;animation:cSheet 260ms cubic-bezier(.2,.8,.2,1) both\">\n              <div style=\"display:flex;align-items:flex-start;gap:12px;padding:0 4px\"><div style=\"flex:1\"><div style=\"font-size:23px;font-weight:800;letter-spacing:-0.025em\">{{ eaListTitle }}</div></div><div sc-camel-on-click=\"{{ eaClose }}\" style=\"width:40px;height:40px;border-radius:20px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.8\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg></div></div>\n              <div ref=\"{{ eaListRef }}\" class=\"cscroll\" style=\"margin-top:16px;max-height:470px;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:10px\">\n                <sc-for list=\"{{ eaListOpts }}\" as=\"o\" hint-placeholder-count=\"5\">\n                  <div sc-camel-on-click=\"{{ o.pick }}\" style=\"flex:none;height:56px;border-radius:28px;background:{{ o.bg }};color:{{ o.ink }};border:1.5px solid {{ o.bd }};display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;cursor:pointer;box-sizing:border-box\">{{ o.label }}</div>\n                </sc-for>\n              </div>\n              <sc-if value=\"{{ eaListDone }}\" hint-placeholder-val=\"{{ false }}\"><div sc-camel-on-click=\"{{ eaCommit }}\" style=\"margin-top:16px;height:58px;border-radius:29px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:18px;font-weight:700;color:#fff\">Done</div></div></sc-if>\n            </div>\n          </div>\n        </sc-if>\n        <sc-if value=\"{{ eaIsGrid }}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"position:absolute;inset:0;z-index:60\"><div sc-camel-on-click=\"{{ eaClose }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(3px);animation:cFade 200ms ease both\"></div>\n            <div style=\"position:absolute;left:0;right:0;bottom:0;background:#f7f9fc;border-radius:34px 34px 0 0;padding:24px 20px 36px;box-sizing:border-box;animation:cSheet 260ms cubic-bezier(.2,.8,.2,1) both\">\n              <div style=\"display:flex;align-items:flex-start;gap:12px;padding:0 4px\"><div style=\"flex:1\"><div style=\"font-size:23px;font-weight:800;letter-spacing:-0.025em\">{{ eaGridTitle }}</div><sc-if value=\"{{ eaGridMulti }}\" hint-placeholder-val=\"{{ false }}\"><div style=\"font-size:15.5px;color:#5b6b85;margin-top:3px\">Pick up to 2</div></sc-if></div><div sc-camel-on-click=\"{{ eaClose }}\" style=\"width:40px;height:40px;border-radius:20px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.8\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg></div></div>\n              <div class=\"cscroll\" style=\"margin-top:16px;max-height:460px;overflow-y:auto;scrollbar-width:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px\">\n                <sc-for list=\"{{ eaGridOpts }}\" as=\"o\" hint-placeholder-count=\"6\">\n                  <div sc-camel-on-click=\"{{ o.pick }}\" style=\"aspect-ratio:1/1;border-radius:24px;background:{{ o.bg }};color:{{ o.ink }};border:1.5px solid {{ o.bd }};box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px;cursor:pointer;text-align:center\"><div style=\"font-size:34px;line-height:1\">{{ o.emoji }}</div><div style=\"font-size:14.5px;font-weight:600;line-height:1.2\">{{ o.label }}</div></div>\n                </sc-for>\n              </div>\n              <sc-if value=\"{{ eaGridMulti }}\" hint-placeholder-val=\"{{ false }}\"><div sc-camel-on-click=\"{{ eaCommit }}\" style=\"margin-top:16px;height:58px;border-radius:29px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:18px;font-weight:700;color:#fff\">Save</div></div></sc-if>\n            </div>\n          </div>\n        </sc-if>\n        <sc-if value=\"{{ eaIsMbti }}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"position:absolute;inset:0;z-index:60\"><div sc-camel-on-click=\"{{ eaClose }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(3px);animation:cFade 200ms ease both\"></div>\n            <div style=\"position:absolute;left:0;right:0;bottom:0;background:#f7f9fc;border-radius:34px 34px 0 0;padding:24px 20px 36px;box-sizing:border-box;animation:cSheet 260ms cubic-bezier(.2,.8,.2,1) both\">\n              <div style=\"display:flex;align-items:flex-start;gap:12px;padding:0 4px\"><div style=\"flex:1\"><div style=\"font-size:23px;font-weight:800;letter-spacing:-0.025em\">Select MBTI type</div></div><div sc-camel-on-click=\"{{ eaClose }}\" style=\"width:40px;height:40px;border-radius:20px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.8\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg></div></div>\n              <div style=\"margin-top:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px\">\n                <sc-for list=\"{{ eaMbtiOpts }}\" as=\"o\" hint-placeholder-count=\"16\">\n                  <div sc-camel-on-click=\"{{ o.pick }}\" style=\"height:54px;border-radius:27px;background:{{ o.bg }};color:{{ o.ink }};border:1.5px solid {{ o.bd }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:16.5px;font-weight:700;cursor:pointer\">{{ o.label }}</div>\n                </sc-for>\n              </div>\n              <div sc-camel-on-click=\"{{ eaMbtiNone }}\" style=\"margin-top:12px;height:54px;border-radius:27px;background:{{ eaMbtiNoneBg }};color:{{ eaMbtiNoneInk }};border:1.5px solid #e6ebf2;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;cursor:pointer\">Prefer not to say</div>\n            </div>\n          </div>\n        </sc-if>\n        <sc-if value=\"{{ eaIsBio }}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"position:absolute;inset:0;z-index:60\"><div sc-camel-on-click=\"{{ eaClose }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(3px);animation:cFade 200ms ease both\"></div>\n            <div style=\"position:absolute;left:16px;right:16px;top:150px;background:#f7f9fc;border-radius:32px;padding:22px 20px 22px;box-sizing:border-box;animation:cRise 220ms ease both\">\n              <div style=\"display:flex;align-items:flex-start;gap:12px;padding:0 4px\"><div style=\"flex:1\"><div style=\"font-size:23px;font-weight:800;letter-spacing:-0.025em\">Edit bio</div></div><div sc-camel-on-click=\"{{ eaClose }}\" style=\"width:40px;height:40px;border-radius:20px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.8\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg></div></div>\n              <div style=\"margin:16px auto 0;display:flex;padding:4px;border-radius:24px;background:#eef1f6;width:240px\">\n                <div sc-camel-on-click=\"{{ eaBioText }}\" style=\"flex:1;height:40px;border-radius:20px;background:{{ eaTabTextBg }};color:{{ eaTabTextInk }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer\">Text</div>\n                <div sc-camel-on-click=\"{{ eaBioVoice }}\" style=\"flex:1;height:40px;border-radius:20px;background:{{ eaTabVoiceBg }};color:{{ eaTabVoiceInk }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer\">Voice</div>\n              </div>\n              <sc-if value=\"{{ eaBioIsText }}\" hint-placeholder-val=\"{{ true }}\">\n                <textarea value=\"{{ eaBioDraft }}\" sc-camel-on-change=\"{{ onEaBio }}\" maxlength=\"300\" style=\"display:block;width:100%;height:150px;margin-top:18px;border:none;outline:none;resize:none;background:transparent;text-align:center;font-family:{{ eaDraftFontCss }};font-size:{{ eaDraftSize }};font-weight:600;line-height:1.25;color:#0b1b3a;box-sizing:border-box\"></textarea>\n                <div class=\"cscroll\" style=\"display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:6px -20px 0;padding:0 20px\">\n                  <sc-for list=\"{{ eaFontOpts }}\" as=\"f\" hint-placeholder-count=\"5\">\n                    <div sc-camel-on-click=\"{{ f.pick }}\" style=\"flex:none;height:42px;padding:0 16px;border-radius:21px;background:{{ f.bg }};color:{{ f.ink }};border:1.5px solid {{ f.bd }};display:flex;align-items:center;font-family:{{ f.css }};font-size:{{ f.size }};font-weight:600;cursor:pointer;white-space:nowrap\">{{ f.label }}</div>\n                  </sc-for>\n                </div>\n              </sc-if>\n              <sc-if value=\"{{ eaBioIsVoice }}\" hint-placeholder-val=\"{{ false }}\">\n                <div style=\"height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px\">\n                  <sc-if value=\"{{ evIdle }}\" hint-placeholder-val=\"{{ true }}\">\n                    <div sc-camel-on-click=\"{{ evStart }}\" style=\"width:84px;height:84px;border-radius:42px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.28)\"><svg width=\"34\" height=\"34\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"9\" y=\"3\" width=\"6\" height=\"11\" rx=\"3\"></rect><path d=\"M5 11a7 7 0 0 0 14 0M12 18v3\"></path></svg></div>\n                    <div style=\"font-size:15.5px;color:#5b6b85;text-align:center\">Tap to record a 30-second voice bio</div>\n                  </sc-if>\n                  <sc-if value=\"{{ evRec }}\" hint-placeholder-val=\"{{ false }}\">\n                    <div style=\"display:flex;align-items:center;gap:8px\"><div style=\"width:10px;height:10px;border-radius:5px;background:#ef4444;animation:cFade 700ms ease-in-out infinite alternate\"></div><div style=\"font-size:22px;font-weight:800;font-variant-numeric:tabular-nums\">{{ evTime }}</div><div style=\"font-size:15px;color:#8b95a6\">/ 0:30</div></div>\n                    <div style=\"display:flex;align-items:center;gap:3px;height:48px\"><sc-for list=\"{{ evBars }}\" as=\"w\" hint-placeholder-count=\"28\"><div style=\"width:4px;height:{{ w.h }};border-radius:2px;background:{{ w.c }};transition:height 160ms ease\"></div></sc-for></div>\n                    <div sc-camel-on-click=\"{{ evStop }}\" style=\"width:72px;height:72px;border-radius:36px;background:#fff;border:3px solid #ef4444;display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box\"><div style=\"width:24px;height:24px;border-radius:6px;background:#ef4444\"></div></div>\n                    <div style=\"font-size:14.5px;color:#5b6b85\">Tap to stop</div>\n                  </sc-if>\n                  <sc-if value=\"{{ evDone }}\" hint-placeholder-val=\"{{ false }}\">\n                    <div style=\"display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border-radius:24px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.07);box-sizing:border-box\">\n                      <div sc-camel-on-click=\"{{ evTogglePlay }}\" style=\"width:48px;height:48px;border-radius:24px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><sc-if value=\"{{ evNotPlaying }}\" hint-placeholder-val=\"{{ true }}\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" style=\"margin-left:2px\"><path d=\"M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z\" fill=\"#fff\"></path></svg></sc-if><sc-if value=\"{{ evPlaying }}\" hint-placeholder-val=\"{{ false }}\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\"><rect x=\"6\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#fff\"></rect><rect x=\"14\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#fff\"></rect></svg></sc-if></div>\n                      <div style=\"flex:1;min-width:0;display:flex;align-items:center;gap:3px;height:40px;overflow:hidden\"><sc-for list=\"{{ evBars }}\" as=\"w\" hint-placeholder-count=\"28\"><div style=\"width:4px;height:{{ w.h }};border-radius:2px;background:{{ w.c }};transition:height 160ms ease\"></div></sc-for></div>\n                      <div style=\"font-size:15px;font-weight:700;color:#5b6b85;font-variant-numeric:tabular-nums\">{{ evTime }}</div>\n                    </div>\n                    <div style=\"display:flex;gap:10px\">\n                      <div sc-camel-on-click=\"{{ evRedo }}\" style=\"display:flex;align-items:center;gap:7px;height:44px;padding:0 16px;border-radius:22px;border:1.5px solid #e6ebf2;background:#fff;cursor:pointer\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 12a9 9 0 1 0 3-6.7L3 8\"></path><path d=\"M3 3v5h5\"></path></svg><div style=\"font-size:15.5px;font-weight:700\">Re-record</div></div>\n                      <div sc-camel-on-click=\"{{ evDelete }}\" style=\"display:flex;align-items:center;gap:7px;height:44px;padding:0 16px;border-radius:22px;border:1.5px solid #fde2e2;background:#fff;cursor:pointer\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13\"></path></svg><div style=\"font-size:15.5px;font-weight:700;color:#dc2626\">Delete</div></div>\n                    </div>\n                  </sc-if>\n                </div>\n              </sc-if>\n              <div sc-camel-on-click=\"{{ eaBioDone }}\" style=\"margin:18px auto 0;width:190px;height:54px;border-radius:27px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:700;color:#fff\">Done</div></div>\n            </div>\n          </div>\n        </sc-if>\n        <sc-if value=\"{{ eaIsSong }}\" hint-placeholder-val=\"{{ false }}\">\n          <div style=\"position:absolute;inset:0;z-index:60;background:linear-gradient(180deg,#e3f3fb 0%,#ece9fb 100%);animation:cRise 240ms ease both\">\n            <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center\">\n              <div sc-camel-on-click=\"{{ eaClose }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.6\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"></path></svg></div>\n              <div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Add profile song</div>\n            </div>\n            <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box\">\n              <div style=\"display:flex;align-items:center;gap:10px;height:52px;padding:0 18px;border-radius:26px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.06)\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#8b95a6\" stroke-width=\"2.2\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m20 20-3.5-3.5\"></path></svg><input value=\"{{ eaSongQ }}\" sc-camel-on-change=\"{{ onEaSongQ }}\" placeholder=\"Search songs, artists…\" style=\"flex:1;min-width:0;border:none;outline:none;background:transparent;font:inherit;font-size:17px;color:#0b1b3a\"></div>\n              <div style=\"display:flex;gap:8px;margin-top:14px\">\n                <div sc-camel-on-click=\"{{ eaTabTrend }}\" style=\"display:flex;align-items:center;gap:6px;height:42px;padding:0 16px;border-radius:21px;background:{{ eaTrendBg }};color:{{ eaTrendInk }};font-size:16px;font-weight:700;cursor:pointer\">🔥 Trending</div>\n                <div sc-camel-on-click=\"{{ eaTabForYou }}\" style=\"display:flex;align-items:center;gap:6px;height:42px;padding:0 16px;border-radius:21px;background:{{ eaForYouBg }};color:{{ eaForYouInk }};font-size:16px;font-weight:700;cursor:pointer\">✨ For you</div>\n              </div>\n              <div style=\"display:flex;flex-direction:column;gap:10px;margin-top:16px\">\n                <sc-for list=\"{{ eaSongs }}\" as=\"g\" hint-placeholder-count=\"6\">\n                  <div sc-camel-on-click=\"{{ g.pick }}\" style=\"display:flex;align-items:center;gap:14px;padding:12px 14px 12px 12px;border-radius:24px;background:#fff;border:1.5px solid {{ g.bd }};box-shadow:0 6px 18px rgba(16,36,74,0.06);cursor:pointer\">\n                    <div style=\"width:56px;height:56px;border-radius:14px;background:{{ g.art }};flex:none;display:flex;align-items:center;justify-content:center;font-size:24px\">{{ g.emoji }}</div>\n                    <div style=\"flex:1;min-width:0\"><div style=\"font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ g.title }}</div><div style=\"font-size:15px;color:#5b6b85;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ g.artist }}</div></div>\n                    <div sc-camel-on-click=\"{{ g.play }}\" style=\"width:44px;height:44px;border-radius:22px;background:{{ g.playBg }};display:flex;align-items:center;justify-content:center;flex:none\"><div style=\"font-size:15px;color:{{ g.playInk }}\">{{ g.playIcon }}</div></div>\n                  </div>\n                </sc-for>\n              </div>\n            </div>\n          </div>\n        </sc-if>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/profile/edit",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（Profile / Preview / Settings）；无历史实例时 replace /pages/profile/index，不创建伪造实体",
+  "styles": [
+    {
+      "line": 1058,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 1059,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;z-index:20"
+    },
+    {
+      "line": 1060,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1061,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 1063,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box"
+    },
+    {
+      "line": 1064,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:16px;padding:20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1065,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 1065,
+      "tag": "div",
+      "style": "font-size:20px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1065,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;margin-top:4px;line-height:1.4"
+    },
+    {
+      "line": 1066,
+      "tag": "div",
+      "style": "position:relative;width:76px;height:76px;flex:none"
+    },
+    {
+      "line": 1066,
+      "tag": "div",
+      "style": "position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800"
+    },
+    {
+      "line": 1068,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1068,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1068,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 1069,
+      "tag": "div",
+      "style": "margin-top:12px;display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 1069,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:700"
+    },
+    {
+      "line": 1069,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1070,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1070,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1070,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 1071,
+      "tag": "div",
+      "style": "display:flex;gap:12px;margin-top:14px;cursor:pointer"
+    },
+    {
+      "line": 1071,
+      "tag": "div",
+      "style": "position:relative;flex:1;min-width:0;aspect-ratio:3/4"
+    },
+    {
+      "line": 1071,
+      "tag": "img",
+      "style": "width:100%;height:100%;object-fit:cover;border-radius:24px;display:block"
+    },
+    {
+      "line": 1071,
+      "tag": "div",
+      "style": "position:absolute;right:8px;bottom:8px;width:34px;height:34px;border-radius:17px;background:rgba(8,16,31,0.55);display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 1071,
+      "tag": "div",
+      "style": "position:relative;flex:1;min-width:0;aspect-ratio:3/4"
+    },
+    {
+      "line": 1071,
+      "tag": "img",
+      "style": "width:100%;height:100%;object-fit:cover;border-radius:24px;display:block"
+    },
+    {
+      "line": 1071,
+      "tag": "div",
+      "style": "position:absolute;right:8px;bottom:8px;width:34px;height:34px;border-radius:17px;background:rgba(8,16,31,0.55);display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 1071,
+      "tag": "div",
+      "style": "position:absolute;top:-6px;right:-6px;width:28px;height:28px;border-radius:14px;background:#fff;box-shadow:0 3px 10px rgba(16,36,74,0.18);display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 1071,
+      "tag": "div",
+      "style": "position:relative;flex:1;min-width:0;aspect-ratio:3/4"
+    },
+    {
+      "line": 1071,
+      "tag": "div",
+      "style": "width:100%;height:100%;border-radius:24px;border:2px dashed #cfd8e4;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 1072,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1072,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1072,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 1073,
+      "tag": "div",
+      "style": "margin-top:12px;padding:18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1075,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#8b95a6"
+    },
+    {
+      "line": 1076,
+      "tag": "div",
+      "style": "margin-top:14px;display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border-radius:27px;border:2px dashed #cfd8e4;cursor:pointer"
+    },
+    {
+      "line": 1076,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 1079,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px"
+    },
+    {
+      "line": 1080,
+      "tag": "div",
+      "style": "width:64px;height:64px;border-radius:16px;background:{{ eaSongArt }};flex:none;display:flex;align-items:center;justify-content:center;font-size:28px"
+    },
+    {
+      "line": 1081,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 1081,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:800;letter-spacing:-0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 1081,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 1082,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1082,
+      "tag": "div",
+      "style": "font-size:15px;color:#fff"
+    },
+    {
+      "line": 1084,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px;margin-top:14px"
+    },
+    {
+      "line": 1084,
+      "tag": "div",
+      "style": "font-size:12.5px;color:#8b95a6;font-variant-numeric:tabular-nums;width:30px"
+    },
+    {
+      "line": 1084,
+      "tag": "div",
+      "style": "flex:1;height:4px;border-radius:2px;background:#eef1f6;overflow:hidden"
+    },
+    {
+      "line": 1084,
+      "tag": "div",
+      "style": "width:{{ eaSongPct }};height:100%;border-radius:2px;background:linear-gradient(90deg,#1ec8f5,#a855f7,#f81ce5);transition:width 1s linear"
+    },
+    {
+      "line": 1084,
+      "tag": "div",
+      "style": "font-size:12.5px;color:#8b95a6;width:30px;text-align:right"
+    },
+    {
+      "line": 1085,
+      "tag": "div",
+      "style": "display:flex;gap:10px;margin-top:16px"
+    },
+    {
+      "line": 1086,
+      "tag": "div",
+      "style": "flex:1;display:flex;align-items:center;justify-content:center;height:50px;border-radius:25px;border:1.5px solid #e6ebf2;cursor:pointer"
+    },
+    {
+      "line": 1086,
+      "tag": "div",
+      "style": "font-size:16px;font-weight:700"
+    },
+    {
+      "line": 1087,
+      "tag": "div",
+      "style": "flex:1;display:flex;align-items:center;justify-content:center;height:50px;border-radius:25px;border:1.5px solid #fde2e2;cursor:pointer"
+    },
+    {
+      "line": 1087,
+      "tag": "div",
+      "style": "font-size:16px;font-weight:700;color:#dc2626"
+    },
+    {
+      "line": 1091,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1091,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1091,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 1092,
+      "tag": "div",
+      "style": "margin-top:12px;padding:20px 18px 18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1092,
+      "tag": "div",
+      "style": "font-family:{{ eaBioFontCss }};font-size:{{ eaBioSize }};font-weight:600;line-height:1.25;color:#26364f;text-align:center;text-wrap:balance"
+    },
+    {
+      "line": 1094,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:22px;background:#f4f7fb"
+    },
+    {
+      "line": 1095,
+      "tag": "div",
+      "style": "width:48px;height:48px;border-radius:24px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1095,
+      "tag": "svg",
+      "style": "margin-left:2px"
+    },
+    {
+      "line": 1096,
+      "tag": "div",
+      "style": "flex:1;min-width:0;display:flex;align-items:center;gap:3px;height:40px;overflow:hidden"
+    },
+    {
+      "line": 1096,
+      "tag": "div",
+      "style": "width:4px;height:{{ w.h }};border-radius:2px;background:{{ w.c }};flex:none"
+    },
+    {
+      "line": 1097,
+      "tag": "div",
+      "style": "font-size:15px;font-weight:700;color:#5b6b85;font-variant-numeric:tabular-nums"
+    },
+    {
+      "line": 1099,
+      "tag": "div",
+      "style": "font-size:14px;color:#8b95a6;text-align:center;margin-top:10px"
+    },
+    {
+      "line": 1100,
+      "tag": "div",
+      "style": "margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border-radius:27px;border:1.5px solid #e6ebf2;cursor:pointer"
+    },
+    {
+      "line": 1100,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 1101,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1101,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1101,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "margin-top:12px;padding:18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "display:flex;flex-wrap:wrap;gap:8px"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "margin-top:14px;display:flex;align-items:center;height:52px;padding:0 18px;border-radius:26px;border:1.5px solid #e6ebf2;cursor:pointer"
+    },
+    {
+      "line": 1102,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:700"
+    },
+    {
+      "line": 1102,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1103,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1103,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1103,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "margin-top:12px;padding:18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "display:flex;flex-wrap:wrap;gap:8px"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "margin-top:14px;display:flex;align-items:center;height:52px;padding:0 18px;border-radius:26px;border:1.5px solid #e6ebf2;cursor:pointer"
+    },
+    {
+      "line": 1104,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:700"
+    },
+    {
+      "line": 1104,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1105,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1105,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1105,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 1106,
+      "tag": "div",
+      "style": "margin-top:12px;padding:24px 18px 18px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1106,
+      "tag": "div",
+      "style": "touch-action:pan-y;user-select:none;cursor:grab;min-height:96px;display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 1106,
+      "tag": "div",
+      "style": "font-size:26px;font-weight:800;letter-spacing:-0.03em;line-height:1.2;text-align:center;text-wrap:balance;animation:cFade 220ms ease both"
+    },
+    {
+      "line": 1106,
+      "tag": "div",
+      "style": "display:flex;justify-content:center;gap:7px;margin-top:16px"
+    },
+    {
+      "line": 1106,
+      "tag": "div",
+      "style": "width:{{ d.w }};height:8px;border-radius:4px;background:{{ d.bg }};cursor:pointer;transition:width 200ms ease"
+    },
+    {
+      "line": 1106,
+      "tag": "div",
+      "style": "margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;height:54px;border-radius:27px;border:1.5px solid #e6ebf2;cursor:pointer"
+    },
+    {
+      "line": 1106,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 1107,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1107,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1107,
+      "tag": "div",
+      "style": "margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 1107,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    },
+    {
+      "line": 1107,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1108,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1108,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1108,
+      "tag": "div",
+      "style": "margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 1108,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    },
+    {
+      "line": 1108,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1109,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1109,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1109,
+      "tag": "div",
+      "style": "margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 1109,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    },
+    {
+      "line": 1109,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1110,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1110,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1110,
+      "tag": "div",
+      "style": "margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 1110,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    },
+    {
+      "line": 1110,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1111,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1111,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1111,
+      "tag": "div",
+      "style": "margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 1111,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    },
+    {
+      "line": 1111,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1112,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1112,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1112,
+      "tag": "div",
+      "style": "margin-top:10px;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 1112,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    },
+    {
+      "line": 1112,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 1113,
+      "tag": "div",
+      "style": "margin-top:28px;padding:0 4px"
+    },
+    {
+      "line": 1113,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1113,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 1114,
+      "tag": "div",
+      "style": "display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px"
+    },
+    {
+      "line": 1114,
+      "tag": "div",
+      "style": "padding:22px 12px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer"
+    },
+    {
+      "line": 1114,
+      "tag": "div",
+      "style": "font-size:48px;line-height:1"
+    },
+    {
+      "line": 1114,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 1114,
+      "tag": "div",
+      "style": "padding:22px 12px;background:#fff;border-radius:26px;box-shadow:0 8px 24px rgba(16,36,74,0.07);display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer"
+    },
+    {
+      "line": 1114,
+      "tag": "div",
+      "style": "font-size:48px;line-height:1"
+    },
+    {
+      "line": 1114,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 1116,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20"
+    },
+    {
+      "line": 1116,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 1116,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 1119,
+      "tag": "div",
+      "style": "position:absolute;inset:0;z-index:60"
+    },
+    {
+      "line": 1119,
+      "tag": "div",
+      "style": "position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(3px);animation:cFade 200ms ease both"
+    },
+    {
+      "line": 1120,
+      "tag": "div",
+      "style": "position:absolute;left:0;right:0;bottom:0;background:#f7f9fc;border-radius:34px 34px 0 0;padding:24px 20px 36px;box-sizing:border-box;animation:cSheet 260ms cubic-bezier(.2,.8,.2,1) both"
+    },
+    {
+      "line": 1121,
+      "tag": "div",
+      "style": "display:flex;align-items:flex-start;gap:12px;padding:0 4px"
+    },
+    {
+      "line": 1121,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 1121,
+      "tag": "div",
+      "style": "font-size:23px;font-weight:800;letter-spacing:-0.025em"
+    },
+    {
+      "line": 1121,
+      "tag": "div",
+      "style": "width:40px;height:40px;border-radius:20px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1122,
+      "tag": "div",
+      "style": "margin-top:16px;max-height:470px;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:10px"
+    },
+    {
+      "line": 1124,
+      "tag": "div",
+      "style": "flex:none;height:56px;border-radius:28px;background:{{ o.bg }};color:{{ o.ink }};border:1.5px solid {{ o.bd }};display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;cursor:pointer;box-sizing:border-box"
+    },
+    {
+      "line": 1127,
+      "tag": "div",
+      "style": "margin-top:16px;height:58px;border-radius:29px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 1127,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 1132,
+      "tag": "div",
+      "style": "position:absolute;inset:0;z-index:60"
+    },
+    {
+      "line": 1132,
+      "tag": "div",
+      "style": "position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(3px);animation:cFade 200ms ease both"
+    },
+    {
+      "line": 1133,
+      "tag": "div",
+      "style": "position:absolute;left:0;right:0;bottom:0;background:#f7f9fc;border-radius:34px 34px 0 0;padding:24px 20px 36px;box-sizing:border-box;animation:cSheet 260ms cubic-bezier(.2,.8,.2,1) both"
+    },
+    {
+      "line": 1134,
+      "tag": "div",
+      "style": "display:flex;align-items:flex-start;gap:12px;padding:0 4px"
+    },
+    {
+      "line": 1134,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 1134,
+      "tag": "div",
+      "style": "font-size:23px;font-weight:800;letter-spacing:-0.025em"
+    },
+    {
+      "line": 1134,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 1134,
+      "tag": "div",
+      "style": "width:40px;height:40px;border-radius:20px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1135,
+      "tag": "div",
+      "style": "margin-top:16px;max-height:460px;overflow-y:auto;scrollbar-width:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px"
+    },
+    {
+      "line": 1137,
+      "tag": "div",
+      "style": "aspect-ratio:1/1;border-radius:24px;background:{{ o.bg }};color:{{ o.ink }};border:1.5px solid {{ o.bd }};box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px;cursor:pointer;text-align:center"
+    },
+    {
+      "line": 1137,
+      "tag": "div",
+      "style": "font-size:34px;line-height:1"
+    },
+    {
+      "line": 1137,
+      "tag": "div",
+      "style": "font-size:14.5px;font-weight:600;line-height:1.2"
+    },
+    {
+      "line": 1140,
+      "tag": "div",
+      "style": "margin-top:16px;height:58px;border-radius:29px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 1140,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 1145,
+      "tag": "div",
+      "style": "position:absolute;inset:0;z-index:60"
+    },
+    {
+      "line": 1145,
+      "tag": "div",
+      "style": "position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(3px);animation:cFade 200ms ease both"
+    },
+    {
+      "line": 1146,
+      "tag": "div",
+      "style": "position:absolute;left:0;right:0;bottom:0;background:#f7f9fc;border-radius:34px 34px 0 0;padding:24px 20px 36px;box-sizing:border-box;animation:cSheet 260ms cubic-bezier(.2,.8,.2,1) both"
+    },
+    {
+      "line": 1147,
+      "tag": "div",
+      "style": "display:flex;align-items:flex-start;gap:12px;padding:0 4px"
+    },
+    {
+      "line": 1147,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 1147,
+      "tag": "div",
+      "style": "font-size:23px;font-weight:800;letter-spacing:-0.025em"
+    },
+    {
+      "line": 1147,
+      "tag": "div",
+      "style": "width:40px;height:40px;border-radius:20px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1148,
+      "tag": "div",
+      "style": "margin-top:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px"
+    },
+    {
+      "line": 1150,
+      "tag": "div",
+      "style": "height:54px;border-radius:27px;background:{{ o.bg }};color:{{ o.ink }};border:1.5px solid {{ o.bd }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:16.5px;font-weight:700;cursor:pointer"
+    },
+    {
+      "line": 1153,
+      "tag": "div",
+      "style": "margin-top:12px;height:54px;border-radius:27px;background:{{ eaMbtiNoneBg }};color:{{ eaMbtiNoneInk }};border:1.5px solid #e6ebf2;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;cursor:pointer"
+    },
+    {
+      "line": 1158,
+      "tag": "div",
+      "style": "position:absolute;inset:0;z-index:60"
+    },
+    {
+      "line": 1158,
+      "tag": "div",
+      "style": "position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(3px);animation:cFade 200ms ease both"
+    },
+    {
+      "line": 1159,
+      "tag": "div",
+      "style": "position:absolute;left:16px;right:16px;top:150px;background:#f7f9fc;border-radius:32px;padding:22px 20px 22px;box-sizing:border-box;animation:cRise 220ms ease both"
+    },
+    {
+      "line": 1160,
+      "tag": "div",
+      "style": "display:flex;align-items:flex-start;gap:12px;padding:0 4px"
+    },
+    {
+      "line": 1160,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 1160,
+      "tag": "div",
+      "style": "font-size:23px;font-weight:800;letter-spacing:-0.025em"
+    },
+    {
+      "line": 1160,
+      "tag": "div",
+      "style": "width:40px;height:40px;border-radius:20px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1161,
+      "tag": "div",
+      "style": "margin:16px auto 0;display:flex;padding:4px;border-radius:24px;background:#eef1f6;width:240px"
+    },
+    {
+      "line": 1162,
+      "tag": "div",
+      "style": "flex:1;height:40px;border-radius:20px;background:{{ eaTabTextBg }};color:{{ eaTabTextInk }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer"
+    },
+    {
+      "line": 1163,
+      "tag": "div",
+      "style": "flex:1;height:40px;border-radius:20px;background:{{ eaTabVoiceBg }};color:{{ eaTabVoiceInk }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer"
+    },
+    {
+      "line": 1166,
+      "tag": "textarea",
+      "style": "display:block;width:100%;height:150px;margin-top:18px;border:none;outline:none;resize:none;background:transparent;text-align:center;font-family:{{ eaDraftFontCss }};font-size:{{ eaDraftSize }};font-weight:600;line-height:1.25;color:#0b1b3a;box-sizing:border-box"
+    },
+    {
+      "line": 1167,
+      "tag": "div",
+      "style": "display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:6px -20px 0;padding:0 20px"
+    },
+    {
+      "line": 1169,
+      "tag": "div",
+      "style": "flex:none;height:42px;padding:0 16px;border-radius:21px;background:{{ f.bg }};color:{{ f.ink }};border:1.5px solid {{ f.bd }};display:flex;align-items:center;font-family:{{ f.css }};font-size:{{ f.size }};font-weight:600;cursor:pointer;white-space:nowrap"
+    },
+    {
+      "line": 1174,
+      "tag": "div",
+      "style": "height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px"
+    },
+    {
+      "line": 1176,
+      "tag": "div",
+      "style": "width:84px;height:84px;border-radius:42px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.28)"
+    },
+    {
+      "line": 1177,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;text-align:center"
+    },
+    {
+      "line": 1180,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:8px"
+    },
+    {
+      "line": 1180,
+      "tag": "div",
+      "style": "width:10px;height:10px;border-radius:5px;background:#ef4444;animation:cFade 700ms ease-in-out infinite alternate"
+    },
+    {
+      "line": 1180,
+      "tag": "div",
+      "style": "font-size:22px;font-weight:800;font-variant-numeric:tabular-nums"
+    },
+    {
+      "line": 1180,
+      "tag": "div",
+      "style": "font-size:15px;color:#8b95a6"
+    },
+    {
+      "line": 1181,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:3px;height:48px"
+    },
+    {
+      "line": 1181,
+      "tag": "div",
+      "style": "width:4px;height:{{ w.h }};border-radius:2px;background:{{ w.c }};transition:height 160ms ease"
+    },
+    {
+      "line": 1182,
+      "tag": "div",
+      "style": "width:72px;height:72px;border-radius:36px;background:#fff;border:3px solid #ef4444;display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box"
+    },
+    {
+      "line": 1182,
+      "tag": "div",
+      "style": "width:24px;height:24px;border-radius:6px;background:#ef4444"
+    },
+    {
+      "line": 1183,
+      "tag": "div",
+      "style": "font-size:14.5px;color:#5b6b85"
+    },
+    {
+      "line": 1186,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border-radius:24px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.07);box-sizing:border-box"
+    },
+    {
+      "line": 1187,
+      "tag": "div",
+      "style": "width:48px;height:48px;border-radius:24px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1187,
+      "tag": "svg",
+      "style": "margin-left:2px"
+    },
+    {
+      "line": 1188,
+      "tag": "div",
+      "style": "flex:1;min-width:0;display:flex;align-items:center;gap:3px;height:40px;overflow:hidden"
+    },
+    {
+      "line": 1188,
+      "tag": "div",
+      "style": "width:4px;height:{{ w.h }};border-radius:2px;background:{{ w.c }};transition:height 160ms ease"
+    },
+    {
+      "line": 1189,
+      "tag": "div",
+      "style": "font-size:15px;font-weight:700;color:#5b6b85;font-variant-numeric:tabular-nums"
+    },
+    {
+      "line": 1191,
+      "tag": "div",
+      "style": "display:flex;gap:10px"
+    },
+    {
+      "line": 1192,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:7px;height:44px;padding:0 16px;border-radius:22px;border:1.5px solid #e6ebf2;background:#fff;cursor:pointer"
+    },
+    {
+      "line": 1192,
+      "tag": "div",
+      "style": "font-size:15.5px;font-weight:700"
+    },
+    {
+      "line": 1193,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:7px;height:44px;padding:0 16px;border-radius:22px;border:1.5px solid #fde2e2;background:#fff;cursor:pointer"
+    },
+    {
+      "line": 1193,
+      "tag": "div",
+      "style": "font-size:15.5px;font-weight:700;color:#dc2626"
+    },
+    {
+      "line": 1198,
+      "tag": "div",
+      "style": "margin:18px auto 0;width:190px;height:54px;border-radius:27px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 1198,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 1203,
+      "tag": "div",
+      "style": "position:absolute;inset:0;z-index:60;background:linear-gradient(180deg,#e3f3fb 0%,#ece9fb 100%);animation:cRise 240ms ease both"
+    },
+    {
+      "line": 1204,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center"
+    },
+    {
+      "line": 1205,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1206,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 1208,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box"
+    },
+    {
+      "line": 1209,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px;height:52px;padding:0 18px;border-radius:26px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 1209,
+      "tag": "input",
+      "style": "flex:1;min-width:0;border:none;outline:none;background:transparent;font:inherit;font-size:17px;color:#0b1b3a"
+    },
+    {
+      "line": 1210,
+      "tag": "div",
+      "style": "display:flex;gap:8px;margin-top:14px"
+    },
+    {
+      "line": 1211,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:42px;padding:0 16px;border-radius:21px;background:{{ eaTrendBg }};color:{{ eaTrendInk }};font-size:16px;font-weight:700;cursor:pointer"
+    },
+    {
+      "line": 1212,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:42px;padding:0 16px;border-radius:21px;background:{{ eaForYouBg }};color:{{ eaForYouInk }};font-size:16px;font-weight:700;cursor:pointer"
+    },
+    {
+      "line": 1214,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:10px;margin-top:16px"
+    },
+    {
+      "line": 1216,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;padding:12px 14px 12px 12px;border-radius:24px;background:#fff;border:1.5px solid {{ g.bd }};box-shadow:0 6px 18px rgba(16,36,74,0.06);cursor:pointer"
+    },
+    {
+      "line": 1217,
+      "tag": "div",
+      "style": "width:56px;height:56px;border-radius:14px;background:{{ g.art }};flex:none;display:flex;align-items:center;justify-content:center;font-size:24px"
+    },
+    {
+      "line": 1218,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 1218,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 1218,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 1219,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:22px;background:{{ g.playBg }};display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 1219,
+      "tag": "div",
+      "style": "font-size:15px;color:{{ g.playInk }}"
+    }
+  ],
+  "texts": [
+    {
+      "line": 1061,
+      "text": "Edit profile"
+    },
+    {
+      "line": 1065,
+      "text": "Your profile score"
+    },
+    {
+      "line": 1065,
+      "text": "A more complete profile helps CIRCA find you better matches."
+    },
+    {
+      "line": 1066,
+      "text": "86%"
+    },
+    {
+      "line": 1068,
+      "text": "Student verification"
+    },
+    {
+      "line": 1068,
+      "text": "Your university email is verified."
+    },
+    {
+      "line": 1069,
+      "text": "HKUST · Verified"
+    },
+    {
+      "line": 1070,
+      "text": "Photos"
+    },
+    {
+      "line": 1070,
+      "text": "Show your best self."
+    },
+    {
+      "line": 1072,
+      "text": "Profile song"
+    },
+    {
+      "line": 1072,
+      "text": "Add a song to your profile."
+    },
+    {
+      "line": 1075,
+      "text": "No profile song selected yet."
+    },
+    {
+      "line": 1076,
+      "text": "Add song"
+    },
+    {
+      "line": 1084,
+      "text": "0:30"
+    },
+    {
+      "line": 1086,
+      "text": "Change song"
+    },
+    {
+      "line": 1087,
+      "text": "Remove"
+    },
+    {
+      "line": 1091,
+      "text": "Bio"
+    },
+    {
+      "line": 1091,
+      "text": "Tell people who you are."
+    },
+    {
+      "line": 1099,
+      "text": "Voice bio · shown instead of text"
+    },
+    {
+      "line": 1100,
+      "text": "Edit bio"
+    },
+    {
+      "line": 1101,
+      "text": "Looking for"
+    },
+    {
+      "line": 1101,
+      "text": "What are you looking for?"
+    },
+    {
+      "line": 1102,
+      "text": "🙋"
+    },
+    {
+      "line": 1102,
+      "text": "New Friends"
+    },
+    {
+      "line": 1102,
+      "text": "☕"
+    },
+    {
+      "line": 1102,
+      "text": "Coffee Chats"
+    },
+    {
+      "line": 1102,
+      "text": "🗣️"
+    },
+    {
+      "line": 1102,
+      "text": "Language Exchange"
+    },
+    {
+      "line": 1102,
+      "text": "3 selected"
+    },
+    {
+      "line": 1103,
+      "text": "Interests"
+    },
+    {
+      "line": 1103,
+      "text": "What are you interested in?"
+    },
+    {
+      "line": 1104,
+      "text": "📷"
+    },
+    {
+      "line": 1104,
+      "text": "Photography"
+    },
+    {
+      "line": 1104,
+      "text": "☕"
+    },
+    {
+      "line": 1104,
+      "text": "Coffee"
+    },
+    {
+      "line": 1104,
+      "text": "🎵"
+    },
+    {
+      "line": 1104,
+      "text": "Live Music"
+    },
+    {
+      "line": 1104,
+      "text": "3 selected"
+    },
+    {
+      "line": 1105,
+      "text": "Icebreakers"
+    },
+    {
+      "line": 1105,
+      "text": "Choose 3 questions others can answer when they say hi."
+    },
+    {
+      "line": 1106,
+      "text": "Edit icebreakers"
+    },
+    {
+      "line": 1107,
+      "text": "Height"
+    },
+    {
+      "line": 1108,
+      "text": "Degree / Major"
+    },
+    {
+      "line": 1109,
+      "text": "Country / Region"
+    },
+    {
+      "line": 1110,
+      "text": "Clubs"
+    },
+    {
+      "line": 1111,
+      "text": "MBTI type"
+    },
+    {
+      "line": 1112,
+      "text": "Religion"
+    },
+    {
+      "line": 1113,
+      "text": "Habits"
+    },
+    {
+      "line": 1113,
+      "text": "Share your drinking and smoking habits."
+    },
+    {
+      "line": 1114,
+      "text": "🍷"
+    },
+    {
+      "line": 1114,
+      "text": "🚭"
+    },
+    {
+      "line": 1116,
+      "text": "Save"
+    },
+    {
+      "line": 1127,
+      "text": "Done"
+    },
+    {
+      "line": 1134,
+      "text": "Pick up to 2"
+    },
+    {
+      "line": 1140,
+      "text": "Save"
+    },
+    {
+      "line": 1147,
+      "text": "Select MBTI type"
+    },
+    {
+      "line": 1153,
+      "text": "Prefer not to say"
+    },
+    {
+      "line": 1160,
+      "text": "Edit bio"
+    },
+    {
+      "line": 1162,
+      "text": "Text"
+    },
+    {
+      "line": 1163,
+      "text": "Voice"
+    },
+    {
+      "line": 1177,
+      "text": "Tap to record a 30-second voice bio"
+    },
+    {
+      "line": 1180,
+      "text": "/ 0:30"
+    },
+    {
+      "line": 1183,
+      "text": "Tap to stop"
+    },
+    {
+      "line": 1192,
+      "text": "Re-record"
+    },
+    {
+      "line": 1193,
+      "text": "Delete"
+    },
+    {
+      "line": 1198,
+      "text": "Done"
+    },
+    {
+      "line": 1206,
+      "text": "Add profile song"
+    },
+    {
+      "line": 1211,
+      "text": "🔥 Trending"
+    },
+    {
+      "line": 1212,
+      "text": "✨ For you"
+    }
+  ],
+  "svg": [
+    {
+      "line": 1060,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    },
+    {
+      "line": 1066,
+      "sha256": "ba4282278504216fc9cac3b71d572c1af66974d76b7a908b430de625477c2dfd"
+    },
+    {
+      "line": 1069,
+      "sha256": "5a2f5e515a92fbba495372ad43839bf10ce0fd862185f902f0a7f69a6f34b71e"
+    },
+    {
+      "line": 1069,
+      "sha256": "ed0306cc0ef3c63e532e1ee9b988841f05b3cc33d7510e09c6d593108d4e232a"
+    },
+    {
+      "line": 1071,
+      "sha256": "51c77782ffc60b949ca2de1affd8a0dac4e60454018b8a6babcbfc29fe1dd895"
+    },
+    {
+      "line": 1071,
+      "sha256": "51c77782ffc60b949ca2de1affd8a0dac4e60454018b8a6babcbfc29fe1dd895"
+    },
+    {
+      "line": 1071,
+      "sha256": "596bfdc2b1330bb9f7c42234c868108f423cb0253af9a7fc615600dff824f0f4"
+    },
+    {
+      "line": 1071,
+      "sha256": "c4dff81751c10819bced8d296bab76177e82a3cf9e9f6d2e70163efd7af51635"
+    },
+    {
+      "line": 1076,
+      "sha256": "095ab16192b65b7821ffa95dfb81fb0dd6685a133b686376d88a804a91241de6"
+    },
+    {
+      "line": 1095,
+      "sha256": "bccde8b62478f5140273cbfb8d13e6dddde01a927c84b958b12ecda72f84e80e"
+    },
+    {
+      "line": 1095,
+      "sha256": "54030a1d41403a1213777641762cfb97988d26e2d7db55f739381e4e32dd043e"
+    },
+    {
+      "line": 1100,
+      "sha256": "ef6d14f27acba73bbd9ac4fe52ee496d514fd6fde289ad6147f1d6be883f148c"
+    },
+    {
+      "line": 1102,
+      "sha256": "ed0306cc0ef3c63e532e1ee9b988841f05b3cc33d7510e09c6d593108d4e232a"
+    },
+    {
+      "line": 1104,
+      "sha256": "ed0306cc0ef3c63e532e1ee9b988841f05b3cc33d7510e09c6d593108d4e232a"
+    },
+    {
+      "line": 1106,
+      "sha256": "ef6d14f27acba73bbd9ac4fe52ee496d514fd6fde289ad6147f1d6be883f148c"
+    },
+    {
+      "line": 1107,
+      "sha256": "ed0306cc0ef3c63e532e1ee9b988841f05b3cc33d7510e09c6d593108d4e232a"
+    },
+    {
+      "line": 1108,
+      "sha256": "ed0306cc0ef3c63e532e1ee9b988841f05b3cc33d7510e09c6d593108d4e232a"
+    },
+    {
+      "line": 1109,
+      "sha256": "ed0306cc0ef3c63e532e1ee9b988841f05b3cc33d7510e09c6d593108d4e232a"
+    },
+    {
+      "line": 1110,
+      "sha256": "ed0306cc0ef3c63e532e1ee9b988841f05b3cc33d7510e09c6d593108d4e232a"
+    },
+    {
+      "line": 1111,
+      "sha256": "ed0306cc0ef3c63e532e1ee9b988841f05b3cc33d7510e09c6d593108d4e232a"
+    },
+    {
+      "line": 1112,
+      "sha256": "ed0306cc0ef3c63e532e1ee9b988841f05b3cc33d7510e09c6d593108d4e232a"
+    },
+    {
+      "line": 1121,
+      "sha256": "e169c31f620c25993541a082a78998dd3b16d118a7d893315f6158ef4e74e997"
+    },
+    {
+      "line": 1134,
+      "sha256": "e169c31f620c25993541a082a78998dd3b16d118a7d893315f6158ef4e74e997"
+    },
+    {
+      "line": 1147,
+      "sha256": "e169c31f620c25993541a082a78998dd3b16d118a7d893315f6158ef4e74e997"
+    },
+    {
+      "line": 1160,
+      "sha256": "e169c31f620c25993541a082a78998dd3b16d118a7d893315f6158ef4e74e997"
+    },
+    {
+      "line": 1176,
+      "sha256": "665add709721e0aec855e7c75e1d1e09893ccb5a69fa76f3931e335df807a9b3"
+    },
+    {
+      "line": 1187,
+      "sha256": "bccde8b62478f5140273cbfb8d13e6dddde01a927c84b958b12ecda72f84e80e"
+    },
+    {
+      "line": 1187,
+      "sha256": "54030a1d41403a1213777641762cfb97988d26e2d7db55f739381e4e32dd043e"
+    },
+    {
+      "line": 1192,
+      "sha256": "b81bdb360a3bb973fbc6c56f1209b7bf0f65dc0797d68ee4e035aa285d84c884"
+    },
+    {
+      "line": 1193,
+      "sha256": "71a5ffdebf827d212c9487ea4b3aea06a6bc29bce94e87510e08d961c72080c8"
+    },
+    {
+      "line": 1205,
+      "sha256": "111df2fe2496e06bb1bdc9bf03ed12ac008bf35ec4a84f8e537263d46a851cdd"
+    },
+    {
+      "line": 1209,
+      "sha256": "e2d9d664a7343229ccc503b0ab9d02869c2777e6e24e28509cc868b7eeafb00e"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a15",
+        "local_path": "static/assets/head/me.png",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a12",
+        "local_path": "static/assets/head/maya-card.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a0",
+        "local_path": "static/assets/songs/beautiful-things.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a3",
+        "local_path": "static/assets/songs/good-luck-babe.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a2",
+        "local_path": "static/assets/songs/birds.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a1",
+        "local_path": "static/assets/songs/espresso.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a6",
+        "local_path": "static/assets/songs/love-me-not.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a9",
+        "local_path": "static/assets/songs/beauty-beat.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      1060,
+      1066,
+      1069,
+      1069,
+      1071,
+      1071,
+      1071,
+      1071,
+      1076,
+      1095,
+      1095,
+      1100,
+      1102,
+      1104,
+      1106,
+      1107,
+      1108,
+      1109,
+      1110,
+      1111,
+      1112,
+      1121,
+      1134,
+      1147,
+      1160,
+      1176,
+      1187,
+      1187,
+      1192,
+      1193,
+      1205,
+      1209,
+      4345
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 1060,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 1069,
+      "event": "sc-camel-on-click",
+      "handler": "eaVerify"
+    },
+    {
+      "line": 1071,
+      "event": "sc-camel-on-click",
+      "handler": "eaPhotos"
+    },
+    {
+      "line": 1076,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenSong"
+    },
+    {
+      "line": 1082,
+      "event": "sc-camel-on-click",
+      "handler": "eaSongPlay"
+    },
+    {
+      "line": 1086,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenSong"
+    },
+    {
+      "line": 1087,
+      "event": "sc-camel-on-click",
+      "handler": "eaSongRemove"
+    },
+    {
+      "line": 1095,
+      "event": "sc-camel-on-click",
+      "handler": "evTogglePlay"
+    },
+    {
+      "line": 1100,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenBio"
+    },
+    {
+      "line": 1102,
+      "event": "sc-camel-on-click",
+      "handler": "eaGoals"
+    },
+    {
+      "line": 1104,
+      "event": "sc-camel-on-click",
+      "handler": "eaInterests"
+    },
+    {
+      "line": 1106,
+      "event": "sc-camel-on-pointer-down",
+      "handler": "iceDown"
+    },
+    {
+      "line": 1106,
+      "event": "sc-camel-on-pointer-up",
+      "handler": "iceUp"
+    },
+    {
+      "line": 1106,
+      "event": "sc-camel-on-pointer-cancel",
+      "handler": "iceUp"
+    },
+    {
+      "line": 1106,
+      "event": "sc-camel-on-click",
+      "handler": "d.go"
+    },
+    {
+      "line": 1106,
+      "event": "sc-camel-on-click",
+      "handler": "eaIce"
+    },
+    {
+      "line": 1107,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenHeight"
+    },
+    {
+      "line": 1108,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenDegree"
+    },
+    {
+      "line": 1109,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenCountry"
+    },
+    {
+      "line": 1110,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenClubs"
+    },
+    {
+      "line": 1111,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenMbti"
+    },
+    {
+      "line": 1112,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenReligion"
+    },
+    {
+      "line": 1114,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenDrink"
+    },
+    {
+      "line": 1114,
+      "event": "sc-camel-on-click",
+      "handler": "eaOpenSmoke"
+    },
+    {
+      "line": 1116,
+      "event": "sc-camel-on-click",
+      "handler": "eaSave"
+    },
+    {
+      "line": 1119,
+      "event": "sc-camel-on-click",
+      "handler": "eaClose"
+    },
+    {
+      "line": 1121,
+      "event": "sc-camel-on-click",
+      "handler": "eaClose"
+    },
+    {
+      "line": 1124,
+      "event": "sc-camel-on-click",
+      "handler": "o.pick"
+    },
+    {
+      "line": 1127,
+      "event": "sc-camel-on-click",
+      "handler": "eaCommit"
+    },
+    {
+      "line": 1132,
+      "event": "sc-camel-on-click",
+      "handler": "eaClose"
+    },
+    {
+      "line": 1134,
+      "event": "sc-camel-on-click",
+      "handler": "eaClose"
+    },
+    {
+      "line": 1137,
+      "event": "sc-camel-on-click",
+      "handler": "o.pick"
+    },
+    {
+      "line": 1140,
+      "event": "sc-camel-on-click",
+      "handler": "eaCommit"
+    },
+    {
+      "line": 1145,
+      "event": "sc-camel-on-click",
+      "handler": "eaClose"
+    },
+    {
+      "line": 1147,
+      "event": "sc-camel-on-click",
+      "handler": "eaClose"
+    },
+    {
+      "line": 1150,
+      "event": "sc-camel-on-click",
+      "handler": "o.pick"
+    },
+    {
+      "line": 1153,
+      "event": "sc-camel-on-click",
+      "handler": "eaMbtiNone"
+    },
+    {
+      "line": 1158,
+      "event": "sc-camel-on-click",
+      "handler": "eaClose"
+    },
+    {
+      "line": 1160,
+      "event": "sc-camel-on-click",
+      "handler": "eaClose"
+    },
+    {
+      "line": 1162,
+      "event": "sc-camel-on-click",
+      "handler": "eaBioText"
+    },
+    {
+      "line": 1163,
+      "event": "sc-camel-on-click",
+      "handler": "eaBioVoice"
+    },
+    {
+      "line": 1166,
+      "event": "sc-camel-on-change",
+      "handler": "onEaBio"
+    },
+    {
+      "line": 1169,
+      "event": "sc-camel-on-click",
+      "handler": "f.pick"
+    },
+    {
+      "line": 1176,
+      "event": "sc-camel-on-click",
+      "handler": "evStart"
+    },
+    {
+      "line": 1182,
+      "event": "sc-camel-on-click",
+      "handler": "evStop"
+    },
+    {
+      "line": 1187,
+      "event": "sc-camel-on-click",
+      "handler": "evTogglePlay"
+    },
+    {
+      "line": 1192,
+      "event": "sc-camel-on-click",
+      "handler": "evRedo"
+    },
+    {
+      "line": 1193,
+      "event": "sc-camel-on-click",
+      "handler": "evDelete"
+    },
+    {
+      "line": 1198,
+      "event": "sc-camel-on-click",
+      "handler": "eaBioDone"
+    },
+    {
+      "line": 1205,
+      "event": "sc-camel-on-click",
+      "handler": "eaClose"
+    },
+    {
+      "line": 1209,
+      "event": "sc-camel-on-change",
+      "handler": "onEaSongQ"
+    },
+    {
+      "line": 1211,
+      "event": "sc-camel-on-click",
+      "handler": "eaTabTrend"
+    },
+    {
+      "line": 1212,
+      "event": "sc-camel-on-click",
+      "handler": "eaTabForYou"
+    },
+    {
+      "line": 1216,
+      "event": "sc-camel-on-click",
+      "handler": "g.pick"
+    },
+    {
+      "line": 1219,
+      "event": "sc-camel-on-click",
+      "handler": "g.play"
+    }
+  ],
+  "interaction_ids": [
+    "editAll.goBack.click.1",
+    "editAll.eaVerify.click.1",
+    "editAll.eaPhotos.click.1",
+    "editAll.eaOpenSong.click.1",
+    "editAll.eaSongPlay.click.1",
+    "editAll.eaOpenSong.click.2",
+    "editAll.eaSongRemove.click.1",
+    "editAll.evTogglePlay.click.1",
+    "editAll.eaOpenBio.click.1",
+    "editAll.eaGoals.click.1",
+    "editAll.eaInterests.click.1",
+    "editAll.iceDown.pointer-down.1",
+    "editAll.iceUp.pointer-up.1",
+    "editAll.iceUp.pointer-cancel.1",
+    "editAll.d.go.click.1",
+    "editAll.eaIce.click.1",
+    "editAll.eaOpenHeight.click.1",
+    "editAll.eaOpenDegree.click.1",
+    "editAll.eaOpenCountry.click.1",
+    "editAll.eaOpenClubs.click.1",
+    "editAll.eaOpenMbti.click.1",
+    "editAll.eaOpenReligion.click.1",
+    "editAll.eaOpenDrink.click.1",
+    "editAll.eaOpenSmoke.click.1",
+    "editAll.eaSave.click.1",
+    "editAll.eaClose.click.1",
+    "editAll.eaClose.click.2",
+    "editAll.o.pick.click.1",
+    "editAll.eaCommit.click.1",
+    "editAll.eaClose.click.3",
+    "editAll.eaClose.click.4",
+    "editAll.o.pick.click.2",
+    "editAll.eaCommit.click.2",
+    "editAll.eaClose.click.5",
+    "editAll.eaClose.click.6",
+    "editAll.o.pick.click.3",
+    "editAll.eaMbtiNone.click.1",
+    "editAll.eaClose.click.7",
+    "editAll.eaClose.click.8",
+    "editAll.eaBioText.click.1",
+    "editAll.eaBioVoice.click.1",
+    "editAll.onEaBio.change.1",
+    "editAll.f.pick.click.1",
+    "editAll.evStart.click.1",
+    "editAll.evStop.click.1",
+    "editAll.evTogglePlay.click.2",
+    "editAll.evRedo.click.1",
+    "editAll.evDelete.click.1",
+    "editAll.eaBioDone.click.1",
+    "editAll.eaClose.click.9",
+    "editAll.onEaSongQ.change.1",
+    "editAll.eaTabTrend.click.1",
+    "editAll.eaTabForYou.click.1",
+    "editAll.g.pick.click.1",
+    "editAll.g.play.click.1",
+    "sheetMic.closeSheet.click.1",
+    "sheetMic.allowMic.click.1",
+    "sheetMic.denyMic.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "editAll.goBack.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaVerify.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaPhotos.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenSong.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaSongPlay.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenSong.click.2",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaSongRemove.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.evTogglePlay.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenBio.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaGoals.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaInterests.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.iceDown.pointer-down.1",
+      "source": "route=editAll",
+      "trigger": "pointer",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.iceUp.pointer-up.1",
+      "source": "route=editAll",
+      "trigger": "pointer",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.iceUp.pointer-cancel.1",
+      "source": "route=editAll",
+      "trigger": "pointer",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.d.go.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaIce.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenHeight.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenDegree.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenCountry.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenClubs.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenMbti.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenReligion.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenDrink.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaOpenSmoke.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaSave.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaClose.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaClose.click.2",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.o.pick.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaCommit.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaClose.click.3",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaClose.click.4",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.o.pick.click.2",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaCommit.click.2",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaClose.click.5",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaClose.click.6",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.o.pick.click.3",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaMbtiNone.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaClose.click.7",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaClose.click.8",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaBioText.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaBioVoice.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.onEaBio.change.1",
+      "source": "route=editAll",
+      "trigger": "input",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.f.pick.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.evStart.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.evStop.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.evTogglePlay.click.2",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.evRedo.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.evDelete.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaBioDone.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaClose.click.9",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.onEaSongQ.change.1",
+      "source": "route=editAll",
+      "trigger": "input",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaTabTrend.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.eaTabForYou.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.g.pick.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editAll.g.play.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "sheetMic.closeSheet.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "sheetMic.allowMic.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "sheetMic.denyMic.click.1",
+      "source": "route=editAll",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}

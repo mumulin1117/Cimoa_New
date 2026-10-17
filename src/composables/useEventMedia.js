@@ -1,7 +1,7 @@
 import { ref, shallowRef, onUnmounted } from 'vue'
 import { onHide } from '@dcloudio/uni-app'
 import { choose_images, create_recorder, inspect_media } from '@/utils/mediaCapabilities.js'
-export function use_event_media(error) {
+export function use_event_media(error, { max_duration_ms = 120000 } = {}) {
   const draft = shallowRef(null), recording = ref(false), busy = ref(false), seconds = ref(0)
   let recorder, timer, capture_controller, token = 0
   const clear = () => { token++; capture_controller?.abort(); capture_controller = null; clearInterval(timer); timer = null; recorder?.dispose(); recorder = null; recording.value = false; busy.value = false; seconds.value = 0; if (draft.value) URL.revokeObjectURL(draft.value.url); draft.value = null }
@@ -10,7 +10,7 @@ export function use_event_media(error) {
     if (!(blob instanceof Blob) || !blob.type.startsWith(`${kind}/`) || !blob.size || blob.size > 20 * 1024 * 1024) throw new Error('Choose valid media up to 20 MB.')
     const current = token, info = await inspect_media(blob, kind)
     if (current !== token) return
-    if (kind === 'audio' && info.duration_ms > 120000) throw new Error('Record up to two minutes.')
+    if (kind === 'audio' && info.duration_ms > max_duration_ms) throw new Error(`Record up to ${max_duration_ms / 1000} seconds.`)
     draft.value = { blob, kind, duration_ms: info.duration_ms || 0, url: URL.createObjectURL(blob) }
   }
   const photo = async () => {
@@ -31,7 +31,7 @@ export function use_event_media(error) {
       capture_controller = new AbortController()
       const next = await create_recorder({ signal: capture_controller.signal }); if (current !== token) { next.dispose(); return }
       recorder = next; recorder.start(); recording.value = true
-      const began = Date.now(); timer = setInterval(() => { seconds.value = Math.floor((Date.now() - began) / 1000); if (seconds.value >= 119) stop() }, 250)
+      const began = Date.now(); timer = setInterval(() => { const elapsed = Date.now() - began; seconds.value = Math.floor(elapsed / 1000); if (elapsed >= max_duration_ms - 250) stop() }, 250)
     } catch (cause) { if (current === token) { recorder?.dispose(); recorder = null; error.value = cause.message } } finally { if (current === token) busy.value = false }
   }
   return { draft, recording, busy, seconds, clear, photo, start, stop }

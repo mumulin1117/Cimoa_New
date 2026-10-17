@@ -33,7 +33,9 @@ const require_owned = (data, rows, key, id) => {
 const ready = (state) => state.hydration_status === 'ready' && s.authenticated(state.data, state.clock_ms)
 const profile = (data, id) => {
   const user = s.user_by_id(data, id)
-  return user ? { ...user, interests: user.interest_ids.map((id) => data.interests.find((row) => row.item_id === id)?.label).filter(Boolean), connection_goal: s.goals_for_user(data, id)[0]?.label || '', verified: user.verification_status === 'verified' } : null
+  if (!user) return null
+  const audio = data.media_files.find(row => row.media_id === user.bio_audio_id && row.owner_user_id === id && row.kind === 'audio')
+  return { ...user, ...(audio ? { voice_intro: { audio_url: audio.media_url, duration_ms: audio.duration_ms, transcript: user.bio || '' } } : {}), interests: user.interest_ids.map((id) => data.interests.find((row) => row.item_id === id)?.label).filter(Boolean), connection_goal: s.goals_for_user(data, id)[0]?.label || '', verified: user.verification_status === 'verified' }
 }
 const check_media = async (store, id, kind) => {
   const row = require_owned(store.data, store.data.media_files, 'media_id', id)

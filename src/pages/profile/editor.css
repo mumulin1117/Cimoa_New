@@ -3,8 +3,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 114.504rpx;
-  margin: 7.634rpx 38.168rpx 7.634rpx;
+  height: 91.603rpx;
+  margin: 7.634rpx 38.168rpx 22.901rpx;
   flex: none;
 }
 .editor-back {
@@ -29,7 +29,7 @@
   letter-spacing: -0.025em;
   pointer-events: none;
 }
-.editor-body { padding: 11.45rpx 38.168rpx 76.336rpx; overflow-wrap: anywhere; }
+.editor-body { padding: 0 38.168rpx 76.336rpx; overflow-wrap: anywhere; }
 .editor-footer { flex: none; padding: 19.084rpx 38.168rpx 19.084rpx; }
 .editor-save {
   display: flex;
