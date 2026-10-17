@@ -26,25 +26,25 @@ const report = async () => { close(); await go('report') }
       <view class="event-detail-cover"><ProfilePhoto :src="event.image_url" :name="event.title" event-cover /></view>
       <view class="event-page-body event-detail-body">
         <text class="event-page-title">{{ event.title }}</text>
-        <view class="event-page-card event-detail-host"><view class="event-detail-host-icon"><SourceIcon name="university" /></view><view><text class="event-detail-host-label">Hosted by</text><text class="event-detail-host-name">{{ event.organizer?.name || 'Organizer not provided' }}</text></view></view>
+        <view class="event-page-card event-detail-host"><view class="event-detail-host-icon">{{ event.organizer?.badge_label }}</view><view><text class="event-detail-host-label">Hosted by</text><text class="event-detail-host-name">{{ event.organizer?.name || 'Organizer not provided' }}<view v-if="event.organizer?.verified" class="event-detail-verified"><SourceIcon name="verified" /></view></text></view></view>
         <view class="event-page-card event-detail-info">
-          <view class="event-detail-row"><view class="event-detail-disc"><view class="event-page-icon"><SourceIcon name="events" /></view></view><view class="event-detail-row-main"><text class="event-detail-row-title">{{ event.date_label }}</text><text class="event-detail-row-sub">{{ event.time_zone_label }}{{ event.ended ? ' · Ended' : '' }}</text></view></view>
-          <view class="event-detail-row" role="button" tabindex="0" data-interaction="eventDetail.location.open.click.1" @click="open('location')" @keydown.enter="open('location')"><view class="event-detail-disc event-detail-disc--location"><view class="event-page-icon"><SourceIcon name="location" /></view></view><view class="event-detail-row-main"><text class="event-detail-row-title">{{ event.location }}</text><text class="event-detail-row-sub">{{ event.university }} · View location</text></view><view class="event-page-icon"><SourceIcon name="chevron" /></view></view>
-          <view class="event-detail-row" role="button" tabindex="0" data-interaction="evDetail.openParticipantsList.click.1" @click="go('participants')" @keydown.enter="go('participants')"><view class="event-detail-disc event-detail-disc--people"><view class="event-page-icon"><SourceIcon name="people" /></view></view><view class="event-detail-row-main"><text class="event-detail-row-title" data-event-count>{{ event.attendance_label }}</text><text class="event-detail-row-sub">{{ event.available_count }} spaces left</text><view class="event-detail-avatars"><view v-for="person in event.participants" :key="person.user_id" class="event-detail-avatar"><UserAvatar :src="person.avatar_url" :name="person.user_name" /></view><text class="event-detail-participants-link">View participants</text></view></view></view>
+          <view class="event-detail-row"><view class="event-detail-disc"><view class="event-page-icon"><SourceIcon name="events" :stroke-width="1.9" /></view></view><view class="event-detail-row-main"><text class="event-detail-row-title">{{ event.date_label }}</text></view></view>
+          <view class="event-detail-row" role="button" tabindex="0" data-interaction="eventDetail.location.open.click.1" @click="open('location')" @keydown.enter="open('location')"><view class="event-detail-disc event-detail-disc--location"><view class="event-page-icon"><SourceIcon name="location" /></view></view><view class="event-detail-row-main"><text class="event-detail-row-title">{{ event.location }}</text></view></view>
+          <view class="event-detail-row" role="button" tabindex="0" data-interaction="evDetail.openParticipantsList.click.1" @click="go('participants')" @keydown.enter="go('participants')"><view class="event-detail-disc event-detail-disc--people"><view class="event-page-icon"><SourceIcon name="people" /></view></view><view class="event-detail-row-main"><text class="event-detail-row-title" data-event-count>{{ event.attendance_label }}</text><view class="event-detail-avatars"><view v-for="person in event.participants" :key="person.user_id" class="event-detail-avatar"><UserAvatar :src="person.avatar_url" :name="person.user_name" /></view><text class="event-detail-participants-link">View participants ›</text></view></view></view>
         </view>
         <text class="event-page-copy event-detail-description">{{ event.description || 'The organizer has not added a description yet.' }}</text>
         <text class="event-page-section">Schedule</text>
         <view class="event-page-card event-detail-schedule"><view v-for="(item, index) in event.schedule" :key="index" class="event-detail-schedule-row"><view class="event-detail-timeline" /><view><text class="event-detail-time">{{ item.time_label }}</text><text class="event-detail-schedule-title">{{ item.label }}</text><text class="event-detail-schedule-copy">{{ item.description }}</text></view></view><text v-if="!event.schedule.length" class="event-detail-schedule-copy">No schedule has been provided.</text></view>
         <text class="event-page-section">Good to know</text>
-        <view class="event-detail-notes"><text v-for="note in event.notes" :key="note" class="event-detail-note">{{ note }}</text><text v-if="!event.notes.length" class="event-detail-schedule-copy">No additional notes yet.</text></view>
+        <view class="event-detail-notes"><view v-for="note in event.note_chips" :key="note.label" class="event-detail-note"><text v-if="note.emoji" class="event-detail-note-emoji">{{ note.emoji }}</text><text>{{ note.label }}</text></view><text v-if="!event.notes.length" class="event-detail-schedule-copy">No additional notes yet.</text></view>
         <template v-if="event.joined && event.organizer?.update_text"><text class="event-page-section">Organizer update</text><view class="event-page-card event-detail-schedule"><text class="event-detail-schedule-copy">{{ event.organizer.update_text }}</text></view></template>
       </view>
     </template>
     <template #footer>
       <text v-if="error && !sheet" class="event-page-error" role="alert">{{ error }}</text>
       <view v-if="event && !access_error" class="event-page-footer">
-        <template v-if="event.joined"><view class="event-page-primary" role="button" tabindex="0" data-interaction="evDetail.openGroup.click.1" @click="go('group')" @keydown.enter="go('group')"><view class="event-page-icon"><SourceIcon name="support" /></view>Open event group</view><view class="event-page-secondary" role="button" tabindex="0" data-interaction="evDetail.manageAttendance.click.1" @click="open('cancel')" @keydown.enter="open('cancel')">Manage attendance</view></template>
-        <view v-else class="event-page-primary" role="button" tabindex="0" data-interaction="evDetail.askJoin.click.1" @click="open('join')" @keydown.enter="open('join')">{{ event.ended ? 'Event ended' : event.available_count ? 'Join event' : 'Event full' }}</view>
+        <template v-if="event.joined"><view class="event-page-primary" role="button" tabindex="0" data-interaction="evDetail.openGroup.click.1" @click="go('group')" @keydown.enter="go('group')"><view class="event-page-icon"><SourceIcon name="support" /></view>Open Group Chat</view><view class="event-page-secondary" role="button" tabindex="0" data-interaction="evDetail.manageAttendance.click.1" @click="open('cancel')" @keydown.enter="open('cancel')">Manage Attendance</view></template>
+        <view v-else class="event-page-primary" role="button" tabindex="0" data-interaction="evDetail.askJoin.click.1" @click="open('join')" @keydown.enter="open('join')">{{ event.ended ? 'Event ended' : event.available_count ? 'Join Event' : 'Event full' }}</view>
       </view>
     </template>
     <template #overlays>
@@ -61,3 +61,28 @@ const report = async () => { close(); await go('report') }
     </template>
   </SecondaryPageFrame>
 </template>
+
+<style scoped>
+.event-detail-host-label { color: var(--cimoa-text-auth-placeholder); font-weight: 700; letter-spacing: 0.06em; }
+.event-detail-host-name { display: flex; align-items: center; gap: 7.634rpx; margin-top: 3.817rpx; }
+.event-detail-verified { display: inline-flex; width: 32.443rpx; height: 32.443rpx; flex: none; }
+.event-detail-row:last-child { align-items: flex-start; }
+.event-detail-participants-link { font-weight: 700; }
+.event-detail-avatars { margin-top: 15.267rpx; }
+.event-detail-description { margin-top: 34.351rpx; }
+.event-page-section { font-weight: 800; }
+.event-detail-schedule-row { gap: 26.718rpx; }
+.event-detail-time { font-weight: 700; color: var(--cimoa-text-auth-placeholder); }
+.event-detail-schedule-title { margin-top: 3.817rpx; font-weight: 700; }
+.event-detail-schedule-copy { margin-top: 3.817rpx; }
+.event-detail-note {
+  display: flex;
+  align-items: center;
+  gap: 13.359rpx;
+  padding: 0 22.901rpx;
+  font-weight: 500;
+  color: var(--cimoa-text-profile-bio);
+}
+.event-detail-note-emoji { font-size: 32.443rpx; }
+.event-page-footer { padding-bottom: 64.885rpx; }
+</style>

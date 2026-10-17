@@ -1,7 +1,7 @@
 {
   "phase": "detail",
   "result": "passed",
-  "server_pid": 81020,
+  "server_pid": 64956,
   "checks": [
     "Events → exact detail → original Tab; source card geometry, local cover and actual count",
     "Join/cancel confirmation and pre-write Loading; unique membership, refresh, rollback and released seat",
