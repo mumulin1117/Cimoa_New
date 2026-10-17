@@ -1,7 +1,8 @@
 <script setup>
 import { ref, watch, onUnmounted } from 'vue'
 import { media_cache } from '@/utils/mediaRepository.js'
-const props = defineProps({ src: { type: String, default: '' }, name: { type: String, required: true }, position: { type: String, default: '50% 22%' }, eventCover: Boolean, portrait: Boolean, retryInteraction: { type: String, default: '' } })
+const props = defineProps({ src: { type: String, default: '' }, name: { type: String, required: true }, position: { type: String, default: '50% 22%' }, eventCover: Boolean, portrait: Boolean, contain: Boolean, retryInteraction: { type: String, default: '' } })
+const emit = defineEmits(['ready'])
 const resolved = ref(''), status = ref('loading')
 let generation = 0, lease = null, timer
 const release = () => { clearTimeout(timer); lease?.release(); lease = null }
@@ -17,14 +18,14 @@ const load = async () => {
     lease = next; resolved.value = next.url
   } catch { if (token === generation) fail() }
 }
-const loaded = () => { if (resolved.value) { clearTimeout(timer); status.value = 'ready' } }
+const loaded = () => { if (resolved.value) { clearTimeout(timer); status.value = 'ready'; emit('ready') } }
 watch(() => props.src, load, { immediate: true })
 onUnmounted(() => { generation++; release() })
 </script>
 
 <template>
-  <view class="profile-photo" :class="{ 'profile-photo--event': eventCover, 'profile-photo--portrait': portrait }" :style="{ '--profile-photo-position': position }" :data-media-status="status" role="img" :aria-label="`${name}: ${status === 'ready' ? eventCover ? 'event cover' : 'profile photo' : status === 'empty' ? 'no photos' : status === 'error' ? 'photo unavailable' : 'loading photo'}`">
-    <image v-if="resolved" :key="resolved" :src="resolved" mode="aspectFill" @load="loaded" @error="fail" />
+  <view class="profile-photo" :class="{ 'profile-photo--event': eventCover, 'profile-photo--portrait': portrait, 'profile-photo--contain': contain }" :style="{ '--profile-photo-position': position }" :data-media-status="status" role="img" :aria-label="`${name}: ${status === 'ready' ? eventCover ? 'event cover' : 'profile photo' : status === 'empty' ? 'no photos' : status === 'error' ? 'photo unavailable' : 'loading photo'}`">
+    <image v-if="resolved" :key="resolved" :src="resolved" :mode="contain ? 'aspectFit' : 'aspectFill'" @load="loaded" @error="fail" />
     <view v-if="status !== 'ready'" class="profile-photo-status" aria-live="polite">
       <text>{{ status === 'loading' ? 'Loading photo…' : status === 'empty' ? 'No photos yet' : portrait ? 'Photo unavailable' : 'Photo could not be loaded.' }}</text>
       <view v-if="status === 'error'" class="photo-retry" role="button" tabindex="0" aria-label="Retry photo" :data-interaction="retryInteraction || undefined" @click.stop="load" @keydown.enter.stop="load" @keydown.space.stop.prevent="load">Retry photo</view>
@@ -68,4 +69,6 @@ onUnmounted(() => { generation++; release() })
   line-height: 1.2;
 }
 .profile-photo--portrait .photo-retry { margin-top: 7.634rpx; padding: 11.45rpx 15.267rpx; background: var(--cimoa-surface-card); color: var(--cimoa-text-link); }
+.profile-photo--contain :deep(img) { object-fit: contain; }
+.profile-photo--contain :deep(uni-image > div) { background-size: contain !important; }
 </style>

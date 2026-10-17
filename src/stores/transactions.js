@@ -82,6 +82,7 @@ export function disconnect_for_block(data, target, now) {
   for (const row of data.match_sessions) if ([row.owner_user_id, row.candidate_id].includes(owner) && [row.owner_user_id, row.candidate_id].includes(target) && !['connected', 'passed', 'expired', 'no_match', 'left'].includes(row.status)) row.status = 'left'
   const direct_ids = data.conversations.filter((row) => row.kind === 'direct' && row.participant_ids.includes(owner) && row.participant_ids.includes(target)).map((row) => row.conversation_id)
   data.conversations = data.conversations.filter((row) => !direct_ids.includes(row.conversation_id))
+  data.call_sessions = data.call_sessions.filter(row => !direct_ids.includes(row.conversation_id))
   data.messages = data.messages.filter((row) => !direct_ids.includes(row.conversation_id))
 }
 export const password_hash = async (password) => {

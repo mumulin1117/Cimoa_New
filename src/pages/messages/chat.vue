@@ -14,6 +14,7 @@ import EventConfirmDialog from '@/components/EventConfirmDialog.vue'
 import EventActionLoading from '@/components/EventActionLoading.vue'
 import SafetyActionsSheet from '@/components/SafetyActionsSheet.vue'
 import ConnectionIcon from '@/components/ConnectionIcon.vue'
+import ChatImageConfirmDialog from '@/components/ChatImageConfirmDialog.vue'
 
 const store = use_app_store()
 const { height: viewport_height, keyboard_open } = use_visual_viewport()
@@ -40,6 +41,9 @@ const access_error = computed(() => store.hydration_status !== 'ready'
       ? 'This conversation is unavailable. It may have ended or the account may be blocked.'
       : '')
 const locked = computed(() => !!sheet.value || is_loading.value || media_busy.value)
+const photo_id = ref('')
+const photo_src = computed(() => conversation.value?.messages.find(row => row.message_id === photo_id.value && row.kind === 'image')?.media?.media_url || '')
+watch(access_error, value => { if (value) { cancel_loading(); clear_media(); sheet.value = ''; photo_id.value = '' } })
 
 onLoad(options => {
   conversation_id.value = String(options?.conversation_id || '')
@@ -81,7 +85,11 @@ const open_profile = async () => {
 const start_call = async () => {
   if (locked.value || access_error.value) return
   if (conversation.value.call_blocker) { error.value = conversation.value.call_blocker; return }
-  try { await frame.value.navigate_forward(`/pages/messages/call/waiting?conversation_id=${encodeURIComponent(conversation_id.value)}`) } catch (cause) { error.value = cause.message }
+  error.value = ''
+  const result = await run_with_loading(() => store.start_waiting_call(conversation_id.value, make_operation_id()))
+  if (!active.value || result.reason === 'cancelled') return
+  if (!result.success) { error.value = result.message; return }
+  try { await frame.value.navigate_forward(`/pages/messages/call/waiting?conversation_id=${encodeURIComponent(conversation_id.value)}&call_id=${encodeURIComponent(result.data)}`) } catch (cause) { error.value = cause.message }
 }
 const open_report = async () => {
   if (is_loading.value || access_error.value) return
@@ -149,7 +157,7 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
         <view class="chat-message-main">
           <view class="chat-bubble">
             <text v-if="message.kind === 'text'">{{ message.body }}</text>
-            <view v-else-if="message.kind === 'image'" class="chat-image"><ProfilePhoto :src="message.media?.media_url || ''" name="Shared photo" portrait /></view>
+            <view v-else-if="message.kind === 'image'" class="chat-image" role="button" tabindex="0" aria-label="View shared photo" data-interaction="chat.image.open.click.1" @click="!locked && (photo_id = message.message_id, sheet = 'image')" @keydown.enter="!locked && (photo_id = message.message_id, sheet = 'image')"><ProfilePhoto :src="message.media?.media_url || ''" name="Shared photo" portrait @ready="message.message_id === conversation.messages.at(-1)?.message_id && scroll_last()" /></view>
             <EventAudio v-else :src="message.media?.media_url || ''" :duration="message.media?.duration_ms" interaction="chat.media.play.click.1" />
           </view>
         </view>
@@ -167,6 +175,7 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
     </template>
 
     <template #overlays>
+      <ChatImageConfirmDialog :open="sheet === 'image' && !!photo_src" :src="photo_src" @close="close_sheet" />
       <SafetyActionsSheet :open="['safety', 'block'].includes(sheet)" :mode="sheet === 'block' ? 'block' : 'menu'" :user-name="participant?.user_name" :muted="muted" :busy="is_loading" :error="error" @close="close_sheet" @view-profile="open_profile" @toggle-mute="toggle_mute" @report="open_report" @open-block="sheet = 'block'; error = ''" @confirm-block="confirm_block" />
       <EventConfirmDialog :open="['media', 'voice'].includes(sheet)" :busy="is_loading || media_busy" :label="sheet === 'voice' ? 'Voice message' : 'Send photo?'" close-interaction="chat.media.close.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="close_sheet">
         <text class="event-dialog-title">{{ sheet === 'voice' ? 'Voice message' : 'Send photo?' }}</text>

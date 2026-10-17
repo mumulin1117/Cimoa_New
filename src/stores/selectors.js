@@ -60,6 +60,11 @@ export const messages_for = (data, conversation_id) => can_open_conversation(dat
 export { home_cards, home_match_card } from './homeFeed.js'
 export const ensure = (condition, message) => { if (!condition) throw new Error(message) }
 export function validate_data(data) {
+  ensure(Array.isArray(data.call_sessions) && new Set(data.call_sessions.map(row => row.call_id)).size === data.call_sessions.length, 'Invalid call identifiers.')
+  for (const row of data.call_sessions) {
+    const conversation = data.conversations.find(item => item.conversation_id === row.conversation_id && item.kind === 'direct')
+    ensure(typeof row.call_id === 'string' && row.call_id && conversation?.participant_ids.includes(row.owner_user_id) && conversation.participant_ids.includes(row.participant_id) && row.owner_user_id !== row.participant_id && typeof row.connection_id === 'string' && row.connection_id && Number.isFinite(row.session_expires_at) && Number.isFinite(row.started_at) && Number.isFinite(row.expires_at) && row.expires_at - row.started_at >= 8000 && row.expires_at - row.started_at <= 12000 && (row.ended_at === null || Number.isFinite(row.ended_at) && row.ended_at >= row.started_at && row.ended_at <= row.expires_at), 'Invalid waiting call.')
+  }
   const tables = { users: 'user_id', accounts: 'account_id', goals: 'item_id', interests: 'item_id', icebreakers: 'question_id', profile_photos: 'photo_id', songs: 'song_id', media_files: 'media_id', relationships: 'relationship_id', requests: 'request_id', match_sessions: 'match_id', events: 'event_id', organizers: 'organizer_id', memberships: 'membership_id', conversations: 'conversation_id', messages: 'message_id', coin_packages: 'package_id', coin_transactions: 'transaction_id', purchase_requests: 'request_id', blocked_users: 'block_id', reports: 'report_id', drafts: 'draft_id', support_requests: 'support_id' }
   const has = (table, id) => data[table].some((row) => row[tables[table]] === id)
   const unique = (rows, key) => new Set(rows.map(key)).size === rows.length

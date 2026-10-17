@@ -7,6 +7,43 @@ import { STATE_KEY } from '../src/utils/statePersistence.js'
 import { validate_data } from '../src/stores/selectors.js'
 
 const epoch = Date.UTC(2026, 9, 17, 10)
+test('waiting calls persist one absolute deadline, isolate login/connection ownership and never imply an answer', () => {
+  const f = fixture(), { store } = f
+  const call = store.start_waiting_call('conversation_chloe', 'call-once')
+  assert.equal(call.success, true)
+  assert.equal(store.start_waiting_call('conversation_chloe', 'call-once').repeated, true)
+  assert.equal(store.start_waiting_call('conversation_chloe', 'another-click').data, call.data)
+  assert.equal(store.data.call_sessions.length, 1)
+  const row = store.waiting_call(call.data)
+  assert.ok(row.expires_at - row.started_at >= 8000 && row.expires_at - row.started_at <= 12000)
+  assert.equal(row.status, 'waiting')
+  f.advance(4500)
+  assert.equal(store.waiting_call(call.data).expires_at, row.expires_at)
+  const reloaded = fixture(f.disk.get(STATE_KEY)).store
+  assert.equal(reloaded.waiting_call(call.data).expires_at, row.expires_at)
+  f.advance(8000); assert.equal(store.waiting_call(call.data).status, 'timeout')
+  assert.equal(store.data.call_sessions[0].ended_at, null)
+  const next = store.start_waiting_call('conversation_chloe', 'next-call')
+  f.fail(true); const before = clone_data(store.data)
+  assert.equal(store.end_waiting_call(next.data).success, false); assert.deepEqual(clone_data(store.data), before)
+  f.fail(false); assert.equal(store.end_waiting_call(next.data).success, true); assert.equal(store.waiting_call(next.data).status, 'ended')
+  store.data.session.expires_at += 1; assert.equal(store.waiting_call(call.data), null)
+  store.block_user('user_chloe'); assert.equal(store.data.call_sessions.length, 0)
+  assert.equal(store.start_waiting_call('conversation_chloe', 'call-once').success, false)
+})
+test('call creation failure, privacy, expiry, corrupt deadlines and old saves remain safe', () => {
+  const f = fixture(), { store } = f, before = clone_data(store.data)
+  f.fail(true); assert.equal(store.start_waiting_call('conversation_chloe').success, false); assert.deepEqual(clone_data(store.data), before)
+  f.fail(false); store.data.settings[0].privacy.allow_video = false
+  assert.equal(store.start_waiting_call('conversation_chloe').success, false)
+  store.data.settings[0].privacy.allow_video = true
+  const call = store.start_waiting_call('conversation_chloe'); const bad = clone_data(store.data); bad.call_sessions[0].expires_at += 13000
+  assert.throws(() => validate_data(bad), /waiting call/)
+  f.advance(31 * 86400000); assert.equal(store.waiting_call(call.data), null)
+  assert.equal(store.end_waiting_call(call.data).success, false)
+  const old = create_seed(epoch); delete old.call_sessions
+  const migrated = fixture(old); assert.deepEqual(migrated.store.data.call_sessions, []); assert.equal(migrated.writes(), 0)
+})
 function fixture(saved = create_seed(epoch)) {
   let fail = false, writes = 0, now = epoch
   const disk = new Map([[STATE_KEY, saved]]), store = use_app_store(createPinia())

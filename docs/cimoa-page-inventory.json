@@ -6401,9 +6401,9 @@
         "back"
       ]
     },
-    "status": "verified",
-    "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "status": "pending",
+    "local_acceptance": "browser-passed; WKWebView and call dependency pending",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "Source locked; local/full/visual acceptance passed; final H5 and iPhone 17 Pro WKWebView 10/10 suite match the same build. Implementation and evidence committed locally at a3fbed70; no push.",
     "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",

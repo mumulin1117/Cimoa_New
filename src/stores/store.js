@@ -17,6 +17,7 @@ import * as s from './selectors.js'
 import * as ev from './eventSelectors.js'
 import { event_group, event_message_actions } from './eventMessaging.js'
 import { direct_conversation, direct_message_actions } from './directMessaging.js'
+import { waiting_call, waiting_call_actions } from './waitingCalls.js'
 import { connection_for, connection_request } from './connectionEntities.js'
 import { home_feed } from './homeFeed.js'
 import { introduction_context } from './discoverFlow.js'
@@ -44,6 +45,7 @@ const check_media = async (store, id, kind) => {
 export const use_app_store = defineStore('app', {
   state: () => ({ data: create_seed(), hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
   getters: {
+    waiting_call: state => id => state.hydration_status === 'ready' ? waiting_call(state.data, id, state.clock_ms) : null,
     match_presentation: state => (id='',draft=null,query='') => match_presentation(state.data,id,state.clock_ms,state.hydration_status,draft,query),
     profile_editor: state => state.hydration_status === 'ready' ? profile_context(state.data, state.clock_ms) : null,
     profile_catalog: state => ({ ...clone_data(state.data.picker_options), songs: clone_data(state.data.songs) }),
@@ -170,6 +172,7 @@ export const use_app_store = defineStore('app', {
   actions: {
     ...event_message_actions,
     ...direct_message_actions,
+    ...waiting_call_actions,
     ...profile_edit_actions,
     ...onboarding_actions,
     tick() { this.clock_ms = get_runtime(this).clock() },
@@ -263,6 +266,7 @@ export const use_app_store = defineStore('app', {
         data.memberships = data.memberships.filter((row) => row.user_id !== owner)
         const direct_ids = data.conversations.filter((row) => row.kind === 'direct' && row.participant_ids.includes(owner)).map((row) => row.conversation_id)
         data.conversations = data.conversations.filter((row) => !direct_ids.includes(row.conversation_id))
+        data.call_sessions = data.call_sessions.filter(row => !direct_ids.includes(row.conversation_id))
         data.messages = data.messages.filter((row) => row.sender_id !== owner && !direct_ids.includes(row.conversation_id))
         for (const table of ['coin_transactions', 'purchase_requests', 'blocked_users', 'reports', 'drafts', 'support_requests', 'operation_receipts', 'settings', 'event_preferences']) data[table] = data[table].filter((row) => row.owner_user_id !== owner && (table !== 'blocked_users' || row.user_id !== owner))
         data.session = { current_user_id: null, account_id: null, expires_at: null }

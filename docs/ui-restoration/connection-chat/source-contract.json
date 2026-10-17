@@ -258,7 +258,10 @@
     "chat.media.close.click.1",
     "chat.media.close.click.2",
     "chat.media.record.click.1",
-    "chat.media.send.click.1"
+    "chat.media.send.click.1",
+    "chat.image.open.click.1",
+    "chat.image.close.click.1",
+    "chat.image.retry.click.1"
   ],
   "approved_deltas": [
     "Cimoa branding and unified actual participant IDs",
@@ -267,6 +270,7 @@
     "Only real shared interests and verified badges",
     "Store writes use confirmation and 500ms loading; no automatic peer acceptance",
     "Resolved/blocked requests show actual state; decline does not claim delivered content was never shared",
-    "Date label is calculated from the real message timestamp"
+    "Date label is calculated from the real message timestamp",
+    "Authorized media completion: aspect-fit full photo preview with explicit missing-Blob retry; no message fixture or fake playback. Call entry persists an account/connection-scoped absolute waiting deadline after 500ms Loading."
   ]
 }
