@@ -145,6 +145,12 @@
       "purple": "#a855f7",
       "pink": "#f81ce5",
       "arc_mid": "#6366f1"
+    },
+    "auto-match": {
+      "match_step": "#3b6bd8",
+      "match_tone_1": "#f3e8ff",
+      "match_note": "rgba(255,255,255,0.7)",
+      "match_cost-tag": "rgba(255,255,255,0.22)"
     }
   },
   "gradients": {
@@ -214,6 +220,12 @@
     "popover": "0 34.351rpx 83.969rpx rgba(16,36,74,0.20)",
     "primary": "0 22.901rpx 53.435rpx rgba(168,85,247,0.32)",
     "coin_hero": "0 26.718rpx 57.252rpx rgba(120,110,245,0.22)",
-    "coin_selected": "0 19.084rpx 49.618rpx rgba(168,85,247,0.18)"
+    "coin_selected": "0 19.084rpx 49.618rpx rgba(168,85,247,0.18)",
+    "auto_match_49": "0 11.45rpx 34.351rpx rgba(16,36,74,0.10)",
+    "auto_match_50": "0 15.267rpx 45.801rpx rgba(16,36,74,0.07)",
+    "auto_match_51": "0 22.9rpx 49.618rpx rgba(168,85,247,0.24)",
+    "auto_match_52": "0 11.45rpx 34.351rpx rgba(16,36,74,0.10)",
+    "auto_match_53": "0 15.267rpx 45.801rpx rgba(16,36,74,0.07)",
+    "auto_match_54": "0 22.9rpx 49.618rpx rgba(168,85,247,0.24)"
   }
 }

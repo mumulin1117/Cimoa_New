@@ -5,6 +5,47 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    private func autoMatchPixel(_ phase: String) async throws {
+        let host = try await rawHost()
+        let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/auto-match-\(phase)")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("native-fixture.json"))) as! [String: Any]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}return true", arguments: ["saved": snapshot], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?matchRestore=\(UUID().uuidString)#/pages/auth/splash")!))
+        }
+        do {
+            _ = try await host.webView.callAsyncJavaScript("const data=fixture.data;data.session.expires_at=Date.now()+86400000;for(const m of data.match_sessions)if(m.match_id==='match_pixel'&&m.status==='found')m.expires_at=Date.now()+3600000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture], in: nil, contentWorld: .page)
+            try await loadFreshConnection(host, route: fixture["route"] as! String, selector: ".auto-match-\(phase)")
+            host.publishSafeArea()
+            let metrics = try await script(host, """
+            await document.fonts.ready;await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));for(const a of document.getAnimations()){if(a.effect.getComputedTiming().iterations===Infinity){a.pause();a.currentTime=0}else a.finish()}await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+            const root=document.querySelector('.auto-match-\(phase)'),box=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}},header=root.querySelector('.secondary-page-header'),footer=root.querySelector('.am-footer');
+            return {viewport:{width:innerWidth,height:innerHeight},origin:location.origin,safe:[getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-top'),getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom')],overflow:document.documentElement.scrollWidth>innerWidth,header:box(header),footer:footer?box(footer):null,errors:[...root.querySelectorAll('[role="alert"]')].map(e=>e.textContent),images:[...root.querySelectorAll('img')].every(i=>i.complete&&i.naturalWidth>0),text:root.innerText};
+            """) as! [String: Any]
+            XCTAssertEqual(metrics["overflow"] as? Bool, false)
+            XCTAssertEqual(metrics["images"] as? Bool, true)
+            XCTAssertEqual(metrics["origin"] as? String, BundleHTTPServer.origin)
+            XCTAssertEqual((metrics["errors"] as? [String])?.count, 0)
+            let image = try await host.webView.takeSnapshot(configuration: nil)
+            try image.pngData()!.write(to: folder.appendingPathComponent("actual-wkwebview.png"))
+            try JSONSerialization.data(withJSONObject: metrics, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-geometry.json"))
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
+    func testAutoMatchIndexPixel() async throws { try await autoMatchPixel("index") }
+    func testAutoMatchPreferencesPixel() async throws { try await autoMatchPixel("preferences") }
+    func testAutoMatchSearchingPixel() async throws { try await autoMatchPixel("searching") }
+    func testAutoMatchPausedPixel() async throws { try await autoMatchPixel("paused") }
+    func testAutoMatchFoundPixel() async throws { try await autoMatchPixel("found") }
+    func testAutoMatchWaitingPixel() async throws { try await autoMatchPixel("waiting") }
+    func testAutoMatchConnectedPixel() async throws { try await autoMatchPixel("connected") }
+    func testAutoMatchPassedPixel() async throws { try await autoMatchPixel("passed") }
+    func testAutoMatchExpiredPixel() async throws { try await autoMatchPixel("expired") }
+    func testAutoMatchNoMatchPixel() async throws { try await autoMatchPixel("no-match") }
+    func testAutoMatchHistoryPixel() async throws { try await autoMatchPixel("history") }
     private func discoverRequestPixel(_ phase: String) async throws {
         let host = try await rawHost()
         let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]

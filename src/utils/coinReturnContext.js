@@ -1,4 +1,6 @@
 export function coin_source_route(store, context_id) {
+  const match=store.current_drafts.find(row=>row.draft_id===context_id&&row.kind==='match_return')
+  if(match){if(match.payload.kind==='match_entry')return '/pages/auto-match/index';return store.matching_context(match.payload.match_id).route||'/pages/auto-match/index'}
   const draft = store.current_drafts.find(row => row.draft_id === context_id && row.kind === 'introduction')
   if (!draft) return '/pages/profile/index'
   const context = store.introduction_context(draft.target_id, draft.draft_id)

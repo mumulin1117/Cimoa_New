@@ -4,6 +4,7 @@ import { create_seed, clone_data } from './seed.js'
 import { ensure_account_defaults, registration_profile, session_for, auth_context_key } from './accountDefaults.js'
 import { auto_match_actions, matching_context } from './autoMatching.js'
 import { apply_priority } from './matchState.js'
+import { match_presentation } from './matchPresentation.js'
 import { migrate_legacy, upgrade_additive_data } from './migration.js'
 import { normalize_email, valid_email, password_error, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
 import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
@@ -43,6 +44,7 @@ const check_media = async (store, id, kind) => {
 export const use_app_store = defineStore('app', {
   state: () => ({ data: create_seed(), hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
   getters: {
+    match_presentation: state => (id='',draft=null,query='') => match_presentation(state.data,id,state.clock_ms,state.hydration_status,draft,query),
     profile_editor: state => state.hydration_status === 'ready' ? profile_context(state.data, state.clock_ms) : null,
     profile_catalog: state => ({ ...clone_data(state.data.picker_options), songs: clone_data(state.data.songs) }),
     auth_draft: state => clone_data(state.data.auth_flow),
@@ -652,7 +654,9 @@ export const use_app_store = defineStore('app', {
         s.ensure(data.coin_packages.some(row => row.package_id === package_id) && !own(data, data.purchase_requests).some(row => row.status === 'pending'), 'A purchase is already pending or this package is unavailable.')
         if (return_context_id) {
           const draft = require_owned(data, data.drafts, 'draft_id', return_context_id)
-          s.ensure(draft.kind === 'introduction' && !draft.payload.completed_request_id && !!introduction_context(data, draft.target_id, return_context_id, now).audio, 'This introduction return context is unavailable.')
+          const intro=draft.kind === 'introduction' && !draft.payload.completed_request_id && !!introduction_context(data, draft.target_id, return_context_id, now).audio
+          const match=draft.kind === 'match_return' && (draft.payload.kind==='match_entry'||draft.payload.kind==='match_priority'&&data.match_sessions.some(m=>m.match_id===draft.payload.match_id&&m.owner_user_id===s.owner_id(data)))
+          s.ensure(intro||match, 'This purchase return context is unavailable.')
         }
         const request_id = make_id('purchase')
         data.purchase_requests.push({ request_id, owner_user_id: s.owner_id(data), package_id, status: 'pending', created_at: now, receipt_id: null, ...(return_context_id ? { return_context_id } : {}) })

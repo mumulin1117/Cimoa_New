@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "page": "index",
+  "route": "/pages/auto-match/index",
+  "errors": [],
+  "geometry_passed": true,
+  "differences": [],
+  "source": "Offline source AST, approved data/safe-area/fixed-frame transformations only",
+  "server_pid": 13934,
+  "cleaned_up": true
+}

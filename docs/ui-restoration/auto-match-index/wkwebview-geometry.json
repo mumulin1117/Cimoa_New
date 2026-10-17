@@ -1,0 +1,29 @@
+{
+  "errors" : [
+
+  ],
+  "footer" : {
+    "height" : 145.203125,
+    "width" : 402,
+    "x" : 0,
+    "y" : 694.796875
+  },
+  "header" : {
+    "height" : 65.4375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Auto Match\nMeet someone new\nJoin the pool and we’ll introduce you to a compatible student who’s also available.\nVerified students only\n1\nJoin the pool\n2\nGet matched\n3\nBoth choose to connect\nEstimated wait\nAbout 9 seconds\nAvailable now\n29 students\nYou get 3 free matches every day — 3 left today. After that, each match costs 10 coins. You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first.\nJoin the Pool\nFree · 3\/3 left\nMatch Preferences\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

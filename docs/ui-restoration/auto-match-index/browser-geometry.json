@@ -1,0 +1,471 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1462": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1463": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1464": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1466": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1468": {
+      "x": 0,
+      "y": 124,
+      "width": 393,
+      "height": 716.25,
+      "text": "Meet someone newJoin the pool and we’ll introduce you to a compatible student who’s also available.Verified students only1Join the pool2Get matched3Both choose to connectEstimated waitAbout 9 secondsAvailable now29 studentsYou get 3 free matches every day — 3 left today. After that, each match costs 10 coins. You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first."
+    },
+    "1469": {
+      "x": 20,
+      "y": 124,
+      "width": 353,
+      "height": 36.71875,
+      "text": "Meet someone new"
+    },
+    "1470": {
+      "x": 20,
+      "y": 170.71875,
+      "width": 353,
+      "height": 49.28125,
+      "text": "Join the pool and we’ll introduce you to a compatible student who’s also available."
+    },
+    "1471": {
+      "x": 20,
+      "y": 236,
+      "width": 205.171875,
+      "height": 40,
+      "text": "Verified students only"
+    },
+    "1472": {
+      "x": 34,
+      "y": 247.5,
+      "width": 17,
+      "height": 17,
+      "text": ""
+    },
+    "1473": {
+      "x": 59,
+      "y": 247.5,
+      "width": 152.171875,
+      "height": 17,
+      "text": "Verified students only"
+    },
+    "1475": {
+      "x": 20,
+      "y": 300,
+      "width": 353,
+      "height": 170,
+      "text": "1Join the pool2Get matched3Both choose to connect"
+    },
+    "1476": {
+      "x": 40,
+      "y": 320,
+      "width": 313,
+      "height": 34,
+      "text": "1Join the pool"
+    },
+    "1477": {
+      "x": 40,
+      "y": 320,
+      "width": 34,
+      "height": 34,
+      "text": "1"
+    },
+    "1478": {
+      "x": 88,
+      "y": 327,
+      "width": 102.171875,
+      "height": 20,
+      "text": "Join the pool"
+    },
+    "1480": {
+      "x": 40,
+      "y": 368,
+      "width": 313,
+      "height": 34,
+      "text": "2Get matched"
+    },
+    "1481": {
+      "x": 40,
+      "y": 368,
+      "width": 34,
+      "height": 34,
+      "text": "2"
+    },
+    "1482": {
+      "x": 88,
+      "y": 375,
+      "width": 102.59375,
+      "height": 20,
+      "text": "Get matched"
+    },
+    "1484": {
+      "x": 40,
+      "y": 416,
+      "width": 313,
+      "height": 34,
+      "text": "3Both choose to connect"
+    },
+    "1485": {
+      "x": 40,
+      "y": 416,
+      "width": 34,
+      "height": 34,
+      "text": "3"
+    },
+    "1486": {
+      "x": 88,
+      "y": 423,
+      "width": 188.5,
+      "height": 20,
+      "text": "Both choose to connect"
+    },
+    "1489": {
+      "x": 20,
+      "y": 486,
+      "width": 353,
+      "height": 160,
+      "text": "Estimated waitAbout 9 secondsAvailable now29 students"
+    },
+    "1490": {
+      "x": 20,
+      "y": 486,
+      "width": 353,
+      "height": 74,
+      "text": "Estimated waitAbout 9 seconds"
+    },
+    "1491": {
+      "x": 36,
+      "y": 500,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1492": {
+      "x": 94,
+      "y": 503.5,
+      "width": 263,
+      "height": 39,
+      "text": "Estimated waitAbout 9 seconds"
+    },
+    "1494": {
+      "x": 20,
+      "y": 572,
+      "width": 353,
+      "height": 74,
+      "text": "Available now29 students"
+    },
+    "1495": {
+      "x": 36,
+      "y": 586,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1496": {
+      "x": 94,
+      "y": 589.5,
+      "width": 263,
+      "height": 39,
+      "text": "Available now29 students"
+    },
+    "1499": {
+      "x": 20,
+      "y": 664,
+      "width": 353,
+      "height": 152.25,
+      "text": "You get 3 free matches every day — 3 left today. After that, each match costs 10 coins. You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first."
+    },
+    "1500": {
+      "x": 38,
+      "y": 682,
+      "width": 317,
+      "height": 116.25,
+      "text": "You get 3 free matches every day — 3 left today. After that, each match costs 10 coins. You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first."
+    },
+    "1503": {
+      "x": 0,
+      "y": 710,
+      "width": 393,
+      "height": 142,
+      "text": "Join the PoolFree · 3/3 leftMatch Preferences"
+    },
+    "1504": {
+      "x": 20,
+      "y": 710,
+      "width": 353,
+      "height": 60,
+      "text": "Join the PoolFree · 3/3 left"
+    },
+    "1505": {
+      "x": 20,
+      "y": 776,
+      "width": 353,
+      "height": 46,
+      "text": "Match Preferences"
+    }
+  },
+  "actual": {
+    "1462": {
+      "x": 19.984375,
+      "y": 57.984375,
+      "width": 353.03125,
+      "height": 47.984375,
+      "text": "Auto Match"
+    },
+    "1463": {
+      "x": 19.984375,
+      "y": 58.984375,
+      "width": 45.984375,
+      "height": 45.984375,
+      "text": ""
+    },
+    "1464": {
+      "x": 31.984375,
+      "y": 70.984375,
+      "width": 21.984375,
+      "height": 21.984375,
+      "text": ""
+    },
+    "1466": {
+      "x": 77.984375,
+      "y": 57.984375,
+      "width": 237.03125,
+      "height": 47.984375,
+      "text": "Auto Match"
+    },
+    "1468": {
+      "x": 0,
+      "y": 123.9375,
+      "width": 393,
+      "height": 715.890625,
+      "text": "Meet someone newJoin the pool and we’ll introduce you to a compatible student who’s also available.Verified students only1Join the pool2Get matched3Both choose to connectEstimated waitAbout 9 secondsAvailable now29 studentsYou get 3 free matches every day — 3 left today. After that, each match costs 10 coins. You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first."
+    },
+    "1469": {
+      "x": 19.984375,
+      "y": 123.9375,
+      "width": 353.03125,
+      "height": 36.71875,
+      "text": "Meet someone new"
+    },
+    "1470": {
+      "x": 19.984375,
+      "y": 170.640625,
+      "width": 353.03125,
+      "height": 49.28125,
+      "text": "Join the pool and we’ll introduce you to a compatible student who’s also available."
+    },
+    "1471": {
+      "x": 19.984375,
+      "y": 235.90625,
+      "width": 205.015625,
+      "height": 39.984375,
+      "text": "Verified students only"
+    },
+    "1472": {
+      "x": 33.96875,
+      "y": 247.40625,
+      "width": 16.984375,
+      "height": 16.984375,
+      "text": ""
+    },
+    "1473": {
+      "x": 58.9375,
+      "y": 247.390625,
+      "width": 152.078125,
+      "height": 17,
+      "text": "Verified students only"
+    },
+    "1475": {
+      "x": 19.984375,
+      "y": 299.875,
+      "width": 353.03125,
+      "height": 169.890625,
+      "text": "1Join the pool2Get matched3Both choose to connect"
+    },
+    "1476": {
+      "x": 39.96875,
+      "y": 319.859375,
+      "width": 313.0625,
+      "height": 33.984375,
+      "text": "1Join the pool"
+    },
+    "1477": {
+      "x": 39.96875,
+      "y": 319.859375,
+      "width": 33.984375,
+      "height": 33.984375,
+      "text": "1"
+    },
+    "1478": {
+      "x": 87.9375,
+      "y": 326.84375,
+      "width": 102.109375,
+      "height": 20,
+      "text": "Join the pool"
+    },
+    "1480": {
+      "x": 39.96875,
+      "y": 367.828125,
+      "width": 313.0625,
+      "height": 33.984375,
+      "text": "2Get matched"
+    },
+    "1481": {
+      "x": 39.96875,
+      "y": 367.828125,
+      "width": 33.984375,
+      "height": 33.984375,
+      "text": "2"
+    },
+    "1482": {
+      "x": 87.9375,
+      "y": 374.8125,
+      "width": 102.53125,
+      "height": 20,
+      "text": "Get matched"
+    },
+    "1484": {
+      "x": 39.96875,
+      "y": 415.796875,
+      "width": 313.0625,
+      "height": 33.984375,
+      "text": "3Both choose to connect"
+    },
+    "1485": {
+      "x": 39.96875,
+      "y": 415.796875,
+      "width": 33.984375,
+      "height": 33.984375,
+      "text": "3"
+    },
+    "1486": {
+      "x": 87.9375,
+      "y": 422.78125,
+      "width": 188.390625,
+      "height": 20,
+      "text": "Both choose to connect"
+    },
+    "1489": {
+      "x": 19.984375,
+      "y": 485.75,
+      "width": 353.03125,
+      "height": 159.890625,
+      "text": "Estimated waitAbout 9 secondsAvailable now29 students"
+    },
+    "1490": {
+      "x": 19.984375,
+      "y": 485.75,
+      "width": 353.03125,
+      "height": 73.953125,
+      "text": "Estimated waitAbout 9 seconds"
+    },
+    "1491": {
+      "x": 35.96875,
+      "y": 499.734375,
+      "width": 45.984375,
+      "height": 45.984375,
+      "text": ""
+    },
+    "1492": {
+      "x": 93.9375,
+      "y": 503.234375,
+      "width": 263.09375,
+      "height": 38.984375,
+      "text": "Estimated waitAbout 9 seconds"
+    },
+    "1494": {
+      "x": 19.984375,
+      "y": 571.6875,
+      "width": 353.03125,
+      "height": 73.953125,
+      "text": "Available now29 students"
+    },
+    "1495": {
+      "x": 35.96875,
+      "y": 585.671875,
+      "width": 45.984375,
+      "height": 45.984375,
+      "text": ""
+    },
+    "1496": {
+      "x": 93.9375,
+      "y": 589.171875,
+      "width": 263.09375,
+      "height": 38.984375,
+      "text": "Available now29 students"
+    },
+    "1499": {
+      "x": 19.984375,
+      "y": 663.625,
+      "width": 353.03125,
+      "height": 152.21875,
+      "text": "You get 3 free matches every day — 3 left today. After that, each match costs 10 coins. You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first."
+    },
+    "1500": {
+      "x": 37.96875,
+      "y": 681.609375,
+      "width": 317.0625,
+      "height": 116.25,
+      "text": "You get 3 free matches every day — 3 left today. After that, each match costs 10 coins. You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first."
+    },
+    "1503": {
+      "x": 0,
+      "y": 710.0625,
+      "width": 393,
+      "height": 141.9375,
+      "text": "Join the PoolFree · 3/3 leftMatch Preferences"
+    },
+    "1504": {
+      "x": 19.984375,
+      "y": 710.0625,
+      "width": 353.03125,
+      "height": 59.984375,
+      "text": "Join the PoolFree · 3/3 left"
+    },
+    "1505": {
+      "x": 19.984375,
+      "y": 776.03125,
+      "width": 353.03125,
+      "height": 45.984375,
+      "text": "Match Preferences"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 40967,
+    "pixels_above_channel_delta_8": 7494,
+    "mean_absolute_channel_delta": 0.8659851389934177,
+    "max_channel_delta": 244
+  }
+}
