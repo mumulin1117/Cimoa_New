@@ -2955,15 +2955,15 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-profile/acceptance.json",
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "acceptance_evidence": "docs/evidence/sync-recovery/profile-browser.json",
     "source_lock": "locked",
-    "visual_acceptance": "passed",
-    "source_lock_artifact": "docs/ui-restoration/discover-request-profile/source-contract.json",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/sync-expanded/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/discover-request-profile/difference-audit.md",
     "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
     "implementation_commit": "f8924a99"

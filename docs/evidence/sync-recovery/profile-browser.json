@@ -1,0 +1,23 @@
+{
+  "phase": "profile",
+  "result": "passed",
+  "checks": [
+    "Original profile layout and three-photo gallery remain read-only, with independent HTML reference/actual/overlay/diff",
+    "Blocking a deck profile changes the canonical deck and a refreshed old profile URL fails closed",
+    "Connected profile block removes shared Home/private conversation; a refreshed private URL exposes no composer",
+    "Unblock survives refresh and restores allowed visibility only, never the old connection or Chat CTA"
+  ],
+  "errors": [],
+  "visual_acceptance": "pending",
+  "media_scope": "Controlled message fixtures; encoded test tone, not a microphone recording or a real peer response",
+  "server_pid": 22193,
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 253722,
+    "pixels_above_channel_delta_8": 70789,
+    "mean_absolute_channel_delta": 3.730043961820115,
+    "max_channel_delta": 244
+  },
+  "cleaned_up": true
+}

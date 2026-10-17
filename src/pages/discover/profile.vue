@@ -3,6 +3,7 @@ import { computed, ref, onUnmounted, watch } from 'vue'
 import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { discover_destination, require_discover_destination_ready } from '@/utils/discoverNavigation.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
@@ -23,7 +24,8 @@ const active = ref(true)
 const navigating = ref(false)
 const was_available = ref(false)
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
-const person = computed(() => store.user_by_id(user_id.value))
+const account_scope = use_account_scope(store, () => { cancel_loading(); sheet.value = ''; photo_index.value = 0 })
+const person = computed(() => account_scope.is_current() ? store.user_by_id(user_id.value) : null)
 const photos = computed(() => store.photos_for_user(user_id.value))
 const goals = computed(() => store.goals_for_user(user_id.value))
 const interests = computed(() => store.interests_for_user(user_id.value))
@@ -36,7 +38,7 @@ const request_context = computed(() => store.introduction_context(user_id.value)
 const primary_label = computed(() => is_self.value ? 'This is you' : request_context.value.primary?.label || 'Send shot')
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated
+  : !store.session.is_authenticated || !account_scope.is_current()
     ? 'Your session has expired. Please sign in again.'
     : !user_id.value || !person.value
       ? 'This profile is unavailable. It may be hidden, deleted or blocked.'
@@ -66,7 +68,7 @@ onUnmounted(leave)
 onShow(async () => {
   active.value = true
   error.value = ''
-  if (was_available.value && store.hydration_status === 'ready' && !person.value) {
+  if (account_scope.is_current() && was_available.value && store.hydration_status === 'ready' && !person.value) {
     try { await frame.value.navigate_relaunch('/pages/discover/index') } catch (cause) { error.value = cause.message }
   }
 })
