@@ -8199,7 +8199,9 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; prototype fake confirmation controls intentionally replaced by the StoreKit-owned native bridge; browser timeout and trusted callback validation implemented; WKWebView acceptance pending"
+    "mapping_status": "Source Apple confirmation is represented only by a genuine host callback, never a fake Apple payment UI. Same owned purchase request and fixed 8000ms deadline; browser controlled callbacks and failure/timeout/cancel verified; real StoreKit products/verification not configured.",
+    "visual_acceptance": "pending",
+    "acceptance_evidence": "docs/evidence/coins/purchasing-acceptance.json"
   },
   {
     "source_screen": "Coins / Purchase / Success",
@@ -8938,7 +8940,7 @@
     "visual_acceptance": "pending",
     "source_lock_artifact": "docs/ui-restoration/account-coin-spend-failed/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/account-coin-spend-failed/difference-audit.md",
-    "acceptance_evidence": "docs/evidence/account-flows/coin-spend-failed.json"
+    "acceptance_evidence": "docs/ui-restoration/account-coin-spend-failed/source-browser-acceptance.json"
   },
   {
     "source_screen": "Coins / History / Default",
@@ -9679,7 +9681,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/profile/basic",
-    "component": null,
+    "component": "src/pages/profile/basic.vue",
     "parent_route": "/pages/profile/edit",
     "allowed_origin_routes": [
       "/pages/profile/edit"
@@ -9738,7 +9740,9 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
+    "mapping_status": "Existing source layout/canonical section actions retained; shared full-session editor and source header geometry consumed; browser and native registration/editor chain covered, current full visual acceptance pending",
+    "visual_acceptance": "pending",
+    "acceptance_evidence": "docs/evidence/profile-edit/preview-acceptance.json"
   },
   {
     "source_screen": "Profile / Edit / Interests",
@@ -9748,7 +9752,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/profile/interests",
-    "component": null,
+    "component": "src/pages/profile/interests.vue",
     "parent_route": "/pages/profile/edit",
     "allowed_origin_routes": [
       "/pages/profile/edit"
@@ -9799,7 +9803,9 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
+    "mapping_status": "Existing source layout/canonical section actions retained; shared full-session editor and source header geometry consumed; browser and native registration/editor chain covered, current full visual acceptance pending",
+    "visual_acceptance": "pending",
+    "acceptance_evidence": "docs/evidence/profile-edit/preview-acceptance.json"
   },
   {
     "source_screen": "Profile / Edit / Connection Goals",
@@ -9809,7 +9815,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/profile/goals",
-    "component": null,
+    "component": "src/pages/profile/goals.vue",
     "parent_route": "/pages/profile/edit",
     "allowed_origin_routes": [
       "/pages/profile/edit"
@@ -9854,7 +9860,9 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
+    "mapping_status": "Existing source layout/canonical section actions retained; shared full-session editor and source header geometry consumed; browser and native registration/editor chain covered, current full visual acceptance pending",
+    "visual_acceptance": "pending",
+    "acceptance_evidence": "docs/evidence/profile-edit/preview-acceptance.json"
   },
   {
     "source_screen": "Profile / Edit / Preferences",
@@ -9934,7 +9942,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/profile/ice",
-    "component": null,
+    "component": "src/pages/profile/ice.vue",
     "parent_route": "/pages/profile/edit",
     "allowed_origin_routes": [
       "/pages/profile/edit"
@@ -10010,7 +10018,9 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
+    "mapping_status": "Existing source layout/canonical section actions retained; shared full-session editor and source header geometry consumed; browser and native registration/editor chain covered, current full visual acceptance pending",
+    "visual_acceptance": "pending",
+    "acceptance_evidence": "docs/evidence/profile-edit/preview-acceptance.json"
   },
   {
     "source_screen": "Profile / Verification / Verified",

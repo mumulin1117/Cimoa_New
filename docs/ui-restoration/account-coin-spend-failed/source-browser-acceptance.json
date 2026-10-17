@@ -15,9 +15,9 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 28537,
+    "pixels_different": 28560,
     "pixels_above_channel_delta_8": 4705,
-    "mean_absolute_channel_delta": 0.3130562424589948,
+    "mean_absolute_channel_delta": 0.3130786414841893,
     "max_channel_delta": 114
   },
   "cleaned_up": true

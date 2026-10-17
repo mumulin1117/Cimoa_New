@@ -57,6 +57,6 @@ onHide(() => { navigating.value = false })
 .spend-failed-footer { display: flex; flex: none; flex-direction: column; gap: 19.084rpx; padding: 19.084rpx 38.168rpx 57.252rpx; }
 .spend-failed-primary, .spend-failed-secondary, .spend-failed-support { display: flex; align-items: center; justify-content: center; flex: none; cursor: pointer; }
 .spend-failed-primary { height: 114.504rpx; border-radius: 57.252rpx; color: var(--cimoa-text-inverse); background: var(--cimoa-gradient-primary); box-shadow: var(--cimoa-shadow-event-confirm); font-size: 36.26rpx; font-weight: 700; }
-.spend-failed-secondary { height: 106.87rpx; border-radius: 53.435rpx; color: var(--cimoa-text-primary); background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); font-size: 34.351rpx; font-weight: 600; }
+.spend-failed-secondary { height: 106.87rpx; border-radius: 53.435rpx; color: var(--cimoa-text-title); background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); font-size: 34.351rpx; font-weight: 600; }
 .spend-failed-support { height: 87.786rpx; color: var(--cimoa-text-secondary); font-size: 30.534rpx; font-weight: 600; }
 </style>
