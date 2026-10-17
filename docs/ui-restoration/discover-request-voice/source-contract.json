@@ -294,7 +294,8 @@
     "Text is free, 300 characters; no payment branch",
     "Actual recording/decoded duration replaces hardcoded playing 00:12; missing capability fails",
     "Existing connection/pending request/match routes to canonical entity; never creates on navigation",
-    "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply"
+    "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply",
+    "No recording initially: 00:00/microphone and disabled Send Request use existing source disabled tokens; review saved audio in Voice preview before coin confirmation; empty waveform space is not fake media data"
   ],
   "states": [
     "default",
@@ -312,6 +313,32 @@
     "ibVoice.openVoiceMenu.click.1",
     "ibVoice.toggleVoicePlay.click.1",
     "ibVoice.switchToTextReply.click.1",
-    "ibVoice.sendVoiceRequest.click.1"
+    "ibVoice.sendVoiceRequest.click.1",
+    "ibVoice.record.click.1",
+    "sheetMic.allowMic.click.1",
+    "sheetMic.denyMic.click.1",
+    "introduction.sheet.close.click.1",
+    "introduction.rerecord.click.1",
+    "introduction.delete.click.1"
+  ],
+  "supplementary_source": [
+    {
+      "name": "microphone",
+      "lines": [
+        4338,
+        4354
+      ],
+      "fragment_sha256": "265a00df6e7bce3f3337ee91d02fd19784e1f0e2d1a24dff58cd8bbfab6ca52a",
+      "fragment": "    <sc-if value=\"{{ sheetMic }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Permissions / Microphone / Prompt\" style=\"position:absolute;inset:0;z-index:55\">\n        <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(2px)\"></div>\n        <div style=\"position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:32px 32px 0 0;padding:26px 22px 34px;box-shadow:0 -14px 40px rgba(8,16,31,0.22);animation:cRise 240ms ease both;box-sizing:border-box\">\n          <div style=\"width:44px;height:5px;border-radius:3px;background:#dfe5ee;margin:0 auto 18px\"></div>\n          <div style=\"display:flex;flex-direction:column;align-items:center;gap:12px\">\n            <div style=\"width:64px;height:64px;border-radius:32px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center\">\n              <svg width=\"30\" height=\"30\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2\" stroke-linecap=\"round\"><rect x=\"9\" y=\"2.5\" width=\"6\" height=\"11\" rx=\"3\"></rect><path d=\"M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5\"></path></svg>\n            </div>\n            <div style=\"font-size:23px;font-weight:800;letter-spacing:-0.03em;text-align:center\">Allow microphone access</div>\n            <div style=\"font-size:16px;color:#5b6b85;text-align:center;text-wrap:pretty\">CIRCA uses your microphone only to record voice introductions you choose to send.</div>\n          </div>\n          <div sc-camel-on-click=\"{{ allowMic }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:20px;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Allow</div></div>\n          <div sc-camel-on-click=\"{{ denyMic }}\" style=\"height:56px;border-radius:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:10px\"><div style=\"font-size:18px;font-weight:600;color:#6b7a93\">Don’t Allow</div></div>\n        </div>\n      </div>\n    </sc-if>"
+    },
+    {
+      "name": "discard",
+      "lines": [
+        4455,
+        4466
+      ],
+      "fragment_sha256": "a18b585ae8d2a3378344bb53f308d16e0ea0a6f389c25fff275edca79332fcd7",
+      "fragment": "    <sc-if value=\"{{ sheetVoiceDiscard }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Discover / Icebreaker / Discard Recording\" style=\"position:absolute;inset:0;z-index:55\">\n        <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(2px)\"></div>\n        <div style=\"position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:32px 32px 0 0;padding:26px 22px 34px;box-shadow:0 -14px 40px rgba(8,16,31,0.22);animation:cRise 240ms ease both;box-sizing:border-box\">\n          <div style=\"width:44px;height:5px;border-radius:3px;background:#dfe5ee;margin:0 auto 18px\"></div>\n          <div style=\"font-size:24px;font-weight:800;letter-spacing:-0.03em\">Discard this recording?</div>\n          <div style=\"font-size:16px;color:#5b6b85;margin-top:8px\">You’ll lose what you’ve recorded so far.</div>\n          <div sc-camel-on-click=\"{{ cancelRec }}\" style=\"height:58px;border-radius:29px;background:#fff;border:1.5px solid #e2e8f0;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:20px\"><div style=\"font-size:18px;font-weight:700;color:#dc2626\">Discard</div></div>\n          <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#6b7a93\">Keep Recording</div></div>\n        </div>\n      </div>\n    </sc-if>"
+    }
   ]
 }

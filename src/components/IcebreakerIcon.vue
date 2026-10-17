@@ -2,7 +2,7 @@
 // Exact paths from decoded HTML 634/642/646/714/734/739/768/784/789.
 defineProps({ name: String })
 </script>
-<template><svg class="ice-source-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<template><svg class="ice-source-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" :stroke-width="name === 'info' ? 1.8 : name === 'keyboard' ? 1.9 : 2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <template v-if="name === 'keyboard'"><rect x="2" y="6" width="20" height="12" rx="2.5" /><path d="M6 10h0M10 10h0M14 10h0M18 10h0M6 14h12" /></template>
   <template v-else-if="name === 'mic'"><rect x="9" y="2.5" width="6" height="11" rx="3" /><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5" /></template>
   <template v-else-if="name === 'check'"><path d="M5 12.5l4.5 4.5L19 7" stroke-width="3" /></template>

@@ -271,5 +271,6 @@
     "ibSelect.pickText.click.1",
     "ibSelect.pickVoice.click.1",
     "ibSelect.answerGo.click.1"
-  ]
+  ],
+  "supplementary_source": []
 }

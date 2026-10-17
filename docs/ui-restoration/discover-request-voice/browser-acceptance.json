@@ -1,0 +1,35 @@
+{
+  "page": "voice",
+  "result": "passed",
+  "checks": [
+    "Microphone pre-prompt can be denied without a Blob, business write or charge",
+    "Actual MediaRecorder output decodes/plays; cancelled discard keeps the unsent recording and does not send or charge",
+    "Review persists real audio and draft reference together only after Loading, without request or debit",
+    "Saved voice draft restores the same playable media after Back and refresh"
+  ],
+  "errors": [],
+  "deferred": [],
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "server_pid": 51962,
+  "reference_geometry": {
+    "620": null,
+    "627": null,
+    "631": null,
+    "640": null,
+    "650": null,
+    "666": null,
+    "676": null,
+    "677": null,
+    "758": null,
+    "762": null
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 54656,
+    "pixels_above_channel_delta_8": 12230,
+    "mean_absolute_channel_delta": 1.0054011516085486,
+    "max_channel_delta": 227
+  },
+  "cleaned_up": true
+}

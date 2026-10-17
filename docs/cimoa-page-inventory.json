@@ -3376,12 +3376,16 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "in_progress",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; media and atomic coin contracts passed automated checks, but an entity microphone success run is still pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-voice/source-contract.json",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json"
   },
   {
     "source_screen": "Discover / Icebreaker / Voice Preview",
@@ -3480,7 +3484,10 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; media and atomic coin contracts passed automated checks, but an entity microphone success run is still pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-preview/source-contract.json"
   },
   {
     "source_screen": "Permissions / Microphone / Prompt",

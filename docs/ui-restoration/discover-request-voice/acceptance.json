@@ -1,0 +1,11 @@
+{
+  "source_lock": "locked",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "visual_acceptance": "pending",
+  "status": "pending",
+  "browser": "4 checks passed; pre-prompt cancel; actual MediaRecorder/decoded playable Blob (Chrome test capture device); discard cancellation; post-Loading draft/media atomic save; saved audio Back/refresh",
+  "gates": "Three mandatory checks passed without warning",
+  "limits": ["Chrome uses a test capture device, not evidence of physical iPhone microphone"],
+  "deferred": ["Final WKWebView pixels and permission/recorder availability path; preview payment confirmation/receiver flow"]
+}

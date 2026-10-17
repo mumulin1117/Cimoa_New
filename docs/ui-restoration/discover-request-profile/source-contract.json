@@ -615,6 +615,11 @@
     "expanded.otherSongPlay.click.1",
     "expanded.prevPhoto.click.1",
     "expanded.nextPhoto.click.1",
-    "expanded.sayHi.click.1"
-  ]
+    "expanded.sayHi.click.1",
+    "expanded.prevPhoto.click.1",
+    "expanded.nextPhoto.click.1",
+    "expanded.voiceIntroPlay.click.1",
+    "expanded.gallery.close.click.1"
+  ],
+  "supplementary_source": []
 }

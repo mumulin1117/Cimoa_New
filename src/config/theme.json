@@ -5,6 +5,7 @@
       "gradient": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
     },
     "surface": {
+      "ice_track": "#e6ecf5",
       "ice_indicator": "#d7dee8",
       "connection_wave": "#e2e8f0",
       "connection_waiting": "#e8edf7",
@@ -147,6 +148,7 @@
     }
   },
   "gradients": {
+    "ice_record_glow": "radial-gradient(circle,rgba(78,142,247,0.28),rgba(248,28,229,0.2) 60%,transparent 75%)",
     "chat_message": "linear-gradient(100deg,#1ec8f5 0%,#8b5cf6 55%,#f845f0 100%)",
     "chat_send": "linear-gradient(135deg,#1ec8f5 0%,#8b5cf6 55%,#f81ce5 100%)",
     "connection_footer": "linear-gradient(180deg,rgba(236,233,251,0) 0%,rgba(236,233,251,0.92) 35%,#ece9fb 100%)",

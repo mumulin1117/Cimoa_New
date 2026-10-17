@@ -194,6 +194,11 @@
     "photo.openMe.click.1",
     "photo.openDiscoverFilters.click.1",
     "photo.expand.click.1",
-    "photo.sayHi.click.1"
-  ]
+    "photo.sayHi.click.1",
+    "photo.browse.drag.1",
+    "tab.home",
+    "tab.discover",
+    "tab.events"
+  ],
+  "supplementary_source": []
 }

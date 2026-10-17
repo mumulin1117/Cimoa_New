@@ -192,6 +192,8 @@
     "ibText.goBack.click.1",
     "ibText.onReply.change.1",
     "ibText.continueText.click.1",
-    "ibText.switchToVoice.click.1"
-  ]
+    "ibText.switchToVoice.click.1",
+    "ibText.draft.save"
+  ],
+  "supplementary_source": []
 }

@@ -13,6 +13,9 @@ export function discover_reference(phase, contract, origin, data) {
     if(node.type===5)return fill(node.loc.source,scope)
     if(node.type!==1)return ''
     const children=()=>node.children.map(x=>render(x,scope)).join(''),line=node.loc.start.line
+    if(phase==='voice'&&line===725)return '<div style="font-size:20px;font-weight:700;letter-spacing:-0.01em;font-variant-numeric:tabular-nums">00:00</div>'
+    if(phase==='voice'&&line===730)return '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#4a7bf7" stroke-width="2" stroke-linecap="round"><rect x="9" y="2.5" width="6" height="11" rx="3"></rect><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5"></path></svg>'
+    if(phase==='voice'&&line===708&&node.tag==='div'&&node.children.every(c=>c.type!==1)&&node.children.some(c=>c.type===2&&c.content.trim()))return `<div style="font-size:15.5px;color:#5b6b85">${escape(user.university===data.users.find(u=>u.user_id===data.session.current_user_id).university?'Same university':user.university)}</div>`
     if(phase==='profile'&&line===419&&!user.song_id)return ''
     if(phase==='profile'&&line===451&&node.tag==='div')return '<div style="font-size:17px;line-height:1;flex:none">🌏</div>'
     if(node.tag==='sc-if'){const key=attribute(node,'value').replace(/[{}\s]/g,'');return(scope[key]??attribute(node,'hint-placeholder-val').includes('true'))?children():''}
@@ -24,6 +27,8 @@ export function discover_reference(phase, contract, origin, data) {
       if(line===371&&p.name==='style')value=value.replace('object-position:50% 22%',`object-position:${data.profile_photos.find(p=>p.photo_id===user.photo_ids[0]).focal_point}`)
       if(line===416&&p.name==='style')value=value.replace('object-position:50% 22%',`object-position:${data.profile_photos.find(p=>p.photo_id===user.photo_ids[0]).focal_point}`)
       if(line===678&&p.name==='placeholder')value=`Write your reply to ${user.user_name}…`
+      if(phase==='voice'&&line===743&&p.name==='style')value=value.replaceAll('linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)','#dfe5ee')
+      if(phase==='voice'&&line===743&&p.name==='style')value=value.replace('color:#fff','color:#96a1b4')
       return ` ${p.name.replace('sc-camel-view-box','viewBox')}="${fill(value,scope)}"`
     }).join('')
     return `<${node.tag} data-source-line="${line}"${attrs}>${textByLine[line]!==undefined&&node.children.every(c=>c.type!==1)&&node.children.some(c=>c.type===2&&c.content.trim())?escape(textByLine[line]):children()}${['img','input','br'].includes(node.tag)?'':`</${node.tag}>`}`
