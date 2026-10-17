@@ -258,6 +258,12 @@
       "source": "Expanded/Chat/group overlays, block and session invalidation",
       "current": "Some cached pages bind only live session; group preview retains a raw URL rather than message identity",
       "required": "Bind original account scope, clear stale private drafts/overlays, derive preview from visible same-ID message"
+    },
+    {
+      "id": "sync-migration-reseed",
+      "source": "Fresh hydration after edited or deleted canonical people",
+      "current": "Additive catalog upgrade previously recreated intentionally removed photos and questions",
+      "required": "Only add missing referenced IDs and retain deleted-account state; never reseed removed entities on refresh"
     }
   ],
   "approved_deltas": [
@@ -274,5 +280,17 @@
     "persistence": "Existing v2 metadata and IndexedDB blobs only",
     "sync_scope": "Home Discover Events/Profile/request/match/private/group/ledger",
     "acceptance": "Explicit domain regression, real browser interactions, fresh WebKit documents and fail-closed boundary checks"
-  }
+  },
+  "domain_regression": {
+    "initial_failures": 7,
+    "migration_failure_reproduced": true,
+    "added_tests": 11,
+    "covered_races": [
+      "same-account same-clock reauthentication",
+      "cancelled or obsolete async media publication",
+      "deleted-account discard compensation"
+    ]
+  },
+  "visual_acceptance": "pending",
+  "full_acceptance": "pending"
 }

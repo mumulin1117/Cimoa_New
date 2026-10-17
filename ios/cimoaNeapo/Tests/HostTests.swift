@@ -2553,6 +2553,119 @@ final class HostTests: XCTestCase {
             try? await restore(); throw error
         }
     }
+    func testCrossPageSyncRefreshAndBlockFiltering() async throws {
+        let host = try await rawHost()
+        let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        let originalScripts = host.webView.configuration.userContentController.userScripts
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/evidence/sync-recovery")
+        // Unique test-only Blob keys cannot overwrite a user's existing media.
+        let nonce = UUID().uuidString
+        let raw = try String(contentsOf: folder.appendingPathComponent("native-fixture.json"), encoding: .utf8)
+        let encoded = raw.replacingOccurrences(of: "sync_audio", with: "native_sync_\(nonce)_audio").replacingOccurrences(of: "sync_image", with: "native_sync_\(nonce)_image")
+        let fixture = try JSONSerialization.jsonObject(with: Data(encoded.utf8)) as! [String:Any]
+        let mediaIDs = (fixture["media"] as! [[String:Any]]).map { $0["media_id"] as! String }
+        let helpers = """
+        const delay=ms=>new Promise(r=>setTimeout(r,ms)),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+        const visible=s=>[...document.querySelectorAll(s)].find(e=>e.closest('uni-page')===[...document.querySelectorAll('uni-page')].at(-1)&&e.getBoundingClientRect().height>0&&getComputedStyle(e).visibility!=='hidden');
+        const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Sync timeout '+location.hash+' '+document.body.innerText)};
+        const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));e.scrollIntoView({block:'center'});await delay(280);e.click();await delay(60)};
+        const idle=async()=>{await wait(()=>!visible('.event-loading,.loading'));await delay(80)};
+        const checks=[],record=(name,pass)=>{if(!pass)throw Error(name);checks.push(name)};
+        """
+        func resetScripts() {
+            host.webView.configuration.userContentController.removeAllUserScripts()
+            for item in originalScripts { host.webView.configuration.userContentController.addUserScript(item) }
+        }
+        func restore() async throws {
+            resetScripts()
+            let saved = String(data: try JSONSerialization.data(withJSONObject: snapshot), encoding: .utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const saved=\(saved);for(const[k,v]of[['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)};", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            try await loadFreshConnection(host, route: "/pages/auth/splash", selector: ".splash-page")
+            resetScripts()
+            _ = try await host.webView.callAsyncJavaScript("const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');for(const id of ids)t.objectStore('blobs').delete(id);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();return true", arguments: ["ids":mediaIDs], in: nil, contentWorld: .page)
+        }
+        var checks = [String]()
+        do {
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const fixture=\(encoded);fixture.data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data:fixture.data}));", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            try await loadFreshConnection(host, route: "/pages/discover/profile?user_id=user_zane", selector: ".expanded-heading")
+            resetScripts(); host.publishSafeArea()
+            _ = try await host.webView.callAsyncJavaScript("""
+            const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onupgradeneeded=()=>r.result.createObjectStore('blobs');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});
+            const files=await Promise.all(items.map(async row=>[row.media_id,row.base64?new Blob([Uint8Array.from(atob(row.base64),c=>c.charCodeAt(0))],{type:row.mime}):await(await fetch(row.source)).blob()]));
+            await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');for(const[id,blob]of files)t.objectStore('blobs').add(blob,id);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();return true
+            """, arguments: ["items":fixture["media"]!], in: nil, contentWorld: .page)
+            checks += try await script(host, helpers + """
+            await wait(()=>visible('.expanded-photo .profile-photo')?.dataset.mediaStatus==='ready');const before=localStorage.getItem('cimoa_app_state_v2');await click('expanded.nextPhoto.click.1');await click('expanded.openGallery.click.2');await wait(()=>visible('[role=dialog]')?.textContent.includes('Photo 2 of 3'));await click('expanded.gallery.close.click.1');record('Three-photo gallery remains canonical and read-only',localStorage.getItem('cimoa_app_state_v2')===before);return checks
+            """) as! [String]
+            try await loadFreshConnection(host, route: "/pages/messages/chat?conversation_id=conversation_chloe", selector: ".chat-composer")
+            checks += try await script(host, helpers + """
+            await idle();await wait(()=>visible('.chat-image .profile-photo')?.dataset.mediaStatus==='ready');await wait(()=>visible('.event-audio-button')?.getAttribute('aria-disabled')==='false');
+            await click('chat.image.open.click.1');await wait(()=>visible('.chat-full-photo .profile-photo')?.dataset.mediaStatus==='ready');await click('chat.image.close.click.1');
+            const audioMessage=state().messages.find(m=>m.message_id==='sync_private_audio'),db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)}),blob=await new Promise((resolve,reject)=>{const r=db.transaction('blobs').objectStore('blobs').get(audioMessage.media_id);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});db.close();const decoder=new(window.AudioContext||window.webkitAudioContext)();let duration=0;try{duration=(await decoder.decodeAudioData(await blob.arrayBuffer())).duration}finally{await decoder.close()}record('IndexedDB image preview and encoded audio decode in WebKit without autoplay',Math.abs(duration-1)<.1);
+            // A DOM .click() is not a trusted OS touch. Do not disable the host's
+            // media policy or mislabel its real rejection as a playback success.
+            await click('chat.media.play.click.1');await wait(()=>visible('.event-audio [role=alert]'));record('Untrusted playback is rejected with retry feedback, never fake playing state',visible('.event-audio [role=alert]').textContent==='Playback was blocked. Tap play to try again.'&&!visible('[aria-label="Pause voice message"]'));
+            const field=visible('uni-input[aria-label="Message"] input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(field,'Native sync message');field.dispatchEvent(new Event('input',{bubbles:true}));await delay(60);const before=localStorage.getItem('cimoa_app_state_v2');await click('chat.send.click.1');visible('[data-interaction="chat.send.click.1"]').click();record('Custom Loading precedes a single message write',!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===before);await wait(()=>state().messages.some(m=>m.body==='Native sync message'));await idle();record('Repeated send creates one canonical message',state().messages.filter(m=>m.body==='Native sync message').length===1);
+            await click('chat.viewProfile.click.1');await wait(()=>visible('.expanded-heading'));record('Connected profile uses Chat CTA',visible('[data-interaction="expanded.sayHi.click.1"]').textContent==='Chat');await click('expanded.sayHi.click.1');await wait(()=>visible('.chat-composer'));await delay(350);record('Chat CTA returns to the exact existing conversation',location.hash.includes('conversation_chloe'));return checks
+            """) as! [String]
+            let chatSnapshot = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            try await loadFreshConnection(host, route: "/pages/messages/chat?conversation_id=conversation_chloe", selector: ".chat-composer")
+            checks += try await script(host, helpers + """
+            await idle();await wait(()=>visible('.chat-image .profile-photo')?.dataset.mediaStatus==='ready');await wait(()=>visible('.event-audio-button')?.getAttribute('aria-disabled')==='false');record('Fresh chat document restores media without duplicate messages',state().messages.filter(m=>m.body==='Native sync message').length===1&&!visible('.event-audio [role=alert]'));return checks
+            """) as! [String]
+            let restoredChat = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(restoredChat, chatSnapshot)
+            try await loadFreshConnection(host, route: "/pages/home/index", selector: ".home-header")
+            checks += try await script(host, helpers + """
+            const card=await wait(()=>visible('#connection-user_chloe'));record('Home card targets the same private conversation',card.dataset.target==='/pages/messages/chat?conversation_id=conversation_chloe');card.click();await wait(()=>visible('.chat-composer'));await idle();record('Home opens the saved conversation and latest message',visible('.chat-messages').textContent.includes('Native sync message'));return checks
+            """) as! [String]
+            try await loadFreshConnection(host, route: "/pages/events/detail?event_id=event_picnic", selector: "[data-event-count]")
+            checks += try await script(host, helpers + """
+            record('Detail count uses privacy-filtered membership',visible('[data-event-count]').textContent==='3 of 20 going');await click('evDetail.openParticipantsList.click.1');await wait(()=>visible('.event-person'));record('Participants use exactly the same visibility count',[...document.querySelectorAll('.event-person')].filter(e=>e.closest('uni-page')===[...document.querySelectorAll('uni-page')].at(-1)).length===3);return checks
+            """) as! [String]
+            try await loadFreshConnection(host, route: "/pages/events/group?event_id=event_picnic&conversation_id=group_picnic", selector: ".event-group-composer")
+            checks += try await script(host, helpers + """
+            await idle();record('Group header shares the same visible participant count',visible('.event-group-heading').textContent.includes('3 participants'));await click('eventGroup.media.preview.click.1');await wait(()=>visible('.event-media-preview .profile-photo')?.dataset.mediaStatus==='ready');await click('eventGroup.media.close.click.2');await wait(()=>!visible('[role=dialog]'));await wait(()=>visible('.event-audio-button')?.getAttribute('aria-disabled')==='false');record('Group image and audio resolve from persisted binary media',!visible('.event-audio [role=alert]'));return checks
+            """) as! [String]
+            let groupSnapshot = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            try await loadFreshConnection(host, route: "/pages/events/group?event_id=event_picnic&conversation_id=group_picnic", selector: ".event-group-composer")
+            _ = try await script(host, helpers + "await idle();await wait(()=>visible('.event-message-image .profile-photo')?.dataset.mediaStatus==='ready');return true")
+            let restoredGroup = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(restoredGroup, groupSnapshot)
+            try await loadFreshConnection(host, route: "/pages/discover/profile?user_id=user_chloe", selector: ".expanded-heading")
+            checks += try await script(host, helpers + """
+            await click('expanded.openSafetyMini.click.1');await click('sheetSafetyMini.openBlock.click.1');const before=localStorage.getItem('cimoa_app_state_v2');await click('sheetBlock.confirmBlock.click.1');record('Block waits for Loading before shared state changes',!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===before);await wait(()=>visible('.discover-header'));record('Block removes private consent and conversation together',state().blocked_users.some(b=>b.user_id==='user_chloe')&&!state().conversations.some(c=>c.conversation_id==='conversation_chloe'));return checks
+            """) as! [String]
+            try await loadFreshConnection(host, route: "/pages/events/group?event_id=event_picnic&conversation_id=group_picnic", selector: ".event-group-composer")
+            checks += try await script(host, helpers + """
+            await idle();record('Refreshed group filters blocked text and media',visible('.event-group-heading').textContent.includes('2 participants')&&!visible('[data-message-id="group_message_0"],[data-message-id="sync_group_audio"],[data-message-id="sync_group_image"]')&&!visible('.event-audio-button'));record('Filtering does not cancel actual event membership',state().memberships.some(m=>m.user_id===state().session.current_user_id&&m.event_id==='event_picnic'&&m.status==='joined'));await document.fonts.ready;for(const a of document.getAnimations())if(a.effect?.getComputedTiming().iterations!==Infinity)a.finish();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return checks
+            """) as! [String]
+            try await Task.sleep(nanoseconds: 250_000_000)
+            try (try await host.webView.takeSnapshot(configuration: nil)).pngData()!.write(to: folder.appendingPathComponent("group-blocked-wkwebview.png"))
+            try await loadFreshConnection(host, route: "/pages/messages/chat?conversation_id=conversation_chloe", selector: ".chat-state")
+            checks += try await script(host, helpers + "record('Old private URL fails closed after block and fresh document',!!visible('.chat-state[role=alert]')&&!visible('.chat-composer'));return checks") as! [String]
+            try await loadFreshConnection(host, route: "/pages/settings/blocked", selector: ".settings-blocked-page")
+            checks += try await script(host, helpers + """
+            const card=[...document.querySelectorAll('.blocked-card')].find(e=>e.textContent.includes('Chloe Lin'));card.querySelector('[data-interaction="blockedList.b.unblock.click.1"]').click();await click('unblockOpen.confirmUnblock.click.1');await idle();record('Unblock restores visibility but not old private consent',!state().blocked_users.some(b=>b.user_id==='user_chloe')&&!state().conversations.some(c=>c.conversation_id==='conversation_chloe'));return checks
+            """) as! [String]
+            try await loadFreshConnection(host, route: "/pages/discover/profile?user_id=user_chloe", selector: ".expanded-heading")
+            checks += try await script(host, helpers + """
+            record('Unblocked refreshed profile cannot reuse old Chat CTA',visible('[data-interaction="expanded.sayHi.click.1"]').textContent==='Send shot');return checks
+            """) as! [String]
+            XCTAssertEqual(checks.count, 21)
+            let metrics = try await script(host, "return {origin:location.origin,overflow:document.documentElement.scrollWidth>innerWidth,safe:[getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-top'),getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom')]}") as! [String:Any]
+            XCTAssertEqual(metrics["origin"] as? String, BundleHTTPServer.origin); XCTAssertEqual(metrics["overflow"] as? Bool, false)
+            try await restore()
+            let finalSnapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+            XCTAssertEqual(finalSnapshot as NSDictionary, snapshot as NSDictionary)
+            try JSONSerialization.data(withJSONObject: ["result":"passed","checks":checks,"metrics":metrics,"original_storage_restored":true,"test_blob_keys_removed":mediaIDs,"scope":"Real WKWebView DOM/bridge and binary media; encoded test tone, not microphone recording, peer delivery or manual OS touch"], options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("native-cross-page.json"))
+        } catch {
+            if let failure = try? await script(host, "return {url:location.href,text:document.body.innerText}") { try? JSONSerialization.data(withJSONObject: failure, options: [.prettyPrinted]).write(to: folder.appendingPathComponent("native-cross-page-failure.json")) }
+            try? await restore(); throw error
+        }
+    }
     func testBundledH5AndMeasuredSafeAreas() async throws {
         let host = try await host(); try await home(host); host.publishSafeArea()
         let result = try await script(host, "await document.fonts.ready; await new Promise(r=>setTimeout(r,300)); const frame=document.querySelector('.main-tab-frame'); const bar=document.querySelector('.tabbar').getBoundingClientRect(); return {origin:location.origin,title:document.title,top:frame.querySelector('.safe-area').getBoundingClientRect().height,bottom:parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom')),images:[...frame.querySelectorAll('img')].filter(i=>i.src.includes('/static/')).every(i=>i.complete&&i.naturalWidth>0),barBottom:bar.bottom,height:innerHeight,secure:isSecureContext}") as! [String: Any]

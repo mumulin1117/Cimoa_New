@@ -1,0 +1,5 @@
+{
+  "scope" : "Initial test harness failure only: untrusted media metadata/playback was deferred; see the later passing native-summary.json and native-cross-page.json. Production playback policy was not changed.",
+  "url" : "http:\/\/127.0.0.1:18765\/index.html?connectionRegression=33860EAF-5F08-4B19-9D87-C10881F2FDF1#\/pages\/messages\/chat?conversation_id=conversation_chloe",
+  "text" : "\n\nChloe\nConnected\nToday, 8:27 PM\n\n\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\n\n\nThe garden near the library is underrated.\nTomorrow after class?\n\n\nI’m in ✨\n\n\n1s voice message\n\n\n\n\nMessage Chloe\n"
+}

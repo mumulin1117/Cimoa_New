@@ -80,3 +80,18 @@ test('refresh never reseeds removed catalog photos/questions into edited or dele
   })
   for (const store of [f.store, f.attach()]) { assert.equal(store.data.profile_photos.some(p => p.user_id === 'user_noah'), false); assert.equal(store.data.icebreakers.some(q => q.user_id === 'user_noah'), false) }
 })
+test('a late discard compensation cannot restore media belonging to a deleted account', async () => {
+  const f = fixture(data => data.media_files.push({ media_id: 'discard_during_delete', owner_user_id: 'user_cimoa', kind: 'audio', media_url: 'indexeddb://discard_during_delete', mime: 'audio/wav', byte_size: 5, duration_ms: 1500 }))
+  f.blobs.set('discard_during_delete', new Blob(['audio'], { type: 'audio/wav' }))
+  let release, first = true
+  configure_store_runtime(f.store, { media: { ...f.media, delete: async id => {
+    if (first) { first = false; await new Promise(resolve => { release = resolve }) }
+    f.blobs.delete(id)
+  } } })
+  const discard = f.store.discard_media('discard_during_delete')
+  await Promise.resolve(); assert.equal(typeof release, 'function')
+  assert.equal((await f.store.delete_account('12341234')).success, true)
+  release(); assert.equal((await discard).success, false)
+  assert.equal(f.blobs.size, 0); assert.equal(f.store.data.media_files.some(m => m.media_id === 'discard_during_delete'), false)
+  assert.equal(f.attach().data.media_files.some(m => m.media_id === 'discard_during_delete'), false)
+})

@@ -1,0 +1,585 @@
+{
+  "date": "2026-10-17",
+  "base_commit": "e6325bce",
+  "result": "Scoped functional regression passed; full visual and manual hardware acceptance pending",
+  "unit": {
+    "result": "passed",
+    "tests": 165,
+    "failures": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "suites": [
+      "scripts/account-scope.test.mjs",
+      "scripts/audio-playback.test.mjs",
+      "scripts/auth.test.mjs",
+      "scripts/auto-match-state.test.mjs",
+      "scripts/coins-state.test.mjs",
+      "scripts/connection-core.test.mjs",
+      "scripts/data.test.mjs",
+      "scripts/discover-request.test.mjs",
+      "scripts/event-pages.test.mjs",
+      "scripts/events.test.mjs",
+      "scripts/home-feed.test.mjs",
+      "scripts/navigation.test.mjs",
+      "scripts/profile-edit.test.mjs",
+      "scripts/registration.test.mjs",
+      "scripts/settings-safety.test.mjs",
+      "scripts/social-entities.test.mjs",
+      "scripts/sync-recovery.test.mjs"
+    ],
+    "report_source": "/tmp/cimoa-sync-unit-results.xml",
+    "scope": "17 explicit non-browser suites, including 11 new sync/recovery regressions; no watch or browser glob"
+  },
+  "browser": {
+    "reports": [
+      {
+        "file": "docs/evidence/sync-recovery/profile-browser.json",
+        "checks": [
+          "Original profile layout and three-photo gallery remain read-only, with independent HTML reference/actual/overlay/diff",
+          "Blocking a deck profile changes the canonical deck and a refreshed old profile URL fails closed",
+          "Connected profile block removes shared Home/private conversation; a refreshed private URL exposes no composer",
+          "Unblock survives refresh and restores allowed visibility only, never the old connection or Chat CTA"
+        ],
+        "temporary_pid": 22193
+      },
+      {
+        "file": "docs/evidence/sync-recovery/chat-browser.json",
+        "checks": [
+          "Persisted direct image and real encoded audio resolve after a fresh document; reads do not duplicate messages or read receipts",
+          "One Loading/write synchronizes the message and same-conversation Chat CTA; the unchanged source Home card opens that exact conversation, return and refresh retain its ID"
+        ],
+        "temporary_pid": 23205
+      },
+      {
+        "file": "docs/evidence/sync-recovery/group-browser.json",
+        "checks": [
+          "Card/detail/participants/group agree on privacy-filtered attendance; image/audio metadata and read state survive reload",
+          "Block hides both text and media from the group, updates its header and remains filtered after refresh without leaving the event"
+        ],
+        "temporary_pid": 23546
+      },
+      {
+        "file": "docs/ui-restoration/event-group/source-browser-acceptance.json",
+        "checks": [
+          "500ms custom Loading precedes visible group unread persistence, without changing peer read state",
+          "Independent original HTML styles/SVG reference plus fixed 393×852 actual, overlay and diff; source header/composer/right avatar geometry",
+          "Refresh does not rewrite read receipts; narrow layout and actual bottom-safe owner preserve the fixed composer"
+        ]
+      },
+      {
+        "file": "docs/evidence/social-entities/browser-acceptance.json",
+        "checks": [
+          "Avatar profile → free introduction → sent Home card → real account switch → accept → one conversation; Chat CTA and messages survive refresh",
+          "Blocking the same user removes both friendship directions and the private conversation across Home and Discover",
+          "Saved preferences → device search → found → waiting and same-profile View match → peer Home invitation → explicit acceptance → shared chat",
+          "Real voice recording → one 10-coin debit/request → peer audio playback/seek/refresh → explicit acceptance → same original audio in the unique conversation after refresh",
+          "Peer Not Now keeps the invitation; explicit menu decline closes the same request without consent or a conversation"
+        ],
+        "temporary_pid": 24886
+      },
+      {
+        "file": "docs/evidence/auto-match/flow-browser.json",
+        "checks": [
+          "One admission survives pause, refresh, background time and Home recovery",
+          "See options / Stay in Pool preserves active search and never charges",
+          "Candidate/profile uses the same entity; waiting persists beyond 45 seconds without fabricated consent",
+          "The signed-in peer explicitly accepts; cancellation stays read-only; one Connection and Conversation result",
+          "Stale Waiting URL restores Connected; profile Chat and private conversation retain the same ID; Home clears stack",
+          "Entry History reopens the same result; refresh and account changes never replay quota or payment"
+        ],
+        "temporary_pid": 25225
+      },
+      {
+        "file": "docs/evidence/account-flows/voice.json",
+        "checks": [
+          "Controlled real MediaRecorder/decoder/player path stages without writes; final 500ms Save atomically publishes owned audio, without charging coins",
+          "Voice bio restores from IndexedDB after a real document reload and remains playable",
+          "Cancel keeps existing audio; confirmed draft deletion only takes effect at final Save",
+          "Microphone denial reports the real failure with no media metadata or profile writes"
+        ],
+        "temporary_pid": 25339
+      },
+      {
+        "file": "docs/evidence/account-flows/profile-child-merge.json",
+        "checks": [
+          "A newer Basic Info major wins over the old parent sheet draft; unrelated staged bio survives final Save and refresh"
+        ],
+        "temporary_pid": 25853
+      },
+      {
+        "file": "docs/evidence/account-flows/coin-processing.json",
+        "checks": [
+          "Hiding during the pre-write Loading cancels the debit; returning resumes the same operation once and opens its owned match",
+          "A fresh document replays the persisted operation receipt without another debit",
+          "Missing or foreign spend context fails closed, without fabricating a draft or transaction"
+        ],
+        "temporary_pid": 25934
+      }
+    ],
+    "recorded_checks_including_repeated_coverage": 30
+  },
+  "native": {
+    "summaries": [
+      {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+              "deviceName": "iPhone 17 Pro",
+              "modelName": "iPhone 17 Pro",
+              "osBuildNumber": "23F77",
+              "osVersion": "26.5",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 4,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "cimoaNeapo · Built with macOS 26.5.1",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1792240943.587,
+        "passedTests": 4,
+        "result": "Passed",
+        "skippedTests": 0,
+        "startTime": 1792240917.101,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - cimoaNeapo",
+        "topInsights": [],
+        "totalTestCount": 4
+      },
+      {
+        "devicesAndConfigurations": [
+          {
+            "device": {
+              "architecture": "arm64",
+              "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+              "deviceName": "iPhone 17 Pro",
+              "modelName": "iPhone 17 Pro",
+              "osBuildNumber": "23F77",
+              "osVersion": "26.5",
+              "platform": "iOS Simulator"
+            },
+            "expectedFailures": 0,
+            "failedTests": 0,
+            "passedTests": 2,
+            "skippedTests": 0,
+            "testPlanConfiguration": {
+              "configurationId": "1",
+              "configurationName": "Test Scheme Action"
+            }
+          }
+        ],
+        "environmentDescription": "cimoaNeapo · Built with macOS 26.5.1",
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "finishTime": 1792241183.259,
+        "passedTests": 2,
+        "result": "Passed",
+        "skippedTests": 0,
+        "startTime": 1792241099.867,
+        "statistics": [],
+        "testFailures": [],
+        "title": "Test - cimoaNeapo",
+        "topInsights": [],
+        "totalTestCount": 2
+      }
+    ],
+    "module": {
+      "checks": [
+        "Three-photo gallery remains canonical and read-only",
+        "IndexedDB image preview and encoded audio decode in WebKit without autoplay",
+        "Untrusted playback is rejected with retry feedback, never fake playing state",
+        "Custom Loading precedes a single message write",
+        "Repeated send creates one canonical message",
+        "Connected profile uses Chat CTA",
+        "Chat CTA returns to the exact existing conversation",
+        "Fresh chat document restores media without duplicate messages",
+        "Home card targets the same private conversation",
+        "Home opens the saved conversation and latest message",
+        "Detail count uses privacy-filtered membership",
+        "Participants use exactly the same visibility count",
+        "Group header shares the same visible participant count",
+        "Group image and audio resolve from persisted binary media",
+        "Block waits for Loading before shared state changes",
+        "Block removes private consent and conversation together",
+        "Refreshed group filters blocked text and media",
+        "Filtering does not cancel actual event membership",
+        "Old private URL fails closed after block and fresh document",
+        "Unblock restores visibility but not old private consent",
+        "Unblocked refreshed profile cannot reuse old Chat CTA"
+      ],
+      "metrics": {
+        "origin": "http://127.0.0.1:18765",
+        "overflow": false,
+        "safe": [
+          "62px",
+          "34px"
+        ]
+      },
+      "original_storage_restored": true,
+      "result": "passed",
+      "scope": "Real WKWebView DOM/bridge and binary media; encoded test tone, not microphone recording, peer delivery or manual OS touch",
+      "test_blob_keys_removed": [
+        "native_sync_A0E0D147-DEF5-443C-A1A5-1232E1192E00_audio",
+        "native_sync_A0E0D147-DEF5-443C-A1A5-1232E1192E00_image"
+      ]
+    },
+    "background": {
+      "result": "passed",
+      "simulator": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "token": "12261F17-FD11-41D4-948C-8A0A7369BBEA",
+      "companion_pid": 26650,
+      "before": "com.cimoa.neapo.dev: 26670",
+      "settings": "com.apple.Preferences: 57130",
+      "elapsed_ms": 1765,
+      "scope": "Actual simulator Settings foreground and return to the same Cimoa process; not physical-device multitasking",
+      "cleaned_up": true
+    },
+    "match_flow": {
+      "checks": [
+        "Actual simulator background/foreground, device-engine search, same-ID pause/reload/resume, Home recovery",
+        "Invitation persists through Home and a fresh WKWebView document, without peer consent",
+        "Signed-in peer accepts via UI; reciprocal consent, owner recovery, profile Chat and existing Conversation",
+        "Entry History restores the same result; one admission, unchanged ledger, correct bundle origin"
+      ],
+      "passed": true,
+      "state": {
+        "balance": 260,
+        "consents": 2,
+        "match_id": "match_fefa5469-2981-4c86-afed-4997d28bc471",
+        "origin": "http://127.0.0.1:18765",
+        "overflow": false,
+        "quota": 1,
+        "state": "connected"
+      }
+    },
+    "simulator": "iPhone 17 Pro / iOS 26.5",
+    "tested_safe_area": "62 / 34",
+    "initial_harness_corrections": [
+      "Synthetic DOM click cannot satisfy the unchanged WKWebView trusted-touch playback policy; assert the real denial and independently decode persisted bytes without autoplay",
+      "HTMLMediaElement metadata may be deferred before a trusted touch; use a non-playing Web Audio decoder in the test only, not a product policy override",
+      "The existing Auto Match test requires an actual OS background round trip. Its initial missing-handshake run failed; rerun with the bounded Settings companion, keeping the original assertion"
+    ],
+    "additional_regressions": [
+      "Full Auto Match recovery and explicit peer acceptance",
+      "Fresh registration, owned photos, profile/preview/settings/account loop, relogin and first-visit-only Tab skeletons"
+    ]
+  },
+  "h5": {
+    "files": 414,
+    "built_test_bundle_matches_every_file": true,
+    "archive_matches_every_file": true,
+    "archive": "artifacts/cimoaNeapo-ios.zip",
+    "prototype_runtime_embedded": false
+  },
+  "implemented": [
+    "One visible-members selector for event card/detail/group header/participant list; actual occupancy and capacity are not reduced by privacy or block",
+    "Full auth generation checked before delayed media/introduction/spend publication and receipt replay; staged media is compensated without resurrecting deleted accounts",
+    "Fresh hydration does not recreate intentionally removed catalog photos/questions or populate deleted profiles",
+    "Retained profile/chat instances close private overlays, cancel Loading and reject replacement logins; group preview derives from visible message_id instead of a stale URL",
+    "Block filters Home/Discover/profiles/requests/matching/private/group media; unblock restores visibility only, not old consent or conversations"
+  ],
+  "ui": {
+    "unchanged_layout_and_copy": true,
+    "visual_acceptance": "pending",
+    "source_audit": "docs/evidence/sync-recovery/source-audit.json",
+    "affected_pages": [
+      {
+        "query": "route=expanded",
+        "component": "src/pages/discover/profile.vue",
+        "status": "pending",
+        "local_acceptance": "passed",
+        "visual_acceptance": "pending",
+        "full_acceptance": "pending"
+      },
+      {
+        "query": "route=chat",
+        "component": "src/pages/messages/chat.vue",
+        "status": "pending",
+        "local_acceptance": "passed",
+        "visual_acceptance": "pending",
+        "full_acceptance": "pending"
+      },
+      {
+        "query": "route=evGroup&joined=1",
+        "component": null,
+        "status": "pending",
+        "local_acceptance": "passed",
+        "visual_acceptance": "pending",
+        "full_acceptance": "pending"
+      }
+    ]
+  },
+  "conventions": {
+    "unchanged_convention_files": true,
+    "canonical_store_getters_only": true,
+    "prewrite_custom_loading": "500ms",
+    "page_order": "source audit, one page, browser regression, three gates and local commit before next page",
+    "required_gates": [
+      "corepack pnpm check:conventions",
+      "git diff --check",
+      "corepack pnpm build:h5"
+    ],
+    "gates": "passed in order",
+    "convention_warnings": 0,
+    "xcode_note": "Non-blocking SDK AppIntents metadata extraction skipped because no AppIntents dependency exists",
+    "git": "local commits only; no push"
+  },
+  "remaining": [
+    "Full independent visual/pixel acceptance, including known baseline source/actual differences",
+    "Trusted OS-touch playback, physical microphone/camera, system keyboard/picker and real hardware background recovery for this increment",
+    "No production payment, university verification or remote messaging service success is claimed"
+  ],
+  "preserved_user_files": [
+    "docs/evidence/registration/interests.png",
+    "docs/evidence/registration/major.png",
+    "docs/evidence/registration/notif.png",
+    "docs/evidence/registration/notification-access.png",
+    "docs/evidence/registration/photo-access.png",
+    "docs/evidence/registration/photos-added.png",
+    "docs/evidence/registration/photos-restored.png",
+    "docs/evidence/registration/signup.png",
+    "docs/evidence/registration/uni.png",
+    "docs/evidence/registration/verification-email.png"
+  ],
+  "task_files": [
+    "dist/build/h5/assets/AgreementSheet.CuKDhNPP.js",
+    "dist/build/h5/assets/AppLoading.BvvRReBv.js",
+    "dist/build/h5/assets/AuthActionLoading.DeDlGD5y.js",
+    "dist/build/h5/assets/AuthPageFrame.D_JLQxC8.js",
+    "dist/build/h5/assets/AutoMatchConfirmDialog.CJj63azI.js",
+    "dist/build/h5/assets/AutoMatchFoundLeaveConfirmDialog.ccWEqRiL.js",
+    "dist/build/h5/assets/AutoMatchLeavingConfirmDialog.DSWiz035.js",
+    "dist/build/h5/assets/BottomSafeArea.BQvADyA1.js",
+    "dist/build/h5/assets/CimoaBrand.Bgjy8ncs.js",
+    "dist/build/h5/assets/CoinActionLoading.mFkxWdTR.js",
+    "dist/build/h5/assets/ConfirmDialog.Bn13UYA3.js",
+    "dist/build/h5/assets/ConnectionIcon.CuNq44nC.js",
+    "dist/build/h5/assets/ConnectionPageHeader.hmRtUVlu.js",
+    "dist/build/h5/assets/EvCancelConfirmDialog.BTGAi8yl.js",
+    "dist/build/h5/assets/EvJoinConfirmDialog.VSbGO642.js",
+    "dist/build/h5/assets/EventActionLoading.DYgqHwYS.js",
+    "dist/build/h5/assets/EventAudio.BgWTLShm.js",
+    "dist/build/h5/assets/EventConfirmDialog.BV1O4qUU.js",
+    "dist/build/h5/assets/EventPageHeader.BJOzN2ws.js",
+    "dist/build/h5/assets/IcebreakerAudio.CDJsiJUB.js",
+    "dist/build/h5/assets/IcebreakerHeader.DePUExvG.js",
+    "dist/build/h5/assets/IcebreakerIcon.atyPm4gE.js",
+    "dist/build/h5/assets/IcebreakerPerson.D0jF1VEn.js",
+    "dist/build/h5/assets/IntroductionConfirmDialog.DOS7FSHY.js",
+    "dist/build/h5/assets/LogoutConfirmDialog.Dff9U6_0.js",
+    "dist/build/h5/assets/MainTabFrame.6iO8Loap.js",
+    "dist/build/h5/assets/OnboardingFrame.BR8JZu15.js",
+    "dist/build/h5/assets/OnboardingSheet.BKjtrXbW.js",
+    "dist/build/h5/assets/PageTransition.BCa05Eie.js",
+    "dist/build/h5/assets/PhotoActionsConfirmDialog.z_Rllo-2.js",
+    "dist/build/h5/assets/ProfileActionLoading.B4m79era.js",
+    "dist/build/h5/assets/ProfileChoiceEditor.DYEogPlj.js",
+    "dist/build/h5/assets/ProfileEditorFrame.Cqq-QNWE.js",
+    "dist/build/h5/assets/ProfilePhoto.Q2MeV68_.js",
+    "dist/build/h5/assets/SafetyActionsMiniSheet.BZaoUydm.js",
+    "dist/build/h5/assets/SecondaryPageFrame.D2ufNbS_.js",
+    "dist/build/h5/assets/SettingsSwitch.B_Dw-H5h.js",
+    "dist/build/h5/assets/SourceIcon.DyDjNDmK.js",
+    "dist/build/h5/assets/SystemStatePage.CNtvoKHx.js",
+    "dist/build/h5/assets/TopSafeArea.DA0NVnPs.js",
+    "dist/build/h5/assets/UserAvatar.CfSsVCNX.js",
+    "dist/build/h5/assets/audioPlayback.D1Bvv3Bm.js",
+    "dist/build/h5/assets/authNavigation.DtzBoEvl.js",
+    "dist/build/h5/assets/chat-DvGhCh7F.css",
+    "dist/build/h5/assets/eventsNavigation.B_lsXI0l.js",
+    "dist/build/h5/assets/group-lpTdE54o.css",
+    "dist/build/h5/assets/index-DYfDNF_a.js",
+    "dist/build/h5/assets/mainTabSkeleton.DjS5sE6S.js",
+    "dist/build/h5/assets/nativePermissions.Ttl0xaFo.js",
+    "dist/build/h5/assets/pages-auth-age.C2MOmlrg.js",
+    "dist/build/h5/assets/pages-auth-community.BEr2nVz1.js",
+    "dist/build/h5/assets/pages-auth-index.B--5gnt3.js",
+    "dist/build/h5/assets/pages-auth-login.DWtAaqDj.js",
+    "dist/build/h5/assets/pages-auth-reset-code.CQFGdJV9.js",
+    "dist/build/h5/assets/pages-auth-reset-email.UfGIAeWC.js",
+    "dist/build/h5/assets/pages-auth-reset-new.DFpJtM6p.js",
+    "dist/build/h5/assets/pages-auth-signup.BxD-23O9.js",
+    "dist/build/h5/assets/pages-auth-splash.COE63Gy2.js",
+    "dist/build/h5/assets/pages-auth-verification-code.NwIUjCzQ.js",
+    "dist/build/h5/assets/pages-auth-verification-email.CkRhQzI3.js",
+    "dist/build/h5/assets/pages-auth-verification-success.CiDSGk-u.js",
+    "dist/build/h5/assets/pages-auth-verification-unsupported.Xe7m7Zi8.js",
+    "dist/build/h5/assets/pages-auth-welcome.D4Wjm75i.js",
+    "dist/build/h5/assets/pages-auto-match-connected.BKIqd6IF.js",
+    "dist/build/h5/assets/pages-auto-match-expired.mzSl_mhX.js",
+    "dist/build/h5/assets/pages-auto-match-found.C8TMZN64.js",
+    "dist/build/h5/assets/pages-auto-match-history.xHzu9uL8.js",
+    "dist/build/h5/assets/pages-auto-match-index.DtcmS7cm.js",
+    "dist/build/h5/assets/pages-auto-match-no-match.D0LAdRFl.js",
+    "dist/build/h5/assets/pages-auto-match-passed.bDxXQlqV.js",
+    "dist/build/h5/assets/pages-auto-match-paused.GDkX_WFV.js",
+    "dist/build/h5/assets/pages-auto-match-preferences.yXaPSVuj.js",
+    "dist/build/h5/assets/pages-auto-match-searching.BF5UsFH1.js",
+    "dist/build/h5/assets/pages-auto-match-waiting.B70v83gU.js",
+    "dist/build/h5/assets/pages-coins-cancelled.CPsRSy0e.js",
+    "dist/build/h5/assets/pages-coins-failed.BxaRNhJd.js",
+    "dist/build/h5/assets/pages-coins-help.BiuPodrz.js",
+    "dist/build/h5/assets/pages-coins-history.BeZ7jFbE.js",
+    "dist/build/h5/assets/pages-coins-index.CdBG36U_.js",
+    "dist/build/h5/assets/pages-coins-processing.D9VJ6Acr.js",
+    "dist/build/h5/assets/pages-coins-purchase-detail.DtgdmUpC.js",
+    "dist/build/h5/assets/pages-coins-purchasing.Cn7mKWe3.js",
+    "dist/build/h5/assets/pages-coins-spend-detail.CjuClCFD.js",
+    "dist/build/h5/assets/pages-coins-spend-failed.DsewQuj5.js",
+    "dist/build/h5/assets/pages-coins-success.DO4yXG8u.js",
+    "dist/build/h5/assets/pages-connections-accepted.ZVoYBKqm.js",
+    "dist/build/h5/assets/pages-connections-declined.DpV97ktN.js",
+    "dist/build/h5/assets/pages-connections-received.Bvdmf53p.js",
+    "dist/build/h5/assets/pages-connections-sent.42fjvTy1.js",
+    "dist/build/h5/assets/pages-discover-icebreaker-preview.CTgw8yzB.js",
+    "dist/build/h5/assets/pages-discover-icebreaker-select.CxZ5hXdN.js",
+    "dist/build/h5/assets/pages-discover-icebreaker-text.CQKgJy26.js",
+    "dist/build/h5/assets/pages-discover-icebreaker-voice.C7uH6EOm.js",
+    "dist/build/h5/assets/pages-discover-index.dxQF-zMQ.js",
+    "dist/build/h5/assets/pages-discover-profile.D-VcL7Xq.js",
+    "dist/build/h5/assets/pages-events-detail.B2EgIc-b.js",
+    "dist/build/h5/assets/pages-events-group.0D1PVu_s.js",
+    "dist/build/h5/assets/pages-events-index.D__Vqz5B.js",
+    "dist/build/h5/assets/pages-events-join-success.D7H0stQQ.js",
+    "dist/build/h5/assets/pages-events-participants.CT2O56dw.js",
+    "dist/build/h5/assets/pages-events-report.DOYWASYj.js",
+    "dist/build/h5/assets/pages-events-upcoming.ybv34QPe.js",
+    "dist/build/h5/assets/pages-home-index.BUYAV7vX.js",
+    "dist/build/h5/assets/pages-legal-privacy.DQA9N3dF.js",
+    "dist/build/h5/assets/pages-legal-terms.-Dqyk3gY.js",
+    "dist/build/h5/assets/pages-messages-call-waiting.BG1-cOwR.js",
+    "dist/build/h5/assets/pages-messages-chat.BrTNzHO2.js",
+    "dist/build/h5/assets/pages-messages-index.CXsgIeDV.js",
+    "dist/build/h5/assets/pages-onboarding-about.DNveRQxP.js",
+    "dist/build/h5/assets/pages-onboarding-basic.BBu2LI4Y.js",
+    "dist/build/h5/assets/pages-onboarding-complete.CUtEBGJx.js",
+    "dist/build/h5/assets/pages-onboarding-goal.BswBkKAX.js",
+    "dist/build/h5/assets/pages-onboarding-ice.9_sALBkJ.js",
+    "dist/build/h5/assets/pages-onboarding-interests.D2wUDyYJ.js",
+    "dist/build/h5/assets/pages-onboarding-major.DUAJNuOh.js",
+    "dist/build/h5/assets/pages-onboarding-notif.BzcRmXec.js",
+    "dist/build/h5/assets/pages-onboarding-photos.CS_zcTry.js",
+    "dist/build/h5/assets/pages-onboarding-uni.DBLMBBgA.js",
+    "dist/build/h5/assets/pages-permissions-camera.ASMXpIe-.js",
+    "dist/build/h5/assets/pages-permissions-mic.BDYA_kxa.js",
+    "dist/build/h5/assets/pages-permissions-notif.5K0zoCJB.js",
+    "dist/build/h5/assets/pages-permissions-photos.ZCJIDhii.js",
+    "dist/build/h5/assets/pages-profile-basic.DvYS_5Qx.js",
+    "dist/build/h5/assets/pages-profile-edit.COzTrPrD.js",
+    "dist/build/h5/assets/pages-profile-goals.BeVvgCOg.js",
+    "dist/build/h5/assets/pages-profile-ice.qN9rN88t.js",
+    "dist/build/h5/assets/pages-profile-index.mgUVosDU.js",
+    "dist/build/h5/assets/pages-profile-interests.BMwrFUjH.js",
+    "dist/build/h5/assets/pages-profile-prefs.DZ7X_WB-.js",
+    "dist/build/h5/assets/pages-profile-preview.DC4PHxeA.js",
+    "dist/build/h5/assets/pages-profile-reverify.C67sVWr5.js",
+    "dist/build/h5/assets/pages-profile-verification.7uPCfn1R.js",
+    "dist/build/h5/assets/pages-safety-report-detail.CP3n27U1.js",
+    "dist/build/h5/assets/pages-safety-report-user.CS1Il65V.js",
+    "dist/build/h5/assets/pages-safety-reports.kNa9JQA3.js",
+    "dist/build/h5/assets/pages-settings-blocked.DRCo-nE_.js",
+    "dist/build/h5/assets/pages-settings-delete-final.DUqO-A3I.js",
+    "dist/build/h5/assets/pages-settings-delete-info.CFcUwhFt.js",
+    "dist/build/h5/assets/pages-settings-delete-reason.BwvSHH5O.js",
+    "dist/build/h5/assets/pages-settings-delete-success.DBaS9xrr.js",
+    "dist/build/h5/assets/pages-settings-index.BfQ_lFpH.js",
+    "dist/build/h5/assets/pages-settings-lang.DJMykVTg.js",
+    "dist/build/h5/assets/pages-settings-legal.H_iBwLLu.js",
+    "dist/build/h5/assets/pages-settings-notif.Cy4uPb2c.js",
+    "dist/build/h5/assets/pages-settings-perm.CMpNWBD_.js",
+    "dist/build/h5/assets/pages-settings-privacy.CDQV_fV8.js",
+    "dist/build/h5/assets/pages-settings-support.C6S6ADI4.js",
+    "dist/build/h5/assets/pages-system-empty.BFa1H5va.js",
+    "dist/build/h5/assets/pages-system-error.B0CwLEth.js",
+    "dist/build/h5/assets/pages-system-index.DvG6Joo3.js",
+    "dist/build/h5/assets/pages-system-loading.BMz5Ifge.js",
+    "dist/build/h5/assets/pages-system-maintenance.BHEESYcx.js",
+    "dist/build/h5/assets/pages-system-offline.CmcHMlH0.js",
+    "dist/build/h5/assets/pages-system-perm-denied.DilNUOdm.js",
+    "dist/build/h5/assets/pages-system-session-expired.Duj-C-x9.js",
+    "dist/build/h5/assets/profile-DWZu7Yti.css",
+    "dist/build/h5/assets/useAccountScope.CmcsGXLM.js",
+    "dist/build/h5/assets/useEventMedia.CtF-Cpbo.js",
+    "dist/build/h5/assets/useEventPage.CgiEOq-j.js",
+    "dist/build/h5/assets/useEventViewport.kFCPnXRw.js",
+    "dist/build/h5/assets/useOnboarding.CwiM5zQi.js",
+    "dist/build/h5/assets/useProfileEditor.D4JD2s3u.js",
+    "dist/build/h5/assets/useWriteLoading.DevbyoNf.js",
+    "dist/build/h5/index.html",
+    "docs/cimoa-page-inventory.json",
+    "docs/evidence/sync-recovery/chat-browser.json",
+    "docs/evidence/sync-recovery/chat-restored.png",
+    "docs/evidence/sync-recovery/group-blocked-restored.png",
+    "docs/evidence/sync-recovery/group-browser.json",
+    "docs/evidence/sync-recovery/native-fixture.json",
+    "docs/evidence/sync-recovery/profile-actual.png",
+    "docs/evidence/sync-recovery/profile-browser.json",
+    "docs/evidence/sync-recovery/profile-comparison/diff.png",
+    "docs/evidence/sync-recovery/profile-comparison/overlay.png",
+    "docs/evidence/sync-recovery/profile-reference.png",
+    "docs/evidence/sync-recovery/source-audit.json",
+    "docs/ui-restoration/sync-chat/difference-audit.md",
+    "docs/ui-restoration/sync-chat/source-contract.json",
+    "docs/ui-restoration/sync-expanded/difference-audit.md",
+    "docs/ui-restoration/sync-expanded/source-contract.json",
+    "docs/ui-restoration/sync-group/difference-audit.md",
+    "docs/ui-restoration/sync-group/source-contract.json",
+    "scripts/lib/sync-recovery-fixture.mjs",
+    "scripts/sync-recovery-browser.test.mjs",
+    "scripts/sync-recovery.test.mjs",
+    "src/pages/discover/profile.vue",
+    "src/pages/events/group.vue",
+    "src/pages/messages/chat.vue",
+    "src/stores/directMessaging.js",
+    "src/stores/eventSelectors.js",
+    "src/stores/migration.js",
+    "src/stores/selectors.js",
+    "src/stores/store.js",
+    "src/stores/transactions.js",
+    "docs/evidence/account-flows/coin-processing.json",
+    "docs/evidence/account-flows/profile-child-merge.json",
+    "docs/evidence/account-flows/voice-draft.png",
+    "docs/evidence/account-flows/voice.json",
+    "docs/evidence/auto-match/flow-browser.json",
+    "docs/evidence/auto-match/flow-native-fixture.json",
+    "docs/evidence/auto-match/flow-wkwebview.json",
+    "docs/evidence/auto-match/native-background-done.txt",
+    "docs/evidence/auto-match/native-background-ready.txt",
+    "docs/evidence/social-entities/browser-acceptance.json",
+    "docs/evidence/social-entities/connected-chat.png",
+    "docs/evidence/social-entities/voice-conversation-restored.png",
+    "docs/ui-restoration/event-group/diff.png",
+    "docs/ui-restoration/event-group/overlay.png",
+    "docs/ui-restoration/event-group/reference.png",
+    "docs/ui-restoration/event-group/source-browser-acceptance.json",
+    "ios/cimoaNeapo/Tests/HostTests.swift",
+    "scripts/social-entities-browser.test.mjs",
+    "docs/evidence/sync-recovery/acceptance.json",
+    "docs/evidence/sync-recovery/cleanup.json",
+    "docs/evidence/sync-recovery/group-blocked-wkwebview.png",
+    "docs/evidence/sync-recovery/native-background.json",
+    "docs/evidence/sync-recovery/native-cross-page.json",
+    "docs/evidence/sync-recovery/native-extra-summary.json",
+    "docs/evidence/sync-recovery/native-initial-harness-failure.json",
+    "docs/evidence/sync-recovery/native-summary.json",
+    "docs/evidence/sync-recovery/unit-results.json",
+    "docs/evidence/sync-recovery/unit-results.xml",
+    "scripts/sync-native-background.mjs",
+    "scripts/sync-recovery-acceptance.mjs"
+  ],
+  "cleanup": {
+    "temporary_previews": "Each finally block closed its server/browser; final PID audit recorded separately",
+    "native_media": "Unique test Blob keys removed and exact pre-test storage restored",
+    "unrelated_project_services": "untouched"
+  }
+}

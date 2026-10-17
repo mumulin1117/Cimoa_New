@@ -84,7 +84,7 @@ try {
   await seed(); await open('/pages/auto-match/index'); await click('amEntry.joinPool.click.1')
   await page.locator('[data-interaction="amSearching.pauseQueue.click.1"]').waitFor()
   await page.locator('[data-interaction="amFound.connectAsk.click.1"]').waitFor({ timeout: 14000 })
-  await click('amFound.connectAsk.click.1'); await page.getByRole('dialog').getByRole('button', { name: 'Connect', exact: true }).click()
+  await click('amFound.connectAsk.click.1'); await click('sheetAccepting.confirmConnect.click.1')
   await page.locator('[data-interaction="amWaiting.returnHome.click.1"]').waitFor()
   const matching = (await snapshot()).match_sessions.find(row => row.owner_user_id === 'user_noah')
   assert.equal(matching.candidate_id, 'user_sophie'); assert.equal(matching.status, 'waiting'); assert.equal(matching.peer_accepted, false)

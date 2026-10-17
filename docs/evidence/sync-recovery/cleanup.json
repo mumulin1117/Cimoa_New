@@ -1,0 +1,25 @@
+{
+  "result": "passed",
+  "tested_processes": [
+    21525,
+    22193,
+    22551,
+    23205,
+    23546,
+    24232,
+    24489,
+    24886,
+    25225,
+    25339,
+    25853,
+    25934,
+    26650
+  ],
+  "temporary_pids_still_running": [],
+  "task_process_leftovers": [],
+  "normal_app_pid": 27326,
+  "bundled_index_sha256": "35caaa8d2ca4ec1ab63074f374974f8dd730f043d11a221122ac4f748ce9ae26",
+  "normal_app_serves_current_bundle": true,
+  "unrelated_services": "Not stopped or modified",
+  "original_registration_screenshots": "Ten existing changes retained and excluded from staging"
+}

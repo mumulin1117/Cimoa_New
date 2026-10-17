@@ -1,0 +1,11 @@
+{
+  "result": "passed",
+  "simulator": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+  "token": "12261F17-FD11-41D4-948C-8A0A7369BBEA",
+  "companion_pid": 26650,
+  "before": "com.cimoa.neapo.dev: 26670",
+  "settings": "com.apple.Preferences: 57130",
+  "elapsed_ms": 1765,
+  "scope": "Actual simulator Settings foreground and return to the same Cimoa process; not physical-device multitasking",
+  "cleaned_up": true
+}

@@ -1,0 +1,40 @@
+{
+  "checks" : [
+    "Three-photo gallery remains canonical and read-only",
+    "IndexedDB image preview and encoded audio decode in WebKit without autoplay",
+    "Untrusted playback is rejected with retry feedback, never fake playing state",
+    "Custom Loading precedes a single message write",
+    "Repeated send creates one canonical message",
+    "Connected profile uses Chat CTA",
+    "Chat CTA returns to the exact existing conversation",
+    "Fresh chat document restores media without duplicate messages",
+    "Home card targets the same private conversation",
+    "Home opens the saved conversation and latest message",
+    "Detail count uses privacy-filtered membership",
+    "Participants use exactly the same visibility count",
+    "Group header shares the same visible participant count",
+    "Group image and audio resolve from persisted binary media",
+    "Block waits for Loading before shared state changes",
+    "Block removes private consent and conversation together",
+    "Refreshed group filters blocked text and media",
+    "Filtering does not cancel actual event membership",
+    "Old private URL fails closed after block and fresh document",
+    "Unblock restores visibility but not old private consent",
+    "Unblocked refreshed profile cannot reuse old Chat CTA"
+  ],
+  "metrics" : {
+    "origin" : "http:\/\/127.0.0.1:18765",
+    "overflow" : false,
+    "safe" : [
+      "62px",
+      "34px"
+    ]
+  },
+  "original_storage_restored" : true,
+  "result" : "passed",
+  "scope" : "Real WKWebView DOM\/bridge and binary media; encoded test tone, not microphone recording, peer delivery or manual OS touch",
+  "test_blob_keys_removed" : [
+    "native_sync_A0E0D147-DEF5-443C-A1A5-1232E1192E00_audio",
+    "native_sync_A0E0D147-DEF5-443C-A1A5-1232E1192E00_image"
+  ]
+}

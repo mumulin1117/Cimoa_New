@@ -1,0 +1,28 @@
+{
+  "result": "passed",
+  "tests": 165,
+  "failures": 0,
+  "skipped": 0,
+  "cancelled": 0,
+  "suites": [
+    "scripts/account-scope.test.mjs",
+    "scripts/audio-playback.test.mjs",
+    "scripts/auth.test.mjs",
+    "scripts/auto-match-state.test.mjs",
+    "scripts/coins-state.test.mjs",
+    "scripts/connection-core.test.mjs",
+    "scripts/data.test.mjs",
+    "scripts/discover-request.test.mjs",
+    "scripts/event-pages.test.mjs",
+    "scripts/events.test.mjs",
+    "scripts/home-feed.test.mjs",
+    "scripts/navigation.test.mjs",
+    "scripts/profile-edit.test.mjs",
+    "scripts/registration.test.mjs",
+    "scripts/settings-safety.test.mjs",
+    "scripts/social-entities.test.mjs",
+    "scripts/sync-recovery.test.mjs"
+  ],
+  "report_source": "/tmp/cimoa-sync-unit-results.xml",
+  "scope": "17 explicit non-browser suites, including 11 new sync/recovery regressions; no watch or browser glob"
+}
