@@ -2034,10 +2034,19 @@
     ],
     "page_level": "主 Tab",
     "route": "/pages/home/index",
-    "component": null,
-    "parent_route": "/pages/home/index",
+    "component": "src/pages/home/index.vue",
+    "parent_route": null,
     "allowed_origin_routes": [
-      "/pages/home/index"
+      "/pages/auth/splash",
+      "/pages/auth/login",
+      "/pages/onboarding/complete",
+      "/pages/discover/index",
+      "/pages/events/index",
+      "/pages/connections/received",
+      "/pages/connections/accepted",
+      "/pages/auto-match/passed",
+      "/pages/auto-match/expired",
+      "/pages/auto-match/no-match"
     ],
     "required_parameters": [],
     "entry_points": [
@@ -2052,7 +2061,7 @@
       "cancelRequest@6181"
     ],
     "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
-    "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
+    "completion_navigation": "Home is a root Tab without a synthetic Back; entity entries push their exact destination, Tab selection replaces the root, explicit flow completion reLaunches Home",
     "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
@@ -2062,22 +2071,25 @@
       "home.startAutoMatch.click.1",
       "home.startAutoMatch.click.2",
       "home.exploreDiscover.click.1",
-      "home.closeGoalPop.click.1",
       "home.openMaya.click.1",
-      "home.popMaya.click.1",
-      "home.stopTap.click.1",
       "home.openLiam.click.1",
-      "home.popLiam.click.1",
-      "home.stopTap.click.2",
       "home.openJordan.click.1",
+      "home.openSentRequest.click.1",
+      "home.openMatchInvitation.click.1",
+      "home.popMaya.click.1",
+      "home.popLiam.click.1",
       "home.popJordan.click.1",
+      "home.closeGoalPop.click.1",
+      "home.stopTap.click.1",
+      "home.stopTap.click.2",
       "home.stopTap.click.3",
       "home.amCardGo.click.1",
-      "showTabs.selectTab.select.1",
-      "hasNotif.openNotif.click.1",
-      "hasNotif.dismissNotif.click.1"
+      "home.retry.click.1",
+      "tab.home",
+      "tab.discover",
+      "tab.events"
     ],
-    "entities": "users; user_relationships; connection_requests; match_sessions; goals; blocked_users",
+    "entities": "home_feed derived from ConnectionRequest / Connection / Conversation / users+goals / match_sessions / UTC quota / blocks",
     "assets": {
       "media": [
         {
@@ -2166,9 +2178,36 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/home/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/home/acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/home/wkwebview-acceptance.json",
+    "source_binding_ids": [
+      "home.openMe.click.1",
+      "home.startAutoMatch.click.1",
+      "home.startAutoMatch.click.2",
+      "home.exploreDiscover.click.1",
+      "home.closeGoalPop.click.1",
+      "home.openMaya.click.1",
+      "home.popMaya.click.1",
+      "home.stopTap.click.1",
+      "home.openLiam.click.1",
+      "home.popLiam.click.1",
+      "home.stopTap.click.2",
+      "home.openJordan.click.1",
+      "home.popJordan.click.1",
+      "home.stopTap.click.3",
+      "home.amCardGo.click.1",
+      "showTabs.selectTab.select.1",
+      "hasNotif.openNotif.click.1",
+      "hasNotif.dismissNotif.click.1"
+    ],
+    "scope_note": "Owned Home 214–358 controls and shared Tabbar; source global notification-overlay bindings are preserved in source_binding_ids for global integration, not claimed as implemented by this Home task"
   },
   {
     "source_screen": "Permissions / Photos / Pre-Permission",
@@ -2503,10 +2542,19 @@
     ],
     "page_level": "主 Tab",
     "route": "/pages/home/index",
-    "component": null,
-    "parent_route": "/pages/home/index",
+    "component": "src/pages/home/index.vue",
+    "parent_route": null,
     "allowed_origin_routes": [
-      "/pages/home/index"
+      "/pages/auth/splash",
+      "/pages/auth/login",
+      "/pages/onboarding/complete",
+      "/pages/discover/index",
+      "/pages/events/index",
+      "/pages/connections/received",
+      "/pages/connections/accepted",
+      "/pages/auto-match/passed",
+      "/pages/auto-match/expired",
+      "/pages/auto-match/no-match"
     ],
     "required_parameters": [],
     "entry_points": [
@@ -2521,7 +2569,7 @@
       "cancelRequest@6181"
     ],
     "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
-    "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
+    "completion_navigation": "Home is a root Tab without a synthetic Back; entity entries push their exact destination, Tab selection replaces the root, explicit flow completion reLaunches Home",
     "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
@@ -2531,22 +2579,25 @@
       "home.startAutoMatch.click.1",
       "home.startAutoMatch.click.2",
       "home.exploreDiscover.click.1",
-      "home.closeGoalPop.click.1",
       "home.openMaya.click.1",
-      "home.popMaya.click.1",
-      "home.stopTap.click.1",
       "home.openLiam.click.1",
-      "home.popLiam.click.1",
-      "home.stopTap.click.2",
       "home.openJordan.click.1",
+      "home.openSentRequest.click.1",
+      "home.openMatchInvitation.click.1",
+      "home.popMaya.click.1",
+      "home.popLiam.click.1",
       "home.popJordan.click.1",
+      "home.closeGoalPop.click.1",
+      "home.stopTap.click.1",
+      "home.stopTap.click.2",
       "home.stopTap.click.3",
       "home.amCardGo.click.1",
-      "showTabs.selectTab.select.1",
-      "hasNotif.openNotif.click.1",
-      "hasNotif.dismissNotif.click.1"
+      "home.retry.click.1",
+      "tab.home",
+      "tab.discover",
+      "tab.events"
     ],
-    "entities": "users; user_relationships; connection_requests; match_sessions; goals; blocked_users",
+    "entities": "home_feed derived from ConnectionRequest / Connection / Conversation / users+goals / match_sessions / UTC quota / blocks",
     "assets": {
       "media": [
         {
@@ -2632,11 +2683,38 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "in_progress",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "visual_acceptance": "passed",
+    "source_lock": "locked",
+    "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/home/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/home/acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/home/wkwebview-acceptance.json",
+    "source_binding_ids": [
+      "home.openMe.click.1",
+      "home.startAutoMatch.click.1",
+      "home.startAutoMatch.click.2",
+      "home.exploreDiscover.click.1",
+      "home.closeGoalPop.click.1",
+      "home.openMaya.click.1",
+      "home.popMaya.click.1",
+      "home.stopTap.click.1",
+      "home.openLiam.click.1",
+      "home.popLiam.click.1",
+      "home.stopTap.click.2",
+      "home.openJordan.click.1",
+      "home.popJordan.click.1",
+      "home.stopTap.click.3",
+      "home.amCardGo.click.1",
+      "showTabs.selectTab.select.1",
+      "hasNotif.openNotif.click.1",
+      "hasNotif.dismissNotif.click.1"
+    ],
+    "scope_note": "Owned Home 214–358 controls and shared Tabbar; source global notification-overlay bindings are preserved in source_binding_ids for global integration, not claimed as implemented by this Home task"
   },
   {
     "source_screen": "Discover / Profile / Photo",
@@ -4867,7 +4945,7 @@
     "entry_points": [
       "amTick@4887"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auto-match/found、/pages/auto-match/waiting）；无历史实例时 replace /pages/auto-match/found，不创建伪造实体",
+    "return_owner": "Header Back / Return Home completion → reLaunch /pages/home/index; Start Chatting / View Profile remain their existing forward routes",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -4945,7 +5023,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "dependency_navigation_evidence": "docs/ui-restoration/home/browser-acceptance.json (four consumers) and wkwebview-acceptance.json (Pass → root)",
+    "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance"
   },
   {
     "source_screen": "Auto Match / Result / Passed",
@@ -4967,7 +5047,7 @@
     "entry_points": [
       "passMatch@6178"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auto-match/found、/pages/auto-match/waiting）；无历史实例时 replace /pages/auto-match/found，不创建伪造实体",
+    "return_owner": "Header Back / Return Home completion → reLaunch /pages/home/index; Start Chatting / View Profile remain their existing forward routes",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -5021,7 +5101,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "dependency_navigation_evidence": "docs/ui-restoration/home/browser-acceptance.json (four consumers) and wkwebview-acceptance.json (Pass → root)",
+    "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance"
   },
   {
     "source_screen": "Auto Match / Result / Expired",
@@ -5044,7 +5126,7 @@
       "go@6187",
       "go@6189"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auto-match/found、/pages/auto-match/waiting）；无历史实例时 replace /pages/auto-match/found，不创建伪造实体",
+    "return_owner": "Header Back / Return Home completion → reLaunch /pages/home/index; Start Chatting / View Profile remain their existing forward routes",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -5098,7 +5180,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "dependency_navigation_evidence": "docs/ui-restoration/home/browser-acceptance.json (four consumers) and wkwebview-acceptance.json (Pass → root)",
+    "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance"
   },
   {
     "source_screen": "Auto Match / Queue / No Match",
@@ -5119,7 +5203,7 @@
     "entry_points": [
       "showNoMatch@6174"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auto-match/searching）；无历史实例时 replace /pages/auto-match/searching，不创建伪造实体",
+    "return_owner": "Header Back / Return Home completion → reLaunch /pages/home/index; Start Chatting / View Profile remain their existing forward routes",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -5174,7 +5258,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "dependency_navigation_evidence": "docs/ui-restoration/home/browser-acceptance.json (four consumers) and wkwebview-acceptance.json (Pass → root)",
+    "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance"
   },
   {
     "source_screen": "Auto Match / History / Default",
@@ -5387,10 +5473,19 @@
     ],
     "page_level": "主 Tab",
     "route": "/pages/home/index",
-    "component": null,
-    "parent_route": "/pages/home/index",
+    "component": "src/pages/home/index.vue",
+    "parent_route": null,
     "allowed_origin_routes": [
-      "/pages/home/index"
+      "/pages/auth/splash",
+      "/pages/auth/login",
+      "/pages/onboarding/complete",
+      "/pages/discover/index",
+      "/pages/events/index",
+      "/pages/connections/received",
+      "/pages/connections/accepted",
+      "/pages/auto-match/passed",
+      "/pages/auto-match/expired",
+      "/pages/auto-match/no-match"
     ],
     "required_parameters": [],
     "entry_points": [
@@ -5405,7 +5500,7 @@
       "cancelRequest@6181"
     ],
     "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
-    "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
+    "completion_navigation": "Home is a root Tab without a synthetic Back; entity entries push their exact destination, Tab selection replaces the root, explicit flow completion reLaunches Home",
     "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
@@ -5415,22 +5510,25 @@
       "home.startAutoMatch.click.1",
       "home.startAutoMatch.click.2",
       "home.exploreDiscover.click.1",
-      "home.closeGoalPop.click.1",
       "home.openMaya.click.1",
-      "home.popMaya.click.1",
-      "home.stopTap.click.1",
       "home.openLiam.click.1",
-      "home.popLiam.click.1",
-      "home.stopTap.click.2",
       "home.openJordan.click.1",
+      "home.openSentRequest.click.1",
+      "home.openMatchInvitation.click.1",
+      "home.popMaya.click.1",
+      "home.popLiam.click.1",
       "home.popJordan.click.1",
+      "home.closeGoalPop.click.1",
+      "home.stopTap.click.1",
+      "home.stopTap.click.2",
       "home.stopTap.click.3",
       "home.amCardGo.click.1",
-      "showTabs.selectTab.select.1",
-      "hasNotif.openNotif.click.1",
-      "hasNotif.dismissNotif.click.1"
+      "home.retry.click.1",
+      "tab.home",
+      "tab.discover",
+      "tab.events"
     ],
-    "entities": "users; user_relationships; connection_requests; match_sessions; goals; blocked_users",
+    "entities": "home_feed derived from ConnectionRequest / Connection / Conversation / users+goals / match_sessions / UTC quota / blocks",
     "assets": {
       "media": [
         {
@@ -5519,42 +5617,16 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
-  },
-  {
-    "source_screen": "Home / Auto Match / Match Found",
-    "source_query": "route=home&am=found",
-    "source_lines": [
-      214
-    ],
-    "page_level": "主 Tab",
-    "route": "/pages/home/index",
-    "component": null,
-    "parent_route": "/pages/home/index",
-    "allowed_origin_routes": [
-      "/pages/home/index"
-    ],
-    "required_parameters": [],
-    "entry_points": [
-      "go@5173",
-      "openMessages@5239",
-      "enterApp@5590",
-      "loginNow@5591",
-      "notNow@5794",
-      "closeAccepted@5802",
-      "confirmLeave@6169",
-      "returnHome@6180",
-      "cancelRequest@6181"
-    ],
-    "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
-    "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
-    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
-    "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "CustomTabBar",
-    "interaction_ids": [
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/home/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/home/acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/home/wkwebview-acceptance.json",
+    "source_binding_ids": [
       "home.openMe.click.1",
       "home.startAutoMatch.click.1",
       "home.startAutoMatch.click.2",
@@ -5574,7 +5646,72 @@
       "hasNotif.openNotif.click.1",
       "hasNotif.dismissNotif.click.1"
     ],
-    "entities": "users; user_relationships; connection_requests; match_sessions; goals; blocked_users",
+    "scope_note": "Owned Home 214–358 controls and shared Tabbar; source global notification-overlay bindings are preserved in source_binding_ids for global integration, not claimed as implemented by this Home task"
+  },
+  {
+    "source_screen": "Home / Auto Match / Match Found",
+    "source_query": "route=home&am=found",
+    "source_lines": [
+      214
+    ],
+    "page_level": "主 Tab",
+    "route": "/pages/home/index",
+    "component": "src/pages/home/index.vue",
+    "parent_route": null,
+    "allowed_origin_routes": [
+      "/pages/auth/splash",
+      "/pages/auth/login",
+      "/pages/onboarding/complete",
+      "/pages/discover/index",
+      "/pages/events/index",
+      "/pages/connections/received",
+      "/pages/connections/accepted",
+      "/pages/auto-match/passed",
+      "/pages/auto-match/expired",
+      "/pages/auto-match/no-match"
+    ],
+    "required_parameters": [],
+    "entry_points": [
+      "go@5173",
+      "openMessages@5239",
+      "enterApp@5590",
+      "loginNow@5591",
+      "notNow@5794",
+      "closeAccepted@5802",
+      "confirmLeave@6169",
+      "returnHome@6180",
+      "cancelRequest@6181"
+    ],
+    "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
+    "completion_navigation": "Home is a root Tab without a synthetic Back; entity entries push their exact destination, Tab selection replaces the root, explicit flow completion reLaunches Home",
+    "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
+    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+    "top_safe_area_owner": "TopSafeArea",
+    "bottom_safe_area_owner": "CustomTabBar",
+    "interaction_ids": [
+      "home.openMe.click.1",
+      "home.startAutoMatch.click.1",
+      "home.startAutoMatch.click.2",
+      "home.exploreDiscover.click.1",
+      "home.openMaya.click.1",
+      "home.openLiam.click.1",
+      "home.openJordan.click.1",
+      "home.openSentRequest.click.1",
+      "home.openMatchInvitation.click.1",
+      "home.popMaya.click.1",
+      "home.popLiam.click.1",
+      "home.popJordan.click.1",
+      "home.closeGoalPop.click.1",
+      "home.stopTap.click.1",
+      "home.stopTap.click.2",
+      "home.stopTap.click.3",
+      "home.amCardGo.click.1",
+      "home.retry.click.1",
+      "tab.home",
+      "tab.discover",
+      "tab.events"
+    ],
+    "entities": "home_feed derived from ConnectionRequest / Connection / Conversation / users+goals / match_sessions / UTC quota / blocks",
     "assets": {
       "media": [
         {
@@ -5663,42 +5800,16 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
-  },
-  {
-    "source_screen": "Home / Auto Match / Waiting",
-    "source_query": "route=home&am=waiting",
-    "source_lines": [
-      214
-    ],
-    "page_level": "主 Tab",
-    "route": "/pages/home/index",
-    "component": null,
-    "parent_route": "/pages/home/index",
-    "allowed_origin_routes": [
-      "/pages/home/index"
-    ],
-    "required_parameters": [],
-    "entry_points": [
-      "go@5173",
-      "openMessages@5239",
-      "enterApp@5590",
-      "loginNow@5591",
-      "notNow@5794",
-      "closeAccepted@5802",
-      "confirmLeave@6169",
-      "returnHome@6180",
-      "cancelRequest@6181"
-    ],
-    "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
-    "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
-    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
-    "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "CustomTabBar",
-    "interaction_ids": [
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/home/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/home/acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/home/wkwebview-acceptance.json",
+    "source_binding_ids": [
       "home.openMe.click.1",
       "home.startAutoMatch.click.1",
       "home.startAutoMatch.click.2",
@@ -5718,7 +5829,72 @@
       "hasNotif.openNotif.click.1",
       "hasNotif.dismissNotif.click.1"
     ],
-    "entities": "users; user_relationships; connection_requests; match_sessions; goals; blocked_users",
+    "scope_note": "Owned Home 214–358 controls and shared Tabbar; source global notification-overlay bindings are preserved in source_binding_ids for global integration, not claimed as implemented by this Home task"
+  },
+  {
+    "source_screen": "Home / Auto Match / Waiting",
+    "source_query": "route=home&am=waiting",
+    "source_lines": [
+      214
+    ],
+    "page_level": "主 Tab",
+    "route": "/pages/home/index",
+    "component": "src/pages/home/index.vue",
+    "parent_route": null,
+    "allowed_origin_routes": [
+      "/pages/auth/splash",
+      "/pages/auth/login",
+      "/pages/onboarding/complete",
+      "/pages/discover/index",
+      "/pages/events/index",
+      "/pages/connections/received",
+      "/pages/connections/accepted",
+      "/pages/auto-match/passed",
+      "/pages/auto-match/expired",
+      "/pages/auto-match/no-match"
+    ],
+    "required_parameters": [],
+    "entry_points": [
+      "go@5173",
+      "openMessages@5239",
+      "enterApp@5590",
+      "loginNow@5591",
+      "notNow@5794",
+      "closeAccepted@5802",
+      "confirmLeave@6169",
+      "returnHome@6180",
+      "cancelRequest@6181"
+    ],
+    "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
+    "completion_navigation": "Home is a root Tab without a synthetic Back; entity entries push their exact destination, Tab selection replaces the root, explicit flow completion reLaunches Home",
+    "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
+    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+    "top_safe_area_owner": "TopSafeArea",
+    "bottom_safe_area_owner": "CustomTabBar",
+    "interaction_ids": [
+      "home.openMe.click.1",
+      "home.startAutoMatch.click.1",
+      "home.startAutoMatch.click.2",
+      "home.exploreDiscover.click.1",
+      "home.openMaya.click.1",
+      "home.openLiam.click.1",
+      "home.openJordan.click.1",
+      "home.openSentRequest.click.1",
+      "home.openMatchInvitation.click.1",
+      "home.popMaya.click.1",
+      "home.popLiam.click.1",
+      "home.popJordan.click.1",
+      "home.closeGoalPop.click.1",
+      "home.stopTap.click.1",
+      "home.stopTap.click.2",
+      "home.stopTap.click.3",
+      "home.amCardGo.click.1",
+      "home.retry.click.1",
+      "tab.home",
+      "tab.discover",
+      "tab.events"
+    ],
+    "entities": "home_feed derived from ConnectionRequest / Connection / Conversation / users+goals / match_sessions / UTC quota / blocks",
     "assets": {
       "media": [
         {
@@ -5807,42 +5983,16 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
-  },
-  {
-    "source_screen": "Home / Auto Match / Connected",
-    "source_query": "route=home&am=connected",
-    "source_lines": [
-      214
-    ],
-    "page_level": "主 Tab",
-    "route": "/pages/home/index",
-    "component": null,
-    "parent_route": "/pages/home/index",
-    "allowed_origin_routes": [
-      "/pages/home/index"
-    ],
-    "required_parameters": [],
-    "entry_points": [
-      "go@5173",
-      "openMessages@5239",
-      "enterApp@5590",
-      "loginNow@5591",
-      "notNow@5794",
-      "closeAccepted@5802",
-      "confirmLeave@6169",
-      "returnHome@6180",
-      "cancelRequest@6181"
-    ],
-    "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
-    "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
-    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
-    "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "CustomTabBar",
-    "interaction_ids": [
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/home/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/home/acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/home/wkwebview-acceptance.json",
+    "source_binding_ids": [
       "home.openMe.click.1",
       "home.startAutoMatch.click.1",
       "home.startAutoMatch.click.2",
@@ -5862,7 +6012,72 @@
       "hasNotif.openNotif.click.1",
       "hasNotif.dismissNotif.click.1"
     ],
-    "entities": "users; user_relationships; connection_requests; match_sessions; goals; blocked_users",
+    "scope_note": "Owned Home 214–358 controls and shared Tabbar; source global notification-overlay bindings are preserved in source_binding_ids for global integration, not claimed as implemented by this Home task"
+  },
+  {
+    "source_screen": "Home / Auto Match / Connected",
+    "source_query": "route=home&am=connected",
+    "source_lines": [
+      214
+    ],
+    "page_level": "主 Tab",
+    "route": "/pages/home/index",
+    "component": "src/pages/home/index.vue",
+    "parent_route": null,
+    "allowed_origin_routes": [
+      "/pages/auth/splash",
+      "/pages/auth/login",
+      "/pages/onboarding/complete",
+      "/pages/discover/index",
+      "/pages/events/index",
+      "/pages/connections/received",
+      "/pages/connections/accepted",
+      "/pages/auto-match/passed",
+      "/pages/auto-match/expired",
+      "/pages/auto-match/no-match"
+    ],
+    "required_parameters": [],
+    "entry_points": [
+      "go@5173",
+      "openMessages@5239",
+      "enterApp@5590",
+      "loginNow@5591",
+      "notNow@5794",
+      "closeAccepted@5802",
+      "confirmLeave@6169",
+      "returnHome@6180",
+      "cancelRequest@6181"
+    ],
+    "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
+    "completion_navigation": "Home is a root Tab without a synthetic Back; entity entries push their exact destination, Tab selection replaces the root, explicit flow completion reLaunches Home",
+    "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
+    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+    "top_safe_area_owner": "TopSafeArea",
+    "bottom_safe_area_owner": "CustomTabBar",
+    "interaction_ids": [
+      "home.openMe.click.1",
+      "home.startAutoMatch.click.1",
+      "home.startAutoMatch.click.2",
+      "home.exploreDiscover.click.1",
+      "home.openMaya.click.1",
+      "home.openLiam.click.1",
+      "home.openJordan.click.1",
+      "home.openSentRequest.click.1",
+      "home.openMatchInvitation.click.1",
+      "home.popMaya.click.1",
+      "home.popLiam.click.1",
+      "home.popJordan.click.1",
+      "home.closeGoalPop.click.1",
+      "home.stopTap.click.1",
+      "home.stopTap.click.2",
+      "home.stopTap.click.3",
+      "home.amCardGo.click.1",
+      "home.retry.click.1",
+      "tab.home",
+      "tab.discover",
+      "tab.events"
+    ],
+    "entities": "home_feed derived from ConnectionRequest / Connection / Conversation / users+goals / match_sessions / UTC quota / blocks",
     "assets": {
       "media": [
         {
@@ -5951,9 +6166,36 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/home/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/home/acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/home/wkwebview-acceptance.json",
+    "source_binding_ids": [
+      "home.openMe.click.1",
+      "home.startAutoMatch.click.1",
+      "home.startAutoMatch.click.2",
+      "home.exploreDiscover.click.1",
+      "home.closeGoalPop.click.1",
+      "home.openMaya.click.1",
+      "home.popMaya.click.1",
+      "home.stopTap.click.1",
+      "home.openLiam.click.1",
+      "home.popLiam.click.1",
+      "home.stopTap.click.2",
+      "home.openJordan.click.1",
+      "home.popJordan.click.1",
+      "home.stopTap.click.3",
+      "home.amCardGo.click.1",
+      "showTabs.selectTab.select.1",
+      "hasNotif.openNotif.click.1",
+      "hasNotif.dismissNotif.click.1"
+    ],
+    "scope_note": "Owned Home 214–358 controls and shared Tabbar; source global notification-overlay bindings are preserved in source_binding_ids for global integration, not claimed as implemented by this Home task"
   },
   {
     "source_screen": "Messages / Chat / Connected",
@@ -11584,22 +11826,25 @@
       "home.startAutoMatch.click.1",
       "home.startAutoMatch.click.2",
       "home.exploreDiscover.click.1",
-      "home.closeGoalPop.click.1",
       "home.openMaya.click.1",
-      "home.popMaya.click.1",
-      "home.stopTap.click.1",
       "home.openLiam.click.1",
-      "home.popLiam.click.1",
-      "home.stopTap.click.2",
       "home.openJordan.click.1",
+      "home.openSentRequest.click.1",
+      "home.openMatchInvitation.click.1",
+      "home.popMaya.click.1",
+      "home.popLiam.click.1",
       "home.popJordan.click.1",
+      "home.closeGoalPop.click.1",
+      "home.stopTap.click.1",
+      "home.stopTap.click.2",
       "home.stopTap.click.3",
       "home.amCardGo.click.1",
-      "showTabs.selectTab.select.1",
-      "hasNotif.openNotif.click.1",
-      "hasNotif.dismissNotif.click.1"
+      "home.retry.click.1",
+      "tab.home",
+      "tab.discover",
+      "tab.events"
     ],
-    "entities": "users; user_relationships; connection_requests; match_sessions; goals; blocked_users",
+    "entities": "home_feed derived from ConnectionRequest / Connection / Conversation / users+goals / match_sessions / UTC quota / blocks",
     "assets": {
       "media": [
         {
@@ -11688,9 +11933,36 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/home/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/home/acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/home/wkwebview-acceptance.json",
+    "source_binding_ids": [
+      "home.openMe.click.1",
+      "home.startAutoMatch.click.1",
+      "home.startAutoMatch.click.2",
+      "home.exploreDiscover.click.1",
+      "home.closeGoalPop.click.1",
+      "home.openMaya.click.1",
+      "home.popMaya.click.1",
+      "home.stopTap.click.1",
+      "home.openLiam.click.1",
+      "home.popLiam.click.1",
+      "home.stopTap.click.2",
+      "home.openJordan.click.1",
+      "home.popJordan.click.1",
+      "home.stopTap.click.3",
+      "home.amCardGo.click.1",
+      "showTabs.selectTab.select.1",
+      "hasNotif.openNotif.click.1",
+      "hasNotif.dismissNotif.click.1"
+    ],
+    "scope_note": "Owned Home 214–358 controls and shared Tabbar; source global notification-overlay bindings are preserved in source_binding_ids for global integration, not claimed as implemented by this Home task"
   },
   {
     "source_screen": "Home / Connection Goals / Liam",
@@ -11728,22 +12000,25 @@
       "home.startAutoMatch.click.1",
       "home.startAutoMatch.click.2",
       "home.exploreDiscover.click.1",
-      "home.closeGoalPop.click.1",
       "home.openMaya.click.1",
-      "home.popMaya.click.1",
-      "home.stopTap.click.1",
       "home.openLiam.click.1",
-      "home.popLiam.click.1",
-      "home.stopTap.click.2",
       "home.openJordan.click.1",
+      "home.openSentRequest.click.1",
+      "home.openMatchInvitation.click.1",
+      "home.popMaya.click.1",
+      "home.popLiam.click.1",
       "home.popJordan.click.1",
+      "home.closeGoalPop.click.1",
+      "home.stopTap.click.1",
+      "home.stopTap.click.2",
       "home.stopTap.click.3",
       "home.amCardGo.click.1",
-      "showTabs.selectTab.select.1",
-      "hasNotif.openNotif.click.1",
-      "hasNotif.dismissNotif.click.1"
+      "home.retry.click.1",
+      "tab.home",
+      "tab.discover",
+      "tab.events"
     ],
-    "entities": "users; user_relationships; connection_requests; match_sessions; goals; blocked_users",
+    "entities": "home_feed derived from ConnectionRequest / Connection / Conversation / users+goals / match_sessions / UTC quota / blocks",
     "assets": {
       "media": [
         {
@@ -11832,9 +12107,36 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/home/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/home/acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/home/wkwebview-acceptance.json",
+    "source_binding_ids": [
+      "home.openMe.click.1",
+      "home.startAutoMatch.click.1",
+      "home.startAutoMatch.click.2",
+      "home.exploreDiscover.click.1",
+      "home.closeGoalPop.click.1",
+      "home.openMaya.click.1",
+      "home.popMaya.click.1",
+      "home.stopTap.click.1",
+      "home.openLiam.click.1",
+      "home.popLiam.click.1",
+      "home.stopTap.click.2",
+      "home.openJordan.click.1",
+      "home.popJordan.click.1",
+      "home.stopTap.click.3",
+      "home.amCardGo.click.1",
+      "showTabs.selectTab.select.1",
+      "hasNotif.openNotif.click.1",
+      "hasNotif.dismissNotif.click.1"
+    ],
+    "scope_note": "Owned Home 214–358 controls and shared Tabbar; source global notification-overlay bindings are preserved in source_binding_ids for global integration, not claimed as implemented by this Home task"
   },
   {
     "source_screen": "Home / Connection Goals / Jordan",
@@ -11872,22 +12174,25 @@
       "home.startAutoMatch.click.1",
       "home.startAutoMatch.click.2",
       "home.exploreDiscover.click.1",
-      "home.closeGoalPop.click.1",
       "home.openMaya.click.1",
-      "home.popMaya.click.1",
-      "home.stopTap.click.1",
       "home.openLiam.click.1",
-      "home.popLiam.click.1",
-      "home.stopTap.click.2",
       "home.openJordan.click.1",
+      "home.openSentRequest.click.1",
+      "home.openMatchInvitation.click.1",
+      "home.popMaya.click.1",
+      "home.popLiam.click.1",
       "home.popJordan.click.1",
+      "home.closeGoalPop.click.1",
+      "home.stopTap.click.1",
+      "home.stopTap.click.2",
       "home.stopTap.click.3",
       "home.amCardGo.click.1",
-      "showTabs.selectTab.select.1",
-      "hasNotif.openNotif.click.1",
-      "hasNotif.dismissNotif.click.1"
+      "home.retry.click.1",
+      "tab.home",
+      "tab.discover",
+      "tab.events"
     ],
-    "entities": "users; user_relationships; connection_requests; match_sessions; goals; blocked_users",
+    "entities": "home_feed derived from ConnectionRequest / Connection / Conversation / users+goals / match_sessions / UTC quota / blocks",
     "assets": {
       "media": [
         {
@@ -11976,9 +12281,36 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/home/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/home/acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/home/wkwebview-acceptance.json",
+    "source_binding_ids": [
+      "home.openMe.click.1",
+      "home.startAutoMatch.click.1",
+      "home.startAutoMatch.click.2",
+      "home.exploreDiscover.click.1",
+      "home.closeGoalPop.click.1",
+      "home.openMaya.click.1",
+      "home.popMaya.click.1",
+      "home.stopTap.click.1",
+      "home.openLiam.click.1",
+      "home.popLiam.click.1",
+      "home.stopTap.click.2",
+      "home.openJordan.click.1",
+      "home.popJordan.click.1",
+      "home.stopTap.click.3",
+      "home.amCardGo.click.1",
+      "showTabs.selectTab.select.1",
+      "hasNotif.openNotif.click.1",
+      "hasNotif.dismissNotif.click.1"
+    ],
+    "scope_note": "Owned Home 214–358 controls and shared Tabbar; source global notification-overlay bindings are preserved in source_binding_ids for global integration, not claimed as implemented by this Home task"
   },
   {
     "source_screen": "Coins / Spend / Text Confirmation",

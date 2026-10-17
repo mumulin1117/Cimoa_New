@@ -1,0 +1,48 @@
+{
+  "avatar" : {
+    "bottom" : 351.984375,
+    "height" : 79.78125,
+    "width" : 79.78125,
+    "x" : 36.8125,
+    "y" : 272.203125
+  },
+  "card" : {
+    "bottom" : 378.5625,
+    "height" : 122.71875,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 255.84375
+  },
+  "header" : {
+    "bottom" : 233.34375,
+    "height" : 171.34375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images_loaded" : 3,
+  "names" : [
+    "Chloe Lin, 21",
+    "Liam Park, 22",
+    "Lina, 21"
+  ],
+  "opacity" : 1,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    62,
+    34.015028625954201
+  ],
+  "skeleton" : false,
+  "tabbar" : {
+    "bottom" : 811.34375,
+    "height" : 63.40625,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 747.9375
+  },
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

@@ -1,5 +1,9 @@
 # Cimoa Home 本页验收
 
+2026-10-17 更新：本文件下文保留首次分段验收历史。当前 Home 已接入统一聚合 getter 并重新执行来源截图/叠图、浏览器和 WKWebView 回归；当前事实、改动文件、完整依赖和提交记录以 [Home 聚合专项验收](./ui-restoration/home-aggregate-acceptance.md) 为准，不再沿用下文旧的 deferred/guard 和浏览器替代原生结论。
+
+## 2026-10-13 首轮记录（历史）
+
 Home 已完成本页还原与浏览器验收，`local_acceptance: passed`；`full_acceptance: pending`。功能与验收提交已推送，页面按流程 5.2 恢复 `pending`（待依赖），未把任何页面或专属组件标为 verified。2026-10-13 用户已将分段验收扩展到后续各页，并要求后续仅本地提交；Discover 可以据此继续，不再重复请求相同决定。
 
 ## 本次实现

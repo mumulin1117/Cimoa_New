@@ -1,0 +1,99 @@
+{
+  "source_lock": "locked",
+  "local_acceptance": "passed",
+  "full_acceptance": "passed",
+  "visual_acceptance": "passed",
+  "status": "pending",
+  "scope": "Home aggregate getter, Home source UI/Popover and related return dependencies; not whole-app acceptance",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "unit_tests": {
+    "total": 131,
+    "passed": 131,
+    "failed": 0,
+    "skipped": 0,
+    "new_home_tests": 13
+  },
+  "browser": {
+    "result": "passed",
+    "checks": 15,
+    "report": "browser-acceptance.json",
+    "reference": "reference.png",
+    "actual": "actual-browser.png",
+    "overlay": "overlay.png",
+    "diff": "diff.png",
+    "popover_reference": "reference-goals.png",
+    "popover_overlay": "goals/overlay.png",
+    "temporary_server_pid": 24116,
+    "cleaned_up": true,
+    "goal_scroll": {
+      "height": 277,
+      "client": 236,
+      "top": 41
+    },
+    "content_scroll": {
+      "height": 1952,
+      "client": 255,
+      "top": 1697
+    }
+  },
+  "visual_review": "Default and goals source AST reference/actual/overlay/diff inspected region by region. Critical default geometry <=1 CSS px. WKWebView screenshot re-captured only after 3 decoded avatars, opacity=1, font completion, animation end and compositor frames. Long/small/error/empty browser screenshots inspected; system safe areas/long text are documented adaptations.",
+  "wkwebview": {
+    "result": "Passed",
+    "passed": 1,
+    "total": 1,
+    "result_bundle": "/tmp/cimoa-home-aggregate-pixels.xcresult",
+    "device": {
+      "architecture": "arm64",
+      "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "deviceName": "iPhone 17 Pro",
+      "modelName": "iPhone 17 Pro",
+      "osBuildNumber": "23F77",
+      "osVersion": "26.5",
+      "platform": "iOS Simulator"
+    },
+    "checks": {
+      "accepted_once": true,
+      "blocked_filtered": true,
+      "depth": "1",
+      "loading_before_accept": true,
+      "navigation_read_only": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "passed_to_root": true,
+      "popover": true,
+      "tab_cycles": 2
+    },
+    "refresh_restored": true,
+    "geometry": "wkwebview-geometry.json",
+    "actual": "actual-wkwebview.png",
+    "test_summary": "native-test-summary.json"
+  },
+  "cross_account": {
+    "result": "passed",
+    "flows": 5,
+    "report": "../../evidence/social-entities/browser-acceptance.json"
+  },
+  "build": {
+    "files": 378,
+    "manifest_sha256": "1da684427e0275bef05b7f7c521d4fa5e2a8b995a5def8c97b4987312250661d",
+    "native_manifest_matches": true,
+    "prototype_runtime_dependency": false
+  },
+  "gates": [
+    "check:conventions passed without warning",
+    "git diff --check passed",
+    "build:h5 passed"
+  ],
+  "deferred": [],
+  "implementation_commit": "pending specialty commit; no verified registration until it succeeds",
+  "limits": [
+    "No new server-backed delivery/online or realtime-video claims",
+    "No claim of manual native gesture/keyboard/device microphone testing from this Home-only programmatic regression",
+    "Other pages keep their own visual acceptance states",
+    "Global conditional notification layer outside Home 214–358 is not part of this getter task; original source bindings are preserved for global integration"
+  ],
+  "preserved_unrelated_changes": "10 pre-existing registration screenshot changes excluded"
+}

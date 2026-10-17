@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, getCurrentInstance, onUnmounted } from 'vue'
+import { ref, computed, watch, getCurrentInstance, onUnmounted } from 'vue'
 import { onHide, onResize } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { switch_tab_route } from '@/utils/routeTransition.js'
@@ -12,19 +12,21 @@ import ConnectionGoalsPopover from '@/components/ConnectionGoalsPopover.vue'
 
 const store = use_app_store(), instance = getCurrentInstance(), frame = ref(null)
 const goal_user_id = ref(''), anchor = ref(null), navigation_error = ref(''), navigating = ref(false)
-const cards = computed(() => store.home_connections)
-const match_card = computed(() => store.home_match_card)
+const home = computed(() => store.home_feed)
+const cards = computed(() => home.value.cards)
+const match_card = computed(() => home.value.match_card)
 let selection = 0
 const close_goals = () => { selection++; goal_user_id.value = ''; anchor.value = null }
 const open_goals = (user_id) => {
+  if (navigating.value || !cards.value.some(card => card.user_id === user_id)) return
   if (goal_user_id.value === user_id) { close_goals(); return }
   const token = ++selection
   uni.createSelectorQuery().in(instance.proxy).select(`#connection-${user_id}`).boundingClientRect().select('.home-header').boundingClientRect().select('.home-content').boundingClientRect().exec((rects) => {
-    if (selection !== token || !store.user_by_id(user_id) || !rects[0]) return
+    if (selection !== token || !cards.value.some(card => card.user_id === user_id) || !rects[0]) return
     const info = uni.getWindowInfo()
     // Bottom boundary is the shared scroll viewport, not a second safe-area padding.
     uni.createSelectorQuery().select('.main-tab-scroll').boundingClientRect((scroll) => {
-      if (selection !== token) return
+      if (selection !== token || !cards.value.some(card => card.user_id === user_id)) return
       anchor.value = { ...rects[0], limit_top: rects[1]?.bottom || 0, limit_bottom: scroll?.bottom || info.windowHeight }
       goal_user_id.value = user_id
     }).exec()
@@ -42,7 +44,8 @@ const navigate = async (kind, id) => {
 }
 const card_id = (card) => card.kind === 'connected' ? 'home.openMaya.click.1' : card.kind === 'auto_match' ? 'home.openLiam.click.1' : card.kind === 'sent' ? 'home.openSentRequest.click.1' : card.kind === 'match_invite' ? 'home.openMatchInvitation.click.1' : 'home.openJordan.click.1'
 const goal_id = (card) => card.kind === 'connected' ? 'home.popMaya.click.1' : card.kind === 'auto_match' ? 'home.popLiam.click.1' : 'home.popJordan.click.1'
-const status_label = (kind) => ({ connected: 'Connected', auto_match: 'Auto Match', invite: 'Invite', sent: 'Sent', match_invite: 'Invite' })[kind]
+watch(() => home.value.owner_user_id, () => { close_goals(); navigation_error.value = '' })
+watch(() => cards.value.some(card => card.user_id === goal_user_id.value), available => { if (goal_user_id.value && !available) close_goals() })
 onHide(close_goals)
 onResize(close_goals)
 onUnmounted(close_goals)
@@ -53,12 +56,12 @@ onUnmounted(close_goals)
     <template #header>
       <view class="home-header">
         <view class="home-toolbar">
-          <view class="home-profile" role="button" aria-label="Open profile" :aria-disabled="navigating" data-interaction="home.openMe.click.1" :data-target="target('profile')" @click="navigate('profile')"><view class="profile-icon"><SourceIcon name="person" /></view></view>
+          <view class="home-profile" role="button" tabindex="0" aria-label="Open profile" :aria-disabled="navigating" data-interaction="home.openMe.click.1" :data-target="target('profile')" @click="navigate('profile')" @keydown.enter="navigate('profile')"><view class="profile-icon"><SourceIcon name="person" /></view></view>
           <CimoaBrand />
-          <view class="home-match" role="button" aria-label="Start Auto Match" :aria-disabled="navigating" data-interaction="home.startAutoMatch.click.1" :data-target="target('match')" @click="navigate('match')">
+          <view class="home-match" role="button" tabindex="0" aria-label="Start Auto Match" :aria-disabled="navigating" data-interaction="home.startAutoMatch.click.1" :data-target="target('match')" @click="navigate('match')" @keydown.enter="navigate('match')">
             <view class="flash-icon"><SourceIcon name="lightning" /></view>
-            <text v-if="store.free_matches_remaining > 0" class="quota-badge" :aria-label="`${store.free_matches_remaining} free matches remaining`">{{ store.free_matches_remaining }}</text>
-            <image v-else-if="store.session.is_authenticated" class="coin-badge" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" aria-label="Paid matching after daily free quota" />
+            <text v-if="home.quota?.remaining > 0" class="quota-badge" :aria-label="`${home.quota?.remaining} free matches remaining`">{{ home.quota?.remaining }}</text>
+            <image v-else-if="home.quota?.is_paid" class="coin-badge" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" aria-label="Paid matching after daily free quota" />
           </view>
         </view>
         <text class="home-title">People you’ve met</text>
@@ -67,32 +70,33 @@ onUnmounted(close_goals)
       </view>
     </template>
     <view class="home-content">
-      <view v-if="store.hydration_status === 'error'" class="home-empty home-read-error">
-        <text class="empty-title">Your connections couldn’t be loaded.</text><text class="empty-copy">{{ store.hydration_error }}</text>
-        <view class="home-secondary" role="button" data-interaction="home.retry.click.1" @click="store.hydrate()">Retry</view>
+      <view v-if="home.status === 'loading'" class="home-empty" aria-busy="true"><text class="empty-copy">Loading your connections…</text></view>
+      <view v-else-if="home.status === 'error'" class="home-empty home-read-error">
+        <text class="empty-title">Your connections couldn’t be loaded.</text><text class="empty-copy">{{ home.error_message }}</text>
+        <view class="home-secondary" role="button" tabindex="0" data-interaction="home.retry.click.1" @click="store.hydrate()" @keydown.enter="store.hydrate()">Retry</view>
       </view>
-      <view v-else-if="!store.session.is_authenticated" class="home-empty"><text class="empty-title">Your session has expired.</text><text class="empty-copy">Please sign in again to view your connections.</text></view>
+      <view v-else-if="home.status === 'session_expired'" class="home-empty"><text class="empty-title">Your session has expired.</text><text class="empty-copy">Please sign in again to view your connections.</text></view>
       <template v-else>
         <template v-if="!cards.length">
           <view class="home-empty"><text class="empty-title">Your new connections will appear here.</text><text class="empty-copy">Join the matching pool or browse people on your campus to get started.</text></view>
           <view class="empty-actions">
-            <view class="home-primary" role="button" :aria-disabled="navigating" data-interaction="home.startAutoMatch.click.2" :data-target="target('match')" @click="navigate('match')"><view class="empty-flash"><SourceIcon name="lightning" /></view><text>Start Auto Match</text></view>
-            <view class="home-secondary" role="button" data-interaction="home.exploreDiscover.click.1" :data-target="target('discover')" @click="navigate('discover')">Explore People</view>
+            <view class="home-primary" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="home.startAutoMatch.click.2" :data-target="target('match')" @click="navigate('match')" @keydown.enter="navigate('match')"><view class="empty-flash"><SourceIcon name="lightning" /></view><text>Start Auto Match</text></view>
+            <view class="home-secondary" role="button" tabindex="0" data-interaction="home.exploreDiscover.click.1" :data-target="target('discover')" @click="navigate('discover')" @keydown.enter="navigate('discover')">Explore People</view>
           </view>
         </template>
         <view v-else class="connections">
-          <view v-for="card in cards" :id="`connection-${card.user_id}`" :key="card.user_id" class="connection" role="button" :aria-disabled="navigating" :data-interaction="card_id(card)" :data-target="target('card', card.user_id)" @click="navigate('card', card.user_id)">
-            <view class="connection-portrait"><view class="connection-avatar"><UserAvatar :src="card.user.avatar_url" :name="card.user.user_name" /></view><text class="connection-status" :class="`connection-status--${card.kind}`">{{ status_label(card.kind) }}</text></view>
+          <view v-for="card in cards" :id="`connection-${card.user_id}`" :key="card.user_id" class="connection" role="button" tabindex="0" :aria-disabled="navigating" :data-interaction="card_id(card)" :data-target="target('card', card.user_id)" @click="navigate('card', card.user_id)" @keydown.enter="navigate('card', card.user_id)">
+            <view class="connection-portrait"><view class="connection-avatar"><UserAvatar :src="card.user.avatar_url" :name="card.user.user_name" /></view><text class="connection-status" :class="`connection-status--${card.kind}`">{{ card.status_label }}</text></view>
             <view class="connection-info">
               <view class="connection-heading"><text class="connection-name">{{ card.user.user_name }}{{ card.user.age ? `, ${card.user.age}` : '' }}</text><view class="connection-chevron"><SourceIcon name="chevron" /></view></view>
               <view class="connection-tags">
                 <view class="university-tag"><view class="tag-icon"><SourceIcon name="university" /></view><text>{{ card.user.university || 'University not shared' }}</text></view>
-                <view class="goals-tag" role="button" :aria-label="`View ${card.user.user_name}’s connection goals`" :aria-expanded="goal_user_id === card.user_id" :data-interaction="goal_id(card)" @click.stop="open_goals(card.user_id)"><view class="tag-icon"><SourceIcon name="goal-search" /></view><text>{{ card.goals.slice(0, 3).map(goal => goal.emoji).join('') || 'Goals' }}</text></view>
+                <view class="goals-tag" role="button" tabindex="0" :aria-label="`View ${card.user.user_name}’s connection goals`" :aria-expanded="goal_user_id === card.user_id" :data-interaction="goal_id(card)" @click.stop="open_goals(card.user_id)" @keydown.enter.stop="open_goals(card.user_id)"><view class="tag-icon"><SourceIcon name="goal-search" /></view><text>{{ card.goals.slice(0, 3).map(goal => goal.emoji).join('') || 'Goals' }}</text></view>
               </view>
             </view>
           </view>
         </view>
-        <view v-if="match_card" class="match-status" role="button" data-interaction="home.amCardGo.click.1" :data-target="target('status')" @click="navigate('status')"><view class="match-status-icon"><view><SourceIcon name="lightning" /></view></view><view class="match-status-copy"><text class="match-status-title">{{ match_card.title }}</text><text class="match-status-subtitle">{{ match_card.subtitle }}</text></view><text class="match-status-action">{{ match_card.action }}</text></view>
+        <view v-if="match_card" class="match-status" role="button" tabindex="0" data-interaction="home.amCardGo.click.1" :data-target="target('status')" @click="navigate('status')" @keydown.enter="navigate('status')"><view class="match-status-icon"><view><SourceIcon name="lightning" /></view></view><view class="match-status-copy"><text class="match-status-title">{{ match_card.title }}</text><text class="match-status-subtitle">{{ match_card.subtitle }}</text></view><text class="match-status-action">{{ match_card.action }}</text></view>
       </template>
     </view>
     <template #overlays><ConnectionGoalsPopover :user-id="goal_user_id" :anchor="anchor" @close="close_goals" /></template>
@@ -259,5 +263,5 @@ onUnmounted(close_goals)
 .match-status-copy { flex: 1; min-width: 0; }
 .match-status-title { display: block; font-size: 34.351rpx; font-weight: 800; letter-spacing: -.02em; }
 .match-status-subtitle { display: block; margin-top: 3.817rpx; font-size: 27.672rpx; color: var(--cimoa-text-secondary); }
-.match-status-action { flex: none; max-width: 110.687rpx; font-size: 28.626rpx; font-weight: 700; color: var(--cimoa-text-link); }
+.match-status-action { flex: none; font-size: 28.626rpx; font-weight: 700; color: var(--cimoa-text-link); }
 </style>

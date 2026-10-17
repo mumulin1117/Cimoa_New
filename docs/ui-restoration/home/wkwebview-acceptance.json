@@ -1,0 +1,20 @@
+{
+  "checks" : {
+    "accepted_once" : true,
+    "blocked_filtered" : true,
+    "depth" : "1",
+    "loading_before_accept" : true,
+    "navigation_read_only" : [
+      true,
+      true,
+      true,
+      true
+    ],
+    "passed_to_root" : true,
+    "popover" : true,
+    "tab_cycles" : 2
+  },
+  "fixture_deadline" : "relative 120s only in isolated test setup; production deadline is untouched",
+  "refresh_restored" : true,
+  "result" : "passed"
+}

@@ -91,6 +91,61 @@ final class HostTests: XCTestCase {
             try? await restore(); throw error
         }
     }
+    func testHomeAggregateInRealWebKit() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let output = root.appendingPathComponent("docs/ui-restoration/home")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: output.appendingPathComponent("native-fixture.json"))) as! [String: Any]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value]of[['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?homeRestored=\(UUID().uuidString)#/pages/auth/splash")!, cachePolicy: .reloadIgnoringLocalCacheData))
+        }
+        do {
+            _ = try await host.webView.callAsyncJavaScript("const data=fixture.data;data.session.expires_at=Date.now()+30*86400000;for(const row of data.match_sessions)if(row.fixture&&row.status==='found')row.expires_at=Date.now()+120000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture], in: nil, contentWorld: .page)
+            try await loadFreshConnection(host, route: "/pages/home/index", selector: ".home-header")
+            host.publishSafeArea()
+            for _ in 0..<100 {
+                if (try? await script(host, "const images=[...document.querySelectorAll('.connection-avatar img')];return images.length===3&&images.every(image=>image.complete&&image.naturalWidth>0)&&Number(getComputedStyle(document.querySelector('.page-transition')).opacity)===1")) as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let geometry = try await script(host, """
+            await document.fonts.ready;await Promise.all([...document.images].map(image=>image.decode().catch(()=>{})));for(const animation of document.getAnimations())if(animation.effect.getComputedTiming().iterations!==Infinity)animation.finish();
+            await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+            const box=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};
+            return {viewport:{width:innerWidth,height:innerHeight},safe:[parseFloat(getComputedStyle(document.querySelector('.top-safe-area,.safe-area')).height),innerHeight-box('.tabbar').bottom-28*innerWidth/393],header:box('.home-header'),card:box('.connection'),avatar:box('.connection-avatar'),tabbar:box('.tabbar'),names:[...document.querySelectorAll('.connection-name')].map(x=>x.textContent),overflow:document.documentElement.scrollWidth>innerWidth,origin:location.origin,skeleton:!!document.querySelector('.main-skeleton'),images_loaded:[...document.querySelectorAll('.connection-avatar img')].filter(x=>x.complete&&x.naturalWidth>0).length,opacity:Number(getComputedStyle(document.querySelector('.page-transition')).opacity)}
+            """) as! [String: Any]
+            XCTAssertEqual(geometry["names"] as? [String], ["Chloe Lin, 21", "Liam Park, 22", "Lina, 21"])
+            XCTAssertEqual(geometry["overflow"] as? Bool, false); XCTAssertEqual(geometry["skeleton"] as? Bool, false)
+            XCTAssertEqual(geometry["images_loaded"] as? Int, 3); XCTAssertEqual(geometry["opacity"] as? Double, 1)
+            try await Task.sleep(nanoseconds: 200_000_000)
+            let image = try await host.webView.takeSnapshot(configuration: nil)
+            try image.pngData()?.write(to: output.appendingPathComponent("actual-wkwebview.png"))
+            try JSONSerialization.data(withJSONObject: geometry, options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("wkwebview-geometry.json"))
+            let result = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>localStorage.getItem('cimoa_app_state_v2');
+            const wait=async fn=>{for(let i=0;i<160;i++){const x=fn();if(x)return x;await delay(30)}throw Error('Home aggregate timeout '+location.hash+' '+document.body.innerText.slice(0,200))};
+            const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(300);e.click();await delay(40)};
+            const assert=(x,message)=>{if(!x)throw Error(message)};const before=state();
+            for(let i=0;i<2;i++){await click('home.popMaya.click.1');await wait(()=>visible('.goals-panel--open'));visible('.goal-label').click();assert(!!visible('.goals-panel--open'),'Goals panel bubbled');visible('.goals-mask').click();await wait(()=>!visible('.goals-panel'));}
+            const checks=[];
+            for(const [entry,selector,back]of[['home.openMe.click.1','.profile-name','profile.goBack.click.1'],['home.startAutoMatch.click.1','[data-interaction="amEntry.joinPool.click.1"]','amEntry.goBack.click.1'],['home.openMaya.click.1','.chat-composer','chat.goBack.click.1'],['home.openJordan.click.1','.received-actions','reqReceived.goBack.click.1']]){await click(entry);await wait(()=>visible(selector));await click(back);await wait(()=>visible('.home-header'));assert(visible('.main-tab-frame').dataset.pageDepth==='1','Wrong Home Back depth');checks.push(state()===before)}
+            for(let cycle=0;cycle<2;cycle++)for(const name of['Discover','Events','Home']){visible('.tab[aria-label="'+name+'"]').click();await wait(()=>visible('.tab[aria-current="page"]')?.getAttribute('aria-label')===name);await delay(300);assert(visible('.main-tab-frame').dataset.pageDepth==='1'&&!visible('.main-skeleton'),'Tab depth/skeleton');}
+            await click('home.openLiam.click.1');await wait(()=>visible('.match-found-avatar'));await click('amFound.passMatch.click.1');await wait(()=>visible('.dialog__confirm'));visible('.dialog__confirm').click();await wait(()=>visible('[data-interaction="amPassed.returnHome.click.1"]'));await click('amPassed.returnHome.click.1');await wait(()=>location.hash.includes('/pages/home/index')&&visible('.home-header'));assert(visible('.main-tab-frame').dataset.pageDepth==='1','Candidate result retained a second Home');assert(!document.querySelector('#connection-user_liam'),'Passed candidate remained in Home');
+            await click('home.openJordan.click.1');await wait(()=>visible('.received-actions'));await click('reqReceived.accept.click.1');await click('reqReceived.accept.click.1');await wait(()=>visible('.dialog__confirm'));const pending=state();visible('.dialog__confirm').click();await delay(30);const loading=!!visible('.event-loading')&&state()===pending;await wait(()=>visible('.connection-accepted-page'));await click('reqAccepted.closeAccepted.click.1');await wait(()=>visible('#connection-user_lina'));assert(visible('#connection-user_lina .connection-status').textContent==='Connected','Acceptance did not aggregate');assert(document.querySelectorAll('#connection-user_lina').length===1,'Duplicate person');
+            visible('#connection-user_chloe').click();await wait(()=>visible('.chat-composer'));await wait(()=>visible('.chat-heading')?.textContent.includes('Chloe'));await click('chat.openSafety.click.1');await click('sheetSafety.openBlock.click.1');await click('sheetBlock.confirmBlock.click.1');await wait(()=>JSON.parse(state()).data.blocked_users.some(row=>row.owner_user_id==='user_cimoa'&&row.user_id==='user_chloe'));await wait(()=>location.hash.includes('/pages/home/index')&&visible('.home-header'));await wait(()=>!document.querySelector('#connection-user_chloe'));
+            return {navigation_read_only:checks,popover:true,tab_cycles:2,passed_to_root:true,loading_before_accept:loading,accepted_once:true,blocked_filtered:true,depth:visible('.main-tab-frame').dataset.pageDepth};
+            """) as! [String: Any]
+            XCTAssertEqual(result["navigation_read_only"] as? [Bool], [true,true,true,true]); XCTAssertEqual(result["loading_before_accept"] as? Bool, true)
+            XCTAssertEqual(result["depth"] as? String, "1")
+            try await loadFreshConnection(host, route: "/pages/home/index", selector: ".home-header")
+            let restored = try await script(host, "return !document.querySelector('#connection-user_chloe')&&document.querySelector('#connection-user_lina .connection-status')?.textContent==='Connected'") as? Bool
+            XCTAssertEqual(restored,true)
+            try JSONSerialization.data(withJSONObject: ["result":"passed","checks":result,"refresh_restored":restored == true,"fixture_deadline":"relative 120s only in isolated test setup; production deadline is untouched"], options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("wkwebview-acceptance.json"))
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testConnectionSentPixel() async throws { try await connectionPixel("sent") }
     func testConnectionReceivedPixel() async throws { try await connectionPixel("received") }
     func testConnectionAcceptedPixel() async throws { try await connectionPixel("accepted") }

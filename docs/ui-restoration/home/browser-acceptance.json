@@ -1,0 +1,113 @@
+{
+  "result": "passed",
+  "checks": [
+    "Default source geometry, canonical profiles, original card groups and no invented message/unread UI",
+    "First/repeated full goals Popovers, bounds, outside close and propagation isolation are read-only",
+    "Profile, matching entry, canonical chat and received request open real entities and Back restores the exact Home without writes",
+    "Candidate opens the same Liam match; leave cancellation preserves consent and browser Back restores Home",
+    "Two main-Tab cycles preserve root depth and never replay an authentication skeleton",
+    "Real empty Home offers source CTAs without fabricated contacts and Explore replaces Discover",
+    "Accepted requests aggregate into one connected card; block filtering and refresh use the same facts",
+    "Four matching status cards retain exact routes, candidate and persisted deadlines after refresh",
+    "Long data and 320×568 real safe-area budget keep Popover, fixed header and Tabbar usable",
+    "Corrupt storage is a retryable error, never an empty success or metadata overwrite",
+    "Exhausted quota persists and UTC midnight restores three free uses without rewriting history",
+    "Keyboard goals activation works and derived candidate expiry clears both card and Popover without writing",
+    "Successful real fixture login grants one skeleton per Tab; Tab return and refresh grant none and retain the fixed bar",
+    "Candidate Pass result clears to root Home as the source returnHome requires",
+    "All four shared AutoMatchResultPage consumers return to one root Home without extra business writes"
+  ],
+  "errors": [],
+  "deferred": [],
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "server_pid": 24116,
+  "reference_geometry": {
+    "profile": {
+      "x": 20,
+      "y": 60,
+      "width": 54,
+      "height": 54
+    },
+    "title": {
+      "x": 20,
+      "y": 149,
+      "width": 353,
+      "height": 39.515625
+    },
+    "card": {
+      "x": 20,
+      "y": 239.515625,
+      "width": 353,
+      "height": 120
+    },
+    "avatar": {
+      "x": 36,
+      "y": 255.515625,
+      "width": 78,
+      "height": 78
+    },
+    "status": {
+      "x": 31.171875,
+      "y": 319.515625,
+      "width": 87.65625,
+      "height": 24
+    }
+  },
+  "geometry": {
+    "header": {
+      "x": 0,
+      "y": 54,
+      "width": 393,
+      "height": 163.453125,
+      "bottom": 217.453125
+    },
+    "card": {
+      "x": 20,
+      "y": 239.453125,
+      "width": 353,
+      "height": 119.96875,
+      "bottom": 359.421875
+    },
+    "avatar": {
+      "x": 35.984375,
+      "y": 255.4375,
+      "width": 78,
+      "height": 78,
+      "bottom": 333.4375
+    },
+    "tabbar": {
+      "x": 20,
+      "y": 762,
+      "width": 353,
+      "height": 62,
+      "bottom": 824
+    }
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 82708,
+    "pixels_above_channel_delta_8": 19058,
+    "mean_absolute_channel_delta": 1.734060107037475,
+    "max_channel_delta": 254
+  },
+  "goals_comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 87324,
+    "pixels_above_channel_delta_8": 20134,
+    "mean_absolute_channel_delta": 2.1986927928896534,
+    "max_channel_delta": 254
+  },
+  "goal_scroll": {
+    "height": 277,
+    "client": 236,
+    "top": 41
+  },
+  "content_scroll": {
+    "height": 1952,
+    "client": 255,
+    "top": 1697
+  },
+  "cleaned_up": true
+}

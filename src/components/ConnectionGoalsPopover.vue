@@ -67,6 +67,6 @@ onUnmounted(() => { token++; clearTimeout(timer) })
 .goals-scroll { min-height: 0; max-height: inherit; }
 .goal-row { display: flex; align-items: flex-start; gap: 19.084rpx; padding: 20.992rpx 22.901rpx; }
 .goal-emoji { font-size: 40.076rpx; line-height: 1.2; flex: none; }
-.goal-label { font-size: 32.443rpx; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.goal-label { font-size: 32.443rpx; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; text-wrap: pretty; }
 .goals-empty { display: block; padding: 20.992rpx 22.901rpx; color: var(--cimoa-text-secondary); font-size: 32.443rpx; }
 </style>

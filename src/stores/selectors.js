@@ -52,47 +52,14 @@ export const match_status = (row, now) => {
   return status === 'found' && row.expires_at <= now ? 'expired' : status
 }
 export const owned_matches = (data, now = Date.now()) => data.match_sessions.filter((row) => row.owner_user_id === owner_id(data) && (!row.candidate_id || visible(data, row.candidate_id))).map((row) => ({ ...row, status: match_status(row, now) }))
-export const active_match = (data, now = Date.now()) => owned_matches(data, now).find((row) => !row.fixture && ['searching', 'paused', 'found', 'waiting'].includes(row.status)) || null
+export const active_match = (data, now = Date.now()) => owned_matches(data, now).filter(row => !row.fixture && ['searching', 'paused', 'found', 'waiting'].includes(row.status) && (!row.candidate_id || !connected(data, row.candidate_id))).sort((a, b) => b.created_at - a.created_at || a.match_id.localeCompare(b.match_id))[0] || null
 export const members = (data, event_id) => data.memberships.filter((row) => row.event_id === event_id && row.status === 'joined')
 export const joined = (data, event_id, user_id = owner_id(data)) => members(data, event_id).some((row) => row.user_id === user_id)
 export const can_open_conversation = (data, conversation) => !!conversation && (conversation.kind === 'group' ? joined(data, conversation.event_id) : conversation.participant_ids.includes(owner_id(data)) && connected(data, conversation.participant_ids.find((id) => id !== owner_id(data))))
 export const goals_for_user = (data, user_id) => clone_data((user_by_id(data, user_id)?.goal_ids || []).map((id) => data.goals.find((row) => row.item_id === id)).filter(Boolean))
 export const messages_for = (data, conversation_id) => can_open_conversation(data, data.conversations.find((row) => row.conversation_id === conversation_id)) ? data.messages.filter((row) => row.conversation_id === conversation_id && visible(data, row.sender_id)).sort((a, b) => a.sent_at - b.sent_at) : []
-export const home_cards = (data, now = Date.now()) => {
-  const cards = new Map()
-  for (const row of data.conversations) {
-    if (row.kind !== 'direct' || !can_open_conversation(data, row)) continue
-    const user_id = row.participant_ids.find((id) => id !== owner_id(data))
-    cards.set(user_id, { user_id, kind: 'connected', conversation_id: row.conversation_id })
-  }
-  for (const row of owned_matches(data, now)) {
-    if (!row.candidate_id || cards.has(row.candidate_id) || !['found', 'waiting'].includes(row.status)) continue
-    cards.set(row.candidate_id, { user_id: row.candidate_id, kind: 'auto_match', match_id: row.match_id })
-  }
-  for (const row of data.match_sessions) {
-    if (row.candidate_id !== owner_id(data) || row.status !== 'waiting' || !row.self_accepted || !visible(data, row.owner_user_id) || cards.has(row.owner_user_id)) continue
-    cards.set(row.owner_user_id, { user_id: row.owner_user_id, kind: 'match_invite', match_id: row.match_id })
-  }
-  for (const row of data.requests) {
-    if (![row.recipient_id, row.sender_id].includes(owner_id(data)) || row.status !== 'pending') continue
-    const user_id = row.sender_id === owner_id(data) ? row.recipient_id : row.sender_id
-    if (!visible(data, user_id) || cards.get(user_id)?.kind === 'connected') continue
-    cards.set(user_id, { user_id, kind: row.sender_id === owner_id(data) ? 'sent' : 'invite', request_id: row.request_id })
-  }
-  return [...cards.values()].map((row) => ({ ...row, user: user_by_id(data, row.user_id), goals: goals_for_user(data, row.user_id) }))
-}
-export const home_match_card = (data, now) => {
-  const row = active_match(data, now)
-  if (!row) return null
-  const name = row.candidate_id ? user_by_id(data, row.candidate_id)?.user_name : null
-  const content = {
-    searching: ['Finding your match', row.queue_position ? `Queue position ${row.queue_position}${row.estimated_wait_seconds ? ` · about ${Math.ceil(row.estimated_wait_seconds / 60)} min` : ''}` : 'Waiting for a queue update', 'View Status'],
-    paused: ['Matching paused', 'Resume whenever you’re ready', 'Resume'],
-    found: ['Your match is ready', 'View before it expires', 'View match'],
-    waiting: [`Waiting for ${name || 'your match'}`, 'Waiting for their response', 'View status'],
-  }[row.status]
-  return { match_id: row.match_id, status: row.status, title: content[0], subtitle: content[1], action: content[2] }
-}
+// Compatibility exports forward to the canonical Home projection; no parallel rules.
+export { home_cards, home_match_card } from './homeFeed.js'
 export const ensure = (condition, message) => { if (!condition) throw new Error(message) }
 export function validate_data(data) {
   const tables = { users: 'user_id', accounts: 'account_id', goals: 'item_id', interests: 'item_id', icebreakers: 'question_id', profile_photos: 'photo_id', songs: 'song_id', media_files: 'media_id', relationships: 'relationship_id', requests: 'request_id', match_sessions: 'match_id', events: 'event_id', organizers: 'organizer_id', memberships: 'membership_id', conversations: 'conversation_id', messages: 'message_id', coin_packages: 'package_id', coin_transactions: 'transaction_id', purchase_requests: 'request_id', blocked_users: 'block_id', reports: 'report_id', drafts: 'draft_id', support_requests: 'support_id' }

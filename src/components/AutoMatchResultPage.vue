@@ -18,7 +18,7 @@ const copy = computed(() => ({
   no_match: ['No compatible matches are available right now', 'Adjust your preferences or try again when the matching service has new availability.'],
 }[props.status]))
 const access_error = computed(() => !store.session.is_authenticated ? 'Your session has expired. Please sign in again.' : !match.value || match.value.status !== props.status ? `This ${props.status.replace('_', ' ')} match result is unavailable.` : props.status === 'connected' && !conversation.value ? 'The connected conversation is unavailable.' : '')
-const go = async (url, replace = true) => { if (navigating.value) return; navigating.value = true; error.value = ''; try { await (replace ? frame.value.navigate_replace(url) : frame.value.navigate_forward(url)) } catch (cause) { error.value = cause.message } finally { navigating.value = false } }
+const go = async (url, replace = true) => { if (navigating.value) return; navigating.value = true; error.value = ''; try { if (url === '/pages/home/index') await frame.value.navigate_relaunch(url); else await (replace ? frame.value.navigate_replace(url) : frame.value.navigate_forward(url)) } catch (cause) { error.value = cause.message } finally { navigating.value = false } }
 const interaction = computed(() => `am${props.status === 'no_match' ? 'NoMatch' : props.status[0].toUpperCase() + props.status.slice(1)}`)
 </script>
 

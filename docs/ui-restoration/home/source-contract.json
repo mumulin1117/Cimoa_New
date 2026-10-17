@@ -1,0 +1,249 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "query": "route=home",
+    "lines": [
+      214,
+      358
+    ],
+    "fragment_sha256": "9c920766bfe486707fa5df209156a0e033900f913acc0f114370a585082e06e8",
+    "fragment": "    <sc-if value=\"{{ isHome }}\" hint-placeholder-val=\"{{ true }}\">\n      <div data-screen-label=\"{{ homeLabel }}\" style=\"position:absolute;inset:0;animation:cRise 260ms ease both\">\n        <div class=\"cscroll\" style=\"position:absolute;top:54px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box\">\n\n          <div style=\"display:flex;align-items:flex-start;justify-content:space-between;padding-top:6px\">\n            <div sc-camel-on-click=\"{{ openMe }}\" style=\"position:relative;width:54px;height:54px;flex:none;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer\">\n              <svg width=\"26\" height=\"26\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8.5\" r=\"3.8\"></circle><path d=\"M4.5 20c1.4-4.2 5-6 7.5-6s6.1 1.8 7.5 6\"></path></svg>\n            </div>\n            <div style=\"display:flex;flex-direction:column;align-items:center;gap:2px;padding-top:2px\">\n              <svg width=\"58\" height=\"16\" sc-camel-view-box=\"0 0 58 16\" fill=\"none\"><defs><linearGradient id=\"arcg\" x1=\"0\" y1=\"0\" x2=\"58\" y2=\"0\" sc-camel-gradient-units=\"userSpaceOnUse\"><stop stop-color=\"#1ec8f5\"></stop><stop offset=\"0.5\" stop-color=\"#6366f1\"></stop><stop offset=\"1\" stop-color=\"#f81ce5\"></stop></linearGradient></defs><path d=\"M3 14C3 7 11.5 2 29 2s26 5 26 12\" stroke=\"url(#arcg)\" stroke-width=\"4\" stroke-linecap=\"round\"></path></svg>\n              <div style=\"font-size:21px;font-weight:500;letter-spacing:0.30em;padding-left:0.30em;color:#0b1b3a\">CIRCA</div>\n              <div style=\"font-size:14px;color:#64748b;letter-spacing:-0.01em\">Real people. A rounder you.</div>\n            </div>\n            <div sc-camel-on-click=\"{{ startAutoMatch }}\" aria-label=\"Start Auto Match\" style=\"position:relative;width:54px;height:54px;flex:none;border-radius:27px;background:linear-gradient(135deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%);box-shadow:0 8px 20px rgba(168,85,247,0.32);display:flex;align-items:center;justify-content:center;cursor:pointer\">\n              <svg width=\"20\" height=\"28\" sc-camel-view-box=\"0 0 12 18\" fill=\"#fff\"><path d=\"M7.5 0 0 10h4l-1 8 8-10.5H7z\"></path></svg>\n              <sc-if value=\"{{ hasFreeMatches }}\" hint-placeholder-val=\"{{ true }}\">\n                <div style=\"position:absolute;top:-4px;right:-4px;min-width:24px;height:24px;padding:0 6px;box-sizing:border-box;border-radius:12px;background:#fff;box-shadow:0 3px 8px rgba(16,36,74,0.18);display:flex;align-items:center;justify-content:center\"><div style=\"font-size:13px;font-weight:800;color:#a21caf\">{{ freeMatchesLeft }}</div></div>\n              </sc-if>\n              <sc-if value=\"{{ noFreeMatches }}\" hint-placeholder-val=\"{{ false }}\">\n                <img src=\"a9831494-dfeb-464f-8617-1e3468ad74f0\" alt=\"coin\" style=\"position:absolute;top:-4px;right:-4px;width:24px;height:24px;display:block;filter:drop-shadow(0 2px 4px rgba(16,36,74,0.2))\">\n              </sc-if>\n            </div>\n          </div>\n\n          <div style=\"font-size:38px;line-height:1.04;font-weight:800;letter-spacing:-0.035em;margin-top:26px\">People you’ve met</div>\n          <div style=\"font-size:18px;color:#5b6b85;margin-top:8px;letter-spacing:-0.015em\">Keep in touch and see what’s next.</div>\n\n          <sc-if value=\"{{ newUser }}\" hint-placeholder-val=\"{{ false }}\">\n            <div style=\"margin-top:34px;padding:30px 22px;border-radius:26px;background:rgba(255,255,255,0.72);text-align:center\">\n              <div style=\"font-size:20px;font-weight:700\">Your new connections will appear here.</div>\n              <div style=\"font-size:16.5px;color:#5b6b85;margin-top:10px;line-height:1.5;text-wrap:pretty\">Join the matching pool or browse people on your campus to get started.</div>\n            </div>\n            <div style=\"margin-top:22px\">\n              <div sc-camel-on-click=\"{{ startAutoMatch }}\" style=\"height:62px;border-radius:31px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);box-shadow:0 12px 28px rgba(168,85,247,0.30);display:flex;align-items:center;justify-content:center;gap:14px;cursor:pointer\">\n                <svg width=\"20\" height=\"26\" sc-camel-view-box=\"0 0 12 18\" fill=\"#fff\"><path d=\"M7.5 0 0 10h4l-1 8 8-10.5H7z\"></path></svg>\n                <div style=\"font-size:21px;font-weight:700;color:#fff;letter-spacing:-0.01em\">Start Auto Match</div>\n              </div>\n              <div sc-camel-on-click=\"{{ exploreDiscover }}\" style=\"height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:12px\">\n                <div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">Explore People</div>\n              </div>\n            </div>\n          </sc-if>\n          <sc-if value=\"{{ anyGoalPop }}\" hint-placeholder-val=\"{{ false }}\"><div sc-camel-on-click=\"{{ closeGoalPop }}\" style=\"position:fixed;inset:0;z-index:35\"></div></sc-if>\n          <sc-if value=\"{{ hasConnections }}\" hint-placeholder-val=\"{{ true }}\">\n          <div style=\"display:flex;flex-direction:column;gap:14px;margin-top:22px\">\n            <div sc-camel-on-click=\"{{ openMaya }}\" style=\"position:relative;display:flex;align-items:center;gap:14px;padding:16px;border-radius:26px;background:#fff;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n              <div style=\"position:relative;flex:none;width:78px;padding-bottom:10px\">\n                <img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"Chloe Lin\" style=\"width:78px;height:78px;border-radius:39px;object-fit:cover;display:block\">\n                <div style=\"position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:24px;padding:0 9px;border-radius:12px;background:#dcfce7;border:2px solid #fff;display:flex;align-items:center;white-space:nowrap\"><div style=\"font-size:12px;font-weight:700;color:#15803d\">Connected</div></div>\n              </div>\n              <div style=\"flex:1;min-width:0\">\n                <div style=\"display:flex;align-items:center;gap:8px\">\n                  <div style=\"flex:1;min-width:0;font-size:20px;font-weight:800;letter-spacing:-0.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">Chloe Lin, 21</div>\n                  <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n                </div>\n                <div style=\"display:flex;flex-wrap:nowrap;gap:6px;margin-top:10px\">\n                  <div style=\"display:flex;align-items:center;gap:6px;height:38px;padding:0 10px;border-radius:19px;background:#f4f7fb;flex:none\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg><div style=\"font-size:15px;font-weight:600;white-space:nowrap\">Berkeley</div></div>\n                  <div sc-camel-on-click=\"{{ popMaya }}\" style=\"cursor:pointer;display:flex;align-items:center;gap:6px;height:38px;padding:0 10px;border-radius:19px;background:#f4f7fb;flex:none\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" style=\"flex:none\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"></circle><path d=\"M15.5 15.5 20 20\"></path></svg><div style=\"font-size:17px;letter-spacing:1px;white-space:nowrap\">🙋📖☕</div></div>\n                </div>\n                  <sc-if value=\"{{ popIsMaya }}\" hint-placeholder-val=\"{{ false }}\">\n                    <div sc-camel-on-click=\"{{ stopTap }}\" style=\"position:absolute;top:100%;right:12px;margin-top:-6px;width:232px;padding:10px 8px;background:#fff;border-radius:24px;box-shadow:0 18px 44px rgba(16,36,74,0.20);z-index:40;cursor:default;animation:cRise 180ms ease both\">\n                      <sc-for list=\"{{ goalsMaya }}\" as=\"g\" hint-placeholder-count=\"3\">\n                        <div style=\"display:flex;align-items:flex-start;gap:10px;padding:11px 12px\">\n                          <div style=\"font-size:21px;line-height:1.2;flex:none\">{{ g.emoji }}</div>\n                          <div style=\"font-size:17px;font-weight:600;line-height:1.3;color:#0b1b3a;text-wrap:pretty\">{{ g.label }}</div>\n                        </div>\n                      </sc-for>\n                    </div>\n                  </sc-if>\n              </div>\n            </div>\n\n            <div sc-camel-on-click=\"{{ openLiam }}\" style=\"position:relative;display:flex;align-items:center;gap:14px;padding:16px;border-radius:26px;background:#fff;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n              <div style=\"position:relative;flex:none;width:78px;padding-bottom:10px\">\n                <img src=\"ccb60bc3-7dec-4660-b8f0-dbdd63bf808c\" alt=\"Liam Park\" style=\"width:78px;height:78px;border-radius:39px;object-fit:cover;display:block\">\n                <div style=\"position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:24px;padding:0 9px;border-radius:12px;background:linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%);border:2px solid #fff;display:flex;align-items:center;white-space:nowrap\"><div style=\"font-size:12px;font-weight:700;color:#ffffff\">Auto Match</div></div>\n              </div>\n              <div style=\"flex:1;min-width:0\">\n                <div style=\"display:flex;align-items:center;gap:8px\">\n                  <div style=\"flex:1;min-width:0;font-size:20px;font-weight:800;letter-spacing:-0.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">Liam Park, 22</div>\n                  <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n                </div>\n                <div style=\"display:flex;flex-wrap:nowrap;gap:6px;margin-top:10px\">\n                  <div style=\"display:flex;align-items:center;gap:6px;height:38px;padding:0 10px;border-radius:19px;background:#f4f7fb;flex:none\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg><div style=\"font-size:15px;font-weight:600;white-space:nowrap\">Stanford</div></div>\n                  <div sc-camel-on-click=\"{{ popLiam }}\" style=\"cursor:pointer;display:flex;align-items:center;gap:6px;height:38px;padding:0 10px;border-radius:19px;background:#f4f7fb;flex:none\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" style=\"flex:none\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"></circle><path d=\"M15.5 15.5 20 20\"></path></svg><div style=\"font-size:17px;letter-spacing:1px;white-space:nowrap\">🏃🎸🍜</div></div>\n                </div>\n                  <sc-if value=\"{{ popIsLiam }}\" hint-placeholder-val=\"{{ false }}\">\n                    <div sc-camel-on-click=\"{{ stopTap }}\" style=\"position:absolute;top:100%;right:12px;margin-top:-6px;width:232px;padding:10px 8px;background:#fff;border-radius:24px;box-shadow:0 18px 44px rgba(16,36,74,0.20);z-index:40;cursor:default;animation:cRise 180ms ease both\">\n                      <sc-for list=\"{{ goalsLiam }}\" as=\"g\" hint-placeholder-count=\"3\">\n                        <div style=\"display:flex;align-items:flex-start;gap:10px;padding:11px 12px\">\n                          <div style=\"font-size:21px;line-height:1.2;flex:none\">{{ g.emoji }}</div>\n                          <div style=\"font-size:17px;font-weight:600;line-height:1.3;color:#0b1b3a;text-wrap:pretty\">{{ g.label }}</div>\n                        </div>\n                      </sc-for>\n                    </div>\n                  </sc-if>\n              </div>\n            </div>\n\n            <div sc-camel-on-click=\"{{ openJordan }}\" style=\"position:relative;display:flex;align-items:center;gap:14px;padding:16px;border-radius:26px;background:#fff;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n              <div style=\"position:relative;flex:none;width:78px;padding-bottom:10px\">\n                <img src=\"c835ba92-45a1-48e0-9991-4ee3f871069b\" alt=\"Jordan Ellis\" style=\"width:78px;height:78px;border-radius:39px;object-fit:cover;display:block\">\n                <div style=\"position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:24px;padding:0 9px;border-radius:12px;background:#e2e9fb;border:2px solid #fff;display:flex;align-items:center;white-space:nowrap\"><div style=\"font-size:12px;font-weight:700;color:#1e3a8a\">Invite</div></div>\n              </div>\n              <div style=\"flex:1;min-width:0\">\n                <div style=\"display:flex;align-items:center;gap:8px\">\n                  <div style=\"flex:1;min-width:0;font-size:20px;font-weight:800;letter-spacing:-0.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">Jordan Ellis, 20</div>\n                  <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n                </div>\n                <div style=\"display:flex;flex-wrap:nowrap;gap:6px;margin-top:10px\">\n                  <div style=\"display:flex;align-items:center;gap:6px;height:38px;padding:0 10px;border-radius:19px;background:#f4f7fb;flex:none\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"flex:none\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg><div style=\"font-size:15px;font-weight:600;white-space:nowrap\">UCLA</div></div>\n                  <div sc-camel-on-click=\"{{ popJordan }}\" style=\"cursor:pointer;display:flex;align-items:center;gap:6px;height:38px;padding:0 10px;border-radius:19px;background:#f4f7fb;flex:none\"><svg width=\"17\" height=\"17\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" style=\"flex:none\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"></circle><path d=\"M15.5 15.5 20 20\"></path></svg><div style=\"font-size:17px;letter-spacing:1px;white-space:nowrap\">💬🗣️✈️</div></div>\n                </div>\n                  <sc-if value=\"{{ popIsJordan }}\" hint-placeholder-val=\"{{ false }}\">\n                    <div sc-camel-on-click=\"{{ stopTap }}\" style=\"position:absolute;top:100%;right:12px;margin-top:-6px;width:232px;padding:10px 8px;background:#fff;border-radius:24px;box-shadow:0 18px 44px rgba(16,36,74,0.20);z-index:40;cursor:default;animation:cRise 180ms ease both\">\n                      <sc-for list=\"{{ goalsJordan }}\" as=\"g\" hint-placeholder-count=\"3\">\n                        <div style=\"display:flex;align-items:flex-start;gap:10px;padding:11px 12px\">\n                          <div style=\"font-size:21px;line-height:1.2;flex:none\">{{ g.emoji }}</div>\n                          <div style=\"font-size:17px;font-weight:600;line-height:1.3;color:#0b1b3a;text-wrap:pretty\">{{ g.label }}</div>\n                        </div>\n                      </sc-for>\n                    </div>\n                  </sc-if>\n              </div>\n            </div>\n          </div>\n\n          </sc-if>\n          <sc-if value=\"{{ amIdleFull }}\" hint-placeholder-val=\"{{ true }}\">\n          </sc-if>\n          <sc-if value=\"{{ amCard }}\" hint-placeholder-val=\"{{ false }}\">\n            <div sc-camel-on-click=\"{{ amCardGo }}\" style=\"margin-top:24px;padding:18px;border-radius:24px;background:#fff;box-shadow:0 10px 26px rgba(16,36,74,0.09);display:flex;align-items:center;gap:14px;cursor:pointer\">\n              <div style=\"width:52px;height:52px;border-radius:26px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;flex:none\">\n                <svg width=\"17\" height=\"22\" sc-camel-view-box=\"0 0 12 18\" fill=\"#fff\"><path d=\"M7.5 0 0 10h4l-1 8 8-10.5H7z\"></path></svg>\n              </div>\n              <div style=\"flex:1;min-width:0\">\n                <div style=\"font-size:18px;font-weight:800;letter-spacing:-0.02em\">{{ amCardTitle }}</div>\n                <div style=\"font-size:14.5px;color:#5b6b85;margin-top:2px\">{{ amCardSub }}</div>\n              </div>\n              <div style=\"font-size:15px;font-weight:700;color:#4a7bf7;flex:none\">{{ amCardAction }}</div>\n            </div>\n          </sc-if>\n        </div>\n      </div>\n    </sc-if>",
+    "tab_component_sha256": "cbdac32e7833b050f47ff8674ef3fe86a0a6d68ed6f5347e323ff3557b5925ca",
+    "tab_component": "\n<div style=\"position:absolute;inset:0;border-radius:31px;background:#ffffff;box-shadow:0 10px 30px rgba(16,36,74,0.12),0 2px 6px rgba(16,36,74,0.06);display:grid;grid-template-columns:repeat(3,1fr);align-items:center;justify-items:center\">\n  <div onClick=\"{{ goHome }}\" style=\"width:52px;height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ homeBg }};color:{{ homeInk }};transition:background 180ms ease\">\n    <svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 10.5 12 3.5l9 7V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z\"></path></svg>\n  </div>\n  <div onClick=\"{{ goDiscover }}\" style=\"width:52px;height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ discoverBg }};color:{{ discoverInk }};transition:background 180ms ease\">\n    <svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"M16.2 16.2 21 21\"></path></svg>\n  </div>\n  <div onClick=\"{{ goEvents }}\" style=\"width:52px;height:52px;border-radius:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ eventsBg }};color:{{ eventsInk }};transition:background 180ms ease\">\n    <svg width=\"26\" height=\"26\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"3\"></rect><path d=\"M8 3v3M16 3v3M3 10h18\"></path></svg>\n  </div>\n</div>\n"
+  },
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "route": "/pages/home/index",
+  "fixed_regions": "TopSafeArea; source toolbar/title; CustomTabBar owns bottom safe area",
+  "scroll_region": "single contacts/status viewport; fixed header is the existing approved adaptation",
+  "styles_copy_svg": "Exact inline coordinates, font/spacing/shadows/gradients, text and SVG paths preserved in source.fragment and source.tab_component; not inferred from the current Vue code",
+  "assets": [
+    {
+      "source": "assets/maya-full.png",
+      "id": "a11",
+      "bundle_id": "be199ee7-6704-4324-98d1-52394676c49a",
+      "target": "static/assets/head/maya-full.png",
+      "mime": "image/png",
+      "bytes": 1879678,
+      "sha256": "59433c0bcb9d9768e37c174b891c0f5d8f50bb5dbcdd4b892f5649f9c528f3b0"
+    },
+    {
+      "source": "assets/maya-av.png",
+      "id": "a13",
+      "bundle_id": "c448edd0-f94d-466e-bc08-4899beb0854a",
+      "target": "static/assets/head/maya-av.png",
+      "mime": "image/png",
+      "bytes": 35386,
+      "sha256": "f6739a48d139e24611ecafb40ba4605af223c6a6b10765ef0c0b7aae838351f4"
+    },
+    {
+      "source": "assets/liam-av.png",
+      "id": "a14",
+      "bundle_id": "ccb60bc3-7dec-4660-b8f0-dbdd63bf808c",
+      "target": "static/assets/head/liam-av.png",
+      "mime": "image/png",
+      "bytes": 879913,
+      "sha256": "6c268cdd7e5f0d2388c00fb7b8360da212c9f31375ed4f49c87acfd3a8073e93"
+    },
+    {
+      "source": "bundle:a9831494-dfeb-464f-8617-1e3468ad74f0",
+      "id": "a9831494-dfeb-464f-8617-1e3468ad74f0",
+      "bundle_id": "a9831494-dfeb-464f-8617-1e3468ad74f0",
+      "target": "static/assets/coins/home-coin-badge.png",
+      "mime": "image/png",
+      "bytes": 42279,
+      "sha256": "c46cf9d434bb7eed4aea0b085e68b90fd90c0917a8f14009ba0e9cf571568ad7"
+    },
+    {
+      "source": "bundle:c45dc80d-a308-443b-a04e-160acb1aacb6",
+      "id": "c45dc80d-a308-443b-a04e-160acb1aacb6",
+      "bundle_id": "c45dc80d-a308-443b-a04e-160acb1aacb6",
+      "target": "static/assets/fonts/c45dc80d-a308-443b-a04e-160acb1aacb6.woff2",
+      "mime": "font/woff2",
+      "bytes": 8680,
+      "sha256": "82cc85bd416dc825c05b4264a8a58e189e528fed8a05fbd471b5493e010d623b"
+    },
+    {
+      "source": "bundle:3fce8f63-a0cb-4038-9e76-9d27825944d8",
+      "id": "3fce8f63-a0cb-4038-9e76-9d27825944d8",
+      "bundle_id": "3fce8f63-a0cb-4038-9e76-9d27825944d8",
+      "target": "static/assets/fonts/3fce8f63-a0cb-4038-9e76-9d27825944d8.woff2",
+      "mime": "font/woff2",
+      "bytes": 31356,
+      "sha256": "0d17b7880f389deeb6663a52fa4eadc6d9116bdda725f0aa1f3d404fbb7d3d59"
+    },
+    {
+      "source": "bundle:e384f657-5844-471e-bb43-9961e1fd1f20",
+      "id": "e384f657-5844-471e-bb43-9961e1fd1f20",
+      "bundle_id": "e384f657-5844-471e-bb43-9961e1fd1f20",
+      "target": "static/assets/fonts/e384f657-5844-471e-bb43-9961e1fd1f20.woff2",
+      "mime": "font/woff2",
+      "bytes": 18612,
+      "sha256": "d0fa07ff63dd60cbc0e2f58e29c802dca2a5ae0276c999f59c6111ab7bbaec3b"
+    },
+    {
+      "source": "bundle:0113f2b2-23eb-4100-baa3-e2e3a3df43d8",
+      "id": "0113f2b2-23eb-4100-baa3-e2e3a3df43d8",
+      "bundle_id": "0113f2b2-23eb-4100-baa3-e2e3a3df43d8",
+      "target": "static/assets/fonts/0113f2b2-23eb-4100-baa3-e2e3a3df43d8.woff2",
+      "mime": "font/woff2",
+      "bytes": 42856,
+      "sha256": "4956ec7b19798cb8418f2e44349e90c0ab7310594350c4b9c2998dc092122d5a"
+    },
+    {
+      "source": "bundle:631e1a4c-0eae-4582-826b-536c5def58d3",
+      "id": "631e1a4c-0eae-4582-826b-536c5def58d3",
+      "bundle_id": "631e1a4c-0eae-4582-826b-536c5def58d3",
+      "target": "static/assets/fonts/631e1a4c-0eae-4582-826b-536c5def58d3.woff2",
+      "mime": "font/woff2",
+      "bytes": 77216,
+      "sha256": "6276a2f5a5554c16b422f00f114773a8d4013a81df18a338f7c216d80103c9af"
+    },
+    {
+      "source": "bundle:53b577a8-636a-4565-a134-1c08a62fa4ec",
+      "id": "53b577a8-636a-4565-a134-1c08a62fa4ec",
+      "bundle_id": "53b577a8-636a-4565-a134-1c08a62fa4ec",
+      "target": "static/assets/fonts/53b577a8-636a-4565-a134-1c08a62fa4ec.woff2",
+      "mime": "font/woff2",
+      "bytes": 29472,
+      "sha256": "f626b95c1efa95cf6b7c9b043d3bbe8862b6abbe5f55a082102f33f7de2fd4f9"
+    },
+    {
+      "source": "bundle:66b0bd6c-e5cc-49ba-9396-78a01d710d85",
+      "id": "66b0bd6c-e5cc-49ba-9396-78a01d710d85",
+      "bundle_id": "66b0bd6c-e5cc-49ba-9396-78a01d710d85",
+      "target": "static/assets/fonts/66b0bd6c-e5cc-49ba-9396-78a01d710d85.woff2",
+      "mime": "font/woff2",
+      "bytes": 74932,
+      "sha256": "891951df5e8b5b0f0bc760d31375405e795c666b5add70437de12d4a6482b33f"
+    },
+    {
+      "source": "bundle:56ac1e90-0b80-4cb8-a82f-59cf81760371",
+      "id": "56ac1e90-0b80-4cb8-a82f-59cf81760371",
+      "bundle_id": "56ac1e90-0b80-4cb8-a82f-59cf81760371",
+      "target": "static/assets/fonts/56ac1e90-0b80-4cb8-a82f-59cf81760371.woff2",
+      "mime": "font/woff2",
+      "bytes": 29564,
+      "sha256": "4884fec2c73aa52a2461073c1b87d1ceb80f400520391b43f97ca7d3c39eeb24"
+    },
+    {
+      "source": "bundle:6331ba1a-6400-4815-ac0a-69510f961a77",
+      "id": "6331ba1a-6400-4815-ac0a-69510f961a77",
+      "bundle_id": "6331ba1a-6400-4815-ac0a-69510f961a77",
+      "target": "static/assets/fonts/6331ba1a-6400-4815-ac0a-69510f961a77.woff2",
+      "mime": "font/woff2",
+      "bytes": 12224,
+      "sha256": "6106d72e36626a3a77914192ac8f89f0e737d9aea78387238bd6df50d2ce1a2c"
+    },
+    {
+      "source": "bundle:81d61863-e3ad-4303-951e-65126210cb5a",
+      "id": "81d61863-e3ad-4303-951e-65126210cb5a",
+      "bundle_id": "81d61863-e3ad-4303-951e-65126210cb5a",
+      "target": "static/assets/fonts/81d61863-e3ad-4303-951e-65126210cb5a.woff2",
+      "mime": "font/woff2",
+      "bytes": 5672,
+      "sha256": "fdfc3667172fc08a812935ab31a4096841115da99e4334eebed65d992075aff3"
+    },
+    {
+      "source": "bundle:78f79fc4-e1ca-483f-a6b9-45572b168ed1",
+      "id": "78f79fc4-e1ca-483f-a6b9-45572b168ed1",
+      "bundle_id": "78f79fc4-e1ca-483f-a6b9-45572b168ed1",
+      "target": "static/assets/fonts/78f79fc4-e1ca-483f-a6b9-45572b168ed1.woff2",
+      "mime": "font/woff2",
+      "bytes": 12880,
+      "sha256": "cf968562375eceed83b66f2b5445aa4ecdc4d5300de94930da06433877a975a1"
+    },
+    {
+      "source": "bundle:1319a1ef-b3fd-4679-80e0-ee8aecf30769",
+      "id": "1319a1ef-b3fd-4679-80e0-ee8aecf30769",
+      "bundle_id": "1319a1ef-b3fd-4679-80e0-ee8aecf30769",
+      "target": "static/assets/fonts/1319a1ef-b3fd-4679-80e0-ee8aecf30769.woff2",
+      "mime": "font/woff2",
+      "bytes": 23228,
+      "sha256": "5d2286941a6b02a29387efa94809a064f8917598eafa67b938261cf13bb887cd"
+    }
+  ],
+  "motion": {
+    "page": "cRise 260ms ease, ending frame",
+    "popover": "cRise 180ms ease, ending frame",
+    "new_list_animation": false
+  },
+  "states": [
+    "default",
+    "empty",
+    "error",
+    "authentication skeleton",
+    "long/missing avatar",
+    "incoming/outgoing request",
+    "match invitation",
+    "connected unread/read/media",
+    "searching/paused/found/waiting/expired",
+    "quota UTC rollover",
+    "account switch",
+    "block/unblock"
+  ],
+  "approved_deltas": [
+    "CIRCA → Cimoa brand; preserve source tagline",
+    "Canonical Chloe/HKUST, Liam/Stanford and Lina/HKU detail profiles, goals and avatar instead of conflicting Home fixture",
+    "Fixed toolbar/title with single scroll frame and real system safe areas; no fake status bar or Home Indicator",
+    "Dynamic outgoing requests use existing Sent variant; match invitations use Invite; one row per person",
+    "Actual queue data or explicit waiting-for-update text; no fake notification/online claim",
+    "Long name/university/goal may wrap for readability; no invented unread badge/preview/section"
+  ],
+  "aggregation": {
+    "persisted": false,
+    "source_entities": [
+      "ConnectionRequest",
+      "derived Connection",
+      "direct Conversation",
+      "users/goals",
+      "match_sessions",
+      "UTC quota",
+      "blocks/privacy"
+    ],
+    "per_person_precedence": [
+      "connected",
+      "pending request",
+      "incoming match invitation",
+      "owned candidate"
+    ],
+    "group_order": [
+      "connected",
+      "auto_match",
+      "match_invite",
+      "invite",
+      "sent"
+    ],
+    "within_group": "activity_at descending, user_id tie-breaker",
+    "status_card": "newest valid active non-fixture match, exact ID/state/route"
+  },
+  "interaction_contract": "interactions.json",
+  "interaction_ids": [
+    "home.openMe.click.1",
+    "home.startAutoMatch.click.1",
+    "home.startAutoMatch.click.2",
+    "home.exploreDiscover.click.1",
+    "home.openMaya.click.1",
+    "home.openLiam.click.1",
+    "home.openJordan.click.1",
+    "home.openSentRequest.click.1",
+    "home.openMatchInvitation.click.1",
+    "home.popMaya.click.1",
+    "home.popLiam.click.1",
+    "home.popJordan.click.1",
+    "home.closeGoalPop.click.1",
+    "home.stopTap.click.1",
+    "home.stopTap.click.2",
+    "home.stopTap.click.3",
+    "home.amCardGo.click.1",
+    "home.retry.click.1",
+    "tab.home",
+    "tab.discover",
+    "tab.events"
+  ]
+}

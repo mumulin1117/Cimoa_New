@@ -1,5 +1,7 @@
 # Cimoa Home 交互清单
 
+2026-10-17 增量：Home 与导航现统一读取 home_feed；本轮十字段契约（含 Sent/匹配邀请两个动态入口）见 [interactions.json](./ui-restoration/home/interactions.json)，来源与验收见 [专项结果](./ui-restoration/home-aggregate-acceptance.md)。下文首次验收的待依赖状态仅作历史；当前不再用旧 guard 拦截已经完成的目标。
+
 来源是内层模板 214–357 行及绑定逻辑，不是旧 Vue 首页。本页实现与实测见 [Home 本页验收](./cimoa-stage5-home-acceptance.md)；下表仍保留完整依赖契约，不能把 deferred 项当成通过。完成门槛统一见开发流程阶段 5。
 
 ## 页面骨架与数据入口
@@ -39,7 +41,7 @@
 
 可复现的测试输入必须在 Store 的测试场景中定义，不能在生产页加入 query 伪造关系或写页面假数组。故障测试应注入持久化适配器错误并断言状态完全不变。
 
-## 完成门槛
+## 首轮完成门槛记录（历史，当前状态见本轮专项）
 
 用户已授权先验收 Home 本页，再逐页补齐依赖。当前 local_acceptance 为 passed，full_acceptance 为 pending；功能 cc59a36 及验收记录 29c15f9 已推送，页面按流程暂回 pending（待依赖）：
 

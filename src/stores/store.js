@@ -16,6 +16,7 @@ import * as ev from './eventSelectors.js'
 import { event_group, event_message_actions } from './eventMessaging.js'
 import { direct_conversation, direct_message_actions } from './directMessaging.js'
 import { connection_for, connection_request } from './connectionEntities.js'
+import { home_feed } from './homeFeed.js'
 import { STATE_KEY, LEGACY_KEY } from '../utils/statePersistence.js'
 import { get_runtime, transact, operation, make_id, failure, unavailable, require_target, require_student, password_hash, add_transaction, connect_users, disconnect_for_block } from './transactions.js'
 export { configure_store_runtime, make_id as make_operation_id } from './transactions.js'
@@ -89,8 +90,9 @@ export const use_app_store = defineStore('app', {
     received_requests: state => ready(state) ? clone_data(state.data.requests.filter(row => row.recipient_id === s.owner_id(state.data) && s.visible(state.data, row.sender_id)).sort((a, b) => b.created_at - a.created_at)) : [],
     sent_requests: state => ready(state) ? clone_data(state.data.requests.filter(row => row.sender_id === s.owner_id(state.data) && s.visible(state.data, row.recipient_id)).sort((a, b) => b.created_at - a.created_at)) : [],
     friends: state => ready(state) ? state.data.users.filter(row => row.user_id !== s.owner_id(state.data) && s.connected(state.data, row.user_id)).map(row => ({ ...profile(state.data, row.user_id), ...s.relationship_state(state.data, row.user_id, state.clock_ms) })) : [],
-    home_connections: (state) => ready(state) ? s.home_cards(state.data, state.clock_ms) : [],
-    home_match_card: (state) => ready(state) ? s.home_match_card(state.data, state.clock_ms) : null,
+    home_feed: state => home_feed(state.data, state.clock_ms, state.hydration_status, state.hydration_error),
+    home_connections() { return this.home_feed.cards },
+    home_match_card() { return this.home_feed.match_card },
     request_by_id: (state) => (id) => ready(state) ? clone_data(state.data.requests.find((row) => row.request_id === id && [row.sender_id, row.recipient_id].includes(s.owner_id(state.data)) && s.visible(state.data, row.sender_id) && s.visible(state.data, row.recipient_id)) || null) : null,
     request_detail() { return id => {
       const request = this.connection_request(id)
