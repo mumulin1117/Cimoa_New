@@ -97,6 +97,11 @@ try {
     await page.locator('[data-interaction="reqAccepted.closeAccepted.click.1"]').click(); await page.locator('.home-header').waitFor(); assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1')
     check('Real counterpart/shared interests; profile Chat CTA and chat use unique conversation; both Back owners correct; Close clears Home')
   }
+  if (phase === 'declined') {
+    assert.ok(close_to(report.geometry.hero.y, 170)); assert.match(report.geometry.text, /No connection was created and no reason is passed on/)
+    for (const id of ['reqDeclined.backToDiscover.click.1','reqDeclined.backToDiscover.click.2']) { await open(route); await page.locator(`[data-interaction="${id}"]`).click(); await page.locator('.discover-header').waitFor(); assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1') }
+    check('Source closed result, truthful no-connection copy and both completion actions clear-stack to Discover')
+  }
   await page.evaluate(({ key, data: fixture }) => localStorage.setItem(key, JSON.stringify({ type: 'object', data: fixture })), { key: STATE_KEY, data })
   await page.setViewportSize({ width: 320, height: 568 }); await open(route); await set_safe_area(page, 62, 34); await page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))))
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true)

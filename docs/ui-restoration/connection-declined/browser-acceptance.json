@@ -1,0 +1,41 @@
+{
+  "page": "declined",
+  "result": "passed",
+  "checks": [
+    "Source closed result, truthful no-connection copy and both completion actions clear-stack to Discover",
+    "Narrow iPhone width with real safe-area budget has no horizontal clipping"
+  ],
+  "geometry": {
+    "header": null,
+    "footer": {
+      "x": 0,
+      "y": 690.03125,
+      "width": 393,
+      "height": 161.96875,
+      "bottom": 852
+    },
+    "hero": {
+      "x": 0,
+      "y": 170,
+      "width": 393,
+      "height": 238.953125,
+      "bottom": 408.953125
+    },
+    "question": null,
+    "answer": null,
+    "photo": null,
+    "text": "Request closed\nNo connection was created and no reason is passed on. There are plenty of other students to meet.\nBack to Discover\nView Other People"
+  },
+  "errors": [],
+  "reference": "Offline HTML AST, original inline styles, no prototype script/runtime",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 31777,
+    "pixels_above_channel_delta_8": 5762,
+    "mean_absolute_channel_delta": 0.35722040043483977,
+    "max_channel_delta": 104
+  },
+  "cleaned_up": true
+}

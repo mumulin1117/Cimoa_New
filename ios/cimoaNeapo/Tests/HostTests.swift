@@ -45,7 +45,12 @@ final class HostTests: XCTestCase {
             let attachment = XCTAttachment(image: snapshot); attachment.name = "Connection \(page) real WKWebView"; attachment.lifetime = .keepAlways; add(attachment)
             try JSONSerialization.data(withJSONObject: metrics, options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("wkwebview-geometry.json"))
             try await restore()
-        } catch { try? await restore(); throw error }
+        } catch {
+            let details = try? await script(host, "return {url:location.href,text:document.body.innerText,html:document.body.innerHTML.slice(0,10000),errors:performance.getEntriesByType('resource').filter(r=>r.responseStatus>=400).map(r=>r.name)}")
+            if let details { let attachment = XCTAttachment(string: String(describing: details)); attachment.name = "Connection \(page) failure DOM"; attachment.lifetime = .keepAlways; add(attachment) }
+            if let image = try? await host.webView.takeSnapshot(configuration: nil) { let attachment = XCTAttachment(image: image); attachment.name = "Connection \(page) failure"; attachment.lifetime = .keepAlways; add(attachment) }
+            try? await restore(); throw error
+        }
     }
     func testConnectionSentPixel() async throws { try await connectionPixel("sent") }
     func testConnectionReceivedPixel() async throws { try await connectionPixel("received") }
