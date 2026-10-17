@@ -52,6 +52,8 @@ export const match_status = effective_match_status
 export const owned_matches = (data, now = Date.now()) => data.match_sessions.filter((row) => row.owner_user_id === owner_id(data) && (!row.candidate_id || visible(data, row.candidate_id))).map((row) => ({ ...row, status: match_status(row, now) }))
 export const active_match = (data, now = Date.now()) => owned_matches(data, now).filter(row => !row.fixture && ['searching', 'paused', 'found', 'waiting'].includes(row.status) && (!row.candidate_id || !connected(data, row.candidate_id))).sort((a, b) => b.created_at - a.created_at || a.match_id.localeCompare(b.match_id))[0] || null
 export const members = (data, event_id) => data.memberships.filter((row) => row.event_id === event_id && row.status === 'joined')
+// Displayed participants share one rule; hidden attendance still occupies a seat.
+export const visible_members = (data, event_id) => members(data, event_id).filter(row => visible(data, row.user_id) && (row.user_id === owner_id(data) || privacy_for(data, row.user_id).event_visible !== false))
 export const joined = (data, event_id, user_id = owner_id(data)) => members(data, event_id).some((row) => row.user_id === user_id)
 export const can_open_conversation = (data, conversation) => !!conversation && (conversation.kind === 'group' ? joined(data, conversation.event_id) : conversation.participant_ids.includes(owner_id(data)) && connected(data, conversation.participant_ids.find((id) => id !== owner_id(data))))
 export const goals_for_user = (data, user_id) => clone_data((user_by_id(data, user_id)?.goal_ids || []).map((id) => data.goals.find((row) => row.item_id === id)).filter(Boolean))

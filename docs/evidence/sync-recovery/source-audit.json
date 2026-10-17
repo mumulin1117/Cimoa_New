@@ -1,0 +1,278 @@
+{
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "base_commit": "e6325bce",
+  "scope": "Cross-page canonical entities, document refresh recovery, block/privacy filtering; no new UI or prototype runtime",
+  "roots": [
+    {
+      "query": "route=home",
+      "route": "/pages/home/index",
+      "condition": "isHome",
+      "lines": [
+        214,
+        358
+      ],
+      "fragment_sha256": "eddb4c3c59329d71a221c626255f19fb869a7da11fe9b59a1f1509ae1573b347",
+      "interaction_ids": [
+        "home.openMe.click.1",
+        "home.startAutoMatch.click.1",
+        "home.startAutoMatch.click.2",
+        "home.exploreDiscover.click.1",
+        "home.openMaya.click.1",
+        "home.openLiam.click.1",
+        "home.openJordan.click.1",
+        "home.openSentRequest.click.1",
+        "home.openMatchInvitation.click.1",
+        "home.popMaya.click.1",
+        "home.popLiam.click.1",
+        "home.popJordan.click.1",
+        "home.closeGoalPop.click.1",
+        "home.stopTap.click.1",
+        "home.stopTap.click.2",
+        "home.stopTap.click.3",
+        "home.amCardGo.click.1",
+        "home.retry.click.1",
+        "tab.home",
+        "tab.discover",
+        "tab.events"
+      ],
+      "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
+      "fixed_regions": "TopSafeArea; 主功能栏和标题; CustomTabBar",
+      "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0"
+    },
+    {
+      "query": "route=expanded",
+      "route": "/pages/discover/profile",
+      "condition": "isExpanded",
+      "lines": [
+        402,
+        514
+      ],
+      "fragment_sha256": "b1f2de0c1bb31eb80a7b8ef58f1906bbccd4bde70d2e0a1116aa235c473ff05b",
+      "interaction_ids": [
+        "expanded.collapse.click.1",
+        "expanded.openSafetyMini.click.1",
+        "expanded.openGallery.click.1",
+        "expanded.openGallery.click.2",
+        "expanded.openGallery.click.3",
+        "expanded.otherSongPlay.click.1",
+        "expanded.prevPhoto.click.1",
+        "expanded.nextPhoto.click.1",
+        "expanded.sayHi.click.1",
+        "sheetSafetyMini.closeSheet.click.1",
+        "sheetSafetyMini.openReport.click.1",
+        "sheetSafetyMini.openBlock.click.1",
+        "sheetSafetyMini.closeSheet.click.2",
+        "sheetBlock.closeSheet.click.1",
+        "sheetBlock.confirmBlock.click.1",
+        "sheetBlock.closeSheet.click.2"
+      ],
+      "return_owner": "pop origin_route（允许来源：/pages/discover/index、/pages/messages/chat、/pages/events/participants、/pages/auto-match/found）；无历史实例时 replace /pages/discover/index，不创建伪造实体",
+      "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
+      "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0"
+    },
+    {
+      "query": "route=events",
+      "route": "/pages/events/index",
+      "condition": "isEvents",
+      "lines": [
+        517,
+        606
+      ],
+      "fragment_sha256": "fa2b6a2b179d72ac0b6e8a865228ba0e004ea624bd665a51f733e92af72c6267",
+      "interaction_ids": [
+        "events.openMe.click.1",
+        "events.openMyEvents.click.1",
+        "events.chipToday.click.1",
+        "events.chipWeek.click.1",
+        "events.chipCampus.click.1",
+        "events.openEvent.click.1",
+        "events.openEvent.click.2",
+        "events.openParticipants.click.1",
+        "events.evJoinTap.click.1",
+        "events.openGroup.click.1",
+        "events.manageAttendance.click.1",
+        "events.m.open.click.1",
+        "events.m.join.click.1",
+        "showTabs.selectTab.select.1",
+        "hasNotif.openNotif.click.1",
+        "hasNotif.dismissNotif.click.1",
+        "sheetEvJoin.closeSheet.click.1",
+        "sheetEvJoin.confirmJoin.click.1",
+        "sheetEvJoin.closeSheet.click.2",
+        "sheetEvCancel.closeSheet.click.1",
+        "sheetEvCancel.keepSpot.click.1",
+        "sheetEvCancel.cancelAttendance.click.1"
+      ],
+      "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
+      "fixed_regions": "TopSafeArea; 工具栏/标题/三筛选项; CustomTabBar",
+      "scroll_region": "固定Header/筛选与Tab之间唯一纵向scroll-view；内部横向吸附活动轮播"
+    },
+    {
+      "query": "route=evDetail",
+      "route": "/pages/events/detail",
+      "condition": "isEvDetail",
+      "lines": [
+        1919,
+        1996
+      ],
+      "fragment_sha256": "78813b09ab658175043e7d6fdc9923c0d0a010ef2b28ad82327499f3b9326ee5",
+      "interaction_ids": [
+        "evDetail.goBack.click.1",
+        "evDetail.openEventMore.click.1",
+        "evDetail.openParticipantsList.click.1",
+        "evDetail.askJoin.click.1",
+        "evDetail.openGroup.click.1",
+        "evDetail.manageAttendance.click.1",
+        "sheetEvMore.closeSheet.click.1",
+        "sheetEvMore.shareEvent.click.1",
+        "sheetEvMore.openEventReport.click.1",
+        "sheetEvMore.blockOrganizer.click.1",
+        "sheetEvMore.closeSheet.click.2",
+        "sheetEvJoin.closeSheet.click.1",
+        "sheetEvJoin.confirmJoin.click.1",
+        "sheetEvJoin.closeSheet.click.2",
+        "sheetEvCancel.closeSheet.click.1",
+        "sheetEvCancel.keepSpot.click.1",
+        "sheetEvCancel.cancelAttendance.click.1"
+      ],
+      "return_owner": "pop origin_route（允许来源：/pages/events/index、/pages/events/upcoming）；无历史实例时 replace /pages/events/index，不创建伪造实体",
+      "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
+      "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0"
+    },
+    {
+      "query": "route=evGroup&joined=1",
+      "route": "/pages/events/group",
+      "condition": "isEvGroup",
+      "lines": [
+        2049,
+        2112
+      ],
+      "fragment_sha256": "51d97a6d83a3e021bd65e972786941243fbc9eee9b3202859516158a4d0c09fd",
+      "interaction_ids": [
+        "evGroup.goBack.click.1",
+        "evGroup.openGroupMenu.click.1",
+        "evGroup.sendPhoto.click.1",
+        "evGroup.onGroupDraft.change.1",
+        "evGroup.recordGroupVoice.click.1",
+        "evGroup.sendGroup.click.1"
+      ],
+      "return_owner": "pop origin_route（允许来源：/pages/events/index、/pages/events/detail、/pages/events/upcoming、/pages/events/join-success）；无历史实例时 replace /pages/events/index，不创建伪造实体",
+      "fixed_regions": "TopSafeArea; SecondaryPageHeader; MessageComposer",
+      "scroll_region": "Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0"
+    },
+    {
+      "query": "route=chat",
+      "route": "/pages/messages/chat",
+      "condition": "isChat",
+      "lines": [
+        1230,
+        1277
+      ],
+      "fragment_sha256": "929f40c4aea572120806aaeeefb0b6058a9efb1f4f10fd1a3fee426eb345cbbe",
+      "interaction_ids": [
+        "chat.goBack.click.1",
+        "chat.viewProfile.click.1",
+        "chat.startCall.click.1",
+        "chat.openSafety.click.1",
+        "chat.sendPhoto.click.1",
+        "chat.onDraft.change.1",
+        "chat.sendVoiceMsg.click.1",
+        "chat.send.click.1",
+        "sheetSafety.closeSheet.click.1",
+        "sheetSafety.viewProfile.click.1",
+        "sheetSafety.muteNotifs.click.1",
+        "sheetSafety.openReport.click.1",
+        "sheetSafety.openBlock.click.1",
+        "sheetSafety.closeSheet.click.2",
+        "sheetBlock.closeSheet.click.1",
+        "sheetBlock.confirmBlock.click.1",
+        "sheetBlock.closeSheet.click.2",
+        "chat.media.play.click.1",
+        "chat.media.preview.click.1",
+        "chat.media.close.click.1",
+        "chat.media.close.click.2",
+        "chat.media.record.click.1",
+        "chat.media.send.click.1",
+        "chat.image.open.click.1",
+        "chat.image.close.click.1",
+        "chat.image.retry.click.1"
+      ],
+      "return_owner": "pop exact origin instance; direct entry fallback replace Home; Profile/Call/Report Back restore the exact conversation, not another user or duplicate chat",
+      "fixed_regions": "TopSafeArea; source chat header; keyboard-aware MessageComposer; single bottom safe-area owner",
+      "scroll_region": "Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0"
+    },
+    {
+      "query": "route=blockedList",
+      "route": "/pages/settings/blocked",
+      "condition": "isBlockedList",
+      "lines": [
+        3893,
+        3921
+      ],
+      "fragment_sha256": "eb76854d4fba4d2dd2e81d632bb0e3864ed6bbe3fb5629893eba734c239709b4",
+      "interaction_ids": [
+        "blockedList.goBack.click.1",
+        "blockedList.b.unblock.click.1",
+        "unblockOpen.closeUnblock.click.1",
+        "unblockOpen.confirmUnblock.click.1",
+        "unblockOpen.closeUnblock.click.2"
+      ],
+      "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
+      "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+      "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0"
+    },
+    {
+      "query": "route=setPrivacy",
+      "route": "/pages/settings/privacy",
+      "condition": "isSetPrivacy",
+      "lines": [
+        3816,
+        3842
+      ],
+      "fragment_sha256": "17dcfb0aa7db2833ec2ee0267d36eceef12aaffd3778148abfbff1acf67175fa",
+      "interaction_ids": [
+        "setPrivacy.goBack.click.1",
+        "setPrivacy.o.pick.click.1",
+        "setPrivacy.p.toggle.click.1"
+      ],
+      "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
+      "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+      "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0"
+    }
+  ],
+  "findings": [
+    {
+      "id": "sync-participants",
+      "source": "Privacy event_visible + events participants/count",
+      "current": "event_card only checks blocked/deleted while event_participants also checks event_visible",
+      "required": "One visible-members selector across feed/detail/group/participant counts; capacity remains actual occupancy"
+    },
+    {
+      "id": "sync-auth-generation",
+      "source": "Shared entities, account isolation, async media and cancellation",
+      "current": "Several async writers only compare owner or session.expires_at, which a same-clock re-login can reuse",
+      "required": "Capture full auth_context; validate before async publication and before receipt replay, compensate newly staged media"
+    },
+    {
+      "id": "sync-cached-pages",
+      "source": "Expanded/Chat/group overlays, block and session invalidation",
+      "current": "Some cached pages bind only live session; group preview retains a raw URL rather than message identity",
+      "required": "Bind original account scope, clear stale private drafts/overlays, derive preview from visible same-ID message"
+    }
+  ],
+  "approved_deltas": [
+    "Existing real safe-area, canonical entity and local account boundaries retained",
+    "No geometry, controls, labels or new UI features changed",
+    "No fake payment, peer consent or media success"
+  ],
+  "contracts": {
+    "trigger": "Existing profile/chat/report/block/privacy/send/join controls and real refresh",
+    "preconditions": "Hydrated unchanged auth context and valid owned entities",
+    "visible_feedback": "Existing source confirmation and 500ms write Loading",
+    "success_result": "Same-ID getters synchronize across screens; refresh restores persistence without reseeding",
+    "failure_result": "Prior state retained; scoped cancellation and staged media compensation",
+    "persistence": "Existing v2 metadata and IndexedDB blobs only",
+    "sync_scope": "Home Discover Events/Profile/request/match/private/group/ledger",
+    "acceptance": "Explicit domain regression, real browser interactions, fresh WebKit documents and fail-closed boundary checks"
+  }
+}

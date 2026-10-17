@@ -1,4 +1,4 @@
-import { authenticated, owner_id, user_by_id, members, joined, visible, social_eligible } from './selectors.js'
+import { authenticated, owner_id, user_by_id, members, visible_members, joined, social_eligible } from './selectors.js'
 import { clone_data } from './seed.js'
 
 export const EVENT_TABS = Object.freeze([
@@ -19,7 +19,7 @@ export function event_card(data, event, now) {
   const day_label = day === today ? 'Today' : day === today + 1 ? 'Tomorrow' : new Intl.DateTimeFormat('en-US', { timeZone: zone, ...(day > today && day < today + 7 ? { weekday: 'short' } : { month: 'short', day: 'numeric' }) }).format(event.starts_at)
   const time = new Intl.DateTimeFormat('en-US', { timeZone: zone, hour: 'numeric', minute: '2-digit' }).format(event.starts_at)
   const attendees = members(data, event.event_id)
-  const participants = attendees.filter(row => visible(data, row.user_id)).map(row => user_by_id(data, row.user_id))
+  const participants = visible_members(data, event.event_id).map(row => user_by_id(data, row.user_id))
   return { ...clone_data(event), joined: joined(data, event.event_id), participant_count: participants.length,
     participants: clone_data(participants.slice(0, 4)), available_count: Math.max(0, event.capacity - attendees.length),
     date_label: `${day_label} · ${time}`, time_zone_label: zone,

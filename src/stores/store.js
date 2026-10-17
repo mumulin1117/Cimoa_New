@@ -173,7 +173,7 @@ export const use_app_store = defineStore('app', {
     event_detail: state => id => ready(state) ? ev.event_detail(state.data, id, state.clock_ms) : null,
     event_group: state => (event_id, conversation_id) => ready(state) ? event_group(state.data, event_id, conversation_id, state.clock_ms) : null,
     event_join_blocker: (state) => id => state.hydration_status === 'ready' ? ev.event_join_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
-    event_participants: (state) => (id) => ready(state) ? s.members(state.data, id).filter((row) => s.visible(state.data, row.user_id) && (row.user_id === s.owner_id(state.data) || s.privacy_for(state.data, row.user_id).event_visible !== false)).map((row) => profile(state.data, row.user_id)) : [],
+    event_participants: (state) => (id) => ready(state) ? s.visible_members(state.data, id).map((row) => profile(state.data, row.user_id)) : [],
     event_people() { return (id, query = '') => this.event_participants(id).filter(user => [user.user_name, user.university, user.major].join(' ').toLowerCase().includes(query.trim().toLowerCase())).map(user => ({ ...user, meta: [user.university, user.major].filter(Boolean).join(' · '), relationship_label: user.user_id === this.session.current_user_id ? 'You' : this.can_chat(user.user_id) ? 'Connected' : 'Not connected' })) },
     my_events() { return this.events.filter((row) => row.joined) },
     my_event_groups: state => ready(state) ? ev.my_event_groups(state.data, state.clock_ms) : { featured: null, sections: [] },
@@ -457,19 +457,21 @@ export const use_app_store = defineStore('app', {
       }, { public: true })
     },
     async save_media(blob, kind, duration_ms = 0, { is_current = () => true, introduction_draft_id = null } = {}) {
+      const expected_context = auth_context_key(this.data)
       const owner = s.owner_id(this.data), media_id = make_id('media'), rt = get_runtime(this)
+      const scope_current = () => is_current() && auth_context_key(this.data) === expected_context
       let wrote_blob = false, published = false
       try {
-        if (!is_current()) return failure('cancelled', 'Media save was cancelled.')
+        if (!scope_current()) return failure('cancelled', 'Media save was cancelled.')
         s.ensure(this.session.is_authenticated, 'Please log in again.')
         s.ensure(['image', 'audio'].includes(kind) && blob instanceof Blob && blob.size > 0 && blob.size <= 20 * 1024 * 1024 && blob.type.startsWith(`${kind}/`), 'Choose a supported file smaller than 20 MB.')
         const decoded = await rt.inspect_media(blob, kind)
-        if (!is_current()) return failure('cancelled', 'Media save was cancelled.')
+        if (!scope_current()) return failure('cancelled', 'Media save was cancelled.')
         duration_ms = decoded.duration_ms
         s.ensure(kind !== 'audio' || Number.isFinite(duration_ms) && duration_ms > 0, 'Record a playable voice note first.')
         await rt.media.put(media_id, blob)
         wrote_blob = true
-        if (!is_current()) return failure('cancelled', 'Media save was cancelled.')
+        if (!scope_current()) return failure('cancelled', 'Media save was cancelled.')
         const result = transact(this, null, (data, now) => {
           const row = { media_id, owner_user_id: owner, kind, media_url: `indexeddb://${media_id}`, mime: blob.type, duration_ms, byte_size: blob.size }
           if (introduction_draft_id) {
@@ -480,35 +482,41 @@ export const use_app_store = defineStore('app', {
             draft.payload.audio_id = media_id; draft.payload.mode = 'voice'; draft.updated_at = now
           }
           data.media_files.push(row); return row
-        }, { expected_owner: owner })
+        }, { expected_owner: owner, expected_context })
         published = result.success
         return result
       } catch (error) { return failure('media_failed', error.message || 'Media could not be saved.') }
       finally { if (wrote_blob && !published) { try { await rt.media.delete(media_id) } catch { this.last_error = 'Media was not published; temporary media cleanup failed. Retry storage when available.' } } }
     },
     async discard_media(id, { is_current = () => true } = {}) {
+      const expected_context = auth_context_key(this.data)
       const owner = s.owner_id(this.data), rt = get_runtime(this)
+      const scope_current = () => is_current() && auth_context_key(this.data) === expected_context
       const row = this.data.media_files.find(item => item.media_id === id && item.owner_user_id === owner)
       if (!row) return failure('media_unavailable', 'This recording is no longer available.')
       const referenced = this.data.requests.some(item => item.audio_id === id) || this.data.messages.some(item => item.media_id === id) || this.data.users.some(item => item.bio_audio_id === id) || this.data.profile_photos.some(item => item.media_url === row.media_url)
       if (referenced) return failure('media_in_use', 'This media is already in use and cannot be discarded.')
       let blob
+      const restore_blob = async () => {
+        if (blob instanceof Blob && this.data.accounts.some(account => account.user_id === owner && account.status === 'active') && this.data.media_files.some(media => media.media_id === id && media.owner_user_id === owner)) await rt.media.put(id, blob)
+      }
       try {
-        if (!is_current()) return failure('cancelled', 'Media removal was cancelled.')
+        if (!scope_current()) return failure('cancelled', 'Media removal was cancelled.')
         blob = await rt.media.get(id)
-        if (!is_current()) return failure('cancelled', 'Media removal was cancelled.')
+        if (!scope_current()) return failure('cancelled', 'Media removal was cancelled.')
         await rt.media.delete(id)
-        if (!is_current()) { if (blob instanceof Blob) await rt.media.put(id, blob); return failure('cancelled', 'Media removal was cancelled.') }
+        if (!scope_current()) { await restore_blob(); return failure('cancelled', 'Media removal was cancelled.') }
         const result = transact(this, null, data => {
           data.media_files = data.media_files.filter(item => item.media_id !== id)
           for (const draft of own(data, data.drafts)) if (draft.kind === 'introduction' && draft.payload.audio_id === id) delete draft.payload.audio_id
           data.drafts = data.drafts.filter(draft => !(draft.owner_user_id === owner && draft.kind === 'coin_spend' && draft.payload.audio_id === id))
-        }, { expected_owner: owner })
-        if (!result.success && blob instanceof Blob) await rt.media.put(id, blob)
+        }, { expected_owner: owner, expected_context })
+        if (!result.success) await restore_blob()
         return result
       } catch (error) { return failure('media_failed', error.message || 'The recording could not be discarded.') }
     },
     async save_profile_photos(media_ids) {
+      const expected_context = auth_context_key(this.data)
       const owner = s.owner_id(this.data)
       try {
         s.ensure(Array.isArray(media_ids) && media_ids.length >= 1 && new Set(media_ids).size === media_ids.length, 'Choose at least one photo.')
@@ -518,14 +526,16 @@ export const use_app_store = defineStore('app', {
           data.profile_photos = data.profile_photos.filter((row) => row.user_id !== owner)
           user.photo_ids = media.map((row, position) => { const photo_id = make_id('photo'); data.profile_photos.push({ photo_id, user_id: owner, media_url: row.media_url, position }); return photo_id })
           user.avatar_url = media[0].media_url
-        }, { expected_owner: owner })
+        }, { expected_owner: owner, expected_context })
       } catch (error) { return failure('media_failed', error.message) }
     },
     async send_introduction({ user_id, question_id, kind = 'text', text = '', audio_id = null, operation_id, draft_id = null }, { is_current = () => true } = {}) {
+      const expected_context = auth_context_key(this.data)
       const owner = s.owner_id(this.data)
-      if (!is_current()) return failure('cancelled', 'Introduction was cancelled.')
+      const scope_current = () => is_current() && auth_context_key(this.data) === expected_context
+      if (!scope_current()) return failure('cancelled', 'Introduction was cancelled.')
       try { if (kind === 'voice') await check_media(this, audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
-      if (!is_current()) return failure('cancelled', 'Introduction was cancelled.')
+      if (!scope_current()) return failure('cancelled', 'Introduction was cancelled.')
       return transact(this, operation(operation_id, 'introduction', [user_id, question_id, kind, text, audio_id, draft_id]), (data, now) => {
         const blocker = s.introduction_blocker(data, user_id, now)
         s.ensure(!blocker, blocker)
@@ -541,7 +551,7 @@ export const use_app_store = defineStore('app', {
           draft.payload.completed_request_id = request_id
         }
         return request_id
-      }, { expected_owner: owner })
+      }, { expected_owner: owner, expected_context })
     },
     prepare_voice_introduction_spend(draft_id) {
       return transact(this, null, (data, now) => {
@@ -558,14 +568,16 @@ export const use_app_store = defineStore('app', {
       })
     },
     async complete_coin_spend(context_id, { is_current = () => true } = {}) {
+      const expected_context = auth_context_key(this.data)
       const owner = s.owner_id(this.data)
+      const scope_current = () => is_current() && auth_context_key(this.data) === expected_context
       const context = this.data.drafts.find((row) => row.draft_id === context_id && row.owner_user_id === owner && row.kind === 'coin_spend')
       if (!context) return failure('operation_unavailable', 'This coin operation is unavailable. No coins were deducted.')
       const payload = clone_data(context.payload || {})
       if (!['voice_introduction', 'priority_match'].includes(payload.kind)) return failure('operation_invalid', 'This coin operation is invalid. No coins were deducted.')
-      if (!is_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
+      if (!scope_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
       try { if (payload.kind === 'voice_introduction') await check_media(this, payload.audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
-      if (!is_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
+      if (!scope_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
       return transact(this, operation(payload.operation_id, 'coin-spend', [context_id, payload]), (data, now) => {
         const current = require_owned(data, data.drafts, 'draft_id', context_id)
         s.ensure(current.kind === 'coin_spend', 'This coin operation is unavailable.')
@@ -593,7 +605,7 @@ export const use_app_store = defineStore('app', {
         const admission=data.match_sessions.find(row=>row.match_id===(match.pool_id||match.match_id)&&row.owner_user_id===match.owner_user_id)
         s.ensure(admission,'This pool admission is unavailable.');admission.priority_until=match.priority_until
         return { kind: payload.kind, destination_id: match.match_id }
-      }, { expected_owner: owner })
+      }, { expected_owner: owner, expected_context })
     },
     resolve_request(id, decision, operation_id = null) {
       const before = this.request_detail(id)

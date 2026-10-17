@@ -2,6 +2,7 @@ import { clone_data } from './seed.js'
 import { authenticated, owner_id, ensure, can_open_conversation, messages_for, user_by_id, privacy_for } from './selectors.js'
 import { transact, get_runtime, make_id, operation, failure } from './transactions.js'
 import { connection_for } from './connectionEntities.js'
+import { auth_context_key } from './accountDefaults.js'
 
 export function direct_conversation(data, conversation_id, now) {
   const conversation = data.conversations.find(row => row.conversation_id === conversation_id && row.kind === 'direct')
@@ -51,6 +52,7 @@ export const direct_message_actions = {
     if (sending.has(this)) return failure('busy', 'A message is already being saved.')
     sending.add(this)
     const rt = get_runtime(this), owner = owner_id(this.data)
+    const expected_context = auth_context_key(this.data)
     const session_expires_at = this.data.session.expires_at
     const connection_id = direct_conversation(this.data, conversation_id, rt.clock())?.connection_id
     let created = null, published = false
@@ -63,12 +65,12 @@ export const direct_message_actions = {
         ensure(media.kind !== 'audio' || Number.isFinite(duration_ms) && duration_ms > 0 && duration_ms <= 120000, 'The recording cannot be decoded or is longer than two minutes.')
         ensure(globalThis.crypto?.subtle, 'Secure media hashing is unavailable.')
         fingerprint = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await media.blob.arrayBuffer())), byte => byte.toString(16).padStart(2, '0')).join('')
-        ensure(is_current(), 'Message save was cancelled.')
+        ensure(is_current() && auth_context_key(this.data) === expected_context, 'Message save was cancelled because your session changed.')
         created = make_id('media')
         await rt.media.put(created, media.blob)
         metadata = { media_id: created, owner_user_id: owner, kind: media.kind, media_url: `indexeddb://${created}`, mime: media.blob.type, byte_size: media.blob.size, duration_ms }
       }
-      ensure(is_current(), 'Message save was cancelled.')
+      ensure(is_current() && auth_context_key(this.data) === expected_context, 'Message save was cancelled because your session changed.')
       const result = transact(this, operation(operation_id, 'direct-message', [conversation_id, body, fingerprint]), (data, now) => {
         const current = direct_conversation(data, conversation_id, now)
         ensure(is_current() && current && data.session.expires_at === session_expires_at && current.connection_id === connection_id, 'This conversation is no longer available.')
@@ -76,7 +78,7 @@ export const direct_message_actions = {
         const message_id = make_id('message')
         data.messages.push({ message_id, conversation_id, sender_id: owner, body: body.trim(), kind: media?.kind || 'text', media_id: metadata?.media_id || null, sent_at: now, read_by: [owner] })
         return message_id
-      }, { expected_owner: owner })
+      }, { expected_owner: owner, expected_context, is_current })
       published = result.success && !result.repeated
       return result
     } catch (error) { return failure('message_failed', error.message) }

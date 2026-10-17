@@ -17,10 +17,10 @@ export function upgrade_additive_data(value) {
   for (const baseline of catalog.users.filter((row) => discover_ids.has(row.user_id))) {
     const current = data.users.find((row) => row.user_id === baseline.user_id)
     if (!current) { data.users.push(clone_data(baseline)); added_user_ids.add(baseline.user_id) }
-    else for (const key of ['discoverable', 'discover_order', 'voice_intro']) if (current[key] === undefined && baseline[key] !== undefined) current[key] = clone_data(baseline[key])
+    else if (!current.deleted) for (const key of ['discoverable', 'discover_order', 'voice_intro']) if (current[key] === undefined && baseline[key] !== undefined) current[key] = clone_data(baseline[key])
   }
-  for (const baseline of catalog.profile_photos.filter((row) => discover_ids.has(row.user_id))) if (!data.profile_photos.some((row) => row.photo_id === baseline.photo_id)) data.profile_photos.push(clone_data(baseline))
-  for (const baseline of catalog.icebreakers.filter((row) => discover_ids.has(row.user_id))) if (!data.icebreakers.some((row) => row.question_id === baseline.question_id)) data.icebreakers.push(clone_data(baseline))
+  for (const baseline of catalog.profile_photos.filter((row) => discover_ids.has(row.user_id))) if (data.users.some(user => user.user_id === baseline.user_id && user.photo_ids.includes(baseline.photo_id)) && !data.profile_photos.some(row => row.photo_id === baseline.photo_id)) data.profile_photos.push(clone_data(baseline))
+  for (const baseline of catalog.icebreakers.filter((row) => discover_ids.has(row.user_id))) if ((data.users.some(user => user.user_id === baseline.user_id && user.icebreaker_ids.includes(baseline.question_id)) || data.requests.some(request => request.question_id === baseline.question_id)) && !data.icebreakers.some(row => row.question_id === baseline.question_id)) data.icebreakers.push(clone_data(baseline))
   for (const baseline of catalog.memberships.filter(row => added_user_ids.has(row.user_id))) if (!data.memberships.some(row => row.event_id === baseline.event_id && row.user_id === baseline.user_id) && data.events.some(row => row.event_id === baseline.event_id && row.capacity > data.memberships.filter(member => member.event_id === row.event_id && member.status === 'joined').length)) data.memberships.push(clone_data(baseline))
   for (const account of data.accounts || []) {
     if (account.status !== 'active') continue

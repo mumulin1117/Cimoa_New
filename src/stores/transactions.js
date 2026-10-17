@@ -3,6 +3,7 @@ import * as select from './selectors.js'
 import { default_persistence, STATE_KEY } from '../utils/statePersistence.js'
 import { media_repository } from '../utils/mediaRepository.js'
 import { inspect_media } from '../utils/mediaCapabilities.js'
+import { auth_context_key } from './accountDefaults.js'
 
 const runtimes = new WeakMap()
 export const get_runtime = (store) => runtimes.get(store) || { persistence: default_persistence, media: media_repository, inspect_media, clock: Date.now, services: {} }
@@ -21,6 +22,8 @@ export function transact(store, operation, mutation, options = {}) {
     const now = get_runtime(store).clock()
     if (!options.public) require_auth(data, now)
     if (options.expected_owner) select.ensure(options.expected_owner === select.owner_id(data), 'The account changed. Please retry.')
+    if (options.expected_context !== undefined) select.ensure(options.expected_context === auth_context_key(data), 'Your session changed. Reopen this page and retry.')
+    if (options.is_current) select.ensure(options.is_current(), 'This operation was cancelled. No changes were made.')
     if (operation) {
       select.ensure(typeof operation.id === 'string' && operation.id.length > 0, 'An operation ID is required.')
       const existing = data.operation_receipts.find((row) => row.owner_user_id === select.owner_id(data) && row.operation_id === operation.id)
