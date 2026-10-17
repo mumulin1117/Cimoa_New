@@ -3,7 +3,7 @@
   "local_acceptance": "passed",
   "full_acceptance": "passed",
   "visual_acceptance": "passed",
-  "status": "pending",
+  "status": "verified",
   "scope": "Home aggregate getter, Home source UI/Popover and related return dependencies; not whole-app acceptance",
   "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
   "unit_tests": {
@@ -88,7 +88,12 @@
     "build:h5 passed"
   ],
   "deferred": [],
-  "implementation_commit": "pending specialty commit; no verified registration until it succeeds",
+  "implementation_commit": "703c7085",
+  "verified_owned_components": [
+    "src/pages/home/index.vue",
+    "src/components/ConnectionGoalsPopover.vue (Home-owned use)"
+  ],
+  "registration": "Verification-only local commit after implementation commit and passing evidence; no push",
   "limits": [
     "No new server-backed delivery/online or realtime-video claims",
     "No claim of manual native gesture/keyboard/device microphone testing from this Home-only programmatic regression",

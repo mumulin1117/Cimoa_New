@@ -2176,11 +2176,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local implementation commit 703c7085 completed; Home-owned scope verified",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
@@ -2683,11 +2683,11 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local implementation commit 703c7085 completed; Home-owned scope verified",
     "visual_acceptance": "passed",
     "source_lock": "locked",
     "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
@@ -5615,11 +5615,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local implementation commit 703c7085 completed; Home-owned scope verified",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
@@ -5798,11 +5798,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local implementation commit 703c7085 completed; Home-owned scope verified",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
@@ -5981,11 +5981,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local implementation commit 703c7085 completed; Home-owned scope verified",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
@@ -6164,11 +6164,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local implementation commit 703c7085 completed; Home-owned scope verified",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
@@ -11931,11 +11931,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local implementation commit 703c7085 completed; Home-owned scope verified",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
@@ -12105,11 +12105,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local implementation commit 703c7085 completed; Home-owned scope verified",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",
@@ -12279,11 +12279,11 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local specialty commit still pending",
+    "mapping_status": "Canonical aggregate, source-region visual review, 131 unit checks, 15 Home browser checks, 5 two-account flows and real iPhone 17 Pro WebKit Home test passed; local implementation commit 703c7085 completed; Home-owned scope verified",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/home/source-contract.json",

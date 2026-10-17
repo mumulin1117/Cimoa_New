@@ -15,6 +15,6 @@
 
 ## 本轮关闭结果
 
-DATA-01/02/03、UI-01/02/03、COPY-01、NAV-01 均已完成。本轮 default/goals 来源叠图逐区查看，默认 profile/title/card/avatar/status 几何均在 1 CSS px 内；原生三张头像解码完成、opacity=1、两绘制帧后重新截图。实测 131 单元、15 Home 浏览器、5 两账号集成和原生 Home 专项全部通过；详见 acceptance.json。功能提交完成之前仍不登记 verified。
+DATA-01/02/03、UI-01/02/03、COPY-01、NAV-01 均已完成。本轮 default/goals 来源叠图逐区查看，默认 profile/title/card/avatar/status 几何均在 1 CSS px 内；原生三张头像解码完成、opacity=1、两绘制帧后重新截图。实测 131 单元、15 Home 浏览器、5 两账号集成和原生 Home 专项全部通过；详见 acceptance.json。功能提交 `703c7085` 已完成，随后以仅含验收登记的本地提交标记 Home 作用域 verified。
 
 原型全局条件通知层位于 Home 区块外（4535 起），其来源 ID 保留在页面清单 source_binding_ids 追溯，不作为本次 getter/UI 作用域已实现的推送服务或全局通知声明；其他页面也不随本轮自动完成。
