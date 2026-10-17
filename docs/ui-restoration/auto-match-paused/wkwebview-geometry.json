@@ -1,0 +1,29 @@
+{
+  "errors" : [
+
+  ],
+  "footer" : {
+    "height" : 145.203125,
+    "width" : 402,
+    "x" : 0,
+    "y" : 694.796875
+  },
+  "header" : {
+    "height" : 67.484375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Matching paused\nYou’re not in the pool right now\nOther students can’t see you as available. Your preferences and queue place are saved.\nSaved queue position\n—\nSaved preferences\n18–30 · All · 1 interests\nResume Matching\nLeave Pool\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

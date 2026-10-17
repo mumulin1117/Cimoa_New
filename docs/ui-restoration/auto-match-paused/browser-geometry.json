@@ -1,0 +1,303 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1672": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Matching paused"
+    },
+    "1673": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1674": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1676": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Matching paused"
+    },
+    "1678": {
+      "x": 0,
+      "y": 146,
+      "width": 393,
+      "height": 450,
+      "text": "You’re not in the pool right nowOther students can’t see you as available. Your preferences and queue place are saved.Saved queue position—Saved preferences18–30 · All · 1 interests"
+    },
+    "1679": {
+      "x": 20,
+      "y": 146,
+      "width": 353,
+      "height": 256,
+      "text": "You’re not in the pool right nowOther students can’t see you as available. Your preferences and queue place are saved."
+    },
+    "1680": {
+      "x": 136.5,
+      "y": 146,
+      "width": 120,
+      "height": 120,
+      "text": ""
+    },
+    "1681": {
+      "x": 174.5,
+      "y": 184,
+      "width": 44,
+      "height": 44,
+      "text": ""
+    },
+    "1683": {
+      "x": 20,
+      "y": 284,
+      "width": 353,
+      "height": 60,
+      "text": "You’re not in the pool right now"
+    },
+    "1684": {
+      "x": 20,
+      "y": 362,
+      "width": 353,
+      "height": 40,
+      "text": "Other students can’t see you as available. Your preferences and queue place are saved."
+    },
+    "1686": {
+      "x": 20,
+      "y": 426,
+      "width": 353,
+      "height": 146,
+      "text": "Saved queue position—Saved preferences18–30 · All · 1 interests"
+    },
+    "1687": {
+      "x": 20,
+      "y": 426,
+      "width": 353,
+      "height": 67,
+      "text": "Saved queue position—"
+    },
+    "1688": {
+      "x": 36,
+      "y": 448.5,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1689": {
+      "x": 70,
+      "y": 440,
+      "width": 287,
+      "height": 39,
+      "text": "Saved queue position—"
+    },
+    "1691": {
+      "x": 20,
+      "y": 505,
+      "width": 353,
+      "height": 67,
+      "text": "Saved preferences18–30 · All · 1 interests"
+    },
+    "1692": {
+      "x": 36,
+      "y": 519,
+      "width": 293,
+      "height": 39,
+      "text": "Saved preferences18–30 · All · 1 interests"
+    },
+    "1693": {
+      "x": 341,
+      "y": 530.5,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1697": {
+      "x": 0,
+      "y": 710,
+      "width": 393,
+      "height": 142,
+      "text": "Resume MatchingLeave Pool"
+    },
+    "1698": {
+      "x": 20,
+      "y": 710,
+      "width": 353,
+      "height": 60,
+      "text": "Resume Matching"
+    },
+    "1699": {
+      "x": 20,
+      "y": 776,
+      "width": 353,
+      "height": 46,
+      "text": "Leave Pool"
+    }
+  },
+  "actual": {
+    "1672": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Matching paused"
+    },
+    "1673": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1674": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1676": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Matching paused"
+    },
+    "1678": {
+      "x": 0,
+      "y": 146,
+      "width": 393,
+      "height": 450,
+      "text": "You’re not in the pool right nowOther students can’t see you as available. Your preferences and queue place are saved.Saved queue position—Saved preferences18–30 · All · 1 interests"
+    },
+    "1679": {
+      "x": 20,
+      "y": 146,
+      "width": 353,
+      "height": 256,
+      "text": "You’re not in the pool right nowOther students can’t see you as available. Your preferences and queue place are saved."
+    },
+    "1680": {
+      "x": 136.5,
+      "y": 146,
+      "width": 120,
+      "height": 120,
+      "text": ""
+    },
+    "1681": {
+      "x": 174.5,
+      "y": 184,
+      "width": 44,
+      "height": 44,
+      "text": ""
+    },
+    "1683": {
+      "x": 20,
+      "y": 284,
+      "width": 353,
+      "height": 60,
+      "text": "You’re not in the pool right now"
+    },
+    "1684": {
+      "x": 20,
+      "y": 362,
+      "width": 353,
+      "height": 40,
+      "text": "Other students can’t see you as available. Your preferences and queue place are saved."
+    },
+    "1686": {
+      "x": 20,
+      "y": 426,
+      "width": 353,
+      "height": 146,
+      "text": "Saved queue position—Saved preferences18–30 · All · 1 interests"
+    },
+    "1687": {
+      "x": 20,
+      "y": 426,
+      "width": 353,
+      "height": 67,
+      "text": "Saved queue position—"
+    },
+    "1688": {
+      "x": 36,
+      "y": 448.5,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1689": {
+      "x": 70,
+      "y": 440,
+      "width": 287,
+      "height": 39,
+      "text": "Saved queue position—"
+    },
+    "1691": {
+      "x": 20,
+      "y": 505,
+      "width": 353,
+      "height": 67,
+      "text": "Saved preferences18–30 · All · 1 interests"
+    },
+    "1692": {
+      "x": 36,
+      "y": 519,
+      "width": 293,
+      "height": 39,
+      "text": "Saved preferences18–30 · All · 1 interests"
+    },
+    "1693": {
+      "x": 341,
+      "y": 530.5,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1697": {
+      "x": 0,
+      "y": 710,
+      "width": 393,
+      "height": 142,
+      "text": "Resume MatchingLeave Pool"
+    },
+    "1698": {
+      "x": 20,
+      "y": 710,
+      "width": 353,
+      "height": 60,
+      "text": "Resume Matching"
+    },
+    "1699": {
+      "x": 20,
+      "y": 776,
+      "width": 353,
+      "height": 46,
+      "text": "Leave Pool"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 47039,
+    "pixels_above_channel_delta_8": 2062,
+    "mean_absolute_channel_delta": 0.17782063457931643,
+    "max_channel_delta": 96
+  }
+}
