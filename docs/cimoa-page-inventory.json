@@ -9818,7 +9818,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/profile/prefs",
-    "component": null,
+    "component": "src/pages/profile/prefs.vue",
     "parent_route": "/pages/profile/edit",
     "allowed_origin_routes": [
       "/pages/profile/edit"
@@ -9873,8 +9873,12 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; shared match_preferences save, hydration and WKWebView route acceptance passed; full visual dependency acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "source-locked; source 12 groups replace unsourced sliders; canonical catalog/ranges, Loading/draft/cancel/refresh passed",
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-preferences/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-preferences/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/account-flows/preferences.json"
   },
   {
     "source_screen": "Profile / Edit / Icebreakers",

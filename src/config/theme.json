@@ -257,6 +257,7 @@
     "auto_match_56": "0 11.45rpx 30.534rpx rgba(16,36,74,0.05)",
     "auto_match_57": "0 15.268rpx 38.168rpx rgba(16,36,74,0.16)",
     "auto_match_58": "0 19.084rpx 49.619rpx rgba(16,36,74,0.14)",
-    "profile_verification": "0 26.718rpx 53.435rpx rgba(168,85,247,0.24)"
+    "profile_verification": "0 26.718rpx 53.435rpx rgba(168,85,247,0.24)",
+    "profile_preference": "0 11.45rpx 30.534rpx rgba(16,36,74,0.06)"
   }
 }

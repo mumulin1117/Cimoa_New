@@ -11,6 +11,7 @@ import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
 import { community_rules, registration_agreements } from '../utils/registrationCatalog.js'
 import { onboarding_context, onboarding_actions } from './onboarding.js'
 import { profile_context, profile_edit_actions } from './profileEditing.js'
+import { profile_preference_groups } from './profilePreferences.js'
 import { ONBOARDING_FLOW, ONBOARDING_GOALS, ONBOARDING_INTEREST_IDS, onboarding_catalog } from '../utils/onboardingFlow.js'
 import { local_verification_context, valid_local_code } from '../utils/localVerification.js'
 import * as s from './selectors.js'
@@ -50,6 +51,7 @@ export const use_app_store = defineStore('app', {
     waiting_call: state => id => state.hydration_status === 'ready' ? waiting_call(state.data, id, state.clock_ms) : null,
     match_presentation: state => (id='',draft=null,query='') => match_presentation(state.data,id,state.clock_ms,state.hydration_status,draft,query),
     profile_editor: state => state.hydration_status === 'ready' ? profile_context(state.data, state.clock_ms) : null,
+    profile_preference_groups: state => draft => ready(state) ? profile_preference_groups(state.data, draft, state.clock_ms) : [],
     profile_verification: state => {
       if (!ready(state)) return null
       const user = state.data.users.find(row => row.user_id === s.owner_id(state.data)), account = state.data.accounts.find(row => row.account_id === state.data.session.account_id)

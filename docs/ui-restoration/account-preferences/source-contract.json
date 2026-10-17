@@ -1,0 +1,198 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isEditPrefs",
+    "source_query": "route=editPrefs",
+    "lines": [
+      3556,
+      3581
+    ],
+    "fragment_sha256": "639c9aeaa1ad67b9cd04c2cd60436251ef8a401c95ba2bf0458a2b63a78a55b3",
+    "fragment": "<sc-if value=\"{{ isEditPrefs }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Profile / Edit / Preferences\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Preferences</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box\">\n          <div style=\"font-size:16px;color:#5b6b85;text-wrap:pretty\">These shape recommendations. They never guarantee a result and are never shown publicly.</div>\n          <div style=\"display:flex;flex-direction:column;gap:20px;margin-top:16px\">\n            <sc-for list=\"{{ prefGroups }}\" as=\"g\" hint-placeholder-count=\"6\">\n              <div>\n                <div style=\"font-size:17px;font-weight:700;letter-spacing:-0.015em\">{{ g.title }}</div>\n                <div style=\"display:flex;flex-wrap:wrap;gap:10px;margin-top:10px\">\n                  <sc-for list=\"{{ g.options }}\" as=\"o\" hint-placeholder-count=\"3\">\n                    <div sc-camel-on-click=\"{{ o.pick }}\" style=\"height:46px;padding:0 17px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.06)\">{{ o.label }}</div>\n                  </sc-for>\n                </div>\n              </div>\n            </sc-for>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20\"><div sc-camel-on-click=\"{{ savePrefs }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Save</div></div></div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/profile/prefs",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/profile/edit）；无历史实例时 replace /pages/profile/edit，不创建伪造实体",
+  "styles": [
+    {
+      "line": 3557,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 3558,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 3559,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 3562,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 3562,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 3564,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box"
+    },
+    {
+      "line": 3565,
+      "tag": "div",
+      "style": "font-size:16px;color:#5b6b85;text-wrap:pretty"
+    },
+    {
+      "line": 3566,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:20px;margin-top:16px"
+    },
+    {
+      "line": 3569,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;letter-spacing:-0.015em"
+    },
+    {
+      "line": 3570,
+      "tag": "div",
+      "style": "display:flex;flex-wrap:wrap;gap:10px;margin-top:10px"
+    },
+    {
+      "line": 3572,
+      "tag": "div",
+      "style": "height:46px;padding:0 17px;border-radius:23px;display:flex;align-items:center;cursor:pointer;font-size:16px;font-weight:600;background:{{ o.bg }};color:{{ o.ink }};box-shadow:0 6px 16px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 3579,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20"
+    },
+    {
+      "line": 3579,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 3579,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    }
+  ],
+  "texts": [
+    {
+      "line": 3562,
+      "text": "Preferences"
+    },
+    {
+      "line": 3565,
+      "text": "These shape recommendations. They never guarantee a result and are never shown publicly."
+    },
+    {
+      "line": 3579,
+      "text": "Save"
+    }
+  ],
+  "svg": [
+    {
+      "line": 3560,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      3560
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 3559,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 3572,
+      "event": "sc-camel-on-click",
+      "handler": "o.pick"
+    },
+    {
+      "line": 3579,
+      "event": "sc-camel-on-click",
+      "handler": "savePrefs"
+    }
+  ],
+  "interaction_ids": [
+    "editPrefs.goBack.click.1",
+    "editPrefs.o.pick.click.1",
+    "editPrefs.savePrefs.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "editPrefs.goBack.click.1",
+      "source": "route=editPrefs",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editPrefs.o.pick.click.1",
+      "source": "route=editPrefs",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "editPrefs.savePrefs.click.1",
+      "source": "route=editPrefs",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}

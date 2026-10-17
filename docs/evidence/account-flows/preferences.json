@@ -1,0 +1,11 @@
+{
+  "phase": "preferences",
+  "result": "passed",
+  "checks": [
+    "Twelve source chip groups: draft selection, 500ms Save, shared Auto Match numeric fields, refresh and cancel without implicit range resets"
+  ],
+  "errors": [],
+  "physical_microphone": "not tested: controlled browser media device",
+  "server_pid": 87390,
+  "cleaned_up": true
+}

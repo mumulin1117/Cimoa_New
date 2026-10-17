@@ -1,0 +1,3 @@
+# Preferences audit — 2026-10-17
+
+HTML 3556–3581 and source prefGroups logic are locked. Original has twelve chip groups, not freeform sliders. Restore their order, source labels, 17px headings, 46px chips / 10px gaps and 60px Save. Source age/height/distance choices map to existing canonical numeric ranges (On campus 1 km, Within 5 km 5 km, Anywhere in city 100 km; approximate region distances, not GPS). Keep arbitrary previously saved ranges unless the user selects a chip. Store projection builds group options from the common goals catalog; no raw Store data on page. Draft only until 500ms Save; scope cancellation, rollback, refresh and Auto Match synchronization required. Visual/full acceptance remains pending until verified evidence.

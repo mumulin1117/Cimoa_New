@@ -103,3 +103,14 @@ test('verification read model masks private email and never invents a verificati
   store.data.users[0].verification_status = 'pending'; assert.equal(store.profile_verification.verified, false)
   assert.equal('credential_hash' in store.profile_verification, false); store.logout(); assert.equal(store.profile_verification, null)
 })
+test('twelve source preference groups map to shared Auto Match fields without page copies or implicit resets', () => {
+  const { store } = fixture(), draft = store.match_preferences, before = clone_data(store.data)
+  const groups = store.profile_preference_groups(draft); assert.equal(groups.length, 12)
+  assert.deepEqual(groups.find(g => g.title === 'Age range').options.map(o => o.label), ['18 – 21', '18 – 24', '21 – 27'])
+  assert.equal(groups[0].options.length, 15)
+  for (const [title, label] of [['Age range', '21 – 27'], ['Distance', 'Within 5 km'], ['Height range', '180 cm +'], ['Connection goal', 'Travel buddies']]) Object.assign(draft, groups.find(g => g.title === title).options.find(o => o.label === label).patch)
+  assert.deepEqual(clone_data(store.data), before); const { owner_user_id, ...patch } = draft
+  assert.equal(store.update_match_preferences(patch).success, true)
+  assert.deepEqual([store.match_preferences.age_min, store.match_preferences.age_max, store.match_preferences.distance_max, store.match_preferences.height_min, store.match_preferences.goal_id], [21,27,5,180,'travel'])
+  store.hydration_status = 'idle'; store.hydrate(); assert.equal(store.match_preferences.goal_id, 'travel')
+})

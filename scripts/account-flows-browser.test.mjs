@@ -35,6 +35,15 @@ try {
     await page.evaluate(() => { navigator.mediaDevices.getUserMedia = async () => { throw new DOMException('Denied', 'NotAllowedError') } })
     const denied_before = await state(); await click('editAll.evStart.click.1'); await click('sheetMic.allowMic.click.1'); await page.locator('.bio-error').waitFor(); assert.match(await page.locator('.bio-error').innerText(), /permission was denied/); assert.deepEqual(await state(), denied_before)
     check('Microphone denial reports the real failure with no media metadata or profile writes')
+  } else if (phase === 'preferences') {
+    await go('/pages/profile/prefs'); await page.locator('.preferences-groups').waitFor(); await set_safe_area(page, 54, 0)
+    assert.equal(await page.getByRole('radiogroup').count(), 12); assert.equal(await page.locator('uni-slider').count(), 0)
+    const before = await state(); await page.getByRole('radio', { name: '21 – 27', exact: true }).click(); await page.getByRole('radio', { name: 'Within 5 km', exact: true }).click(); await page.getByRole('radio', { name: 'Travel buddies', exact: true }).click(); assert.deepEqual(await state(), before)
+    await page.screenshot({ path: path.join(output, 'preferences.png') }); await click('editPrefs.savePrefs.click.1'); await page.locator('.loading:visible').waitFor(); assert.deepEqual(await state(), before); await page.locator('.profile-edit-page').waitFor()
+    const p = (await state()).match_preferences[0]; assert.deepEqual([p.age_min,p.age_max,p.distance_max,p.goal_id], [21,27,5,'travel'])
+    await go('/pages/profile/prefs'); await page.reload(); await page.getByRole('radio', { name: 'Within 5 km', exact: true }).waitFor(); assert.equal(await page.getByRole('radio', { name: 'Within 5 km', exact: true }).getAttribute('aria-checked'), 'true')
+    await page.getByRole('radio', { name: 'On campus', exact: true }).click(); await page.getByRole('button', { name: 'Back', exact: true }).click(); assert.equal((await state()).match_preferences[0].distance_max, 5)
+    check('Twelve source chip groups: draft selection, 500ms Save, shared Auto Match numeric fields, refresh and cancel without implicit range resets')
   } else throw Error('Unknown phase: ' + phase)
   assert.deepEqual(report.errors, []); await context.close(); report.result = 'passed'
 } catch (error) { report.failure = String(error.stack || error); throw error }
