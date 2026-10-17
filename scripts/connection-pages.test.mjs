@@ -39,6 +39,8 @@ function reference_markup(origin) {
     if (node.type === 2) return interpolate(node.content, scope)
     if (node.type === 5) return interpolate(node.loc.source, scope)
     if (node.type !== 1) return ''
+    // Source's voice card has an authorized text-answer variant; no fake 18s media.
+    if (phase === 'received' && node.loc.start.line === 953) return '<div style="font-size:17px;line-height:1.45;margin-top:6px;color:#26364f;text-wrap:pretty">A long walk and coffee by the sea.</div>'
     const children = () => (node.children || []).map(child => render(child, scope)).join('')
     if (node.tag === 'sc-if') { const key = attribute(node, 'value').replace(/[{}\s]/g, ''); return (key in scope ? scope[key] : attribute(node, 'hint-placeholder-val').includes('true')) ? children() : '' }
     if (node.tag === 'sc-for') { const key = attribute(node, 'list').replace(/[{}\s]/g, ''); return (scope[key] || []).map(value => (node.children || []).map(child => render(child, { ...scope, [attribute(node, 'as')]: value })).join('')).join('') }
@@ -46,7 +48,7 @@ function reference_markup(origin) {
       const name = prop.name.replace('sc-camel-view-box', 'viewBox').replace('sc-camel-gradient-units', 'gradientUnits')
       let value = prop.value?.content || ''
       for (const asset of resources) if (asset.local_path) value = value.replaceAll(asset.bundle_id, `${origin}/${asset.local_path}`)
-      return ` ${name}="${interpolate(value, scope)}"`
+      return ` ${name}="${interpolate(value, scope).replaceAll('"', '&quot;')}"`
     }).join('')
     return `<${node.tag}${attrs}>${children()}${['img','input','br'].includes(node.tag) ? '' : `</${node.tag}>`}`
   }
@@ -76,6 +78,19 @@ try {
     await page.locator('[data-interaction="reqSent.doneSent.click.1"]').click(); await page.locator('.discover-header').waitFor(); assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1')
     check('Source geometry/copy, persisted pending, refresh and Done clear-stack to Discover')
   }
+  if (phase === 'received') {
+    assert.ok(close_to(report.geometry.header.y, 58)); assert.ok(close_to(report.geometry.photo.y, 118)); assert.ok(close_to(report.geometry.photo.width, 353)); assert.ok(close_to(report.geometry.photo.height, 353 * 4 / 3))
+    const saved = () => page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data)
+    await page.locator('[data-interaction="reqReceived.notNow.click.1"]').click(); await page.locator('.home-header').waitFor(); assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending')
+    check('Not Now preserves the same pending request and returns Home without a write')
+    await open(route); await page.locator('[data-interaction="reqReceived.openReqMenu.click.1"]').click(); await page.locator('[data-interaction="reqReceived.openDecline.click.1"]').click(); await page.locator('.dialog__cancel').click(); assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending')
+    await page.locator('[data-interaction="reqReceived.accept.click.1"]').click(); await page.getByRole('dialog').getByRole('button', { name: 'Accept', exact: true }).click()
+    assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending'); assert.ok(await page.locator('.event-loading:visible').count())
+    await page.locator('[data-interaction="reqAccepted.startChat.click.1"]').waitFor(); const accepted = await saved()
+    assert.equal(accepted.requests.find(row => row.request_id === 'request_pixel').status, 'accepted'); assert.equal(accepted.conversations.filter(row => row.kind === 'direct' && row.participant_ids.includes('user_lina')).length, 1)
+    check('Decline cancellation keeps pending; Accept writes after business Loading and creates one real conversation')
+  }
+  await page.evaluate(({ key, data: fixture }) => localStorage.setItem(key, JSON.stringify({ type: 'object', data: fixture })), { key: STATE_KEY, data })
   await page.setViewportSize({ width: 320, height: 568 }); await open(route); await set_safe_area(page, 62, 34); await page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))))
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true)
   await page.screenshot({ path: path.join(output, 'actual-browser-small.png') }); check('Narrow iPhone width with real safe-area budget has no horizontal clipping')

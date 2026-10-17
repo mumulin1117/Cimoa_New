@@ -3624,7 +3624,9 @@
       "reqReceived.togglePlay.click.1",
       "reqReceived.seekLiam.click.1",
       "reqReceived.notNow.click.1",
-      "reqReceived.accept.click.1"
+      "reqReceived.accept.click.1",
+      "reqReceived.openDecline.click.1",
+      "reqReceived.openGallery.click.1"
     ],
     "entities": "connection_requests; user_relationships; dm_conversations; users",
     "assets": {
@@ -3720,7 +3722,10 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "acceptance_notes": "2026-10-17: source photo-wall/parallel actions restored; Not Now preserves pending. Browser and iPhone 17 Pro WKWebView passed; complete result/chat and voice-media regression deferred.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "visual_evidence": "docs/ui-restoration/connection-received"
   },
   {
     "source_screen": "Connection / Request / Accepted",

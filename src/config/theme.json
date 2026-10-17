@@ -140,6 +140,8 @@
     }
   },
   "gradients": {
+    "connection_footer": "linear-gradient(180deg,rgba(236,233,251,0) 0%,rgba(236,233,251,0.92) 35%,#ece9fb 100%)",
+    "connection_voice": "linear-gradient(135deg,#4a7bf7,#c026d3)",
     "event_timeline": "linear-gradient(135deg,#1ec8f5,#a855f7)",
     "ice_badge": "linear-gradient(135deg,#1ec8f5 0%,#4a7bf7 50%,#a855f7 100%)",
     "verification_glow": "radial-gradient(circle,rgba(30,200,245,0.35),rgba(248,28,229,0.28) 60%,transparent 75%)",
@@ -153,6 +155,8 @@
     "coin_hero": "linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%)"
   },
   "shadows": {
+    "connection_photo": "0 22.901rpx 57.252rpx rgba(16,36,74,0.12)",
+    "connection_answer": "0 19.084rpx 53.435rpx rgba(16,36,74,0.12)",
     "event_group_header": "0 1px 0 rgba(16,36,74,0.06)",
     "event_message": "0 11.45rpx 34.351rpx rgba(16,36,74,0.07)",
     "onboarding_photo_side": "0 19.084rpx 41.985rpx rgba(16,36,74,0.12)",

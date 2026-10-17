@@ -1,0 +1,23 @@
+{
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "browser": "browser-acceptance.json",
+  "wkwebview": {
+    "result": "passed",
+    "device": "iPhone 17 Pro",
+    "os": "26.5",
+    "result_bundle": "/tmp/cimoa-connection-received.xcresult"
+  },
+  "visual_review": "Photo wall/header/name/badge/song card/fixed text-answer card/parallel actions compared to source AST overlay; text-answer variant is an approved dynamic content delta.",
+  "deferred": [
+    "accepted/declined/chat full regressions",
+    "actual request voice playback and media recovery"
+  ],
+  "gates": [
+    "check:conventions passed",
+    "git diff --check passed",
+    "build:h5 passed"
+  ]
+}

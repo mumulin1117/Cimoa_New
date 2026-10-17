@@ -1,0 +1,42 @@
+{
+  "page": "received",
+  "result": "passed",
+  "checks": [
+    "Not Now preserves the same pending request and returns Home without a write",
+    "Decline cancellation keeps pending; Accept writes after business Loading and creates one real conversation",
+    "Narrow iPhone width with real safe-area budget has no horizontal clipping"
+  ],
+  "geometry": {
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 45.984375,
+      "bottom": 103.984375
+    },
+    "footer": null,
+    "hero": null,
+    "question": null,
+    "answer": null,
+    "photo": {
+      "x": 20,
+      "y": 117.984375,
+      "width": 353,
+      "height": 470.65625,
+      "bottom": 588.640625
+    },
+    "text": "Lina, 21\nGood Luck, Babe!\nChappell Roan\n165 cm\nHKU\nPsychology\nINFJ\n🇲🇾\nMalaysia\n🍷\nNever\n🚭\nNever\n🕊️\nChristian\nPsychology Society\nPok Fu Lam\nPsych student who loves long walks, podcasts, and trying every dessert place in Kennedy Town.\nLooking for\n🤝\nNew friends\n📚\nStudy buddy\n☕\nCoffee chats\n🗣️\nLanguage exchange\n🎉\nCampus events\nInterests\n📷\nPhotography\n☕\nCoffee\n🎵\nLive Music\nHow would you spend your ideal weekend?\nA long walk and coffee by the sea.\nNot Now\nAccept"
+  },
+  "errors": [],
+  "reference": "Offline HTML AST, original inline styles, no prototype script/runtime",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 197506,
+    "pixels_above_channel_delta_8": 28536,
+    "mean_absolute_channel_delta": 1.8634816746108542,
+    "max_channel_delta": 219
+  },
+  "cleaned_up": true
+}

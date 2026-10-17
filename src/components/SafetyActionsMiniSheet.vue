@@ -27,6 +27,7 @@ const act = event => { if (!props.busy) emit(event) }
       <view class="safety-action-list">
         <view class="safety-action safety-action--icon" role="button" tabindex="0" data-interaction="sheetSafetyMini.openReport.click.1" @click="act('report')" @keydown.enter="act('report')"><view class="safety-action-icon"><SourceIcon name="flag" /></view><text>Report</text></view>
         <view class="safety-action safety-action--icon safety-action--danger" role="button" tabindex="0" data-interaction="sheetSafetyMini.openBlock.click.1" @click="act('open-block')" @keydown.enter="act('open-block')"><view class="safety-action-icon"><SourceIcon name="blocked" /></view><text>Block</text></view>
+        <slot name="actions" />
       </view>
       <text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text>
       <view class="event-dialog-secondary" role="button" tabindex="0" :aria-disabled="busy" data-interaction="sheetSafetyMini.closeSheet.click.2" @click="act('close')" @keydown.enter="act('close')">Cancel</view>

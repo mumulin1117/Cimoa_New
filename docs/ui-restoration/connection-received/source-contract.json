@@ -1,0 +1,796 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "source_query": "route=reqReceived",
+    "condition": "isReqReceived",
+    "lines": [
+      842,
+      972
+    ],
+    "fragment": "    <sc-if value=\"{{ isReqReceived }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Connections / Request Detail / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:46px;display:flex;align-items:center;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1;display:flex;align-items:center;justify-content:center;gap:7px\"><div style=\"font-size:23px;font-weight:700;letter-spacing:-0.02em\">Lina, 21</div><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></div>\n          <div sc-camel-on-click=\"{{ openReqMenu }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"#0b1b3a\"><circle cx=\"5\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"12\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"19\" cy=\"12\" r=\"1.9\"></circle></svg>\n          </div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 330px;box-sizing:border-box\">\n          <div style=\"position:relative;width:100%;aspect-ratio:3/4;border-radius:24px;overflow:hidden;box-shadow:0 12px 30px rgba(16,36,74,0.12)\">\n            <sc-if value=\"{{ isPhoto0 }}\" hint-placeholder-val=\"{{ true }}\"><img src=\"be199ee7-6704-4324-98d1-52394676c49a\" alt=\"Lina photo\" style=\"width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;cursor:pointer\"></sc-if>\n            <sc-if value=\"{{ isPhoto1 }}\" hint-placeholder-val=\"{{ false }}\"><img src=\"7c94b5fa-a030-4722-860f-0d79d6dcfc3f\" alt=\"Lina photo\" style=\"width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;cursor:pointer\"></sc-if>\n            <sc-if value=\"{{ isPhoto2 }}\" hint-placeholder-val=\"{{ false }}\"><img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"Lina photo\" style=\"width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;cursor:pointer\"></sc-if>\n            <div style=\"position:absolute;left:14px;right:14px;bottom:12px;display:flex;align-items:center;gap:12px;padding:8px;border-radius:22px;background:rgba(8,16,31,0.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:4\">\n              <div style=\"width:44px;height:44px;border-radius:12px;background:url(&quot;c540ffa8-6f8c-4149-8a02-c0b48c332694&quot;) center/cover no-repeat;flex:none\"></div>\n              <div style=\"flex:1;min-width:0\"><div style=\"font-size:15.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">Good Luck, Babe!</div><div style=\"font-size:13px;color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">Chappell Roan</div></div>\n              <div sc-camel-on-click=\"{{ otherSongPlay }}\" style=\"width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer\"><sc-if value=\"{{ otherPlayingNot }}\" hint-placeholder-val=\"{{ true }}\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" style=\"margin-left:2px\"><path d=\"M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z\" fill=\"#a855f7\"></path></svg></sc-if><sc-if value=\"{{ otherPlaying }}\" hint-placeholder-val=\"{{ false }}\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\"><rect x=\"6\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#a855f7\"></rect><rect x=\"14\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#a855f7\"></rect></svg></sc-if></div>\n            </div>\n            <div sc-camel-on-click=\"{{ prevPhoto }}\" style=\"position:absolute;left:0;top:0;bottom:0;width:35%;cursor:pointer\"></div>\n            <div sc-camel-on-click=\"{{ nextPhoto }}\" style=\"position:absolute;right:0;top:0;bottom:0;width:35%;cursor:pointer\"></div>\n            <div style=\"position:absolute;top:14px;left:14px;right:14px;display:flex;gap:6px\">\n              <sc-for list=\"{{ profileDots }}\" as=\"d\" hint-placeholder-count=\"3\">\n                <div style=\"flex:1;height:3px;border-radius:2px;background:{{ d.bg }}\"></div>\n              </sc-for>\n            </div>\n          </div>\n\n          <div style=\"padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06);margin-top:20px;display:flex;flex-wrap:wrap;gap:8px\">\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 2v20M16 2v20M8 6h4M8 12h4M8 18h4\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">165 cm</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">HKU</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 5.5c3.2-1 6.3-.7 9.5 1.2 3.2-1.9 6.3-2.2 9.5-1.2v13c-3.2-1-6.3-.7-9.5 1.2-3.2-1.9-6.3-2.2-9.5-1.2z\"></path><path d=\"M12 6.7v13\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Psychology</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.2 3.8a2.3 2.3 0 0 1 4.6 0V5H17a1 1 0 0 1 1 1v3.3h1.2a2.3 2.3 0 0 1 0 4.6H18V18a1 1 0 0 1-1 1h-3.3v-1.2a2.3 2.3 0 0 0-4.6 0V19H6a1 1 0 0 1-1-1v-3.4h1.2a2.3 2.3 0 0 0 0-4.6H5V6a1 1 0 0 1 1-1h3.2z\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">INFJ</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:17px;line-height:1;flex:none\">🇲🇾</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Malaysia</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:17px;line-height:1;flex:none\">🍷</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Never</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:17px;line-height:1;flex:none\">🚭</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Never</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:17px;line-height:1;flex:none\">🕊️</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Christian</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Psychology Society</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21s-7-6.2-7-11.4A7 7 0 0 1 19 9.6C19 14.8 12 21 12 21z\"></path><circle cx=\"12\" cy=\"9.4\" r=\"2.4\"></circle></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Pok Fu Lam</div>\n            </div>\n          </div>\n\n          <div style=\"margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)\">\n            <div style=\"font-family:'Caveat',cursive;font-size:27px;font-weight:600;line-height:1.25;color:#26364f;text-align:center;text-wrap:balance\">Psych student who loves long walks, podcasts, and trying every dessert place in Kennedy Town.</div>\n          </div>\n\n          <div style=\"margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)\">\n            <div style=\"display:flex;align-items:center;gap:10px\"><div style=\"width:36px;height:36px;border-radius:18px;background:#efe9fb;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg></div><div style=\"font-size:22px;font-weight:800;letter-spacing:-0.02em\">Looking for</div></div>\n            <div style=\"display:flex;flex-wrap:wrap;gap:8px;margin-top:12px\">\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">🤝 New friends</div>\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">📚 Study buddy</div>\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">☕ Coffee chats</div>\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">🗣️ Language exchange</div>\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">🎉 Campus events</div>\n            </div>\n          </div>\n\n          <div style=\"margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)\">\n            <div style=\"display:flex;align-items:center;gap:10px\"><div style=\"width:36px;height:36px;border-radius:18px;background:#e5f0ff;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l1.6 4.8L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.2z\"></path></svg></div><div style=\"font-size:22px;font-weight:800;letter-spacing:-0.02em\">Interests</div></div>\n            <div style=\"display:flex;flex-wrap:wrap;gap:8px;margin-top:12px\">\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:13px;line-height:1;flex:none\">📷</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Photography</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:13px;line-height:1;flex:none\">☕</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Coffee</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:13px;line-height:1;flex:none\">🎵</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Live music</div>\n            </div>\n          </div>\n        </div>\n\n        </div>\n        <div style=\"position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(180deg,rgba(236,233,251,0) 0%,rgba(236,233,251,0.92) 35%,#ece9fb 100%);pointer-events:none;z-index:19\"></div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:108px;z-index:20\">\n          <div style=\"padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 10px 28px rgba(16,36,74,0.12)\">\n            <div style=\"font-size:16.5px;font-weight:700;letter-spacing:-0.015em\">How would you spend your ideal weekend?</div>\n            <div style=\"display:flex;align-items:center;gap:14px;margin-top:12px\">\n              <div sc-camel-on-click=\"{{ togglePlay }}\" style=\"width:48px;height:48px;border-radius:24px;background:linear-gradient(135deg,#4a7bf7,#c026d3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n                <sc-if value=\"{{ liamPlaying }}\" hint-placeholder-val=\"{{ false }}\"><div style=\"display:flex;gap:3px\"><div style=\"width:4px;height:14px;background:#fff;border-radius:2px\"></div><div style=\"width:4px;height:14px;background:#fff;border-radius:2px\"></div></div></sc-if>\n                <sc-if value=\"{{ liamNotPlaying }}\" hint-placeholder-val=\"{{ true }}\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M7.5 5 18.5 12 7.5 19z\"></path></svg></sc-if>\n              </div>\n              <div sc-camel-on-click=\"{{ seekLiam }}\" style=\"flex:1;display:flex;align-items:center;gap:2px;height:24px;cursor:pointer\">\n                <sc-for list=\"{{ liamWave }}\" as=\"w\" hint-placeholder-count=\"18\">\n                  <div style=\"flex:1;height:{{ w.h }};border-radius:2px;background:{{ w.bg }}\"></div>\n                </sc-for>\n              </div>\n              <div style=\"font-size:15px;color:#6b7a93;flex:none;font-variant-numeric:tabular-nums\">0:18</div>\n            </div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;display:flex;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ notNow }}\" style=\"flex:1;height:58px;border-radius:29px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.08);display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:700;color:#0b1b3a\">Not Now</div></div>\n          <div sc-camel-on-click=\"{{ accept }}\" style=\"flex:1;height:58px;border-radius:29px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:18px;font-weight:700;color:#fff\">Accept</div></div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "scale": 1,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "route": "/pages/connections/received",
+  "parameters": [
+    "request_id"
+  ],
+  "entry_points": [
+    "openJordan@5250",
+    "openIncoming@5814"
+  ],
+  "return_owner": "Pop exact origin; direct entry fallback Home",
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "styles": [
+    {
+      "line": 843,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 844,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:46px;display:flex;align-items:center;z-index:20"
+    },
+    {
+      "line": 845,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 848,
+      "tag": "div",
+      "style": "flex:1;display:flex;align-items:center;justify-content:center;gap:7px"
+    },
+    {
+      "line": 848,
+      "tag": "div",
+      "style": "font-size:23px;font-weight:700;letter-spacing:-0.02em"
+    },
+    {
+      "line": 849,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 853,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 330px;box-sizing:border-box"
+    },
+    {
+      "line": 854,
+      "tag": "div",
+      "style": "position:relative;width:100%;aspect-ratio:3/4;border-radius:24px;overflow:hidden;box-shadow:0 12px 30px rgba(16,36,74,0.12)"
+    },
+    {
+      "line": 855,
+      "tag": "img",
+      "style": "width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;cursor:pointer"
+    },
+    {
+      "line": 856,
+      "tag": "img",
+      "style": "width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;cursor:pointer"
+    },
+    {
+      "line": 857,
+      "tag": "img",
+      "style": "width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;cursor:pointer"
+    },
+    {
+      "line": 858,
+      "tag": "div",
+      "style": "position:absolute;left:14px;right:14px;bottom:12px;display:flex;align-items:center;gap:12px;padding:8px;border-radius:22px;background:rgba(8,16,31,0.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:4"
+    },
+    {
+      "line": 859,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:12px;background:url(\"c540ffa8-6f8c-4149-8a02-c0b48c332694\") center/cover no-repeat;flex:none"
+    },
+    {
+      "line": 860,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 860,
+      "tag": "div",
+      "style": "font-size:15.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 860,
+      "tag": "div",
+      "style": "font-size:13px;color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 861,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer"
+    },
+    {
+      "line": 861,
+      "tag": "svg",
+      "style": "margin-left:2px"
+    },
+    {
+      "line": 863,
+      "tag": "div",
+      "style": "position:absolute;left:0;top:0;bottom:0;width:35%;cursor:pointer"
+    },
+    {
+      "line": 864,
+      "tag": "div",
+      "style": "position:absolute;right:0;top:0;bottom:0;width:35%;cursor:pointer"
+    },
+    {
+      "line": 865,
+      "tag": "div",
+      "style": "position:absolute;top:14px;left:14px;right:14px;display:flex;gap:6px"
+    },
+    {
+      "line": 867,
+      "tag": "div",
+      "style": "flex:1;height:3px;border-radius:2px;background:{{ d.bg }}"
+    },
+    {
+      "line": 872,
+      "tag": "div",
+      "style": "padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06);margin-top:20px;display:flex;flex-wrap:wrap;gap:8px"
+    },
+    {
+      "line": 873,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 875,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 877,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 879,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 881,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 883,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 885,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 887,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 889,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 890,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1;flex:none"
+    },
+    {
+      "line": 891,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 893,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 894,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1;flex:none"
+    },
+    {
+      "line": 895,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 897,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 898,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1;flex:none"
+    },
+    {
+      "line": 899,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 901,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 902,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1;flex:none"
+    },
+    {
+      "line": 903,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 905,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 907,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 909,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 911,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 915,
+      "tag": "div",
+      "style": "margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 916,
+      "tag": "div",
+      "style": "font-family:'Caveat',cursive;font-size:27px;font-weight:600;line-height:1.25;color:#26364f;text-align:center;text-wrap:balance"
+    },
+    {
+      "line": 919,
+      "tag": "div",
+      "style": "margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 920,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px"
+    },
+    {
+      "line": 920,
+      "tag": "div",
+      "style": "width:36px;height:36px;border-radius:18px;background:#efe9fb;display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 920,
+      "tag": "div",
+      "style": "font-size:22px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 921,
+      "tag": "div",
+      "style": "display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"
+    },
+    {
+      "line": 922,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 923,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 924,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 925,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 926,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 930,
+      "tag": "div",
+      "style": "margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 931,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px"
+    },
+    {
+      "line": 931,
+      "tag": "div",
+      "style": "width:36px;height:36px;border-radius:18px;background:#e5f0ff;display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 931,
+      "tag": "div",
+      "style": "font-size:22px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 932,
+      "tag": "div",
+      "style": "display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"
+    },
+    {
+      "line": 933,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 934,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1;flex:none"
+    },
+    {
+      "line": 935,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 937,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 938,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1;flex:none"
+    },
+    {
+      "line": 939,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 941,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 942,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1;flex:none"
+    },
+    {
+      "line": 943,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 949,
+      "tag": "div",
+      "style": "position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(180deg,rgba(236,233,251,0) 0%,rgba(236,233,251,0.92) 35%,#ece9fb 100%);pointer-events:none;z-index:19"
+    },
+    {
+      "line": 950,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:108px;z-index:20"
+    },
+    {
+      "line": 951,
+      "tag": "div",
+      "style": "padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 10px 28px rgba(16,36,74,0.12)"
+    },
+    {
+      "line": 952,
+      "tag": "div",
+      "style": "font-size:16.5px;font-weight:700;letter-spacing:-0.015em"
+    },
+    {
+      "line": 953,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;margin-top:12px"
+    },
+    {
+      "line": 954,
+      "tag": "div",
+      "style": "width:48px;height:48px;border-radius:24px;background:linear-gradient(135deg,#4a7bf7,#c026d3);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 955,
+      "tag": "div",
+      "style": "display:flex;gap:3px"
+    },
+    {
+      "line": 955,
+      "tag": "div",
+      "style": "width:4px;height:14px;background:#fff;border-radius:2px"
+    },
+    {
+      "line": 955,
+      "tag": "div",
+      "style": "width:4px;height:14px;background:#fff;border-radius:2px"
+    },
+    {
+      "line": 958,
+      "tag": "div",
+      "style": "flex:1;display:flex;align-items:center;gap:2px;height:24px;cursor:pointer"
+    },
+    {
+      "line": 960,
+      "tag": "div",
+      "style": "flex:1;height:{{ w.h }};border-radius:2px;background:{{ w.bg }}"
+    },
+    {
+      "line": 963,
+      "tag": "div",
+      "style": "font-size:15px;color:#6b7a93;flex:none;font-variant-numeric:tabular-nums"
+    },
+    {
+      "line": 967,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;display:flex;gap:12px;z-index:20"
+    },
+    {
+      "line": 968,
+      "tag": "div",
+      "style": "flex:1;height:58px;border-radius:29px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.08);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 968,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:700;color:#0b1b3a"
+    },
+    {
+      "line": 969,
+      "tag": "div",
+      "style": "flex:1;height:58px;border-radius:29px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 969,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:700;color:#fff"
+    }
+  ],
+  "content": [
+    {
+      "line": 848,
+      "text": "Lina, 21"
+    },
+    {
+      "line": 860,
+      "text": "Good Luck, Babe!"
+    },
+    {
+      "line": 860,
+      "text": "Chappell Roan"
+    },
+    {
+      "line": 875,
+      "text": "165 cm"
+    },
+    {
+      "line": 879,
+      "text": "HKU"
+    },
+    {
+      "line": 883,
+      "text": "Psychology"
+    },
+    {
+      "line": 887,
+      "text": "INFJ"
+    },
+    {
+      "line": 890,
+      "text": "🇲🇾"
+    },
+    {
+      "line": 891,
+      "text": "Malaysia"
+    },
+    {
+      "line": 894,
+      "text": "🍷"
+    },
+    {
+      "line": 895,
+      "text": "Never"
+    },
+    {
+      "line": 898,
+      "text": "🚭"
+    },
+    {
+      "line": 899,
+      "text": "Never"
+    },
+    {
+      "line": 902,
+      "text": "🕊️"
+    },
+    {
+      "line": 903,
+      "text": "Christian"
+    },
+    {
+      "line": 907,
+      "text": "Psychology Society"
+    },
+    {
+      "line": 911,
+      "text": "Pok Fu Lam"
+    },
+    {
+      "line": 916,
+      "text": "Psych student who loves long walks, podcasts, and trying every dessert place in Kennedy Town."
+    },
+    {
+      "line": 920,
+      "text": "Looking for"
+    },
+    {
+      "line": 922,
+      "text": "🤝 New friends"
+    },
+    {
+      "line": 923,
+      "text": "📚 Study buddy"
+    },
+    {
+      "line": 924,
+      "text": "☕ Coffee chats"
+    },
+    {
+      "line": 925,
+      "text": "🗣️ Language exchange"
+    },
+    {
+      "line": 926,
+      "text": "🎉 Campus events"
+    },
+    {
+      "line": 931,
+      "text": "Interests"
+    },
+    {
+      "line": 934,
+      "text": "📷"
+    },
+    {
+      "line": 935,
+      "text": "Photography"
+    },
+    {
+      "line": 938,
+      "text": "☕"
+    },
+    {
+      "line": 939,
+      "text": "Coffee"
+    },
+    {
+      "line": 942,
+      "text": "🎵"
+    },
+    {
+      "line": 943,
+      "text": "Live music"
+    },
+    {
+      "line": 952,
+      "text": "How would you spend your ideal weekend?"
+    },
+    {
+      "line": 963,
+      "text": "0:18"
+    },
+    {
+      "line": 968,
+      "text": "Not Now"
+    },
+    {
+      "line": 969,
+      "text": "Accept"
+    }
+  ],
+  "svg": [
+    {
+      "line": 846,
+      "source": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+    },
+    {
+      "line": 848,
+      "source": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>"
+    },
+    {
+      "line": 850,
+      "source": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"#0b1b3a\"><circle cx=\"5\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"12\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"19\" cy=\"12\" r=\"1.9\"></circle></svg>"
+    },
+    {
+      "line": 861,
+      "source": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" style=\"margin-left:2px\"><path d=\"M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z\" fill=\"#a855f7\"></path></svg>"
+    },
+    {
+      "line": 861,
+      "source": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\"><rect x=\"6\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#a855f7\"></rect><rect x=\"14\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#a855f7\"></rect></svg>"
+    },
+    {
+      "line": 874,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 2v20M16 2v20M8 6h4M8 12h4M8 18h4\"></path></svg>"
+    },
+    {
+      "line": 878,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg>"
+    },
+    {
+      "line": 882,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 5.5c3.2-1 6.3-.7 9.5 1.2 3.2-1.9 6.3-2.2 9.5-1.2v13c-3.2-1-6.3-.7-9.5 1.2-3.2-1.9-6.3-2.2-9.5-1.2z\"></path><path d=\"M12 6.7v13\"></path></svg>"
+    },
+    {
+      "line": 886,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.2 3.8a2.3 2.3 0 0 1 4.6 0V5H17a1 1 0 0 1 1 1v3.3h1.2a2.3 2.3 0 0 1 0 4.6H18V18a1 1 0 0 1-1 1h-3.3v-1.2a2.3 2.3 0 0 0-4.6 0V19H6a1 1 0 0 1-1-1v-3.4h1.2a2.3 2.3 0 0 0 0-4.6H5V6a1 1 0 0 1 1-1h3.2z\"></path></svg>"
+    },
+    {
+      "line": 906,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg>"
+    },
+    {
+      "line": 910,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21s-7-6.2-7-11.4A7 7 0 0 1 19 9.6C19 14.8 12 21 12 21z\"></path><circle cx=\"12\" cy=\"9.4\" r=\"2.4\"></circle></svg>"
+    },
+    {
+      "line": 920,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg>"
+    },
+    {
+      "line": 931,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l1.6 4.8L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.2z\"></path></svg>"
+    },
+    {
+      "line": 956,
+      "source": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"#fff\" stroke=\"#fff\" stroke-width=\"2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M7.5 5 18.5 12 7.5 19z\"></path></svg>"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a13",
+        "local_path": "static/assets/head/maya-av.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a12",
+        "local_path": "static/assets/head/maya-card.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a11",
+        "local_path": "static/assets/head/maya-full.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a0",
+        "local_path": "static/assets/songs/beautiful-things.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a3",
+        "local_path": "static/assets/songs/good-luck-babe.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a2",
+        "local_path": "static/assets/songs/birds.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a1",
+        "local_path": "static/assets/songs/espresso.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a5",
+        "local_path": "static/assets/songs/risk-it-all.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a9",
+        "local_path": "static/assets/songs/beauty-beat.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      846,
+      848,
+      850,
+      861,
+      861,
+      874,
+      878,
+      882,
+      886,
+      906,
+      910,
+      920,
+      931,
+      956
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "motion": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "phase": "finished"
+  },
+  "states": [
+    "default",
+    "loading",
+    "error",
+    "empty",
+    "long-content",
+    "refresh",
+    "resolved",
+    "blocked",
+    "session-expired"
+  ],
+  "interaction_ids": [
+    "reqReceived.goBack.click.1",
+    "reqReceived.openReqMenu.click.1",
+    "reqReceived.otherSongPlay.click.1",
+    "reqReceived.prevPhoto.click.1",
+    "reqReceived.nextPhoto.click.1",
+    "reqReceived.togglePlay.click.1",
+    "reqReceived.seekLiam.click.1",
+    "reqReceived.notNow.click.1",
+    "reqReceived.accept.click.1"
+  ],
+  "approved_deltas": [
+    "Cimoa branding and unified actual participant IDs",
+    "Real system safe areas; one scroll container and fixed footer",
+    "No invented online, music or voice success",
+    "Only real shared interests and verified badges",
+    "Store writes use confirmation and 500ms loading; no automatic peer acceptance",
+    "Resolved/blocked requests show actual state; decline does not claim delivered content was never shared",
+    "Date label is calculated from the real message timestamp"
+  ]
+}
