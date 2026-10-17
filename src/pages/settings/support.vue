@@ -2,6 +2,7 @@
 import { computed, onUnmounted, ref } from 'vue'
 import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { relaunch_route } from '@/utils/routeTransition.js'
 import { startup_destination } from '@/utils/authNavigation.js'
@@ -34,14 +35,16 @@ const faqs = [
   ['How can I keep a support note?', 'Open the form below. After the required loading step, the topic and description can be saved as a private draft on this device.'],
 ]
 const draft_target = computed(() => context_type.value === 'report' && context_id.value ? `report:${context_id.value}` : 'general')
+const account_scope = use_account_scope(store, () => { cancel_loading(); topic.value = ''; description.value = ''; form_open.value = false; draft_id.value = '' })
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const ready = computed(() => !!topic.value && !!description.value.trim())
 
 const restore_draft = () => {
+  if (access_error.value) return
   const row = store.current_drafts.find(item => item.kind === 'support' && item.target_id === draft_target.value)
   if (!row) return
   draft_id.value = row.draft_id
@@ -65,7 +68,7 @@ const back = async () => { if (is_loading.value) return; try { await frame.value
 const toggle_faq = index => { if (!is_loading.value) open_faq.value = open_faq.value === index ? -1 : index }
 const open_form = () => { if (is_loading.value || access_error.value) return; error.value = ''; delivery_notice.value = ''; form_open.value = true }
 const save_draft = async () => {
-  if (is_loading.value || access_error.value || !ready.value) { if (!ready.value) error.value = 'Choose a topic and add a description before saving your draft.'; return }
+  if (!active || is_loading.value || access_error.value || !ready.value) { if (!ready.value) error.value = 'Choose a topic and add a description before saving your draft.'; return }
   error.value = ''; delivery_notice.value = ''
   let saved_id = ''
   const result = await run_with_loading(() => {
