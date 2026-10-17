@@ -2954,8 +2954,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; profile structure, gallery, source media, honest missing-audio error, report/block and exact returns passed local acceptance; Say Hi icebreaker dependency is still pending, so full acceptance and verified remain pending",
-    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json"
+    "mapping_status": "Profile source geometry/CTA corrected; 3 browser checks passed; final request dependency and bundled WebKit regression pending.",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-profile/acceptance.json",
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-profile/source-contract.json"
   },
   {
     "source_screen": "Events / Explore / Default",

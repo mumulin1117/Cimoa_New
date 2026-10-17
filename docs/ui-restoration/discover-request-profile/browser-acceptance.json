@@ -1,0 +1,30 @@
+{
+  "page": "profile",
+  "result": "passed",
+  "checks": [
+    "Source header/photo geometry and three actual photos/gallery use the same entity without writes",
+    "Send shot and real Back preserve user, photos and saved state",
+    "Long detail content is scrollable with fixed CTA and one safe-area budget on a narrow iPhone"
+  ],
+  "errors": [],
+  "deferred": [],
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "server_pid": 38453,
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 254649,
+    "pixels_above_channel_delta_8": 72090,
+    "mean_absolute_channel_delta": 3.8090580164617904,
+    "max_channel_delta": 244
+  },
+  "geometry": {
+    "photo": {
+      "x": 20,
+      "y": 125.96875,
+      "width": 353,
+      "height": 470.65625
+    }
+  },
+  "cleaned_up": true
+}

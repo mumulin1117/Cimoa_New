@@ -1,0 +1,10 @@
+{
+  "source_lock": "locked",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "visual_acceptance": "pending",
+  "status": "pending",
+  "browser": "3 checks passed; header/photo geometry, actual three photos/gallery, same target and Back, narrow detail scrolling; overlay reviewed",
+  "gates": "check:conventions, git diff --check, build:h5 passed without warning",
+  "deferred": ["Final full request flow and current-bundle WKWebView regression"]
+}

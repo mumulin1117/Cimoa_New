@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onUnmounted } from 'vue'
+import { computed, ref, onUnmounted, watch } from 'vue'
 import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
@@ -20,6 +20,7 @@ const photo_index = ref(0)
 const sheet = ref('')
 const error = ref('')
 const active = ref(true)
+const navigating = ref(false)
 const was_available = ref(false)
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 const person = computed(() => store.user_by_id(user_id.value))
@@ -31,8 +32,8 @@ const song = computed(() => store.song_for_user(user_id.value))
 const conversation = computed(() => store.current_conversations.find((row) => row.participant_id === user_id.value) || null)
 const photo = computed(() => photos.value[photo_index.value] || null)
 const is_self = computed(() => user_id.value === store.session.current_user_id)
-const relation = computed(() => store.relationship_state(user_id.value))
-const primary_label = computed(() => is_self.value ? 'This is you' : conversation.value ? 'Chat' : relation.value?.request_id ? relation.value.status === 'outgoing_request' ? 'Request sent' : 'View request' : relation.value?.match_id ? 'View match' : 'Send shot')
+const request_context = computed(() => store.introduction_context(user_id.value))
+const primary_label = computed(() => is_self.value ? 'This is you' : request_context.value.primary?.label || 'Send shot')
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
   : !store.session.is_authenticated
@@ -58,14 +59,15 @@ onLoad(options => {
   origin_conversation_id.value = String(options?.origin_conversation_id || '')
   was_available.value = !!store.user_by_id(user_id.value)
 })
-const leave = () => { active.value = false; cancel_loading(); sheet.value = '' }
+const leave = () => { active.value = false; navigating.value = false; cancel_loading(); sheet.value = '' }
+watch(() => photos.value.length, length => { photo_index.value = length ? photo_index.value % length : 0 })
 onHide(leave)
 onUnmounted(leave)
 onShow(async () => {
   active.value = true
   error.value = ''
   if (was_available.value && store.hydration_status === 'ready' && !person.value) {
-    try { await frame.value.navigate_replace('/pages/discover/index') } catch (cause) { error.value = cause.message }
+    try { await frame.value.navigate_relaunch('/pages/discover/index') } catch (cause) { error.value = cause.message }
   }
 })
 
@@ -80,23 +82,20 @@ const change_photo = delta => {
 const open_gallery = () => { if (photo.value && !is_loading.value) { sheet.value = 'gallery'; error.value = '' } }
 const play_song = () => { error.value = song.value?.audio_id ? 'This song audio is not available in local storage.' : 'This profile includes song artwork only. No playable audio was provided.' }
 const say_hi = async () => {
-  if (is_loading.value || sheet.value || access_error.value || is_self.value) return
+  if (is_loading.value || navigating.value || sheet.value || access_error.value || is_self.value) return
+  navigating.value = true
   error.value = ''
   try {
-    if (conversation.value) {
-      const route = conversation_route()
+    const primary = request_context.value.primary
+    if (request_context.value.error || primary?.error || !primary?.destination) throw Error(request_context.value.error || primary?.error || 'This profile is unavailable.')
+    if (primary.kind === 'chat') {
+      const route = primary.destination
       if (conversation.value.conversation_id === origin_conversation_id.value) await frame.value.navigate_back(route)
       else await frame.value.navigate_forward(route)
       return
     }
-    if (relation.value?.request_id) { await frame.value.navigate_forward(`/pages/connections/${relation.value.status === 'outgoing_request' ? 'sent' : 'received'}?request_id=${encodeURIComponent(relation.value.request_id)}`); return }
-    if (relation.value?.match_id) {
-      const invitation = store.match_invitation(relation.value.match_id)
-      const route = invitation?.recipient_id === store.session.current_user_id ? `/pages/connections/received?match_id=${encodeURIComponent(relation.value.match_id)}` : `/pages/auto-match/${relation.value.match_status}?match_id=${encodeURIComponent(relation.value.match_id)}`
-      await frame.value.navigate_forward(route); return
-    }
-    await frame.value.navigate_forward(require_discover_destination_ready(discover_destination(store, 'icebreaker', user_id.value)))
-  } catch (cause) { error.value = cause.message }
+    await frame.value.navigate_forward(require_discover_destination_ready(primary.destination))
+  } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
 const open_report = async () => {
   if (is_loading.value || access_error.value || is_self.value) return
@@ -110,7 +109,7 @@ const confirm_block = async () => {
   if (!active.value || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
   sheet.value = ''
-  try { await frame.value.navigate_replace('/pages/discover/index') } catch (cause) { error.value = cause.message }
+  try { await frame.value.navigate_relaunch('/pages/discover/index') } catch (cause) { error.value = cause.message }
 }
 </script>
 
@@ -185,7 +184,7 @@ const confirm_block = async () => {
 .expanded-dots view { flex: 1; height: 5.725rpx; border-radius: 3.817rpx; background: var(--cimoa-surface-profile-dot-inactive); }
 .expanded-dots .active { background: var(--cimoa-surface-card); }
 .expanded-card { margin-top: 30.534rpx; padding: 34.351rpx; border-radius: 45.802rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); }
-.expanded-tags { display: flex; flex-wrap: wrap; gap: 15.267rpx; }
+.expanded-tags { display: flex; flex-wrap: wrap; gap: 15.267rpx; margin-top: 38.168rpx; }
 .expanded-tag, .expanded-chip { display: flex; align-items: center; gap: 11.45rpx; min-height: 64.885rpx; padding: 0 22.901rpx; border-radius: 32.443rpx; color: var(--cimoa-text-profile-bio); background: var(--cimoa-surface-tinted); font-size: 26.718rpx; font-weight: 500; }
 .expanded-tag-icon { width: 34.351rpx; height: 34.351rpx; color: var(--cimoa-text-title); }
 .expanded-tag-emoji { font-size: 30.534rpx; }
@@ -196,7 +195,7 @@ const confirm_block = async () => {
 .expanded-chip-list { display: flex; flex-wrap: wrap; gap: 15.267rpx; margin-top: 22.901rpx; }
 .expanded-question-list { display: flex; flex-direction: column; gap: 15.267rpx; margin-top: 22.901rpx; }
 .expanded-question-list text { padding: 22.901rpx 26.718rpx; border-radius: 30.534rpx; color: var(--cimoa-text-profile-bio); background: var(--cimoa-surface-tinted); font-size: 28.626rpx; line-height: 1.4; }
-.expanded-footer { padding: 15.267rpx 38.168rpx 0; background: var(--cimoa-page-gradient); }
+.expanded-footer { padding: 15.267rpx 38.168rpx 64.885rpx; }
 .expanded-send { display: flex; align-items: center; justify-content: center; height: 114.504rpx; border-radius: 57.252rpx; color: var(--cimoa-text-inverse); background: var(--cimoa-gradient-primary); box-shadow: var(--cimoa-shadow-primary); font-size: 40.076rpx; font-weight: 700; cursor: pointer; }
 .expanded-send[aria-disabled="true"] { opacity: 0.5; cursor: default; }
 .expanded-error { display: block; margin-bottom: 11.45rpx; color: var(--cimoa-status-danger); font-size: 25.763rpx; line-height: 1.4; overflow-wrap: anywhere; }

@@ -5,7 +5,7 @@ import { read_circa_source, walk_html, attribute } from './lib/circa-source.mjs'
 import { sha256 } from './lib/pixel-acceptance.mjs'
 export const phases = {
   deck: ['photo', 'isPhoto', 360, 399, '/pages/discover/index', 'src/pages/discover/index.vue'],
-  profile: ['expanded', 'isExpanded', 401, 531, '/pages/discover/profile?user_id=user_zane', 'src/pages/discover/profile.vue'],
+  profile: ['expanded', 'isExpanded', 401, 514, '/pages/discover/profile?user_id=user_zane', 'src/pages/discover/profile.vue'],
   select: ['ibSelect', 'isIbSelect', 609, 654, '/pages/discover/icebreaker/select?user_id=user_zane', 'src/pages/discover/icebreaker/select.vue'],
   text: ['ibText', 'isIbText', 656, 689, '/pages/discover/icebreaker/text?user_id=user_zane&draft_id=draft_discover', 'src/pages/discover/icebreaker/text.vue'],
   voice: ['ibVoice', 'isIbVoice', 691, 745, '/pages/discover/icebreaker/voice?user_id=user_zane&draft_id=draft_discover', 'src/pages/discover/icebreaker/voice.vue'],

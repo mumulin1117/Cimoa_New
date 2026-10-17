@@ -1,7 +1,7 @@
 [
   {
     "interaction_id": "expanded.collapse.click.1",
-    "source_screen": "expanded decoded HTML 401–531",
+    "source_screen": "expanded decoded HTML 401–514",
     "trigger": "click",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
@@ -13,7 +13,7 @@
   },
   {
     "interaction_id": "expanded.openSafetyMini.click.1",
-    "source_screen": "expanded decoded HTML 401–531",
+    "source_screen": "expanded decoded HTML 401–514",
     "trigger": "click",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
@@ -25,7 +25,7 @@
   },
   {
     "interaction_id": "expanded.openGallery.click.1",
-    "source_screen": "expanded decoded HTML 401–531",
+    "source_screen": "expanded decoded HTML 401–514",
     "trigger": "click",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
@@ -37,7 +37,7 @@
   },
   {
     "interaction_id": "expanded.openGallery.click.2",
-    "source_screen": "expanded decoded HTML 401–531",
+    "source_screen": "expanded decoded HTML 401–514",
     "trigger": "click",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
@@ -49,7 +49,7 @@
   },
   {
     "interaction_id": "expanded.openGallery.click.3",
-    "source_screen": "expanded decoded HTML 401–531",
+    "source_screen": "expanded decoded HTML 401–514",
     "trigger": "click",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
@@ -61,7 +61,7 @@
   },
   {
     "interaction_id": "expanded.otherSongPlay.click.1",
-    "source_screen": "expanded decoded HTML 401–531",
+    "source_screen": "expanded decoded HTML 401–514",
     "trigger": "click",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
@@ -73,7 +73,7 @@
   },
   {
     "interaction_id": "expanded.prevPhoto.click.1",
-    "source_screen": "expanded decoded HTML 401–531",
+    "source_screen": "expanded decoded HTML 401–514",
     "trigger": "click",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
@@ -85,7 +85,7 @@
   },
   {
     "interaction_id": "expanded.nextPhoto.click.1",
-    "source_screen": "expanded decoded HTML 401–531",
+    "source_screen": "expanded decoded HTML 401–514",
     "trigger": "click",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
@@ -97,7 +97,7 @@
   },
   {
     "interaction_id": "expanded.sayHi.click.1",
-    "source_screen": "expanded decoded HTML 401–531",
+    "source_screen": "expanded decoded HTML 401–514",
     "trigger": "click",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
