@@ -1,0 +1,476 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isProfile",
+    "source_query": "route=profile",
+    "lines": [
+      3294,
+      3352
+    ],
+    "fragment_sha256": "3c8caf3a0978af6250eb5fb00e8785654a6bbab9d9581cb396cdab1132699737",
+    "fragment": "<sc-if value=\"{{ isProfile }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Profile / Personal / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">My profile</div><div sc-camel-on-click=\"{{ openAppSettings }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><svg width=\"21\" height=\"21\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z\"></path><path d=\"M19.4 13a7.6 7.6 0 0 0 0-2l2-1.4-2-3.4-2.3.7a7.6 7.6 0 0 0-1.7-1L15 3h-6l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.3-.7-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.4 2 3.4 2.3-.7a7.6 7.6 0 0 0 1.7 1L9 21h6l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.3.7 2-3.4z\"></path></svg></div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:40px;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box\">\n          <div style=\"display:flex;flex-direction:column;align-items:center;gap:10px\">\n            <div style=\"position:relative\">\n              <img src=\"6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30\" alt=\"{{ obName }}\" style=\"width:120px;height:120px;border-radius:60px;object-fit:cover;box-shadow:0 12px 28px rgba(16,36,74,0.14);display:block;border:3px solid #fff\">\n            </div>\n            <div style=\"display:flex;align-items:center;gap:7px;margin-top:4px\">\n              <div style=\"font-size:27px;font-weight:800;letter-spacing:-0.03em\">{{ obName }}, 22</div>\n              <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>\n            </div>\n            <div style=\"display:flex;flex-wrap:nowrap;justify-content:center;gap:6px;max-width:100%;padding:0 16px;box-sizing:border-box\">\n              <div style=\"display:flex;align-items:center;gap:4px;height:30px;padding:0 10px;border-radius:15px;min-width:0;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.07)\"><svg width=\"13\" height=\"13\" style=\"flex:none\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg><div style=\"font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">HKUST</div></div>\n              <div style=\"display:flex;align-items:center;gap:4px;height:30px;padding:0 10px;border-radius:15px;min-width:0;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.07)\"><svg width=\"13\" height=\"13\" style=\"flex:none\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 5.5c3.2-1 6.3-.7 9.5 1.2 3.2-1.9 6.3-2.2 9.5-1.2v13c-3.2-1-6.3-.7-9.5 1.2-3.2-1.9-6.3-2.2-9.5-1.2z\"></path><path d=\"M12 6.7v13\"></path></svg><div style=\"font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ obField }}</div></div>\n              <div style=\"display:flex;align-items:center;gap:4px;height:30px;padding:0 10px;border-radius:15px;min-width:0;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.07)\"><svg width=\"13\" height=\"13\" style=\"flex:none\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.2 3.8a2.3 2.3 0 0 1 4.6 0V5H17a1 1 0 0 1 1 1v3.3h1.2a2.3 2.3 0 0 1 0 4.6H18V18a1 1 0 0 1-1 1h-3.3v-1.2a2.3 2.3 0 0 0-4.6 0V19H6a1 1 0 0 1-1-1v-3.4h1.2a2.3 2.3 0 0 0 0-4.6H5V6a1 1 0 0 1 1-1h3.2z\"></path></svg><div style=\"font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">INFP</div></div>\n            </div>\n            <div sc-camel-on-click=\"{{ openEditBasic }}\" style=\"height:48px;padding:0 26px;border-radius:24px;background:linear-gradient(#ffffff,#ffffff) padding-box, linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%) border-box;border:2px solid transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:10px;gap:8px\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#4a7bf7\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 20h4L19 9l-4-4L4 16z\"></path><path d=\"M13.5 6.5l4 4\"></path></svg>\n              <div style=\"font-size:17px;font-weight:700;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);-webkit-background-clip:text;background-clip:text;color:transparent\">Edit Profile</div>\n            </div>\n          </div>\n\n          <div style=\"margin-top:22px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"font-size:22px;font-weight:800;letter-spacing:-0.02em\">About me</div>\n            <div style=\"font-family:'Caveat',cursive;font-size:27px;font-weight:600;line-height:1.25;color:#26364f;margin-top:8px;text-align:center;text-wrap:balance\">{{ obBio }}</div>\n          </div>\n\n          <div style=\"margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"font-size:22px;font-weight:800;letter-spacing:-0.02em\">Interests</div>\n            <div style=\"display:flex;flex-wrap:wrap;gap:18px;margin-top:14px\">\n              <sc-for list=\"{{ selectedInterests }}\" as=\"o\" hint-placeholder-count=\"3\">\n                <div style=\"display:flex;flex-direction:column;align-items:center;gap:8px;width:74px\">\n                  <div style=\"width:56px;height:56px;border-radius:28px;background:#eef2f8;display:flex;align-items:center;justify-content:center;font-size:24px\">{{ o.icon }}</div>\n                  <div style=\"font-size:14.5px;font-weight:600;text-align:center\">{{ o.label }}</div>\n                </div>\n              </sc-for>\n            </div>\n          </div>\n\n          <div sc-camel-on-click=\"{{ openStore }}\" style=\"display:flex;align-items:center;gap:14px;margin-top:16px;padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n            <img src=\"a9831494-dfeb-464f-8617-1e3468ad74f0\" alt=\"coin\" style=\"width:40px;height:40px;display:block;flex:none\">\n            <div style=\"flex:1;min-width:0;font-size:19px;font-weight:800;letter-spacing:-0.02em\">{{ balanceText }}</div>\n            <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n          </div>\n\n          <div sc-camel-on-click=\"{{ openProfilePreview }}\" style=\"display:flex;align-items:center;gap:14px;margin-top:16px;padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n            <div style=\"width:40px;height:40px;border-radius:20px;background:#eef2f8;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"19\" height=\"19\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#44536b\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8.5\" r=\"3.8\"></circle><path d=\"M4.5 20c1.4-4.2 5-6 7.5-6s6.1 1.8 7.5 6\"></path></svg></div>\n            <div style=\"flex:1;min-width:0;font-size:17px;font-weight:700\">Preview my profile</div>\n            <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n          </div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/profile/index",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/home/index、/pages/discover/index、/pages/events/index）；无历史实例时 replace /pages/home/index，不创建伪造实体",
+  "styles": [
+    {
+      "line": 3295,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 3296,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 3297,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 3300,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 3300,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 3300,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 3302,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:40px;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box"
+    },
+    {
+      "line": 3303,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:center;gap:10px"
+    },
+    {
+      "line": 3304,
+      "tag": "div",
+      "style": "position:relative"
+    },
+    {
+      "line": 3305,
+      "tag": "img",
+      "style": "width:120px;height:120px;border-radius:60px;object-fit:cover;box-shadow:0 12px 28px rgba(16,36,74,0.14);display:block;border:3px solid #fff"
+    },
+    {
+      "line": 3307,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:7px;margin-top:4px"
+    },
+    {
+      "line": 3308,
+      "tag": "div",
+      "style": "font-size:27px;font-weight:800;letter-spacing:-0.03em"
+    },
+    {
+      "line": 3311,
+      "tag": "div",
+      "style": "display:flex;flex-wrap:nowrap;justify-content:center;gap:6px;max-width:100%;padding:0 16px;box-sizing:border-box"
+    },
+    {
+      "line": 3312,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:4px;height:30px;padding:0 10px;border-radius:15px;min-width:0;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 3312,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 3312,
+      "tag": "div",
+      "style": "font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 3313,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:4px;height:30px;padding:0 10px;border-radius:15px;min-width:0;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 3313,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 3313,
+      "tag": "div",
+      "style": "font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 3314,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:4px;height:30px;padding:0 10px;border-radius:15px;min-width:0;background:#fff;box-shadow:0 4px 12px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 3314,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 3314,
+      "tag": "div",
+      "style": "font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 3316,
+      "tag": "div",
+      "style": "height:48px;padding:0 26px;border-radius:24px;background:linear-gradient(#ffffff,#ffffff) padding-box, linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%) border-box;border:2px solid transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:10px;gap:8px"
+    },
+    {
+      "line": 3318,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);-webkit-background-clip:text;background-clip:text;color:transparent"
+    },
+    {
+      "line": 3322,
+      "tag": "div",
+      "style": "margin-top:22px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 3323,
+      "tag": "div",
+      "style": "font-size:22px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 3324,
+      "tag": "div",
+      "style": "font-family:'Caveat',cursive;font-size:27px;font-weight:600;line-height:1.25;color:#26364f;margin-top:8px;text-align:center;text-wrap:balance"
+    },
+    {
+      "line": 3327,
+      "tag": "div",
+      "style": "margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 3328,
+      "tag": "div",
+      "style": "font-size:22px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 3329,
+      "tag": "div",
+      "style": "display:flex;flex-wrap:wrap;gap:18px;margin-top:14px"
+    },
+    {
+      "line": 3331,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:center;gap:8px;width:74px"
+    },
+    {
+      "line": 3332,
+      "tag": "div",
+      "style": "width:56px;height:56px;border-radius:28px;background:#eef2f8;display:flex;align-items:center;justify-content:center;font-size:24px"
+    },
+    {
+      "line": 3333,
+      "tag": "div",
+      "style": "font-size:14.5px;font-weight:600;text-align:center"
+    },
+    {
+      "line": 3339,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;margin-top:16px;padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 3340,
+      "tag": "img",
+      "style": "width:40px;height:40px;display:block;flex:none"
+    },
+    {
+      "line": 3341,
+      "tag": "div",
+      "style": "flex:1;min-width:0;font-size:19px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 3342,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 3345,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;margin-top:16px;padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 3346,
+      "tag": "div",
+      "style": "width:40px;height:40px;border-radius:20px;background:#eef2f8;display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 3347,
+      "tag": "div",
+      "style": "flex:1;min-width:0;font-size:17px;font-weight:700"
+    },
+    {
+      "line": 3348,
+      "tag": "svg",
+      "style": "flex:none"
+    }
+  ],
+  "texts": [
+    {
+      "line": 3300,
+      "text": "My profile"
+    },
+    {
+      "line": 3308,
+      "text": ", 22"
+    },
+    {
+      "line": 3312,
+      "text": "HKUST"
+    },
+    {
+      "line": 3314,
+      "text": "INFP"
+    },
+    {
+      "line": 3318,
+      "text": "Edit Profile"
+    },
+    {
+      "line": 3323,
+      "text": "About me"
+    },
+    {
+      "line": 3328,
+      "text": "Interests"
+    },
+    {
+      "line": 3347,
+      "text": "Preview my profile"
+    }
+  ],
+  "svg": [
+    {
+      "line": 3298,
+      "source": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+    },
+    {
+      "line": 3300,
+      "source": "<svg width=\"21\" height=\"21\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z\"></path><path d=\"M19.4 13a7.6 7.6 0 0 0 0-2l2-1.4-2-3.4-2.3.7a7.6 7.6 0 0 0-1.7-1L15 3h-6l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.3-.7-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.4 2 3.4 2.3-.7a7.6 7.6 0 0 0 1.7 1L9 21h6l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.3.7 2-3.4z\"></path></svg>"
+    },
+    {
+      "line": 3309,
+      "source": "<svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>"
+    },
+    {
+      "line": 3312,
+      "source": "<svg width=\"13\" height=\"13\" style=\"flex:none\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg>"
+    },
+    {
+      "line": 3313,
+      "source": "<svg width=\"13\" height=\"13\" style=\"flex:none\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 5.5c3.2-1 6.3-.7 9.5 1.2 3.2-1.9 6.3-2.2 9.5-1.2v13c-3.2-1-6.3-.7-9.5 1.2-3.2-1.9-6.3-2.2-9.5-1.2z\"></path><path d=\"M12 6.7v13\"></path></svg>"
+    },
+    {
+      "line": 3314,
+      "source": "<svg width=\"13\" height=\"13\" style=\"flex:none\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.2 3.8a2.3 2.3 0 0 1 4.6 0V5H17a1 1 0 0 1 1 1v3.3h1.2a2.3 2.3 0 0 1 0 4.6H18V18a1 1 0 0 1-1 1h-3.3v-1.2a2.3 2.3 0 0 0-4.6 0V19H6a1 1 0 0 1-1-1v-3.4h1.2a2.3 2.3 0 0 0 0-4.6H5V6a1 1 0 0 1 1-1h3.2z\"></path></svg>"
+    },
+    {
+      "line": 3317,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#4a7bf7\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 20h4L19 9l-4-4L4 16z\"></path><path d=\"M13.5 6.5l4 4\"></path></svg>"
+    },
+    {
+      "line": 3342,
+      "source": "<svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>"
+    },
+    {
+      "line": 3346,
+      "source": "<svg width=\"19\" height=\"19\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#44536b\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"8.5\" r=\"3.8\"></circle><path d=\"M4.5 20c1.4-4.2 5-6 7.5-6s6.1 1.8 7.5 6\"></path></svg>"
+    },
+    {
+      "line": 3348,
+      "source": "<svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a9831494-dfeb-464f-8617-1e3468ad74f0",
+        "local_path": "static/assets/coins/home-coin-badge.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a15",
+        "local_path": "static/assets/head/me.png",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a0",
+        "local_path": "static/assets/songs/beautiful-things.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a3",
+        "local_path": "static/assets/songs/good-luck-babe.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a2",
+        "local_path": "static/assets/songs/birds.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a1",
+        "local_path": "static/assets/songs/espresso.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a6",
+        "local_path": "static/assets/songs/love-me-not.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a9",
+        "local_path": "static/assets/songs/beauty-beat.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      3298,
+      3300,
+      3309,
+      3312,
+      3313,
+      3314,
+      3317,
+      3342,
+      3346,
+      3348
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 3297,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 3300,
+      "event": "sc-camel-on-click",
+      "handler": "openAppSettings"
+    },
+    {
+      "line": 3316,
+      "event": "sc-camel-on-click",
+      "handler": "openEditBasic"
+    },
+    {
+      "line": 3339,
+      "event": "sc-camel-on-click",
+      "handler": "openStore"
+    },
+    {
+      "line": 3345,
+      "event": "sc-camel-on-click",
+      "handler": "openProfilePreview"
+    }
+  ],
+  "interaction_ids": [
+    "profile.goBack.click.1",
+    "profile.openAppSettings.click.1",
+    "profile.openEditBasic.click.1",
+    "profile.openStore.click.1",
+    "profile.openProfilePreview.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "profile.goBack.click.1",
+      "source": "route=profile",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "profile.openAppSettings.click.1",
+      "source": "route=profile",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "profile.openEditBasic.click.1",
+      "source": "route=profile",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "profile.openStore.click.1",
+      "source": "route=profile",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "profile.openProfilePreview.click.1",
+      "source": "route=profile",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}

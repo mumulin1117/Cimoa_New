@@ -7,12 +7,15 @@ import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import ProfilePhoto from '@/components/ProfilePhoto.vue'
 import { bio_style } from '@/utils/profilePresentation.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 
 const store = use_app_store(), frame = ref(null), navigating = ref(false), navigation_error = ref('')
 const user = computed(() => store.current_user)
+const { access_error } = use_account_scope(store)
 const target = kind => { try { return profile_destination(store, kind) } catch { return '' } }
 const navigate = async kind => {
   if (navigating.value) return
+  if (kind !== 'back' && access_error.value) { navigation_error.value = access_error.value; return }
   navigating.value = true; navigation_error.value = ''
   try {
     if (kind === 'back') await frame.value.navigate_back()
@@ -27,17 +30,17 @@ onHide(() => { navigation_error.value = '' })
     <template #header>
       <view class="profile-header">
         <view class="profile-toolbar">
-          <view class="profile-tool" role="button" aria-label="Back" :aria-disabled="navigating" data-interaction="profile.goBack.click.1" @click="navigate('back')"><view class="profile-back-icon"><SourceIcon name="back" /></view></view>
+          <view class="profile-tool" role="button" tabindex="0" aria-label="Back" :aria-disabled="navigating" data-interaction="profile.goBack.click.1" @click="navigate('back')" @keydown.enter="navigate('back')" @keydown.space.prevent="navigate('back')"><view class="profile-back-icon"><SourceIcon name="back" /></view></view>
           <text class="profile-title">My profile</text>
-          <view class="profile-tool" role="button" aria-label="Open settings" :aria-disabled="navigating" data-interaction="profile.openAppSettings.click.1" :data-target="target('settings')" @click="navigate('settings')"><view class="profile-settings-icon"><SourceIcon name="settings" /></view></view>
+          <view class="profile-tool" role="button" tabindex="0" aria-label="Open settings" :aria-disabled="navigating" data-interaction="profile.openAppSettings.click.1" :data-target="target('settings')" @click="navigate('settings')" @keydown.enter="navigate('settings')" @keydown.space.prevent="navigate('settings')"><view class="profile-settings-icon"><SourceIcon name="settings" /></view></view>
         </view>
         <text v-if="navigation_error" class="profile-feedback" role="alert">{{ navigation_error }}</text>
       </view>
     </template>
     <view class="profile-content">
       <view v-if="store.hydration_status === 'loading' || store.hydration_status === 'idle'" class="profile-state" role="status">Loading your profile…</view>
-      <view v-else-if="store.hydration_status === 'error'" class="profile-state" role="alert"><text>Your profile couldn’t be loaded.</text><text>{{ store.hydration_error }}</text><view class="profile-retry" role="button" data-interaction="profile.retry.click.1" @click="store.hydrate()">Retry</view></view>
-      <view v-else-if="!store.session.is_authenticated" class="profile-state"><text>Your session has expired.</text><text>Please sign in again to view your profile.</text></view>
+      <view v-else-if="store.hydration_status === 'error'" class="profile-state" role="alert"><text>Your profile couldn’t be loaded.</text><text>{{ store.hydration_error }}</text><view class="profile-retry" role="button" tabindex="0" data-interaction="profile.retry.click.1" @click="store.hydrate()" @keydown.enter="store.hydrate()" @keydown.space.prevent="store.hydrate()">Retry</view></view>
+      <view v-else-if="access_error" class="profile-state" role="alert"><text>{{ access_error }}</text></view>
       <template v-else>
         <view class="profile-intro">
           <view class="profile-avatar"><ProfilePhoto :src="user.avatar_url" :name="user.user_name" portrait retry-interaction="profile.retryPhoto.click.1" /></view>
@@ -47,13 +50,13 @@ onHide(() => { navigation_error.value = '' })
             <view class="profile-tag"><view class="profile-tag-icon"><SourceIcon name="book" :stroke-width="2" /></view><text>{{ user.major || 'Major not shared' }}</text></view>
             <view class="profile-tag"><view class="profile-tag-icon"><SourceIcon name="puzzle" :stroke-width="2" /></view><text>{{ user.mbti || 'MBTI not shared' }}</text></view>
           </view>
-          <view class="profile-edit" role="button" :aria-disabled="navigating" data-interaction="profile.openEditBasic.click.1" :data-target="target('edit')" @click="navigate('edit')"><view class="profile-edit-icon"><SourceIcon name="edit" :stroke-width="2.2" /></view><text>Edit Profile</text></view>
+          <view class="profile-edit" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="profile.openEditBasic.click.1" :data-target="target('edit')" @click="navigate('edit')" @keydown.enter="navigate('edit')" @keydown.space.prevent="navigate('edit')"><view class="profile-edit-icon"><SourceIcon name="edit" :stroke-width="2.2" /></view><text>Edit Profile</text></view>
         </view>
         <view class="profile-card profile-about"><text class="profile-section-title">About me</text><text v-if="user.bio" class="profile-bio" :style="bio_style(user.bio_font)">{{ user.bio }}</text><text v-else class="profile-empty">No introduction yet.</text></view>
         <view class="profile-card"><text class="profile-section-title">Interests</text><view v-if="store.current_interests.length" class="profile-interests"><view v-for="interest in store.current_interests" :key="interest.item_id" class="profile-interest"><view class="interest-icon">{{ interest.emoji }}</view><text class="interest-label">{{ interest.label }}</text></view></view><text v-else class="profile-empty">No interests selected yet.</text></view>
-        <view class="profile-card profile-link" role="button" :aria-disabled="navigating" data-interaction="profile.openStore.click.1" :data-target="target('coins')" @click="navigate('coins')"><image class="profile-coin" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><text class="profile-balance">{{ store.coin_balance.toLocaleString('en-US') }} coins</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
-        <view class="profile-card profile-link" role="button" :aria-disabled="navigating" data-interaction="profile.openVerification.click.1" :data-target="target('verification')" @click="navigate('verification')"><view class="profile-preview-icon"><view><SourceIcon :name="user.verified ? 'verified' : 'shield'" /></view></view><text class="profile-preview-label">University verification · {{ user.verified ? 'Active' : 'Pending' }}</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
-        <view class="profile-card profile-link" role="button" :aria-disabled="navigating" data-interaction="profile.openProfilePreview.click.1" :data-target="target('preview')" @click="navigate('preview')"><view class="profile-preview-icon"><view><SourceIcon name="person" :stroke-width="1.9" /></view></view><text class="profile-preview-label">Preview my profile</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
+        <view class="profile-card profile-link" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="profile.openStore.click.1" :data-target="target('coins')" @click="navigate('coins')" @keydown.enter="navigate('coins')" @keydown.space.prevent="navigate('coins')"><image class="profile-coin" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><text class="profile-balance">{{ store.coin_balance.toLocaleString('en-US') }} coins</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
+        <view class="profile-card profile-link" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="profile.openVerification.click.1" :data-target="target('verification')" @click="navigate('verification')" @keydown.enter="navigate('verification')" @keydown.space.prevent="navigate('verification')"><view class="profile-preview-icon"><view><SourceIcon :name="user.verified ? 'verified' : 'shield'" /></view></view><text class="profile-preview-label">University verification · {{ user.verified ? 'Active' : 'Pending' }}</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
+        <view class="profile-card profile-link" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="profile.openProfilePreview.click.1" :data-target="target('preview')" @click="navigate('preview')" @keydown.enter="navigate('preview')" @keydown.space.prevent="navigate('preview')"><view class="profile-preview-icon"><view><SourceIcon name="person" :stroke-width="1.9" /></view></view><text class="profile-preview-label">Preview my profile</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
       </template>
     </view>
     <template #footer><view class="profile-bottom-space" aria-hidden="true" /></template>

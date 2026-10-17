@@ -1,7 +1,7 @@
 {
   "result": "passed",
   "runtime": "Chromium, fresh isolated profile, 393 x 852",
-  "server_pid": 6796,
+  "server_pid": 81568,
   "checks": [
     {
       "name": "three source tabs, capsule geometry, restored session has no skeleton",
@@ -129,17 +129,17 @@
           "bottom": 111.09375
         },
         "scroll": {
-          "top": 1102,
+          "top": 1174,
           "width": 320,
           "fullWidth": 320,
           "height": 390
         },
         "last": {
           "x": 16.28125,
-          "y": 410.328125,
+          "y": 409.9375,
           "width": 287.4375,
           "height": 58.59375,
-          "bottom": 468.921875
+          "bottom": 468.53125
         },
         "viewport": {
           "x": 0,
