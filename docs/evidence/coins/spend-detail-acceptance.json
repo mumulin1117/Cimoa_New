@@ -1,7 +1,7 @@
 {
   "phase": "spend-detail",
   "result": "passed",
-  "server_pid": 60433,
+  "server_pid": 9518,
   "checks": [
     "Spending Detail discloses fixture provenance and does not invent a linked feature",
     "Coin activity support opens Coin Help and Back restores detail without mutating coin activity",

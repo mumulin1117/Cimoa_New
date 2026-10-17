@@ -1,0 +1,270 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isCoinSpendDetail",
+    "source_query": "route=coinSpendDetail",
+    "lines": [
+      2422,
+      2463
+    ],
+    "fragment_sha256": "9214ddb0cb4b9d22f7faf54a3c4a41c44f0485146250f1117e7f2e5ba72d4312",
+    "fragment": "<sc-if value=\"{{ isCoinSpendDetail }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Coins / History / Spending Detail\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Coins used</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 120px;box-sizing:border-box\">\n          <div style=\"padding:20px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);display:flex;flex-direction:column;align-items:center;gap:8px\">\n            <img src=\"a9831494-dfeb-464f-8617-1e3468ad74f0\" alt=\"coin\" style=\"width:56px;height:56px;display:block;flex:none\">\n            <div style=\"font-size:27px;font-weight:800;letter-spacing:-0.03em;margin-top:4px\">{{ txnCoins }}</div>\n            <div style=\"font-size:16px;color:#5b6b85\">{{ txnTitle }}</div>\n          </div>\n          <div style=\"margin-top:16px;padding:6px 18px 12px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n              <div style=\"font-size:17px;color:#5b6b85\">Feature</div>\n              <div style=\"font-size:17px;font-weight:700\">{{ txnTitle }}</div>\n            </div>\n            <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n              <div style=\"font-size:17px;color:#5b6b85\">Date</div>\n              <div style=\"font-size:17px;font-weight:700\">{{ txnWhen }}</div>\n            </div>\n            <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n              <div style=\"font-size:17px;color:#5b6b85\">Status</div>\n              <div style=\"font-size:17px;font-weight:700\">{{ txnStatus }}</div>\n            </div>\n            <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n              <div style=\"font-size:17px;color:#5b6b85\">Related action</div>\n              <div style=\"font-size:17px;font-weight:700\">{{ txnDetail }}</div>\n            </div>\n          </div>\n          <sc-if value=\"{{ txnRefunded }}\" hint-placeholder-val=\"{{ false }}\">\n            <div style=\"margin-top:14px;padding:16px 18px;border-radius:20px;background:#e8f1fd\">\n              <div style=\"font-size:17px;font-weight:700;color:#1e4b8f\">{{ txnRefundText }}</div>\n              <div style=\"font-size:15px;color:#1e4b8f;margin-top:4px;text-wrap:pretty\">The action could not be delivered, so the coins went back to your balance.</div>\n            </div>\n          </sc-if>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20\"><div sc-camel-on-click=\"{{ openSupport }}\" style=\"height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">Purchase support</div></div></div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/coins/spend-detail",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/coins/history）；无历史实例时 replace /pages/coins/history，不创建伪造实体",
+  "styles": [
+    {
+      "line": 2423,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 2424,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 2425,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 2428,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 2428,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 2430,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 120px;box-sizing:border-box"
+    },
+    {
+      "line": 2431,
+      "tag": "div",
+      "style": "padding:20px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);display:flex;flex-direction:column;align-items:center;gap:8px"
+    },
+    {
+      "line": 2432,
+      "tag": "img",
+      "style": "width:56px;height:56px;display:block;flex:none"
+    },
+    {
+      "line": 2433,
+      "tag": "div",
+      "style": "font-size:27px;font-weight:800;letter-spacing:-0.03em;margin-top:4px"
+    },
+    {
+      "line": 2434,
+      "tag": "div",
+      "style": "font-size:16px;color:#5b6b85"
+    },
+    {
+      "line": 2436,
+      "tag": "div",
+      "style": "margin-top:16px;padding:6px 18px 12px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 2437,
+      "tag": "div",
+      "style": "display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6"
+    },
+    {
+      "line": 2438,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85"
+    },
+    {
+      "line": 2439,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 2441,
+      "tag": "div",
+      "style": "display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6"
+    },
+    {
+      "line": 2442,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85"
+    },
+    {
+      "line": 2443,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 2445,
+      "tag": "div",
+      "style": "display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6"
+    },
+    {
+      "line": 2446,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85"
+    },
+    {
+      "line": 2447,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 2449,
+      "tag": "div",
+      "style": "display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6"
+    },
+    {
+      "line": 2450,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85"
+    },
+    {
+      "line": 2451,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 2455,
+      "tag": "div",
+      "style": "margin-top:14px;padding:16px 18px;border-radius:20px;background:#e8f1fd"
+    },
+    {
+      "line": 2456,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;color:#1e4b8f"
+    },
+    {
+      "line": 2457,
+      "tag": "div",
+      "style": "font-size:15px;color:#1e4b8f;margin-top:4px;text-wrap:pretty"
+    },
+    {
+      "line": 2461,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20"
+    },
+    {
+      "line": 2461,
+      "tag": "div",
+      "style": "height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 2461,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:600;color:#0b1b3a"
+    }
+  ],
+  "texts": [
+    {
+      "line": 2428,
+      "text": "Coins used"
+    },
+    {
+      "line": 2438,
+      "text": "Feature"
+    },
+    {
+      "line": 2442,
+      "text": "Date"
+    },
+    {
+      "line": 2446,
+      "text": "Status"
+    },
+    {
+      "line": 2450,
+      "text": "Related action"
+    },
+    {
+      "line": 2457,
+      "text": "The action could not be delivered, so the coins went back to your balance."
+    },
+    {
+      "line": 2461,
+      "text": "Purchase support"
+    }
+  ],
+  "svg": [
+    {
+      "line": 2426,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a9831494-dfeb-464f-8617-1e3468ad74f0",
+        "local_path": "static/assets/coins/home-coin-badge.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a9",
+        "local_path": "static/assets/songs/beauty-beat.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      2426
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 2425,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 2461,
+      "event": "sc-camel-on-click",
+      "handler": "openSupport"
+    }
+  ],
+  "interaction_ids": [
+    "coinSpendDetail.goBack.click.1",
+    "coinSpendDetail.openSupport.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "coinSpendDetail.goBack.click.1",
+      "source": "route=coinSpendDetail",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "coinSpendDetail.openSupport.click.1",
+      "source": "route=coinSpendDetail",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}

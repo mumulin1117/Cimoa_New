@@ -68,6 +68,13 @@ try {
     assert.match(page.url(), /return_context_id=coin_return_test/); const before = await state(); await page.reload(); await click('coinHistory.goBack.click.1'); await page.locator('.coin-center-page').waitFor(); assert.match(page.url(), /return_context_id=coin_return_test/)
     await click('coinStore.goBack.click.1'); await page.locator('.auto-match-index').waitFor(); assert.deepEqual(await state(), before)
     check('Coin Center → History → reload → fallback Back preserves the owned Auto Match return context and never writes navigation state')
+  } else if (phase === 'coin-refund') {
+    await go('/pages/home/index'); await page.locator('.home-header').waitFor()
+    await page.evaluate(() => { const e = JSON.parse(localStorage.getItem('cimoa_app_state_v2')); e.data.coin_transactions.push({ transaction_id: 'refund_test', owner_user_id: e.data.session.current_user_id, amount: 20, business_key: 'refund:txn_seed_1', kind: 'refund', status: 'completed', related_id: 'txn_seed_1', created_at: Date.now() }); localStorage.setItem('cimoa_app_state_v2', JSON.stringify(e)) })
+    await page.goto(server.origin + '/?flow=refund-read-model#/pages/coins/spend-detail?transaction_id=refund_test'); await page.locator('.spend-hero').waitFor()
+    assert.match(await page.locator('.spend-header').innerText(), /Coin refund/); assert.match(await page.locator('.spend-hero').innerText(), /\+20 Coins/); assert.match(await page.locator('.spend-card').innerText(), /Coins returned/)
+    assert.match(await page.locator('.spend-note').innerText(), /not a new App Store purchase/); const before = await state(); await page.reload(); await page.locator('.spend-hero').waitFor(); assert.deepEqual(await state(), before)
+    check('Controlled canonical refund ledger row renders returned coins, not a new purchase or an invalid negative spend; refresh is read-only (not a real refund-service test)')
   } else throw Error('Unknown phase: ' + phase)
   assert.deepEqual(report.errors, []); await context.close(); report.result = 'passed'
 } catch (error) { report.failure = String(error.stack || error); throw error }

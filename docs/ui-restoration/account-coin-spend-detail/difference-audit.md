@@ -1,0 +1,3 @@
+# Coin spending detail audit — 2026-10-17
+
+HTML 2422–2463 locked. Canonical ledger getter supplies transaction/provenance and actual feature via its business reference, not a hardcoded generic feature. Keep owned ID validation; missing references show Not recorded, never imply an action happened. Extend the same source detail layout for a genuine positive refund rather than routing it to an error or labelling it a new purchase. No user refund action is fabricated when the verification service is absent. Preserve owned return_context_id across History/Help/reload Back; full auth scope protects stale pages. Source default layout remains; source pixel/refund real-service acceptance pending.

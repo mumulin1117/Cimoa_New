@@ -2,37 +2,43 @@
 import { computed, ref } from 'vue'
 import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { format_coin_date } from '@/utils/coinHistory.js'
+import { coin_child_route } from '@/utils/coinReturnContext.js'
 
 const store = use_app_store(), frame = ref(null), transaction_id = ref(''), navigating = ref(false), error = ref('')
 const account_id = store.session.account_id
-onLoad(options => { transaction_id.value = String(options?.transaction_id || '') })
-const transaction = computed(() => store.coin_transaction_by_id(transaction_id.value))
+const return_context_id = ref('')
+onLoad(options => { transaction_id.value = String(options?.transaction_id || ''); return_context_id.value = String(options?.return_context_id || '') })
+const detail = computed(() => store.coin_ledger_detail(transaction_id.value))
+const transaction = computed(() => detail.value?.transaction)
+const refund = computed(() => detail.value?.mode === 'refund')
+const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved coin data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !transaction_id.value || !transaction.value
       ? 'This coin activity record is unavailable.'
-      : transaction.value.kind !== 'spend' || transaction.value.amount >= 0
+      : !refund.value && (transaction.value.kind !== 'spend' || transaction.value.amount >= 0)
         ? 'This record is not a completed coin spend.'
         : '')
 const detail_rows = computed(() => access_error.value ? [] : [
-  ['Feature', transaction.value.related_id ? 'Linked coin feature' : 'Unavailable in demo ledger'],
-  ['Coins used', Math.abs(transaction.value.amount).toLocaleString('en-US')],
+  ['Feature', detail.value.feature_label],
+  [refund.value ? 'Coins returned' : 'Coins used', Math.abs(transaction.value.amount).toLocaleString('en-US')],
   ['Date', format_coin_date(transaction.value.created_at)],
   ['Transaction ID', transaction.value.transaction_id],
-  ['Status', transaction.value.fixture ? 'Completed · Local demo' : 'Completed'],
+  ['Status', transaction.value.fixture ? 'Recorded' : 'Completed'],
 ])
 const navigate = async route => {
-  if (navigating.value) return
+  if (navigating.value || route && access_error.value) return
   navigating.value = true; error.value = ''
   try {
-    if (!route) await frame.value.navigate_back(COIN_ROUTES.history)
-    else await frame.value.navigate_forward(require_coin_route_ready(route))
+    if (!route) await frame.value.navigate_back(coin_child_route(store, COIN_ROUTES.history, return_context_id.value))
+    else await frame.value.navigate_forward(require_coin_route_ready(coin_child_route(store, route, return_context_id.value)))
   } catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }
@@ -44,7 +50,7 @@ onHide(() => { navigating.value = false; error.value = '' })
     <template #header>
       <view class="spend-header">
         <view class="spend-back" role="button" aria-label="Back" :aria-disabled="navigating" data-interaction="coinSpendDetail.goBack.click.1" @click="navigate()"><SourceIcon name="back" /></view>
-        <text>Coin use</text>
+        <text>{{ refund ? 'Coin refund' : 'Coin use' }}</text>
       </view>
       <text v-if="error" class="spend-error" role="alert">{{ error }}</text>
     </template>
@@ -54,13 +60,13 @@ onHide(() => { navigating.value = false; error.value = '' })
       <template v-else>
         <view class="spend-hero">
           <view class="spend-icon"><SourceIcon name="lightning" /></view>
-          <text>−{{ Math.abs(transaction.amount).toLocaleString('en-US') }} Coins</text>
-          <text>{{ transaction.fixture ? 'Local demo ledger entry' : 'Completed coin activity' }}</text>
+          <text>{{ refund ? '+' : '−' }}{{ Math.abs(transaction.amount).toLocaleString('en-US') }} Coins</text>
+          <text>{{ refund ? 'Returned coins' : transaction.fixture ? 'Recorded coin activity' : 'Completed coin activity' }}</text>
         </view>
         <view class="spend-card">
           <view v-for="row in detail_rows" :key="row[0]" class="spend-row"><text>{{ row[0] }}</text><text>{{ row[1] }}</text></view>
         </view>
-        <view class="spend-note"><SourceIcon name="shield" /><text>{{ transaction.fixture ? 'This fixture verifies the local history UI. It is not evidence that a named feature was used.' : 'Coin activity is recorded only after the linked feature completes.' }}</text></view>
+        <view class="spend-note"><SourceIcon name="shield" /><text>{{ transaction.fixture ? 'This entry has no saved feature reference. It is not evidence that a named feature was used.' : refund ? 'Returned coins reference the original coin activity. They are not a new App Store purchase.' : 'Coin activity is recorded only after the linked feature completes.' }}</text></view>
         <view class="spend-support" role="button" :aria-disabled="navigating" data-interaction="coinSpendDetail.openSupport.click.1" @click="navigate(COIN_ROUTES.help)"><SourceIcon name="support" /><text>Coin activity support</text><SourceIcon name="chevron" /></view>
       </template>
     </view>

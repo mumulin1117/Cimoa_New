@@ -1,0 +1,11 @@
+{
+  "phase": "coin-refund",
+  "result": "passed",
+  "checks": [
+    "Controlled canonical refund ledger row renders returned coins, not a new purchase or an invalid negative spend; refresh is read-only (not a real refund-service test)"
+  ],
+  "errors": [],
+  "physical_microphone": "not tested: controlled browser media device",
+  "server_pid": 10025,
+  "cleaned_up": true
+}
