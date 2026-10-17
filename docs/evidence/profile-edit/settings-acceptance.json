@@ -1,7 +1,7 @@
 {
   "phase": "settings",
   "result": "passed",
-  "server_pid": 65535,
+  "server_pid": 87662,
   "checks": [
     "Settings restores source sections and canonical avatar/balance; every restored child opens and returns to Settings; guidelines use a custom Sheet",
     "Logout cancel and failed storage preserve session; confirmed logout waits before writing, keeps all account entities, clears stack and survives refresh/guard",

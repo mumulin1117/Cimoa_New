@@ -10119,7 +10119,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/settings/index",
-    "component": null,
+    "component": "src/pages/settings/index.vue",
     "parent_route": "/pages/profile/index",
     "allowed_origin_routes": [
       "/pages/profile/index"
@@ -10259,7 +10259,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
+    "mapping_status": "source-locked; source rows/header/icons and full-session logout guard; child return/logout rollback/relogin/skeleton/browser source evidence passed",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-settings/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-settings/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/profile-edit/settings-acceptance.json"
   },
   {
     "source_screen": "Settings / Notifications / Default",
