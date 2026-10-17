@@ -1,0 +1,29 @@
+{
+  "errors" : [
+
+  ],
+  "footer" : {
+    "height" : 145.203125,
+    "width" : 402,
+    "x" : 0,
+    "y" : 694.796875
+  },
+  "header" : {
+    "height" : 67.484375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Finding your match\n\n\n\n\nQueue position\n—\nAbout 9 sec\nLooking for someone who shares your interests.\nNew friends\nAll\nShared interests\nPriority Match · 20 coins\nMove closer to the front for 15 min\nNothing available? See options\nPause\nLeave Pool\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

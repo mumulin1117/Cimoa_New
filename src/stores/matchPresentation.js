@@ -19,7 +19,7 @@ export function match_presentation(data,id,now,hydration,draft=null,query='') {
     am_name:candidate?`${person_name}, ${candidate.age}`:'',am_uni:candidate?.university||'',am_major:candidate?.major||'',am_mbti:candidate?.mbti||'',am_bio:candidate?.bio||'',candidate_verified:candidate?.verification_status==='verified',
     join_pool_label:context.active?'Open Active Match':'Join the Pool',join_pool_tag:context.active?'Resume':free?`Free · ${free}/3 left`:'10 coins',
     am_cost_note:free?`You get 3 free matches every day — ${free} left today. After that, each match costs 10 coins.`:'You’ve used today’s 3 free matches. Each match now costs 10 coins; free matches reset tomorrow.',
-    entry_wait:'About 9 seconds',available_now:`${pool.length} ${pool.length===1?'student':'students'}`,balance_text:`${balance} coins`,boost_cost:'20 coins',boost_after:`${Math.max(0,balance-20)} coins`,
+    entry_wait:'About 9 seconds',available_now:`${pool.length} ${pool.length===1?'student':'students'}`,balance_text:`${balance} coins`,balance,standard_cost:data.quota_policy.standard_cost,priority_cost:20,boost_cost:'20 coins',boost_after:`${Math.max(0,balance-20)} coins`,
     insufficient_feature:'Priority Match',insufficient_missing:`${Math.max(0,20-balance)} coins missing`,insufficient_required:'20 coins',free_alt_label:'Continue Standard Match',
     queue_pos:m?.queue_position??'—',wait_text:m?.estimated_wait_seconds==null?'Wait time unavailable':`About ${m.estimated_wait_seconds<60?`${Math.ceil(m.estimated_wait_seconds)} sec`:`${Math.ceil(m.estimated_wait_seconds/60)} min`}`,
     priority_on:priority,priority_off:!priority,priority_timer:`Priority active · ${timer((m?.priority_until||0)-now)}`,found_timer:timer((m?.expires_at||now)-now),

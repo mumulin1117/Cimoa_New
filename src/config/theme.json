@@ -150,7 +150,15 @@
       "match_step": "#3b6bd8",
       "match_tone_1": "#f3e8ff",
       "match_note": "rgba(255,255,255,0.7)",
-      "match_cost-tag": "rgba(255,255,255,0.22)"
+      "match_cost-tag": "rgba(255,255,255,0.22)",
+      "match_wait-pill": "#e5f3ff",
+      "match_wait-ink": "#2e7dd6",
+      "match_goal-ink": "#3760c9",
+      "match_campus-ink": "#7238c9",
+      "match_priority-pill": "#f6ecfd",
+      "match_priority-ink": "#6b21a8",
+      "match_crown-bg": "#fdecd2",
+      "match_crown": "#e08a1e"
     }
   },
   "gradients": {
@@ -229,6 +237,7 @@
     "auto_match_53": "0 15.267rpx 45.801rpx rgba(16,36,74,0.07)",
     "auto_match_54": "0 22.9rpx 49.618rpx rgba(168,85,247,0.24)",
     "auto_match_55": "0 7.633rpx 19.083rpx rgba(16,36,74,0.28)",
-    "auto_match_56": "0 11.45rpx 30.534rpx rgba(16,36,74,0.05)"
+    "auto_match_56": "0 11.45rpx 30.534rpx rgba(16,36,74,0.05)",
+    "auto_match_57": "0 15.268rpx 38.168rpx rgba(16,36,74,0.16)"
   }
 }

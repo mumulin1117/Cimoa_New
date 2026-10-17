@@ -2,6 +2,7 @@ import {computed,nextTick,onUnmounted,ref,watch} from 'vue'
 import {onHide,onLoad,onShow,onReady} from '@dcloudio/uni-app'
 import {use_app_store,make_operation_id} from '@/stores/store.js'
 import {use_write_loading} from './useWriteLoading.js'
+import {MOTION} from '@/config/navigation.js'
 export function use_auto_match_page(page) {
   const store=use_app_store(),frame=ref(null),match_id=ref(''),error=ref(''),modal=ref(''),draft=ref(null),query=ref(''),options_view=ref(false),navigating=ref(false)
   const {is_loading,run_with_loading,cancel_loading}=use_write_loading(),owner=store.session.account_id
@@ -63,6 +64,7 @@ export function use_auto_match_page(page) {
   }
   onHide(()=>{visible=false;modal.value='';cancel_loading();navigating.value=false})
   onUnmounted(()=>{visible=false;ready=false;cancel_loading()})
-  return{store,frame,match_id,c,error,modal,draft,query,busy,is_loading,guard,action,follow}
+  const motion_style={'--match-pulse-duration':`${MOTION.match_pulse}ms`,'--match-pulse-delay':`${MOTION.match_pulse_delay}ms`,'--match-connected-duration':`${MOTION.match_connected}ms`}
+  return{store,frame,match_id,c,error,modal,draft,query,busy,is_loading,guard,action,follow,motion_style}
 }
 const structuredCloneSafe=value=>JSON.parse(JSON.stringify(value))

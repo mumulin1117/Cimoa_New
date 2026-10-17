@@ -255,6 +255,40 @@
       }
     ]
   },
+  "sheets": [
+    {
+      "condition": "sheetLeaving",
+      "lines": [
+        4357,
+        4368
+      ],
+      "fragment": "<sc-if value=\"{{ sheetLeaving }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Auto Match / Queue / Leaving\" style=\"position:absolute;inset:0;z-index:55\">\n        <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(2px)\"></div>\n        <div style=\"position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:32px 32px 0 0;padding:26px 22px 34px;box-shadow:0 -14px 40px rgba(8,16,31,0.22);animation:cRise 240ms ease both;box-sizing:border-box\">\n          <div style=\"width:44px;height:5px;border-radius:3px;background:#dfe5ee;margin:0 auto 18px\"></div>\n          <div style=\"font-size:25px;font-weight:800;letter-spacing:-0.03em\">Leave the matching pool?</div>\n          <div style=\"font-size:16px;color:#5b6b85;margin-top:8px;text-wrap:pretty\">You can join again whenever you’re ready. Your preferences are kept.</div>\n          <div sc-camel-on-click=\"{{ stayInPool }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:20px;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Stay in Pool</div></div>\n          <div sc-camel-on-click=\"{{ confirmLeave }}\" style=\"height:56px;border-radius:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:10px\"><div style=\"font-size:18px;font-weight:600;color:#6b7a93\">Leave Pool</div></div>\n        </div>\n      </div>\n    </sc-if>"
+    },
+    {
+      "condition": "sheetBoost",
+      "lines": [
+        4386,
+        4412
+      ],
+      "fragment": "<sc-if value=\"{{ sheetBoost }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Auto Match / Boost / Confirmation\" style=\"position:absolute;inset:0;z-index:55\">\n        <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(2px)\"></div>\n        <div style=\"position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:32px 32px 0 0;padding:26px 22px 34px;box-shadow:0 -14px 40px rgba(8,16,31,0.22);animation:cRise 240ms ease both;box-sizing:border-box\">\n          <div style=\"width:44px;height:5px;border-radius:3px;background:#dfe5ee;margin:0 auto 18px\"></div>\n          <div style=\"font-size:25px;font-weight:800;letter-spacing:-0.03em\">Priority Match</div>\n          <div style=\"font-size:16px;color:#5b6b85;margin-top:8px;text-wrap:pretty\">Priority Match moves you closer to the front of the queue for 15 minutes. It does not guarantee a match or connection.</div>\n          <div style=\"margin-top:16px\">\n          <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n            <div style=\"font-size:17px;color:#5b6b85\">Cost</div>\n            <div style=\"font-size:17px;font-weight:700\">{{ boostCost }}</div>\n          </div>\n          <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n            <div style=\"font-size:17px;color:#5b6b85\">Current balance</div>\n            <div style=\"font-size:17px;font-weight:700\">{{ balanceText }}</div>\n          </div>\n          <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n            <div style=\"font-size:17px;color:#5b6b85\">Balance after purchase</div>\n            <div style=\"font-size:17px;font-weight:700\">{{ boostAfter }}</div>\n          </div>\n          </div>\n          <div sc-camel-on-click=\"{{ confirmBoost }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:20px;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Use 20 Coins</div></div>\n          <div sc-camel-on-click=\"{{ standardMatch }}\" style=\"height:56px;border-radius:28px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:10px\"><div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">Continue Standard Match</div></div>\n          <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#6b7a93\">Cancel</div></div>\n        </div>\n      </div>\n    </sc-if>"
+    },
+    {
+      "condition": "sheetInsufficient",
+      "lines": [
+        4265,
+        4287
+      ],
+      "fragment": "<sc-if value=\"{{ sheetInsufficient }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Coins / Balance / Insufficient\" style=\"position:absolute;inset:0;z-index:55\">\n        <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(2px)\"></div>\n        <div style=\"position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:32px 32px 0 0;padding:26px 22px 34px;box-shadow:0 -14px 40px rgba(8,16,31,0.22);animation:cRise 240ms ease both;box-sizing:border-box\">\n          <div style=\"width:44px;height:5px;border-radius:3px;background:#dfe5ee;margin:0 auto 18px\"></div>\n          <div style=\"font-size:25px;font-weight:800;letter-spacing:-0.03em\">Not enough coins</div>\n          <div style=\"font-size:16px;color:#5b6b85;margin-top:6px\">{{ insufficientFeature }} · {{ insufficientMissing }}</div>\n          <div style=\"margin-top:16px\">\n          <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n            <div style=\"font-size:17px;color:#5b6b85\">Required</div>\n            <div style=\"font-size:17px;font-weight:700\">{{ insufficientRequired }}</div>\n          </div>\n          <div style=\"display:flex;align-items:center;justify-content:space-between;height:52px;border-bottom:1px solid #eef1f6\">\n            <div style=\"font-size:17px;color:#5b6b85\">Current balance</div>\n            <div style=\"font-size:17px;font-weight:700\">{{ balanceText }}</div>\n          </div>\n          </div>\n          <div sc-camel-on-click=\"{{ getCoins2 }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:20px;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Get Coins</div></div>\n          <div sc-camel-on-click=\"{{ freeAlt }}\" style=\"height:56px;border-radius:28px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:10px\"><div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">{{ freeAltLabel }}</div></div>\n          <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#6b7a93\">Cancel</div></div>\n        </div>\n      </div>\n    </sc-if>"
+    },
+    {
+      "condition": "sheetAmHelp",
+      "lines": [
+        4414,
+        4424
+      ],
+      "fragment": "<sc-if value=\"{{ sheetAmHelp }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Auto Match / Help / Explanation\" style=\"position:absolute;inset:0;z-index:55\">\n        <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(2px)\"></div>\n        <div style=\"position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:32px 32px 0 0;padding:26px 22px 34px;box-shadow:0 -14px 40px rgba(8,16,31,0.22);animation:cRise 240ms ease both;box-sizing:border-box\">\n          <div style=\"width:44px;height:5px;border-radius:3px;background:#dfe5ee;margin:0 auto 18px\"></div>\n          <div style=\"font-size:24px;font-weight:800;letter-spacing:-0.03em\">How Auto Match works</div>\n          <div style=\"font-size:16px;color:#5b6b85;margin-top:10px;line-height:1.5;text-wrap:pretty\">You’re placed in a queue with other students who are free right now. When it’s your turn, we pair you with someone based on your preferences. You can leave the pool anytime.</div>\n          <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"height:58px;border-radius:29px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:20px\"><div style=\"font-size:18px;font-weight:700;color:#fff\">Got it</div></div>\n        </div>\n      </div>\n    </sc-if>"
+    }
+  ],
   "source_lock": "locked",
   "reference_viewport": {
     "width": 393,
@@ -283,6 +317,19 @@
     "amSearching.openBoost.click.1",
     "amSearching.showNoMatch.click.1",
     "amSearching.pauseQueue.click.1",
-    "amSearching.askLeave.click.1"
+    "amSearching.askLeave.click.1",
+    "sheetInsufficient.closeSheet.click.1",
+    "sheetInsufficient.getCoins2.click.1",
+    "sheetInsufficient.freeAlt.click.1",
+    "sheetInsufficient.closeSheet.click.2",
+    "sheetLeaving.closeSheet.click.1",
+    "sheetLeaving.stayInPool.click.1",
+    "sheetLeaving.confirmLeave.click.1",
+    "sheetBoost.closeSheet.click.1",
+    "sheetBoost.confirmBoost.click.1",
+    "sheetBoost.standardMatch.click.1",
+    "sheetBoost.closeSheet.click.2",
+    "sheetAmHelp.closeSheet.click.1",
+    "sheetAmHelp.closeSheet.click.2"
   ]
 }

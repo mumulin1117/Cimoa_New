@@ -1,0 +1,485 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1613": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Finding your match"
+    },
+    "1614": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1615": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1617": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Finding your match"
+    },
+    "1619": {
+      "x": 0,
+      "y": 138,
+      "width": 393,
+      "height": 680,
+      "text": "Queue position—About 9 secLooking for someone who shares your interests.New friendsAllShared interestsPriority Match · 20 coinsMove closer to the front for 15 minNothing available? See options"
+    },
+    "1620": {
+      "x": 20,
+      "y": 138,
+      "width": 353,
+      "height": 184,
+      "text": ""
+    },
+    "1621": {
+      "x": 104.5,
+      "y": 138,
+      "width": 184,
+      "height": 184,
+      "text": ""
+    },
+    "1622": {
+      "x": 110.0199966430664,
+      "y": 143.51998901367188,
+      "width": 172.96002197265625,
+      "height": 172.96002197265625,
+      "text": ""
+    },
+    "1623": {
+      "x": 130.5,
+      "y": 164,
+      "width": 132,
+      "height": 132,
+      "text": ""
+    },
+    "1624": {
+      "x": 148.5,
+      "y": 182,
+      "width": 96,
+      "height": 96,
+      "text": ""
+    },
+    "1625": {
+      "x": 135.5,
+      "y": 194,
+      "width": 122,
+      "height": 72,
+      "text": ""
+    },
+    "1626": {
+      "x": 135.5,
+      "y": 194,
+      "width": 72,
+      "height": 72,
+      "text": ""
+    },
+    "1627": {
+      "x": 185.5,
+      "y": 194,
+      "width": 72,
+      "height": 72,
+      "text": ""
+    },
+    "1632": {
+      "x": 20,
+      "y": 344,
+      "width": 353,
+      "height": 329,
+      "text": "Queue position—About 9 secLooking for someone who shares your interests.New friendsAllShared interests"
+    },
+    "1633": {
+      "x": 42,
+      "y": 366,
+      "width": 309,
+      "height": 17,
+      "text": "Queue position"
+    },
+    "1634": {
+      "x": 42,
+      "y": 385,
+      "width": 309,
+      "height": 47,
+      "text": "—"
+    },
+    "1635": {
+      "x": 125.296875,
+      "y": 442,
+      "width": 142.390625,
+      "height": 36,
+      "text": "About 9 sec"
+    },
+    "1636": {
+      "x": 141.296875,
+      "y": 452,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1637": {
+      "x": 164.296875,
+      "y": 451,
+      "width": 87.390625,
+      "height": 18,
+      "text": "About 9 sec"
+    },
+    "1639": {
+      "x": 42,
+      "y": 496,
+      "width": 309,
+      "height": 1,
+      "text": ""
+    },
+    "1640": {
+      "x": 42,
+      "y": 515,
+      "width": 309,
+      "height": 36,
+      "text": "Looking for someone who shares your interests."
+    },
+    "1641": {
+      "x": 42,
+      "y": 565,
+      "width": 309,
+      "height": 86,
+      "text": "New friendsAllShared interests"
+    },
+    "1642": {
+      "x": 86.90625,
+      "y": 565,
+      "width": 139.046875,
+      "height": 38,
+      "text": "New friends"
+    },
+    "1643": {
+      "x": 235.953125,
+      "y": 565,
+      "width": 70.140625,
+      "height": 38,
+      "text": "All"
+    },
+    "1644": {
+      "x": 110.484375,
+      "y": 613,
+      "width": 172.015625,
+      "height": 38,
+      "text": "Shared interests"
+    },
+    "1654": {
+      "x": 20,
+      "y": 685,
+      "width": 353,
+      "height": 76,
+      "text": "Priority Match · 20 coinsMove closer to the front for 15 min"
+    },
+    "1655": {
+      "x": 36,
+      "y": 701,
+      "width": 44,
+      "height": 44,
+      "text": ""
+    },
+    "1656": {
+      "x": 92,
+      "y": 703.5,
+      "width": 237,
+      "height": 39,
+      "text": "Priority Match · 20 coinsMove closer to the front for 15 min"
+    },
+    "1657": {
+      "x": 341,
+      "y": 715,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1660": {
+      "x": 20,
+      "y": 777,
+      "width": 353,
+      "height": 17,
+      "text": "Nothing available? See options"
+    },
+    "1662": {
+      "x": 0,
+      "y": 710,
+      "width": 393,
+      "height": 142,
+      "text": "PauseLeave Pool"
+    },
+    "1663": {
+      "x": 20,
+      "y": 710,
+      "width": 353,
+      "height": 60,
+      "text": "Pause"
+    },
+    "1664": {
+      "x": 20,
+      "y": 776,
+      "width": 353,
+      "height": 46,
+      "text": "Leave Pool"
+    }
+  },
+  "actual": {
+    "1613": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Finding your match"
+    },
+    "1614": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1615": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1617": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Finding your match"
+    },
+    "1619": {
+      "x": 0,
+      "y": 138,
+      "width": 393,
+      "height": 680,
+      "text": "Queue position—About 9 secLooking for someone who shares your interests.New friendsAllShared interestsPriority Match · 20 coinsMove closer to the front for 15 minNothing available? See options"
+    },
+    "1620": {
+      "x": 20,
+      "y": 138,
+      "width": 353,
+      "height": 184,
+      "text": ""
+    },
+    "1621": {
+      "x": 104.5,
+      "y": 138,
+      "width": 184,
+      "height": 184,
+      "text": ""
+    },
+    "1622": {
+      "x": 110.0199966430664,
+      "y": 143.51998901367188,
+      "width": 172.96002197265625,
+      "height": 172.96002197265625,
+      "text": ""
+    },
+    "1623": {
+      "x": 130.5,
+      "y": 164,
+      "width": 132,
+      "height": 132,
+      "text": ""
+    },
+    "1624": {
+      "x": 148.5,
+      "y": 182,
+      "width": 96,
+      "height": 96,
+      "text": ""
+    },
+    "1625": {
+      "x": 135.5,
+      "y": 194,
+      "width": 122.015625,
+      "height": 72,
+      "text": ""
+    },
+    "1626": {
+      "x": 135.5,
+      "y": 194,
+      "width": 72,
+      "height": 72,
+      "text": ""
+    },
+    "1627": {
+      "x": 185.515625,
+      "y": 194,
+      "width": 72,
+      "height": 72,
+      "text": ""
+    },
+    "1632": {
+      "x": 20,
+      "y": 344,
+      "width": 353,
+      "height": 329,
+      "text": "Queue position—About 9 secLooking for someone who shares your interests.New friendsAllShared interests"
+    },
+    "1633": {
+      "x": 42,
+      "y": 366,
+      "width": 309,
+      "height": 17,
+      "text": "Queue position"
+    },
+    "1634": {
+      "x": 42,
+      "y": 385,
+      "width": 309,
+      "height": 47,
+      "text": "—"
+    },
+    "1635": {
+      "x": 125.328125,
+      "y": 442,
+      "width": 142.328125,
+      "height": 36,
+      "text": "About 9 sec"
+    },
+    "1636": {
+      "x": 141.328125,
+      "y": 452,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1637": {
+      "x": 164.328125,
+      "y": 451.5,
+      "width": 87.328125,
+      "height": 17,
+      "text": "About 9 sec"
+    },
+    "1639": {
+      "x": 42,
+      "y": 496,
+      "width": 309,
+      "height": 1,
+      "text": ""
+    },
+    "1640": {
+      "x": 42,
+      "y": 515,
+      "width": 309,
+      "height": 36,
+      "text": "Looking for someone who shares your interests."
+    },
+    "1641": {
+      "x": 42,
+      "y": 565,
+      "width": 309,
+      "height": 86,
+      "text": "New friendsAllShared interests"
+    },
+    "1642": {
+      "x": 86.9375,
+      "y": 565,
+      "width": 138.984375,
+      "height": 38,
+      "text": "New friends"
+    },
+    "1643": {
+      "x": 235.921875,
+      "y": 565,
+      "width": 70.125,
+      "height": 38,
+      "text": "All"
+    },
+    "1644": {
+      "x": 110.53125,
+      "y": 613,
+      "width": 171.9375,
+      "height": 38,
+      "text": "Shared interests"
+    },
+    "1654": {
+      "x": 20,
+      "y": 685,
+      "width": 353,
+      "height": 76,
+      "text": "Priority Match · 20 coinsMove closer to the front for 15 min"
+    },
+    "1655": {
+      "x": 36,
+      "y": 701,
+      "width": 44,
+      "height": 44,
+      "text": ""
+    },
+    "1656": {
+      "x": 92,
+      "y": 703.5,
+      "width": 237,
+      "height": 39,
+      "text": "Priority Match · 20 coinsMove closer to the front for 15 min"
+    },
+    "1657": {
+      "x": 341,
+      "y": 715,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1660": {
+      "x": 20,
+      "y": 777,
+      "width": 353,
+      "height": 17,
+      "text": "Nothing available? See options"
+    },
+    "1662": {
+      "x": 0,
+      "y": 710,
+      "width": 393,
+      "height": 142,
+      "text": "PauseLeave Pool"
+    },
+    "1663": {
+      "x": 20,
+      "y": 710,
+      "width": 353,
+      "height": 60,
+      "text": "Pause"
+    },
+    "1664": {
+      "x": 20,
+      "y": 776,
+      "width": 353,
+      "height": 46,
+      "text": "Leave Pool"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 69901,
+    "pixels_above_channel_delta_8": 8991,
+    "mean_absolute_channel_delta": 0.7749241419680082,
+    "max_channel_delta": 194
+  }
+}
