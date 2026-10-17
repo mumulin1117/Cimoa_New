@@ -1,0 +1,92 @@
+{
+  "phase": "permission-notifications-pixel-restoration",
+  "result": "passed",
+  "server_pid": 10368,
+  "reference": {
+    "kind": "source-derived locked reference with real-permission, explicit-error and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "9ba5929646d999d0ed7aae939c1f6b9d4d22bd3d045107723223a67d3f75b17b",
+    "behavior_fragment_sha256": "943c760794ab67f11038ee458e32159807bd9c022e2cf77422e94f4f4b29380a",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "icon": {
+      "x": 150.5,
+      "y": 182,
+      "width": 91.984375,
+      "height": 91.984375,
+      "right": 242.484375,
+      "bottom": 273.984375
+    },
+    "title": {
+      "x": 73.265625,
+      "y": 289.96875,
+      "width": 246.46875,
+      "height": 31.046875,
+      "right": 319.734375,
+      "bottom": 321.015625
+    },
+    "copy": {
+      "x": 24,
+      "y": 337,
+      "width": 345,
+      "height": 51,
+      "right": 369,
+      "bottom": 388
+    },
+    "primary": {
+      "x": 20,
+      "y": 710.03125,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 770.03125
+    },
+    "secondary": {
+      "x": 20,
+      "y": 776.015625,
+      "width": 353,
+      "height": 45.984375,
+      "right": 373,
+      "bottom": 822
+    },
+    "text": {
+      "title": "Turn on notifications",
+      "copy": "Introductions, Auto Match results, and event reminders. Nothing promotional.",
+      "primary": "Allow Notifications",
+      "secondary": "Don’t Allow"
+    },
+    "interactions": [
+      "permNotif.allowNotifs.click.1",
+      "permNotif.denyNotifs.click.1"
+    ],
+    "note": false,
+    "card": false
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 36517,
+    "pixels_above_channel_delta_8": 7609,
+    "mean_absolute_channel_delta": 1.1397042134059658,
+    "max_channel_delta": 223
+  },
+  "checks": [
+    "393x852 source default geometry, exact copy, fixed footer and default interaction IDs match",
+    "unsupported permission and no-host Settings expose real errors, one source Settings action and zero writes",
+    "double Don't Allow performs one delayed Store transition to Complete and keeps notifications disabled",
+    "real browser granted status persists after Loading in one transaction and refresh restores Complete",
+    "granted-system but failed persistence rolls back and never reports completion",
+    "320x568 keeps source content visible above the fixed footer"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

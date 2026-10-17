@@ -1,0 +1,49 @@
+{
+  "screen": "Permissions / Notifications / Pre-Permission",
+  "route": "/pages/permissions/notif",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_lines": [3271, 3290],
+    "visual_fragment_sha256": "9ba5929646d999d0ed7aae939c1f6b9d4d22bd3d045107723223a67d3f75b17b",
+    "behavior_lines": [5771, 5772],
+    "behavior_fragment_sha256": "943c760794ab67f11038ee458e32159807bd9c022e2cf77422e94f4f4b29380a"
+  },
+  "viewport": { "width": 393, "height": 852 },
+  "layout": {
+    "content_top": 172,
+    "content_inset": 24,
+    "content_gap": 16,
+    "icon_size": 92,
+    "title_size": 27,
+    "copy_size": 17,
+    "error_margin_top": 4,
+    "error_padding": 18,
+    "error_radius": 24,
+    "settings_height": 48,
+    "footer_inset": 20,
+    "footer_bottom": 30,
+    "footer_gap": 6,
+    "primary_height": 60,
+    "secondary_height": 46
+  },
+  "content": {
+    "title": "Turn on notifications",
+    "copy": "Introductions, Auto Match results, and event reminders. Nothing promotional.",
+    "denied_title": "Access is off",
+    "settings": "Open Settings",
+    "primary": "Allow Notifications",
+    "secondary": "Don’t Allow"
+  },
+  "interactions": [
+    "permNotif.openSettings.click.1",
+    "permNotif.allowNotifs.click.1",
+    "permNotif.denyNotifs.click.1"
+  ],
+  "approved_deltas": [
+    "Use real operating-system notification status and real safe-area values.",
+    "Do not persist granted until the operating system returns granted.",
+    "Unsupported, denied, host-failure and persistence-failure states show truthful contextual text.",
+    "Allow and Don't Allow persist through one Store transaction after the required custom Loading."
+  ]
+}

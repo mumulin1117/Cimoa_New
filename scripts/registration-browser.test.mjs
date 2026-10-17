@@ -253,7 +253,7 @@ try {
     await page.evaluate(() => { window.__notificationAPI = window.Notification; window.Notification = undefined })
     await click('permNotif.allowNotifs.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /unavailable/); assert.deepEqual(await snapshot(), before)
     await click('permNotif.openSettings.click.1'); assert.match(await page.getByRole('alert').innerText(), /unavailable in this browser/)
-    await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.onboarding-notif-page').waitFor()
+    await page.goBack(); await page.locator('.onboarding-notif-page').waitFor()
     await page.evaluate(() => { window.Notification = window.__notificationAPI; delete window.__notificationAPI })
     await page.context().grantPermissions(['notifications'])
     await click('obNotif.enableNotifs.click.1'); await page.locator('.permission-notif-page').waitFor()

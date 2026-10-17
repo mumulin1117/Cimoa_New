@@ -1344,6 +1344,43 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Onboarding Notifications WKWebView stage \(stage) failed: \(error)"); _ = try? await script(host,"window.__restoreOnboardingNotifStorage?.();return true"); try? await restore(); throw error }
     }
+    func testNotificationPermissionPixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?permissionNotif=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header,.onboarding-page,.welcome-page")
+        }
+        var stage = "prepare notification permission"
+        do {
+            _ = try await script(host, """
+            const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),data=envelope.data,account=data.accounts.find(row=>row.account_id===data.session.account_id),user=data.users.find(row=>row.user_id===data.session.current_user_id);account.status='active';account.auth_provider='local';account.local_verification={method:'fixed_code',status:'verified',verified_at:Date.now()};account.onboarding={step:'notif',completed_steps:['basic','uni','major','photos','about','interests','goal','ice']};user.onboarding_status='in_progress';data.auth_flow.pending_registration_account_id=account.account_id;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true
+            """)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?permissionNotif=native#/pages/permissions/notif")!)); try await waitFor(host,".permission-notif-page"); try await Task.sleep(nanoseconds:350_000_000)
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}},root=box('.permission-notif-page'),icon=box('.notice-icon'),title=box('.notice-title'),copy=box('.notice-copy'),primary=box('[data-interaction="permNotif.allowNotifs.click.1"]'),secondary=box('[data-interaction="permNotif.denyNotifs.click.1"]'),safes=[...document.querySelectorAll('.permission-notif-page>.safe-area')].map(element=>element.getBoundingClientRect().height);return {root,icon,title,copy,primary,secondary,safes,text:{title:document.querySelector('.notice-title').textContent,copy:document.querySelector('.notice-copy').textContent,primary:document.querySelector('[data-interaction="permNotif.allowNotifs.click.1"]').textContent.trim(),secondary:document.querySelector('[data-interaction="permNotif.denyNotifs.click.1"]').textContent.trim()},interactions:[...document.querySelectorAll('[data-interaction]')].map(element=>element.dataset.interaction),note:!!document.querySelector('.notice-note'),card:!!document.querySelector('.permission-error')}
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds:100_000_000)
+            }
+            let root=metrics["root"] as! [String:Double],icon=metrics["icon"] as! [String:Double],title=metrics["title"] as! [String:Double],copy=metrics["copy"] as! [String:Double],primary=metrics["primary"] as! [String:Double],secondary=metrics["secondary"] as! [String:Double],safes=metrics["safes"] as! [Double],text=metrics["text"] as! [String:String],interactions=metrics["interactions"] as! [String],scale=root["width"]!/393
+            XCTAssertEqual(safes[0],Double(host.view.safeAreaInsets.top),accuracy:1); XCTAssertEqual(safes[1],Double(host.view.safeAreaInsets.bottom),accuracy:1); XCTAssertEqual(icon["y"]!,safes[0]+128*scale,accuracy:2); XCTAssertEqual(icon["width"]!,92*scale,accuracy:1); XCTAssertEqual(icon["height"]!,92*scale,accuracy:1); XCTAssertEqual(title["y"]!-icon["bottom"]!,16*scale,accuracy:1); XCTAssertEqual(copy["y"]!-title["bottom"]!,16*scale,accuracy:1); XCTAssertEqual(primary["height"]!,60*scale,accuracy:1); XCTAssertEqual(secondary["height"]!,46*scale,accuracy:1); XCTAssertEqual(secondary["bottom"]!,root["height"]!-safes[1]-30*scale,accuracy:2)
+            XCTAssertEqual(text["title"],"Turn on notifications"); XCTAssertEqual(text["copy"],"Introductions, Auto Match results, and event reminders. Nothing promotional."); XCTAssertEqual(text["primary"],"Allow Notifications"); XCTAssertEqual(text["secondary"],"Don’t Allow"); XCTAssertEqual(metrics["note"] as? Bool,false)
+            XCTAssertTrue(interactions.contains("permNotif.allowNotifs.click.1")); XCTAssertTrue(interactions.contains("permNotif.denyNotifs.click.1")); if metrics["card"] as? Bool == false { XCTAssertEqual(interactions,["permNotif.allowNotifs.click.1","permNotif.denyNotifs.click.1"]) }
+            let defaultShot=XCTAttachment(image:try await host.webView.takeSnapshot(configuration:nil)); defaultShot.name="WKWebView Notification Permission default"; defaultShot.lifetime = .keepAlways; add(defaultShot); print("CIMOA_PERMISSION_NOTIF_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+
+            stage = "atomic decline"
+            let before = try await script(host,"window.__permissionBefore=localStorage.getItem('cimoa_app_state_v2');window.__permissionWrites=0;const original=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')window.__permissionWrites++;return original.call(this,key,value)};const action=document.querySelector('[data-interaction=\"permNotif.denyNotifs.click.1\"]');action.click();action.click();return window.__permissionBefore") as! String
+            try await waitFor(host,".loading"); let unchanged = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')===window.__permissionBefore") as? Bool; XCTAssertEqual(unchanged,true); try await waitFor(host,".onboarding-complete-page")
+            let committed=try await script(host,"const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,account=data.accounts.find(row=>row.account_id===data.session.account_id),settings=data.settings.find(row=>row.owner_user_id===data.session.current_user_id);return {step:account.onboarding.step,permission:account.onboarding.notification_permission,master:settings.notifications.master,writes:window.__permissionWrites,state:window.__permissionBefore}") as! [String:Any]
+            XCTAssertEqual(committed["state"] as? String,before); XCTAssertEqual(committed["step"] as? String,"complete"); XCTAssertTrue(["skipped","denied","unavailable"].contains(committed["permission"] as? String ?? "")); XCTAssertEqual(committed["master"] as? Bool,false); XCTAssertEqual(committed["writes"] as? Int,1)
+            try await restore()
+        } catch { XCTFail("Notification Permission WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

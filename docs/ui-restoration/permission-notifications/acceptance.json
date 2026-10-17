@@ -1,0 +1,39 @@
+{
+  "screen": "Permissions / Notifications / Pre-Permission",
+  "route": "/pages/permissions/notif",
+  "result": "passed",
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "browser": {
+    "checks_passed": 6,
+    "checks_failed": 0,
+    "viewport": "393x852",
+    "compact_viewport": "320x568",
+    "mean_absolute_channel_delta": 1.1397042134059658,
+    "cleaned_up": true,
+    "report": "docs/ui-restoration/permission-notifications/browser-acceptance.json",
+    "actual": "docs/ui-restoration/permission-notifications/actual-browser.png",
+    "unavailable": "docs/ui-restoration/permission-notifications/actual-browser-unavailable.png",
+    "failure": "docs/ui-restoration/permission-notifications/actual-browser-failure.png"
+  },
+  "wkwebview": {
+    "checks_passed": 1,
+    "checks_failed": 0,
+    "device": "iPhone 17 Pro simulator",
+    "os": "iOS 26.5",
+    "safe_area": "62/34",
+    "test": "HostTests/testNotificationPermissionPixelRestoration()",
+    "xcresult": "Test-cimoaNeapo-2026.10.17_09-15-31-+0800.xcresult",
+    "actual": "docs/ui-restoration/permission-notifications/actual-wkwebview.png"
+  },
+  "behavior": {
+    "real_status_bridge": true,
+    "granted_only_after_system_result": true,
+    "unsupported_zero_write": true,
+    "settings_failure_explicit": true,
+    "decline_loading_before_write": true,
+    "duplicate_tap_single_write": true,
+    "persistence_failure_rolls_back": true,
+    "refresh_restores_complete_step": true
+  }
+}
