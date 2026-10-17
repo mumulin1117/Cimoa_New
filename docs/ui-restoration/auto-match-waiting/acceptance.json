@@ -1,0 +1,24 @@
+{
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "status": "pending",
+  "automatic_confirmation": "Source/actual overlay reviewed, <=1 CSS px geometry, current browser and WKWebView evidence, no unresolved visual differences",
+  "browser": "browser-acceptance.json",
+  "native": "wkwebview-geometry.json",
+  "native_result": "/tmp/cimoa-match-waiting-sheet-20261017.xcresult",
+  "native_tests": 1,
+  "unresolved_visual_differences": [],
+  "deferred": [
+    "Connected/Passed pages and final whole-module regression"
+  ],
+  "git": "local commit only; no push",
+  "checks": [
+    "120-second advance still waiting, never auto-accepts",
+    "Home/reload preserve the same invitation and state",
+    "Cancel dismiss read-only; confirm updates one session and relaunches depth1"
+  ],
+  "supplement": "Source Leave Sheet reused for explicit cancellation, with busy/animation/safe-area ownership",
+  "resolved_test_issue": "Reapply the same 54px test safe area after browser refresh before Sheet comparison; native host reports real safe areas."
+}

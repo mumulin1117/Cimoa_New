@@ -60,6 +60,14 @@ final class HostTests: XCTestCase {
                     _ = try await script(host, "document.querySelector('.match-source-sheet .event-dialog--open .event-dialog-mask').click();await new Promise(r=>setTimeout(r,300));return true")
                 }
             }
+            if phase == "waiting" {
+                _ = try await script(host, "document.querySelector('[data-interaction=\"amWaiting.cancelRequest.click.1\"]').click();await new Promise(r=>setTimeout(r,350));return true")
+                let output = folder.appendingPathComponent("cancel")
+                try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+                let shot = try await host.webView.takeSnapshot(configuration: nil)
+                try shot.pngData()!.write(to: output.appendingPathComponent("actual-wkwebview.png"))
+                _ = try await script(host, "document.querySelector('.match-source-sheet .event-dialog--open .event-dialog-mask').click();await new Promise(r=>setTimeout(r,300));return true")
+            }
             try await restore()
         } catch {
             if let debug = try? await script(host, "return {url:location.href,text:document.body.innerText,html:document.body.innerHTML.slice(0,4000)}") {

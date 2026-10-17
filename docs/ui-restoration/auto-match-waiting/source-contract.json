@@ -138,11 +138,13 @@
     "Local-account matching engine; no timer grants peer consent; no fabricated online count",
     "UTC daily quota and atomic costs; restarting a terminal session reviews the entry cost",
     "User-authorized persisted campus-area distances, not GPS or real-time location; unknown distance fails; 100+ km is unrestricted",
-    "Source options screen does not falsify an active session as no_match"
+    "Source options screen does not falsify an active session as no_match",
+    "Cancel Request requires a controlled confirmation using the source Leave Sheet variant; no fee or new business state is introduced."
   ],
   "interaction_ids": [
     "amWaiting.goBack.click.1",
     "amWaiting.returnHome.click.1",
-    "amWaiting.cancelRequest.click.1"
+    "amWaiting.cancelRequest.click.1",
+    "amWaiting.confirmCancel.click.1"
   ]
 }

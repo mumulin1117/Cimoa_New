@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "page": "waiting",
+  "route": "/pages/auto-match/waiting?match_id=match_pixel",
+  "errors": [],
+  "geometry_passed": true,
+  "differences": [],
+  "source": "Offline source AST, approved data/safe-area/fixed-frame transformations only",
+  "server_pid": 33272,
+  "cleaned_up": true
+}

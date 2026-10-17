@@ -34,5 +34,17 @@
     "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
     "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
     "acceptance": "scripts/auto-match-browser.test.mjs --page=waiting; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "amWaiting.confirmCancel.click.1",
+    "source_screen": "Supplement: source amWaiting.cancelRequest, established source Leave Sheet variant",
+    "trigger": "Explicit cancel confirmation",
+    "preconditions": "Authenticated owner, same match_id still waiting; no loading/route operation",
+    "visible_feedback": "Source-style controlled Sheet then custom 500ms Loading; disabled while submitting",
+    "success_result": "Same match becomes left, invitation invalidates, Home relaunch depth1",
+    "failure_result": "No partial write or charge; Sheet closes to expose readable error; stale route follows actual state",
+    "persistence": "Store match_sessions.status/resolved_at",
+    "sync_scope": "Home, history, profile primary action and peer invitation",
+    "acceptance": "Cancel confirmation and backdrop do not write. Confirm once changes one entity; repeat and reload never revive it."
   }
 ]

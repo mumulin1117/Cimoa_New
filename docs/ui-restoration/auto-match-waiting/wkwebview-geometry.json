@@ -1,0 +1,29 @@
+{
+  "errors" : [
+
+  ],
+  "footer" : {
+    "height" : 145.203125,
+    "width" : 402,
+    "x" : 0,
+    "y" : 694.796875
+  },
+  "header" : {
+    "height" : 65.4375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Request sent\n\n\n\n\nWaiting for Zane\nWe’ll let you know when Zane responds. You can leave this screen — your request stays active.\nChat unlocks when you both accept\nReturn Home\nCancel Request\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}
