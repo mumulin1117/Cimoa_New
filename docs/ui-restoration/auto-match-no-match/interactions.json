@@ -1,7 +1,7 @@
 [
   {
     "interaction_id": "amNoMatch.goBack.click.1",
-    "source_screen": "amNoMatch:1866",
+    "source_screen": "amNoMatch:1869",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -13,7 +13,7 @@
   },
   {
     "interaction_id": "amNoMatch.findAnother.click.1",
-    "source_screen": "amNoMatch:1866",
+    "source_screen": "amNoMatch:1882",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -25,7 +25,7 @@
   },
   {
     "interaction_id": "amNoMatch.adjustPrefs.click.1",
-    "source_screen": "amNoMatch:1866",
+    "source_screen": "amNoMatch:1883",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -37,7 +37,7 @@
   },
   {
     "interaction_id": "amNoMatch.returnHome.click.1",
-    "source_screen": "amNoMatch:1866",
+    "source_screen": "amNoMatch:1884",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",

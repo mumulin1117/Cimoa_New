@@ -1,0 +1,205 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1868": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1869": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1870": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1872": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1874": {
+      "x": 0,
+      "y": 178,
+      "width": 393,
+      "height": 252,
+      "text": "No compatible matches are available right nowYou can stay in the pool, adjust your preferences, or try again later."
+    },
+    "1875": {
+      "x": 148.5,
+      "y": 178,
+      "width": 96,
+      "height": 96,
+      "text": ""
+    },
+    "1876": {
+      "x": 176.5,
+      "y": 206,
+      "width": 40,
+      "height": 40,
+      "text": ""
+    },
+    "1878": {
+      "x": 20,
+      "y": 290,
+      "width": 353,
+      "height": 60,
+      "text": "No compatible matches are available right now"
+    },
+    "1879": {
+      "x": 46.5,
+      "y": 366,
+      "width": 300,
+      "height": 40,
+      "text": "You can stay in the pool, adjust your preferences, or try again later."
+    },
+    "1881": {
+      "x": 0,
+      "y": 640,
+      "width": 393,
+      "height": 212,
+      "text": "Stay in PoolAdjust PreferencesReturn Home"
+    },
+    "1882": {
+      "x": 20,
+      "y": 640,
+      "width": 353,
+      "height": 60,
+      "text": "Stay in Pool"
+    },
+    "1883": {
+      "x": 20,
+      "y": 710,
+      "width": 353,
+      "height": 56,
+      "text": "Adjust Preferences"
+    },
+    "1884": {
+      "x": 20,
+      "y": 776,
+      "width": 353,
+      "height": 46,
+      "text": "Return Home"
+    }
+  },
+  "actual": {
+    "1868": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1869": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1870": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1872": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1874": {
+      "x": 0,
+      "y": 178,
+      "width": 393,
+      "height": 252,
+      "text": "No compatible matches are available right nowYou can stay in the pool, adjust your preferences, or try again later."
+    },
+    "1875": {
+      "x": 148.5,
+      "y": 178,
+      "width": 96,
+      "height": 96,
+      "text": ""
+    },
+    "1876": {
+      "x": 176.5,
+      "y": 206,
+      "width": 40,
+      "height": 40,
+      "text": ""
+    },
+    "1878": {
+      "x": 20,
+      "y": 290,
+      "width": 353,
+      "height": 60,
+      "text": "No compatible matches are available right now"
+    },
+    "1879": {
+      "x": 46.5,
+      "y": 366,
+      "width": 300,
+      "height": 40,
+      "text": "You can stay in the pool, adjust your preferences, or try again later."
+    },
+    "1881": {
+      "x": 0,
+      "y": 640,
+      "width": 393,
+      "height": 212,
+      "text": "Stay in PoolAdjust PreferencesReturn Home"
+    },
+    "1882": {
+      "x": 20,
+      "y": 640,
+      "width": 353,
+      "height": 60,
+      "text": "Stay in Pool"
+    },
+    "1883": {
+      "x": 20,
+      "y": 710,
+      "width": 353,
+      "height": 56,
+      "text": "Adjust Preferences"
+    },
+    "1884": {
+      "x": 20,
+      "y": 776,
+      "width": 353,
+      "height": 46,
+      "text": "Return Home"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 31701,
+    "pixels_above_channel_delta_8": 1534,
+    "mean_absolute_channel_delta": 0.12953430933352447,
+    "max_channel_delta": 98
+  }
+}

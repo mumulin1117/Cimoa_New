@@ -1,0 +1,29 @@
+{
+  "errors" : [
+
+  ],
+  "footer" : {
+    "height" : 216.796875,
+    "width" : 402,
+    "x" : 0,
+    "y" : 623.203125
+  },
+  "header" : {
+    "height" : 65.4375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Auto Match\nNo compatible matches are available right now\nYou can stay in the pool, adjust your preferences, or try again later.\nStay in Pool\nAdjust Preferences\nReturn Home\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}
