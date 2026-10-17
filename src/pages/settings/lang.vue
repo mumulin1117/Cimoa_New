@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { relaunch_route } from '@/utils/routeTransition.js'
 import { startup_destination } from '@/utils/authNavigation.js'
 import ProfileEditorFrame from '@/components/ProfileEditorFrame.vue'
@@ -13,9 +14,10 @@ const notice = ref('')
 const account_id = store.session.account_id
 const options = [{ value: 'en-US', label: 'English' }, { value: 'zh-Hant', label: '繁體中文' }]
 const language = computed(() => store.current_settings.language || 'en-US')
+const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const recover = async () => { try { await relaunch_route(startup_destination(store)) } catch (cause) { error.value = cause.message } }
@@ -47,7 +49,7 @@ const select = value => {
 </style>
 <style scoped>
 .language-stack { margin-top: 0; }
-.language-choice { gap: 22.901rpx; min-height: 125.954rpx; font-size: 34.351rpx; }
+.language-choice { gap: 22.901rpx; min-height: 0; padding: 34.351rpx; font-size: 34.351rpx; font-weight: 700; }
 .language-choice > text { flex: 1; }
 .language-check { width: 38.168rpx; height: 38.168rpx; color: var(--cimoa-button-primary); }
 .language-notice { display: block; margin-bottom: 22.901rpx; color: var(--cimoa-status-success); font-size: 28.626rpx; line-height: 1.4; }
