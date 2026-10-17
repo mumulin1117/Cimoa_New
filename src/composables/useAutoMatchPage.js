@@ -35,6 +35,7 @@ export function use_auto_match_page(page) {
     if(name==='closeSheet'||name==='stayInPool'||name==='standardMatch'){modal.value='';return}
     if(name==='goBack'){await back();return}
     if(name==='returnHome'){await home();return}
+    if(name==='openHistory'){await go('/pages/auto-match/history');return}
     if(name==='openPrefs'||name==='adjustPrefs'){await go('/pages/auto-match/preferences');return}
     if(name==='openUniPicker'){query.value='';modal.value='university';return}
     if(name==='openInterestsPicker'){modal.value='interests';return}

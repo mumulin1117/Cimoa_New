@@ -13,7 +13,7 @@
       "y": 58,
       "width": 353,
       "height": 48,
-      "text": "Auto Match"
+      "text": "Auto MatchHistory"
     },
     "1463": {
       "x": 20,
@@ -239,7 +239,7 @@
       "y": 57.984375,
       "width": 353.03125,
       "height": 47.984375,
-      "text": "Auto Match"
+      "text": "HistoryAuto Match"
     },
     "1463": {
       "x": 19.984375,
@@ -463,9 +463,9 @@
   "pixels": {
     "width": 393,
     "height": 852,
-    "pixels_different": 40967,
-    "pixels_above_channel_delta_8": 7494,
-    "mean_absolute_channel_delta": 0.8659851389934177,
+    "pixels_different": 43673,
+    "pixels_above_channel_delta_8": 7744,
+    "mean_absolute_channel_delta": 0.9083678278321328,
     "max_channel_delta": 244
   }
 }

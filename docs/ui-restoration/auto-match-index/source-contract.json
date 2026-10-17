@@ -288,7 +288,8 @@
     "Local-account matching engine; no timer grants peer consent; no fabricated online count",
     "UTC daily quota and atomic admission costs; user-authorized same-admission retries consume no extra quota or coins",
     "User-authorized persisted campus-area distances, not GPS or real-time location; unknown distance fails; 100+ km is unrestricted",
-    "Source options screen does not falsify an active session as no_match"
+    "Source options screen does not falsify an active session as no_match",
+    "User 2026-10-17 approved History entry on Auto Match Entry; uses existing source capsule styling without moving source title/body/footer."
   ],
   "interaction_ids": [
     "amEntry.goBack.click.1",
@@ -297,6 +298,7 @@
     "sheetInsufficient.closeSheet.click.1",
     "sheetInsufficient.getCoins2.click.1",
     "sheetInsufficient.freeAlt.click.1",
-    "sheetInsufficient.closeSheet.click.2"
+    "sheetInsufficient.closeSheet.click.2",
+    "amEntry.openHistory.click.1"
   ]
 }

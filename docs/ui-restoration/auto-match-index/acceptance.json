@@ -4,24 +4,15 @@
   "local_acceptance": "passed",
   "full_acceptance": "pending",
   "status": "pending",
-  "automatic_confirmation": "User authorized; source/actual overlay reviewed after theme namespace correction",
+  "automatic_confirmation": "Source/actual overlay reviewed, <=1 CSS px geometry, current browser and WKWebView evidence, no unresolved visual differences",
   "browser": "browser-acceptance.json",
   "native": "wkwebview-geometry.json",
-  "native_result": "/tmp/cimoa-match-index-final-20261017.xcresult",
+  "native_result": "/tmp/cimoa-match-index-history-20261017.xcresult",
   "native_tests": 1,
-  "geometry_tolerance_px": 1,
   "unresolved_visual_differences": [],
-  "allowed_render_differences": [
-    "SF font rasterization and rpx subpixel boundaries",
-    "Physical safe areas and single scroll fixed frame"
-  ],
   "deferred": [
-    "Preferences, Searching and all subsequent same-ID status pages full regression"
+    "Final complete module cross-page restoration/regression"
   ],
-  "checks": [
-    "Convention checks passed without warnings",
-    "git diff --check passed",
-    "build:h5 passed, native bundle packaged"
-  ],
-  "git": "local page commit; no push"
+  "git": "local commit only; no push",
+  "approved_supplement": "History capsule on Entry, authorized 2026-10-17; navigation and cancellation read-only."
 }

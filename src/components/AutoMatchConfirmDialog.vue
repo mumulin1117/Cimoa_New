@@ -4,14 +4,14 @@ import EventConfirmDialog from './EventConfirmDialog.vue'
 const props=defineProps({modal:String,context:Object,busy:Boolean})
 const emit=defineEmits(['action'])
 const standard=computed(()=>props.modal==='insufficient-standard')
-const cost=computed(()=>standard.value?10:20)
+const cost=computed(()=>standard.value?props.context.standard_cost:props.context.priority_cost)
 const act=name=>{if(!props.busy)emit('action',name)}
 </script>
 <template>
   <view class="match-confirm">
     <EventConfirmDialog :open="modal === 'insufficient' || standard" :busy="busy" label="Not enough coins" close-interaction="sheetInsufficient.closeSheet.click.1" @close="act('closeSheet')">
       <view class="match-sheet-title">Not enough coins</view>
-      <view class="match-sheet-copy">{{ standard ? 'Standard Match' : 'Priority Match' }} · {{ Math.max(0,cost - Number(context.balance_text?.split(' ')[0] || 0)) }} coins missing</view>
+      <view class="match-sheet-copy">{{ standard ? 'Standard Match' : 'Priority Match' }} · {{ Math.max(0,cost - context.balance) }} coins missing</view>
       <view class="match-sheet-rows"><view><view>Required</view><view>{{ cost }} coins</view></view><view><view>Current balance</view><view>{{ context.balance_text }}</view></view></view>
       <view class="match-sheet-primary" role="button" :aria-disabled="busy" data-interaction="sheetInsufficient.getCoins2.click.1" @click="act('getCoins')">Get Coins</view>
       <view class="match-sheet-secondary match-sheet-tinted" role="button" :aria-disabled="busy" data-interaction="sheetInsufficient.freeAlt.click.1" @click="act('standardMatch')">{{ standard ? 'Not Now' : 'Continue Standard Match' }}</view>
