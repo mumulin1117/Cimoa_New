@@ -1,7 +1,7 @@
 {
   "phase": "legal-privacy",
   "result": "passed",
-  "server_pid": 59741,
+  "server_pid": 41570,
   "checks": [
     "Welcome opens the independent local Privacy page with nine truthful sections and no invented controller or contact",
     "Privacy restores after refresh, scrolls on a small viewport and returns to the unauthenticated Welcome owner",

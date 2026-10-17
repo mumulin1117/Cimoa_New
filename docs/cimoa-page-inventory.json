@@ -232,11 +232,16 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/legal-privacy/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/legal-privacy/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; independent local-document acceptance passed; final legal/auth cross-flow acceptance pending"
+    "mapping_status": "source locked; Privacy Policy title and long-document geometry restored; truthful unpublished local privacy content retained; browser pixel, refresh/back, small-screen/safe-area and iPhone 17 Pro WKWebView checks passed",
+    "acceptance_evidence": "docs/ui-restoration/legal-privacy/acceptance.json"
   },
   {
     "source_screen": "Auth / Age Confirmation / Default",

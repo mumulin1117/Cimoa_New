@@ -1,0 +1,39 @@
+{
+  "phase": "legal-privacy-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-17",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 5,
+    "behavior_checks_passed": 3,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": { "top": 54, "bottom": 0 },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": { "top": 62, "bottom": 34 },
+    "report": "docs/ui-restoration/legal-privacy/browser-acceptance.json",
+    "behavior_report": "docs/evidence/settings-safety/legal-privacy-acceptance.json",
+    "comparison": { "pixels_different": 64198, "pixels_above_channel_delta_8": 32924, "mean_absolute_channel_delta": 3.18513018313443, "max_channel_delta": 244 }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testLegalPrivacyPixelRestoration",
+    "tests": 1,
+    "failures": 0,
+    "screenshot": "docs/ui-restoration/legal-privacy/actual-wkwebview.png"
+  },
+  "verified_flows": [
+    "source title, 58px Back, 118px scroll start and source legal typography are restored",
+    "nine truthful unpublished local sections replace unsupported production claims without inventing a controller or contact",
+    "refresh and full-document scrolling are zero-write and have no horizontal overflow",
+    "Guest returns to Welcome and authenticated entry returns to Settings Legal with unchanged state"
+  ],
+  "final_gates": { "check_conventions": "passed", "git_diff_check": "passed", "build_h5": "passed" }
+}

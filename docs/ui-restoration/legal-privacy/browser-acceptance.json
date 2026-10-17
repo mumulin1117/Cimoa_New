@@ -1,0 +1,122 @@
+{
+  "phase": "legal-privacy-pixel-restoration",
+  "result": "passed",
+  "server_pid": 41571,
+  "reference": {
+    "kind": "source-derived locked reference with approved unpublished-document and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "a171878786efdf2fb49242c975e772d1c1751f92bc9fed0f958000a85a2a5061",
+    "behavior_fragment_sha256": "f77c89d1e379574d3f07d894b8befabe72a64ea00b06bee8a72cde82bd5812e6",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "bottom": 852
+    },
+    "header": {
+      "x": 0,
+      "y": 54,
+      "width": 393,
+      "height": 63.984375,
+      "bottom": 117.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 58,
+      "width": 45.984375,
+      "height": 45.984375,
+      "bottom": 103.984375
+    },
+    "title": {
+      "x": 78,
+      "y": 68.984375,
+      "width": 237,
+      "height": 24,
+      "bottom": 92.984375
+    },
+    "scroll": {
+      "x": 0,
+      "y": 117.984375,
+      "width": 393,
+      "height": 734.015625,
+      "bottom": 852
+    },
+    "updated": {
+      "x": 20,
+      "y": 117.984375,
+      "width": 353,
+      "height": 17,
+      "bottom": 134.984375
+    },
+    "intro": {
+      "x": 20,
+      "y": 146.984375,
+      "width": 353,
+      "height": 123.984375,
+      "bottom": 270.96875
+    },
+    "card": {
+      "x": 20,
+      "y": 288.953125,
+      "width": 353,
+      "height": 1766.34375,
+      "bottom": 2055.296875
+    },
+    "firstHeading": {
+      "x": 40,
+      "y": 310.921875,
+      "width": 313,
+      "height": 20,
+      "bottom": 330.921875
+    },
+    "firstCopy": {
+      "x": 40,
+      "y": 336.90625,
+      "width": 313,
+      "height": 144.09375,
+      "bottom": 481
+    },
+    "safes": [
+      54,
+      0
+    ],
+    "text": {
+      "title": "Privacy Policy",
+      "updated": "Local draft · 14 October 2026",
+      "intro": "This notice describes information handled by this local Cimoa build. It is not a published production privacy policy and does not identify a configured controller, processor or privacy contact.",
+      "firstHeading": "1. Information stored locally",
+      "footer": "No production privacy or support contact is configured for this local build."
+    },
+    "sections": 9,
+    "interactions": [
+      "isLegalDoc.goBack.click.1"
+    ],
+    "scrollable": true,
+    "overflow": false
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 64198,
+    "pixels_above_channel_delta_8": 32924,
+    "mean_absolute_channel_delta": 3.18513018313443,
+    "max_channel_delta": 244
+  },
+  "checks": [
+    "393x852 restores locked Privacy Policy hierarchy and truthful unpublished content without invented contact",
+    "refresh and full-document scrolling remain zero-write",
+    "guest Back restores Welcome without mutating authentication or agreements",
+    "320x568 and 62/34 safe areas keep one long-document scroll owner without horizontal overflow",
+    "authenticated Back restores Settings Legal with the same session and zero writes"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}
