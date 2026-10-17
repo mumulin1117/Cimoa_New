@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { permission_statuses, open_app_settings } from '@/utils/nativePermissions.js'
 import { relaunch_route } from '@/utils/routeTransition.js'
 import { startup_destination } from '@/utils/authNavigation.js'
@@ -15,9 +16,10 @@ const statuses = ref({ camera: 'unavailable', microphone: 'unavailable', photos:
 const account_id = store.session.account_id
 let generation = 0
 
+const account_scope = use_account_scope(store, () => { generation += 1; reading.value = false })
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const rows = [
@@ -68,6 +70,9 @@ const open_settings = async () => {
 </style>
 <style scoped>
 .permissions-stack { margin-top: 0; }
+.permission-row { padding: 30.534rpx 34.351rpx; }
+.permission-row > text { font-size: 32.443rpx; }
+.settings-page-note { font-size: 28.626rpx; margin-top: 26.718rpx; color: var(--cimoa-text-auth-placeholder); }
 .permission-pill { flex: none; padding: 11.45rpx 22.901rpx; border-radius: 26.718rpx; background: var(--cimoa-surface-profile-icon); }
 .permission-pill text { font-size: 25.763rpx; font-weight: 700; color: var(--cimoa-text-secondary); }
 .permission-pill--granted { background: var(--cimoa-status-connected-bg); }
