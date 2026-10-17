@@ -1,0 +1,13 @@
+{
+  "phase": "coin-spend-failed",
+  "result": "passed",
+  "checks": [
+    "Insufficient balance reaches the source failure layout and retry never leaves a debit or invents a success",
+    "Help Back and refreshed Return restore the owned matching session and draft without spending",
+    "Invalid context exposes no Retry or Support mutation path"
+  ],
+  "errors": [],
+  "physical_microphone": "not tested: controlled browser media device",
+  "server_pid": 13403,
+  "cleaned_up": true
+}

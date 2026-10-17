@@ -15,18 +15,21 @@ const specs = {
   verification: ['isVerified', '/pages/profile/verification', '.verification-summary', 'account-verification'],
   reverify: ['isReverify', '/pages/profile/reverify', '.reverify-body', 'account-reverify'],
   coins: ['isCoinStore', '/pages/coins/index', '.coin-hero', 'account-coins'],
+  'spend-failed': ['isCoinSpendFailed', '/pages/coins/spend-failed?return_context_id=spend_visual', '.spend-failed-content', 'account-coin-spend-failed'],
 }
 assert.ok(specs[key], 'Unknown source page')
 const [condition, route, ready, slug] = specs[key], output = path.resolve('docs/ui-restoration', slug)
 const source = read_circa_source(), contract = JSON.parse(fs.readFileSync(path.join(output, 'source-contract.json')))
 assert.equal(contract.source.file_sha256, source.source_hash)
 const epoch = Date.UTC(2026, 9, 17, 1), data = create_seed(epoch), user = data.users[0]
+if (key === 'spend-failed') data.drafts.push({ draft_id: 'spend_visual', owner_user_id: user.user_id, kind: 'coin_spend', target_id: data.match_sessions[0].match_id, payload: { kind: 'priority_match', match_id: data.match_sessions[0].match_id, operation_id: 'spend_visual' }, updated_at: epoch })
 const images = { '6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30': user.avatar_url, 'a9831494-dfeb-464f-8617-1e3468ad74f0': '/static/assets/coins/home-coin-badge.png', '501d6dc6-cd53-4ee4-b9ae-e49c37deca54': '/static/assets/coins/store-coin-hero.png' }
 const report = { result: 'failed', source_sha256: source.source_hash, checks: [], errors: [], visual_acceptance: 'pending', approved_deltas: ['Canonical user data and actual ledger balance', 'Real safe areas instead of simulated system bars', 'No invented university verification, purchase or moderation success'] }
 const check = value => { report.checks.push(value); console.log('PASS ' + value) }
 function reference(origin) {
   const vars = { obName: user.user_name, obField: user.major, obBio: user.bio, balanceText: '260 coins', coinsNum: '260', language: 'English', maskedEmail: 'ci•••@gmail.com', selectedInterests: user.interest_ids.map(id => { const i = data.interests.find(i => i.item_id === id); return { ...i, icon: i.emoji } }) }
   const gradient = 'linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)'
+  if (key === 'spend-failed') vars.balanceText = '260'
   vars.storeBtnBg = gradient; vars.storeBtnInk = '#fff'
   vars.packages = data.coin_packages.map(p => ({ img: package_image(p.coins), coins: p.coins + ' Coins', price: p.price, tag: p.badge, hasTag: !!p.badge, bg: p.coins === 300 ? 'linear-gradient(#fff,#fff) padding-box,' + gradient + ' border-box' : '#fff', border: p.coins === 300 ? '2px solid transparent' : '2px solid rgba(16,36,74,0.06)', shadow: p.coins === 300 ? '0 10px 26px rgba(168,85,247,0.18)' : '0 8px 22px rgba(16,36,74,0.06)' }))
   vars.coinFeatures = COIN_FEATURES.map((f, i) => ({ img: f.image_url, title: f.title, sub: f.description, cost: f.cost, border: i === COIN_FEATURES.length - 1 ? 'none' : '1px solid #eef1f6' }))

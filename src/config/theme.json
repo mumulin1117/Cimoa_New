@@ -23,6 +23,7 @@
       "settings_purple": "#efe9fb",
       "settings_blue": "#e5f0ff",
       "settings_danger": "#fdeaea",
+      "coin_spend_error": "#fee2e2",
       "profile_song": "rgba(8,16,31,0.55)",
       "profile_dot_inactive": "rgba(255,255,255,0.4)",
       "profile_goal_icon": "#efe9fb",

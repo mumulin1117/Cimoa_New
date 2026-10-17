@@ -69,6 +69,29 @@ try {
     assert.match(page.url(), /return_context_id=coin_return_test/); const before = await state(); await page.reload(); await click('coinHistory.goBack.click.1'); await page.locator('.coin-center-page').waitFor(); assert.match(page.url(), /return_context_id=coin_return_test/)
     await click('coinStore.goBack.click.1'); await page.locator('.auto-match-index').waitFor(); assert.deepEqual(await state(), before)
     check('Coin Center → History → reload → fallback Back preserves the owned Auto Match return context and never writes navigation state')
+    for (const [label, selector] of [['Terms of Use', '.legal-terms-page'], ['Privacy Policy', '.legal-privacy-page']]) {
+      await page.goto(server.origin + '/?flow=legal-return#/pages/coins/help?return_context_id=coin_return_test')
+      await page.getByRole('button', { name: label, exact: true }).click(); await page.locator(selector).waitFor(); assert.match(page.url(), /origin=coins/)
+      await page.reload(); await click('isLegalDoc.goBack.click.1'); await page.locator('.coin-help-page').waitFor(); assert.match(page.url(), /return_context_id=coin_return_test/)
+      await page.reload(); await click('coinHelp.goBack.click.1'); await page.locator('.coin-center-page').waitFor(); await click('coinStore.goBack.click.1'); await page.locator('.auto-match-index').waitFor()
+    }
+    assert.deepEqual(await state(), before)
+    check('Both legal documents restore Coin Help after refresh; Help restores Coin Center and the original Auto Match entry without writes')
+  } else if (phase === 'coin-spend-failed') {
+    await go('/pages/home/index'); await page.locator('.home-header').waitFor()
+    const fixture = create_scenario('match_searching', Date.now()); fixture.coin_transactions = []
+    fixture.drafts.push({ draft_id: 'spend_failed', owner_user_id: fixture.session.current_user_id, kind: 'coin_spend', target_id: 'match_liam', payload: { kind: 'priority_match', match_id: 'match_liam', operation_id: 'account_failed_priority' }, updated_at: Date.now() })
+    await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), fixture)
+    await page.goto(server.origin + '/?flow=spend-failure#/pages/coins/processing?return_context_id=spend_failed'); await page.locator('.coin-spend-failed-page').waitFor(); await set_safe_area(page, 54, 0)
+    assert.match(await page.locator('.spend-failed-copy').innerText(), /balance is 0/); assert.equal(await page.locator('.spend-failed-icon svg path').getAttribute('d'), 'M12 7v7M12 17.5v.5')
+    await page.screenshot({ path: path.join(output, 'spend-failed.png') }); assert.deepEqual((await state()).coin_transactions, [])
+    await click('coinSpendFailed.retrySpend.click.1'); await page.locator('.coin-spend-failed-page').waitFor(); assert.deepEqual((await state()).coin_transactions, [])
+    check('Insufficient balance reaches the source failure layout and retry never leaves a debit or invents a success')
+    await click('coinSpendFailed.openCoinHelp.click.1'); await page.locator('.coin-help-page').waitFor(); await click('coinHelp.goBack.click.1'); await page.locator('.coin-spend-failed-page').waitFor()
+    await page.reload(); await click('coinSpendFailed.goBack.click.1'); await page.locator('.auto-match-searching').waitFor(); assert.deepEqual((await state()).coin_transactions, [])
+    check('Help Back and refreshed Return restore the owned matching session and draft without spending')
+    await page.goto(server.origin + '/?flow=bad-failure#/pages/coins/spend-failed?return_context_id=foreign'); await page.getByRole('alert').waitFor(); assert.equal(await page.locator('[data-interaction="coinSpendFailed.retrySpend.click.1"]').count(), 0)
+    check('Invalid context exposes no Retry or Support mutation path')
   } else if (phase === 'coin-processing') {
     await go('/pages/home/index'); await page.locator('.home-header').waitFor()
     const fixture = create_scenario('match_searching', Date.now())

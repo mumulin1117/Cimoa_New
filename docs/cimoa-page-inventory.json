@@ -8872,7 +8872,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/coins/spend-failed",
-    "component": null,
+    "component": "src/pages/coins/spend-failed.vue",
     "parent_route": "/pages/discover/icebreaker/preview",
     "allowed_origin_routes": [
       "/pages/discover/icebreaker/preview",
@@ -8933,8 +8933,12 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; atomic ledger failure/idempotency and UI error states passed; full paid dependency path remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-coin-spend-failed/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-coin-spend-failed/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/account-flows/coin-spend-failed.json"
   },
   {
     "source_screen": "Coins / History / Default",
