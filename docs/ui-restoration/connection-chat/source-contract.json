@@ -30,8 +30,8 @@
     "returnToChat@5845",
     "go@6187"
   ],
-  "return_owner": "Pop exact origin; direct entry fallback Home",
-  "fixed_regions": "TopSafeArea; SecondaryPageHeader; MessageComposer",
+  "return_owner": "pop exact origin instance; direct entry fallback replace Home; Profile/Call/Report Back restore the exact conversation, not another user or duplicate chat",
+  "fixed_regions": "TopSafeArea; source chat header; keyboard-aware MessageComposer; single bottom safe-area owner",
   "scroll_region": "Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0",
   "styles": [
     {
@@ -252,7 +252,13 @@
     "sheetSafety.closeSheet.click.2",
     "sheetBlock.closeSheet.click.1",
     "sheetBlock.confirmBlock.click.1",
-    "sheetBlock.closeSheet.click.2"
+    "sheetBlock.closeSheet.click.2",
+    "chat.media.play.click.1",
+    "chat.media.preview.click.1",
+    "chat.media.close.click.1",
+    "chat.media.close.click.2",
+    "chat.media.record.click.1",
+    "chat.media.send.click.1"
   ],
   "approved_deltas": [
     "Cimoa branding and unified actual participant IDs",

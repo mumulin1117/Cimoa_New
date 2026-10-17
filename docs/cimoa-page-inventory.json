@@ -3511,11 +3511,14 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/connections/sent",
-    "component": null,
+    "component": "src/pages/connections/sent.vue",
     "parent_route": "/pages/discover/icebreaker/text",
     "allowed_origin_routes": [
       "/pages/discover/icebreaker/text",
-      "/pages/discover/icebreaker/preview"
+      "/pages/discover/icebreaker/preview",
+      "/pages/coins/processing",
+      "/pages/home/index",
+      "/pages/discover/profile"
     ],
     "required_parameters": [
       "request_id"
@@ -3526,9 +3529,9 @@
       "sendVoiceRequest@5315",
       "openPending@5812"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/discover/icebreaker/text、/pages/discover/icebreaker/preview）；无历史实例时 replace /pages/discover/icebreaker/text，不创建伪造实体",
-    "completion_navigation": "Done → reLaunch /pages/discover/index",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+    "return_owner": "pop exact origin instance; direct entry fallback replace /pages/discover/index; no writes",
+    "completion_navigation": "Done → reLaunch /pages/discover/index; historical result displays the same request snapshot and actual status",
+    "fixed_regions": "TopSafeArea; source request header; fixed Done; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -3536,7 +3539,7 @@
       "reqSent.goBack.click.1",
       "reqSent.doneSent.click.1"
     ],
-    "entities": "connection_requests; user_relationships; dm_conversations; users",
+    "entities": "requests (ConnectionRequest); relationships (derived Connection generation); conversations/messages (Conversation); users/photos/audio; blocks; account-scoped privacy",
     "assets": {
       "media": [
         {
@@ -3581,13 +3584,15 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-17: source AST overlay inspected; browser + real iPhone 17 Pro WKWebView geometry passed. Full acceptance deferred until received/result/chat dependency regression.",
+    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "visual_evidence": "docs/ui-restoration/connection-sent"
+    "visual_evidence": "docs/ui-restoration/connection-sent",
+    "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/connection-sent/wkwebview-geometry.json"
   },
   {
     "source_screen": "Connections / Request Detail / Default",
@@ -3597,21 +3602,22 @@
     ],
     "page_level": "二级",
     "route": "/pages/connections/received",
-    "component": null,
+    "component": "src/pages/connections/received.vue",
     "parent_route": "/pages/home/index",
     "allowed_origin_routes": [
-      "/pages/home/index"
+      "/pages/home/index",
+      "/pages/discover/profile"
     ],
     "required_parameters": [
-      "request_id"
+      "request_id XOR match_id"
     ],
     "entry_points": [
       "openJordan@5250",
       "openIncoming@5814"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/home/index）；无历史实例时 replace /pages/home/index，不创建伪造实体",
-    "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
+    "return_owner": "pop exact origin instance; direct entry fallback replace /pages/home/index; gallery/menu/confirm close restores same request and photo index",
+    "completion_navigation": "Not Now → reLaunch Home without mutation; explicit Accept/Decline confirmation → 500ms Loading → replace accepted/declined with the same request_id or match_id",
+    "fixed_regions": "TopSafeArea; compact source request header; fixed answer/Not Now/Accept; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomCTA",
@@ -3626,9 +3632,11 @@
       "reqReceived.notNow.click.1",
       "reqReceived.accept.click.1",
       "reqReceived.openDecline.click.1",
-      "reqReceived.openGallery.click.1"
+      "reqReceived.openGallery.click.1",
+      "reqReceived.gallery.close.click.1",
+      "reqReceived.gallery.close.click.2"
     ],
-    "entities": "connection_requests; user_relationships; dm_conversations; users",
+    "entities": "requests (ConnectionRequest); relationships (derived Connection generation); conversations/messages (Conversation); users/photos/audio; blocks; account-scoped privacy",
     "assets": {
       "media": [
         {
@@ -3719,13 +3727,15 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-17: source photo/profile, full-viewport gallery, Not Now, confirmation and real voice request playback passed browser and WKWebView checks; final cross-page suite still pending.",
+    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "visual_evidence": "docs/ui-restoration/connection-received"
+    "visual_evidence": "docs/ui-restoration/connection-received",
+    "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/connection-received/wkwebview-geometry.json"
   },
   {
     "source_screen": "Connection / Request / Accepted",
@@ -3735,20 +3745,20 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/connections/accepted",
-    "component": null,
+    "component": "src/pages/connections/accepted.vue",
     "parent_route": "/pages/connections/received",
     "allowed_origin_routes": [
       "/pages/connections/received"
     ],
     "required_parameters": [
-      "request_id"
+      "request_id XOR match_id"
     ],
     "entry_points": [
       "accept@5015"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/connections/received）；无历史实例时 replace /pages/connections/received，不创建伪造实体",
-    "completion_navigation": "Done → reLaunch /pages/home/index；Chat 仅传本次 request_id 派生的 conversation_id",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+    "return_owner": "Close → reLaunch Home; Chat/Profile push with exact current connection generation, their Back restores this accepted result",
+    "completion_navigation": "Start Chatting → canonical conversation_id from this request/match generation; View Profile → same counterpart user_id; no fabricated friendship or chat",
+    "fixed_regions": "TopSafeArea; source Close; fixed Start Chatting/View Profile; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -3757,7 +3767,7 @@
       "reqAccepted.startChat.click.1",
       "reqAccepted.viewProfile.click.1"
     ],
-    "entities": "connection_requests; user_relationships; dm_conversations; users",
+    "entities": "requests (ConnectionRequest); relationships (derived Connection generation); conversations/messages (Conversation); users/photos/audio; blocks; account-scoped privacy",
     "assets": {
       "media": [
         {
@@ -3824,13 +3834,15 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-17: source SVG badge, avatars, natural shared-interest spacing and navigation passed latest browser + native pixel checks; final cross-page suite pending.",
+    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "visual_evidence": "docs/ui-restoration/connection-accepted"
+    "visual_evidence": "docs/ui-restoration/connection-accepted",
+    "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/connection-accepted/wkwebview-geometry.json"
   },
   {
     "source_screen": "Connection / Request / Declined",
@@ -3840,20 +3852,18 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/connections/declined",
-    "component": null,
+    "component": "src/pages/connections/declined.vue",
     "parent_route": "/pages/connections/received",
     "allowed_origin_routes": [
       "/pages/connections/received"
     ],
-    "required_parameters": [
-      "request_id"
-    ],
+    "required_parameters": [],
     "entry_points": [
       "decline@5793"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/connections/received）；无历史实例时 replace /pages/connections/received，不创建伪造实体",
-    "completion_navigation": "Done → reLaunch /pages/home/index；Chat 仅传本次 request_id 派生的 conversation_id",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+    "return_owner": "Both visible completion actions → reLaunch /pages/discover/index; no synthetic Back into a handled request",
+    "completion_navigation": "Back to Discover / View Other People → reLaunch Discover; no connection created",
+    "fixed_regions": "TopSafeArea; fixed Back to Discover/View Other People; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -3861,7 +3871,7 @@
       "reqDeclined.backToDiscover.click.1",
       "reqDeclined.backToDiscover.click.2"
     ],
-    "entities": "connection_requests; user_relationships; dm_conversations; users",
+    "entities": "requests (ConnectionRequest); relationships (derived Connection generation); conversations/messages (Conversation); users/photos/audio; blocks; account-scoped privacy",
     "assets": {
       "media": [
         {
@@ -3899,13 +3909,15 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-17: source AST overlay and real iPhone 17 Pro WKWebView geometry inspected; browser interactions passed. Full cross-page/media regression deferred to task final pass.",
+    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "visual_evidence": "docs/ui-restoration/connection-declined"
+    "visual_evidence": "docs/ui-restoration/connection-declined",
+    "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/connection-declined/wkwebview-geometry.json"
   },
   {
     "source_screen": "Auto Match / Entry / Default",
@@ -5927,12 +5939,14 @@
     ],
     "page_level": "二级",
     "route": "/pages/messages/chat",
-    "component": null,
+    "component": "src/pages/messages/chat.vue",
     "parent_route": "/pages/home/index",
     "allowed_origin_routes": [
       "/pages/home/index",
       "/pages/connections/accepted",
-      "/pages/auto-match/connected"
+      "/pages/auto-match/connected",
+      "/pages/discover/profile",
+      "/pages/messages/index"
     ],
     "required_parameters": [
       "conversation_id"
@@ -5946,9 +5960,9 @@
       "returnToChat@5845",
       "go@6187"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/home/index、/pages/connections/accepted、/pages/auto-match/connected）；无历史实例时 replace /pages/home/index，不创建伪造实体",
+    "return_owner": "pop exact origin instance; direct entry fallback replace Home; Profile/Call/Report Back restore the exact conversation, not another user or duplicate chat",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; MessageComposer",
+    "fixed_regions": "TopSafeArea; source chat header; keyboard-aware MessageComposer; single bottom safe-area owner",
     "scroll_region": "Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "MessageComposer",
@@ -5969,9 +5983,13 @@
       "sheetSafety.closeSheet.click.2",
       "sheetBlock.closeSheet.click.1",
       "sheetBlock.confirmBlock.click.1",
-      "sheetBlock.closeSheet.click.2"
+      "sheetBlock.closeSheet.click.2",
+      "chat.media.close.click.1",
+      "chat.media.close.click.2",
+      "chat.media.record.click.1",
+      "chat.media.send.click.1"
     ],
-    "entities": "users; dm_conversations; dm_messages; call_sessions; user_relationships; blocked_users",
+    "entities": "requests (ConnectionRequest); relationships (derived Connection generation); conversations/messages (Conversation); users/photos/audio; blocks; account-scoped privacy",
     "assets": {
       "media": [
         {
@@ -6009,15 +6027,15 @@
     },
     "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; text/photo/voice, Loading, failure rollback, empty/error/long/refresh/back, safety actions, Home entry and WKWebView acceptance passed; full verified waits for the still-pending Profile Say Hi dependency",
-    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
-    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json",
+    "mapping_status": "Source locked; source-region visual review, browser interaction/state regression and iPhone 17 Pro WKWebView 10/10 final suite passed; verified registration waits for the final local specialty commit.",
+    "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
+    "native_acceptance_evidence": "docs/ui-restoration/connection-chat/wkwebview-geometry.json",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "visual_evidence": "docs/ui-restoration/connection-chat",
-    "acceptance_notes": "2026-10-17: source AST overlay and real iPhone 17 Pro WKWebView geometry inspected; browser interactions passed. Full cross-page/media regression deferred to task final pass."
+    "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md."
   },
   {
     "source_screen": "Video Call / Incoming / Default",

@@ -1,0 +1,120 @@
+{
+  "scope": "ConnectionRequest / derived Connection / direct Conversation and five source-locked consumer pages; not whole-app acceptance",
+  "date": "2026-10-17",
+  "result": "passed",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "pages": [
+    {
+      "page": "sent",
+      "result": "passed",
+      "checks": 2,
+      "artifacts": "docs/ui-restoration/connection-sent"
+    },
+    {
+      "page": "received",
+      "result": "passed",
+      "checks": 6,
+      "artifacts": "docs/ui-restoration/connection-received"
+    },
+    {
+      "page": "accepted",
+      "result": "passed",
+      "checks": 2,
+      "artifacts": "docs/ui-restoration/connection-accepted"
+    },
+    {
+      "page": "declined",
+      "result": "passed",
+      "checks": 2,
+      "artifacts": "docs/ui-restoration/connection-declined"
+    },
+    {
+      "page": "chat",
+      "result": "passed",
+      "checks": 3,
+      "artifacts": "docs/ui-restoration/connection-chat"
+    }
+  ],
+  "unit_tests": {
+    "result": "passed",
+    "total": 118,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browser_page_checks": 15,
+  "cross_account": {
+    "result": "passed",
+    "flows": 5,
+    "report": "docs/evidence/social-entities/browser-acceptance.json",
+    "temporary_server_pid": 86555,
+    "cleaned_up": true
+  },
+  "chat_safety": {
+    "result": "passed",
+    "checks": 19,
+    "report": "docs/evidence/settings-safety/safety-actions-acceptance.json",
+    "temporary_server_pid": 74647
+  },
+  "wkwebview": {
+    "result": "Passed",
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "result_bundle": "/tmp/cimoa-connection-core-pause-final.xcresult",
+    "device": {
+      "architecture": "arm64",
+      "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "deviceName": "iPhone 17 Pro",
+      "modelName": "iPhone 17 Pro",
+      "osBuildNumber": "23F77",
+      "osVersion": "26.5",
+      "platform": "iOS Simulator"
+    },
+    "origin": "http://127.0.0.1:18765",
+    "safe_area": [
+      62,
+      34
+    ],
+    "viewport": [
+      402,
+      874
+    ],
+    "summary_file": "native-test-summary.json"
+  },
+  "native_voice": {
+    "conversation_id": "conversation_2fd97831-485a-43ee-b9ab-3ea0ff1bc90b",
+    "duration": "0:02",
+    "header": "NoahConnected",
+    "initial_audio_played": true,
+    "loading": true,
+    "media_id": "media_native_voice_969dad2e-a48c-49e4-973b-666099bbd287",
+    "refreshed_audio_played": true,
+    "report": "docs/evidence/connection-core/native-voice-lifecycle.json",
+    "recording": "isolated 1500ms PCM WAV fixture, real IndexedDB decoding/playback; no live microphone claim"
+  },
+  "build": {
+    "files": 378,
+    "manifest_sha256": "354aef527aae60289868af0c853b7bafe5159b6d51f1832a449dc19264c23e74",
+    "index_sha256": "2bb4e0389f2ccd6d2d90be37011d7e8c1f8a747121e46158ffd2b5382ddd8414",
+    "native_manifest_matches": true,
+    "prototype_runtime_dependency": false
+  },
+  "extracted_source_assets": {
+    "verified": 47,
+    "hash_mismatches": 0
+  },
+  "gates": {
+    "check_conventions": "passed; no warnings",
+    "diff_check": "passed",
+    "build_h5": "passed"
+  },
+  "acceptance_policy": "User-authorized automatic confirmation after source, region review, browser, real WKWebView and full dependency regression; verified only registered after local specialty commit",
+  "preserved_unrelated_changes": "10 pre-existing docs/evidence/registration/*.png changes excluded from task staging",
+  "limits": [
+    "No server-backed delivery, online presence or automatic peer acceptance",
+    "Calls remain the approved waiting-only simulation, not a real video connection",
+    "Native tests cover actual playback and controlled fixture/bridge paths, not physical-device microphone/photo-picker/system-permission or manual native-keyboard acceptance",
+    "Other App pages retain their own acceptance states"
+  ]
+}

@@ -27,8 +27,8 @@
     "sendVoiceRequest@5315",
     "openPending@5812"
   ],
-  "return_owner": "Back pops previous instance; Done clears stack to Discover",
-  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "return_owner": "pop exact origin instance; direct entry fallback replace /pages/discover/index; no writes",
+  "fixed_regions": "TopSafeArea; source request header; fixed Done; BottomSafeArea",
   "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
   "styles": [
     {
@@ -254,7 +254,8 @@
   ],
   "interaction_ids": [
     "reqSent.goBack.click.1",
-    "reqSent.doneSent.click.1"
+    "reqSent.doneSent.click.1",
+    "reqSent.togglePlay.click.1"
   ],
   "approved_deltas": [
     "Cimoa branding and unified actual participant IDs",

@@ -1,6 +1,6 @@
 {
   "result": "passed",
-  "server_pid": 53077,
+  "server_pid": 86555,
   "checks": [
     "Avatar profile → free introduction → sent Home card → real account switch → accept → one conversation; Chat CTA and messages survive refresh",
     "Blocking the same user removes both friendship directions and the private conversation across Home and Discover",

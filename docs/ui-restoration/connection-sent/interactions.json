@@ -1,0 +1,38 @@
+[
+  {
+    "interaction_id": "reqSent.goBack.click.1",
+    "source_screen": "reqSent; source-contract.json",
+    "trigger": "click / keyboard activation",
+    "preconditions": "authenticated sender of this request; both identities visible",
+    "visible_feedback": "source cRise navigation or controlled UI; no navigation Loading",
+    "success_result": "pop actual origin instance, preserve its scroll/entity; direct entry fallback Home (sent fallback Discover)",
+    "failure_result": "stay in the current valid context with readable error; cancellation, invalid identity, storage/media failure cause no partial write, no duplicate request/message or debit",
+    "persistence": "none; existing entity state is preserved",
+    "sync_scope": "Home / profile / request result / consent / unique conversation / unread / block filtering",
+    "acceptance": "source-default geometry plus browser-acceptance.json; two-account text/voice/decline/match integration; native pixel/voice/media/return regression in final report"
+  },
+  {
+    "interaction_id": "reqSent.doneSent.click.1",
+    "source_screen": "reqSent; source-contract.json",
+    "trigger": "click / keyboard activation",
+    "preconditions": "authenticated sender of this request; both identities visible",
+    "visible_feedback": "source cRise navigation or controlled UI; no navigation Loading",
+    "success_result": "reLaunch /pages/discover/index; clear completed intro stack; request remains unchanged",
+    "failure_result": "stay in the current valid context with readable error; cancellation, invalid identity, storage/media failure cause no partial write, no duplicate request/message or debit",
+    "persistence": "none; existing entity state is preserved",
+    "sync_scope": "Home / profile / request result / consent / unique conversation / unread / block filtering",
+    "acceptance": "source-default geometry plus browser-acceptance.json; two-account text/voice/decline/match integration; native pixel/voice/media/return regression in final report"
+  },
+  {
+    "interaction_id": "reqSent.togglePlay.click.1",
+    "source_screen": "reqSent; source-contract.json",
+    "trigger": "click / keyboard activation",
+    "preconditions": "authenticated sender of this request; both identities visible",
+    "visible_feedback": "real media loading/play/pause/seek; unavailable media error; no fake time",
+    "success_result": "decode the original request audio; play/pause/seek based on actual media clock; missing/denied/invalid media shows a real error",
+    "failure_result": "stay in the current valid context with readable error; cancellation, invalid identity, storage/media failure cause no partial write, no duplicate request/message or debit",
+    "persistence": "none for playback; read the saved original media entity",
+    "sync_scope": "Home / profile / request result / consent / unique conversation / unread / block filtering",
+    "acceptance": "source-default geometry plus browser-acceptance.json; two-account text/voice/decline/match integration; native pixel/voice/media/return regression in final report"
+  }
+]

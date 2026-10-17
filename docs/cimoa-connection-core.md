@@ -25,4 +25,18 @@ Conversation 持久化双方唯一私聊及 messages；读取模型派生 connec
 
 允许差异：用户实体替代写死人物；只展示真实学生徽章；共同兴趣取交集、无交集显示明确空态；无音频/歌曲显示错误、不造 18 秒音频；Connected 替代无依据 Online；日期来自消息时间；系统安全区与固定滚动骨架；文字免费；固定 Loading 与确认；拒绝文案不能声称已送达的介绍“未分享”。这些均为既有数据/安全约定，不改两份约定。
 
-当前记录仅说明设计与实施范围，不作为视觉或全项目验收通过证明。
+## 补充字段与消费者
+
+- requests.question_text：发送时的非空文字快照；轻量元数据持久化；send_introduction / complete_coin_spend 写，sent/received 读；迁移只补缺失值。
+- relationships.source_request_id / source_match_id：本轮双方同意的来源 ID（二选一或旧资料未提供）；接受事务写；Connection 与 accepted 结果页读。单向旧同意经本次双方明确同意后更新时间与来源，不推断其他请求已获接受。
+- Connection.connection_id：双方同意记录 ID 的排序组合，derived；connection_by_user / connection_by_id / connections 读取。source_request_id、source_match_id 在旧数据无法唯一判定时为 null，不随意认领旧接受结果。
+- Connection.shared_interests：双方 interest_ids 交集，derived；accepted 的 YOU BOTH LIKE 消费。无交集显示实际空态，不复制对方全部兴趣。
+- ConnectionRequest.direction、can_accept/can_decline/can_cancel、connection_id、conversation_id：当前账号权限/状态投影；request_detail、请求页和跨页回归消费；无独立持久化布尔值。
+- Conversation.connection_id、created_at、updated_at、last_message、preview、unread_count：关系与消息派生；当前会话列表、聊天、Home/详情入口和未读状态消费。kind=group 保持原活动成员授权模型。
+- Conversation.can_call / call_blocker：双方现有 allow_video 设置派生；聊天入口与等待页共同守卫，任一方关闭都不启动等待计时，但保留合法文字会话。
+
+方向同意、请求与媒体新增归属/来源校验；私聊 read_by 必须属于双方，不能重复。认证过期禁止新连接但允许拒绝和既有会话。异步媒体读取、语音消费及 Blob 保存消费页面取消 token，离开不继续发送/扣费；已写入但未发布的 Blob 被补偿删除。
+
+## 验收边界
+
+实施提交、逐页来源图、浏览器叠图、iPhone 17 Pro 的真实 WKWebView 截图均保留。最终专项结果见 [专项验收记录](./cimoa-connection-core-acceptance.md)，以本轮报告为准。报告只覆盖三类实体与本次关联五页、既有入口依赖回归，不表示全 App 其他页面像素验收或真实支付/实时音视频服务已经完成。

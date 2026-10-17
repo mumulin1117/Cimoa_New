@@ -4,8 +4,10 @@
   "checks": [
     "Photo gallery owns the full viewport overlay outside the scrolling/clipped profile body",
     "Not Now preserves the same pending request and returns Home without a write",
+    "Accept storage failure preserves the complete pending request, consent, messages and balance; retry stays available",
     "Decline cancellation keeps pending; Accept writes after business Loading and creates one real conversation",
-    "Narrow iPhone width with real safe-area budget has no horizontal clipping"
+    "Narrow iPhone width with real safe-area budget has no horizontal clipping",
+    "Long names/300-character answers keep both decisions visible; forged request ID exposes no private content and Back restores Home"
   ],
   "geometry": {
     "header": {

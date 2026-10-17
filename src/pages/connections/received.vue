@@ -26,6 +26,7 @@ const access_error = computed(() => !store.session.is_authenticated ? 'Your sess
 const back = async () => { if (is_loading.value || navigating.value || sheet.value || decision.value) return; try { await frame.value.navigate_back('/pages/home/index') } catch (cause) { error.value = cause.message } }
 const resolve = async () => {
   if (!decision.value || is_loading.value || access_error.value) return
+  error.value = ''
   const next = decision.value; decision.value = ''; pending_action.value = next
   const operation_id = `request:${request_id.value}:${next}`
   const result = await run_with_loading(() => match_id.value ? store.respond_to_match(match_id.value, next === 'accept' ? 'accepted' : 'declined') : next === 'accept' ? store.accept_request(request_id.value, operation_id) : store.decline_request(request_id.value, operation_id))

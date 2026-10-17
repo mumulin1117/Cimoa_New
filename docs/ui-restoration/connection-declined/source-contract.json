@@ -24,8 +24,8 @@
   "entry_points": [
     "decline@5793"
   ],
-  "return_owner": "Completion clears to Discover",
-  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "return_owner": "Both visible completion actions → reLaunch /pages/discover/index; no synthetic Back into a handled request",
+  "fixed_regions": "TopSafeArea; fixed Back to Discover/View Other People; BottomSafeArea",
   "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
   "styles": [
     {

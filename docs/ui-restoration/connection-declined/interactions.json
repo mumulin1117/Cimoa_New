@@ -1,0 +1,26 @@
+[
+  {
+    "interaction_id": "reqDeclined.backToDiscover.click.1",
+    "source_screen": "reqDeclined; source-contract.json",
+    "trigger": "click / keyboard activation",
+    "preconditions": "this request/match is declined and belongs to this account",
+    "visible_feedback": "source cRise navigation or controlled UI; no navigation Loading",
+    "success_result": "reLaunch /pages/discover/index; closed request remains closed and no friendship is created",
+    "failure_result": "stay in the current valid context with readable error; cancellation, invalid identity, storage/media failure cause no partial write, no duplicate request/message or debit",
+    "persistence": "none; existing entity state is preserved",
+    "sync_scope": "Home / profile / request result / consent / unique conversation / unread / block filtering",
+    "acceptance": "source-default geometry plus browser-acceptance.json; two-account text/voice/decline/match integration; native pixel/voice/media/return regression in final report"
+  },
+  {
+    "interaction_id": "reqDeclined.backToDiscover.click.2",
+    "source_screen": "reqDeclined; source-contract.json",
+    "trigger": "click / keyboard activation",
+    "preconditions": "this request/match is declined and belongs to this account",
+    "visible_feedback": "source cRise navigation or controlled UI; no navigation Loading",
+    "success_result": "reLaunch /pages/discover/index; closed request remains closed and no friendship is created",
+    "failure_result": "stay in the current valid context with readable error; cancellation, invalid identity, storage/media failure cause no partial write, no duplicate request/message or debit",
+    "persistence": "none; existing entity state is preserved",
+    "sync_scope": "Home / profile / request result / consent / unique conversation / unread / block filtering",
+    "acceptance": "source-default geometry plus browser-acceptance.json; two-account text/voice/decline/match integration; native pixel/voice/media/return regression in final report"
+  }
+]

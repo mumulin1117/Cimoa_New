@@ -5,6 +5,30 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    private func installConnectionChatFixture(_ host: WebViewController) async throws {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: root.appendingPathComponent("docs/ui-restoration/connection-chat/native-fixture.json"))) as! [String: Any]
+        _ = try await host.webView.callAsyncJavaScript("const data=fixture.data,owner=data.session.current_user_id;for(const message of data.messages)if(message.conversation_id==='conversation_chloe'&&!message.read_by.includes(owner))message.read_by.push(owner);localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture], in: nil, contentWorld: .page)
+        let installed = try await script(host, "const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return {revision:'isolated-audio-v2',owner:data.session.current_user_id,conversation:!!data.conversations.find(row=>row.conversation_id==='conversation_chloe'),blocked:data.blocked_users.some(row=>row.user_id==='user_chloe')}")
+        try JSONSerialization.data(withJSONObject: installed, options: [.prettyPrinted,.sortedKeys]).write(to: root.appendingPathComponent("docs/evidence/connection-core/native-isolation.json"))
+    }
+    private func loadFreshConnection(_ host: WebViewController, route: String, selector: String) async throws {
+        _ = try await script(host, "window.__connectionRegressionOld=true;return true")
+        host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?connectionRegression=\(UUID().uuidString)#\(route)")!, cachePolicy: .reloadIgnoringLocalCacheData))
+        for _ in 0..<100 {
+            if (try? await script(host, "return !window.__connectionRegressionOld&&!!document.querySelector('\(selector)')")) as? Bool == true { return }
+            try await Task.sleep(nanoseconds: 100_000_000)
+        }
+        throw NSError(domain: "CimoaTests", code: 9, userInfo: [NSLocalizedDescriptionKey: "Fresh regression document unavailable"])
+    }
+    private func waitForPreparedAudio(_ host: WebViewController, selector: String) async throws {
+        for _ in 0..<100 {
+            if (try? await script(host, "const element=document.querySelector('\(selector)');return !!element&&element.getAttribute('aria-disabled')!=='true'")) as? Bool == true { return }
+            try await Task.sleep(nanoseconds: 30_000_000)
+        }
+        throw NSError(domain: "CimoaTests", code: 10, userInfo: [NSLocalizedDescriptionKey: "Audio is still preparing"])
+    }
     private func connectionPixel(_ page: String) async throws {
         let host = try await rawHost()
         let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
@@ -55,7 +79,7 @@ final class HostTests: XCTestCase {
             try JSONSerialization.data(withJSONObject: metrics, options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("wkwebview-geometry.json"))
             if page == "received" {
                 let gallery = try await script(host, """
-                document.querySelector('[data-interaction="reqReceived.openGallery.click.1"]').click();for(let i=0;i<80;i++){const panel=document.querySelector('.received-gallery .profile-photo[data-media-status="ready"]');if(panel){const layer=panel.closest('.event-dialog').getBoundingClientRect();document.querySelector('[data-interaction="reqReceived.gallery.close.click.2"]').click();return {height:layer.height,width:layer.width,viewport:innerHeight}}await new Promise(resolve=>setTimeout(resolve,30))}throw Error('Native gallery unavailable');
+                document.querySelector('[data-interaction="reqReceived.openGallery.click.1"]').click();for(let i=0;i<80;i++){const panel=document.querySelector('.received-gallery .profile-photo[data-media-status="ready"]'),dialog=panel?.closest('.event-dialog--open');if(dialog&&dialog.getBoundingClientRect().height>0){const layer=dialog.getBoundingClientRect();document.querySelector('[data-interaction="reqReceived.gallery.close.click.2"]').click();return {height:layer.height,width:layer.width,viewport:innerHeight}}await new Promise(resolve=>setTimeout(resolve,30))}throw Error('Native gallery unavailable');
                 """) as! [String: Double]
                 XCTAssertEqual(gallery["height"]!, gallery["viewport"]!, accuracy: 1)
             }
@@ -96,13 +120,18 @@ final class HostTests: XCTestCase {
             await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');t.objectStore('blobs').add(new Blob([buffer],{type:'audio/wav'}),fixture.media_id);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data:fixture.data}));return true
             """, arguments: ["fixture": fixture], in: nil, contentWorld: .page)
             await WKWebsiteDataStore.default().removeData(ofTypes: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache], modifiedSince: .distantPast)
-            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?voiceLifecycle=\(UUID().uuidString)#/pages/home/index")!, cachePolicy: .reloadIgnoringLocalCacheData))
-            try await waitFor(host, ".home-header")
+            try await loadFreshConnection(host, route: "/pages/home/index", selector: ".home-header")
+            _ = try await script(host, """
+            document.querySelector('[data-interaction="home.openJordan.click.1"]').click();for(let i=0;i<160;i++){const button=document.querySelector('.request-audio-play');if(button&&button.getAttribute('aria-disabled')!=='true')return true;await new Promise(resolve=>setTimeout(resolve,30))}throw Error('Request audio did not prepare');
+            """)
+            let introDuration = try await script(host, """
+            document.querySelector('.request-audio-play').click();for(let i=0;i<120;i++){const playing=document.querySelector('[aria-label="Pause voice introduction"]'),wave=document.querySelector('.request-audio-wave');if(playing&&Number(wave?.getAttribute('aria-valuenow'))>0){playing.click();return document.querySelector('.request-audio-duration').textContent}await new Promise(resolve=>setTimeout(resolve,30))}throw Error('Request audio did not play '+document.body.innerText);
+            """) as? String
+            XCTAssertEqual(introDuration, "0:02")
             let flow = try await script(host, """
-            const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),visible=selector=>[...document.querySelectorAll(selector)].find(el=>el.getBoundingClientRect().height>0&&getComputedStyle(el).display!=='none'),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),visible=selector=>[...document.querySelectorAll(selector)].find(el=>{const rect=el.getBoundingClientRect(),style=getComputedStyle(el);return rect.height>0&&style.display!=='none'&&style.visibility!=='hidden'&&rect.right>0&&rect.left<innerWidth}),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
             const wait=async(fn,label='')=>{for(let i=0;i<160;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Voice lifecycle timeout '+window.__voiceStage+' '+label+' '+location.hash+' '+document.body.innerText)};
             const assert=(ok,message)=>{if(!ok)throw Error(message)},click=async id=>{window.__voiceStage=id;const element=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(280);element.click();await delay(60)};
-            await click('home.openJordan.click.1');await wait(()=>visible('.request-audio-play'));await click('reqReceived.togglePlay.click.1');await wait(()=>visible('[aria-label="Pause voice introduction"]'));await wait(()=>Number(visible('.request-audio-wave').getAttribute('aria-valuenow'))>0);await click('reqReceived.togglePlay.click.1');
             const duration=visible('.request-audio-duration').textContent,beforeNotNow=localStorage.getItem('cimoa_app_state_v2');await click('reqReceived.notNow.click.1');await wait(()=>visible('.home-header'));assert(localStorage.getItem('cimoa_app_state_v2')===beforeNotNow,'Not Now modified the request');
             await click('home.openJordan.click.1');await wait(()=>visible('.request-audio-play'));await click('reqReceived.accept.click.1');await wait(()=>visible('.dialog__confirm'));const beforeAccept=localStorage.getItem('cimoa_app_state_v2');visible('.dialog__confirm').click();visible('.dialog__confirm')?.click();await delay(30);const loading=!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===beforeAccept;await wait(()=>visible('.connection-accepted-page'));
             await click('reqAccepted.startChat.click.1');await wait(()=>visible('.chat-composer'),'chat composer');await wait(()=>!visible('.event-loading'),'read loading hidden');
@@ -113,6 +142,7 @@ final class HostTests: XCTestCase {
             XCTAssertEqual(flow["loading"] as? Bool, true); XCTAssertEqual(flow["media_id"] as? String, mediaID); XCTAssertEqual(flow["duration"] as? String, "0:02")
             // A fresh WebKit evaluation preserves the deliberate activation
             // boundary; a click scheduled many async seconds ago is not a tap.
+            try await waitForPreparedAudio(host, selector: "[data-interaction=\"chat.media.play.click.1\"]")
             let firstPlayback = try await script(host, """
             document.querySelector('[data-interaction="chat.media.play.click.1"]').click();for(let i=0;i<100;i++){if(document.querySelector('[aria-label="Pause voice message"]')){window.__voiceOld=true;return true}await new Promise(resolve=>setTimeout(resolve,30))}throw Error('Native voice message did not start');
             """) as? Bool
@@ -122,6 +152,7 @@ final class HostTests: XCTestCase {
                 if (try? await script(host, "return !window.__voiceOld&&!!document.querySelector('.chat-composer')")) as? Bool == true { break }
                 try await Task.sleep(nanoseconds: 100_000_000)
             }
+            try await waitForPreparedAudio(host, selector: "[data-interaction=\"chat.media.play.click.1\"]")
             let restored = try await script(host, """
             const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),visible=s=>[...document.querySelectorAll(s)].find(el=>el.getBoundingClientRect().height>0),wait=async fn=>{for(let i=0;i<160;i++){if(fn())return;await delay(50)}throw Error('Restored audio failed '+document.body.innerText)};
             await wait(()=>visible('[data-interaction="chat.media.play.click.1"]'));visible('[data-interaction="chat.media.play.click.1"]').click();await wait(()=>visible('[aria-label="Pause voice message"]'));return {state:localStorage.getItem('cimoa_app_state_v2'),audio:true};
@@ -2147,7 +2178,8 @@ final class HostTests: XCTestCase {
             try await waitFor(host, ".home-header")
         }
         do {
-            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?safety=chat#/pages/messages/chat?conversation_id=conversation_chloe")!))
+            try await installConnectionChatFixture(host)
+            try await loadFreshConnection(host, route: "/pages/messages/chat?conversation_id=conversation_chloe", selector: ".chat-composer")
             try await waitFor(host, ".direct-chat-page")
             let media = try await script(host, """
             const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
@@ -2207,7 +2239,8 @@ final class HostTests: XCTestCase {
             try await waitFor(host, ".home-header")
         }
         do {
-            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?profileChat=connected#/pages/messages/chat?conversation_id=conversation_chloe")!))
+            try await installConnectionChatFixture(host)
+            try await loadFreshConnection(host, route: "/pages/messages/chat?conversation_id=conversation_chloe", selector: ".chat-composer")
             try await waitFor(host, ".direct-chat-page")
             let result = try await script(host, """
             const delay=ms=>new Promise(r=>setTimeout(r,ms));

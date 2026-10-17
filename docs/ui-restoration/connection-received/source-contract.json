@@ -19,14 +19,15 @@
   },
   "route": "/pages/connections/received",
   "parameters": [
-    "request_id"
+    "request_id",
+    "match_id (mutually exclusive)"
   ],
   "entry_points": [
     "openJordan@5250",
     "openIncoming@5814"
   ],
-  "return_owner": "Pop exact origin; direct entry fallback Home",
-  "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
+  "return_owner": "pop exact origin instance; direct entry fallback replace /pages/home/index; gallery/menu/confirm close restores same request and photo index",
+  "fixed_regions": "TopSafeArea; compact source request header; fixed answer/Not Now/Accept; BottomSafeArea",
   "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
   "styles": [
     {
@@ -782,7 +783,18 @@
     "reqReceived.togglePlay.click.1",
     "reqReceived.seekLiam.click.1",
     "reqReceived.notNow.click.1",
-    "reqReceived.accept.click.1"
+    "reqReceived.accept.click.1",
+    "reqReceived.openDecline.click.1",
+    "reqReceived.openGallery.click.1",
+    "reqReceived.gallery.close.click.1",
+    "reqReceived.gallery.close.click.2",
+    "sheetSafetyMini.closeSheet.click.1",
+    "sheetSafetyMini.closeSheet.click.2",
+    "sheetBlock.closeSheet.click.1",
+    "sheetBlock.closeSheet.click.2",
+    "sheetSafetyMini.openReport.click.1",
+    "sheetSafetyMini.openBlock.click.1",
+    "sheetBlock.confirmBlock.click.1"
   ],
   "approved_deltas": [
     "Cimoa branding and unified actual participant IDs",

@@ -2,21 +2,24 @@
   "source_lock": "locked",
   "visual_acceptance": "passed",
   "local_acceptance": "passed",
-  "full_acceptance": "pending",
+  "full_acceptance": "passed",
   "browser": "browser-acceptance.json",
   "wkwebview": {
     "result": "passed",
     "device": "iPhone 17 Pro",
     "os": "26.5",
-    "geometry": "wkwebview-geometry.json"
+    "geometry": "wkwebview-geometry.json",
+    "result_bundle": "/tmp/cimoa-connection-core-pause-final.xcresult",
+    "final_suite": "../../evidence/connection-core/native-test-summary.json"
   },
   "visual_review": "Source AST reference, actual, overlay and diff inspected; original regions/copy/resources restored with approved entity and system safe-area deltas.",
-  "deferred": [
-    "complete cross-page/media regression after sequential page restoration"
-  ],
+  "deferred": [],
   "gates": [
     "check:conventions passed without warning",
     "git diff --check passed",
     "build:h5 passed"
-  ]
+  ],
+  "interaction_contract": "interactions.json",
+  "full_regression": "../../evidence/connection-core/final-acceptance.json",
+  "local_commit": "Final media/cancellation/region fixes are awaiting the task specialty commit; inventory remains pending until that commit is recorded."
 }

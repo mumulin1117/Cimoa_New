@@ -1,34 +1,43 @@
 <script setup>
 import { ref, watch, onUnmounted } from 'vue'
-import { onHide } from '@dcloudio/uni-app'
-import { acquire_audio_media } from '@/utils/mediaRepository.js'
+import { onHide, onShow } from '@dcloudio/uni-app'
+import { create_audio_playback } from '@/utils/audioPlayback.js'
 import SourceIcon from './SourceIcon.vue'
 const props = defineProps({ src: String, duration: Number, interaction: { type: String, default: 'eventGroup.media.play.click.1' } })
 const error = ref(''), playing = ref(false), pending = ref(false)
-let audio, handle, token = 0
-const dispose = () => { token++; audio?.stop(); audio?.destroy(); audio = null; handle?.release(); handle = null; playing.value = false; pending.value = false }
-watch(() => props.src, dispose); onHide(dispose); onUnmounted(dispose)
-const toggle = async () => {
-  if (pending.value) return
-  if (playing.value) { audio.pause(); return }
+let audio, token = 0
+const dispose = () => { token++; audio?.destroy(); audio = null; playing.value = false; pending.value = false }
+const prepare = async () => {
+  if (audio || pending.value) return
   const current = ++token; pending.value = true; error.value = ''
   try {
-    if (!audio) {
-      const acquired = await acquire_audio_media(props.src)
-      if (current !== token) { acquired.release(); return }
-      handle = acquired; audio = uni.createInnerAudioContext(); audio.src = handle.url
-      audio.onPlay(() => { playing.value = true; pending.value = false }); audio.onPause(() => { playing.value = false }); audio.onEnded(() => { playing.value = false })
-      audio.onError(() => { dispose(); error.value = 'This audio could not be played. Please retry.' })
-    }
-    audio.play()
-  } catch (cause) { if (current === token) { dispose(); error.value = cause.message } }
+    const player = await create_audio_playback(props.src, { play: () => { if (current === token) playing.value = true }, pause: () => { if (current === token) playing.value = false }, ended: () => { if (current === token) playing.value = false }, error: message => { if (current === token) { playing.value = false; pending.value = false; error.value = message } } })
+    if (current !== token) { player.destroy(); return }
+    audio = player
+  } catch (cause) { if (current === token) error.value = cause.message }
+  finally { if (current === token) pending.value = false }
+}
+watch(() => props.src, () => { dispose(); prepare() }, { immediate: true }); onShow(prepare); onHide(dispose); onUnmounted(dispose)
+const toggle = async () => {
+  if (pending.value) return
+  if (!audio) { await prepare(); return }
+  if (playing.value) { audio.pause(); return }
+  const current = token; error.value = ''; pending.value = true
+  try { await audio.play() } catch (cause) { if (current === token) { playing.value = false; error.value = cause.message } }
   finally { if (current === token) pending.value = false }
 }
 </script>
 <template><view class="event-audio"><view class="event-audio-button" role="button" tabindex="0" :aria-label="playing ? 'Pause voice message' : 'Play voice message'" :aria-disabled="pending" :data-interaction="interaction" @click="toggle" @keydown.enter="toggle"><view class="event-page-icon"><SourceIcon :name="playing ? 'pause' : 'play'" /></view><text>{{ pending ? 'Loading audio…' : `${Math.ceil((duration || 0) / 1000)}s voice message` }}</text></view><text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text></view></template>
 
 <style scoped>
-.event-audio-button { display: flex; align-items: center; gap: 15.267rpx; padding: 7.634rpx 0; font-size: 28.626rpx; cursor: pointer; }
+.event-audio-button {
+  display: flex;
+  align-items: center;
+  gap: 15.267rpx;
+  padding: 7.634rpx 0;
+  font-size: 28.626rpx;
+  cursor: pointer;
+}
 .event-page-icon { flex: none; display: flex; width: 41.985rpx; height: 41.985rpx; }
 .event-dialog-error { display: block; margin-top: 11.45rpx; color: var(--cimoa-status-danger); font-size: 24.809rpx; line-height: 1.4; }
 </style>

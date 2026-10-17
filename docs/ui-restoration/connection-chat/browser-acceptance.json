@@ -3,7 +3,8 @@
   "result": "passed",
   "checks": [
     "Source header/composer/icons/message geometry; real send→refresh, same profile Chat CTA and waiting-call return",
-    "Narrow iPhone width with real safe-area budget has no horizontal clipping"
+    "Narrow iPhone width with real safe-area budget has no horizontal clipping",
+    "Keyboard-height viewport keeps the composer above the keyboard without a second bottom safe area"
   ],
   "geometry": {
     "header": {
@@ -24,7 +25,7 @@
     "question": null,
     "answer": null,
     "photo": null,
-    "text": "Chloe\nConnected\nToday, 1:58 PM\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\nThe garden near the library is underrated.\nTomorrow after class?\nI’m in ✨\nMessage Chloe"
+    "text": "Chloe\nConnected\nToday, 2:35 PM\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\nThe garden near the library is underrated.\nTomorrow after class?\nI’m in ✨\nMessage Chloe"
   },
   "errors": [],
   "reference": "Offline HTML AST, original inline styles, no prototype script/runtime",
@@ -32,9 +33,9 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 94037,
-    "pixels_above_channel_delta_8": 9430,
-    "mean_absolute_channel_delta": 0.8209444324982976,
+    "pixels_different": 94048,
+    "pixels_above_channel_delta_8": 9419,
+    "mean_absolute_channel_delta": 0.8214133187590342,
     "max_channel_delta": 228
   },
   "cleaned_up": true

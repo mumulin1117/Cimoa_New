@@ -19,13 +19,14 @@
   },
   "route": "/pages/connections/accepted",
   "parameters": [
-    "request_id"
+    "request_id",
+    "match_id (mutually exclusive)"
   ],
   "entry_points": [
     "accept@5015"
   ],
-  "return_owner": "Close clears to Home; Chat/Profile push correct entity; pop restores result",
-  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "return_owner": "Close → reLaunch Home; Chat/Profile push with exact current connection generation, their Back restores this accepted result",
+  "fixed_regions": "TopSafeArea; source Close; fixed Start Chatting/View Profile; BottomSafeArea",
   "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
   "styles": [
     {

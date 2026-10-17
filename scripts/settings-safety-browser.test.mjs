@@ -320,6 +320,7 @@ try {
     check('Controlled real audio records, decodes, saves once, and plays from IndexedDB after direct-chat refresh')
 
     await page.setViewportSize({ width: 320, height: 568 })
+    await page.waitForFunction(() => { const composer = document.querySelector('.chat-composer')?.getBoundingClientRect(); return composer && composer.bottom <= innerHeight })
     const composer = await page.locator('.chat-composer').boundingBox()
     assert.ok(composer.y + composer.height <= 568)
     assert.equal(await page.locator('.secondary-page-scroll .uni-scroll-view').last().evaluate(element => element.scrollHeight > element.clientHeight), true)

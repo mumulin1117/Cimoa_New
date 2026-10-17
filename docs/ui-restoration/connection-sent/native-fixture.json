@@ -3,7 +3,7 @@
   "data": {
     "schema_version": 2,
     "revision": 0,
-    "updated_at": 1792216093234,
+    "updated_at": 1792219207345,
     "environment": "fixture",
     "accounts": [
       {
@@ -18,7 +18,7 @@
     "session": {
       "account_id": "account_cimoa",
       "current_user_id": "user_cimoa",
-      "expires_at": 1794808093234
+      "expires_at": 1794811207345
     },
     "users": [
       {
@@ -3160,7 +3160,7 @@
         "text": "A long walk and coffee by the sea.",
         "audio_id": null,
         "status": "pending",
-        "created_at": 1792216092235,
+        "created_at": 1792219206347,
         "resolved_at": null
       }
     ],
@@ -3170,9 +3170,9 @@
         "owner_user_id": "user_cimoa",
         "candidate_id": "user_liam",
         "status": "found",
-        "created_at": 1792216093234,
-        "started_at": 1792216093234,
-        "expires_at": 1792216138234,
+        "created_at": 1792219207345,
+        "started_at": 1792219207345,
+        "expires_at": 1792219252345,
         "priority_until": null,
         "paused_at": null,
         "self_accepted": false,
@@ -3762,196 +3762,196 @@
         "event_id": "event_picnic",
         "user_id": "user_chloe",
         "status": "joined",
-        "joined_at": 1792129693234
+        "joined_at": 1792132807345
       },
       {
         "membership_id": "member_picnic_user_alex",
         "event_id": "event_picnic",
         "user_id": "user_alex",
         "status": "joined",
-        "joined_at": 1792129693234
+        "joined_at": 1792132807345
       },
       {
         "membership_id": "member_picnic_user_zoe",
         "event_id": "event_picnic",
         "user_id": "user_zoe",
         "status": "joined",
-        "joined_at": 1792129693234
+        "joined_at": 1792132807345
       },
       {
         "membership_id": "member_badminton_user_alex",
         "event_id": "event_badminton",
         "user_id": "user_alex",
         "status": "joined",
-        "joined_at": 1792216093234
+        "joined_at": 1792219207345
       },
       {
         "membership_id": "member_badminton_user_zoe",
         "event_id": "event_badminton",
         "user_id": "user_zoe",
         "status": "joined",
-        "joined_at": 1792216093234
+        "joined_at": 1792219207345
       },
       {
         "membership_id": "member_catalog_user_noah",
         "event_id": "event_sketch",
         "user_id": "user_noah",
         "status": "joined",
-        "joined_at": 1792212493234
+        "joined_at": 1792215607345
       },
       {
         "membership_id": "member_catalog_user_sophie",
         "event_id": "event_photowalk",
         "user_id": "user_sophie",
         "status": "joined",
-        "joined_at": 1792208893234
+        "joined_at": 1792212007345
       },
       {
         "membership_id": "member_catalog_user_ella",
         "event_id": "event_language",
         "user_id": "user_ella",
         "status": "joined",
-        "joined_at": 1792205293234
+        "joined_at": 1792208407345
       },
       {
         "membership_id": "member_catalog_user_oliver",
         "event_id": "event_mic",
         "user_id": "user_oliver",
         "status": "joined",
-        "joined_at": 1792201693234
+        "joined_at": 1792204807345
       },
       {
         "membership_id": "member_catalog_user_grace",
         "event_id": "event_yoga",
         "user_id": "user_grace",
         "status": "joined",
-        "joined_at": 1792198093234
+        "joined_at": 1792201207345
       },
       {
         "membership_id": "member_catalog_user_lucas",
         "event_id": "event_games",
         "user_id": "user_lucas",
         "status": "joined",
-        "joined_at": 1792194493234
+        "joined_at": 1792197607345
       },
       {
         "membership_id": "member_catalog_user_jack",
         "event_id": "event_hike",
         "user_id": "user_jack",
         "status": "joined",
-        "joined_at": 1792190893234
+        "joined_at": 1792194007345
       },
       {
         "membership_id": "member_catalog_user_amelia",
         "event_id": "event_film",
         "user_id": "user_amelia",
         "status": "joined",
-        "joined_at": 1792187293234
+        "joined_at": 1792190407345
       },
       {
         "membership_id": "member_catalog_user_lily",
         "event_id": "event_dumpling",
         "user_id": "user_lily",
         "status": "joined",
-        "joined_at": 1792183693234
+        "joined_at": 1792186807345
       },
       {
         "membership_id": "member_catalog_user_mia",
         "event_id": "event_run",
         "user_id": "user_mia",
         "status": "joined",
-        "joined_at": 1792180093234
+        "joined_at": 1792183207345
       },
       {
         "membership_id": "member_catalog_user_isla",
         "event_id": "event_sketch",
         "user_id": "user_isla",
         "status": "joined",
-        "joined_at": 1792176493234
+        "joined_at": 1792179607345
       },
       {
         "membership_id": "member_catalog_user_henry",
         "event_id": "event_photowalk",
         "user_id": "user_henry",
         "status": "joined",
-        "joined_at": 1792172893234
+        "joined_at": 1792176007345
       },
       {
         "membership_id": "member_catalog_user_theo",
         "event_id": "event_language",
         "user_id": "user_theo",
         "status": "joined",
-        "joined_at": 1792169293234
+        "joined_at": 1792172407345
       },
       {
         "membership_id": "member_catalog_user_finn",
         "event_id": "event_mic",
         "user_id": "user_finn",
         "status": "joined",
-        "joined_at": 1792165693234
+        "joined_at": 1792168807345
       },
       {
         "membership_id": "member_catalog_user_leo",
         "event_id": "event_yoga",
         "user_id": "user_leo",
         "status": "joined",
-        "joined_at": 1792162093234
+        "joined_at": 1792165207345
       },
       {
         "membership_id": "member_catalog_user_ava",
         "event_id": "event_games",
         "user_id": "user_ava",
         "status": "joined",
-        "joined_at": 1792158493234
+        "joined_at": 1792161607345
       },
       {
         "membership_id": "member_catalog_user_archie",
         "event_id": "event_hike",
         "user_id": "user_archie",
         "status": "joined",
-        "joined_at": 1792154893234
+        "joined_at": 1792158007345
       },
       {
         "membership_id": "member_catalog_user_ruby",
         "event_id": "event_film",
         "user_id": "user_ruby",
         "status": "joined",
-        "joined_at": 1792151293234
+        "joined_at": 1792154407345
       },
       {
         "membership_id": "member_catalog_user_freya",
         "event_id": "event_dumpling",
         "user_id": "user_freya",
         "status": "joined",
-        "joined_at": 1792147693234
+        "joined_at": 1792150807345
       },
       {
         "membership_id": "member_catalog_user_alice",
         "event_id": "event_run",
         "user_id": "user_alice",
         "status": "joined",
-        "joined_at": 1792144093234
+        "joined_at": 1792147207345
       },
       {
         "membership_id": "member_catalog_user_daisy",
         "event_id": "event_sketch",
         "user_id": "user_daisy",
         "status": "joined",
-        "joined_at": 1792140493234
+        "joined_at": 1792143607345
       },
       {
         "membership_id": "member_catalog_user_oscar",
         "event_id": "event_photowalk",
         "user_id": "user_oscar",
         "status": "joined",
-        "joined_at": 1792136893234
+        "joined_at": 1792140007345
       },
       {
         "membership_id": "member_catalog_user_max",
         "event_id": "event_language",
         "user_id": "user_max",
         "status": "joined",
-        "joined_at": 1792133293234
+        "joined_at": 1792136407345
       }
     ],
     "organizers": [
@@ -4045,7 +4045,7 @@
         "amount": 300,
         "kind": "purchase",
         "status": "completed",
-        "created_at": 1791870493234,
+        "created_at": 1791873607345,
         "related_id": null,
         "fixture": true
       },
@@ -4056,7 +4056,7 @@
         "amount": -20,
         "kind": "spend",
         "status": "completed",
-        "created_at": 1791956893234,
+        "created_at": 1791960007345,
         "related_id": null,
         "fixture": true
       },
@@ -4067,7 +4067,7 @@
         "amount": -10,
         "kind": "spend",
         "status": "completed",
-        "created_at": 1792043293234,
+        "created_at": 1792046407345,
         "related_id": null,
         "fixture": true
       },
@@ -4078,7 +4078,7 @@
         "amount": -10,
         "kind": "spend",
         "status": "completed",
-        "created_at": 1792129693234,
+        "created_at": 1792132807345,
         "related_id": null,
         "fixture": true
       }
@@ -4089,7 +4089,7 @@
         "block_id": "block_jordan",
         "owner_user_id": "user_cimoa",
         "user_id": "user_jordan",
-        "created_at": 1792216093234
+        "created_at": 1792219207345
       }
     ],
     "reports": [],
