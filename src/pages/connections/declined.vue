@@ -34,7 +34,7 @@ const discover = async () => { try { await frame.value.navigate_relaunch('/pages
   height: 167.939rpx;
   border-radius: 50%;
   background: var(--cimoa-surface-connection-waiting);
-  color: var(--cimoa-text-auth-muted);
+  color: var(--cimoa-text-connection-audio);
 }
 .declined-icon > view { width: 68.702rpx; height: 68.702rpx; }
 .declined-title { font-size: 57.252rpx; font-weight: 800; letter-spacing: -.035em; text-align: center; }

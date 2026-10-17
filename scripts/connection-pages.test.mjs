@@ -83,6 +83,8 @@ try {
   if (phase === 'received') {
     assert.ok(close_to(report.geometry.header.y, 58)); assert.ok(close_to(report.geometry.photo.y, 118)); assert.ok(close_to(report.geometry.photo.width, 353)); assert.ok(close_to(report.geometry.photo.height, 353 * 4 / 3))
     const saved = () => page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data)
+    await page.locator('[data-interaction="reqReceived.openGallery.click.1"]').click(); const gallery = page.getByRole('dialog', { name: 'Lina photo gallery' }); await gallery.waitFor(); await gallery.locator('.profile-photo[data-media-status="ready"]').waitFor(); const mask = await gallery.locator('..').boundingBox(); assert.ok(close_to(mask.height, 852)); await gallery.getByRole('button', { name: 'Close', exact: true }).click(); await gallery.waitFor({ state: 'hidden' })
+    check('Photo gallery owns the full viewport overlay outside the scrolling/clipped profile body')
     await page.locator('[data-interaction="reqReceived.notNow.click.1"]').click(); await page.locator('.home-header').waitFor(); assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending')
     check('Not Now preserves the same pending request and returns Home without a write')
     await open(route); await page.locator('[data-interaction="reqReceived.openReqMenu.click.1"]').click(); await page.locator('[data-interaction="reqReceived.openDecline.click.1"]').click(); await page.locator('.dialog__cancel').click(); assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending')
@@ -118,6 +120,9 @@ try {
   await page.setViewportSize({ width: 320, height: 568 }); await open(route); await set_safe_area(page, 62, 34); await page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {}))))
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true)
   await page.screenshot({ path: path.join(output, 'actual-browser-small.png') }); check('Narrow iPhone width with real safe-area budget has no horizontal clipping')
+  if (phase === 'chat') {
+    await page.locator('uni-input[aria-label="Message"] input').focus(); await page.setViewportSize({ width: 320, height: 360 }); await page.waitForFunction(() => document.querySelector('.direct-chat-page')?.classList.contains('direct-chat-page--keyboard')); const composer = await page.locator('.chat-composer').boundingBox(); assert.ok(composer.y + composer.height <= 360); await page.screenshot({ path: path.join(output, 'actual-browser-keyboard.png') }); check('Keyboard-height viewport keeps the composer above the keyboard without a second bottom safe area')
+  }
   await context.close(); assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.errors.push(error.stack || error.message); throw error }
 finally { await browser?.close(); await server?.close(); report.cleaned_up = true; fs.writeFileSync(path.join(output, 'browser-acceptance.json'), JSON.stringify(report, null, 2) + '\n') }

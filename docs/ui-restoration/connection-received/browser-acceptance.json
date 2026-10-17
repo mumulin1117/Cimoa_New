@@ -2,6 +2,7 @@
   "page": "received",
   "result": "passed",
   "checks": [
+    "Photo gallery owns the full viewport overlay outside the scrolling/clipped profile body",
     "Not Now preserves the same pending request and returns Home without a write",
     "Decline cancellation keeps pending; Accept writes after business Loading and creates one real conversation",
     "Narrow iPhone width with real safe-area budget has no horizontal clipping"
@@ -33,9 +34,9 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 197506,
-    "pixels_above_channel_delta_8": 28536,
-    "mean_absolute_channel_delta": 1.8634816746108542,
+    "pixels_different": 196955,
+    "pixels_above_channel_delta_8": 28516,
+    "mean_absolute_channel_delta": 1.8575235339091376,
     "max_channel_delta": 219
   },
   "cleaned_up": true

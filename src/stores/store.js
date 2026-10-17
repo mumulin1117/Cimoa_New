@@ -394,19 +394,25 @@ export const use_app_store = defineStore('app', {
         data.auth_flow.step = 'signup'
       }, { public: true })
     },
-    async save_media(blob, kind, duration_ms = 0) {
+    async save_media(blob, kind, duration_ms = 0, { is_current = () => true } = {}) {
       const owner = s.owner_id(this.data), media_id = make_id('media'), rt = get_runtime(this)
+      let wrote_blob = false, published = false
       try {
+        if (!is_current()) return failure('cancelled', 'Media save was cancelled.')
         s.ensure(this.session.is_authenticated, 'Please log in again.')
         s.ensure(['image', 'audio'].includes(kind) && blob instanceof Blob && blob.size > 0 && blob.size <= 20 * 1024 * 1024 && blob.type.startsWith(`${kind}/`), 'Choose a supported file smaller than 20 MB.')
         const decoded = await rt.inspect_media(blob, kind)
+        if (!is_current()) return failure('cancelled', 'Media save was cancelled.')
         duration_ms = decoded.duration_ms
         s.ensure(kind !== 'audio' || Number.isFinite(duration_ms) && duration_ms > 0, 'Record a playable voice note first.')
         await rt.media.put(media_id, blob)
+        wrote_blob = true
+        if (!is_current()) return failure('cancelled', 'Media save was cancelled.')
         const result = transact(this, null, (data) => { const row = { media_id, owner_user_id: owner, kind, media_url: `indexeddb://${media_id}`, mime: blob.type, duration_ms, byte_size: blob.size }; data.media_files.push(row); return row }, { expected_owner: owner })
-        if (!result.success) { await rt.media.delete(media_id); return result }
+        published = result.success
         return result
       } catch (error) { return failure('media_failed', error.message || 'Media could not be saved.') }
+      finally { if (wrote_blob && !published) { try { await rt.media.delete(media_id) } catch { this.last_error = 'Media was not published; temporary media cleanup failed. Retry storage when available.' } } }
     },
     async discard_media(id) {
       const owner = s.owner_id(this.data), rt = get_runtime(this)
@@ -436,9 +442,11 @@ export const use_app_store = defineStore('app', {
         }, { expected_owner: owner })
       } catch (error) { return failure('media_failed', error.message) }
     },
-    async send_introduction({ user_id, question_id, kind = 'text', text = '', audio_id = null, operation_id, draft_id = null }) {
+    async send_introduction({ user_id, question_id, kind = 'text', text = '', audio_id = null, operation_id, draft_id = null }, { is_current = () => true } = {}) {
       const owner = s.owner_id(this.data)
+      if (!is_current()) return failure('cancelled', 'Introduction was cancelled.')
       try { if (kind === 'voice') await check_media(this, audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
+      if (!is_current()) return failure('cancelled', 'Introduction was cancelled.')
       return transact(this, operation(operation_id, 'introduction', [user_id, question_id, kind, text, audio_id, draft_id]), (data, now) => {
         const blocker = s.introduction_blocker(data, user_id, now)
         s.ensure(!blocker, blocker)
@@ -456,13 +464,15 @@ export const use_app_store = defineStore('app', {
         return request_id
       }, { expected_owner: owner })
     },
-    async complete_coin_spend(context_id) {
+    async complete_coin_spend(context_id, { is_current = () => true } = {}) {
       const owner = s.owner_id(this.data)
       const context = this.data.drafts.find((row) => row.draft_id === context_id && row.owner_user_id === owner && row.kind === 'coin_spend')
       if (!context) return failure('operation_unavailable', 'This coin operation is unavailable. No coins were deducted.')
       const payload = clone_data(context.payload || {})
       if (!['voice_introduction', 'priority_match'].includes(payload.kind)) return failure('operation_invalid', 'This coin operation is invalid. No coins were deducted.')
+      if (!is_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
       try { if (payload.kind === 'voice_introduction') await check_media(this, payload.audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
+      if (!is_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
       return transact(this, operation(payload.operation_id, 'coin-spend', [context_id, payload]), (data, now) => {
         const current = require_owned(data, data.drafts, 'draft_id', context_id)
         s.ensure(current.kind === 'coin_spend', 'This coin operation is unavailable.')
@@ -494,6 +504,7 @@ export const use_app_store = defineStore('app', {
         s.ensure((decision === 'cancelled' ? row.sender_id : row.recipient_id) === s.owner_id(data), 'You cannot change this request.')
         require_target(data, row.sender_id === s.owner_id(data) ? row.recipient_id : row.sender_id)
         s.ensure(decision !== 'accepted' || s.social_eligible(data) && s.social_eligible(data, row.sender_id), 'Complete account verification and profile setup first.')
+        s.ensure(decision !== 'accepted' || !s.connected(data, row.sender_id), 'You are already connected.')
         row.status = decision; row.resolved_at = now
         if (decision !== 'accepted') return id
         const conversation_id = connect_users(data, row.sender_id, now, { request_id: id })
@@ -528,7 +539,7 @@ export const use_app_store = defineStore('app', {
         if (row.engine === 'device' && status === 'paused') row.search_remaining_ms = Math.max(0, row.search_ready_at - now)
         if (row.engine === 'device' && row.status === 'paused' && status === 'searching') { row.search_ready_at = now + row.search_remaining_ms; row.expires_at = row.candidate_id ? row.search_ready_at + 45000 : null }
         row.status = status; row.paused_at = status === 'paused' ? now : null
-        if (status === 'waiting') { require_target(data, row.candidate_id); s.ensure(s.match_visible(data, row.candidate_id) && s.social_eligible(data, row.candidate_id) && !s.connected(data, row.candidate_id), 'This person is no longer available for a new match.'); s.ensure(!data.requests.some(request => request.status === 'pending' && [request.sender_id, request.recipient_id].includes(s.owner_id(data)) && [request.sender_id, request.recipient_id].includes(row.candidate_id)), 'An introduction is already pending.'); row.self_accepted = true }
+        if (status === 'waiting') { require_student(data); require_target(data, row.candidate_id); s.ensure(s.match_visible(data, row.candidate_id) && s.social_eligible(data, row.candidate_id) && !s.connected(data, row.candidate_id), 'This person is no longer available for a new match.'); s.ensure(!data.requests.some(request => request.status === 'pending' && [request.sender_id, request.recipient_id].includes(s.owner_id(data)) && [request.sender_id, request.recipient_id].includes(row.candidate_id)), 'An introduction is already pending.'); row.self_accepted = true }
         return id
       })
     },
@@ -537,7 +548,7 @@ export const use_app_store = defineStore('app', {
         const row = data.match_sessions.find(match => match.match_id === id && match.candidate_id === s.owner_id(data))
         s.ensure(row?.status === 'waiting' && row.self_accepted && ['accepted', 'declined'].includes(decision), 'This match invitation is no longer available.')
         require_target(data, row.owner_user_id)
-        s.ensure(s.social_eligible(data), 'Complete account verification and profile setup first.')
+        s.ensure(decision !== 'accepted' || s.social_eligible(data) && s.social_eligible(data, row.owner_user_id), 'Both profiles must be available for a new connection.')
         row.status = decision === 'accepted' ? 'connected' : 'passed'
         row.peer_accepted = decision === 'accepted'; row.resolved_at = now
         return decision === 'accepted' ? connect_users(data, row.owner_user_id, now, { match_id: id }) : id
@@ -555,7 +566,7 @@ export const use_app_store = defineStore('app', {
           row.queue_position = event.queue_position; row.estimated_wait_seconds = event.estimated_wait_seconds ?? null
         }
         else if (event.type === 'found') { s.ensure(row.status === 'searching' && s.match_visible(data, event.user_id), 'This person is unavailable for Auto Match.'); require_target(data, event.user_id); row.candidate_id = event.user_id; row.status = 'found'; row.expires_at = now + 45000 }
-        else if (event.type === 'accepted') { s.ensure(row.status === 'waiting' && row.self_accepted && row.candidate_id === event.user_id, 'The candidate does not match.'); require_target(data, event.user_id); row.peer_accepted = true; row.status = 'connected'; row.resolved_at = now; connect_users(data, event.user_id, now, { match_id: row.match_id }) }
+        else if (event.type === 'accepted') { s.ensure(row.status === 'waiting' && row.self_accepted && row.candidate_id === event.user_id, 'The candidate does not match.'); require_student(data); require_target(data, event.user_id); s.ensure(s.social_eligible(data, event.user_id), 'This person is not available for a new connection.'); row.peer_accepted = true; row.status = 'connected'; row.resolved_at = now; connect_users(data, event.user_id, now, { match_id: row.match_id }) }
         else { s.ensure(event.type === 'no_match' && row.status === 'searching', 'Invalid queue event.'); row.status = 'no_match' }
       }, { expected_owner: owner })
     },

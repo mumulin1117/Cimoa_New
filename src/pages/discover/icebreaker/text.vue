@@ -19,7 +19,7 @@ const open_result = async request_id => { navigating.value = true; try { await f
 const send = async () => {
   if (is_loading.value || navigating.value || access_error.value) return
   if (!reply.value.trim()) { error.value = 'Write an introduction first.'; return }
-  const result = await run_with_loading(() => store.send_introduction({ user_id: user_id.value, question_id: question.value.question_id, kind: 'text', text: reply.value, operation_id: draft.value.payload.operation_id, draft_id: draft_id.value }))
+  const result = await run_with_loading(scope => store.send_introduction({ user_id: user_id.value, question_id: question.value.question_id, kind: 'text', text: reply.value, operation_id: draft.value.payload.operation_id, draft_id: draft_id.value }, scope))
   if (result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
   await open_result(result.data)

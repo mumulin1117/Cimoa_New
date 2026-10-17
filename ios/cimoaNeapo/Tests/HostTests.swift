@@ -53,6 +53,12 @@ final class HostTests: XCTestCase {
             try snapshot.pngData()!.write(to: output.appendingPathComponent("actual-wkwebview.png"))
             let attachment = XCTAttachment(image: snapshot); attachment.name = "Connection \(page) real WKWebView"; attachment.lifetime = .keepAlways; add(attachment)
             try JSONSerialization.data(withJSONObject: metrics, options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("wkwebview-geometry.json"))
+            if page == "received" {
+                let gallery = try await script(host, """
+                document.querySelector('[data-interaction="reqReceived.openGallery.click.1"]').click();for(let i=0;i<80;i++){const panel=document.querySelector('.received-gallery .profile-photo[data-media-status="ready"]');if(panel){const layer=panel.closest('.event-dialog').getBoundingClientRect();document.querySelector('[data-interaction="reqReceived.gallery.close.click.2"]').click();return {height:layer.height,width:layer.width,viewport:innerHeight}}await new Promise(resolve=>setTimeout(resolve,30))}throw Error('Native gallery unavailable');
+                """) as! [String: Double]
+                XCTAssertEqual(gallery["height"]!, gallery["viewport"]!, accuracy: 1)
+            }
             try await restore()
         } catch {
             let details = try? await script(host, "return {url:location.href,text:document.body.innerText,html:document.body.innerHTML.slice(0,10000),errors:performance.getEntriesByType('resource').filter(r=>r.responseStatus>=400).map(r=>r.name)}")
@@ -66,6 +72,72 @@ final class HostTests: XCTestCase {
     func testConnectionAcceptedPixel() async throws { try await connectionPixel("accepted") }
     func testConnectionDeclinedPixel() async throws { try await connectionPixel("declined") }
     func testConnectionChatPixel() async throws { try await connectionPixel("chat") }
+    func testConnectionVoiceLifecycleInRealWebKit() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let output = root.appendingPathComponent("docs/evidence/connection-core")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: output.appendingPathComponent("native-lifecycle-fixture.json"))) as! [String: Any]
+        let mediaID = fixture["media_id"] as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("""
+            const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});
+            await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');t.objectStore('blobs').delete(mediaID);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();
+            if(snapshot===null)localStorage.removeItem('cimoa_app_state_v2');else localStorage.setItem('cimoa_app_state_v2',snapshot);return true
+            """, arguments: ["snapshot": saved, "mediaID": mediaID], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?voiceLifecycleRestored=\(UUID().uuidString)#/pages/auth/splash")!, cachePolicy: .reloadIgnoringLocalCacheData))
+        }
+        do {
+            _ = try await host.webView.callAsyncJavaScript("""
+            const buffer=new ArrayBuffer(48044),view=new DataView(buffer),write=(offset,text)=>[...text].forEach((char,index)=>view.setUint8(offset+index,char.charCodeAt(0)));
+            write(0,'RIFF');view.setUint32(4,48036,true);write(8,'WAVE');write(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,16000,true);view.setUint32(28,32000,true);view.setUint16(32,2,true);view.setUint16(34,16,true);write(36,'data');view.setUint32(40,48000,true);for(let i=0;i<24000;i++)view.setInt16(44+i*2,Math.sin(i*2*Math.PI*220/16000)*5000,true);
+            const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onupgradeneeded=()=>r.result.createObjectStore('blobs');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});
+            await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');t.objectStore('blobs').add(new Blob([buffer],{type:'audio/wav'}),fixture.media_id);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data:fixture.data}));return true
+            """, arguments: ["fixture": fixture], in: nil, contentWorld: .page)
+            await WKWebsiteDataStore.default().removeData(ofTypes: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache], modifiedSince: .distantPast)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?voiceLifecycle=\(UUID().uuidString)#/pages/home/index")!, cachePolicy: .reloadIgnoringLocalCacheData))
+            try await waitFor(host, ".home-header")
+            let flow = try await script(host, """
+            const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),visible=selector=>[...document.querySelectorAll(selector)].find(el=>el.getBoundingClientRect().height>0&&getComputedStyle(el).display!=='none'),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            const wait=async(fn,label='')=>{for(let i=0;i<160;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Voice lifecycle timeout '+window.__voiceStage+' '+label+' '+location.hash+' '+document.body.innerText)};
+            const assert=(ok,message)=>{if(!ok)throw Error(message)},click=async id=>{window.__voiceStage=id;const element=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(280);element.click();await delay(60)};
+            await click('home.openJordan.click.1');await wait(()=>visible('.request-audio-play'));await click('reqReceived.togglePlay.click.1');await wait(()=>visible('[aria-label="Pause voice introduction"]'));await wait(()=>Number(visible('.request-audio-wave').getAttribute('aria-valuenow'))>0);await click('reqReceived.togglePlay.click.1');
+            const duration=visible('.request-audio-duration').textContent,beforeNotNow=localStorage.getItem('cimoa_app_state_v2');await click('reqReceived.notNow.click.1');await wait(()=>visible('.home-header'));assert(localStorage.getItem('cimoa_app_state_v2')===beforeNotNow,'Not Now modified the request');
+            await click('home.openJordan.click.1');await wait(()=>visible('.request-audio-play'));await click('reqReceived.accept.click.1');await wait(()=>visible('.dialog__confirm'));const beforeAccept=localStorage.getItem('cimoa_app_state_v2');visible('.dialog__confirm').click();visible('.dialog__confirm')?.click();await delay(30);const loading=!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===beforeAccept;await wait(()=>visible('.connection-accepted-page'));
+            await click('reqAccepted.startChat.click.1');await wait(()=>visible('.chat-composer'),'chat composer');await wait(()=>!visible('.event-loading'),'read loading hidden');
+            const request=state().requests.find(row=>row.request_id==='request_native_voice'),conversation=state().conversations.find(row=>row.kind==='direct'&&row.participant_ids.includes('user_noah')),message=state().messages.find(row=>row.message_id==='introduction_request_native_voice');
+            assert(request.status==='accepted'&&message.kind==='audio'&&message.sender_id==='user_noah'&&message.media_id===request.audio_id,'Original voice/sender did not survive acceptance');assert(state().conversations.filter(row=>row.kind==='direct'&&row.participant_ids.includes('user_noah')).length===1,'Duplicate conversation');
+            return {duration,loading,conversation_id:conversation.conversation_id,media_id:message.media_id,state:localStorage.getItem('cimoa_app_state_v2'),header:visible('.chat-heading').textContent};
+            """) as! [String: Any]
+            XCTAssertEqual(flow["loading"] as? Bool, true); XCTAssertEqual(flow["media_id"] as? String, mediaID); XCTAssertEqual(flow["duration"] as? String, "0:02")
+            // A fresh WebKit evaluation preserves the deliberate activation
+            // boundary; a click scheduled many async seconds ago is not a tap.
+            let firstPlayback = try await script(host, """
+            document.querySelector('[data-interaction="chat.media.play.click.1"]').click();for(let i=0;i<100;i++){if(document.querySelector('[aria-label="Pause voice message"]')){window.__voiceOld=true;return true}await new Promise(resolve=>setTimeout(resolve,30))}throw Error('Native voice message did not start');
+            """) as? Bool
+            XCTAssertEqual(firstPlayback, true)
+            host.webView.reload()
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__voiceOld&&!!document.querySelector('.chat-composer')")) as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let restored = try await script(host, """
+            const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms)),visible=s=>[...document.querySelectorAll(s)].find(el=>el.getBoundingClientRect().height>0),wait=async fn=>{for(let i=0;i<160;i++){if(fn())return;await delay(50)}throw Error('Restored audio failed '+document.body.innerText)};
+            await wait(()=>visible('[data-interaction="chat.media.play.click.1"]'));visible('[data-interaction="chat.media.play.click.1"]').click();await wait(()=>visible('[aria-label="Pause voice message"]'));return {state:localStorage.getItem('cimoa_app_state_v2'),audio:true};
+            """) as! [String: Any]
+            XCTAssertEqual(restored["state"] as? String, flow["state"] as? String); XCTAssertEqual(restored["audio"] as? Bool, true)
+            let image = try await host.webView.takeSnapshot(configuration: nil)
+            try image.pngData()!.write(to: output.appendingPathComponent("actual-wkwebview-voice.png"))
+            var record = flow
+            record.removeValue(forKey: "state"); record["initial_audio_played"] = firstPlayback; record["refreshed_audio_played"] = restored["audio"]
+            try JSONSerialization.data(withJSONObject: record, options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("native-voice-lifecycle.json"))
+            try await restore()
+        } catch {
+            let attachment = XCTAttachment(string: String(describing: try? await script(host, "return {url:location.href,stage:window.__voiceStage,text:document.body.innerText,loading:[...document.querySelectorAll('.event-loading')].map(el=>({display:getComputedStyle(el).display,visibility:getComputedStyle(el).visibility,rect:el.getBoundingClientRect().toJSON(),parent:el.closest('uni-page')?.outerHTML.slice(0,500)}))}"))); attachment.name = "Voice lifecycle failure"; attachment.lifetime = .keepAlways; add(attachment)
+            try? await restore(); throw error
+        }
+    }
     private func rawHost() async throws -> WebViewController {
         for _ in 0..<100 {
             if let host = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).compactMap({ $0.rootViewController as? WebViewController }).first, host.webView != nil, !host.webView.isLoading, host.isTrustedURL(host.webView.url) { return host }

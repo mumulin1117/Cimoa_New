@@ -99,6 +99,35 @@ try {
   await click('reqAccepted.startChat.click.1'); await page.locator('.chat-composer').waitFor()
   assert.equal((await snapshot()).match_sessions.find(row => row.match_id === matching.match_id).status, 'connected')
   check('Saved preferences → device search → found → waiting and same-profile View match → peer Home invitation → explicit acceptance → shared chat')
+  // A genuine encoded recording through the production recorder; only the
+  // microphone stream is controlled by this isolated test, never by the app.
+  const voice_fixture = structuredClone(data)
+  voice_fixture.coin_transactions.push({ transaction_id: 'test_voice_opening', owner_user_id: 'user_noah', business_key: 'test_voice_opening', amount: 10, kind: 'opening', status: 'completed', created_at: now, related_id: null, fixture: true })
+  await page.evaluate(initial => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data: initial })), voice_fixture)
+  await open('/pages/discover/profile?user_id=user_sophie'); await click('expanded.sayHi.click.1'); await page.locator('[data-interaction="ibSelect.q.pick.click.1"]').first().click(); await click('ibSelect.pickVoice.click.1'); await click('ibSelect.answerGo.click.1')
+  await page.evaluate(async () => { window.originalGUM = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices); window.audioProbe = new AudioContext(); await window.audioProbe.resume(); const destination = window.audioProbe.createMediaStreamDestination(); window.tone = window.audioProbe.createOscillator(); window.tone.connect(destination); window.tone.start(); navigator.mediaDevices.getUserMedia = async () => destination.stream })
+  await click('ibVoice.openVoiceMenu.click.1'); await page.getByRole('button', { name: 'Stop recording', exact: true }).waitFor(); await page.waitForTimeout(1600); await click('ibVoice.openVoiceMenu.click.1'); await page.getByRole('button', { name: 'Play voice message', exact: true }).waitFor(); await click('ibVoice.sendVoiceRequest.click.1'); await page.locator('[data-interaction="ibPreview.continueVoice.click.1"]').waitFor()
+  await click('ibPreview.continueVoice.click.1'); await page.locator('.connection-sent-page').waitFor()
+  const voice_state = await snapshot(), voice_request = voice_state.requests.find(row => row.sender_id === 'user_noah' && row.recipient_id === 'user_sophie')
+  assert.equal(voice_request.kind, 'voice'); assert.equal(voice_request.status, 'pending'); assert.equal(voice_state.coin_transactions.filter(row => row.owner_user_id === 'user_noah').reduce((sum,row) => sum + row.amount, 0), 0)
+  assert.equal(voice_state.coin_transactions.filter(row => row.business_key === `voice:${voice_request.request_id}`).length, 1)
+  await page.evaluate(async () => { navigator.mediaDevices.getUserMedia = window.originalGUM; window.tone.stop(); await window.audioProbe.close() })
+  await switch_account('sophie@campus.edu'); await click('home.openJordan.click.1')
+  await page.locator('[data-interaction="reqReceived.togglePlay.click.1"]').click(); await page.getByRole('button', { name: 'Pause voice introduction', exact: true }).waitFor(); await page.waitForFunction(() => Number(document.querySelector('.request-audio-wave').getAttribute('aria-valuenow')) > 0)
+  await page.getByRole('button', { name: 'Pause voice introduction', exact: true }).click(); assert.notEqual(await page.locator('.request-audio-duration').innerText(), '0:18')
+  await page.reload(); await page.locator('.request-audio-play').waitFor(); await page.getByRole('button', { name: 'Play voice introduction', exact: true }).click(); await page.getByRole('button', { name: 'Pause voice introduction', exact: true }).waitFor()
+  await shot('voice-request-restored.png'); await click('reqReceived.accept.click.1'); await page.locator('.dialog__confirm').click(); await click('reqAccepted.startChat.click.1'); await page.locator('.chat-composer').waitFor(); await page.locator('.event-loading:visible').waitFor({ state: 'hidden' })
+  const voice_connected = await snapshot(), original_message = voice_connected.messages.find(row => row.message_id === `introduction_${voice_request.request_id}`)
+  assert.equal(original_message.kind, 'audio'); assert.equal(original_message.media_id, voice_request.audio_id); assert.equal(original_message.sender_id, 'user_noah')
+  await page.reload(); await page.getByRole('button', { name: 'Play voice message', exact: true }).click(); await page.getByRole('button', { name: 'Pause voice message', exact: true }).waitFor(); await shot('voice-conversation-restored.png')
+  check('Real voice recording → one 10-coin debit/request → peer audio playback/seek/refresh → explicit acceptance → same original audio in the unique conversation after refresh')
+  // Close through the real request menu, never through Not Now.
+  await seed(); await open('/pages/discover/profile?user_id=user_sophie'); await click('expanded.sayHi.click.1'); await page.locator('[data-interaction="ibSelect.q.pick.click.1"]').first().click(); await click('ibSelect.answerGo.click.1'); await field('Your introduction').fill('Would you like a coffee walk?'); await click('ibText.continueText.click.1'); await page.locator('.connection-sent-page').waitFor()
+  const to_decline = (await snapshot()).requests.find(row => row.sender_id === 'user_noah')
+  await switch_account('sophie@campus.edu'); await click('home.openJordan.click.1'); await click('reqReceived.notNow.click.1'); await page.locator('.home-header').waitFor(); assert.equal((await snapshot()).requests.find(row => row.request_id === to_decline.request_id).status, 'pending')
+  await click('home.openJordan.click.1'); await click('reqReceived.openReqMenu.click.1'); await click('reqReceived.openDecline.click.1'); await page.locator('.dialog__confirm').click(); await page.locator('.connection-declined-page').waitFor()
+  assert.equal((await snapshot()).requests.find(row => row.request_id === to_decline.request_id).status, 'declined'); assert.equal((await snapshot()).conversations.some(row => row.kind === 'direct' && row.participant_ids.includes('user_noah')), false)
+  check('Peer Not Now keeps the invitation; explicit menu decline closes the same request without consent or a conversation')
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.errors.push(error.stack || error.message); throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); report.cleaned_up = true; fs.writeFileSync(path.join(output, 'browser-acceptance.json'), JSON.stringify(report, null, 2) + '\n') }

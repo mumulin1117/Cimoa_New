@@ -84,3 +84,57 @@ test('session expiry hides all three core entities and preserves saved state on 
   assert.equal(store.connection_request('incoming'), null); assert.deepEqual(store.connections, []); assert.equal(store.direct_conversation(result.data), null)
   const before = clone_data(store.data); assert.equal(store.accept_request('incoming', 'expire-case').success, false); assert.deepEqual(clone_data(store.data), before)
 })
+test('expired profiles cannot acquire new consent, but declining remains available and existing conversations survive', async () => {
+  const { store } = fixture(), id = text_invite(store)
+  store.data.users.find(row => row.user_id === 'user_lina').verification_status = 'expired'
+  const before = clone_data(store.data)
+  assert.equal(store.accept_request(id, 'expired-accept').success, false); assert.deepEqual(clone_data(store.data), before)
+  assert.equal((await store.send_introduction({ user_id: 'user_lina', question_id: 'user_lina_q_0', text: 'New request', operation_id: 'expired-intro' })).success, false)
+  assert.equal(store.decline_request(id, 'expired-decline').success, true)
+  store.data.users.find(row => row.user_id === 'user_chloe').verification_status = 'expired'
+  assert.ok(store.direct_conversation('conversation_chloe'))
+  store.data.match_sessions.push({ ...clone_data(store.data.match_sessions[0]), match_id: 'expired-peer', owner_user_id: 'user_noah', candidate_id: 'user_cimoa', status: 'waiting', self_accepted: true, peer_accepted: false })
+  store.data.users.find(row => row.user_id === 'user_noah').verification_status = 'expired'
+  assert.equal(store.respond_to_match('expired-peer', 'accepted').success, false)
+  assert.equal(store.respond_to_match('expired-peer', 'declined').success, true)
+})
+test('consent provenance cannot point at a request or match belonging to another pair', () => {
+  const data = create_seed(epoch); data.relationships[0].source_request_id = 'request_lina'
+  assert.throws(() => validate_data(data), /connection request consent/)
+  delete data.relationships[0].source_request_id; data.relationships[0].source_match_id = data.match_sessions[0].match_id
+  assert.throws(() => validate_data(data), /matching consent/)
+})
+test('a legacy one-way consent is renewed by the explicit request and acceptance, not mistaken for an old generation', () => {
+  const { store } = fixture(), id = text_invite(store)
+  store.data.relationships.push({ relationship_id: 'legacy_one_way', from_user_id: 'user_lina', to_user_id: 'user_cimoa', created_at: epoch - 5000 })
+  assert.equal(store.connection_by_user('user_lina'), null)
+  const accepted = store.accept_request(id, 'complete-two-directions')
+  assert.equal(accepted.success, true); assert.equal(store.connection_by_user('user_lina').source_request_id, id); assert.equal(store.request_detail(id).conversation_id, accepted.data)
+})
+test('leaving during an asynchronous voice read cannot send a request or deduct coins', async () => {
+  const { store } = fixture(), blob = new Blob(['voice'], { type: 'audio/wav' })
+  store.data.media_files.push({ media_id: 'cancelled_voice', owner_user_id: 'user_cimoa', kind: 'audio', mime: blob.type, media_url: 'indexeddb://cancelled_voice', byte_size: blob.size, duration_ms: 1000 })
+  let release, active = true
+  configure_store_runtime(store, { media: { get: () => new Promise(resolve => { release = resolve }) } })
+  const before = clone_data(store.data), pending = store.send_introduction({ user_id: 'user_noah', question_id: 'user_noah_q_0', kind: 'voice', audio_id: 'cancelled_voice', operation_id: 'cancel-mid-read' }, { is_current: () => active })
+  active = false; release(blob)
+  assert.equal((await pending).reason, 'cancelled'); assert.deepEqual(clone_data(store.data), before)
+})
+test('cancelled media publication compensates a Blob already written without publishing its metadata', async () => {
+  const { store } = fixture(), blobs = new Map(), blob = new Blob(['voice'], { type: 'audio/wav' })
+  let active = true
+  configure_store_runtime(store, { inspect_media: async () => ({ duration_ms: 1000 }), media: { put: async (id,value) => { blobs.set(id,value); active = false }, delete: async id => blobs.delete(id) } })
+  const before = clone_data(store.data)
+  assert.equal((await store.save_media(blob, 'audio', 1000, { is_current: () => active })).reason, 'cancelled')
+  assert.equal(blobs.size, 0); assert.deepEqual(clone_data(store.data), before)
+})
+test('either participant can disable call access without deleting their valid conversation', () => {
+  const { store } = fixture()
+  assert.equal(store.direct_conversation('conversation_chloe').can_call, true)
+  store.data.settings[0].privacy.allow_video = false
+  assert.equal(store.direct_conversation('conversation_chloe').can_call, false)
+  store.data.settings[0].privacy.allow_video = true
+  store.data.settings.push({ owner_user_id: 'user_chloe', privacy: { allow_video: false } })
+  assert.match(store.direct_conversation('conversation_chloe').call_blocker, /turned off/)
+  assert.equal(store.can_chat('user_chloe'), true)
+})

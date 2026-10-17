@@ -48,7 +48,7 @@ const back = async () => { try { await frame.value.navigate_back('/pages/discove
   border-radius: 83.969rpx;
   color: var(--cimoa-text-inverse);
   background: var(--cimoa-gradient-primary);
-  box-shadow: var(--cimoa-shadow-verification-success);
+  box-shadow: var(--cimoa-shadow-connection-success);
 }
 .sent-check > view { width: 80.153rpx; height: 80.153rpx; }
 .sent-title { font-size: 51.527rpx; font-weight: 800; letter-spacing: -.03em; text-align: center; }
@@ -67,14 +67,14 @@ const back = async () => { try { await frame.value.navigate_back('/pages/discove
   padding: 11.45rpx;
   border-radius: 41.985rpx;
   background: var(--cimoa-surface-connection-waiting);
-  color: var(--cimoa-text-auth-legal);
+  color: var(--cimoa-text-connection-status);
 }
 .sent-status > view { flex: none; width: 34.351rpx; height: 34.351rpx; }
 .sent-status > text { font-size: 30.534rpx; font-weight: 600; }
 .sent-note {
   display: block;
   margin-top: 22.901rpx;
-  color: var(--cimoa-text-auth-placeholder);
+  color: var(--cimoa-text-connection-muted);
   font-size: 27.672rpx;
   text-align: center;
   text-wrap: pretty;

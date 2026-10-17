@@ -1,5 +1,5 @@
 import { clone_data } from './seed.js'
-import { authenticated, owner_id, ensure, can_open_conversation, messages_for, user_by_id } from './selectors.js'
+import { authenticated, owner_id, ensure, can_open_conversation, messages_for, user_by_id, privacy_for } from './selectors.js'
 import { transact, get_runtime, make_id, operation, failure } from './transactions.js'
 import { connection_for } from './connectionEntities.js'
 
@@ -10,11 +10,13 @@ export function direct_conversation(data, conversation_id, now) {
   const messages = messages_for(data, conversation_id)
   const last_message = messages.at(-1) || null
   const connection = connection_for(data, participant_id, now)
+  const can_call = privacy_for(data, owner_id(data)).allow_video !== false && privacy_for(data, participant_id).allow_video !== false
   return {
     ...clone_data(conversation),
     participant_id,
     participant: clone_data(user_by_id(data, participant_id)),
     connection_id: connection?.connection_id || null,
+    can_call, call_blocker: can_call ? '' : 'Video calls are turned off for this connection.',
     created_at: connection?.created_at || messages[0]?.sent_at || 0,
     updated_at: last_message?.sent_at || connection?.created_at || 0,
     last_message: clone_data(last_message),

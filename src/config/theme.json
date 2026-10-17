@@ -5,6 +5,7 @@
       "gradient": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
     },
     "surface": {
+      "connection_wave": "#e2e8f0",
       "connection_waiting": "#e8edf7",
       "event_people": "#fbe6f7",
       "event_group_header": "rgba(255,255,255,0.88)",
@@ -48,6 +49,9 @@
       "coin_hero_orb_secondary": "rgba(255,255,255,0.10)"
     },
     "text": {
+      "connection_muted": "#8b95a6",
+      "connection_status": "#44536b",
+      "connection_audio": "#6b7a93",
       "chat_placeholder": "#757575",
       "event_people": "#b6249e",
       "settings_pink": "#db2777",
@@ -159,6 +163,12 @@
     "coin_hero": "linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%)"
   },
   "shadows": {
+    "connection_action": "0 22.901rpx 49.618rpx rgba(168,85,247,0.24)",
+    "connection_secondary": "0 15.267rpx 41.985rpx rgba(16,36,74,0.07)",
+    "connection_profile": "0 15.267rpx 45.802rpx rgba(16,36,74,0.06)",
+    "connection_success": "0 26.718rpx 57.252rpx rgba(168,85,247,0.28)",
+    "connection_chat_received": "0 15.267rpx 41.985rpx rgba(16,36,74,0.07)",
+    "connection_chat_input": "0 11.45rpx 34.351rpx rgba(16,36,74,0.08)",
     "connection_chat_avatar": "0 11.45rpx 30.534rpx rgba(16,36,74,0.12)",
     "connection_chat_person": "0 7.634rpx 22.901rpx rgba(16,36,74,0.10)",
     "connection_chat_mine": "0 19.084rpx 45.802rpx rgba(139,92,246,0.22)",

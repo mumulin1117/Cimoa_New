@@ -3722,7 +3722,7 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-17: source photo-wall/parallel actions restored; Not Now preserves pending. Browser and iPhone 17 Pro WKWebView passed; complete result/chat and voice-media regression deferred.",
+    "acceptance_notes": "2026-10-17: source photo/profile, full-viewport gallery, Not Now, confirmation and real voice request playback passed browser and WKWebView checks; final cross-page suite still pending.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "visual_evidence": "docs/ui-restoration/connection-received"

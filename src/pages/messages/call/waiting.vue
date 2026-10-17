@@ -21,7 +21,7 @@ const access_error = computed(() => store.hydration_status !== 'ready'
     ? 'Your session has expired. Please sign in again.'
     : !conversation.value
       ? 'This conversation is unavailable, so the call cannot be started.'
-      : '')
+      : conversation.value.call_blocker)
 
 onLoad(options => { conversation_id.value = String(options?.conversation_id || '') })
 const dispose = () => { waiting?.dispose(); waiting = null }

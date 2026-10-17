@@ -40,6 +40,7 @@ export const introduction_blocker = (data, target, now = Date.now()) => {
   if (!social_eligible(data)) return 'Complete account verification and profile setup first.'
   if (target === owner || !visible(data, target)) return 'This profile is unavailable.'
   if (connected(data, target)) return 'You are already connected.'
+  if (!social_eligible(data, target)) return 'This person is not available for a new connection.'
   if (data.requests.some((row) => row.status === 'pending' && [row.sender_id, row.recipient_id].includes(owner) && [row.sender_id, row.recipient_id].includes(target))) return 'A request is already pending.'
   if (data.match_sessions.some(row => row.status === 'waiting' && row.self_accepted && [row.owner_user_id, row.candidate_id].includes(owner) && [row.owner_user_id, row.candidate_id].includes(target))) return 'A match invitation is already pending.'
   return ''
@@ -126,8 +127,12 @@ export function validate_data(data) {
   for (const row of data.icebreakers) ensure(has('users', row.user_id) && typeof row.text === 'string' && row.text.trim(), 'Invalid question.')
   for (const row of data.profile_photos) ensure(has('users', row.user_id) && typeof row.media_url === 'string' && row.media_url && (row.focal_point === undefined || /^\d{1,3}% \d{1,3}%$/.test(row.focal_point)), 'Invalid photo.')
   for (const row of data.media_files) ensure(has('users', row.owner_user_id) && ['image', 'audio'].includes(row.kind) && row.media_url === `indexeddb://${row.media_id}` && row.byte_size > 0 && row.mime.startsWith(`${row.kind}/`), 'Invalid media.')
-  for (const row of data.relationships) ensure(has('users', row.from_user_id) && has('users', row.to_user_id) && row.from_user_id !== row.to_user_id, 'Invalid relationship.')
+  for (const row of data.relationships) ensure(has('users', row.from_user_id) && has('users', row.to_user_id) && row.from_user_id !== row.to_user_id && Number.isFinite(row.created_at), 'Invalid relationship.')
   ensure(unique(data.relationships, (row) => `${row.from_user_id}:${row.to_user_id}`), 'Duplicate relationship.')
+  for (const row of data.relationships) {
+    if (row.source_request_id) ensure(data.requests.some(request => request.request_id === row.source_request_id && request.status === 'accepted' && [request.sender_id, request.recipient_id].includes(row.from_user_id) && [request.sender_id, request.recipient_id].includes(row.to_user_id)), 'Invalid connection request consent.')
+    if (row.source_match_id) ensure(data.match_sessions.some(match => match.match_id === row.source_match_id && match.status === 'connected' && [match.owner_user_id, match.candidate_id].includes(row.from_user_id) && [match.owner_user_id, match.candidate_id].includes(row.to_user_id)), 'Invalid matching consent.')
+  }
   for (const row of data.requests) ensure(has('users', row.sender_id) && has('users', row.recipient_id) && row.sender_id !== row.recipient_id && data.icebreakers.some((q) => q.question_id === row.question_id && q.user_id === row.recipient_id) && ['pending', 'accepted', 'declined', 'cancelled'].includes(row.status) && ['text', 'voice'].includes(row.kind) && (row.kind === 'text' ? !!row.text.trim() : has('media_files', row.audio_id) || row.fixture_media_unavailable === true), 'Invalid request.')
   ensure(unique(data.requests.filter(row => row.status === 'pending'), row => [row.sender_id, row.recipient_id].sort().join(':')), 'Duplicate pending request.')
   for (const row of data.requests.filter(row => row.kind === 'voice' && row.audio_id)) ensure(data.media_files.some(media => media.media_id === row.audio_id && media.kind === 'audio' && media.owner_user_id === row.sender_id), 'Introduction media belongs to another user.')

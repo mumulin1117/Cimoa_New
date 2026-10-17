@@ -9,16 +9,21 @@ import ConnectionRequestProfile from '@/components/ConnectionRequestProfile.vue'
 import RequestAudioPlayer from '@/components/RequestAudioPlayer.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import SafetyActionsMiniSheet from '@/components/SafetyActionsMiniSheet.vue'
+import EventConfirmDialog from '@/components/EventConfirmDialog.vue'
+import ProfilePhoto from '@/components/ProfilePhoto.vue'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import EventActionLoading from '@/components/EventActionLoading.vue'
 
 const store = use_app_store(), frame = ref(null), request_id = ref(''), match_id = ref(''), error = ref(''), decision = ref(''), navigating = ref(false)
 const sheet = ref(''), pending_action = ref('')
+const gallery_index = ref(0)
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 onLoad(options => { request_id.value = String(options?.request_id || ''); match_id.value = String(options?.match_id || '') })
 const request = computed(() => match_id.value ? store.match_invitation(match_id.value) : store.request_detail(request_id.value)), person = computed(() => request.value?.other)
+const photos = computed(() => person.value ? store.photos_for_user(person.value.user_id) : []), gallery_photo = computed(() => photos.value[gallery_index.value] || null)
+const open_gallery = index => { if (!is_loading.value && !navigating.value) { gallery_index.value = index; sheet.value = 'gallery' } }
 const access_error = computed(() => !store.session.is_authenticated ? 'Your session has expired. Please sign in again.' : !!request_id.value === !!match_id.value || !request.value || request.value.recipient_id !== store.session.current_user_id ? 'This request is unavailable.' : request.value.status !== 'pending' ? 'This request has already been handled.' : '')
-const back = async () => { if (is_loading.value || navigating.value) return; try { await frame.value.navigate_back('/pages/home/index') } catch (cause) { error.value = cause.message } }
+const back = async () => { if (is_loading.value || navigating.value || sheet.value || decision.value) return; try { await frame.value.navigate_back('/pages/home/index') } catch (cause) { error.value = cause.message } }
 const resolve = async () => {
   if (!decision.value || is_loading.value || access_error.value) return
   const next = decision.value; decision.value = ''; pending_action.value = next
@@ -46,7 +51,7 @@ onHide(() => { decision.value = ''; sheet.value = ''; navigating.value = false; 
 <template>
   <SecondaryPageFrame ref="frame" class="connection-received-page" :scroll-locked="!!decision || !!sheet || is_loading">
     <template #header><ConnectionPageHeader compact interaction="reqReceived.goBack.click.1" :busy="is_loading || navigating" @back="back"><text class="received-name">{{ person ? `${person.user_name}${person.age === null ? '' : `, ${person.age}`}` : 'Introduction' }}</text><view v-if="person?.verified" class="received-verified"><SourceIcon name="verified" :stroke-width="2.6" /></view><template #right><view v-if="person && !access_error" class="received-more" role="button" tabindex="0" aria-label="Request actions" :aria-disabled="is_loading" data-interaction="reqReceived.openReqMenu.click.1" @click="!is_loading && (sheet = 'safety')" @keydown.enter="!is_loading && (sheet = 'safety')"><view><SourceIcon name="more" /></view></view></template></ConnectionPageHeader></template>
-    <view v-if="access_error" class="connection-unavailable" role="alert">{{ access_error }}</view><ConnectionRequestProfile v-else :user-id="person.user_id" />
+    <view v-if="access_error" class="connection-unavailable" role="alert">{{ access_error }}</view><ConnectionRequestProfile v-else :user-id="person.user_id" @gallery="open_gallery" />
     <template #footer>
       <view v-if="!access_error" class="received-footer">
         <view class="received-fade" />
@@ -57,7 +62,8 @@ onHide(() => { decision.value = ''; sheet.value = ''; navigating.value = false; 
       <text v-else-if="error" class="connection-error" role="alert">{{ error }}</text>
     </template>
     <template #overlays>
-      <SafetyActionsMiniSheet :open="!!sheet" :mode="sheet === 'block' ? 'block' : 'menu'" :user-name="person?.user_name" :busy="is_loading" :error="error" @close="!is_loading && (sheet = '')" @report="report" @open-block="sheet = 'block'" @confirm-block="block"><template #actions><view class="received-decline" role="button" tabindex="0" data-interaction="reqReceived.openDecline.click.1" @click="choose('decline')" @keydown.enter="choose('decline')">Decline introduction</view></template></SafetyActionsMiniSheet>
+      <SafetyActionsMiniSheet :open="['safety','block'].includes(sheet)" :mode="sheet === 'block' ? 'block' : 'menu'" :user-name="person?.user_name" :busy="is_loading" :error="error" @close="!is_loading && (sheet = '')" @report="report" @open-block="sheet = 'block'" @confirm-block="block"><template #actions><view class="received-decline" role="button" tabindex="0" data-interaction="reqReceived.openDecline.click.1" @click="choose('decline')" @keydown.enter="choose('decline')">Decline introduction</view></template></SafetyActionsMiniSheet>
+      <EventConfirmDialog :open="sheet === 'gallery'" :label="`${person?.user_name || 'Profile'} photo gallery`" close-interaction="reqReceived.gallery.close.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="sheet = ''"><text class="event-dialog-title">Photo {{ gallery_index + 1 }} of {{ photos.length }}</text><view class="received-gallery"><ProfilePhoto :src="gallery_photo?.media_url || ''" :name="person?.user_name || 'Profile'" :position="gallery_photo?.focal_point || '50% 22%'" /></view><view class="event-dialog-secondary" role="button" tabindex="0" data-interaction="reqReceived.gallery.close.click.2" @click="sheet = ''" @keydown.enter="sheet = ''">Close</view></EventConfirmDialog>
       <ConfirmDialog :visible="decision === 'accept'" title="Accept this introduction?" :message="`You and ${person?.user_name || 'this student'} will be connected and chat will unlock.`" confirm-label="Accept" @cancel="decision = ''" @confirm="resolve" />
       <ConfirmDialog :visible="decision === 'decline'" title="Close this request?" message="No reason is shared, and no connection will be created." confirm-label="Close Request" danger @cancel="decision = ''" @confirm="resolve" />
       <EventActionLoading :visible="is_loading" :label="pending_action === 'accept' ? 'Creating your connection…' : pending_action === 'block' ? 'Blocking account…' : 'Closing the request…'" />
@@ -88,6 +94,7 @@ onHide(() => { decision.value = ''; sheet.value = ''; navigating.value = false; 
   cursor: pointer;
 }
 .received-more > view { width: 38.168rpx; height: 38.168rpx; }
+.received-gallery { position: relative; height: 687.023rpx; margin-top: 30.534rpx; overflow: hidden; border-radius: 38.168rpx; }
 .received-footer {
   position: relative;
   display: flex;

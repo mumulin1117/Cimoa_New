@@ -1,10 +1,12 @@
 {
   "result": "passed",
-  "server_pid": 78158,
+  "server_pid": 53077,
   "checks": [
     "Avatar profile → free introduction → sent Home card → real account switch → accept → one conversation; Chat CTA and messages survive refresh",
     "Blocking the same user removes both friendship directions and the private conversation across Home and Discover",
-    "Saved preferences → device search → found → waiting and same-profile View match → peer Home invitation → explicit acceptance → shared chat"
+    "Saved preferences → device search → found → waiting and same-profile View match → peer Home invitation → explicit acceptance → shared chat",
+    "Real voice recording → one 10-coin debit/request → peer audio playback/seek/refresh → explicit acceptance → same original audio in the unique conversation after refresh",
+    "Peer Not Now keeps the invitation; explicit menu decline closes the same request without consent or a conversation"
   ],
   "errors": [],
   "cleaned_up": true

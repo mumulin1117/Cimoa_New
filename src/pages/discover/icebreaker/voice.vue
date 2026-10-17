@@ -23,7 +23,7 @@ const back = () => { if (is_loading.value || navigating.value || media_busy.valu
 const switch_text = async () => { if (is_loading.value || navigating.value || media_busy.value || access_error.value) return; clear(); navigating.value = true; try { await frame.value.navigate_replace(`/pages/discover/icebreaker/text?user_id=${encodeURIComponent(user_id.value)}&draft_id=${encodeURIComponent(draft_id.value)}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false } }
 const review = async () => {
   if (is_loading.value || navigating.value || media_busy.value || !recording_draft.value) return
-  const result = await run_with_loading(() => store.save_media(recording_draft.value.blob, 'audio', recording_draft.value.duration_ms))
+  const result = await run_with_loading(scope => store.save_media(recording_draft.value.blob, 'audio', recording_draft.value.duration_ms, scope))
   if (!active.value || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
   clear(); navigating.value = true

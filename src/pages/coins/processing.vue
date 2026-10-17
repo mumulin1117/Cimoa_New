@@ -15,7 +15,7 @@ const access_error = computed(() => !store.session.is_authenticated ? 'Your sess
 const run = async () => {
   if (started.value || access_error.value) return
   started.value = true; const payload = context.value.payload
-  const result = await run_with_loading(() => store.complete_coin_spend(context_id.value))
+  const result = await run_with_loading(scope => store.complete_coin_spend(context_id.value, scope))
   if (!active.value || result.reason === 'cancelled') return
   if (!result.success) {
     error.value = result.message

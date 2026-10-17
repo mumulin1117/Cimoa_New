@@ -57,8 +57,8 @@ const seek = event => { if (!audio || !Number.isFinite(audio.duration) || !audio
   height: 45.802rpx;
   cursor: pointer;
 }
-.request-audio-wave > view { flex: 1; border-radius: 3.817rpx; background: var(--cimoa-surface-verification-shield-border); }
+.request-audio-wave > view { flex: 1; border-radius: 3.817rpx; background: var(--cimoa-surface-connection-wave); }
 .request-audio-wave > view.played { background: var(--cimoa-gradient-primary); }
-.request-audio-duration { flex: none; color: var(--cimoa-text-auth-muted); font-size: 28.626rpx; font-variant-numeric: tabular-nums; }
+.request-audio-duration { flex: none; color: var(--cimoa-text-connection-audio); font-size: 28.626rpx; font-variant-numeric: tabular-nums; }
 .request-audio-error { display: block; margin-top: 15.267rpx; color: var(--cimoa-status-danger); font-size: 27.672rpx; line-height: 1.4; }
 </style>

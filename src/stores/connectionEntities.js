@@ -9,8 +9,9 @@ export function connection_for(data, target, now) {
   const consent = [[owner, target], [target, owner]].map(([from, to]) => data.relationships.find(row => row.from_user_id === from && row.to_user_id === to))
   const created_at = Math.max(...consent.map(row => row.created_at))
   const conversation = data.conversations.find(row => row.kind === 'direct' && row.participant_ids.includes(owner) && row.participant_ids.includes(target))
-  const request = data.requests.find(row => row.status === 'accepted' && (consent[0].source_request_id !== undefined ? consent.every(item => item.source_request_id === row.request_id) : row.resolved_at === created_at) && [row.sender_id, row.recipient_id].includes(owner) && [row.sender_id, row.recipient_id].includes(target))
-  const match = data.match_sessions.find(row => row.status === 'connected' && (consent[0].source_match_id !== undefined ? consent.every(item => item.source_match_id === row.match_id) : row.resolved_at === created_at) && [row.owner_user_id, row.candidate_id].includes(owner) && [row.owner_user_id, row.candidate_id].includes(target))
+  const requests = data.requests.filter(row => row.status === 'accepted' && (consent[0].source_request_id !== undefined ? consent.every(item => item.source_request_id === row.request_id) : row.resolved_at === created_at) && [row.sender_id, row.recipient_id].includes(owner) && [row.sender_id, row.recipient_id].includes(target))
+  const matches = data.match_sessions.filter(row => row.status === 'connected' && (consent[0].source_match_id !== undefined ? consent.every(item => item.source_match_id === row.match_id) : row.resolved_at === created_at) && [row.owner_user_id, row.candidate_id].includes(owner) && [row.owner_user_id, row.candidate_id].includes(target))
+  const request = requests.length === 1 ? requests[0] : null, match = matches.length === 1 ? matches[0] : null
   const mine = data.users.find(row => row.user_id === owner)
   return {
     connection_id: `connection:${JSON.stringify(consent.map(row => row.relationship_id).sort())}`,

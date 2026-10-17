@@ -80,6 +80,7 @@ const open_profile = async () => {
 }
 const start_call = async () => {
   if (locked.value || access_error.value) return
+  if (conversation.value.call_blocker) { error.value = conversation.value.call_blocker; return }
   try { await frame.value.navigate_forward(`/pages/messages/call/waiting?conversation_id=${encodeURIComponent(conversation_id.value)}`) } catch (cause) { error.value = cause.message }
 }
 const open_report = async () => {
@@ -132,7 +133,7 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
             <view class="chat-avatar"><UserAvatar :src="participant.avatar_url" :name="participant.user_name" /><view class="chat-online-dot" /></view>
             <view class="chat-heading"><text>{{ participant_first_name }}</text><view class="chat-connection-status"><view class="chat-status-dot" /><text>Connected{{ muted ? ' · Muted' : '' }}</text></view></view>
           </view>
-          <view class="chat-round chat-call" role="button" tabindex="0" aria-label="Start video call" data-interaction="chat.startCall.click.1" @click="start_call" @keydown.enter="start_call"><view class="chat-icon"><ConnectionIcon name="video" /></view></view>
+          <view class="chat-round chat-call" role="button" tabindex="0" aria-label="Start video call" :aria-disabled="locked || !conversation.can_call" data-interaction="chat.startCall.click.1" @click="start_call" @keydown.enter="start_call"><view class="chat-icon"><ConnectionIcon name="video" /></view></view>
           <view class="chat-round" role="button" tabindex="0" aria-label="Safety actions" data-interaction="chat.openSafety.click.1" @click="!locked && (sheet = 'safety'); error = ''" @keydown.enter="!locked && (sheet = 'safety'); error = ''"><view class="chat-icon"><ConnectionIcon name="more" /></view></view>
         </template>
       </view>
@@ -258,7 +259,7 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
 .chat-status-dot { width: 17.176rpx; height: 17.176rpx; border-radius: 50%; background: var(--cimoa-status-connection-indicator); }
 .chat-call .chat-icon { width: 64.885rpx; height: 64.885rpx; }
 .chat-messages { display: flex; flex-direction: column; gap: 34.351rpx; padding: 30.534rpx 34.351rpx; }
-.chat-day { color: var(--cimoa-text-auth-placeholder); font-size: 27.672rpx; text-align: center; }
+.chat-day { color: var(--cimoa-text-connection-muted); font-size: 27.672rpx; text-align: center; }
 .chat-message { display: flex; align-items: center; gap: 19.084rpx; justify-content: flex-start; }
 .chat-message--mine { justify-content: flex-end; }
 .chat-message-avatar {
@@ -276,7 +277,7 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
   padding: 26.718rpx 34.351rpx;
   border-radius: 49.618rpx;
   background: var(--cimoa-surface-card);
-  box-shadow: var(--cimoa-shadow-auth-secondary);
+  box-shadow: var(--cimoa-shadow-connection-chat-received);
   color: var(--cimoa-text-title);
   font-size: 34.351rpx;
   font-weight: 500;
@@ -317,7 +318,7 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
   padding: 0 19.084rpx 0 38.168rpx;
   border-radius: 51.527rpx;
   background: var(--cimoa-surface-card);
-  box-shadow: var(--cimoa-shadow-event-chip);
+  box-shadow: var(--cimoa-shadow-connection-chat-input);
 }
 .chat-input input { flex: 1; min-width: 0; color: var(--cimoa-text-title); font-size: 32.443rpx; }
 .chat-input :deep(.uni-input-placeholder) { left: 3.817rpx; color: var(--cimoa-text-chat-placeholder); font-size: 32.443rpx; font-weight: 400; }
