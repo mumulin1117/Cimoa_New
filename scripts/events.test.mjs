@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_seed, clone_data, TEST_USER_ID } from '../src/stores/seed.js'
-import { events_destination, require_events_destination_ready, EVENTS_DEFERRED_ROUTES } from '../src/utils/eventsNavigation.js'
+import { events_destination, event_report_fallback, require_events_destination_ready, EVENTS_DEFERRED_ROUTES } from '../src/utils/eventsNavigation.js'
 
 const now = Date.UTC(2026, 9, 13, 1) // Tuesday 09:00 Hong Kong, deliberately not device-local time.
 const make = transform => {
@@ -80,6 +80,11 @@ test('source navigation carries exact event and group IDs, never autojoins or en
   for (const route of EVENTS_DEFERRED_ROUTES) assert.throws(() => require_events_destination_ready(route), /not been restored/)
   assert.equal(JSON.stringify(f.store.data), before)
   f.store.join_event('event_picnic'); assert.equal(events_destination(f.store, 'group', 'event_picnic'), '/pages/events/group?event_id=event_picnic&conversation_id=group_picnic')
+  assert.equal(events_destination(f.store, 'report', 'event_picnic', 'group_picnic'), '/pages/events/report?event_id=event_picnic&origin_conversation_id=group_picnic')
+  assert.equal(event_report_fallback(f.store, 'event_picnic', 'group_picnic'), '/pages/events/group?event_id=event_picnic&conversation_id=group_picnic')
+  assert.throws(() => events_destination(f.store, 'report', 'event_mic', 'group_picnic'), /origin/)
+  assert.equal(event_report_fallback(f.store, 'event_mic', 'group_picnic'), '/pages/events/detail?event_id=event_mic')
+  f.store.leave_event('event_picnic'); assert.equal(event_report_fallback(f.store, 'event_picnic', 'group_picnic'), '/pages/events/detail?event_id=event_picnic')
 })
 test('malformed event metadata is a recoverable read error; failed cancellation retains membership', () => {
   for (const transform of [d => { d.events[0].time_zone = 'Invalid/Timezone' }, d => { d.event_preferences[0].active_tab = 'unknown' }]) {

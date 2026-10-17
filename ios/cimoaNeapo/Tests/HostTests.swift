@@ -2559,10 +2559,13 @@ final class HostTests: XCTestCase {
             let result = try await script(host, """
             const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),wait=async fn=>{for(let i=0;i<120;i++){if(fn())return;await delay(50)}throw Error('Group regression timeout '+location.hash)},click=async id=>{await delay(350);visible('[data-interaction="'+id+'"]').click();await delay(60)};
             await click('evGroup.openGroupMenu.click.1');await click('eventGroup.menu.participants.click.1');await wait(()=>visible('.event-participants-page'));const count=document.querySelectorAll('.event-person').length;
-            await click('evParticipants.goBack.click.1');await wait(()=>visible('.event-group-page'));await click('evGroup.openGroupMenu.click.1');await click('eventGroup.menu.manage.click.1');await click('sheetEvCancel.cancelAttendance.click.1');await wait(()=>visible('.event-group-page [role=alert]'));
-            return {count,messages:document.querySelectorAll('.event-message').length,composer:!!visible('.event-group-composer')}
+            await click('evParticipants.goBack.click.1');await wait(()=>visible('.event-group-page'));await click('evGroup.openGroupMenu.click.1');await click('eventGroup.menu.report.click.1');await wait(()=>visible('.event-report-page'));
+            const attendanceBefore=JSON.stringify(JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.memberships);[...document.querySelectorAll('[role=radio]')].find(e=>e.textContent.includes('Unsafe activity')).click();await click('evReport.submitEvReport.click.1');await wait(()=>visible('.event-report-saved'));
+            const reported=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;if(attendanceBefore!==JSON.stringify(reported.memberships))throw Error('Report changed attendance');const reportTarget=reported.reports.at(-1)?.target_id;
+            await click('evReport.goBack.click.2');await wait(()=>visible('.event-group-page'));await click('evGroup.openGroupMenu.click.1');await click('eventGroup.menu.manage.click.1');await click('sheetEvCancel.cancelAttendance.click.1');await wait(()=>visible('.event-group-page [role=alert]'));
+            return {count,reportTarget,messages:document.querySelectorAll('.event-message').length,composer:!!visible('.event-group-composer')}
             """) as! [String:Any]
-            XCTAssertEqual(result["count"] as? Int, 4); XCTAssertEqual(result["messages"] as? Int, 0); XCTAssertEqual(result["composer"] as? Bool, false)
+            XCTAssertEqual(result["count"] as? Int, 4); XCTAssertEqual(result["messages"] as? Int, 0); XCTAssertEqual(result["composer"] as? Bool, false); XCTAssertEqual(result["reportTarget"] as? String, "event_picnic")
             try await restore()
         } catch { try? await restore(); throw error }
     }

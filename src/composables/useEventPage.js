@@ -17,7 +17,7 @@ export function use_event_page(frame, { needsEvent = true, joinedOnly = false } 
   const go = async (kind, id = event_id.value, replace = false) => {
     if (navigating.value || is_loading.value || access_error.value) return
     navigating.value = true; error.value = ''; store.tick()
-    try { const url = require_events_destination_ready(events_destination(store, kind, id)); await frame.value[replace ? 'navigate_replace' : 'navigate_forward'](url) }
+    try { const url = require_events_destination_ready(events_destination(store, kind, id, kind === 'report' ? conversation_id.value : '')); await frame.value[replace ? 'navigate_replace' : 'navigate_forward'](url) }
     catch (cause) { error.value = cause.message } finally { navigating.value = false }
   }
   const back = async (fallback = '/pages/events/index') => {

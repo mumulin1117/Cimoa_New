@@ -14,6 +14,8 @@
       "connection_wave": "#e2e8f0",
       "connection_waiting": "#e8edf7",
       "event_people": "#fbe6f7",
+      "event_report_selected": "#eef3fd",
+      "event_report_dot": "#d6deea",
       "event_group_header": "rgba(255,255,255,0.88)",
       "event_group_composer": "rgba(255,255,255,0.9)",
       "profile_picker": "#f7f9fc",
@@ -193,6 +195,7 @@
   "shadows": {
     "event_group_menu": "0 11.45rpx 30.534rpx rgba(16,36,74,0.10)",
     "event_group_send": "0 15.267rpx 38.168rpx rgba(168,85,247,0.28)",
+    "event_report": "0 15.267rpx 41.985rpx rgba(16,36,74,0.05)",
     "call_end": "0 19.084rpx 45.802rpx rgba(239,68,68,0.4)",
     "ice_question": "0 15.267rpx 41.985rpx rgba(16,36,74,0.06)",
     "ice_question_selected": "0 19.084rpx 49.618rpx rgba(168,85,247,0.18)",

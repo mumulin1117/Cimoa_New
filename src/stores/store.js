@@ -154,6 +154,7 @@ export const use_app_store = defineStore('app', {
     unread_count() { return this.current_conversations.reduce((sum, row) => sum + row.unread_count, 0) },
     events: (state) => ready(state) ? state.data.events.map(event => ev.event_card(state.data, event, state.clock_ms)) : [],
     event_tabs: () => ev.EVENT_TABS,
+    event_report_reasons: () => ev.EVENT_REPORT_REASONS,
     active_event_tab: (state) => ready(state) ? ev.active_event_tab(state.data) : 'Today',
     event_feed: (state) => ready(state) ? ev.event_feed(state.data, state.clock_ms) : [],
     event_by_id() { return id => clone_data(this.events.find(row => row.event_id === id) || null) },

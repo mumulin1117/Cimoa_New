@@ -6,6 +6,7 @@ export const EVENT_TABS = Object.freeze([
   { label: 'This week', interaction_id: 'events.chipWeek.click.1' },
   { label: 'My campus', interaction_id: 'events.chipCampus.click.1' },
 ])
+export const EVENT_REPORT_REASONS = Object.freeze(['Misleading event information', 'Unsafe activity', 'Harassment or discrimination', 'Inappropriate content', 'Spam or scam', 'Underage safety concern', 'Other'])
 export const active_event_tab = data => data.event_preferences.find(row => row.owner_user_id === owner_id(data))?.active_tab || 'Today'
 const date_key = (time, zone) => {
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(time).map(part => [part.type, part.value]))

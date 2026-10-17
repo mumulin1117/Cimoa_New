@@ -1,0 +1,182 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isEvReport",
+    "source_query": "route=evReport",
+    "lines": [
+      2167,
+      2188
+    ],
+    "fragment_sha256": "1492d579b2338109bc0b11c2c7e94f54b9a5982f075ef16ea246fc235a4de421",
+    "fragment": "<sc-if value=\"{{ isEvReport }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Events / Report / Select Reason\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Report event</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 120px;box-sizing:border-box\">\n          <div style=\"font-size:17px;color:#5b6b85;text-wrap:pretty\">Reports are private. Your attendance stays as it is unless you also choose to leave the event.</div>\n          <div style=\"display:flex;flex-direction:column;gap:10px;margin-top:16px\">\n            <sc-for list=\"{{ evReasonList }}\" as=\"r\" hint-placeholder-count=\"7\">\n              <div sc-camel-on-click=\"{{ r.pick }}\" style=\"display:flex;align-items:center;gap:14px;min-height:62px;padding:12px 18px;border-radius:20px;background:{{ r.bg }};border:{{ r.border }};box-shadow:0 8px 22px rgba(16,36,74,0.05);cursor:pointer\">\n                <div style=\"width:22px;height:22px;border-radius:11px;background:{{ r.dot }};flex:none\"></div>\n                <div style=\"font-size:17px;font-weight:600;text-wrap:pretty\">{{ r.text }}</div>\n              </div>\n            </sc-for>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20\"><div sc-camel-on-click=\"{{ submitEvReport }}\" style=\"height:60px;border-radius:30px;background:{{ evReportBg }};display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:{{ evReportInk }}\">Submit report</div></div></div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/events/report",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "styles": [
+    {
+      "line": 2168,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 2169,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 2170,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 2173,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 2173,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 2175,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 120px;box-sizing:border-box"
+    },
+    {
+      "line": 2176,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85;text-wrap:pretty"
+    },
+    {
+      "line": 2177,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:10px;margin-top:16px"
+    },
+    {
+      "line": 2179,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;min-height:62px;padding:12px 18px;border-radius:20px;background:{{ r.bg }};border:{{ r.border }};box-shadow:0 8px 22px rgba(16,36,74,0.05);cursor:pointer"
+    },
+    {
+      "line": 2180,
+      "tag": "div",
+      "style": "width:22px;height:22px;border-radius:11px;background:{{ r.dot }};flex:none"
+    },
+    {
+      "line": 2181,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:600;text-wrap:pretty"
+    },
+    {
+      "line": 2186,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20"
+    },
+    {
+      "line": 2186,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:{{ evReportBg }};display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 2186,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:{{ evReportInk }}"
+    }
+  ],
+  "texts": [
+    {
+      "line": 2173,
+      "text": "Report event"
+    },
+    {
+      "line": 2176,
+      "text": "Reports are private. Your attendance stays as it is unless you also choose to leave the event."
+    },
+    {
+      "line": 2186,
+      "text": "Submit report"
+    }
+  ],
+  "svg": [
+    {
+      "line": 2171,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "22"
+        ],
+        [
+          "height",
+          "22"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#0b1b3a"
+        ],
+        [
+          "stroke-width",
+          "2.4"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 2171,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M15 5l-7 7 7 7"
+        ]
+      ]
+    }
+  ],
+  "resources": [],
+  "interaction_ids": [
+    "evReport.goBack.click.1",
+    "evReport.r.pick.click.1",
+    "evReport.submitEvReport.click.1"
+  ],
+  "approved_deltas": [
+    "Real safe area, fixed shared page skeleton, rpx responsive conversion and source cRise",
+    "Canonical user profiles, actual counts/relationships/event times instead of fake prototype totals",
+    "Explicit error/empty/expired state; local-only reports do not claim delivery",
+    "Media capture/preview/menu are user-authorized supplements; no fabricated peer messages",
+    "No source screenshot yet: visual_acceptance stays pending",
+    "Keep the explicit device-only report disclosure and saved status; do not claim moderation delivery",
+    "Validated group origin survives refresh and falls back to detail only when group access has ended"
+  ],
+  "acceptance": {
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "full_acceptance": "pending"
+  },
+  "parameters": [
+    "event_id",
+    "report_id",
+    "origin_conversation_id"
+  ]
+}
