@@ -36,6 +36,15 @@ try {
     await page.evaluate(() => { navigator.mediaDevices.getUserMedia = async () => { throw new DOMException('Denied', 'NotAllowedError') } })
     const denied_before = await state(); await click('editAll.evStart.click.1'); await click('sheetMic.allowMic.click.1'); await page.locator('.bio-error').waitFor(); assert.match(await page.locator('.bio-error').innerText(), /permission was denied/); assert.deepEqual(await state(), denied_before)
     check('Microphone denial reports the real failure with no media metadata or profile writes')
+  } else if (phase === 'profile-child-merge') {
+    await go('/pages/profile/edit'); await page.locator('.score-card').waitFor()
+    const before = await state(); await click('editAll.eaOpenDegree.click.1'); await page.getByRole('dialog').getByRole('button', { name: 'Business', exact: true }).click()
+    await click('editAll.eaOpenBio.click.1'); await page.locator('uni-textarea[aria-label="Profile bio"] textarea').fill('Keep this parent draft after a child save.'); await click('editAll.eaBioDone.click.1')
+    assert.deepEqual(await state(), before); await click('profileEdit.basic.click.1'); await page.locator('uni-input[aria-label="Field of study"] input').fill('Interdisciplinary Design'); await click('editBasic.saveBasic.click.1'); await page.locator('.profile-edit-page:visible').waitFor()
+    assert.equal((await state()).users[0].major, 'Interdisciplinary Design'); assert.match(await page.locator('[data-interaction="editAll.eaOpenDegree.click.1"]').innerText(), /Interdisciplinary Design/)
+    await click('editAll.eaSave.click.1'); await page.locator('.profile-title').waitFor(); const saved = await state(); assert.equal(saved.users[0].major, 'Interdisciplinary Design'); assert.equal(saved.users[0].bio, 'Keep this parent draft after a child save.')
+    await page.reload(); await page.locator('.profile-title').waitFor(); assert.equal((await state()).users[0].major, 'Interdisciplinary Design')
+    check('A newer Basic Info major wins over the old parent sheet draft; unrelated staged bio survives final Save and refresh')
   } else if (phase === 'preferences') {
     await go('/pages/profile/prefs'); await page.locator('.preferences-groups').waitFor(); await set_safe_area(page, 54, 0)
     assert.equal(await page.getByRole('radiogroup').count(), 12); assert.equal(await page.locator('uni-slider').count(), 0)

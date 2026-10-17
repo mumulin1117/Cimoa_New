@@ -21,6 +21,13 @@ const title = computed(() => PROFILE_FIELDS.find(row => row.key === field.value)
 const song = computed(() => store.profile_catalog.songs.find(row => row.song_id === draft.value.song_id)), songs = computed(() => { const rows = store.profile_catalog.songs.filter(row => `${row.title} ${row.artist}`.toLowerCase().includes(song_query.value.toLowerCase())); return song_tab.value === 'trend' ? rows : [...rows].reverse() })
 const questions = computed(() => context.value?.questions || []), interests = computed(() => store.current_interests), goals = computed(() => store.goals_for_user(context.value?.user.user_id))
 const score = computed(() => context.value?.score || 0)
+// A child save is authoritative; retain unrelated unsaved parent fields.
+watch(() => context.value?.user, (next, previous) => {
+  if (!next || !previous || access_error.value) return
+  for (const key of Object.keys(changes.value)) {
+    if (JSON.stringify(next[key]) !== JSON.stringify(previous[key])) delete changes.value[key]
+  }
+})
 const urls = new Set(); let generation = 0, start_x = null
 const release = () => { for (const url of urls) URL.revokeObjectURL(url); urls.clear() }
 const prune_urls = () => { const used = new Set([...photos.value.map(p => p.media_url), audio_url.value]); for (const url of urls) if (!used.has(url)) { URL.revokeObjectURL(url); urls.delete(url) } }

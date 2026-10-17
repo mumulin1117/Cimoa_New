@@ -1,0 +1,11 @@
+{
+  "phase": "profile-child-merge",
+  "result": "passed",
+  "checks": [
+    "A newer Basic Info major wins over the old parent sheet draft; unrelated staged bio survives final Save and refresh"
+  ],
+  "errors": [],
+  "physical_microphone": "not tested: controlled browser media device",
+  "server_pid": 18478,
+  "cleaned_up": true
+}
