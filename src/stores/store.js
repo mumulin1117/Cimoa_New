@@ -230,6 +230,7 @@ export const use_app_store = defineStore('app', {
     logout(expected_account_id) {
       return transact(this, null, (data, now) => {
         if (expected_account_id !== undefined) s.ensure(s.authenticated(data, now) && data.session.account_id === expected_account_id, 'The account changed or the session expired. Reopen Settings before logging out.')
+        for (const row of data.call_sessions) if (row.owner_user_id === s.owner_id(data) && row.ended_at === null) row.ended_at = Math.max(row.started_at, Math.min(now, row.expires_at))
         data.session = { current_user_id: null, account_id: null, expires_at: null }
         // Keep accounts, onboarding, public profile, media and relationships.
         // Only discard entry-form details that must not leak to the next account.

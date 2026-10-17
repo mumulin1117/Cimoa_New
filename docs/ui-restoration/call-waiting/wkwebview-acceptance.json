@@ -1,0 +1,55 @@
+{
+  "actual_background_foreground" : true,
+  "geometry" : {
+    "back" : {
+      "bottom" : 111.078125,
+      "height" : 45,
+      "width" : 45,
+      "x" : 20.453125,
+      "y" : 66.078125
+    },
+    "call" : {
+      "call_id" : "call_d7d42842-8a84-4f56-9900-deff821f4a09",
+      "connection_id" : "connection:[\"rel_seed_0\",\"rel_seed_1\"]",
+      "conversation_id" : "conversation_chloe",
+      "ended_at" : null,
+      "expires_at" : 1792233009381,
+      "owner_user_id" : "user_cimoa",
+      "participant_id" : "user_chloe",
+      "session_expires_at" : 1792319397387,
+      "started_at" : 1792232998037
+    },
+    "end" : {
+      "bottom" : 795,
+      "height" : 65.453125,
+      "width" : 65.453125,
+      "x" : 168.265625,
+      "y" : 729.546875
+    },
+    "images" : true,
+    "origin" : "http:\/\/127.0.0.1:18765",
+    "own" : {
+      "bottom" : 270.65625,
+      "height" : 145.25,
+      "width" : 106.375,
+      "x" : 275.171875,
+      "y" : 125.40625
+    },
+    "video" : 0,
+    "viewport" : {
+      "height" : 874,
+      "width" : 402
+    }
+  },
+  "manual" : {
+    "conversation" : true,
+    "ended" : true
+  },
+  "result" : "passed",
+  "timeout" : {
+    "conversation" : true,
+    "elapsed" : 10979,
+    "once" : true,
+    "timeout" : true
+  }
+}

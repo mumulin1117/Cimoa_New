@@ -29,11 +29,26 @@ export function inspect_media(blob, kind) {
     .catch(inspect_element)
   return inspect_element()
 }
-export async function create_recorder({ devices = globalThis.navigator?.mediaDevices, Recorder = globalThis.MediaRecorder, clock = Date.now } = {}) {
+export async function create_recorder({ devices = globalThis.navigator?.mediaDevices, Recorder = globalThis.MediaRecorder, clock = Date.now, signal, timers = globalThis, request_timeout = 15000 } = {}) {
   if (!devices?.getUserMedia || !Recorder) throw new Error('Voice recording is unavailable on this device.')
   let stream
-  try { stream = await devices.getUserMedia({ audio: true }) } catch (error) {
-    throw new Error(error.name === 'NotAllowedError' ? 'Microphone permission was denied.' : error.name === 'NotFoundError' ? 'No microphone was found.' : 'The microphone could not be opened.')
+  try {
+    stream = await new Promise((resolve, reject) => {
+      let settled = false, timer
+      const cleanup = () => { timers.clearTimeout(timer); signal?.removeEventListener('abort', abort) }
+      const fail = error => { if (!settled) { settled = true; cleanup(); reject(error) } }
+      const abort = () => fail(Object.assign(new Error('Microphone access was cancelled.'), { name: 'AbortError' }))
+      if (signal?.aborted) { abort(); return }
+      signal?.addEventListener('abort', abort, { once: true })
+      timer = timers.setTimeout(() => fail(Object.assign(new Error('The microphone did not respond. Check your audio input and try again.'), { name: 'TimeoutError' })), request_timeout)
+      Promise.resolve().then(() => devices.getUserMedia({ audio: true })).then(value => {
+        if (settled) { value.getTracks().forEach(track => track.stop()); return }
+        settled = true; cleanup(); resolve(value)
+      }, fail)
+    })
+    if (signal?.aborted) { stream.getTracks().forEach(track => track.stop()); throw Object.assign(new Error('Microphone access was cancelled.'), { name: 'AbortError' }) }
+  } catch (error) {
+    throw new Error(['AbortError', 'TimeoutError'].includes(error.name) ? error.message : error.name === 'NotAllowedError' ? 'Microphone permission was denied.' : error.name === 'NotFoundError' ? 'No microphone was found.' : 'The microphone could not be opened.')
   }
   const tracks = () => stream.getTracks().forEach((track) => track.stop())
   let recorder

@@ -51,6 +51,8 @@ export const direct_message_actions = {
     if (sending.has(this)) return failure('busy', 'A message is already being saved.')
     sending.add(this)
     const rt = get_runtime(this), owner = owner_id(this.data)
+    const session_expires_at = this.data.session.expires_at
+    const connection_id = direct_conversation(this.data, conversation_id, rt.clock())?.connection_id
     let created = null, published = false
     try {
       validate(this, conversation_id, body, media, rt.clock())
@@ -68,7 +70,8 @@ export const direct_message_actions = {
       }
       ensure(is_current(), 'Message save was cancelled.')
       const result = transact(this, operation(operation_id, 'direct-message', [conversation_id, body, fingerprint]), (data, now) => {
-        ensure(direct_conversation(data, conversation_id, now), 'This conversation is no longer available.')
+        const current = direct_conversation(data, conversation_id, now)
+        ensure(is_current() && current && data.session.expires_at === session_expires_at && current.connection_id === connection_id, 'This conversation is no longer available.')
         if (metadata) data.media_files.push(metadata)
         const message_id = make_id('message')
         data.messages.push({ message_id, conversation_id, sender_id: owner, body: body.trim(), kind: media?.kind || 'text', media_id: metadata?.media_id || null, sent_at: now, read_by: [owner] })

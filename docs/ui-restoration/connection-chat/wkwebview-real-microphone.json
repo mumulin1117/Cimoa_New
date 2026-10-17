@@ -1,0 +1,7 @@
+{
+  "diagnostics" : {
+    "audio_inputs" : 1,
+    "text" : "\n\nChloe\nConnected\nToday, 6:15 PM\n\n\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\n\n\nThe garden near the library is underrated.\nTomorrow after class?\n\n\nI’m in ✨\nMessage Chloe\nVoice message\nRecord up to two minutes. Review it before sending.\nStart recording\nThe microphone did not respond. Check your audio input and try again.\nCancel\n"
+  },
+  "result" : "failed"
+}

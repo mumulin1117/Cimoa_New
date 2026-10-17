@@ -25,7 +25,7 @@
     "question": null,
     "answer": null,
     "photo": null,
-    "text": "Chloe\nConnected\nToday, 6:04 PM\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\nThe garden near the library is underrated.\nTomorrow after class?\nI’m in ✨\nMessage Chloe"
+    "text": "Chloe\nConnected\nToday, 6:15 PM\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\nThe garden near the library is underrated.\nTomorrow after class?\nI’m in ✨\nMessage Chloe"
   },
   "errors": [],
   "reference": "Offline HTML AST, original inline styles, no prototype script/runtime",
@@ -33,9 +33,9 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 94071,
-    "pixels_above_channel_delta_8": 9417,
-    "mean_absolute_channel_delta": 0.8210228290864782,
+    "pixels_different": 94028,
+    "pixels_above_channel_delta_8": 9428,
+    "mean_absolute_channel_delta": 0.8213856932946278,
     "max_channel_delta": 228
   },
   "cleaned_up": true

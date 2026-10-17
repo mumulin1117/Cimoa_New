@@ -44,6 +44,22 @@ test('call creation failure, privacy, expiry, corrupt deadlines and old saves re
   const old = create_seed(epoch); delete old.call_sessions
   const migrated = fixture(old); assert.deepEqual(migrated.store.data.call_sessions, []); assert.equal(migrated.writes(), 0)
 })
+test('logout irreversibly ends a pending call even if the same account reuses an identical test-clock expiry', () => {
+  const { store } = fixture(), call = store.start_waiting_call('conversation_chloe'), session = clone_data(store.data.session)
+  assert.equal(store.logout().success,true); store.data.session = session
+  assert.equal(store.waiting_call(call.data).status,'ended')
+})
+test('private media decoding cannot publish across a new login for the same owner; newly written Blob is compensated', async () => {
+  const { store } = fixture(), blobs = new Map(), session = clone_data(store.data.session)
+  let decoded
+  configure_store_runtime(store, { inspect_media: () => new Promise(resolve => { decoded = resolve }), media: { put: async(id,blob) => blobs.set(id,blob), delete: async id => blobs.delete(id) } })
+  const count = store.data.messages.length
+  const sending = store.send_direct_message('conversation_chloe','',{ kind:'audio',blob:new Blob(['recording'],{type:'audio/wav'}),duration_ms:1500 },'new-login-race')
+  store.logout(); store.data.session = { ...session, expires_at: session.expires_at + 1 }
+  decoded({ duration_ms:1500 })
+  assert.equal((await sending).success,false)
+  assert.equal(store.data.messages.length,count); assert.equal(blobs.size,0); assert.equal(store.data.media_files.length,0)
+})
 function fixture(saved = create_seed(epoch)) {
   let fail = false, writes = 0, now = epoch
   const disk = new Map([[STATE_KEY, saved]]), store = use_app_store(createPinia())

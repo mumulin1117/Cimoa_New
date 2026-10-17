@@ -1,0 +1,52 @@
+{
+  "result": "partial; full acceptance pending real microphone capture",
+  "date": "2026-10-17",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "build": {
+    "same_manifest": true,
+    "files": 403,
+    "sha256": "f8ddb1b25bb6ad38c9143499a9dde185ca5bc63e92a8825a0414cb0d5f5a4e8f"
+  },
+  "domain": {
+    "passed": 117,
+    "failed": 0
+  },
+  "browser": {
+    "chat_source": 3,
+    "direct_chat_safety_media": 21,
+    "waiting_call": 5,
+    "shared_event_group": 3,
+    "shared_discover_voice": 7,
+    "all": "passed"
+  },
+  "wkwebview": {
+    "device": "iPhone 17 Pro",
+    "os": "26.5",
+    "chat_passed": 4,
+    "waiting_call_passed": 1,
+    "real_microphone_success": "failed: getUserMedia never acquired; explicit timeout after 15000ms; see ../connection-chat/wkwebview-real-microphone.json",
+    "hardware_observation": "macOS reports only Mac mini speaker, no physical audio input; WebKit reports one default input",
+    "actual_background_foreground": true,
+    "system_keyboard_retest": "not claimed; browser keyboard viewport regression passed"
+  },
+  "mandatory_commands": {
+    "check_conventions": "passed, no warnings",
+    "diff_check": "passed",
+    "build_h5": "passed"
+  },
+  "policy": {
+    "verified": false,
+    "no_fake_peer_consent_or_connection": true,
+    "no_real_call_or_webrtc": true,
+    "no_prototype_runtime": true,
+    "local_commits_only": true,
+    "push": false
+  },
+  "cleanup": {
+    "temporary_servers": "closed",
+    "isolated_browser_contexts": "closed",
+    "native_snapshots": "restored",
+    "new_test_media": "deleted by restore/finally",
+    "user_registration_images": "preserved; not staged"
+  }
+}

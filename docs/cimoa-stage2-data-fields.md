@@ -75,7 +75,7 @@
 | auth_flow | owner_user_id, step, email, verification_request_id, agreements, profile_draft | nullable ID/string/string/nullable ID/object/object | signup, ver*, fp*, ob* | accounts | local_storage_metadata | save_auth_draft, apply_verification |
 | support_requests | support_id, owner_user_id, body, status, external_ticket_id | ID/ID/string/draft或submitted/nullable ID | setSupport | users | local_storage_metadata | submit_support |
 | service_state | availability, error_code, retry_context | object/nullable string/nullable object | sys*, 服务失败 | none | derived | service adapter |
-| call_session | conversation_id, started_at, ended_at, end_reason | ID/number/nullable number/nullable string | 模拟等待通话 | conversations | derived | begin/end waiting controller |
+| call_sessions | call_id, owner_user_id, participant_id, conversation_id, connection_id, session_expires_at, started_at, expires_at, ended_at | ID/ID/ID/ID/string/number/number/number/nullable number | 用户已确认的等待接通 | conversations、Connection 代际、当前登录 | local_storage_metadata；status 只读推导 waiting/timeout/ended | start_waiting_call / end_waiting_call；logout 结束、block/delete 清理 |
 | legacy_archive | snapshot, captured_at | object/number / 仅迁移时存在 | 旧版存储 | 原样保留旧数据 | local_storage_metadata | hydrate migration |
 | operation_receipts | owner_user_id, operation_id, fingerprint, result, created_at | ID/string/string/JSON/number / 同账号操作键唯一 | 介绍、消息、匹配、购买及退款 | 当前账号与对应操作 | local_storage_metadata | 对应事务 action |
 
@@ -118,6 +118,8 @@ Discover 本页补充（2026-10-13）：`discover_person` 为只读 getter，从
 | create_account / reset_password / apply_verification / submit_support | 真实服务成功结果通过适配器返回；测试通过独立注入适配器覆盖 | 未配置明确 unavailable；无“邮件已发送/客服已接单”假反馈 |
 
 ## 迁移与恢复
+
+私聊/等待增量（2026-10-17）：旧 v2 缺失 call_sessions 时仅在内存补空表，hydration 不写磁盘。显式开始通话经 500ms Loading 后原子创建或复用同会话等待，截止为 started_at + 8–12 秒；刷新/后台/页面恢复不延长。timeout 由截止推导，不写假接通；主动挂断原子保存 ended_at。账号登录有效期、双方视频隐私、连接代际共同约束读取；退出结束本账号等待，拉黑/注销移除关联行。私聊媒体发送异步解码期间固定 owner/session/Connection，失效则回滚新增 Blob；成功才发布 Message，Home 预览和未读从同一实体派生。完整交互契约与证据见 [私聊专项验收](./cimoa-messaging-acceptance.md)。
 
 Events 本页补充（2026-10-13）：新增可选 `events.time_zone`（新 HKUST fixture 为 Asia/Hong_Kong，旧记录缺失回退 UTC）、`featured_tab` / `feed_order`（先真实筛选，再源编排排序）、owner 范围 `event_preferences.active_tab`（缺失只读回退 Today）。`event_feed`、`event_by_id`、`event_join_blocker` 共用日期、成员和资格；`select_event_tab` 单事务保存，绝不覆盖旧高级 filters、收藏或提醒。Today 当日、This week 周一至周日、My campus 按当前账号大学，均排除结束活动。`event_card` 头像/人数只含可见成员，余位按所有报名计算；取消撤销群权限。字段和十字段入口契约见 [Events](./cimoa-events-interactions.md)。旧 v2 时间、图片与用户自定义文本完整保留，不因新 fixture 自动重置。
 

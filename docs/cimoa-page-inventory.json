@@ -6363,7 +6363,10 @@
       "chat.media.close.click.1",
       "chat.media.close.click.2",
       "chat.media.record.click.1",
-      "chat.media.send.click.1"
+      "chat.media.send.click.1",
+      "chat.image.open.click.1",
+      "chat.image.close.click.1",
+      "chat.image.retry.click.1"
     ],
     "entities": "requests (ConnectionRequest); relationships (derived Connection generation); conversations/messages (Conversation); users/photos/audio; blocks; account-scoped privacy",
     "assets": {
@@ -6402,20 +6405,20 @@
       ]
     },
     "status": "pending",
-    "local_acceptance": "browser-passed; WKWebView and call dependency pending",
+    "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source locked; local/full/visual acceptance passed; final H5 and iPhone 17 Pro WKWebView 10/10 suite match the same build. Implementation and evidence committed locally at a3fbed70; no push.",
-    "acceptance_evidence": "docs/evidence/connection-core/final-acceptance.json",
-    "native_acceptance_evidence": "docs/ui-restoration/connection-chat/wkwebview-geometry.json",
+    "mapping_status": "Implementation and browser/source/native chat regression passed. Native real microphone acquisition times out; full acceptance pending, not verified.",
+    "acceptance_evidence": "docs/cimoa-messaging-acceptance.md",
+    "native_acceptance_evidence": "docs/ui-restoration/call-waiting/native-chat-summary.json",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "visual_evidence": "docs/ui-restoration/connection-chat",
-    "acceptance_notes": "2026-10-17: source-contract, reference/actual/overlay/diff, 15 browser page checks, 5 two-account integration flows, 19 chat/safety checks and 10 native tests passed. Scope and real-media limitations: docs/cimoa-connection-core-acceptance.md.",
+    "acceptance_notes": "2026-10-17: 117 domain checks, 21 direct chat/media/safety checks, source pixel/keyboard regression and native 4 passing chat tests. Real microphone success is NOT passed; see report.",
     "source_lock_artifact": "docs/ui-restoration/connection-chat/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/connection-chat/difference-audit.md",
     "interaction_contract_artifact": "docs/ui-restoration/connection-chat/interactions.json",
-    "implementation_commit": "a3fbed70"
+    "implementation_commit": "375dcdb5"
   },
   {
     "source_screen": "Video Call / Incoming / Default",
@@ -6425,19 +6428,20 @@
     ],
     "page_level": "三级",
     "route": "/pages/messages/call/waiting",
-    "component": null,
+    "component": "src/pages/messages/call/waiting.vue",
     "parent_route": "/pages/messages/chat",
     "allowed_origin_routes": [
       "/pages/messages/chat"
     ],
     "required_parameters": [
-      "conversation_id"
+      "conversation_id",
+      "call_id"
     ],
     "entry_points": [],
     "return_owner": "pop origin_route（允许来源：/pages/messages/chat）；无历史实例时 replace /pages/messages/chat，不创建伪造实体",
     "completion_navigation": "仅等待接通模拟；结束只 pop 一次至原 conversation_id 的聊天",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
-    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+    "fixed_regions": "Full-viewport static profile preview, TopSafeArea header, own preview, bottom-safe waiting/hangup",
+    "scroll_region": "none; source fixed call viewport",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
@@ -6473,14 +6477,18 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
-    "mapping_status": "source-mapped; user-authorized waiting-only override verified through manual end, 8–12 second auto end, one-return cleanup, invalid conversation, small viewport and WKWebView",
-    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
-    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
+    "mapping_status": "User-confirmed waiting-only override; browser and real WKWebView waiting/refresh/background/manual/timeout passed. Full dependency acceptance pending Chat real microphone success.",
+    "acceptance_evidence": "docs/cimoa-messaging-acceptance.md",
+    "native_acceptance_evidence": "docs/ui-restoration/call-waiting/native-call-summary.json",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/call-waiting/source-contract.json",
+    "interaction_contract_artifact": "docs/ui-restoration/call-waiting/interactions.json",
+    "visual_evidence": "docs/ui-restoration/call-waiting"
   },
   {
     "source_screen": "Video Call / Active / Default",
@@ -6490,21 +6498,22 @@
     ],
     "page_level": "三级",
     "route": "/pages/messages/call/waiting",
-    "component": null,
+    "component": "src/pages/messages/call/waiting.vue",
     "parent_route": "/pages/messages/chat",
     "allowed_origin_routes": [
       "/pages/messages/chat"
     ],
     "required_parameters": [
-      "conversation_id"
+      "conversation_id",
+      "call_id"
     ],
     "entry_points": [
       "startCall@5022"
     ],
     "return_owner": "pop origin_route（允许来源：/pages/messages/chat）；无历史实例时 replace /pages/messages/chat，不创建伪造实体",
     "completion_navigation": "仅等待接通模拟；结束只 pop 一次至原 conversation_id 的聊天",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
-    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+    "fixed_regions": "Full-viewport static profile preview, TopSafeArea header, own preview, bottom-safe waiting/hangup",
+    "scroll_region": "none; source fixed call viewport",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
@@ -6584,14 +6593,19 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
-    "mapping_status": "source-mapped; original active-call controls are superseded by the user-authorized waiting-only override; manual/automatic end, timer cleanup, invalid conversation, small viewport and WKWebView passed",
-    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
-    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
+    "mapping_status": "User-confirmed waiting-only override; browser and real WKWebView waiting/refresh/background/manual/timeout passed. Full dependency acceptance pending Chat real microphone success.",
+    "acceptance_evidence": "docs/cimoa-messaging-acceptance.md",
+    "native_acceptance_evidence": "docs/ui-restoration/call-waiting/native-call-summary.json",
+    "visual_acceptance": "passed",
+    "source_evidence": "docs/ui-restoration/call-waiting",
+    "source_lock_artifact": "docs/ui-restoration/call-waiting/source-contract.json",
+    "interaction_contract_artifact": "docs/ui-restoration/call-waiting/interactions.json",
+    "visual_evidence": "docs/ui-restoration/call-waiting"
   },
   {
     "source_screen": "Video Call / Ended / Default",
@@ -6601,21 +6615,22 @@
     ],
     "page_level": "三级",
     "route": "/pages/messages/call/waiting",
-    "component": null,
+    "component": "src/pages/messages/call/waiting.vue",
     "parent_route": "/pages/messages/chat",
     "allowed_origin_routes": [
       "/pages/messages/chat"
     ],
     "required_parameters": [
-      "conversation_id"
+      "conversation_id",
+      "call_id"
     ],
     "entry_points": [
       "endCall@5025"
     ],
     "return_owner": "pop origin_route（允许来源：/pages/messages/chat）；无历史实例时 replace /pages/messages/chat，不创建伪造实体",
     "completion_navigation": "仅等待接通模拟；结束只 pop 一次至原 conversation_id 的聊天",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
-    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+    "fixed_regions": "Full-viewport static profile preview, TopSafeArea header, own preview, bottom-safe waiting/hangup",
+    "scroll_region": "none; source fixed call viewport",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
@@ -6662,14 +6677,18 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "implementation_override": "用户确认仅等待接通模拟；非真实接通状态，按开发约定 12.5 合并实现",
-    "mapping_status": "source-mapped; original ended screen is superseded by the user-authorized waiting-only single return; manual/automatic end are idempotent and verified in browser, timer unit tests and WKWebView",
-    "acceptance_evidence": "docs/evidence/settings-safety/safety-actions-acceptance.json",
-    "native_acceptance_evidence": "docs/evidence/settings-safety/ios-chat-safety-acceptance.json"
+    "mapping_status": "User-confirmed waiting-only override; browser and real WKWebView waiting/refresh/background/manual/timeout passed. Full dependency acceptance pending Chat real microphone success.",
+    "acceptance_evidence": "docs/cimoa-messaging-acceptance.md",
+    "native_acceptance_evidence": "docs/ui-restoration/call-waiting/native-call-summary.json",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/call-waiting/source-contract.json",
+    "interaction_contract_artifact": "docs/ui-restoration/call-waiting/interactions.json",
+    "visual_evidence": "docs/ui-restoration/call-waiting"
   },
   {
     "source_screen": "Events / Explore / Default",

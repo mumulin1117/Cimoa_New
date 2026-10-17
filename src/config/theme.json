@@ -5,6 +5,10 @@
       "gradient": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
     },
     "surface": {
+      "call": "#08101f",
+      "call_control": "rgba(8,16,31,0.38)",
+      "call_control_border": "rgba(255,255,255,0.18)",
+      "call_preview_border": "rgba(255,255,255,0.4)",
       "ice_track": "#e6ecf5",
       "ice_indicator": "#d7dee8",
       "connection_wave": "#e2e8f0",
@@ -51,6 +55,7 @@
       "coin_hero_orb_secondary": "rgba(255,255,255,0.10)"
     },
     "text": {
+      "call_waiting": "rgba(255,255,255,0.85)",
       "connection_muted": "#8b95a6",
       "connection_status": "#44536b",
       "connection_audio": "#6b7a93",
@@ -164,6 +169,8 @@
     }
   },
   "gradients": {
+    "call_top": "linear-gradient(to bottom,rgba(8,16,31,0.6),rgba(8,16,31,0))",
+    "call_bottom": "linear-gradient(to top,rgba(8,16,31,0.82),rgba(8,16,31,0))",
     "ice_record_glow": "radial-gradient(circle,rgba(78,142,247,0.28),rgba(248,28,229,0.2) 60%,transparent 75%)",
     "chat_message": "linear-gradient(100deg,#1ec8f5 0%,#8b5cf6 55%,#f845f0 100%)",
     "chat_send": "linear-gradient(135deg,#1ec8f5 0%,#8b5cf6 55%,#f81ce5 100%)",
@@ -184,6 +191,7 @@
     "auto_match_17": "linear-gradient(to top,rgba(6,14,28,0.8) 0%,rgba(6,14,28,0.35) 55%,rgba(6,14,28,0) 100%)"
   },
   "shadows": {
+    "call_end": "0 19.084rpx 45.802rpx rgba(239,68,68,0.4)",
     "ice_question": "0 15.267rpx 41.985rpx rgba(16,36,74,0.06)",
     "ice_question_selected": "0 19.084rpx 49.618rpx rgba(168,85,247,0.18)",
     "connection_action": "0 22.901rpx 49.618rpx rgba(168,85,247,0.24)",

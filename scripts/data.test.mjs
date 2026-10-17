@@ -214,6 +214,18 @@ test('microphone denial/no-device/unavailable and permission queries report real
   await assert.rejects(create_recorder({ devices: {}, Recorder: null }), /unavailable/)
   assert.equal((await read_permissions({ permissions: { query: async () => { throw new Error() } } })).microphone, 'unavailable')
 })
+test('pending microphone timeout/cancel clears timers and stops a stream that resolves late', async () => {
+  for (const mode of ['timeout','abort']) {
+    const clock = fake_clock(), controller = new AbortController(); let resolve_capture, stopped = 0
+    const pending = create_recorder({ Recorder: class {}, devices: { getUserMedia: () => new Promise(resolve => {resolve_capture=resolve}) }, timers:clock, signal:controller.signal })
+    const rejected = assert.rejects(pending,mode==='abort' ? /cancelled/ : /did not respond/)
+    await Promise.resolve()
+    if(mode==='abort')controller.abort();else await clock.advance(15000)
+    await rejected; assert.equal(clock.pending(),0)
+    resolve_capture({ getTracks:()=>[{stop:()=>stopped++}] }); await Promise.resolve(); await Promise.resolve()
+    assert.equal(stopped,1)
+  }
+})
 test('write loading is before mutation, rejects repeats and resolves cancellation without leaked timers', async () => {
   const clock = fake_clock(), states = [], operation = create_write_operation({ timers: clock, set_loading: (state) => states.push(state) }); let writes = 0
   const promise = operation.run(() => { writes++; return { success: true } }); assert.equal(states[0], true)

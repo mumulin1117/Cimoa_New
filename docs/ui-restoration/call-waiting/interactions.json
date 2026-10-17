@@ -1,0 +1,122 @@
+[
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "500ms custom Loading before any state write; pure navigation and timeout have no Loading",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "callActive.endCall.click.1",
+    "success_result": "End current wait and return to exact conversation only once",
+    "persistence": "ended_at saved by owned Store action; timeout status derived without write"
+  },
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "500ms custom Loading before any state write; pure navigation and timeout have no Loading",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "callActive.goBack.click.1",
+    "success_result": "End valid wait then Back; invalid call Back to exact valid Chat or Home",
+    "persistence": "Same owned end action for valid wait; none for invalid/error navigation"
+  },
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "Source flag opens controlled SafetyActionsMiniSheet",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "callActive.openSafetyMini.click.1",
+    "success_result": "Open source Report/Block menu over same target",
+    "persistence": "none"
+  },
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "500ms custom Loading before any state write; pure navigation and timeout have no Loading",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "sheetSafetyMini.openReport.click.1",
+    "success_result": "Persist end first then push report with real target_user_id and context_id; Back resolves ended wait to exact Chat",
+    "persistence": "Owned call ended_at only; no fabricated report delivery"
+  },
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "Shared explicit destructive confirmation",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "sheetSafetyMini.openBlock.click.1",
+    "success_result": "Show source block confirmation",
+    "persistence": "none"
+  },
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "500ms custom Loading before any state write; pure navigation and timeout have no Loading",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "sheetBlock.confirmBlock.click.1",
+    "success_result": "Atomically block target, remove consent/conversation/messages/call rows; clear-stack Home",
+    "persistence": "Existing block_user transaction; rollback all on failure"
+  },
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "Controlled Sheet leave",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "sheetSafetyMini.closeSheet.click.1",
+    "success_result": "Close without mutations; original absolute waiting deadline continues",
+    "persistence": "none"
+  },
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "Controlled Sheet leave",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "sheetSafetyMini.closeSheet.click.2",
+    "success_result": "Close without mutations; original absolute waiting deadline continues",
+    "persistence": "none"
+  },
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "Controlled Sheet leave",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "sheetBlock.closeSheet.click.1",
+    "success_result": "Close without mutations; original absolute waiting deadline continues",
+    "persistence": "none"
+  },
+  {
+    "source_screen": "Call Waiting under user-confirmed override; original isCallActive",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Authenticated call owner, exact Conversation and Connection generation, both video privacy enabled",
+    "visible_feedback": "Controlled Sheet leave",
+    "failure_result": "Readable retryable error; no fake answer, duplicate navigation, message, debit or partial state",
+    "sync_scope": "call_sessions / users / relationships / conversations / blocked_users",
+    "acceptance": "waiting-call-browser.test.mjs + native testWaitingCallDeadlineAndBackgroundRecovery",
+    "interaction_id": "sheetBlock.closeSheet.click.2",
+    "success_result": "Close without mutations; original absolute waiting deadline continues",
+    "persistence": "none"
+  }
+]

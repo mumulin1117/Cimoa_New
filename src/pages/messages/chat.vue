@@ -43,7 +43,7 @@ const access_error = computed(() => store.hydration_status !== 'ready'
 const locked = computed(() => !!sheet.value || is_loading.value || media_busy.value)
 const photo_id = ref('')
 const photo_src = computed(() => conversation.value?.messages.find(row => row.message_id === photo_id.value && row.kind === 'image')?.media?.media_url || '')
-watch(access_error, value => { if (value) { cancel_loading(); clear_media(); sheet.value = ''; photo_id.value = '' } })
+watch(access_error, value => { if (value) { if (!(sheet.value === 'block' && is_loading.value)) cancel_loading(); clear_media(); sheet.value = ''; photo_id.value = '' } })
 
 onLoad(options => {
   conversation_id.value = String(options?.conversation_id || '')
@@ -75,7 +75,7 @@ onShow(async () => {
   scroll_last()
 })
 
-const close_sheet = () => { if (!locked.value || (!is_loading.value && !media_busy.value)) { sheet.value = ''; error.value = ''; clear_media() } }
+const close_sheet = () => { if (!is_loading.value) { sheet.value = ''; error.value = ''; clear_media() } }
 const back = async () => { if (locked.value) return; try { await frame.value.navigate_back('/pages/home/index') } catch (cause) { error.value = cause.message } }
 const open_profile = async () => {
   if (is_loading.value || media_busy.value || access_error.value) return
@@ -177,7 +177,7 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
     <template #overlays>
       <ChatImageConfirmDialog :open="sheet === 'image' && !!photo_src" :src="photo_src" @close="close_sheet" />
       <SafetyActionsSheet :open="['safety', 'block'].includes(sheet)" :mode="sheet === 'block' ? 'block' : 'menu'" :user-name="participant?.user_name" :muted="muted" :busy="is_loading" :error="error" @close="close_sheet" @view-profile="open_profile" @toggle-mute="toggle_mute" @report="open_report" @open-block="sheet = 'block'; error = ''" @confirm-block="confirm_block" />
-      <EventConfirmDialog :open="['media', 'voice'].includes(sheet)" :busy="is_loading || media_busy" :label="sheet === 'voice' ? 'Voice message' : 'Send photo?'" close-interaction="chat.media.close.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="close_sheet">
+      <EventConfirmDialog :open="['media', 'voice'].includes(sheet)" :busy="is_loading" :label="sheet === 'voice' ? 'Voice message' : 'Send photo?'" close-interaction="chat.media.close.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="close_sheet">
         <text class="event-dialog-title">{{ sheet === 'voice' ? 'Voice message' : 'Send photo?' }}</text>
         <view v-if="media?.kind === 'image'" class="chat-media-preview"><ProfilePhoto :src="media.url" name="Photo preview" portrait /></view>
         <template v-if="sheet === 'voice'">

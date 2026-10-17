@@ -1,0 +1,45 @@
+{
+  "result": "passed",
+  "checks": [
+    "Original call background, gradients, header/preview/hangup geometry with approved waiting-only deltas; fixed 393×852 and dot phase",
+    "Loading precedes call creation; reload/freeze/resume preserve deadline; small-screen timeout returns once to exact Chat without messages/coins/peer consent",
+    "Manual end storage failure remains retryable; retry persists end and returns once",
+    "Expired waiting URL never restarts; forged conversation shows no private preview and Back returns Home",
+    "Source safety flag ends waiting before Report and returns to exact Chat; confirmed Block clears connection/call and returns Home"
+  ],
+  "errors": [],
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "geometry": {
+    "back": {
+      "x": 20,
+      "y": 58,
+      "width": 43.984375,
+      "height": 43.984375,
+      "bottom": 101.984375
+    },
+    "own": {
+      "x": 269.015625,
+      "y": 116,
+      "width": 103.984375,
+      "height": 141.984375,
+      "bottom": 257.984375
+    },
+    "end": {
+      "x": 164.5,
+      "y": 744.03125,
+      "width": 63.984375,
+      "height": 63.984375,
+      "bottom": 808.015625
+    },
+    "state": "Waiting for Chloe Lin."
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 203902,
+    "pixels_above_channel_delta_8": 10879,
+    "mean_absolute_channel_delta": 0.9526574203490664,
+    "max_channel_delta": 183
+  },
+  "cleaned_up": true
+}

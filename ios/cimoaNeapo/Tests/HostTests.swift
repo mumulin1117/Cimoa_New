@@ -450,6 +450,63 @@ final class HostTests: XCTestCase {
     func testConnectionReceivedPixel() async throws { try await connectionPixel("received") }
     func testConnectionAcceptedPixel() async throws { try await connectionPixel("accepted") }
     func testConnectionDeclinedPixel() async throws { try await connectionPixel("declined") }
+    func testWaitingCallDeadlineAndBackgroundRecovery() async throws {
+        let host = try await rawHost()
+        let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        let originalScripts = host.webView.configuration.userContentController.userScripts
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/call-waiting")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: root.appendingPathComponent("docs/ui-restoration/connection-chat/native-fixture.json"))) as! [String: Any]
+        func restoreScripts() {
+            host.webView.configuration.userContentController.removeAllUserScripts()
+            for item in originalScripts { host.webView.configuration.userContentController.addUserScript(item) }
+        }
+        func restore() async throws {
+            restoreScripts()
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value]of[['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}return true", arguments: ["saved": snapshot], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?callRestore=\(UUID().uuidString)#/pages/auth/splash")!))
+        }
+        do {
+            let encoded = String(data: try JSONSerialization.data(withJSONObject: fixture["data"]!), encoding: .utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const data=\(encoded);data.session.expires_at=Date.now()+86400000;data.call_sessions=[];for(const m of data.messages)if(m.conversation_id==='conversation_chloe')m.read_by=['user_cimoa','user_chloe'];localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            try await loadFreshConnection(host, route: "/pages/messages/chat?conversation_id=conversation_chloe", selector: ".chat-composer")
+            restoreScripts()
+            _ = try await script(host, "document.querySelector('[data-interaction=\"chat.startCall.click.1\"]').click();return true")
+            try await waitFor(host, ".waiting-call-own")
+            host.publishSafeArea()
+            let first = try await script(host, "await document.fonts.ready;await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));for(const a of document.getAnimations())a.finish();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const call=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.call_sessions.at(-1),box=s=>{const r=document.querySelector(s).getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};return {call,viewport:{width:innerWidth,height:innerHeight},back:box('.waiting-call-round'),own:box('.waiting-call-own'),end:box('.waiting-call-end'),images:[...document.querySelectorAll('.waiting-call-page .profile-photo')].every(e=>e.dataset.mediaStatus==='ready'),video:document.querySelectorAll('video').length,origin:location.origin}") as! [String: Any]
+            XCTAssertEqual(first["images"] as? Bool, true); XCTAssertEqual(first["video"] as? Int, 0); XCTAssertEqual(first["origin"] as? String, BundleHTTPServer.origin)
+            let viewport = first["viewport"] as! [String: Double], back = first["back"] as! [String: Double], own = first["own"] as! [String: Double], end = first["end"] as! [String: Double], scale = viewport["width"]! / 393
+            XCTAssertEqual(back["y"]!, Double(host.view.safeAreaInsets.top) + 4 * scale, accuracy: 1)
+            XCTAssertEqual(own["width"]!, 104 * scale, accuracy: 1); XCTAssertEqual(own["height"]!,142 * scale,accuracy:1)
+            XCTAssertEqual(end["bottom"]!, viewport["height"]! - Double(host.view.safeAreaInsets.bottom) - 44 * scale, accuracy: 1)
+            try (await host.webView.takeSnapshot(configuration: nil)).pngData()!.write(to: folder.appendingPathComponent("actual-wkwebview.png"))
+            let call = first["call"] as! [String: Any], id = call["call_id"] as! String
+            try await loadFreshConnection(host, route: "/pages/messages/call/waiting?conversation_id=conversation_chloe&call_id=\(id)", selector: ".waiting-call-own")
+            let restoredDeadline = try await script(host, "return JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.call_sessions.at(-1).expires_at") as! Double
+            XCTAssertEqual(restoredDeadline, call["expires_at"] as! Double)
+            _ = try await script(host, "const e=document.querySelector('[data-interaction=\"callActive.endCall.click.1\"]');e.click();e.click();return true")
+            try await waitFor(host, ".chat-composer")
+            let manual = try await script(host, "const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return {ended:d.call_sessions.at(-1).ended_at!==null,conversation:location.hash.includes('conversation_id=conversation_chloe')}") as! [String: Bool]
+            XCTAssertEqual(manual["ended"],true); XCTAssertEqual(manual["conversation"],true)
+            _ = try await script(host, "document.querySelector('[data-interaction=\"chat.startCall.click.1\"]').click();return true")
+            try await waitFor(host, ".waiting-call-own")
+            let backgroundToken = UUID().uuidString
+            try Data(backgroundToken.utf8).write(to: folder.appendingPathComponent("native-background-ready.txt"))
+            var backgroundReturned = false
+            for _ in 0..<60 {
+                if (try? String(contentsOf: folder.appendingPathComponent("native-background-done.txt"), encoding: .utf8).trimmingCharacters(in: .whitespacesAndNewlines)) == backgroundToken { backgroundReturned = true; break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            XCTAssertTrue(backgroundReturned, "Actual simulator background/foreground is required")
+            try await waitFor(host, ".chat-composer")
+            let timeout = try await script(host, "const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,c=d.call_sessions.at(-1);return {once:d.call_sessions.length===2,timeout:c.ended_at===null&&Date.now()>=c.expires_at,elapsed:Date.now()-c.started_at,conversation:location.hash.includes('conversation_id=conversation_chloe')}") as! [String: Any]
+            XCTAssertEqual(timeout["once"] as? Bool,true); XCTAssertEqual(timeout["timeout"] as? Bool,true); XCTAssertEqual(timeout["conversation"] as? Bool,true); XCTAssertLessThan(timeout["elapsed"] as! Double,14500)
+            try JSONSerialization.data(withJSONObject: ["result":"passed","geometry":first,"manual":manual,"timeout":timeout,"actual_background_foreground":backgroundReturned], options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-acceptance.json"))
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testConnectionChatPixel() async throws { try await connectionPixel("chat") }
     func testConnectionVoiceLifecycleInRealWebKit() async throws {
         let host = try await rawHost()
@@ -2519,6 +2576,63 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { try? await restore(); throw error }
     }
+    func testDirectChatRealMicrophoneAndCleanup() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        let existing = try await script(host, "return JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.media_files.map(m=>m.media_id)") as! [String]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: root.appendingPathComponent("docs/ui-restoration/connection-chat/native-fixture.json"))) as! [String:Any]
+        let originalScripts=host.webView.configuration.userContentController.userScripts
+        func restoreScripts() { host.webView.configuration.userContentController.removeAllUserScripts();for item in originalScripts {host.webView.configuration.userContentController.addUserScript(item)} }
+        func restore() async throws {
+            restoreScripts()
+            let ids = try await script(host, "return JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.media_files.map(m=>m.media_id)") as! [String]
+            host.webView.load(URLRequest(url:URL(string:BundleHTTPServer.origin+"/index.html?directMicCleanup=\(UUID().uuidString)#/pages/auth/splash")!))
+            for _ in 0..<60 { if !host.webView.isLoading {break};try await Task.sleep(nanoseconds:50_000_000) }
+            _ = try await host.webView.callAsyncJavaScript("""
+            const ids=created.filter(id=>!existing.includes(id));if(ids.length){const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');ids.forEach(id=>t.objectStore('blobs').delete(id));t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close()}for(const[key,value]of[['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}return true
+            """,arguments:["created":ids,"existing":existing,"saved":saved],in:nil,contentWorld:.page)
+            host.webView.load(URLRequest(url:URL(string:BundleHTTPServer.origin+"/index.html?directMicRestored=\(UUID().uuidString)#/pages/auth/splash")!))
+        }
+        do {
+            let encoded=String(data:try JSONSerialization.data(withJSONObject:fixture["data"]!),encoding:.utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source:"const data=\(encoded);data.session.expires_at=Date.now()+86400000;for(const m of data.messages)if(m.conversation_id==='conversation_chloe')m.read_by=['user_cimoa','user_chloe'];localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));",injectionTime:.atDocumentStart,forMainFrameOnly:true))
+            try await loadFreshConnection(host,route:"/pages/messages/chat?conversation_id=conversation_chloe",selector:".chat-composer")
+            restoreScripts()
+            // User authorized a short microphone test; no captured bytes are exported.
+            _ = try await script(host, "document.querySelector('[data-interaction=\"chat.sendVoiceMsg.click.1\"]').click();return true")
+            try await Task.sleep(nanoseconds: 300_000_000)
+            _ = try await script(host, "document.querySelector('[data-interaction=\"chat.media.record.click.1\"]').click();return true")
+            var recording = false
+            for _ in 0..<200 {
+                if (try? await script(host, "return document.querySelector('[data-interaction=\"chat.media.record.click.1\"]')?.textContent.trim()==='Stop recording'")) as? Bool == true { recording = true; break }
+                if (try? await script(host, "return !!document.querySelector('.event-dialog-error')?.textContent.trim()")) as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            guard recording else { throw NSError(domain:"CimoaTests",code:41,userInfo:[NSLocalizedDescriptionKey:"Direct microphone did not start"]) }
+            try await Task.sleep(nanoseconds: 2_000_000_000)
+            _ = try await script(host, "document.querySelector('[data-interaction=\"chat.media.record.click.1\"]').click();return true")
+            try await waitForPreparedAudio(host, selector:"[data-interaction=\"chat.media.preview.click.1\"]")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"chat.media.send.click.1\"]').click();return true")
+            try await waitForPreparedAudio(host, selector:"[data-interaction=\"chat.media.play.click.1\"]")
+            let voice = try await script(host, "const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,m=d.messages.at(-1),file=d.media_files.find(f=>f.media_id===m.media_id);return {kind:m.kind,duration:file?.duration_ms,state:localStorage.getItem('cimoa_app_state_v2')}") as! [String:Any]
+            XCTAssertEqual(voice["kind"] as? String,"audio"); XCTAssertGreaterThan(voice["duration"] as? Double ?? 0,1000)
+            try await loadFreshConnection(host, route:"/pages/messages/chat?conversation_id=conversation_chloe", selector:".chat-composer")
+            try await waitForPreparedAudio(host, selector:"[data-interaction=\"chat.media.play.click.1\"]")
+            let playback = try await script(host, "document.querySelector('[data-interaction=\"chat.media.play.click.1\"]').click();for(let i=0;i<100;i++){if(document.querySelector('[aria-label=\"Pause voice message\"]'))return true;await new Promise(r=>setTimeout(r,30))}return false") as? Bool
+            XCTAssertEqual(playback,true)
+            let voiceRestored = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(voiceRestored,voice["state"] as? String)
+
+            try await restore()
+            try JSONSerialization.data(withJSONObject:["result":"passed","duration_ms":voice["duration"]!,"playback_after_refresh":playback==true,"test_blob_removed":true,"snapshot_restored":true,"recording_bytes_exported":false],options:[.prettyPrinted,.sortedKeys]).write(to:root.appendingPathComponent("docs/ui-restoration/connection-chat/wkwebview-real-microphone.json"))
+        } catch {
+            let diagnostics = try? await script(host,"return {text:document.body.innerText,audio_inputs:(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput').length}")
+            if let diagnostics {let details=diagnostics as? [String:Any];let blocked=(details?["audio_inputs"] as? Int)==0;try? JSONSerialization.data(withJSONObject:["result":blocked ? "blocked" : "failed","diagnostics":diagnostics],options:[.prettyPrinted,.sortedKeys]).write(to:root.appendingPathComponent("docs/ui-restoration/connection-chat/wkwebview-real-microphone.json"))}
+            try? await restore();throw error
+        }
+    }
     func testDirectChatSafetyAndMediaInRealWebKit() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
@@ -2564,11 +2678,15 @@ final class HostTests: XCTestCase {
             try await Task.sleep(nanoseconds: 250_000_000)
             let screenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); screenshot.name = "WKWebView direct chat after media refresh"; screenshot.lifetime = .keepAlways; add(screenshot)
 
+            let imagePreview = try await script(host, """
+            const delay=ms=>new Promise(r=>setTimeout(r,ms));document.querySelector('[data-interaction="chat.image.open.click.1"]').click();for(let i=0;i<100;i++){const photo=document.querySelector('.chat-full-photo .profile-photo[data-media-status="ready"]');if(photo){const contained=getComputedStyle(photo.querySelector('img')).objectFit==='contain';document.querySelector('.chat-full-photo').closest('[role="dialog"]').querySelector('[data-interaction="chat.image.close.click.1"]').click();return contained}await delay(30)}throw Error('Native full photo did not decode');
+            """) as? Bool
+            XCTAssertEqual(imagePreview,true)
             let safety = try await script(host, """
             const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
             const wait=async fn=>{for(let i=0;i<200;i++){const v=fn();if(v)return v;await delay(50)}throw Error('Safety timeout '+location.hash+' '+document.body.innerText)};
             const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);e.click();await delay(80)};
-            const beforeCall=localStorage.getItem('cimoa_app_state_v2');await click('chat.startCall.click.1');await wait(()=>visible('.waiting-call-page'));const waitingOnly=visible('.waiting-call-copy').textContent.includes('never claims the other person answered');await click('callActive.endCall.click.1');await wait(()=>visible('.direct-chat-page'));const callUnchanged=localStorage.getItem('cimoa_app_state_v2')===beforeCall;
+            const beforeCall=localStorage.getItem('cimoa_app_state_v2');await click('chat.startCall.click.1');await wait(()=>visible('.waiting-call-page'));const waitingOnly=!!visible('.waiting-call-own')&&!document.querySelector('video');await click('callActive.endCall.click.1');await wait(()=>visible('.direct-chat-page'));const oldCallState=JSON.parse(beforeCall).data;const callUnchanged=JSON.stringify(state().messages)===JSON.stringify(oldCallState.messages)&&state().call_sessions.at(-1).ended_at!==null;
             await click('chat.openSafety.click.1');await click('sheetSafety.openReport.click.1');await wait(()=>visible('.safety-report-user-page'));const reportTarget=visible('.editor-title').textContent.includes('Chloe Lin'),reportCount=state().reports.length;await click('safetyReport.goBack.click.1');await wait(()=>visible('.direct-chat-page'));
             await click('chat.openSafety.click.1');const beforeMute=localStorage.getItem('cimoa_app_state_v2');await click('sheetSafety.muteNotifs.click.1');const muteLoading=!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===beforeMute;await wait(()=>visible('[data-interaction="sheetSafety.muteNotifs.click.1"]')?.textContent.includes('Unmute'));
             await click('sheetSafety.openBlock.click.1');const beforeCancel=localStorage.getItem('cimoa_app_state_v2');await click('sheetBlock.closeSheet.click.2');await wait(()=>!visible('[role=dialog]'));const cancelUnchanged=localStorage.getItem('cimoa_app_state_v2')===beforeCancel;

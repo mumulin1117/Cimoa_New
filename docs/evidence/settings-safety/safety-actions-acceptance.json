@@ -1,15 +1,17 @@
 {
   "phase": "safety-actions",
   "result": "passed",
-  "server_pid": 74647,
+  "server_pid": 61413,
   "checks": [
     "Direct text send waits for custom Loading, persists once, clears the draft and restores after refresh",
     "Direct-message persistence failure rolls back completely and keeps the text draft retryable",
     "Direct photo uses the real chooser, remains a draft until confirmation, then restores its Blob after refresh",
+    "Sent photo opens its full aspect-fit image, closes without navigation and releases its viewer",
     "Denied direct-chat microphone access reports the real failure and cannot send an empty voice message",
+    "Pending microphone can be cancelled immediately; a late stream is stopped without a message or write",
     "Controlled real audio records, decodes, saves once, and plays from IndexedDB after direct-chat refresh",
     "Long direct history scrolls only inside the fixed header/composer frame and remains safe on a small viewport",
-    "Call entry uses only the approved waiting simulation and returns once without changing local entities",
+    "Call entry saves only its scoped deadline; manual end returns once without altering messages or coins",
     "Waiting call remains safe at small size and auto-ends once within the approved 8–12 second window",
     "Chat opens the source safety Sheet over the same conversation and Store-backed user entity",
     "Mute waits for custom Loading, persists, and restores after refresh without changing the conversation",
@@ -20,7 +22,7 @@
     "A valid conversation with no messages renders the real empty state without inventing history",
     "A forged conversation ID shows a recoverable error and exposes no private composer",
     "A forged call conversation shows an explicit error and never starts a timer or fake call",
-    "An unconnected profile keeps Send shot and enters the existing icebreaker flow without creating a conversation",
+    "An unconnected profile keeps Send shot and prepares the existing introduction draft without creating consent or a conversation",
     "Home opens the canonical Chloe conversation and chat Back restores the original Home instance"
   ],
   "errors": []

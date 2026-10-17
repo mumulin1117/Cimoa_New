@@ -28,10 +28,10 @@
     "source_screen": "chat; source-contract.json",
     "trigger": "click / keyboard activation",
     "preconditions": "authenticated participant in a connected, unblocked direct conversation; both existing allow_video preferences permit calls",
-    "visible_feedback": "source cRise navigation or controlled UI; no navigation Loading",
-    "success_result": "push waiting call with this conversation_id; only approved 450ms dots / 8–12s waiting simulation, no connected video; end pops once",
+    "visible_feedback": "500ms custom business Loading before creating/reusing call_sessions; navigation itself has no Loading",
+    "success_result": "push waiting with exact conversation_id and call_id; refresh never renews deadline",
     "failure_result": "stay in the current valid context with readable error; cancellation, invalid identity, storage/media failure cause no partial write, no duplicate request/message or debit",
-    "persistence": "none for navigation/selection; actual messages/settings remain Store-owned",
+    "persistence": "Store atomically saves call_id, owner, conversation, connection generation, login expiry and absolute started_at/expires_at; no peer or message state changes",
     "sync_scope": "Home / profile / request result / consent / unique conversation / unread / block filtering",
     "acceptance": "source-default geometry plus browser-acceptance.json; two-account text/voice/decline/match integration; native pixel/voice/media/return regression in final report"
   },
@@ -274,5 +274,41 @@
     "persistence": "atomic Store media/message transaction; Blob in IndexedDB",
     "sync_scope": "Home / profile / request result / connection / canonical conversation / block filtering / refresh",
     "acceptance": "browser-acceptance.json; social-entities/browser-acceptance.json; settings-safety/safety-actions-acceptance.json; final native 10-test result in cimoa-connection-core-acceptance.md"
+  },
+  {
+    "interaction_id": "chat.image.open.click.1",
+    "source_screen": "Chat; user-authorized completion of unimplemented prototype media flow",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Current authenticated participant with a visible image Message in the same unblocked Conversation",
+    "visible_feedback": "Controlled image dialog; actual loading/error/ready from ProfilePhoto; no business Loading or write",
+    "success_result": "Show the existing message media_id at aspectFit without cropping; no route or storage change",
+    "failure_result": "Readable Photo unavailable with Retry; no download, fake image, write or navigation",
+    "persistence": "none; only transient preview ID and reference-counted object URL",
+    "sync_scope": "Existing Conversation.Message.media_id and media_files; no page copy",
+    "acceptance": "settings-safety-browser safety-actions; native DirectChatSafetyAndMedia; image aspectFit and refresh assertions"
+  },
+  {
+    "interaction_id": "chat.image.close.click.1",
+    "source_screen": "Chat; user-authorized completion of unimplemented prototype media flow",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Current authenticated participant with a visible image Message in the same unblocked Conversation",
+    "visible_feedback": "Controlled image dialog; actual loading/error/ready from ProfilePhoto; no business Loading or write",
+    "success_result": "Close viewer, release image lease and remain in exact conversation",
+    "failure_result": "Readable Photo unavailable with Retry; no download, fake image, write or navigation",
+    "persistence": "none; only transient preview ID and reference-counted object URL",
+    "sync_scope": "Existing Conversation.Message.media_id and media_files; no page copy",
+    "acceptance": "settings-safety-browser safety-actions; native DirectChatSafetyAndMedia; image aspectFit and refresh assertions"
+  },
+  {
+    "interaction_id": "chat.image.retry.click.1",
+    "source_screen": "Chat; user-authorized completion of unimplemented prototype media flow",
+    "trigger": "click / keyboard activation",
+    "preconditions": "Current authenticated participant with a visible image Message in the same unblocked Conversation",
+    "visible_feedback": "Controlled image dialog; actual loading/error/ready from ProfilePhoto; no business Loading or write",
+    "success_result": "Reacquire the same existing Blob; missing/corrupt media remains explicit failure, never a substitute photo",
+    "failure_result": "Readable Photo unavailable with Retry; no download, fake image, write or navigation",
+    "persistence": "none; only transient preview ID and reference-counted object URL",
+    "sync_scope": "Existing Conversation.Message.media_id and media_files; no page copy",
+    "acceptance": "settings-safety-browser safety-actions; native DirectChatSafetyAndMedia; image aspectFit and refresh assertions"
   }
 ]

@@ -12,5 +12,12 @@ defineEmits(['close'])
   </EventConfirmDialog>
 </template>
 <style scoped>
-.chat-full-photo { position: relative; width: 100%; height: min(95.42vw, 48vh); overflow: hidden; border-radius: 30.534rpx; margin: 30.534rpx 0; }
+.chat-full-photo {
+  position: relative;
+  width: 100%;
+  height: min(715.649rpx, 48vh);
+  overflow: hidden;
+  border-radius: 30.534rpx;
+  margin: 30.534rpx 0;
+}
 </style>
