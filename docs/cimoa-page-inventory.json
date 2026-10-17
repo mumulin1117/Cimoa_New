@@ -3104,7 +3104,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending",
-    "visual_acceptance": "pending"
+    "visual_acceptance": "pending",
+    "source_lock": "locked",
+    "source_contract": "docs/ui-restoration/events/source-contract.json"
   },
   {
     "source_screen": "Discover / Icebreaker / Select Question",
@@ -6828,7 +6830,10 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending"
+    "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending",
+    "source_lock": "locked",
+    "source_contract": "docs/ui-restoration/events/source-contract.json",
+    "visual_acceptance": "pending"
   },
   {
     "source_screen": "Events / Detail / Available",
@@ -6986,7 +6991,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-event-pages.md",
-    "visual_acceptance": "pending"
+    "visual_acceptance": "pending",
+    "source_lock": "locked",
+    "source_contract": "docs/ui-restoration/event-detail/source-contract.json"
   },
   {
     "source_screen": "Events / Detail / Joined",
@@ -7144,7 +7151,10 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-event-pages.md"
+    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-event-pages.md",
+    "source_lock": "locked",
+    "source_contract": "docs/ui-restoration/event-detail/source-contract.json",
+    "visual_acceptance": "pending"
   },
   {
     "source_screen": "Events / Join / Confirmation",
@@ -7371,7 +7381,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-event-pages.md",
-    "visual_acceptance": "pending"
+    "visual_acceptance": "pending",
+    "source_lock": "locked",
+    "source_contract": "docs/ui-restoration/event-success/source-contract.json"
   },
   {
     "source_screen": "Events / Participants / Default",
@@ -7439,7 +7451,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-event-pages.md",
-    "visual_acceptance": "pending"
+    "visual_acceptance": "pending",
+    "source_lock": "locked",
+    "source_contract": "docs/ui-restoration/event-participants/source-contract.json"
   },
   {
     "source_screen": "Events / Group Chat / Default",
@@ -7573,7 +7587,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-event-pages.md",
-    "visual_acceptance": "pending"
+    "visual_acceptance": "pending",
+    "source_lock": "locked",
+    "source_contract": "docs/ui-restoration/event-group/source-contract.json"
   },
   {
     "source_screen": "Events / My Events / Upcoming",
@@ -7683,7 +7699,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-event-pages.md",
-    "visual_acceptance": "pending"
+    "visual_acceptance": "pending",
+    "source_lock": "locked",
+    "source_contract": "docs/ui-restoration/event-upcoming/source-contract.json"
   },
   {
     "source_screen": "Events / Attendance / Cancel",
@@ -7907,7 +7925,9 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; local acceptance passed; full dependency acceptance pending",
-    "visual_acceptance": "pending"
+    "visual_acceptance": "pending",
+    "source_lock": "locked",
+    "source_contract": "docs/ui-restoration/event-report/source-contract.json"
   },
   {
     "source_screen": "Wallet / Coin Center / Default",
