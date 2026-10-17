@@ -11216,7 +11216,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; local acceptance passed with report-detail dependency; full cross-flow acceptance pending"
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-reports/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-reports/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/settings-safety/reports-list-acceptance.json"
   },
   {
     "source_screen": "Safety / Report Detail / Default",
