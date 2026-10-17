@@ -57,7 +57,7 @@ export function use_auto_match_page(page) {
     if(name==='askLeaveMatch'){modal.value='found-leave';return}if(name==='passMatch'){await change('passed');return}
     if(name==='connectAsk'){modal.value='accepting';return}if(name==='confirmConnect'){await change('waiting');return}
     if(name==='cancelRequest'){modal.value='cancel';return}if(name==='confirmCancel'){const result=await write(()=>store.transition_match(match_id.value,'left'),false);if(result?.success)await home();return}
-    if(name==='findAnother'){if(options_view.value&&c.value.active)await go(store.matching_context(c.value.active.match_id).route,'replace');else await go('/pages/auto-match/index','replace');return}
+    if(name==='findAnother'){if(options_view.value&&c.value.active)await go(store.matching_context(c.value.active.match_id).route,'replace');else await write(()=>store.retry_match(match_id.value,make_operation_id('match-retry')),id=>store.matching_context(id).route);return}
     if(name==='openLimitedProfile'||name==='viewProfile'){if(c.value.candidate)await go(`/pages/discover/profile?user_id=${encodeURIComponent(c.value.candidate.user_id)}`);return}
     if(name==='startChat'){const id=store.connection_by_user(c.value.candidate?.user_id)?.conversation_id;if(id)await go(`/pages/messages/chat?conversation_id=${encodeURIComponent(id)}`);else error.value='This conversation is unavailable. Return Home and try again.';return}
     if(name==='history'){await go(row.route);return}

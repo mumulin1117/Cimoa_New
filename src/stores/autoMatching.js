@@ -9,9 +9,15 @@ const own_match = (data,id) => { const row=data.match_sessions.find(m=>m.match_i
 const allowed = { searching:['paused','left'], paused:['searching','left'], found:['waiting','passed','left'], waiting:['left'] }
 const require_pool = data => { require_student(data);s.ensure(s.privacy_for(data,s.owner_id(data)).auto_match_visible!==false,'Enable Auto Match visibility in Privacy before joining the pool.') }
 const require_distance = data => {const prefs=data.match_preferences.find(p=>p.owner_user_id===s.owner_id(data)),me=data.users.find(u=>u.user_id===s.owner_id(data));s.ensure(prefs&&(prefs.distance_max>=100||data.users.some(u=>u.user_id!==me.user_id&&matching_distance(data,me,u)!==null)),'Distance information is unavailable. Set Distance to 100+ km to continue.')}
+const admission = (data,row) => {
+  const root=data.match_sessions.find(m=>m.match_id===(row.pool_id||row.match_id)&&m.owner_user_id===row.owner_user_id)
+  s.ensure(root,'This pool admission is unavailable.');return root
+}
+const close_pool = (data,row,now) => { admission(data,row).pool_closed_at=now }
 const set_candidate = (data,row,now) => {
   row.preference_snapshot=clone_data(data.match_preferences.find(p=>p.owner_user_id===row.owner_user_id))
-  row.candidate_id=choose_match_candidate(data,now,row.match_id)?.user_id||null
+  const previous=data.match_sessions.filter(m=>m.match_id!==row.match_id&&(m.pool_id||m.match_id)===(row.pool_id||row.match_id)).map(m=>m.candidate_id).filter(Boolean)
+  row.candidate_id=choose_match_candidate(data,now,row.match_id,previous)?.user_id||null
   row.expires_at=row.candidate_id&&row.status!=='paused'?row.search_ready_at+45000:null
 }
 export const auto_match_actions = {
@@ -24,11 +30,31 @@ export const auto_match_actions = {
       const match_id=make_id('match'),date_key=s.utc_date_key(now),owner=s.owner_id(data)
       let quota=data.match_quota.find(q=>q.owner_user_id===owner&&q.date_key===date_key)
       if(!quota){quota={owner_user_id:owner,date_key,used_count:0};data.match_quota.push(quota)}
-      if(quota.used_count<data.quota_policy.free_daily_limit)quota.used_count++
+      const admission_cost=quota.used_count<data.quota_policy.free_daily_limit?0:data.quota_policy.standard_cost
+      if(admission_cost===0)quota.used_count++
       else add_transaction(data,-data.quota_policy.standard_cost,`match:${match_id}`,'spend',match_id,now)
-      const row={match_id,owner_user_id:owner,candidate_id:null,status:'searching',created_at:now,started_at:now,paused_at:null,expires_at:null,priority_until:null,self_accepted:false,peer_accepted:false,queue_position:null,estimated_wait_seconds:available===undefined?9:null,fixture:false,search_revision:0,...(available===undefined?{engine:'device',search_ready_at:now+9000}: {})}
+      // A deliberate new admission supersedes terminal retry chains, never their history or receipts.
+      for(const previous of data.match_sessions.filter(m=>m.owner_user_id===owner&&(m.pool_id||m.match_id)===m.match_id&&m.pool_closed_at==null))previous.pool_closed_at=now
+      const row={match_id,pool_id:match_id,admission_cost,admission_date_key:date_key,pool_closed_at:null,owner_user_id:owner,candidate_id:null,status:'searching',created_at:now,started_at:now,paused_at:null,expires_at:null,priority_until:null,self_accepted:false,peer_accepted:false,queue_position:null,estimated_wait_seconds:available===undefined?9:null,fixture:false,search_revision:0,...(available===undefined?{engine:'device',search_ready_at:now+9000}: {})}
       if(row.engine==='device')set_candidate(data,row,now)
       data.match_sessions.push(row);return match_id
+    })
+  },
+  retry_match(id,operation_id) {
+    const available=get_runtime(this).services.matching_available
+    if(available===false)return unavailable('Auto Match service')
+    return transact(this,operation(operation_id,'match-retry',id),(data,now)=>{
+      require_pool(data);require_distance(data)
+      const previous=own_match(data,id),root=admission(data,previous),status=s.match_status(previous,now)
+      s.ensure(root.pool_closed_at==null,'This pool admission has ended. Join the pool again to start a new search.')
+      if(previous.next_match_id){const next=own_match(data,previous.next_match_id);s.ensure((next.pool_id||next.match_id)===root.match_id,'This retry is unavailable.');return next.match_id}
+      s.ensure(['passed','expired','no_match'].includes(status),'This match is not ready for another search.')
+      s.ensure(!s.active_match(data,now),'A match session is already active.')
+      previous.status=status;previous.resolved_at??=now
+      const match_id=make_id('match'),priority_until=root.priority_until>now?root.priority_until:null,duration=priority_until?5000:9000
+      const row={match_id,pool_id:root.match_id,retry_of_match_id:id,owner_user_id:root.owner_user_id,candidate_id:null,status:'searching',created_at:now,started_at:now,paused_at:null,expires_at:null,priority_until,self_accepted:false,peer_accepted:false,queue_position:null,estimated_wait_seconds:available===undefined?duration/1000:null,fixture:false,search_revision:0,...(available===undefined?{engine:'device',search_ready_at:now+duration,...(priority_until?{standard_search_ready_at:now+9000}: {})}: {})}
+      if(row.engine==='device')set_candidate(data,row,now)
+      previous.next_match_id=match_id;data.match_sessions.push(row);return match_id
     })
   },
   transition_match(id,status) {
@@ -51,6 +77,7 @@ export const auto_match_actions = {
       row.status=status;row.paused_at=status==='paused'?now:null;row.search_revision=(row.search_revision||0)+1
       if(row.engine==='device'&&status==='searching')row.expires_at=row.candidate_id?row.search_ready_at+45000:null
       if(['left','passed'].includes(status))row.resolved_at=now
+      if(status==='left')close_pool(data,row,now)
       return id
     })
   },
@@ -59,8 +86,9 @@ export const auto_match_actions = {
       const row=data.match_sessions.find(m=>m.match_id===id&&m.candidate_id===s.owner_id(data))
       s.ensure(row&&s.match_status(row,now)==='waiting'&&row.self_accepted&&['accepted','declined'].includes(decision),'This match invitation is no longer available.')
       require_target(data,row.owner_user_id)
-      s.ensure(decision!=='accepted'||s.social_eligible(data)&&s.social_eligible(data,row.owner_user_id)&&s.match_visible(data,row.owner_user_id),'Both profiles must be available for a new connection.')
+      s.ensure(decision!=='accepted'||s.social_eligible(data)&&s.social_eligible(data,row.owner_user_id)&&s.match_visible(data,row.owner_user_id)&&s.privacy_for(data,s.owner_id(data)).auto_match_visible!==false,'Both profiles must be available for a new connection.')
       row.status=decision==='accepted'?'connected':'passed';row.peer_accepted=decision==='accepted';row.resolved_at=now
+      if(decision==='accepted')close_pool(data,row,now)
       return decision==='accepted'?connect_users(data,row.owner_user_id,now,{match_id:id}):id
     })
   },
@@ -82,7 +110,7 @@ export const auto_match_actions = {
       }else if(event.type==='accepted'){
         s.ensure(status==='waiting'&&row.self_accepted&&row.candidate_id===event.user_id,'This match invitation is no longer available.')
         require_pool(data);require_target(data,event.user_id);s.ensure(s.social_eligible(data,event.user_id),'This person is unavailable for a new connection.')
-        row.peer_accepted=true;row.status='connected';row.resolved_at=now;connect_users(data,event.user_id,now,{match_id:row.match_id})
+        row.peer_accepted=true;row.status='connected';row.resolved_at=now;close_pool(data,row,now);connect_users(data,event.user_id,now,{match_id:row.match_id})
       }else{s.ensure(event.type==='no_match'&&status==='searching','Invalid queue event.');row.status='no_match';row.resolved_at=now}
       return row.match_id
     },{expected_owner:owner})
@@ -91,7 +119,7 @@ export const auto_match_actions = {
     return transact(this,operation(operation_id,'priority',id),(data,now)=>{
       const row=own_match(data,id);require_pool(data)
       s.ensure(['searching','paused'].includes(s.match_status(row,now))&&!(row.priority_until>now),'Priority Match is not available for this session.')
-      add_transaction(data,-20,`priority:${operation_id}`,'spend',id,now);apply_priority(row,now);return id
+      add_transaction(data,-20,`priority:${operation_id}`,'spend',id,now);apply_priority(row,now);admission(data,row).priority_until=row.priority_until;return id
     })
   },
   update_match_preferences(patch) {

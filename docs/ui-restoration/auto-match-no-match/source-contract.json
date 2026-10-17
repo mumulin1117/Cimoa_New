@@ -128,7 +128,7 @@
     "Cimoa brand and canonical current/candidate identities",
     "Actual safe areas and fixed header/footer; one scrolling content region",
     "Local-account matching engine; no timer grants peer consent; no fabricated online count",
-    "UTC daily quota and atomic costs; restarting a terminal session reviews the entry cost",
+    "UTC daily quota and atomic admission costs; user-authorized same-admission retries consume no extra quota or coins",
     "User-authorized persisted campus-area distances, not GPS or real-time location; unknown distance fails; 100+ km is unrestricted",
     "Source options screen does not falsify an active session as no_match"
   ],

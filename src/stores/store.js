@@ -561,6 +561,8 @@ export const use_app_store = defineStore('app', {
         s.ensure(['searching', 'paused'].includes(s.match_status(match, now)) && !(match.priority_until > now), 'Priority Match is not available for this session.')
         add_transaction(data, -20, `priority:${payload.operation_id}`, 'spend', match.match_id, now)
         apply_priority(match, now)
+        const admission=data.match_sessions.find(row=>row.match_id===(match.pool_id||match.match_id)&&row.owner_user_id===match.owner_user_id)
+        s.ensure(admission,'This pool admission is unavailable.');admission.priority_until=match.priority_until
         return { kind: payload.kind, destination_id: match.match_id }
       }, { expected_owner: owner })
     },

@@ -65,3 +65,27 @@ test('a connected Boolean without current consent provenance and a Conversation 
   const f=fixture(),id=f.store.start_match('start').data;f.advance(9000);const row=f.store.data.match_sessions.find(m=>m.match_id===id);row.status='connected';row.self_accepted=true;row.peer_accepted=true
   assert.match(f.store.matching_context(id).error,/connection is no longer available/);assert.equal(f.store.match_presentation(id).candidate, null)
 })
+test('skip, expiry and no-result retries share admission, exclude prior candidates and never charge again',()=>{
+  for(const terminal of ['passed','expired','no_match']){
+    const f=fixture(),id=f.store.start_match('admission').data;f.store.boost_match(id,'priority');f.advance(5000)
+    const first=f.store.data.match_sessions.find(m=>m.match_id===id),candidate=first.candidate_id
+    if(terminal==='passed')assert.ok(f.store.transition_match(id,'passed').success)
+    else if(terminal==='expired')f.advance(45000)
+    else{first.status='no_match';first.candidate_id=null}
+    const before=JSON.stringify({quota:f.store.data.match_quota,ledger:f.store.data.coin_transactions}),deadline=first.priority_until
+    const retry=f.store.retry_match(id,'retry');assert.ok(retry.success,retry.message)
+    const next=f.store.match_by_id(retry.data);assert.equal(next.pool_id,id);assert.equal(next.retry_of_match_id,id);assert.equal(next.priority_until,deadline);if(terminal!=='no_match')assert.notEqual(next.candidate_id,candidate)
+    assert.equal(next.search_ready_at,f.store.clock_ms+5000);assert.equal(f.store.retry_match(id,'another-click').data,next.match_id)
+    assert.equal(JSON.stringify({quota:f.store.data.match_quota,ledger:f.store.data.coin_transactions}),before)
+    const restored=fixture(f.saved());assert.equal(restored.store.match_by_id(next.match_id).pool_id,id);assert.equal(restored.store.coin_balance,240);assert.equal(restored.store.free_matches_remaining,2)
+    assert.ok(restored.store.transition_match(next.match_id,'left').success);assert.equal(restored.store.retry_match(id,'after-leave').success,false)
+  }
+})
+test('paid admission is debited once; retry failure rolls back links and never renews expired priority',()=>{
+  const f=fixture();f.store.data.match_quota.push({owner_user_id:'user_cimoa',date_key:new Date(epoch).toISOString().slice(0,10),used_count:3})
+  const id=f.store.start_match('paid').data;assert.equal(f.store.coin_balance,250);assert.equal(f.store.match_by_id(id).admission_cost,10)
+  f.advance(9000);f.store.transition_match(id,'passed');const before=JSON.stringify(f.store.data)
+  configure_store_runtime(f.store,{persistence:{read:()=>null,write(){throw Error('Storage full')}}});assert.equal(f.store.retry_match(id,'failed').success,false);assert.equal(JSON.stringify(f.store.data),before)
+  configure_store_runtime(f.store,{persistence:{read:()=>null,write(){}}});f.advance(900001);const next=f.store.retry_match(id,'retry').data;assert.equal(f.store.match_by_id(next).priority_until,null);assert.equal(f.store.match_by_id(next).search_ready_at,f.store.clock_ms+9000);assert.equal(f.store.coin_balance,250);assert.equal(f.store.free_matches_remaining,0)
+  assert.equal(f.store.retry_match(next,'active').success,false)
+})

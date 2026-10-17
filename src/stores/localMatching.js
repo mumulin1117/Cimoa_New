@@ -24,4 +24,4 @@ export function match_candidates(data,now=Date.now(),exclude_match_id=null) {
   }).map(person => ({ person, score: person.interest_ids.filter(id => (preferences.interest_ids.length ? preferences.interest_ids : me.interest_ids).includes(id)).length * (preferences.interest_mode==='A mix'?1:3) + person.goal_ids.filter(id => me.goal_ids.includes(id)).length }))
     .sort((a, b) => (preferences.interest_mode === 'Surprise me' ? 0 : b.score - a.score) || a.person.user_id.localeCompare(b.person.user_id)).map(row=>row.person)
 }
-export const choose_match_candidate=(data,now,exclude_match_id)=>match_candidates(data,now,exclude_match_id)[0]||null
+export const choose_match_candidate=(data,now,exclude_match_id,excluded_user_ids=[])=>match_candidates(data,now,exclude_match_id).find(row=>!excluded_user_ids.includes(row.user_id))||null

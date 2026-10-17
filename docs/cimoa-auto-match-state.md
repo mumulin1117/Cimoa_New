@@ -14,9 +14,9 @@
 
 ## 迁移与操作
 
-searching → paused / found / no_match / left；paused → searching / left；found → waiting / passed / expired / left；waiting → connected / passed / left。connected 必须有双方 consent 和可访问会话。终态不可恢复为 searching；再次匹配从 Entry 明确费用后新建 ID。Not Now/返回 Home 不撤销等待，确认取消才 left。进入 See options 是只读视图，不修改真实 searching。
+searching → paused / found / no_match / left；paused → searching / left；found → waiting / passed / expired / left；waiting → connected / passed / left。connected 必须有双方 consent 和可访问会话。终态不重写为 searching；2026-10-17 用户确认“Stay in Pool / Find Another Match”沿用当次入池资格，不再扣次数或金币。原记录以 pool_id（根 match_id）关联同一资格，新候选产生新的 match_id / retry_of_match_id，旧结果和 next_match_id 保留以阻止重复重试。确认离开、取消请求或建立连接关闭资格；主动重新 Join 开启新资格并结束旧链。历史入口经用户确认位于 Entry。Not Now/返回 Home 不撤销等待，确认取消才 left。进入 See options 是只读视图，不修改真实 searching。
 
-`start_match` 幂等提交会话、UTC日期配额或10币流水；`boost_match`/既有消费确认上下文原子提交20币与15分钟截止。失败回滚全部状态。异步服务事件验证完再次检查原账号、有效状态、版本/序号及候选；取消的任务不得落账。
+`pool_id/admission_cost/admission_date_key/pool_closed_at` 保存在根会话；旧会话无 pool_id 时以自己的 match_id 作为已有资格兼容读取，不补扣历史费用。`retry_match` 仅允许当前账号已存在的 passed/expired/no_match、尚未关闭且没有其他活动匹配的资格；原子新建候选并保留原优先截止，跳过已浏览候选。取消/存储失败不产生半条重试；同一结果的重复重试返回相同后继，不更新期限。\n\n`start_match` 幂等提交会话、UTC日期配额或10币流水；`boost_match`/既有消费确认上下文原子提交20币与15分钟截止。失败回滚全部状态。异步服务事件验证完再次检查原账号、有效状态、版本/序号及候选；取消的任务不得落账。
 
 偏好只保存源字段和兼容既有字段，合法区间/枚举/兴趣ID校验。原稿 Distance 的100+km视为无限制。用户于本轮授权生成区域距离数据：`match_distances` 保存大学间对称距离表、稳定ID和 `generated_campus_region` 来源；种子创建和旧数据迁移只补缺表、不覆盖已保存数据。相同大学为0，同地区按固定区域模型生成，跨区域按超出筛选范围处理。这些值仅供匹配筛选，不请求GPS、不展示为实时位置；未知大学仍明确失败并保留偏好。在线人数不照抄48，入池数据/队列信息来自同一引擎/可信事件，未知显示明确占位。
 
