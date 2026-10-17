@@ -6,6 +6,7 @@ export function use_auto_match_page(page) {
   const store=use_app_store(),frame=ref(null),match_id=ref(''),error=ref(''),modal=ref(''),draft=ref(null),query=ref(''),options_view=ref(false),navigating=ref(false)
   const {is_loading,run_with_loading,cancel_loading}=use_write_loading(),owner=store.session.account_id
   let visible=true,ready=false
+  const range_end={age:'min',height:'min'}
   onLoad(o=>{match_id.value=String(o?.match_id||'');options_view.value=o?.view==='options';if(page==='preferences')draft.value=store.match_preferences?structuredCloneSafe(store.match_preferences):null})
   const c=computed(()=>store.match_presentation(match_id.value,draft.value,query.value)),busy=computed(()=>is_loading.value||navigating.value)
   const guard=computed(()=>c.value.error||(store.session.account_id!==owner?'Your session has ended. Please sign in again.':!['index','preferences','history'].includes(page)&&!c.value.match?'This match session is unavailable.':''))
@@ -20,6 +21,7 @@ export function use_auto_match_page(page) {
   const pick=row=>{if(busy.value||!draft.value)return;if(row.key==='interest_ids'){const ids=draft.value.interest_ids;if(ids.includes(row.value))draft.value.interest_ids=ids.filter(i=>i!==row.value);else if(ids.length<5)draft.value.interest_ids=[...ids,row.value];else error.value='Choose up to five interests.'}else{draft.value[row.key]=row.value;if(row.key==='university'){query.value='';modal.value=''}}}
   const track=async(kind,event)=>{
     if(busy.value||!draft.value)return
+    if(event.type==='keydown'){if(event.key==='Enter'&&kind!=='distance'){range_end[kind]=range_end[kind]==='min'?'max':'min';return}const increment=event.key==='ArrowLeft'?-1:event.key==='ArrowRight'?1:0;if(!increment)return;if(kind==='distance')draft.value.distance_max=Math.max(0,Math.min(100,draft.value.distance_max+increment));else{const upper=range_end[kind]==='max',key=kind+(upper?'_max':'_min'),limit=kind==='age'?[18,35]:[140,200];draft.value[key]=Math.max(upper?draft.value[kind+'_min']:limit[0],Math.min(upper?limit[1]:draft.value[kind+'_max'],draft.value[key]+increment))}return}
     const target=event.currentTarget,rect=await new Promise(resolve=>{if(target?.getBoundingClientRect)resolve(target.getBoundingClientRect());else uni.createSelectorQuery().select(`[data-range="${kind}"]`).boundingClientRect(resolve).exec()})
     if(!rect)return
     const x=event.clientX??event.touches?.[0]?.clientX??event.detail?.x??rect.left,ratio=Math.max(0,Math.min(1,(x-rect.left-uni.upx2px(38.168))/(rect.width-uni.upx2px(76.336))))
@@ -55,7 +57,7 @@ export function use_auto_match_page(page) {
     if(name==='cancelRequest'){modal.value='cancel';return}if(name==='confirmCancel'){const result=await write(()=>store.transition_match(match_id.value,'left'),false);if(result?.success)await home();return}
     if(name==='findAnother'){if(options_view.value&&c.value.active)await go(store.matching_context(c.value.active.match_id).route,'replace');else await go('/pages/auto-match/index','replace');return}
     if(name==='openLimitedProfile'||name==='viewProfile'){if(c.value.candidate)await go(`/pages/discover/profile?user_id=${encodeURIComponent(c.value.candidate.user_id)}`);return}
-    if(name==='startChat'){const id=store.connection_by_user(c.value.candidate?.user_id)?.conversation_id;if(id)await go(`/pages/chat/detail?conversation_id=${encodeURIComponent(id)}`);else error.value='This conversation is unavailable. Return Home and try again.';return}
+    if(name==='startChat'){const id=store.connection_by_user(c.value.candidate?.user_id)?.conversation_id;if(id)await go(`/pages/messages/chat?conversation_id=${encodeURIComponent(id)}`);else error.value='This conversation is unavailable. Return Home and try again.';return}
     if(name==='history'){await go(row.route);return}
     if(name==='getCoins'){const kind=modal.value==='insufficient-standard'?'match_entry':'match_priority';const result=await write(()=>store.save_draft('match_return',match_id.value||'entry',{kind,match_id:match_id.value||null}));if(result?.success)await go(`/pages/coins/index?return_context_id=${encodeURIComponent(result.data)}`);return}
   }

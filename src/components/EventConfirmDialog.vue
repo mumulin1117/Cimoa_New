@@ -25,6 +25,7 @@ onUnmounted(() => { token++; clearTimeout(timer) })
     <view class="event-dialog-panel" role="dialog" aria-modal="true" :aria-label="label" :aria-busy="busy" @click.stop>
       <slot name="corner" />
       <view class="event-dialog-handle" />
+      <slot name="header" />
       <scroll-view class="event-dialog-scroll" scroll-y :show-scrollbar="false"><slot /></scroll-view>
     </view>
   </view>

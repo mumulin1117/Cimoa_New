@@ -33,6 +33,9 @@ test('waiting is not fake acceptance and does not reuse the old found deadline',
   assert.equal(f.store.match_by_id(id).status,'waiting');assert.equal(f.store.can_chat(f.store.match_by_id(id).candidate_id),false)
   assert.equal(f.store.transition_match(id,'connected').success,false);assert.ok(f.store.transition_match(id,'left').success);assert.equal(f.store.active_match,null);assert.equal(f.store.transition_match(id,'searching').success,false)
 })
+test('priority expiry during a long pause resumes the saved standard time, not a renewed boost',()=>{
+  const f=fixture(),id=f.store.start_match('start').data;f.advance(1000);f.store.boost_match(id,'boost');f.advance(1000);f.store.transition_match(id,'paused');assert.equal(f.store.match_by_id(id).standard_search_remaining_ms,7000);f.advance(900001);assert.ok(f.store.transition_match(id,'searching').success);assert.equal(f.store.match_by_id(id).search_ready_at,f.store.clock_ms+7000);assert.equal(f.store.coin_balance,240);assert.equal(f.store.free_matches_remaining,2)
+})
 test('late/out-of-order events and account changes cannot revive a paused or ended session',async()=>{
   const f=fixture(undefined,{matching_available:true,verify_match_event:async()=>true}),id=f.store.start_match('start').data
   assert.ok((await f.store.apply_match_event({event_id:'q1',type:'queue',match_id:id,queue_position:2,sequence:4,search_revision:0})).success)

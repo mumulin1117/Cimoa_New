@@ -32,8 +32,23 @@ final class HostTests: XCTestCase {
             let image = try await host.webView.takeSnapshot(configuration: nil)
             try image.pngData()!.write(to: folder.appendingPathComponent("actual-wkwebview.png"))
             try JSONSerialization.data(withJSONObject: metrics, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-geometry.json"))
+            if phase == "preferences" {
+                for (entry, name) in [("amPrefs.openUniPicker.click.1","university"),("amPrefs.openInterestsPicker.click.1","interests")] {
+                    _ = try await script(host, "const e=document.querySelector('[data-interaction=\"\(entry)\"]');e.scrollIntoView({block:'center'});e.click();await new Promise(r=>setTimeout(r,350));return true")
+                    let shot = try await host.webView.takeSnapshot(configuration: nil)
+                    let output = folder.appendingPathComponent(name)
+                    try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+                    try shot.pngData()!.write(to: output.appendingPathComponent("actual-wkwebview.png"))
+                    _ = try await script(host, "document.querySelector('.match-picker .event-dialog-mask').click();await new Promise(r=>setTimeout(r,300));return true")
+                }
+            }
             try await restore()
-        } catch { try? await restore(); throw error }
+        } catch {
+            if let debug = try? await script(host, "return {url:location.href,text:document.body.innerText,html:document.body.innerHTML.slice(0,4000)}") {
+                try? JSONSerialization.data(withJSONObject: debug, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-failure.json"))
+            }
+            try? await restore(); throw error
+        }
     }
     func testAutoMatchIndexPixel() async throws { try await autoMatchPixel("index") }
     func testAutoMatchPreferencesPixel() async throws { try await autoMatchPixel("preferences") }

@@ -35,11 +35,12 @@ export const auto_match_actions = {
       const row=own_match(data,id),current=s.match_status(row,now)
       s.ensure(allowed[current]?.includes(status),'This match action is no longer available.')
       if(status==='searching'){require_pool(data);require_distance(data)}
-      if(row.engine==='device'&&status==='paused')row.search_remaining_ms=Math.max(0,row.search_ready_at-now)
+      if(row.engine==='device'&&status==='paused'){row.search_remaining_ms=Math.max(0,row.search_ready_at-now);if(row.standard_search_ready_at!=null)row.standard_search_remaining_ms=Math.max(0,row.standard_search_ready_at-now)}
       if(row.engine==='device'&&current==='paused'&&status==='searching'){
-        const remaining=row.search_remaining_ms??Math.max(0,row.search_ready_at-row.paused_at)
+        const remaining=(row.priority_until<=now?row.standard_search_remaining_ms:null)??row.search_remaining_ms??Math.max(0,row.search_ready_at-row.paused_at)
         s.ensure(Number.isFinite(remaining),'The saved search time is unavailable. Leave this session and start again.')
         row.search_ready_at=now+remaining;set_candidate(data,row,now)
+        if(row.standard_search_remaining_ms!=null)row.standard_search_ready_at=now+row.standard_search_remaining_ms
       }
       if(status==='waiting'){
         require_pool(data);require_target(data,row.candidate_id)

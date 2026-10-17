@@ -1,0 +1,29 @@
+{
+  "errors" : [
+
+  ],
+  "footer" : {
+    "height" : 96.125,
+    "width" : 402,
+    "x" : 0,
+    "y" : 743.875
+  },
+  "header" : {
+    "height" : 65.4375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Match Preferences\nAge Range\n18–30\nUniversity\nAll\nDegree \/ Major\nAll\n💼 Business\n💻 Computer Science\n⚙️ Engineering\n🩺 Medicine\n💰 Finance\n🔬 Sciences\n📊 Data Science\n📈 Economics\n🧠 Psychology\n⚖️ Law\n📚 Education\n🎨 Arts\n💊 Nursing\n📣 Marketing\n🏛️ Architecture\n🧬 Biology\n🎙️ Communications\n🗳️ Political Science\n🧾 Accounting\nHeight Range\n150–190 cm\nInterests\n1\/5 selected\nClear\n1\/5 selected\n🇰🇷 K-pop\nMBTI Personality\nAll\nINTJ\nINTP\nENTJ\nENTP\nINFJ\nINFP\nENFJ\nENFP\nISTJ\nISFJ\nESTJ\nESFJ\nISTP\nISFP\nESTP\nESFP\nReligion\nAll\nPrefer Not to Say\nNon-Religious\nAtheist\nChristian\nCatholic\nIslam\nTaoism\nBuddhism\nHinduism\nDrinking Habits\nAll\nNever\nOccasionally\nSocially\nRegularly\nDistance\n100+ km\nSave\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

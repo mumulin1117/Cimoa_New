@@ -169,7 +169,8 @@
     "tab": "linear-gradient(120deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
     "lightning": "linear-gradient(135deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)",
     "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)",
-    "coin_hero": "linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%)"
+    "coin_hero": "linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%)",
+    "auto_match_16": "linear-gradient(95deg,#1ec8f5,#a855f7)"
   },
   "shadows": {
     "ice_question": "0 15.267rpx 41.985rpx rgba(16,36,74,0.06)",
@@ -226,6 +227,8 @@
     "auto_match_51": "0 22.9rpx 49.618rpx rgba(168,85,247,0.24)",
     "auto_match_52": "0 11.45rpx 34.351rpx rgba(16,36,74,0.10)",
     "auto_match_53": "0 15.267rpx 45.801rpx rgba(16,36,74,0.07)",
-    "auto_match_54": "0 22.9rpx 49.618rpx rgba(168,85,247,0.24)"
+    "auto_match_54": "0 22.9rpx 49.618rpx rgba(168,85,247,0.24)",
+    "auto_match_55": "0 7.633rpx 19.083rpx rgba(16,36,74,0.28)",
+    "auto_match_56": "0 11.45rpx 30.534rpx rgba(16,36,74,0.05)"
   }
 }

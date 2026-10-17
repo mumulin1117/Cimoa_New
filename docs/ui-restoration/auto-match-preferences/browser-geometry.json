@@ -1,0 +1,779 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1513": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Match Preferences"
+    },
+    "1514": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1515": {
+      "x": 33,
+      "y": 72,
+      "width": 20,
+      "height": 20,
+      "text": ""
+    },
+    "1517": {
+      "x": 66,
+      "y": 70,
+      "width": 261,
+      "height": 24,
+      "text": "Match Preferences"
+    },
+    "1519": {
+      "x": 0,
+      "y": 124,
+      "width": 393,
+      "height": 2100,
+      "text": "Age Range18–30UniversityAllDegree / MajorAll💼 Business💻 Computer Science⚙️ Engineering🩺 Medicine💰 Finance🔬 Sciences📊 Data Science📈 Economics🧠 Psychology⚖️ Law📚 Education🎨 Arts💊 Nursing📣 Marketing🏛️ Architecture🧬 Biology🎙️ Communications🗳️ Political Science🧾 AccountingHeight Range150–190 cmInterests1/5 selectedClear1/5 selected🇰🇷 K-popMBTI PersonalityAllINTJINTPENTJENTPINFJINFPENFJENFPISTJISFJESTJESFJISTPISFPESTPESFPReligionAllPrefer Not to SayNon-ReligiousAtheistChristianCatholicIslamTaoismBuddhismHinduismDrinking HabitsAllNeverOccasionallySociallyRegularlyDistance100+ km"
+    },
+    "1521": {
+      "x": 20,
+      "y": 124,
+      "width": 353,
+      "height": 26,
+      "text": "Age Range18–30"
+    },
+    "1522": {
+      "x": 20,
+      "y": 124,
+      "width": 133.125,
+      "height": 26,
+      "text": "Age Range"
+    },
+    "1523": {
+      "x": 330.015625,
+      "y": 128,
+      "width": 42.984375,
+      "height": 18,
+      "text": "18–30"
+    },
+    "1525": {
+      "x": 20,
+      "y": 162,
+      "width": 353,
+      "height": 56,
+      "text": ""
+    },
+    "1526": {
+      "x": 40,
+      "y": 187.5,
+      "width": 313,
+      "height": 5,
+      "text": ""
+    },
+    "1527": {
+      "x": 40,
+      "y": 187.5,
+      "width": 220.953125,
+      "height": 5,
+      "text": ""
+    },
+    "1528": {
+      "x": 28,
+      "y": 178,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1529": {
+      "x": 248.9375,
+      "y": 178,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1533": {
+      "x": 20,
+      "y": 244,
+      "width": 353,
+      "height": 26,
+      "text": "University"
+    },
+    "1534": {
+      "x": 20,
+      "y": 244,
+      "width": 26,
+      "height": 26,
+      "text": ""
+    },
+    "1536": {
+      "x": 20,
+      "y": 282,
+      "width": 353,
+      "height": 56,
+      "text": "All"
+    },
+    "1537": {
+      "x": 38,
+      "y": 300,
+      "width": 300,
+      "height": 20,
+      "text": "All"
+    },
+    "1538": {
+      "x": 338,
+      "y": 301.5,
+      "width": 17,
+      "height": 17,
+      "text": ""
+    },
+    "1541": {
+      "x": 20,
+      "y": 364,
+      "width": 353,
+      "height": 26,
+      "text": "Degree / Major"
+    },
+    "1542": {
+      "x": 20,
+      "y": 402,
+      "width": 353,
+      "height": 606,
+      "text": "All💼 Business💻 Computer Science⚙️ Engineering🩺 Medicine💰 Finance🔬 Sciences📊 Data Science📈 Economics🧠 Psychology⚖️ Law📚 Education🎨 Arts💊 Nursing📣 Marketing🏛️ Architecture🧬 Biology🎙️ Communications🗳️ Political Science🧾 Accounting"
+    },
+    "1544": {
+      "x": 20,
+      "y": 402,
+      "width": 55.453125,
+      "height": 46,
+      "text": "All"
+    },
+    "1548": {
+      "x": 20,
+      "y": 1034,
+      "width": 353,
+      "height": 26,
+      "text": "Height Range150–190 cm"
+    },
+    "1549": {
+      "x": 20,
+      "y": 1034,
+      "width": 158.296875,
+      "height": 26,
+      "text": "Height Range"
+    },
+    "1550": {
+      "x": 289.28125,
+      "y": 1038,
+      "width": 83.71875,
+      "height": 18,
+      "text": "150–190 cm"
+    },
+    "1552": {
+      "x": 20,
+      "y": 1072,
+      "width": 353,
+      "height": 56,
+      "text": ""
+    },
+    "1553": {
+      "x": 40,
+      "y": 1097.5,
+      "width": 313,
+      "height": 5,
+      "text": ""
+    },
+    "1554": {
+      "x": 92.15625,
+      "y": 1097.5,
+      "width": 208.6875,
+      "height": 5,
+      "text": ""
+    },
+    "1555": {
+      "x": 80.15625,
+      "y": 1088,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1556": {
+      "x": 288.828125,
+      "y": 1088,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1560": {
+      "x": 20,
+      "y": 1154,
+      "width": 353,
+      "height": 26,
+      "text": "Interests1/5 selectedClear"
+    },
+    "1561": {
+      "x": 20,
+      "y": 1154,
+      "width": 116.96875,
+      "height": 26,
+      "text": "Interests"
+    },
+    "1562": {
+      "x": 242.53125,
+      "y": 1158,
+      "width": 130.46875,
+      "height": 18,
+      "text": "1/5 selectedClear"
+    },
+    "1564": {
+      "x": 20,
+      "y": 1192,
+      "width": 353,
+      "height": 56,
+      "text": "1/5 selected"
+    },
+    "1565": {
+      "x": 38,
+      "y": 1210,
+      "width": 300,
+      "height": 20,
+      "text": "1/5 selected"
+    },
+    "1566": {
+      "x": 338,
+      "y": 1211.5,
+      "width": 17,
+      "height": 17,
+      "text": ""
+    },
+    "1568": {
+      "x": 20,
+      "y": 1258,
+      "width": 353,
+      "height": 44,
+      "text": "🇰🇷 K-pop"
+    },
+    "1570": {
+      "x": 20,
+      "y": 1258,
+      "width": 101.859375,
+      "height": 44,
+      "text": "🇰🇷 K-pop"
+    },
+    "1574": {
+      "x": 20,
+      "y": 1328,
+      "width": 353,
+      "height": 26,
+      "text": "MBTI Personality"
+    },
+    "1575": {
+      "x": 20,
+      "y": 1366,
+      "width": 353,
+      "height": 270,
+      "text": "AllINTJINTPENTJENTPINFJINFPENFJENFPISTJISFJESTJESFJISTPISFPESTPESFP"
+    },
+    "1577": {
+      "x": 20,
+      "y": 1366,
+      "width": 55.453125,
+      "height": 46,
+      "text": "All"
+    },
+    "1581": {
+      "x": 20,
+      "y": 1662,
+      "width": 353,
+      "height": 26,
+      "text": "Religion"
+    },
+    "1582": {
+      "x": 20,
+      "y": 1700,
+      "width": 353,
+      "height": 214,
+      "text": "AllPrefer Not to SayNon-ReligiousAtheistChristianCatholicIslamTaoismBuddhismHinduism"
+    },
+    "1584": {
+      "x": 20,
+      "y": 1700,
+      "width": 55.453125,
+      "height": 46,
+      "text": "All"
+    },
+    "1588": {
+      "x": 20,
+      "y": 1940,
+      "width": 353,
+      "height": 26,
+      "text": "Drinking Habits"
+    },
+    "1589": {
+      "x": 20,
+      "y": 1978,
+      "width": 353,
+      "height": 102,
+      "text": "AllNeverOccasionallySociallyRegularly"
+    },
+    "1591": {
+      "x": 20,
+      "y": 1978,
+      "width": 55.453125,
+      "height": 46,
+      "text": "All"
+    },
+    "1595": {
+      "x": 20,
+      "y": 2106,
+      "width": 353,
+      "height": 26,
+      "text": "Distance100+ km"
+    },
+    "1596": {
+      "x": 20,
+      "y": 2106,
+      "width": 115.671875,
+      "height": 26,
+      "text": "Distance"
+    },
+    "1597": {
+      "x": 313.921875,
+      "y": 2110,
+      "width": 59.078125,
+      "height": 18,
+      "text": "100+ km"
+    },
+    "1599": {
+      "x": 20,
+      "y": 2144,
+      "width": 353,
+      "height": 56,
+      "text": ""
+    },
+    "1600": {
+      "x": 40,
+      "y": 2169.5,
+      "width": 313,
+      "height": 5,
+      "text": ""
+    },
+    "1601": {
+      "x": 40,
+      "y": 2169.5,
+      "width": 313,
+      "height": 5,
+      "text": ""
+    },
+    "1602": {
+      "x": 341,
+      "y": 2160,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1606": {
+      "x": 0,
+      "y": 758,
+      "width": 393,
+      "height": 94,
+      "text": "Save"
+    }
+  },
+  "actual": {
+    "1513": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Match Preferences"
+    },
+    "1514": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1515": {
+      "x": 33,
+      "y": 72,
+      "width": 20,
+      "height": 20,
+      "text": ""
+    },
+    "1517": {
+      "x": 66,
+      "y": 70,
+      "width": 261,
+      "height": 24,
+      "text": "Match Preferences"
+    },
+    "1519": {
+      "x": 0,
+      "y": 124,
+      "width": 393,
+      "height": 2100,
+      "text": "Age Range18–30UniversityAllDegree / MajorAll💼 Business💻 Computer Science⚙️ Engineering🩺 Medicine💰 Finance🔬 Sciences📊 Data Science📈 Economics🧠 Psychology⚖️ Law📚 Education🎨 Arts💊 Nursing📣 Marketing🏛️ Architecture🧬 Biology🎙️ Communications🗳️ Political Science🧾 AccountingHeight Range150–190 cmInterests1/5 selectedClear1/5 selected🇰🇷 K-popMBTI PersonalityAllINTJINTPENTJENTPINFJINFPENFJENFPISTJISFJESTJESFJISTPISFPESTPESFPReligionAllPrefer Not to SayNon-ReligiousAtheistChristianCatholicIslamTaoismBuddhismHinduismDrinking HabitsAllNeverOccasionallySociallyRegularlyDistance100+ km"
+    },
+    "1521": {
+      "x": 20,
+      "y": 124,
+      "width": 353,
+      "height": 26,
+      "text": "Age Range18–30"
+    },
+    "1522": {
+      "x": 20,
+      "y": 124,
+      "width": 133.0625,
+      "height": 26,
+      "text": "Age Range"
+    },
+    "1523": {
+      "x": 330.046875,
+      "y": 128.5,
+      "width": 42.953125,
+      "height": 17,
+      "text": "18–30"
+    },
+    "1525": {
+      "x": 20,
+      "y": 162,
+      "width": 353,
+      "height": 56,
+      "text": ""
+    },
+    "1526": {
+      "x": 40,
+      "y": 187.5,
+      "width": 313,
+      "height": 5,
+      "text": ""
+    },
+    "1527": {
+      "x": 40,
+      "y": 187.5,
+      "width": 220.953125,
+      "height": 5,
+      "text": ""
+    },
+    "1528": {
+      "x": 28,
+      "y": 178,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1529": {
+      "x": 248.9375,
+      "y": 178,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1533": {
+      "x": 20,
+      "y": 244,
+      "width": 353,
+      "height": 26,
+      "text": "University"
+    },
+    "1534": {
+      "x": 20,
+      "y": 244,
+      "width": 26,
+      "height": 26,
+      "text": ""
+    },
+    "1536": {
+      "x": 20,
+      "y": 282,
+      "width": 353,
+      "height": 56,
+      "text": "All"
+    },
+    "1537": {
+      "x": 38,
+      "y": 300,
+      "width": 300,
+      "height": 20,
+      "text": "All"
+    },
+    "1538": {
+      "x": 338,
+      "y": 301.5,
+      "width": 17,
+      "height": 17,
+      "text": ""
+    },
+    "1541": {
+      "x": 20,
+      "y": 364,
+      "width": 353,
+      "height": 26,
+      "text": "Degree / Major"
+    },
+    "1542": {
+      "x": 20,
+      "y": 402,
+      "width": 353,
+      "height": 606,
+      "text": "All💼 Business💻 Computer Science⚙️ Engineering🩺 Medicine💰 Finance🔬 Sciences📊 Data Science📈 Economics🧠 Psychology⚖️ Law📚 Education🎨 Arts💊 Nursing📣 Marketing🏛️ Architecture🧬 Biology🎙️ Communications🗳️ Political Science🧾 Accounting"
+    },
+    "1544": {
+      "x": 20,
+      "y": 402,
+      "width": 55.453125,
+      "height": 46,
+      "text": "All"
+    },
+    "1548": {
+      "x": 20,
+      "y": 1034,
+      "width": 353,
+      "height": 26,
+      "text": "Height Range150–190 cm"
+    },
+    "1549": {
+      "x": 20,
+      "y": 1034,
+      "width": 158.234375,
+      "height": 26,
+      "text": "Height Range"
+    },
+    "1550": {
+      "x": 289.34375,
+      "y": 1038.5,
+      "width": 83.65625,
+      "height": 17,
+      "text": "150–190 cm"
+    },
+    "1552": {
+      "x": 20,
+      "y": 1072,
+      "width": 353,
+      "height": 56,
+      "text": ""
+    },
+    "1553": {
+      "x": 40,
+      "y": 1097.5,
+      "width": 313,
+      "height": 5,
+      "text": ""
+    },
+    "1554": {
+      "x": 92.15625,
+      "y": 1097.5,
+      "width": 208.6875,
+      "height": 5,
+      "text": ""
+    },
+    "1555": {
+      "x": 80.15625,
+      "y": 1088,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1556": {
+      "x": 288.828125,
+      "y": 1088,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1560": {
+      "x": 20,
+      "y": 1154,
+      "width": 353,
+      "height": 26,
+      "text": "Interests1/5 selectedClear"
+    },
+    "1561": {
+      "x": 20,
+      "y": 1154,
+      "width": 116.9375,
+      "height": 26,
+      "text": "Interests"
+    },
+    "1562": {
+      "x": 242.59375,
+      "y": 1158.5,
+      "width": 130.40625,
+      "height": 17,
+      "text": "1/5 selectedClear"
+    },
+    "1564": {
+      "x": 20,
+      "y": 1192,
+      "width": 353,
+      "height": 56,
+      "text": "1/5 selected"
+    },
+    "1565": {
+      "x": 38,
+      "y": 1210,
+      "width": 300,
+      "height": 20,
+      "text": "1/5 selected"
+    },
+    "1566": {
+      "x": 338,
+      "y": 1211.5,
+      "width": 17,
+      "height": 17,
+      "text": ""
+    },
+    "1568": {
+      "x": 20,
+      "y": 1258,
+      "width": 353,
+      "height": 44,
+      "text": "🇰🇷 K-pop"
+    },
+    "1570": {
+      "x": 20,
+      "y": 1258,
+      "width": 101.828125,
+      "height": 44,
+      "text": "🇰🇷 K-pop"
+    },
+    "1574": {
+      "x": 20,
+      "y": 1328,
+      "width": 353,
+      "height": 26,
+      "text": "MBTI Personality"
+    },
+    "1575": {
+      "x": 20,
+      "y": 1366,
+      "width": 353,
+      "height": 270,
+      "text": "AllINTJINTPENTJENTPINFJINFPENFJENFPISTJISFJESTJESFJISTPISFPESTPESFP"
+    },
+    "1577": {
+      "x": 20,
+      "y": 1366,
+      "width": 55.453125,
+      "height": 46,
+      "text": "All"
+    },
+    "1581": {
+      "x": 20,
+      "y": 1662,
+      "width": 353,
+      "height": 26,
+      "text": "Religion"
+    },
+    "1582": {
+      "x": 20,
+      "y": 1700,
+      "width": 353,
+      "height": 214,
+      "text": "AllPrefer Not to SayNon-ReligiousAtheistChristianCatholicIslamTaoismBuddhismHinduism"
+    },
+    "1584": {
+      "x": 20,
+      "y": 1700,
+      "width": 55.453125,
+      "height": 46,
+      "text": "All"
+    },
+    "1588": {
+      "x": 20,
+      "y": 1940,
+      "width": 353,
+      "height": 26,
+      "text": "Drinking Habits"
+    },
+    "1589": {
+      "x": 20,
+      "y": 1978,
+      "width": 353,
+      "height": 102,
+      "text": "AllNeverOccasionallySociallyRegularly"
+    },
+    "1591": {
+      "x": 20,
+      "y": 1978,
+      "width": 55.453125,
+      "height": 46,
+      "text": "All"
+    },
+    "1595": {
+      "x": 20,
+      "y": 2106,
+      "width": 353,
+      "height": 26,
+      "text": "Distance100+ km"
+    },
+    "1596": {
+      "x": 20,
+      "y": 2106,
+      "width": 115.640625,
+      "height": 26,
+      "text": "Distance"
+    },
+    "1597": {
+      "x": 313.953125,
+      "y": 2110.5,
+      "width": 59.046875,
+      "height": 17,
+      "text": "100+ km"
+    },
+    "1599": {
+      "x": 20,
+      "y": 2144,
+      "width": 353,
+      "height": 56,
+      "text": ""
+    },
+    "1600": {
+      "x": 40,
+      "y": 2169.5,
+      "width": 313,
+      "height": 5,
+      "text": ""
+    },
+    "1601": {
+      "x": 40,
+      "y": 2169.5,
+      "width": 313,
+      "height": 5,
+      "text": ""
+    },
+    "1602": {
+      "x": 341,
+      "y": 2160,
+      "width": 24,
+      "height": 24,
+      "text": ""
+    },
+    "1606": {
+      "x": 0,
+      "y": 758,
+      "width": 393,
+      "height": 94,
+      "text": "Save"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 55617,
+    "pixels_above_channel_delta_8": 2837,
+    "mean_absolute_channel_delta": 0.3366670549164367,
+    "max_channel_delta": 187
+  }
+}

@@ -1,9 +1,9 @@
 import fs from 'node:fs'
-import {page_parts,elements,adjusted_text,source_image,snake,design_source} from './auto-match-design.mjs'
+import {page_parts,elements,adjusted_text,source_image,snake,design_source,source_root} from './auto-match-design.mjs'
 import {attribute,binding} from './circa-source.mjs'
 import {match_presentation} from '../../src/stores/matchPresentation.js'
 const escape=value=>String(value??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;')
-export function auto_match_reference(page,data,origin){
+export function auto_match_reference(page,data,origin,sheet=''){
   const {header,body,footer}=page_parts(page),id=data.match_sessions.find(m=>m.match_id==='match_pixel')?.match_id||'',c=match_presentation(data,id,Date.now(),'ready'),theme=JSON.parse(fs.readFileSync('src/config/theme.json')),variables=[]
   const flatten=(o,p='')=>{for(const[k,v]of Object.entries(o)){const key=p+k.replaceAll('_','-');if(typeof v==='string')variables.push(`--cimoa-${key}:${v.replace(/(-?\d*\.?\d+)rpx\b/g,(_,n)=>Number(n)*393/750+'px')}`);else flatten(v,key+'-')}};flatten(theme.colors);flatten(theme.gradients,'gradient-');flatten(theme.shadows,'shadow-')
   const resolve=(scope,key)=>key.split('.').reduce((r,k)=>r?.[snake(k)],scope)
@@ -23,5 +23,5 @@ export function auto_match_reference(page,data,origin){
     for(const prop of node.props.filter(p=>p.type===6&&!['style','class'].includes(p.name)&&!p.name.startsWith('sc-camel-on-')&&!p.name.startsWith('hint-'))){let name=prop.name.replace('sc-camel-view-box','viewBox'),value=prop.value?.content||'';if(node.tag==='img'&&name==='src'){const [key]=source_image(node);value=origin+(key.startsWith('h.')?resolve(scope,key):c[key]||'')}else if(node.tag==='img'&&name==='alt'){const[,key]=source_image(node);value=key.startsWith("'")?key.slice(1,-1):key.startsWith('h.')?resolve(scope,key):resolve(c,key)}attrs+=` ${name}="${fill(String(value||''),scope)}"`}
     return `<${node.tag}${attrs}>${node.children.map(n=>render(n,scope)).join('')}${['img','input'].includes(node.tag)?'':`</${node.tag}>`}`
   }
-  return `<!doctype html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box}:root{${variables.join(';')}}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;color:#0b1b3a;background:linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;padding-top:54px}::-webkit-scrollbar{display:none}@keyframes cPulse{0%,100%{transform:scale(.94);opacity:.16}50%{transform:scale(1.04);opacity:.3}}</style></head><body>${render(header)}<div style="flex:1;min-height:0;overflow:auto">${render(body)}</div>${footer?render(footer):''}</body></html>`
+  return `<!doctype html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box}:root{${variables.join(';')}}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;color:#0b1b3a;background:linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;padding-top:54px}::-webkit-scrollbar{display:none}@keyframes cPulse{0%,100%{transform:scale(.94);opacity:.16}50%{transform:scale(1.04);opacity:.3}}</style></head><body>${render(header)}<div data-reference-scroll style="flex:1;min-height:0;overflow:auto">${render(body)}</div>${footer?render(footer):''}${sheet?render(source_root(sheet)):''}</body></html>`
 }

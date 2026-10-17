@@ -10,10 +10,15 @@ export function match_route(row) {
   return `/pages/auto-match/${page}${page === 'index' ? '' : `?match_id=${encodeURIComponent(row.match_id)}`}`
 }
 export function apply_priority(row, now) {
+  const previous_until=row.priority_until
   row.priority_until = now + 900000
   if (row.engine !== 'device') return
-  if (row.status === 'paused') row.search_remaining_ms = Math.min(row.search_remaining_ms ?? Math.max(0,row.search_ready_at-row.paused_at), 5000)
+  if (row.status === 'paused') {
+    const remaining=previous_until<=now&&row.standard_search_remaining_ms!=null?row.standard_search_remaining_ms:row.search_remaining_ms??Math.max(0,row.search_ready_at-row.paused_at)
+    row.standard_search_remaining_ms=remaining;row.search_remaining_ms=Math.min(remaining,5000)
+  }
   else {
+    row.standard_search_ready_at=row.search_ready_at
     row.search_ready_at = now + Math.min(Math.max(0, row.search_ready_at - now), 5000)
     row.expires_at = row.candidate_id ? row.search_ready_at + 45000 : null
   }

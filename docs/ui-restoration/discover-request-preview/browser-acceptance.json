@@ -14,7 +14,7 @@
   "errors": [],
   "deferred": [],
   "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
-  "server_pid": 78741,
+  "server_pid": 21635,
   "reference_geometry": {
     "620": null,
     "627": null,
@@ -40,9 +40,9 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 63208,
+    "pixels_different": 63206,
     "pixels_above_channel_delta_8": 2173,
-    "mean_absolute_channel_delta": 0.2786319272718585,
+    "mean_absolute_channel_delta": 0.27863267390603164,
     "max_channel_delta": 244
   },
   "geometry": {

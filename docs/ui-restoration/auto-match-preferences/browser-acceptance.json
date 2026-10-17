@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "page": "preferences",
+  "route": "/pages/auto-match/preferences",
+  "errors": [],
+  "geometry_passed": true,
+  "differences": [],
+  "source": "Offline source AST, approved data/safe-area/fixed-frame transformations only",
+  "server_pid": 21261,
+  "cleaned_up": true
+}

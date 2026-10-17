@@ -1,7 +1,7 @@
 [
   {
     "interaction_id": "amPrefs.goBack.click.1",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1514",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -13,7 +13,7 @@
   },
   {
     "interaction_id": "amPrefs.onAgeTrack.click.1",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1525",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -25,7 +25,7 @@
   },
   {
     "interaction_id": "amPrefs.openUniPicker.click.1",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1533",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -37,7 +37,7 @@
   },
   {
     "interaction_id": "amPrefs.openUniPicker.click.2",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1536",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -49,7 +49,7 @@
   },
   {
     "interaction_id": "amPrefs.o.pick.click.1",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1544",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -61,7 +61,7 @@
   },
   {
     "interaction_id": "amPrefs.onHeightTrack.click.1",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1552",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -73,7 +73,7 @@
   },
   {
     "interaction_id": "amPrefs.clearInterests.click.1",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1562",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -85,7 +85,7 @@
   },
   {
     "interaction_id": "amPrefs.openInterestsPicker.click.1",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1564",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -97,7 +97,7 @@
   },
   {
     "interaction_id": "amPrefs.o.pick.click.2",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1577",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -109,7 +109,7 @@
   },
   {
     "interaction_id": "amPrefs.o.pick.click.3",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1584",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -121,7 +121,7 @@
   },
   {
     "interaction_id": "amPrefs.o.pick.click.4",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1591",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -133,7 +133,7 @@
   },
   {
     "interaction_id": "amPrefs.onDistanceTrack.click.1",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1599",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -145,7 +145,79 @@
   },
   {
     "interaction_id": "amPrefs.savePrefs.click.1",
-    "source_screen": "amPrefs:1511",
+    "source_screen": "amPrefs:1606",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=preferences; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetUniPicker.closeSheet.click.1",
+    "source_screen": "sheetUniPicker:4500",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=preferences; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetUniPicker.onUniSearch.change.1",
+    "source_screen": "sheetUniPicker:4506",
+    "trigger": "input",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=preferences; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetUniPicker.o.pick.click.1",
+    "source_screen": "sheetUniPicker:4511",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=preferences; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetInterestsPicker.closeSheet.click.1",
+    "source_screen": "sheetInterestsPicker:4521",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=preferences; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetInterestsPicker.o.pick.click.1",
+    "source_screen": "sheetInterestsPicker:4527",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=preferences; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetInterestsPicker.closeSheet.click.2",
+    "source_screen": "sheetInterestsPicker:4530",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",

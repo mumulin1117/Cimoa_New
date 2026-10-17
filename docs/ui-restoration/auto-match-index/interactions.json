@@ -1,7 +1,7 @@
 [
   {
     "interaction_id": "amEntry.goBack.click.1",
-    "source_screen": "amEntry:1460",
+    "source_screen": "amEntry:1463",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -13,7 +13,7 @@
   },
   {
     "interaction_id": "amEntry.joinPool.click.1",
-    "source_screen": "amEntry:1460",
+    "source_screen": "amEntry:1504",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -25,7 +25,55 @@
   },
   {
     "interaction_id": "amEntry.openPrefs.click.1",
-    "source_screen": "amEntry:1460",
+    "source_screen": "amEntry:1505",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=index; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetInsufficient.closeSheet.click.1",
+    "source_screen": "sheetInsufficient:4267",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=index; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetInsufficient.getCoins2.click.1",
+    "source_screen": "sheetInsufficient:4282",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=index; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetInsufficient.freeAlt.click.1",
+    "source_screen": "sheetInsufficient:4283",
+    "trigger": "click / Enter",
+    "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Canonical match_id/state and route; peer acceptance alone can establish Connection/Conversation.",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "scripts/auto-match-browser.test.mjs --page=index; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "sheetInsufficient.closeSheet.click.2",
+    "source_screen": "sheetInsufficient:4284",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",

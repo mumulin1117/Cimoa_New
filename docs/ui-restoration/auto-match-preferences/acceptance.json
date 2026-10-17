@@ -1,0 +1,31 @@
+{
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "status": "pending",
+  "automatic_confirmation": "Source, overlay and both picker overlays reviewed; keyboard normalized through uni-app; no unresolved visual differences",
+  "browser": "browser-acceptance.json",
+  "native": "wkwebview-geometry.json",
+  "native_sheets": [
+    "university/actual-wkwebview.png",
+    "interests/actual-wkwebview.png"
+  ],
+  "native_result": "/tmp/cimoa-match-preferences-sheets-20261017.xcresult",
+  "native_tests": 1,
+  "geometry_tolerance_px": 1,
+  "unresolved_visual_differences": [],
+  "allowed_render_differences": [
+    "Font rasterization",
+    "Physical safe area/fixed frame"
+  ],
+  "deferred": [
+    "Active Searching/Paused preference updates and round-trip full flow after those pages are restored"
+  ],
+  "checks": [
+    "38 domain tests passed",
+    "Shared confirmation Sheet regression through Discover preview",
+    "Convention checks, whitespace and H5 build passed"
+  ],
+  "git": "local page commit; no push"
+}
