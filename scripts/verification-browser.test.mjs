@@ -9,7 +9,8 @@ import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { clone_data } from '../src/stores/seed.js'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
-const root = path.resolve('dist/build/h5'), output = path.resolve('docs/evidence/auth')
+const root = path.resolve('dist/build/h5')
+const output = path.resolve(process.env.CIMOA_AUTH_EVIDENCE_DIR || 'docs/evidence/auth')
 const phase = 'verification-success'
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
 const server = http.createServer((req, res) => {

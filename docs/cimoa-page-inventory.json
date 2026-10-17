@@ -1874,7 +1874,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/onboarding/notif",
-    "component": null,
+    "component": "src/pages/onboarding/notif.vue",
     "parent_route": "/pages/onboarding/ice",
     "allowed_origin_routes": [
       "/pages/onboarding/ice"
@@ -1961,7 +1961,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/onboarding/complete",
-    "component": null,
+    "component": "src/pages/onboarding/complete.vue",
     "parent_route": "/pages/onboarding/notif",
     "allowed_origin_routes": [
       "/pages/onboarding/notif",
@@ -2416,7 +2416,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/permissions/notif",
-    "component": null,
+    "component": "src/pages/permissions/notif.vue",
     "parent_route": "/pages/onboarding/notif",
     "allowed_origin_routes": [
       "/pages/onboarding/notif",

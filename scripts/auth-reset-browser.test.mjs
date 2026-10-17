@@ -8,7 +8,8 @@ import { create_scenario } from '../src/stores/scenarios.js'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const phase = process.argv.find(arg => arg.startsWith('--phase='))?.slice(8) || 'email'
-const root = path.resolve('dist/build/h5'), output = path.resolve('docs/evidence/auth-reset')
+const root = path.resolve('dist/build/h5')
+const output = path.resolve(process.env.CIMOA_AUTH_RESET_EVIDENCE_DIR || 'docs/evidence/auth-reset')
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' }
 const server = http.createServer((request, response) => {
   const file = path.resolve(root, `.${new URL(request.url, 'http://localhost').pathname.replace(/^\/$/, '/index.html')}`)

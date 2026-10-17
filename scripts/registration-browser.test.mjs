@@ -7,7 +7,8 @@ import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const phase = process.argv.find(arg => arg.startsWith('--phase='))?.slice(8) || 'age'
-const root = path.resolve('dist/build/h5'), output = path.resolve('docs/evidence/registration')
+const root = path.resolve('dist/build/h5')
+const output = path.resolve(process.env.CIMOA_REGISTRATION_EVIDENCE_DIR || 'docs/evidence/registration')
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
 const server = http.createServer((req, res) => {
   const file = path.resolve(root, '.' + new URL(req.url, 'http://localhost').pathname.replace(/^\/$/, '/index.html'))

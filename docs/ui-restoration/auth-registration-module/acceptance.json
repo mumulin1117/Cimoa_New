@@ -1,0 +1,76 @@
+{
+  "module": "launch-authentication-registration-onboarding",
+  "date": "2026-10-17",
+  "result": "passed",
+  "scope": {
+    "inventory": "docs/cimoa-page-inventory.json",
+    "source_screen_entries": 30,
+    "unique_routes": 28,
+    "status_verified": 30,
+    "source_lock_locked": 30,
+    "visual_acceptance_passed": 30,
+    "local_acceptance_passed": 30,
+    "full_acceptance_passed": 30,
+    "pending_or_in_progress": 0,
+    "duplicate_route_states": [
+      "Onboarding / Photos / Empty and Added",
+      "Onboarding / Icebreakers / Empty and Completed"
+    ]
+  },
+  "data_regression": {
+    "command": "node --test scripts/auth.test.mjs scripts/registration.test.mjs scripts/permissions.test.mjs",
+    "passed": 25,
+    "failed": 0
+  },
+  "browser_regression": {
+    "viewport": "393x852, with 320x568 and 62/34 safe-area branches where required",
+    "result": "passed",
+    "assertion_groups": 73,
+    "flows": {
+      "splash_welcome_login": 26,
+      "fixed_local_verification": 15,
+      "password_reset": 14,
+      "complete_registration_and_onboarding": 18
+    },
+    "covered": [
+      "guest launch and valid-session restoration",
+      "corrupt-storage retry and navigation de-duplication",
+      "login failure, persistence rollback, refresh and relogin",
+      "age, agreements and salted local account creation",
+      "exact fixed code 009789 and email correction",
+      "password reset, old-password invalidation and new-password relogin",
+      "profile fields, university, major, photos, about, interests, goals and icebreakers",
+      "real file chooser decoding, IndexedDB media refresh and photo ownership",
+      "notification no-host failure, granted result and settings fallback",
+      "onboarding guards, completion, Home depth and one-time skeleton consumption"
+    ]
+  },
+  "wkwebview_regression": {
+    "device": "iPhone 17 Pro simulator",
+    "os": "iOS 26.5",
+    "result": "passed",
+    "passed": 5,
+    "failed": 0,
+    "tests": [
+      "HostTests.testFreshEntryAndRealLocalLogin",
+      "HostTests.testFreshRegistrationToHomeWithOwnedPhotos",
+      "HostTests.testFixedLocalVerificationAndRefresh",
+      "HostTests.testLocalPasswordResetAndRelogin",
+      "HostTests.testBundledH5AndMeasuredSafeAreas"
+    ],
+    "test_isolation": "If a previous specialty test leaves the trusted H5 on a non-entry route, the test host reloads Splash and uses the real session guard. It does not rewrite Store data."
+  },
+  "truthful_boundaries": [
+    "Authentication and registration are device-local by product decision.",
+    "Verification accepts only the fixed code 009789; no email is sent or claimed.",
+    "Apple sign-in is explicitly unavailable and creates no account.",
+    "Local verification never claims official student verification; the profile remains pending until a future real service exists.",
+    "The iOS simulator verifies the bundled camera route and permission contract but cannot prove capture from physical camera hardware."
+  ],
+  "workspace_protection": "The pre-existing modified registration screenshots were not overwritten; browser regression wrote to isolated temporary evidence directories.",
+  "final_gates": {
+    "corepack pnpm check:conventions": "passed; no warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; 346 H5 files packaged for WKWebView"
+  }
+}

@@ -7,7 +7,8 @@ import { createRequire } from 'node:module'
 import { create_scenario } from '../src/stores/scenarios.js'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
-const root = path.resolve('dist/build/h5'), output = path.resolve('docs/evidence/auth')
+const root = path.resolve('dist/build/h5')
+const output = path.resolve(process.env.CIMOA_AUTH_EVIDENCE_DIR || 'docs/evidence/auth')
 const phase = process.argv.find(arg => arg.startsWith('--phase='))?.slice(8) || 'splash'
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
 const server = http.createServer((req, res) => {

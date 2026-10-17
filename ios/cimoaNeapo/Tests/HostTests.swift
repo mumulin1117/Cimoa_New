@@ -13,7 +13,8 @@ final class HostTests: XCTestCase {
         throw NSError(domain: "CimoaTests", code: 3, userInfo: [NSLocalizedDescriptionKey: "Native host WebView was not ready."])
     }
     private func host() async throws -> WebViewController {
-        for _ in 0..<100 {
+        var recoveredEntry = false
+        for attempt in 0..<120 {
             if let host = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).compactMap({ $0.rootViewController as? WebViewController }).first, host.webView != nil, !host.webView.isLoading, host.isTrustedURL(host.webView.url) {
                 // Poll from XCTest: a promise created in about:blank is destroyed
                 // by the initial document navigation, before Vue can mount.
@@ -21,6 +22,10 @@ final class HostTests: XCTestCase {
                 if ready as? Bool == true { return host }
                 let welcome = try? await script(host, "return !!document.querySelector('.welcome-page')")
                 if welcome as? Bool == true { try await signIn(host); return host }
+                if !recoveredEntry, attempt >= 10 {
+                    recoveredEntry = true
+                    host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?hostReadyRecovery=1#/pages/auth/splash")!))
+                }
             }
             try await Task.sleep(nanoseconds: 100_000_000)
         }
