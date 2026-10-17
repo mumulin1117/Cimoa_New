@@ -1,0 +1,3 @@
+# Delete final audit — 2026-10-17
+
+HTML 4029–4052 and current controlled danger confirmation are locked. Preserve real password, irreversible local scope, source buttons and Loading. Found asynchronous credential check can commit after logout/relogin into the same account. Capture auth context before verification; recheck caller scope and session context inside the atomic deletion transaction. Clear private password/dialog on unrelated invalidation, but do not cancel the intended successful delete→clear-stack success transition. No remote deletion is claimed. Wrong password, storage rollback, cancelled timer, same-account relogin race and owned Blob cleanup are required regressions; full visual/system acceptance pending.

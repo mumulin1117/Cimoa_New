@@ -69,7 +69,7 @@ export const use_app_store = defineStore('app', {
     onboarding_catalog: state => ({ ...clone_data(onboarding_catalog), steps: [...ONBOARDING_FLOW], goals: clone_data(ONBOARDING_GOALS), interests: ONBOARDING_INTEREST_IDS.map(id => state.data.interests.find(row => row.item_id === id)).filter(Boolean).map(clone_data) }),
     local_verification: state => state.hydration_status === 'ready' ? local_verification_context(state.data, state.clock_ms) : null,
     local_verification_code: () => LOCAL_VERIFICATION_CODE,
-    last_deleted_account: state => state.hydration_status === 'ready' ? clone_data(state.data.accounts.filter(row => row.status === 'deleted' && Number.isFinite(row.deleted_at)).sort((a, b) => b.deleted_at - a.deleted_at)[0] || null) : null,
+    last_deleted_account: state => state.hydration_status === 'ready' && !s.authenticated(state.data, state.clock_ms) ? clone_data(state.data.accounts.find(row => row.account_id === state.data.auth_flow.deleted_account_id && row.status === 'deleted' && Number.isFinite(row.deleted_at)) || null) : null,
     requires_local_verification() { return this.session.is_authenticated && this.data.accounts.find(row => row.account_id === this.data.session.account_id)?.auth_provider === 'local' && !this.local_verification?.verified },
     session: (state) => ({ ...state.data.session, is_authenticated: ready(state) }),
     auth_context: state => auth_context_key(state.data),
@@ -249,11 +249,12 @@ export const use_app_store = defineStore('app', {
         data.auth_flow = { flow_id: make_id('auth_flow'), step: 'welcome', email: '', verification_request_id: null, pending_registration_account_id: null, agreements: { age: false, student: false, terms: false, privacy: false, community: false }, profile_draft: {} }
       }, { public: true })
     },
-    async delete_account(password, reason = '') {
+    async delete_account(password, reason = '', { is_current = () => true, expected_context = auth_context_key(this.data) } = {}) {
       const owner = s.owner_id(this.data), expected = this.data.accounts.find(row => row.account_id === this.data.session.account_id)
       const valid = await (expected?.auth_provider === 'local' ? verify_local_credential(expected, password) : password_hash(password).then(hash => hash === expected?.credential_hash)).catch(() => false)
       const media_ids = this.data.media_files.filter((row) => row.owner_user_id === owner).map((row) => row.media_id)
       const result = transact(this, null, (data, now) => {
+        s.ensure(is_current() && auth_context_key(data) === expected_context, 'The account changed. Reopen Settings before deleting it.')
         const account = data.accounts.find((row) => row.account_id === data.session.account_id)
         s.ensure(valid && account?.credential_hash === expected?.credential_hash, 'Password is incorrect.')
         account.status = 'deleted'; account.deleted_at = now; account.deletion_reason = String(reason || '').slice(0, 120); account.credential_hash = 'deleted'
@@ -284,6 +285,7 @@ export const use_app_store = defineStore('app', {
         for (const table of ['coin_transactions', 'purchase_requests', 'blocked_users', 'reports', 'drafts', 'support_requests', 'operation_receipts', 'settings', 'event_preferences']) data[table] = data[table].filter((row) => row.owner_user_id !== owner && (table !== 'blocked_users' || row.user_id !== owner))
         data.session = { current_user_id: null, account_id: null, expires_at: null }
         data.auth_flow = { flow_id: make_id('auth_flow'), step: 'welcome', email: '', verification_request_id: null, pending_registration_account_id: null, password_reset: null, agreements: { age: false, student: false, terms: false, privacy: false, community: false }, profile_draft: {} }
+        data.auth_flow.deleted_account_id = account.account_id
         return { user_id: owner, media_ids }
       }, { expected_owner: owner })
       if (!result.success) return result

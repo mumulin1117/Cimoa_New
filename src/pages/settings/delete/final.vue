@@ -2,6 +2,7 @@
 import { computed, onUnmounted, ref } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { relaunch_route } from '@/utils/routeTransition.js'
 import { startup_destination } from '@/utils/authNavigation.js'
@@ -21,9 +22,10 @@ const account_id = store.session.account_id
 const draft_target = `account:${account_id || 'none'}`
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 let active = true
+const account_scope = use_account_scope(store, () => { if (store.last_deleted_account?.account_id !== account_id) { cancel_loading(); password.value = ''; dialog_open.value = false; shown.value = false } })
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const reason = computed(() => store.current_drafts.find(row => row.kind === 'delete-account' && row.target_id === draft_target)?.payload?.reason || 'No reason selected')
@@ -46,7 +48,7 @@ const confirm_delete = async () => {
   dialog_error.value = ''
   const secret = password.value
   const deletion_reason = reason.value === 'No reason selected' ? '' : reason.value
-  const result = await run_with_loading(() => store.delete_account(secret, deletion_reason))
+  const result = await run_with_loading(scope => store.delete_account(secret, deletion_reason, { ...scope, expected_context: account_scope.auth_context }))
   password.value = ''
   if (!active || result.reason === 'cancelled') return
   if (!result.success) { dialog_error.value = result.message || 'The local account could not be deleted.'; return }

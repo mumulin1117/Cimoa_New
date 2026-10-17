@@ -11066,7 +11066,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/settings/delete/final",
-    "component": "src/pages/settings/delete/final.vue; src/components/DeleteAccountConfirmDialog.vue",
+    "component": "src/pages/settings/delete/final.vue",
     "parent_route": "/pages/settings/delete/reason",
     "allowed_origin_routes": [
       "/pages/settings/delete/reason"
@@ -11107,11 +11107,15 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; verified with password failure, persistence rollback, custom confirmation and atomic local deletion"
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-delete-final/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-delete-final/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/settings-safety/delete-final-acceptance.json"
   },
   {
     "source_screen": "Settings / Delete Account / Success",

@@ -16,6 +16,22 @@ const fixture = ({ guest = false, fail_write = false } = {}) => {
   assert.equal(store.hydrate().success, true)
   return { store, blobs, snapshot: () => clone_data(disk) }
 }
+test('pending password verification cannot delete a replacement login to the same account at the same clock', async () => {
+  const { store } = fixture(), original = crypto.subtle.digest.bind(crypto.subtle)
+  let release, calls = 0
+  crypto.subtle.digest = (...args) => ++calls === 1 ? new Promise(resolve => { release = async () => resolve(await original(...args)) }) : original(...args)
+  try {
+    const pending = store.delete_account('12341234', 'Privacy concerns')
+    store.logout(); assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, true)
+    const before = clone_data(store.data); await release(); assert.equal((await pending).success, false); assert.deepEqual(clone_data(store.data), before)
+  } finally { crypto.subtle.digest = original }
+})
+test('delete success belongs to the completed deletion flow, not an arbitrary historical deleted account', async () => {
+  const { store } = fixture(); assert.equal(store.last_deleted_account, null)
+  const id = store.session.account_id; assert.equal((await store.delete_account('12341234')).success, true)
+  assert.equal(store.last_deleted_account.account_id, id); store.hydration_status = 'idle'; store.hydrate(); assert.equal(store.last_deleted_account.account_id, id)
+  store.logout(); assert.equal(store.last_deleted_account, null)
+})
 
 test('privacy choices persist through the Store and gate Discover, Auto Match, fields and events', () => {
   const { store } = fixture()
