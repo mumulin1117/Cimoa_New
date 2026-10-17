@@ -1285,6 +1285,65 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Onboarding Ice WKWebView stage \(stage) failed: \(error)"); _ = try? await script(host,"window.__restoreOnboardingIceStorage?.();return true"); try? await restore(); throw error }
     }
+    func testOnboardingNotificationsPixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?onboardingNotif=restored#/pages/home/index")!))
+            try await waitFor(host, ".home-header,.onboarding-page,.welcome-page")
+        }
+        func loadNotifications(_ suffix: String) async throws {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?onboardingNotif=\(suffix)#/pages/onboarding/notif")!))
+            try await waitFor(host, ".onboarding-notif-page")
+            try await Task.sleep(nanoseconds: 300_000_000)
+        }
+        var stage = "prepare notifications account"
+        do {
+            _ = try await script(host, """
+            const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),data=envelope.data,account=data.accounts.find(row=>row.account_id===data.session.account_id),user=data.users.find(row=>row.user_id===data.session.current_user_id);account.status='active';account.auth_provider='local';account.local_verification={method:'fixed_code',status:'verified',verified_at:Date.now()};account.onboarding={step:'notif',completed_steps:['basic','uni','major','photos','about','interests','goal','ice']};user.onboarding_status='in_progress';data.auth_flow.pending_registration_account_id=account.account_id;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true
+            """)
+            try await loadNotifications("native")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}},root=box('.onboarding-notif-page'),icon=box('.notice-icon'),title=box('.notice-title'),copy=box('.notice-copy'),footer=box('.notice-footer'),primary=box('[data-interaction="obNotif.enableNotifs.click.1"]'),secondary=box('[data-interaction="obNotif.skipNotifs.click.1"]'),safes=[...document.querySelectorAll('.onboarding-notif-page>.safe-area')].map(element=>element.getBoundingClientRect().height);return {root,icon,title,copy,footer,primary,secondary,safes,text:{title:document.querySelector('.notice-title').textContent,copy:document.querySelector('.notice-copy').textContent,primary:document.querySelector('[data-interaction="obNotif.enableNotifs.click.1"]').textContent.trim(),secondary:document.querySelector('[data-interaction="obNotif.skipNotifs.click.1"]').textContent.trim()},interactions:[...document.querySelectorAll('[data-interaction]')].map(element=>element.dataset.interaction),note:!!document.querySelector('.notice-note')}
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root=metrics["root"] as! [String:Double],icon=metrics["icon"] as! [String:Double],title=metrics["title"] as! [String:Double],copy=metrics["copy"] as! [String:Double],primary=metrics["primary"] as! [String:Double],secondary=metrics["secondary"] as! [String:Double],safes=metrics["safes"] as! [Double],text=metrics["text"] as! [String:String],interactions=metrics["interactions"] as! [String],scale=root["width"]!/393
+            XCTAssertEqual(safes[0],Double(host.view.safeAreaInsets.top),accuracy:1); XCTAssertEqual(safes[1],Double(host.view.safeAreaInsets.bottom),accuracy:1)
+            XCTAssertEqual(icon["y"]!,safes[0]+132*scale,accuracy:2); XCTAssertEqual(icon["width"]!,92*scale,accuracy:1); XCTAssertEqual(icon["height"]!,92*scale,accuracy:1)
+            XCTAssertEqual(title["y"]!-icon["bottom"]!,16*scale,accuracy:1); XCTAssertEqual(copy["y"]!-title["bottom"]!,16*scale,accuracy:1)
+            XCTAssertEqual(primary["height"]!,60*scale,accuracy:1); XCTAssertEqual(secondary["height"]!,46*scale,accuracy:1); XCTAssertEqual(secondary["bottom"]!,root["height"]!-safes[1]-30*scale,accuracy:2)
+            XCTAssertEqual(text["title"],"Stay in the loop"); XCTAssertEqual(text["copy"],"Get notified when someone accepts your introduction, when an Auto Match is ready, or when an event is about to start."); XCTAssertEqual(text["primary"],"Enable Notifications"); XCTAssertEqual(text["secondary"],"Not Now")
+            XCTAssertEqual(interactions,["obNotif.enableNotifs.click.1","obNotif.skipNotifs.click.1"]); XCTAssertEqual(metrics["note"] as? Bool,false)
+            let defaultShot=XCTAttachment(image:try await host.webView.takeSnapshot(configuration:nil)); defaultShot.name="WKWebView Onboarding Notifications default"; defaultShot.lifetime = .keepAlways; add(defaultShot); print("CIMOA_ONBOARDING_NOTIF_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+
+            stage = "permission boundary and return ownership"
+            let beforeForward=try await script(host,"return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host,"const action=document.querySelector('[data-interaction=\"obNotif.enableNotifs.click.1\"]');action.click();action.click();return true"); try await waitFor(host,".permission-notif-page")
+            let stateAfterForward = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(stateAfterForward,beforeForward)
+            _ = try await script(host,"history.back();return true"); try await waitFor(host,".onboarding-notif-page")
+            let stateAfterBack = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(stateAfterBack,beforeForward)
+
+            stage = "failure rollback and atomic skip"
+            _ = try await script(host,"window.__notifBefore=localStorage.getItem('cimoa_app_state_v2');window.__notifOriginalSetItem=Storage.prototype.setItem;window.__restoreOnboardingNotifStorage=()=>{Storage.prototype.setItem=window.__notifOriginalSetItem;delete window.__notifOriginalSetItem};Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw new DOMException('Injected notification storage failure','QuotaExceededError');return window.__notifOriginalSetItem.call(this,key,value)};document.querySelector('[data-interaction=\"obNotif.skipNotifs.click.1\"]').click();return true"); try await waitFor(host,".loading"); try await waitFor(host,".onboarding-notif-page [role=alert]")
+            let failed=try await script(host,"const result={message:document.querySelector('.onboarding-notif-page [role=alert]').textContent,state:localStorage.getItem('cimoa_app_state_v2'),complete:!!document.querySelector('.onboarding-complete-page')};window.__restoreOnboardingNotifStorage();return result") as! [String:Any]
+            XCTAssertTrue((failed["message"] as? String)?.contains("Injected notification storage failure") == true); XCTAssertEqual(failed["state"] as? String,beforeForward); XCTAssertEqual(failed["complete"] as? Bool,false)
+            let failureShot=XCTAttachment(image:try await host.webView.takeSnapshot(configuration:nil)); failureShot.name="WKWebView Onboarding Notifications failure"; failureShot.lifetime = .keepAlways; add(failureShot)
+            _ = try await script(host,"window.__notifWrites=0;const original=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')window.__notifWrites++;return original.call(this,key,value)};const action=document.querySelector('[data-interaction=\"obNotif.skipNotifs.click.1\"]');action.click();action.click();return true"); try await waitFor(host,".loading")
+            let unchangedDuringLoading = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')===window.__notifBefore") as? Bool
+            XCTAssertEqual(unchangedDuringLoading,true); try await waitFor(host,".onboarding-complete-page")
+            let committed=try await script(host,"const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,account=data.accounts.find(row=>row.account_id===data.session.account_id),settings=data.settings.find(row=>row.owner_user_id===data.session.current_user_id);return {step:account.onboarding.step,permission:account.onboarding.notification_permission,master:settings.notifications.master,writes:window.__notifWrites}") as! [String:Any]
+            XCTAssertEqual(committed["step"] as? String,"complete"); XCTAssertEqual(committed["permission"] as? String,"skipped"); XCTAssertEqual(committed["master"] as? Bool,false); XCTAssertEqual(committed["writes"] as? Int,1)
+            try await restore()
+        } catch { XCTFail("Onboarding Notifications WKWebView stage \(stage) failed: \(error)"); _ = try? await script(host,"window.__restoreOnboardingNotifStorage?.();return true"); try? await restore(); throw error }
+    }
     func testFixedLocalVerificationAndRefresh() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

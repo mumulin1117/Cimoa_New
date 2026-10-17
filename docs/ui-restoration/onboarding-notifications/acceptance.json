@@ -1,0 +1,40 @@
+{
+  "screen": "Onboarding / Notifications / Pre-Permission",
+  "route": "/pages/onboarding/notif",
+  "result": "passed",
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "browser": {
+    "checks_passed": 6,
+    "checks_failed": 0,
+    "viewport": "393x852",
+    "compact_viewport": "320x568",
+    "safe_area": "54/0",
+    "mean_absolute_channel_delta": 1.0359638748521665,
+    "cleaned_up": true,
+    "report": "docs/ui-restoration/onboarding-notifications/browser-acceptance.json",
+    "actual": "docs/ui-restoration/onboarding-notifications/actual-browser.png",
+    "overlay": "docs/ui-restoration/onboarding-notifications/overlay.png",
+    "diff": "docs/ui-restoration/onboarding-notifications/diff.png"
+  },
+  "wkwebview": {
+    "checks_passed": 1,
+    "checks_failed": 0,
+    "device": "iPhone 17 Pro simulator",
+    "os": "iOS 26.5",
+    "safe_area": "62/34",
+    "test": "HostTests/testOnboardingNotificationsPixelRestoration()",
+    "xcresult": "Test-cimoaNeapo-2026.10.16_20-40-05-+0800.xcresult",
+    "actual": "docs/ui-restoration/onboarding-notifications/actual-wkwebview.png",
+    "failure_state": "docs/ui-restoration/onboarding-notifications/actual-wkwebview-failure.png"
+  },
+  "behavior": {
+    "enable_navigation_without_write": true,
+    "return_restores_origin_without_write": true,
+    "skip_loading_before_write": true,
+    "duplicate_tap_single_write": true,
+    "refresh_restores_complete_step": true,
+    "persistence_failure_rolls_back": true,
+    "leave_during_loading_cancels": true
+  }
+}

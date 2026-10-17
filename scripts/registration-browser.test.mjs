@@ -238,7 +238,7 @@ try {
   }
   if (['notif', 'notification-access', 'complete'].includes(phase)) {
     await page.locator('.onboarding-notif-page').waitFor(); await shot('notif')
-    assert.match(await page.locator('.notice-note').innerText(), /delivery is not connected/)
+    assert.equal(await page.locator('.notice-note').count(), 0)
     if (phase === 'notif') {
       const before = await snapshot(); await click('obNotif.skipNotifs.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
       await page.locator('.loading').waitFor({ state: 'detached' }); const d = await snapshot(), account = d.accounts.find(a => a.account_id === d.session.account_id)

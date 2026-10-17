@@ -1,0 +1,42 @@
+{
+  "screen": "Onboarding / Notifications / Pre-Permission",
+  "route": "/pages/onboarding/notif",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_lines": [3180, 3192],
+    "visual_fragment_sha256": "d4e28bbf62f7669e05a736c271e6374a837e4dcde0d0f8342ff9ed6b9fe3e8f3",
+    "behavior_lines": [5769, 5770],
+    "behavior_fragment_sha256": "2f57cbf5b61517493386ede6eb161ff8bb2d4edde8a0a10b2f26cfe5099d2d56"
+  },
+  "viewport": { "width": 393, "height": 852 },
+  "layout": {
+    "content_top": 176,
+    "content_inset": 24,
+    "content_gap": 16,
+    "icon_size": 92,
+    "title_size": 28,
+    "copy_size": 17,
+    "footer_inset": 20,
+    "footer_bottom": 30,
+    "footer_gap": 6,
+    "primary_height": 60,
+    "secondary_height": 46
+  },
+  "content": {
+    "title": "Stay in the loop",
+    "copy": "Get notified when someone accepts your introduction, when an Auto Match is ready, or when an event is about to start.",
+    "primary": "Enable Notifications",
+    "secondary": "Not Now"
+  },
+  "interactions": [
+    "obNotif.enableNotifs.click.1",
+    "obNotif.skipNotifs.click.1"
+  ],
+  "approved_deltas": [
+    "Use the real top and bottom safe-area values instead of the prototype's fixed canvas insets.",
+    "Enable Notifications only opens the dedicated permission page; it does not claim authorization before the operating system responds.",
+    "Not Now shows the required 400-600ms custom Loading before one Store persistence transaction.",
+    "Persistence and access failures render an explicit in-page error and do not navigate."
+  ]
+}

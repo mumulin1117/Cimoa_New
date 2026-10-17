@@ -1,0 +1,107 @@
+{
+  "phase": "onboarding-notifications-pixel-restoration",
+  "result": "passed",
+  "server_pid": 6024,
+  "reference": {
+    "kind": "source-derived locked reference with approved persistence, truthful-permission and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "d4e28bbf62f7669e05a736c271e6374a837e4dcde0d0f8342ff9ed6b9fe3e8f3",
+    "behavior_fragment_sha256": "2f57cbf5b61517493386ede6eb161ff8bb2d4edde8a0a10b2f26cfe5099d2d56",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "content": {
+      "x": 0,
+      "y": 54,
+      "width": 393,
+      "height": 388.625,
+      "right": 393,
+      "bottom": 442.625
+    },
+    "icon": {
+      "x": 150.5,
+      "y": 185.984375,
+      "width": 91.984375,
+      "height": 91.984375,
+      "right": 242.484375,
+      "bottom": 277.96875
+    },
+    "title": {
+      "x": 101.390625,
+      "y": 293.953125,
+      "width": 190.21875,
+      "height": 32.1875,
+      "right": 291.609375,
+      "bottom": 326.140625
+    },
+    "copy": {
+      "x": 24,
+      "y": 342.125,
+      "width": 345,
+      "height": 76.5,
+      "right": 369,
+      "bottom": 418.625
+    },
+    "footer": {
+      "x": 0,
+      "y": 710.03125,
+      "width": 393,
+      "height": 141.96875,
+      "right": 393,
+      "bottom": 852
+    },
+    "primary": {
+      "x": 20,
+      "y": 710.03125,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 770.03125
+    },
+    "secondary": {
+      "x": 20,
+      "y": 776.015625,
+      "width": 353,
+      "height": 45.984375,
+      "right": 373,
+      "bottom": 822
+    },
+    "text": {
+      "title": "Stay in the loop",
+      "copy": "Get notified when someone accepts your introduction, when an Auto Match is ready, or when an event is about to start.",
+      "primary": "Enable Notifications",
+      "secondary": "Not Now"
+    },
+    "interactions": [
+      "obNotif.enableNotifs.click.1",
+      "obNotif.skipNotifs.click.1"
+    ],
+    "note": false
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 43037,
+    "pixels_above_channel_delta_8": 8201,
+    "mean_absolute_channel_delta": 1.0359638748521665,
+    "max_channel_delta": 223
+  },
+  "checks": [
+    "393x852 source geometry, exact copy, fixed footer and interaction IDs match the finished cRise frame",
+    "Enable opens one permission page with no authorization write and browser Back restores the originating pre-prompt",
+    "double Not Now shows Loading, performs one Store transaction, keeps notifications off and refresh restores Complete",
+    "persistence failure rolls back the choice, remains on Notifications and exposes a real error",
+    "leaving during Loading cancels the delayed write and hidden-page navigation",
+    "320x568 keeps all source content visible above the fixed footer with safe-area ownership intact"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}
