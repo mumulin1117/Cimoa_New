@@ -5,6 +5,7 @@ import { use_app_store } from '@/stores/store.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import { COIN_ROUTES } from '@/utils/coinNavigation.js'
+import { coin_center_route } from '@/utils/coinReturnContext.js'
 
 const store = use_app_store(), frame = ref(null), request_id = ref(''), navigating = ref(false), error = ref('')
 const account_id = store.session.account_id
@@ -27,8 +28,7 @@ const navigate_store = async use_back => {
   if (navigating.value) return
   navigating.value = true; error.value = ''
   try {
-    if (use_back) await frame.value.navigate_back(COIN_ROUTES.center)
-    else await frame.value.navigate_replace(COIN_ROUTES.center)
+    await frame.value.navigate_back(coin_center_route(store, request.value?.return_context_id))
   } catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }

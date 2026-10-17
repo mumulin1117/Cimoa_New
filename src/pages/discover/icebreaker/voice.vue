@@ -10,7 +10,6 @@ import IcebreakerPerson from '@/components/IcebreakerPerson.vue'
 import IcebreakerIcon from '@/components/IcebreakerIcon.vue'
 import IcebreakerAudio from '@/components/IcebreakerAudio.vue'
 import IntroductionConfirmDialog from '@/components/IntroductionConfirmDialog.vue'
-import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import EventActionLoading from '@/components/EventActionLoading.vue'
 
@@ -35,7 +34,7 @@ const persist_recording = async () => {
   if (!active.value || result.reason === 'cancelled') return null
   if (!result.success) { error.value = result.message; return null }
   clear()
-  if (old && old !== result.data.media_id) await store.discard_media(old)
+  if (old && old !== result.data.media_id) await store.discard_media(old, { is_current: () => active.value })
   return result.data.media_id
 }
 const switch_text = async () => {
@@ -61,7 +60,7 @@ const rerecord = () => { sheet.value = ''; clear(); sheet.value = 'microphone' }
 const remove_audio = async () => {
   sheet.value = ''; clear()
   if (!context.value.audio) return
-  const result = await run_with_loading(() => store.discard_media(context.value.audio.media_id))
+  const result = await run_with_loading(scope => store.discard_media(context.value.audio.media_id, scope))
   if (!result.success && result.reason !== 'cancelled') error.value = result.message
 }
 const hide = () => { active.value = false; sheet.value = ''; discard.value = false; navigating.value = false; cancel_loading() }
@@ -78,7 +77,7 @@ onHide(hide); onUnmounted(() => { hide(); clear() })
       </view><view class="ice-voice-note"><view><IcebreakerIcon name="info" /></view><text>Your answer will be sent with the connection request</text></view>
     </template><view v-else class="ice-unavailable" role="alert">{{ access_error }}</view></view>
     <template #footer><view v-if="!access_error" class="ice-footer"><view class="ice-primary" role="button" tabindex="0" :aria-disabled="is_loading || media_busy || navigating || recording || !audio_source" data-interaction="ibVoice.sendVoiceRequest.click.1" @click="review" @keydown.enter="review">Send Request · 10 Coins</view></view></template>
-    <template #overlays><IntroductionConfirmDialog :open="!!sheet" :mode="sheet" :busy="is_loading || media_busy" @close="sheet = ''" @confirm="allow" @rerecord="rerecord" @delete="remove_audio" /><ConfirmDialog :visible="discard" title="Discard this recording?" message="You’ll lose what you’ve recorded so far." confirm-label="Discard" danger @cancel="discard = false" @confirm="back_now" /><EventActionLoading :visible="is_loading" label="Saving your voice introduction…" /></template>
+    <template #overlays><IntroductionConfirmDialog :open="!!sheet" :mode="sheet" :busy="is_loading || media_busy" @close="sheet = ''" @confirm="allow" @rerecord="rerecord" @delete="remove_audio" /><IntroductionConfirmDialog :open="discard" mode="discard" :busy="is_loading || media_busy" @close="discard = false" @confirm="back_now" /><EventActionLoading :visible="is_loading" label="Saving your voice introduction…" /></template>
   </SecondaryPageFrame>
 </template>
 <style scoped src="./icebreaker.css"></style>

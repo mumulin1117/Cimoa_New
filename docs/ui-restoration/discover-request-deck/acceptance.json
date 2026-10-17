@@ -2,11 +2,35 @@
   "source_lock": "locked",
   "local_acceptance": "passed",
   "full_acceptance": "pending",
-  "visual_acceptance": "pending",
+  "visual_acceptance": "passed",
   "status": "pending",
-  "browser": "4 checks passed; source geometry <=1px, overlay reviewed; 8 iPhone sizes",
-  "native": "testDiscoverRequestDeckPixel passed on iPhone 17 Pro; final bundled regression required after shared draft action completion",
-  "gates": "check:conventions, git diff --check, build:h5 passed; no warning",
-  "deferred": ["Final text/voice/draft/recipient decision flow and final package WKWebView regression"],
-  "scope": "Deck plus shared read model/draft data foundation; not a whole-app completion"
+  "browser": {
+    "result": "passed",
+    "checks": 7,
+    "errors": [],
+    "cleaned": true
+  },
+  "WKWebView": {
+    "device": "iPhone 17 Pro",
+    "runtime": "iOS 26.5",
+    "viewport": "402×874; real safe areas",
+    "suite": "7 passed, 0 failed, 0 skipped",
+    "bundle_manifest_sha256": "2231a7f64d79327c8fb29a940dca6ad655ab9570281279e1051d88bc502399c4"
+  },
+  "visual_review": {
+    "policy": "User-authorized automatic confirmation after source/actual/overlay/diff and native review",
+    "reference": "393×852, safe top54/bottom0, cRise end frame",
+    "geometry_tolerance": "1 CSS design pixel; source tokens/SVG/copy preserved",
+    "approved_deltas": "Canonical supplied people/media; actual safe area; fixed page skeleton; free text; real recorder and decoded media; account-derived consent/balance",
+    "unresolved": []
+  },
+  "gates": "check:conventions without warnings; git diff --check; build:h5; 391 files packaged without prototype",
+  "deferred": [
+    "Local implementation commit required before final verified record"
+  ],
+  "limits": [
+    "Local-account product scope; no fabricated remote reply or consent",
+    "No StoreKit product/signing configuration: cancel/timeout/failure only; no purchase success claim",
+    "Browser recording uses an isolated capture device; authorized native test uses real getUserMedia/MediaRecorder, then deletes the test Blob"
+  ]
 }

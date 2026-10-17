@@ -2,10 +2,45 @@
   "source_lock": "locked",
   "local_acceptance": "passed",
   "full_acceptance": "pending",
-  "visual_acceptance": "pending",
+  "visual_acceptance": "passed",
   "status": "pending",
-  "browser": "4 checks passed; pre-prompt cancel; actual MediaRecorder/decoded playable Blob (Chrome test capture device); discard cancellation; post-Loading draft/media atomic save; saved audio Back/refresh",
-  "gates": "Three mandatory checks passed without warning",
-  "limits": ["Chrome uses a test capture device, not evidence of physical iPhone microphone"],
-  "deferred": ["Final WKWebView pixels and permission/recorder availability path; preview payment confirmation/receiver flow"]
+  "browser": {
+    "result": "passed",
+    "checks": 7,
+    "errors": [],
+    "cleaned": true
+  },
+  "WKWebView": {
+    "device": "iPhone 17 Pro",
+    "runtime": "iOS 26.5",
+    "viewport": "402×874; real safe areas",
+    "suite": "7 passed, 0 failed, 0 skipped",
+    "bundle_manifest_sha256": "2231a7f64d79327c8fb29a940dca6ad655ab9570281279e1051d88bc502399c4"
+  },
+  "visual_review": {
+    "policy": "User-authorized automatic confirmation after source/actual/overlay/diff and native review",
+    "reference": "393×852, safe top54/bottom0, cRise end frame",
+    "geometry_tolerance": "1 CSS design pixel; source tokens/SVG/copy preserved",
+    "approved_deltas": "Canonical supplied people/media; actual safe area; fixed page skeleton; free text; real recorder and decoded media; account-derived consent/balance",
+    "unresolved": []
+  },
+  "gates": "check:conventions without warnings; git diff --check; build:h5; 391 files packaged without prototype",
+  "deferred": [
+    "Local implementation commit required before final verified record"
+  ],
+  "limits": [
+    "Local-account product scope; no fabricated remote reply or consent",
+    "No StoreKit product/signing configuration: cancel/timeout/failure only; no purchase success claim",
+    "Browser recording uses an isolated capture device; authorized native test uses real getUserMedia/MediaRecorder, then deletes the test Blob"
+  ],
+  "real_microphone": {
+    "account_snapshot_restored": true,
+    "capture": "real WKWebView getUserMedia/MediaRecorder",
+    "discard_cancel_preserved_recording": true,
+    "duration_ms": 2134.7708333333335,
+    "playable_after_refresh": true,
+    "recording_bytes_saved_to_evidence": false,
+    "result": "passed",
+    "test_blob_removed": true
+  }
 }

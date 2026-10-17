@@ -5,11 +5,13 @@ import { use_app_store } from '@/stores/store.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
+import { coin_center_route } from '@/utils/coinReturnContext.js'
 
 const store = use_app_store(), frame = ref(null), request_id = ref(''), navigating = ref(false), error = ref('')
 const account_id = store.session.account_id
 onLoad(options => { request_id.value = String(options?.purchase_request_id || '') })
 const request = computed(() => store.purchase_by_id(request_id.value))
+const center_route = computed(() => coin_center_route(store, request.value?.return_context_id))
 const pack = computed(() => store.coin_package_by_id(request.value?.package_id))
 const transaction = computed(() => store.coin_transactions.find(item => item.kind === 'purchase' && item.related_id === request_id.value && item.status === 'completed') || null)
 const verified = computed(() => !!request.value && request.value.status === 'success' && !!request.value.receipt_id && !!pack.value?.product_id && !!transaction.value && transaction.value.amount === pack.value.coins)
@@ -25,7 +27,7 @@ const access_error = computed(() => store.hydration_status !== 'ready'
 const navigate = async route => {
   if (navigating.value) return
   navigating.value = true; error.value = ''
-  try { await frame.value.navigate_replace(require_coin_route_ready(route)) }
+  try { if (route === center_route.value) await frame.value.navigate_back(route); else await frame.value.navigate_replace(require_coin_route_ready(route)) }
   catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }
@@ -37,7 +39,7 @@ onHide(() => { navigating.value = false; error.value = '' })
   <SecondaryPageFrame ref="frame" class="coin-success-page">
     <template #header>
       <view class="success-header">
-        <view class="success-back" role="button" aria-label="Back to Coin Store" :aria-disabled="navigating" data-interaction="coinSuccess.backToStore.click.1" @click="navigate(COIN_ROUTES.center)"><SourceIcon name="back" /></view>
+        <view class="success-back" role="button" aria-label="Back to Coin Store" :aria-disabled="navigating" data-interaction="coinSuccess.backToStore.click.1" @click="navigate(center_route)"><SourceIcon name="back" /></view>
         <text>Coins</text>
       </view>
       <text v-if="error" class="success-error" role="alert">{{ error }}</text>
@@ -56,10 +58,10 @@ onHide(() => { navigating.value = false; error.value = '' })
     <template #footer>
       <view class="success-footer">
         <template v-if="verified">
-          <view class="success-primary" role="button" :aria-disabled="navigating" data-interaction="coinSuccess.purchaseDone.click.1" @click="navigate(COIN_ROUTES.center)">Done</view>
+          <view class="success-primary" role="button" :aria-disabled="navigating" data-interaction="coinSuccess.purchaseDone.click.1" @click="navigate(center_route)">Done</view>
           <view class="success-secondary" role="button" :aria-disabled="navigating" data-interaction="coinSuccess.viewTxn.click.1" @click="view_transaction">View transaction</view>
         </template>
-        <view class="success-store" role="button" :aria-disabled="navigating" data-interaction="coinSuccess.backToStore.click.1" @click="navigate(COIN_ROUTES.center)">Back to Coin Store</view>
+        <view class="success-store" role="button" :aria-disabled="navigating" data-interaction="coinSuccess.backToStore.click.1" @click="navigate(center_route)">Back to Coin Store</view>
       </view>
     </template>
   </SecondaryPageFrame>

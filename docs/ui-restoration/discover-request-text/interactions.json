@@ -2,7 +2,7 @@
   {
     "interaction_id": "ibText.goBack.click.1",
     "source_screen": "ibText decoded HTML 656–689",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -26,7 +26,7 @@
   {
     "interaction_id": "ibText.continueText.click.1",
     "source_screen": "ibText decoded HTML 656–689",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -38,7 +38,7 @@
   {
     "interaction_id": "ibText.switchToVoice.click.1",
     "source_screen": "ibText decoded HTML 656–689",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -50,7 +50,7 @@
   {
     "interaction_id": "ibText.draft.save",
     "source_screen": "ibText decoded HTML 656–689",
-    "trigger": "click",
+    "trigger": "800ms idle, Back or mode switch",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",

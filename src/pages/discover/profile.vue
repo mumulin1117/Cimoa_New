@@ -160,6 +160,7 @@ const confirm_block = async () => {
 </template>
 
 <style scoped>
+.expanded-profile-page { -webkit-font-smoothing: antialiased; }
 .expanded-header { display: flex; align-items: center; justify-content: space-between; min-height: 103.053rpx; padding: 11.45rpx 38.168rpx 0; }
 .expanded-round { display: flex; align-items: center; justify-content: center; width: 103.053rpx; height: 103.053rpx; border-radius: 50%; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-header); color: var(--cimoa-text-title); cursor: pointer; }
 .expanded-round-placeholder { width: 103.053rpx; }

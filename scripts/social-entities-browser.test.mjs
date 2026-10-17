@@ -29,14 +29,14 @@ data.users.find(row => row.user_id === 'user_sophie').gender = 'Non-binary'
 Object.assign(data.match_preferences.find(row => row.owner_user_id === 'user_noah'), { university: 'HKU', major: 'Psychology', gender: 'Non-binary', language: 'All' })
 const report = { result: 'failed', server_pid: process.pid, checks: [], errors: [] }
 const check = message => { report.checks.push(message); console.log(`PASS ${message}`) }
-let browser
+let browser, page
 try {
   fs.mkdirSync(output, { recursive: true })
   await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve) })
   const origin = `http://127.0.0.1:${server.address().port}`
   console.log(`Temporary social-entity preview PID ${process.pid}, ${origin}`)
   browser = await chromium.launch({ headless: true, ...(process.env.CIMOA_BROWSER_CHANNEL ? { channel: process.env.CIMOA_BROWSER_CHANNEL } : {}) })
-  const page = await browser.newPage({ viewport: { width: 393, height: 852 } }); page.setDefaultTimeout(12000)
+  page = await browser.newPage({ viewport: { width: 393, height: 852 } }); page.setDefaultTimeout(12000)
   page.on('pageerror', error => report.errors.push(error.message))
   const open = route => page.goto(`${origin}/?social=${Date.now()}#${route}`)
   const snapshot = () => page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data)
@@ -106,8 +106,8 @@ try {
   await page.evaluate(initial => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data: initial })), voice_fixture)
   await open('/pages/discover/profile?user_id=user_sophie'); await click('expanded.sayHi.click.1'); await page.locator('[data-interaction="ibSelect.q.pick.click.1"]').first().click(); await click('ibSelect.pickVoice.click.1'); await click('ibSelect.answerGo.click.1')
   await page.evaluate(async () => { window.originalGUM = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices); window.audioProbe = new AudioContext(); await window.audioProbe.resume(); const destination = window.audioProbe.createMediaStreamDestination(); window.tone = window.audioProbe.createOscillator(); window.tone.connect(destination); window.tone.start(); navigator.mediaDevices.getUserMedia = async () => destination.stream })
-  await click('ibVoice.openVoiceMenu.click.1'); await page.getByRole('button', { name: 'Stop recording', exact: true }).waitFor(); await page.waitForTimeout(3000); await click('ibVoice.openVoiceMenu.click.1'); await page.getByRole('button', { name: 'Play voice message', exact: true }).waitFor(); await click('ibVoice.sendVoiceRequest.click.1'); await page.locator('[data-interaction="ibPreview.continueVoice.click.1"]').waitFor()
-  await click('ibPreview.continueVoice.click.1'); await page.locator('.connection-sent-page').waitFor()
+  await click('ibVoice.record.click.1'); await click('sheetMic.allowMic.click.1'); await page.getByRole('button', { name: 'Stop recording', exact: true }).waitFor(); await page.waitForTimeout(3000); await click('ibVoice.record.click.1'); await page.getByRole('button', { name: 'Play voice message', exact: true }).waitFor(); await click('ibVoice.sendVoiceRequest.click.1'); await page.locator('[data-interaction="ibPreview.continueVoice.click.1"]').waitFor()
+  await click('ibPreview.continueVoice.click.1'); await click('sheetVoiceCoin.spendVoice.click.1'); await page.locator('.connection-sent-page').waitFor()
   const voice_state = await snapshot(), voice_request = voice_state.requests.find(row => row.sender_id === 'user_noah' && row.recipient_id === 'user_sophie')
   assert.equal(voice_request.kind, 'voice'); assert.equal(voice_request.status, 'pending'); assert.equal(voice_state.coin_transactions.filter(row => row.owner_user_id === 'user_noah').reduce((sum,row) => sum + row.amount, 0), 0)
   assert.equal(voice_state.coin_transactions.filter(row => row.business_key === `voice:${voice_request.request_id}`).length, 1)
@@ -133,5 +133,5 @@ try {
   assert.equal((await snapshot()).requests.find(row => row.request_id === to_decline.request_id).status, 'declined'); assert.equal((await snapshot()).conversations.some(row => row.kind === 'direct' && row.participant_ids.includes('user_noah')), false)
   check('Peer Not Now keeps the invitation; explicit menu decline closes the same request without consent or a conversation')
   assert.deepEqual(report.errors, []); report.result = 'passed'
-} catch (error) { report.errors.push(error.stack || error.message); throw error }
+} catch (error) { report.errors.push(error.stack || error.message); if(page)report.failure={url:page.url(),text:await page.locator('body').innerText().catch(()=>''),state:await page.evaluate(()=>{const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return{session:d.session,requests:d.requests,media:d.media_files.map(r=>({id:r.media_id,owner:r.owner_user_id,kind:r.kind}))}}).catch(()=>null)}; throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); report.cleaned_up = true; fs.writeFileSync(path.join(output, 'browser-acceptance.json'), JSON.stringify(report, null, 2) + '\n') }

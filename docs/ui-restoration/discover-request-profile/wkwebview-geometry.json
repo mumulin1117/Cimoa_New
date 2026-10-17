@@ -1,0 +1,23 @@
+{
+  "card" : null,
+  "footer" : null,
+  "header" : {
+    "bottom" : 123.359375,
+    "height" : 61.359375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Zane, 22\n\n\n184 cm\nHKUST\nEngineering\nESTP\n🌏\nUnited States\n🍷\nSocially\n🚭\nNever\n🕊️\nPrefer not to say\nSports Team\nClear Water Bay\nBasketball, running, weekend hikes, and the search for the best post-workout meal.\nVoice introduction\nTap to listen\n17s voice message\nHey, I'm Zane. I'm usually on the basketball court or out for a run, and I love a good weekend hike. The best part after a workout? Finding a cozy little place for a great meal. Got any hidden gems? Come tell me about them.\nLooking for\n🏃\nActivity Buddies\n🍜\nFood Explorers\n🤝\nNew friends\nInterests\n🏀\nSports\n💪\nFitness\n🥾\nHiking\n🍜\nFood\nAsk me\nWhat hidden food spot should I try next?\nWhat is your ideal weekend hike?\nWhich sport could you play all afternoon?\nSend shot\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

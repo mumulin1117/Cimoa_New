@@ -1,0 +1,35 @@
+{
+  "card" : {
+    "bottom" : 251.359375,
+    "height" : 121.875,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 129.484375
+  },
+  "footer" : {
+    "bottom" : 840,
+    "height" : 138.609375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 701.390625
+  },
+  "header" : {
+    "bottom" : 113.125,
+    "height" : 47.046875,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 66.078125
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Your answer\n\n\nZane, 22\nWhat hidden food spot should I try next?\nWrite something real\nWrite your reply to Zane…\n\n0 \/ 300\nContinue\nSwitch to voice\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

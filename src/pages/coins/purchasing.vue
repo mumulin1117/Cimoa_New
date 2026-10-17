@@ -8,6 +8,7 @@ import SourceIcon from '@/components/SourceIcon.vue'
 import CoinActionLoading from '@/components/CoinActionLoading.vue'
 import { request_purchase, cancel_purchase_request } from '@/utils/iapBridge.js'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
+import { coin_center_route } from '@/utils/coinReturnContext.js'
 
 const store = use_app_store(), frame = ref(null), request_id = ref(''), navigating = ref(false), error = ref(''), resolving = ref(false), account_id = store.session.account_id
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
@@ -59,7 +60,7 @@ const cancel = () => {
 const navigate_store = async () => {
   if (navigating.value || is_loading.value) return
   navigating.value = true; error.value = ''
-  try { await frame.value.navigate_replace(COIN_ROUTES.center) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
+  try { await frame.value.navigate_back(coin_center_route(store, request.value?.return_context_id)) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
 onReady(() => { if (!pending.value && !access_error.value) navigate_result(request.value.status); else start() })
 onHide(() => { navigating.value = false })

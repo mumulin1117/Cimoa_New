@@ -2724,7 +2724,7 @@
     ],
     "page_level": "主 Tab",
     "route": "/pages/discover/index",
-    "component": null,
+    "component": "src/pages/discover/index.vue",
     "parent_route": "/pages/home/index",
     "allowed_origin_routes": [
       "/pages/home/index"
@@ -2739,9 +2739,9 @@
       "backToDiscover@5804"
     ],
     "return_owner": "replace_route 在 Home/Discover/Events 间切换，不 Push",
-    "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
+    "completion_navigation": "Tab replacement keeps root depth; Send shot/pending/Chat/match opens canonical target ID",
     "fixed_regions": "DiscoverHeroHeader; CustomTabBar; Send shot CTA",
-    "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+    "scroll_region": "Non-scrolling flex card region; shorter iPhones shrink the card instead of adding vertical scroll",
     "top_safe_area_owner": "DiscoverHeroHeader",
     "bottom_safe_area_owner": "CustomTabBar",
     "interaction_ids": [
@@ -2753,7 +2753,7 @@
       "hasNotif.openNotif.click.1",
       "hasNotif.dismissNotif.click.1"
     ],
-    "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
+    "entities": "users; profile_photos; icebreakers; drafts; media_files; requests; relationships; connections; conversations; match_sessions; coin_transactions; purchase_requests",
     "assets": {
       "media": [
         {
@@ -2808,13 +2808,15 @@
     },
     "status": "pending",
     "source_lock": "locked",
-    "visual_acceptance": "pending",
+    "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-deck/source-contract.json",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Discover deck read-only canonical primary and responsive UI passed browser/native local checks; final full request dependency regression deferred.",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-deck/acceptance.json"
+    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-deck/acceptance.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-deck/difference-audit.md",
+    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app."
   },
   {
     "source_screen": "Discover / Profile / Expanded",
@@ -2824,7 +2826,7 @@
     ],
     "page_level": "二级",
     "route": "/pages/discover/profile",
-    "component": null,
+    "component": "src/pages/discover/profile.vue",
     "parent_route": "/pages/discover/index",
     "allowed_origin_routes": [
       "/pages/discover/index",
@@ -2846,7 +2848,7 @@
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "BottomCTA",
+    "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "expanded.collapse.click.1",
       "expanded.openSafetyMini.click.1",
@@ -2865,7 +2867,7 @@
       "sheetBlock.confirmBlock.click.1",
       "sheetBlock.closeSheet.click.2"
     ],
-    "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
+    "entities": "users; profile_photos; icebreakers; drafts; media_files; requests; relationships; connections; conversations; match_sessions; coin_transactions; purchase_requests",
     "assets": {
       "media": [
         {
@@ -2954,11 +2956,13 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Profile source geometry/CTA corrected; 3 browser checks passed; final request dependency and bundled WebKit regression pending.",
+    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
     "acceptance_evidence": "docs/ui-restoration/discover-request-profile/acceptance.json",
     "source_lock": "locked",
-    "visual_acceptance": "pending",
-    "source_lock_artifact": "docs/ui-restoration/discover-request-profile/source-contract.json"
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-profile/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-profile/difference-audit.md",
+    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app."
   },
   {
     "source_screen": "Events / Explore / Default",
@@ -3107,7 +3111,7 @@
     ],
     "page_level": "二级",
     "route": "/pages/discover/icebreaker/select",
-    "component": null,
+    "component": "src/pages/discover/icebreaker/select.vue",
     "parent_route": "/pages/discover/index",
     "allowed_origin_routes": [
       "/pages/discover/index",
@@ -3115,8 +3119,7 @@
       "/pages/events/participants"
     ],
     "required_parameters": [
-      "user_id",
-      "draft_id (after question selection)"
+      "user_id"
     ],
     "entry_points": [
       "sayHi@5265",
@@ -3136,7 +3139,7 @@
       "ibSelect.pickVoice.click.1",
       "ibSelect.answerGo.click.1"
     ],
-    "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
+    "entities": "users; profile_photos; icebreakers; drafts; media_files; requests; relationships; connections; conversations; match_sessions; coin_transactions; purchase_requests",
     "assets": {
       "media": [
         {
@@ -3180,12 +3183,13 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
     "source_lock": "locked",
-    "visual_acceptance": "pending",
+    "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-select/source-contract.json",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-select/acceptance.json"
+    "acceptance_evidence": "docs/ui-restoration/discover-request-select/acceptance.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-select/difference-audit.md"
   },
   {
     "source_screen": "Discover / Icebreaker / Text Reply",
@@ -3195,14 +3199,14 @@
     ],
     "page_level": "三级",
     "route": "/pages/discover/icebreaker/text",
-    "component": null,
+    "component": "src/pages/discover/icebreaker/text.vue",
     "parent_route": "/pages/discover/icebreaker/select",
     "allowed_origin_routes": [
       "/pages/discover/icebreaker/select"
     ],
     "required_parameters": [
       "user_id",
-      "draft_id (after question selection)"
+      "draft_id"
     ],
     "entry_points": [
       "switchToTextReply@5314",
@@ -3214,14 +3218,14 @@
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "BottomCTA",
+    "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "ibText.goBack.click.1",
       "ibText.onReply.change.1",
       "ibText.continueText.click.1",
       "ibText.switchToVoice.click.1"
     ],
-    "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
+    "entities": "users; profile_photos; icebreakers; drafts; media_files; requests; relationships; connections; conversations; match_sessions; coin_transactions; purchase_requests",
     "assets": {
       "media": [
         {
@@ -3263,12 +3267,13 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
     "source_lock": "locked",
-    "visual_acceptance": "pending",
+    "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-text/source-contract.json",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-text/acceptance.json"
+    "acceptance_evidence": "docs/ui-restoration/discover-request-text/acceptance.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-text/difference-audit.md"
   },
   {
     "source_screen": "Discover / Icebreaker Answer / Voice",
@@ -3278,14 +3283,14 @@
     ],
     "page_level": "三级",
     "route": "/pages/discover/icebreaker/voice",
-    "component": null,
+    "component": "src/pages/discover/icebreaker/voice.vue",
     "parent_route": "/pages/discover/icebreaker/select",
     "allowed_origin_routes": [
       "/pages/discover/icebreaker/select"
     ],
     "required_parameters": [
       "user_id",
-      "draft_id (after question selection)"
+      "draft_id"
     ],
     "entry_points": [
       "switchToVoice@5296",
@@ -3297,7 +3302,7 @@
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "BottomCTA",
+    "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "ibVoice.goBack.click.1",
       "ibVoice.openVoiceMenu.click.1",
@@ -3311,7 +3316,7 @@
       "sheetVoiceDiscard.cancelRec.click.1",
       "sheetVoiceDiscard.closeSheet.click.2"
     ],
-    "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
+    "entities": "users; profile_photos; icebreakers; drafts; media_files; requests; relationships; connections; conversations; match_sessions; coin_transactions; purchase_requests",
     "assets": {
       "media": [
         {
@@ -3376,16 +3381,17 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "pending",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; media and atomic coin contracts passed automated checks, but an entity microphone success run is still pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
     "source_lock": "locked",
-    "visual_acceptance": "pending",
+    "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-voice/source-contract.json",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json"
+    "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-voice/difference-audit.md"
   },
   {
     "source_screen": "Discover / Icebreaker / Voice Preview",
@@ -3395,14 +3401,15 @@
     ],
     "page_level": "三级",
     "route": "/pages/discover/icebreaker/preview",
-    "component": null,
+    "component": "src/pages/discover/icebreaker/preview.vue",
     "parent_route": "/pages/discover/icebreaker/voice",
     "allowed_origin_routes": [
       "/pages/discover/icebreaker/voice"
     ],
     "required_parameters": [
       "user_id",
-      "draft_id (after question selection)"
+      "draft_id",
+      "media_id"
     ],
     "entry_points": [
       "stopRec@4977",
@@ -3413,7 +3420,7 @@
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "BottomCTA",
+    "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "ibPreview.goBack.click.1",
       "ibPreview.togglePlay.click.1",
@@ -3432,7 +3439,7 @@
       "sheetVoiceCoin.spendVoice.click.1",
       "sheetVoiceCoin.editRecording.click.1"
     ],
-    "entities": "users; profile_photos; icebreakers; introductions; interests; goals; coin_transactions",
+    "entities": "users; profile_photos; icebreakers; drafts; media_files; requests; relationships; connections; conversations; match_sessions; coin_transactions; purchase_requests",
     "assets": {
       "media": [
         {
@@ -3479,15 +3486,17 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "in_progress",
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; media and atomic coin contracts passed automated checks, but an entity microphone success run is still pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
     "source_lock": "locked",
-    "visual_acceptance": "pending",
-    "source_lock_artifact": "docs/ui-restoration/discover-request-preview/source-contract.json"
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-preview/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-preview/difference-audit.md",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-preview/acceptance.json"
   },
   {
     "source_screen": "Permissions / Microphone / Prompt",
@@ -3497,7 +3506,7 @@
     ],
     "page_level": "Sheet",
     "route": "component",
-    "component": "src/components/MicPermissionSheet.vue",
+    "component": "src/components/IntroductionConfirmDialog.vue",
     "parent_route": "/pages/discover/icebreaker/voice",
     "allowed_origin_routes": [
       "/pages/discover/icebreaker/voice"
@@ -3600,8 +3609,13 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; media and atomic coin contracts passed automated checks, but an entity microphone success run is still pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "First-use source Sheet restored; Store-derived dynamic balance/identity; source pixels and browser/native functional regression passed; waiting local implementation commit.",
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-voice/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-voice/microphone/overlay.png",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json"
   },
   {
     "source_screen": "Connection / Request / Sent",
@@ -8287,7 +8301,7 @@
     ],
     "page_level": "Sheet",
     "route": "component",
-    "component": "src/components/CoinInsufficientSheet.vue",
+    "component": "src/components/IntroductionConfirmDialog.vue",
     "parent_route": "/pages/discover/icebreaker/preview",
     "allowed_origin_routes": [
       "/pages/discover/icebreaker/preview"
@@ -8378,8 +8392,13 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; atomic ledger failure/idempotency and UI error states passed; full paid dependency path remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "First-use source Sheet restored; Store-derived dynamic balance/identity; source pixels and browser/native functional regression passed; waiting local implementation commit.",
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-preview/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-preview/insufficient/overlay.png",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-preview/acceptance.json"
   },
   {
     "source_screen": "Coins / Spend / Voice Confirmation",
@@ -8389,7 +8408,7 @@
     ],
     "page_level": "确认弹窗",
     "route": "component",
-    "component": "src/components/CoinVoiceConfirmDialog.vue",
+    "component": "src/components/IntroductionConfirmDialog.vue",
     "parent_route": "/pages/discover/icebreaker/preview",
     "allowed_origin_routes": [
       "/pages/discover/icebreaker/preview"
@@ -8478,8 +8497,13 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; media and atomic coin contracts passed automated checks, but an entity microphone success run is still pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "First-use source Sheet restored; Store-derived dynamic balance/identity; source pixels and browser/native functional regression passed; waiting local implementation commit.",
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-preview/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-preview/confirmation/overlay.png",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-preview/acceptance.json"
   },
   {
     "source_screen": "Coins / Spend / Priority Match Confirmation",
@@ -12523,7 +12547,7 @@
     ],
     "page_level": "确认弹窗",
     "route": "component",
-    "component": "src/components/VoiceDiscardConfirmDialog.vue",
+    "component": "src/components/IntroductionConfirmDialog.vue",
     "parent_route": "/pages/discover/icebreaker/voice",
     "allowed_origin_routes": [
       "/pages/discover/icebreaker/voice"
@@ -12626,8 +12650,13 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; media and atomic coin contracts passed automated checks, but an entity microphone success run is still pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "First-use source Sheet restored; Store-derived dynamic balance/identity; source pixels and browser/native functional regression passed; waiting local implementation commit.",
+    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/discover-request-voice/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-voice/discard/overlay.png",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json"
   },
   {
     "source_screen": "Onboarding / Icebreakers / Library",

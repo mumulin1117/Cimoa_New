@@ -1,0 +1,29 @@
+{
+  "card" : {
+    "bottom" : 227.65625,
+    "height" : 98.171875,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 129.484375
+  },
+  "footer" : null,
+  "header" : {
+    "bottom" : 115.171875,
+    "height" : 49.09375,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 66.078125
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Say Hi to Zane\n\n\nZane, 22\nHKUST · Year 3\nPick a question\nStart the conversation with something fun.\nWhat hidden food spot should I try next?\nWhat is your ideal weekend hike?\nWhich sport could you play all afternoon?\nAnswer with\nText\nVoice\nAnswer This Question\nText introductions are free\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

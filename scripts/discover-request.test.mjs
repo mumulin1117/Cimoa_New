@@ -4,6 +4,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_seed } from '../src/stores/seed.js'
 import { discover_destination } from '../src/utils/discoverNavigation.js'
+import { coin_source_route, coin_center_route } from '../src/utils/coinReturnContext.js'
 const make = change => {
   setActivePinia(createPinia()); const store = use_app_store(), data = create_seed(); change?.(data)
   configure_store_runtime(store, { persistence: { read: () => data, write() {} } }); store.hydrate(); return store
@@ -49,4 +50,32 @@ test('saved audio and draft reference publish together; discard clears its draft
   store.save_draft('coin_spend',id,{kind:'voice_introduction',audio_id:saved.data.media_id})
   assert.ok((await store.discard_media(saved.data.media_id)).success);assert.equal(store.introduction_context('user_zane',id).audio,null);assert.equal(store.data.drafts.filter(d=>d.kind==='coin_spend').length,0);assert.equal(files.size,0)
   const bytes=JSON.stringify(store.data);const failed=await store.save_media(blob,'audio',1000,{introduction_draft_id:'invalid'});assert.equal(failed.success,false);assert.equal(files.size,0);assert.equal(JSON.stringify(store.data),bytes)
+})
+test('cancelled media deletion compensates the Blob without clearing the saved draft', async () => {
+  const store=make(),files=new Map();let current=true
+  configure_store_runtime(store,{media:{get:async id=>files.get(id),put:async(id,blob)=>files.set(id,blob),delete:async id=>{files.delete(id);current=false}},inspect_media:async()=>({duration_ms:1000})})
+  const id=store.prepare_introduction('user_zane',store.questions_for_user('user_zane')[0].question_id,'voice').data
+  const saved=await store.save_media(new Blob(['test recording'],{type:'audio/wav'}),'audio',1000,{introduction_draft_id:id}),before=JSON.stringify(store.data)
+  const result=await store.discard_media(saved.data.media_id,{is_current:()=>current})
+  assert.equal(result.reason,'cancelled');assert.equal(JSON.stringify(store.data),before);assert.ok(files.get(saved.data.media_id) instanceof Blob);assert.equal(store.introduction_context('user_zane',id).audio.media_id,saved.data.media_id)
+})
+test('voice confirmation is account/draft/audio bound and transaction retry never doubles a debit', async () => {
+  const store=make(),files=new Map();configure_store_runtime(store,{media:{get:async id=>files.get(id),put:async(id,blob)=>files.set(id,blob),delete:async id=>files.delete(id)},inspect_media:async()=>({duration_ms:1000})})
+  const id=store.prepare_introduction('user_zane',store.questions_for_user('user_zane')[0].question_id,'voice').data
+  assert.equal(store.prepare_voice_introduction_spend(id).success,false)
+  const media=await store.save_media(new Blob(['recorded sample'],{type:'audio/wav'}),'audio',1000,{introduction_draft_id:id}),coin=store.prepare_voice_introduction_spend(id);assert.ok(coin.success)
+  assert.equal(store.prepare_voice_introduction_spend(id).data,coin.data);assert.equal(store.data.requests.filter(r=>r.recipient_id==='user_zane').length,0);assert.equal(store.coin_balance,260)
+  assert.match(coin_source_route(store,id),new RegExp(media.data.media_id));assert.match(coin_center_route(store,id),/return_context_id=/)
+  const before=JSON.stringify(store.data);configure_store_runtime(store,{persistence:{read:()=>null,write(){throw Error('Storage full')}}});assert.equal((await store.complete_coin_spend(coin.data)).success,false);assert.equal(JSON.stringify(store.data),before)
+  configure_store_runtime(store,{persistence:{read:()=>null,write(){}}});const sent=await store.complete_coin_spend(coin.data);assert.ok(sent.success);assert.equal(store.coin_balance,250);assert.equal((await store.complete_coin_spend(coin.data)).repeated,true);assert.equal(store.coin_balance,250)
+})
+test('replaced recording makes an old confirmed context stale without sending or charging', async () => {
+  const store=make(),files=new Map();configure_store_runtime(store,{media:{get:async id=>files.get(id),put:async(id,blob)=>files.set(id,blob),delete:async id=>files.delete(id)},inspect_media:async()=>({duration_ms:1000})});const id=store.prepare_introduction('user_zane',store.questions_for_user('user_zane')[0].question_id,'voice').data
+  await store.save_media(new Blob(['first recording'],{type:'audio/wav'}),'audio',1000,{introduction_draft_id:id});const coin=store.prepare_voice_introduction_spend(id).data;await store.save_media(new Blob(['second recording'],{type:'audio/wav'}),'audio',1000,{introduction_draft_id:id});const before=JSON.stringify(store.data);assert.equal((await store.complete_coin_spend(coin)).success,false);assert.equal(JSON.stringify(store.data),before)
+})
+test('purchase return context remains an owned draft reference and never grants coins or sends on navigation', async () => {
+  const store=make(),id=store.prepare_introduction('user_zane',store.questions_for_user('user_zane')[0].question_id,'voice').data
+  assert.equal(store.begin_purchase(store.coin_packages[0].package_id,'no-audio',id).success,false)
+  const files=new Map();configure_store_runtime(store,{media:{get:async id=>files.get(id),put:async(id,blob)=>files.set(id,blob),delete:async id=>files.delete(id)},inspect_media:async()=>({duration_ms:1000})});await store.save_media(new Blob(['draft sample'],{type:'audio/wav'}),'audio',1000,{introduction_draft_id:id})
+  const purchase=store.begin_purchase(store.coin_packages[0].package_id,'owned-return',id);assert.ok(purchase.success);assert.equal(store.purchase_by_id(purchase.data).return_context_id,id);assert.equal(store.coin_balance,260);assert.equal(store.data.requests.filter(r=>r.recipient_id==='user_zane').length,0);assert.equal(coin_source_route(store,'other-owner'),'/pages/profile/index')
 })

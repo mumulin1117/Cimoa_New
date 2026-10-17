@@ -5,12 +5,15 @@
     "Microphone pre-prompt can be denied without a Blob, business write or charge",
     "Actual MediaRecorder output decodes/plays; cancelled discard keeps the unsent recording and does not send or charge",
     "Review persists real audio and draft reference together only after Loading, without request or debit",
-    "Saved voice draft restores the same playable media after Back and refresh"
+    "Saved voice draft restores the same playable media after Back and refresh",
+    "Small iPhone width/real safe-area budget retains readable content and scroll access",
+    "Corrupt storage shows a readable error without overwriting data or leaking profile/draft content",
+    "Expired session cannot view or submit private introduction state"
   ],
   "errors": [],
   "deferred": [],
   "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
-  "server_pid": 51962,
+  "server_pid": 78243,
   "reference_geometry": {
     "620": null,
     "627": null,
@@ -26,10 +29,28 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 54656,
-    "pixels_above_channel_delta_8": 12230,
-    "mean_absolute_channel_delta": 1.0054011516085486,
+    "pixels_different": 49800,
+    "pixels_above_channel_delta_8": 7228,
+    "mean_absolute_channel_delta": 0.6785045514819195,
     "max_channel_delta": 227
+  },
+  "sheet_comparisons": {
+    "microphone": {
+      "width": 393,
+      "height": 852,
+      "pixels_different": 63094,
+      "pixels_above_channel_delta_8": 2546,
+      "mean_absolute_channel_delta": 0.24641316943219965,
+      "max_channel_delta": 220
+    },
+    "discard": {
+      "width": 393,
+      "height": 852,
+      "pixels_different": 92835,
+      "pixels_above_channel_delta_8": 33664,
+      "mean_absolute_channel_delta": 2.0349066408629897,
+      "max_channel_delta": 123
+    }
   },
   "cleaned_up": true
 }

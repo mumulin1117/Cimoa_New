@@ -1,7 +1,7 @@
 {
   "phase": "center",
   "result": "passed",
-  "server_pid": 60435,
+  "server_pid": 70755,
   "checks": [
     "Profile opens Coin Center with Store-derived balance and all six source packages",
     "Package selection is transient UI state and does not change the ledger or purchase requests",

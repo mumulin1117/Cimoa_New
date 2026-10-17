@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { onHide } from '@dcloudio/uni-app'
+import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { make_operation_id } from '@/stores/store.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
@@ -9,10 +9,13 @@ import CoinActionLoading from '@/components/CoinActionLoading.vue'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { COIN_FEATURES, package_image } from '@/utils/coinPresentation.js'
+import { coin_source_route } from '@/utils/coinReturnContext.js'
 
 const store = use_app_store(), frame = ref(null), navigating = ref(false), error = ref('')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 const account_id = store.session.account_id
+const return_context_id = ref('')
+onLoad(options => { return_context_id.value = String(options?.return_context_id || '') })
 const packages = computed(() => store.coin_packages)
 const selected_id = ref(packages.value.find(item => item.coins === 300)?.package_id || packages.value[0]?.package_id || '')
 const selected = computed(() => packages.value.find(item => item.package_id === selected_id.value) || null)
@@ -27,7 +30,7 @@ const navigate = async route => {
   if (navigating.value) return
   navigating.value = true; error.value = ''
   try {
-    if (!route) await frame.value.navigate_back('/pages/profile/index')
+    if (!route) await frame.value.navigate_back(coin_source_route(store, return_context_id.value))
     else {
       if (access_error.value) throw Error(access_error.value)
       await frame.value.navigate_forward(require_coin_route_ready(route))
@@ -45,7 +48,7 @@ const continue_purchase = () => {
   const existing = store.current_purchase_requests.find(item => item.status === 'pending')
   if (existing) { navigate(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(existing.request_id)}`); return }
   error.value = ''
-  run_with_loading(() => store.begin_purchase(selected.value.package_id, make_operation_id('purchase'))).then(result => {
+  run_with_loading(() => store.begin_purchase(selected.value.package_id, make_operation_id('purchase'), return_context_id.value || null)).then(result => {
     if (result.reason === 'cancelled') return
     if (!result.success) { error.value = result.message; return }
     navigate(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(result.data)}`)

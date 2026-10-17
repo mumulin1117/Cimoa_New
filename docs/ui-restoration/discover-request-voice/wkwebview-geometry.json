@@ -1,0 +1,35 @@
+{
+  "card" : {
+    "bottom" : 198.546875,
+    "height" : 71.109375,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 127.4375
+  },
+  "footer" : {
+    "bottom" : 840,
+    "height" : 104.296875,
+    "width" : 402,
+    "x" : 0,
+    "y" : 735.703125
+  },
+  "header" : {
+    "bottom" : 113.125,
+    "height" : 47.046875,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 66.078125
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Answer an Icebreaker\n\n\nZane · 22\nSame university\nClear Water Bay\nIcebreaker\n1\/3\nWhat hidden food spot should I try next?\n00:00\nSwitch to text\nYour answer will be sent with the connection request\nSend Request · 10 Coins\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

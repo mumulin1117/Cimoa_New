@@ -4,18 +4,33 @@
   "checks": [
     "Source header/photo geometry and three actual photos/gallery use the same entity without writes",
     "Send shot and real Back preserve user, photos and saved state",
-    "Long detail content is scrollable with fixed CTA and one safe-area budget on a narrow iPhone"
+    "Long detail content is scrollable with fixed CTA and one safe-area budget on a narrow iPhone",
+    "Small iPhone width/real safe-area budget retains readable content and scroll access",
+    "Corrupt storage shows a readable error without overwriting data or leaking profile/draft content",
+    "Expired session cannot view or submit private introduction state"
   ],
   "errors": [],
   "deferred": [],
   "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
-  "server_pid": 38453,
+  "server_pid": 77423,
+  "reference_geometry": {
+    "620": null,
+    "627": null,
+    "631": null,
+    "640": null,
+    "650": null,
+    "666": null,
+    "676": null,
+    "677": null,
+    "758": null,
+    "762": null
+  },
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 254649,
-    "pixels_above_channel_delta_8": 72090,
-    "mean_absolute_channel_delta": 3.8090580164617904,
+    "pixels_different": 253732,
+    "pixels_above_channel_delta_8": 70789,
+    "mean_absolute_channel_delta": 3.730059641137751,
     "max_channel_delta": 244
   },
   "geometry": {

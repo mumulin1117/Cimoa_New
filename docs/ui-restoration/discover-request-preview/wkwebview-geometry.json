@@ -1,0 +1,29 @@
+{
+  "card" : null,
+  "footer" : {
+    "bottom" : 840,
+    "height" : 104.296875,
+    "width" : 402,
+    "x" : 0,
+    "y" : 735.703125
+  },
+  "header" : {
+    "bottom" : 115.171875,
+    "height" : 49.09375,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 66.078125
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Voice preview\nZANE’S QUESTION\nWhat hidden food spot should I try next?\nReady to play\n0:01\nIntroduction costs 10 coins · balance 260 coins\nContinue\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

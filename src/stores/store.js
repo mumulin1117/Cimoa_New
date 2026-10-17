@@ -453,7 +453,7 @@ export const use_app_store = defineStore('app', {
       } catch (error) { return failure('media_failed', error.message || 'Media could not be saved.') }
       finally { if (wrote_blob && !published) { try { await rt.media.delete(media_id) } catch { this.last_error = 'Media was not published; temporary media cleanup failed. Retry storage when available.' } } }
     },
-    async discard_media(id) {
+    async discard_media(id, { is_current = () => true } = {}) {
       const owner = s.owner_id(this.data), rt = get_runtime(this)
       const row = this.data.media_files.find(item => item.media_id === id && item.owner_user_id === owner)
       if (!row) return failure('media_unavailable', 'This recording is no longer available.')
@@ -461,8 +461,11 @@ export const use_app_store = defineStore('app', {
       if (referenced) return failure('media_in_use', 'This media is already in use and cannot be discarded.')
       let blob
       try {
+        if (!is_current()) return failure('cancelled', 'Media removal was cancelled.')
         blob = await rt.media.get(id)
+        if (!is_current()) return failure('cancelled', 'Media removal was cancelled.')
         await rt.media.delete(id)
+        if (!is_current()) { if (blob instanceof Blob) await rt.media.put(id, blob); return failure('cancelled', 'Media removal was cancelled.') }
         const result = transact(this, null, data => {
           data.media_files = data.media_files.filter(item => item.media_id !== id)
           for (const draft of own(data, data.drafts)) if (draft.kind === 'introduction' && draft.payload.audio_id === id) delete draft.payload.audio_id
@@ -507,6 +510,20 @@ export const use_app_store = defineStore('app', {
         return request_id
       }, { expected_owner: owner })
     },
+    prepare_voice_introduction_spend(draft_id) {
+      return transact(this, null, (data, now) => {
+        const intro = require_owned(data, data.drafts, 'draft_id', draft_id), payload = intro.payload
+        s.ensure(intro.kind === 'introduction' && !payload.completed_request_id, 'This introduction draft is unavailable.')
+        const blocker = s.introduction_blocker(data, intro.target_id, now); s.ensure(!blocker, blocker)
+        s.ensure(data.users.find(row => row.user_id === intro.target_id)?.icebreaker_ids.includes(payload.question_id), 'Choose one of this person’s current questions.')
+        s.ensure(s.balance(data) >= 10, 'You need 10 coins for a voice introduction. No coins were deducted.')
+        s.ensure(data.media_files.some(row => row.media_id === payload.audio_id && row.owner_user_id === s.owner_id(data) && row.kind === 'audio'), 'Record a playable voice introduction first.')
+        let context = own(data, data.drafts).find(row => row.kind === 'coin_spend' && row.target_id === draft_id)
+        if (!context) { context = { draft_id: make_id('draft'), owner_user_id: s.owner_id(data), kind: 'coin_spend', target_id: draft_id }; data.drafts.push(context) }
+        context.payload = { kind: 'voice_introduction', introduction_draft_id: draft_id, user_id: intro.target_id, question_id: payload.question_id, audio_id: payload.audio_id, draft_audio_id: payload.audio_id, operation_id: `voice:${payload.operation_id}` }; context.updated_at = now
+        return context.draft_id
+      })
+    },
     async complete_coin_spend(context_id, { is_current = () => true } = {}) {
       const owner = s.owner_id(this.data)
       const context = this.data.drafts.find((row) => row.draft_id === context_id && row.owner_user_id === owner && row.kind === 'coin_spend')
@@ -520,6 +537,9 @@ export const use_app_store = defineStore('app', {
         const current = require_owned(data, data.drafts, 'draft_id', context_id)
         s.ensure(current.kind === 'coin_spend', 'This coin operation is unavailable.')
         if (payload.kind === 'voice_introduction') {
+          const intro = require_owned(data, data.drafts, 'draft_id', payload.introduction_draft_id)
+          s.ensure(intro.kind === 'introduction' && intro.target_id === payload.user_id && intro.payload.question_id === payload.question_id && !intro.payload.completed_request_id, 'This introduction draft is unavailable. No coins were deducted.')
+          if (payload.draft_audio_id) s.ensure(intro.payload.audio_id === payload.audio_id && payload.draft_audio_id === payload.audio_id, 'The recording changed. Review it again before sending.')
           const blocker = s.introduction_blocker(data, payload.user_id, now)
           s.ensure(!blocker, blocker)
           s.ensure(data.users.find(row => row.user_id === payload.user_id)?.icebreaker_ids.includes(payload.question_id), 'Choose one of this person’s current questions.')
@@ -677,7 +697,18 @@ export const use_app_store = defineStore('app', {
     set_privacy_visibility(value) { return transact(this, null, (data) => { const row = data.settings.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(['discover', 'auto_match', 'hidden'].includes(value), 'Choose a valid profile visibility.'); row.privacy.discover_visible = value === 'discover'; row.privacy.auto_match_visible = value !== 'hidden' }) },
     set_language(value) { return value === 'en-US' ? { success: true, repeated: true, data: 'en-US' } : failure('language_unavailable', 'Traditional Chinese is not available in this build. English remains selected.') },
     toggle_setting(key) { const map = { notifications_enabled: ['notifications', 'master'], show_online_status: ['privacy', 'show_online'] }; const path = map[key]; return path ? this.update_settings(path[0], { [path[1]]: !this.current_settings[path[0]][path[1]] }) : unavailable('Location permission settings') },
-    begin_purchase(package_id, operation_id) { return transact(this, operation(operation_id, 'purchase', package_id), (data, now) => { s.ensure(data.coin_packages.some((row) => row.package_id === package_id) && !own(data, data.purchase_requests).some((row) => row.status === 'pending'), 'A purchase is already pending or this package is unavailable.'); const request_id = make_id('purchase'); data.purchase_requests.push({ request_id, owner_user_id: s.owner_id(data), package_id, status: 'pending', created_at: now, receipt_id: null }); return request_id }) },
+    begin_purchase(package_id, operation_id, return_context_id = null) {
+      return transact(this, operation(operation_id, 'purchase', return_context_id ? [package_id, return_context_id] : package_id), (data, now) => {
+        s.ensure(data.coin_packages.some(row => row.package_id === package_id) && !own(data, data.purchase_requests).some(row => row.status === 'pending'), 'A purchase is already pending or this package is unavailable.')
+        if (return_context_id) {
+          const draft = require_owned(data, data.drafts, 'draft_id', return_context_id)
+          s.ensure(draft.kind === 'introduction' && !draft.payload.completed_request_id && !!introduction_context(data, draft.target_id, return_context_id, now).audio, 'This introduction return context is unavailable.')
+        }
+        const request_id = make_id('purchase')
+        data.purchase_requests.push({ request_id, owner_user_id: s.owner_id(data), package_id, status: 'pending', created_at: now, receipt_id: null, ...(return_context_id ? { return_context_id } : {}) })
+        return request_id
+      })
+    },
     expire_purchases() { return transact(this, null, (data, now) => { for (const row of own(data, data.purchase_requests)) if (row.status === 'pending' && now - row.created_at >= 8000) row.status = 'timeout' }) },
     async settle_purchase(id, result) {
       const owner = s.owner_id(this.data), before = this.data.purchase_requests.find((row) => row.request_id === id && row.owner_user_id === owner)

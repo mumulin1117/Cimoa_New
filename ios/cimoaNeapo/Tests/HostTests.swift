@@ -12,11 +12,20 @@ final class HostTests: XCTestCase {
         for _ in 0..<4 { root.deleteLastPathComponent() }
         let folder = root.appendingPathComponent("docs/ui-restoration/discover-request-\(phase)")
         let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("native-fixture.json"))) as! [String: Any]
+        var installedMedia = false
         func restore() async throws {
+            if installedMedia {
+                _ = try await host.webView.callAsyncJavaScript("const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');t.objectStore('blobs').delete(id);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();return true", arguments: ["id": fixture["media_id"]!], in: nil, contentWorld: .page)
+            }
             _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}return true", arguments: ["saved": snapshot], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?discoverRequestRestore=\(UUID().uuidString)#/pages/auth/splash")!))
         }
         do {
             _ = try await host.webView.callAsyncJavaScript("const data=fixture.data;data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture], in: nil, contentWorld: .page)
+            if let base64 = fixture["media_base64"] as? String {
+                _ = try await host.webView.callAsyncJavaScript("const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0)),db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onupgradeneeded=()=>r.result.createObjectStore('blobs');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');t.objectStore('blobs').add(new Blob([bytes],{type:'audio/wav'}),id);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();return true", arguments: ["base64": base64, "id": fixture["media_id"]!], in: nil, contentWorld: .page)
+                installedMedia = true
+            }
             let selector = phase == "deck" ? ".discover-photo-card--front" : phase == "profile" ? ".expanded-profile-page" : ".ice-\(phase)-page"
             try await loadFreshConnection(host, route: fixture["route"] as! String, selector: selector)
             host.publishSafeArea()
@@ -38,6 +47,32 @@ final class HostTests: XCTestCase {
                 XCTAssertEqual(result["returned"] as? String, result["id"] as? String); XCTAssertEqual(result["user"] as? Bool, true); XCTAssertEqual(result["read_only"] as? Bool, true)
                 try JSONSerialization.data(withJSONObject: result, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-acceptance.json"))
             }
+            if phase == "text" {
+                let result = try await script(host, """
+                const delay=ms=>new Promise(r=>setTimeout(r,ms)),wait=async fn=>{for(let i=0;i<200;i++){const v=fn();if(v)return v;await delay(40)}throw Error('Text flow '+document.body.innerText)};
+                const input=document.querySelector('textarea');input.value='A campus walk after lectures sounds good.';input.dispatchEvent(new Event('input',{bubbles:true}));await wait(()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.drafts.find(d=>d.draft_id==='draft_discover').payload.text===input.value);
+                const before=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;document.querySelector('[data-interaction="ibText.continueText.click.1"]').click();document.querySelector('[data-interaction="ibText.continueText.click.1"]').click();await wait(()=>document.querySelector('.connection-sent-page'));
+                const after=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,requests=after.requests.filter(r=>r.sender_id==='user_cimoa'&&r.recipient_id==='user_zane');return {count:requests.length,pending:requests[0]?.status==='pending',free:JSON.stringify(before.coin_transactions)===JSON.stringify(after.coin_transactions),text:requests[0]?.text};
+                """) as! [String: Any]
+                XCTAssertEqual(result["count"] as? Int, 1); XCTAssertEqual(result["pending"] as? Bool, true); XCTAssertEqual(result["free"] as? Bool, true)
+                try JSONSerialization.data(withJSONObject: result, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-acceptance.json"))
+            }
+            if phase == "voice" {
+                let result = try await script(host, """
+                const delay=ms=>new Promise(r=>setTimeout(r,ms)),before=localStorage.getItem('cimoa_app_state_v2');document.querySelector('[data-interaction="ibVoice.record.click.1"]').click();for(let i=0;i<100;i++){const dialog=document.querySelector('.intro-sheet .event-dialog--open'),deny=document.querySelector('[data-interaction="sheetMic.denyMic.click.1"]');if(deny&&deny.getBoundingClientRect().height>0){await delay(300);deny.click();return {cancel_read_only:before===localStorage.getItem('cimoa_app_state_v2'),recorder_supported:typeof MediaRecorder==='function',capture_supported:typeof navigator.mediaDevices?.getUserMedia==='function'}}await delay(40)}throw Error('Mic pre-prompt missing');
+                """) as! [String: Any]
+                XCTAssertEqual(result["cancel_read_only"] as? Bool, true)
+                try JSONSerialization.data(withJSONObject: result, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-acceptance.json"))
+            }
+            if phase == "preview" {
+                let result = try await script(host, """
+                const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),wait=async fn=>{for(let i=0;i<200;i++){const v=fn();if(v)return v;await delay(40)}throw Error('Voice confirmation '+document.body.innerText)};
+                await wait(()=>visible('[data-interaction="ibPreview.togglePlay.click.1"]')?.getAttribute('aria-disabled')!=='true');visible('[data-interaction="ibPreview.togglePlay.click.1"]').click();await wait(()=>visible('.ice-audio')?.dataset.playing==='true');await delay(200);const progress=visible('.ice-audio-track > uni-view').style.width;
+                const before=localStorage.getItem('cimoa_app_state_v2');visible('[data-interaction="ibPreview.continueVoice.click.1"]').click();await wait(()=>visible('[data-interaction="sheetVoiceCoin.spendVoice.click.1"]'));const no_write=before===localStorage.getItem('cimoa_app_state_v2');await delay(300);visible('[data-interaction="sheetVoiceCoin.spendVoice.click.1"]').click();await wait(()=>visible('.connection-sent-page'));const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,request=data.requests.find(r=>r.recipient_id==='user_zane'&&r.sender_id==='user_cimoa');return {played:true,progress,no_write,kind:request?.kind,status:request?.status,debits:data.coin_transactions.filter(t=>t.related_id===request?.request_id&&t.amount===-10).length};
+                """) as! [String: Any]
+                XCTAssertEqual(result["played"] as? Bool, true); XCTAssertEqual(result["no_write"] as? Bool, true); XCTAssertEqual(result["kind"] as? String, "voice"); XCTAssertEqual(result["status"] as? String, "pending"); XCTAssertEqual(result["debits"] as? Int, 1)
+                try JSONSerialization.data(withJSONObject: result, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-acceptance.json"))
+            }
             try await restore()
         } catch { try? await restore(); throw error }
     }
@@ -47,6 +82,69 @@ final class HostTests: XCTestCase {
     func testDiscoverRequestTextPixel() async throws { try await discoverRequestPixel("text") }
     func testDiscoverRequestVoicePixel() async throws { try await discoverRequestPixel("voice") }
     func testDiscoverRequestPreviewPixel() async throws { try await discoverRequestPixel("preview") }
+    // Explicit user approval: a short real microphone capture, never retained in evidence.
+    func testDiscoverRequestRealMicrophoneAndCleanup() async throws {
+        let host = try await rawHost()
+        let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/discover-request-voice")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("native-fixture.json"))) as! [String: Any]
+        var recordedID: String?
+        func restore() async throws {
+            // Dispose the page's recorder/playback before removing only the isolated test Blob.
+            if recordedID == nil {
+                recordedID = try? await script(host, "const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return data.drafts.find(d=>d.draft_id==='draft_discover')?.payload.audio_id||''") as? String
+            }
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?micCleanup=\(UUID().uuidString)#/pages/discover/icebreaker/voice?user_id=user_zane&draft_id=draft_discover")!))
+            for _ in 0..<60 {
+                if !host.webView.isLoading { break }
+                try await Task.sleep(nanoseconds: 50_000_000)
+            }
+            if let id = recordedID, !id.isEmpty {
+                let removed = try await host.webView.callAsyncJavaScript("const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');t.objectStore('blobs').delete(id);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});const removed=await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readonly'),r=t.objectStore('blobs').get(id);r.onsuccess=()=>resolve(r.result===undefined);r.onerror=()=>reject(r.error)});db.close();return removed", arguments: ["id": id], in: nil, contentWorld: .page) as? Bool
+                XCTAssertEqual(removed, true)
+            }
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}return true", arguments: ["saved": snapshot], in: nil, contentWorld: .page)
+            let restored = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+            XCTAssertEqual(restored as NSDictionary, snapshot as NSDictionary)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?micRestored=\(UUID().uuidString)#/pages/auth/splash")!))
+        }
+        do {
+            _ = try await host.webView.callAsyncJavaScript("const data=fixture.data;data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture], in: nil, contentWorld: .page)
+            try await loadFreshConnection(host, route: fixture["route"] as! String, selector: ".ice-voice-page")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"ibVoice.record.click.1\"]').click();return true")
+            try await waitFor(host, "[data-interaction=\"sheetMic.allowMic.click.1\"]")
+            try await Task.sleep(nanoseconds: 300_000_000)
+            _ = try await script(host, "document.querySelector('[data-interaction=\"sheetMic.allowMic.click.1\"]').click();return true")
+            var started = false
+            for _ in 0..<240 {
+                if (try? await script(host, "return !!document.querySelector('[aria-label=\"Stop recording\"]')")) as? Bool == true { started = true; break }
+                try await Task.sleep(nanoseconds: 250_000_000)
+            }
+            guard started else { throw NSError(domain: "CimoaTests", code: 31, userInfo: [NSLocalizedDescriptionKey: "Real microphone did not start: \(try await script(host, "return document.body.innerText"))"]) }
+            try await Task.sleep(nanoseconds: 2_000_000_000)
+            _ = try await script(host, "document.querySelector('[aria-label=\"Stop recording\"]').click();return true")
+            try await waitForPreparedAudio(host, selector: "[data-interaction=\"ibVoice.toggleVoicePlay.click.1\"]")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"ibVoice.goBack.click.1\"]').click();for(let i=0;i<80;i++){const e=document.querySelector('[data-interaction=\"sheetVoiceDiscard.closeSheet.click.2\"]');if(e&&e.getBoundingClientRect().height>0){await new Promise(r=>setTimeout(r,300));return true}await new Promise(r=>setTimeout(r,30))}throw Error('Source discard sheet missing')")
+            let discardImage = try await host.webView.takeSnapshot(configuration: nil)
+            try discardImage.pngData()!.write(to: folder.appendingPathComponent("actual-wkwebview-discard.png"))
+            _ = try await script(host, "document.querySelector('[data-interaction=\"sheetVoiceDiscard.closeSheet.click.2\"]').click();return true")
+            try await Task.sleep(nanoseconds: 300_000_000)
+            _ = try await script(host, "document.querySelector('[data-interaction=\"ibVoice.sendVoiceRequest.click.1\"]').click();return true")
+            try await waitFor(host, ".ice-preview-page")
+            let media = try await script(host, "const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,id=d.drafts.find(d=>d.draft_id==='draft_discover').payload.audio_id,m=d.media_files.find(m=>m.media_id===id);return {id,duration:m.duration_ms,requests:d.requests.filter(r=>r.sender_id==='user_cimoa'&&r.recipient_id==='user_zane').length}") as! [String: Any]
+            recordedID = media["id"] as? String
+            XCTAssertGreaterThan(media["duration"] as? Double ?? 0, 1000); XCTAssertEqual(media["requests"] as? Int, 0)
+            try await loadFreshConnection(host, route: "/pages/discover/icebreaker/preview?user_id=user_zane&draft_id=draft_discover&media_id=\(recordedID!)", selector: ".ice-preview-page")
+            try await waitForPreparedAudio(host, selector: "[data-interaction=\"ibPreview.togglePlay.click.1\"]")
+            let played = try await script(host, "document.querySelector('[data-interaction=\"ibPreview.togglePlay.click.1\"]').click();for(let i=0;i<80;i++){if(document.querySelector('.ice-audio')?.dataset.playing==='true')return true;await new Promise(r=>setTimeout(r,30))}return false") as? Bool
+            XCTAssertEqual(played, true)
+            try await restore()
+            let evidence: [String: Any] = ["result": "passed", "capture": "real WKWebView getUserMedia/MediaRecorder", "duration_ms": media["duration"]!, "discard_cancel_preserved_recording": true, "playable_after_refresh": played == true, "test_blob_removed": true, "account_snapshot_restored": true, "recording_bytes_saved_to_evidence": false]
+            try JSONSerialization.data(withJSONObject: evidence, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-real-microphone.json"))
+        } catch { try? await restore(); throw error }
+    }
     private func installConnectionChatFixture(_ host: WebViewController) async throws {
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<4 { root.deleteLastPathComponent() }

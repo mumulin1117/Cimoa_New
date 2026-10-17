@@ -2,7 +2,7 @@
   {
     "interaction_id": "ibPreview.goBack.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -14,7 +14,7 @@
   {
     "interaction_id": "ibPreview.togglePlay.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -26,7 +26,7 @@
   {
     "interaction_id": "ibPreview.deleteVoice.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -38,7 +38,7 @@
   {
     "interaction_id": "ibPreview.reRecord.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -50,7 +50,7 @@
   {
     "interaction_id": "ibPreview.continueVoice.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -62,7 +62,7 @@
   {
     "interaction_id": "sheetVoiceCoin.spendVoice.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -74,7 +74,7 @@
   {
     "interaction_id": "sheetVoiceCoin.editRecording.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -86,7 +86,7 @@
   {
     "interaction_id": "sheetVoiceCoin.closeSheet.click.2",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -98,7 +98,7 @@
   {
     "interaction_id": "sheetInsufficient.getCoins2.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -110,7 +110,7 @@
   {
     "interaction_id": "sheetInsufficient.freeAlt.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -122,7 +122,7 @@
   {
     "interaction_id": "sheetInsufficient.closeSheet.click.2",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",
@@ -134,7 +134,7 @@
   {
     "interaction_id": "introduction.sheet.close.click.1",
     "source_screen": "ibPreview decoded HTML 747–797",
-    "trigger": "click",
+    "trigger": "click / Enter",
     "preconditions": "Ready authenticated account; current user_id and account-owned draft/question/media; submit revalidates consent, privacy, balance and blocks.",
     "visible_feedback": "Pure navigation has no Loading; selection is transient. Business writes show custom 500ms Loading, lock duplicates, preserve input on failure. Source control/animation retained.",
     "success_result": "Same user_id → question_id → draft_id → request_id; only accepting account establishes Connection/Conversation. Navigation returns to actual origin.",

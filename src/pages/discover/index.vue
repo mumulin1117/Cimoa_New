@@ -119,7 +119,7 @@ const back_style = computed(() => {
 </script>
 
 <template>
-  <MainTabFrame ref="frame" route="pages/discover/index" header-owns-safe-area scroll-locked>
+  <MainTabFrame ref="frame" class="discover-request-deck" route="pages/discover/index" header-owns-safe-area scroll-locked>
     <template #header><DiscoverHeroHeader :profile-target="target('profile')" :preferences-target="target('preferences')" @profile="navigate('profile')" @preferences="navigate('preferences')" /></template>
     <view class="discover-content">
       <view v-if="store.hydration_status === 'error'" class="discover-state discover-read-error" role="alert"><text>{{ store.hydration_error }}</text><view class="discover-retry" role="button" tabindex="0" @click="store.hydrate" @keydown.enter="store.hydrate">Retry</view></view>
@@ -162,6 +162,7 @@ const back_style = computed(() => {
 </template>
 
 <style scoped>
+.discover-request-deck { -webkit-font-smoothing: antialiased; }
 .discover-content { height: 100%; min-height: 0; overflow: hidden; padding: 0 38.168rpx; }
 .discover-deck { position: relative; width: 100%; height: min(100%, 1034.351rpx); min-height: 0; overflow: visible; }
 .discover-footer { flex: none; padding: 30.534rpx 38.168rpx 3.817rpx; }

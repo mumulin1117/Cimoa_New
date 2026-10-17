@@ -317,10 +317,17 @@
     "ibVoice.record.click.1",
     "sheetMic.allowMic.click.1",
     "sheetMic.denyMic.click.1",
+    "sheetVoiceDiscard.cancelRec.click.1",
+    "sheetVoiceDiscard.closeSheet.click.2",
     "introduction.sheet.close.click.1",
     "introduction.rerecord.click.1",
     "introduction.delete.click.1"
   ],
+  "global_presentation": {
+    "line": 42,
+    "style": "body { -webkit-font-smoothing: antialiased; }",
+    "implementation": "Scoped to these six route roots; no unrelated page typography changes"
+  },
   "supplementary_source": [
     {
       "name": "microphone",

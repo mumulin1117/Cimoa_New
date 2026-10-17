@@ -621,5 +621,10 @@
     "expanded.voiceIntroPlay.click.1",
     "expanded.gallery.close.click.1"
   ],
+  "global_presentation": {
+    "line": 42,
+    "style": "body { -webkit-font-smoothing: antialiased; }",
+    "implementation": "Scoped to these six route roots; no unrelated page typography changes"
+  },
   "supplementary_source": []
 }

@@ -1,0 +1,10 @@
+{
+  "account_snapshot_restored" : true,
+  "capture" : "real WKWebView getUserMedia\/MediaRecorder",
+  "discard_cancel_preserved_recording" : true,
+  "duration_ms" : 2134.7708333333335,
+  "playable_after_refresh" : true,
+  "recording_bytes_saved_to_evidence" : false,
+  "result" : "passed",
+  "test_blob_removed" : true
+}

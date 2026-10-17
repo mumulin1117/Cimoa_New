@@ -23,6 +23,7 @@ onUnmounted(() => { token++; clearTimeout(timer) })
   <view v-show="rendered" class="event-dialog" :class="{ 'event-dialog--open': showing }" :style="{ '--event-sheet-duration': `${MOTION.sheet}ms` }" @keydown.esc="close">
     <view class="event-dialog-mask" :data-interaction="closeInteraction" @click="close" @touchmove.stop.prevent />
     <view class="event-dialog-panel" role="dialog" aria-modal="true" :aria-label="label" :aria-busy="busy" @click.stop>
+      <slot name="corner" />
       <view class="event-dialog-handle" />
       <scroll-view class="event-dialog-scroll" scroll-y :show-scrollbar="false"><slot /></scroll-view>
     </view>

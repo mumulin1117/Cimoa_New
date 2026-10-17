@@ -5,19 +5,34 @@
     "Source geometry and exact user entry/Back are read-only, with preserved deck order",
     "Eight iPhone viewports keep the whole card, CTA and Tabbar in one non-scrolling view",
     "Repeated Tab changes retain root depth, fixed bar and no repeated skeleton",
-    "An existing request opens its canonical result instead of duplicate send or an eligibility dead end"
+    "An existing request opens its canonical result instead of duplicate send or an eligibility dead end",
+    "Small iPhone width/real safe-area budget retains readable content and scroll access",
+    "Corrupt storage shows a readable error without overwriting data or leaking profile/draft content",
+    "Expired session cannot view or submit private introduction state"
   ],
   "errors": [],
   "deferred": [],
   "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
-  "server_pid": 34779,
+  "server_pid": 77302,
+  "reference_geometry": {
+    "620": null,
+    "627": null,
+    "631": null,
+    "640": null,
+    "650": null,
+    "666": null,
+    "676": null,
+    "677": null,
+    "758": null,
+    "762": null
+  },
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 254060,
-    "pixels_above_channel_delta_8": 84282,
-    "mean_absolute_channel_delta": 4.475533544780131,
-    "max_channel_delta": 236
+    "pixels_different": 253567,
+    "pixels_above_channel_delta_8": 83997,
+    "mean_absolute_channel_delta": 4.596435269803725,
+    "max_channel_delta": 241
   },
   "geometry": {
     "card": {
