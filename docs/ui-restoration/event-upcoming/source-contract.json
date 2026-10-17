@@ -1,0 +1,507 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isEvUpcoming",
+    "source_query": "route=evUpcoming&joined=1",
+    "lines": [
+      2116,
+      2164
+    ],
+    "fragment_sha256": "6e6f89b1dd8a29c1fe2f3fe01a9167d856cab0c59c4d4c92b2ce35edd034e89d",
+    "fragment": "<sc-if value=\"{{ isEvUpcoming }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Events / My Events / Upcoming\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">My events</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box\">\n          <sc-if value=\"{{ true }}\" hint-placeholder-val=\"{{ true }}\">\n            <div sc-camel-on-click=\"{{ openJoined }}\" style=\"margin-top:4px;padding:16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n              <div style=\"display:flex;align-items:center;gap:12px\">\n                <img src=\"b8e65a72-456c-4c6d-ac60-b015015a3ac4\" alt=\"{{ evTitle }}\" style=\"width:64px;height:64px;border-radius:18px;object-fit:cover;flex:none;display:block\">\n                <div style=\"flex:1;min-width:0\">\n                  <div style=\"font-size:19px;font-weight:800;letter-spacing:-0.025em\">{{ evTitle }}</div>\n                  <div style=\"font-size:15px;color:#5b6b85;margin-top:3px\">{{ evWhen }}</div>\n                  <div style=\"font-size:15px;color:#5b6b85\">{{ evPlace }}</div>\n                </div>\n              </div>\n              <div style=\"display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px\">\n                <div sc-camel-on-click=\"{{ openGroupStop }}\" style=\"height:48px;border-radius:24px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:700;color:#fff;box-shadow:0 8px 18px rgba(168,85,247,0.22)\">Group chat</div>\n                <div sc-camel-on-click=\"{{ manageStop }}\" style=\"height:48px;border-radius:24px;background:#fff;border:1.5px solid #e2e8f0;box-sizing:border-box;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:700;color:#0b1b3a\">Manage</div>\n              </div>\n            </div>\n          </sc-if>\n          <div style=\"margin-top:24px;font-size:19px;font-weight:800;letter-spacing:-0.02em\">This week</div>\n          <div style=\"display:flex;flex-direction:column;gap:12px;margin-top:12px\">\n            <div sc-camel-on-click=\"{{ openJoined }}\" style=\"display:flex;align-items:center;gap:14px;padding:14px;background:#fff;border-radius:22px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n              <div style=\"width:64px;height:64px;border-radius:16px;background:url(&quot;a6735a36-9d89-4906-822b-bc9e0793dab6&quot;) center/cover no-repeat;flex:none\"></div>\n              <div style=\"flex:1;min-width:0\"><div style=\"font-size:17px;font-weight:800;letter-spacing:-0.02em\">Open Mic Night</div><div style=\"font-size:14.5px;color:#5b6b85;margin-top:3px\">Thu · 8:00 PM</div><div style=\"font-size:14.5px;color:#5b6b85;margin-top:1px\">Student Centre · 18 going</div></div>\n              <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n            </div>\n            <div sc-camel-on-click=\"{{ openJoined }}\" style=\"display:flex;align-items:center;gap:14px;padding:14px;background:#fff;border-radius:22px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n              <div style=\"width:64px;height:64px;border-radius:16px;background:url(&quot;f505a1ed-f13f-4b85-bfb5-0982f9b3402d&quot;) center/cover no-repeat;flex:none\"></div>\n              <div style=\"flex:1;min-width:0\"><div style=\"font-size:17px;font-weight:800;letter-spacing:-0.02em\">Beginner Badminton</div><div style=\"font-size:14.5px;color:#5b6b85;margin-top:3px\">Fri · 7:00 PM</div><div style=\"font-size:14.5px;color:#5b6b85;margin-top:1px\">Sports Hall · 24 going</div></div>\n              <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n            </div>\n          </div>\n          <div style=\"margin-top:24px;font-size:19px;font-weight:800;letter-spacing:-0.02em\">Past</div>\n          <div style=\"display:flex;flex-direction:column;gap:12px;margin-top:12px\">\n            <div sc-camel-on-click=\"{{ openJoined }}\" style=\"display:flex;align-items:center;gap:14px;padding:14px;background:#fff;border-radius:22px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n              <div style=\"width:64px;height:64px;border-radius:16px;background:url(&quot;4ec95bce-b04a-4536-bc0d-1fcef78d7756&quot;) center/cover no-repeat;flex:none\"></div>\n              <div style=\"flex:1;min-width:0\"><div style=\"font-size:17px;font-weight:800;letter-spacing:-0.02em\">Coffee &amp; Sketch</div><div style=\"font-size:14.5px;color:#5b6b85;margin-top:3px\">Last week</div><div style=\"font-size:14.5px;color:#5b6b85;margin-top:1px\">Art Studio · 15 went</div></div>\n              <svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\" style=\"flex:none\"><path d=\"M9 5l7 7-7 7\"></path></svg>\n            </div>\n          </div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/events/upcoming",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "styles": [
+    {
+      "line": 2117,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 2118,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 2119,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 2122,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 2122,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 2124,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 40px;box-sizing:border-box"
+    },
+    {
+      "line": 2126,
+      "tag": "div",
+      "style": "margin-top:4px;padding:16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 2127,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:12px"
+    },
+    {
+      "line": 2128,
+      "tag": "img",
+      "style": "width:64px;height:64px;border-radius:18px;object-fit:cover;flex:none;display:block"
+    },
+    {
+      "line": 2129,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 2130,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:800;letter-spacing:-0.025em"
+    },
+    {
+      "line": 2131,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 2132,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85"
+    },
+    {
+      "line": 2135,
+      "tag": "div",
+      "style": "display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"
+    },
+    {
+      "line": 2136,
+      "tag": "div",
+      "style": "height:48px;border-radius:24px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:700;color:#fff;box-shadow:0 8px 18px rgba(168,85,247,0.22)"
+    },
+    {
+      "line": 2137,
+      "tag": "div",
+      "style": "height:48px;border-radius:24px;background:#fff;border:1.5px solid #e2e8f0;box-sizing:border-box;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:700;color:#0b1b3a"
+    },
+    {
+      "line": 2141,
+      "tag": "div",
+      "style": "margin-top:24px;font-size:19px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 2142,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:12px;margin-top:12px"
+    },
+    {
+      "line": 2143,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;padding:14px;background:#fff;border-radius:22px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 2144,
+      "tag": "div",
+      "style": "width:64px;height:64px;border-radius:16px;background:url(\"a6735a36-9d89-4906-822b-bc9e0793dab6\") center/cover no-repeat;flex:none"
+    },
+    {
+      "line": 2145,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 2145,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 2145,
+      "tag": "div",
+      "style": "font-size:14.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 2145,
+      "tag": "div",
+      "style": "font-size:14.5px;color:#5b6b85;margin-top:1px"
+    },
+    {
+      "line": 2146,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 2148,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;padding:14px;background:#fff;border-radius:22px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 2149,
+      "tag": "div",
+      "style": "width:64px;height:64px;border-radius:16px;background:url(\"f505a1ed-f13f-4b85-bfb5-0982f9b3402d\") center/cover no-repeat;flex:none"
+    },
+    {
+      "line": 2150,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 2150,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 2150,
+      "tag": "div",
+      "style": "font-size:14.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 2150,
+      "tag": "div",
+      "style": "font-size:14.5px;color:#5b6b85;margin-top:1px"
+    },
+    {
+      "line": 2151,
+      "tag": "svg",
+      "style": "flex:none"
+    },
+    {
+      "line": 2154,
+      "tag": "div",
+      "style": "margin-top:24px;font-size:19px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 2155,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:12px;margin-top:12px"
+    },
+    {
+      "line": 2156,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;padding:14px;background:#fff;border-radius:22px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 2157,
+      "tag": "div",
+      "style": "width:64px;height:64px;border-radius:16px;background:url(\"4ec95bce-b04a-4536-bc0d-1fcef78d7756\") center/cover no-repeat;flex:none"
+    },
+    {
+      "line": 2158,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 2158,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 2158,
+      "tag": "div",
+      "style": "font-size:14.5px;color:#5b6b85;margin-top:3px"
+    },
+    {
+      "line": 2158,
+      "tag": "div",
+      "style": "font-size:14.5px;color:#5b6b85;margin-top:1px"
+    },
+    {
+      "line": 2159,
+      "tag": "svg",
+      "style": "flex:none"
+    }
+  ],
+  "texts": [
+    {
+      "line": 2122,
+      "text": "My events"
+    },
+    {
+      "line": 2136,
+      "text": "Group chat"
+    },
+    {
+      "line": 2137,
+      "text": "Manage"
+    },
+    {
+      "line": 2141,
+      "text": "This week"
+    },
+    {
+      "line": 2145,
+      "text": "Open Mic Night"
+    },
+    {
+      "line": 2145,
+      "text": "Thu · 8:00 PM"
+    },
+    {
+      "line": 2145,
+      "text": "Student Centre · 18 going"
+    },
+    {
+      "line": 2150,
+      "text": "Beginner Badminton"
+    },
+    {
+      "line": 2150,
+      "text": "Fri · 7:00 PM"
+    },
+    {
+      "line": 2150,
+      "text": "Sports Hall · 24 going"
+    },
+    {
+      "line": 2154,
+      "text": "Past"
+    },
+    {
+      "line": 2158,
+      "text": "Coffee & Sketch"
+    },
+    {
+      "line": 2158,
+      "text": "Last week"
+    },
+    {
+      "line": 2158,
+      "text": "Art Studio · 15 went"
+    }
+  ],
+  "svg": [
+    {
+      "line": 2120,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "22"
+        ],
+        [
+          "height",
+          "22"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#0b1b3a"
+        ],
+        [
+          "stroke-width",
+          "2.4"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 2120,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M15 5l-7 7 7 7"
+        ]
+      ]
+    },
+    {
+      "line": 2146,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "16"
+        ],
+        [
+          "height",
+          "16"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#94a3b8"
+        ],
+        [
+          "stroke-width",
+          "2.4"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "style",
+          "flex:none"
+        ]
+      ]
+    },
+    {
+      "line": 2146,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M9 5l7 7-7 7"
+        ]
+      ]
+    },
+    {
+      "line": 2151,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "16"
+        ],
+        [
+          "height",
+          "16"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#94a3b8"
+        ],
+        [
+          "stroke-width",
+          "2.4"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "style",
+          "flex:none"
+        ]
+      ]
+    },
+    {
+      "line": 2151,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M9 5l7 7-7 7"
+        ]
+      ]
+    },
+    {
+      "line": 2159,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "16"
+        ],
+        [
+          "height",
+          "16"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#94a3b8"
+        ],
+        [
+          "stroke-width",
+          "2.4"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "style",
+          "flex:none"
+        ]
+      ]
+    },
+    {
+      "line": 2159,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "M9 5l7 7-7 7"
+        ]
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "line": 2128,
+      "source": "b8e65a72-456c-4c6d-ac60-b015015a3ac4"
+    }
+  ],
+  "interaction_ids": [
+    "evUpcoming.goBack.click.1",
+    "evUpcoming.openJoined.click.1",
+    "evUpcoming.openGroupStop.click.1",
+    "evUpcoming.manageStop.click.1",
+    "evUpcoming.openJoined.click.2",
+    "evUpcoming.openJoined.click.3",
+    "evUpcoming.openJoined.click.4"
+  ],
+  "approved_deltas": [
+    "Real safe area, fixed shared page skeleton, rpx responsive conversion and source cRise",
+    "Canonical user profiles, actual counts/relationships/event times instead of fake prototype totals",
+    "Explicit error/empty/expired state; local-only reports do not claim delivery",
+    "Media capture/preview/menu are user-authorized supplements; no fabricated peer messages",
+    "No source screenshot yet: visual_acceptance stays pending"
+  ],
+  "acceptance": {
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "full_acceptance": "pending"
+  }
+}

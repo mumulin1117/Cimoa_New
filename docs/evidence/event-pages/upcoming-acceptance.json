@@ -1,15 +1,15 @@
 {
   "phase": "upcoming",
   "result": "passed",
-  "server_pid": 13818,
+  "server_pid": 67297,
   "checks": [
     "Events → exact detail → original Tab; source card geometry, local cover and actual count",
     "Join/cancel confirmation and pre-write Loading; unique membership, refresh, rollback and released seat",
-    "Real share summary and address; missing maps/report services fail without fake success",
+    "Real report route, share summary and address; missing map service fails without fake success",
     "Small/long/empty-source details scroll; full/ended/unverified/invalid-ID errors stay honest",
     "My Events success entry, exact detail and return, cancel removes own card, refresh/Tab counts synchronize; actual Past section",
     "Success page reads actual membership, reload is read-only, Open event pops original detail, cancelled attendance cannot show success",
-    "Participants search, empty/long, deferred person, correct return and persistent block filter; no automatic friendship"
+    "Participants search, empty/long, canonical person profile, correct return and persistent block filter; no automatic friendship"
   ],
   "errors": []
 }
