@@ -22,7 +22,7 @@ const close = async () => { try { await frame.value.navigate_relaunch('/pages/ho
     <view v-if="access_error" class="connection-unavailable" role="alert">{{ access_error }}</view>
     <view v-else class="accepted-content">
       <view class="accepted-celebrate"><ConnectionIcon name="celebrate" /></view>
-      <view class="accepted-avatars"><view class="accepted-avatar accepted-avatar--mine"><UserAvatar :src="store.current_user.avatar_url" :name="store.current_user.user_name" /><view v-if="store.current_user.verified" class="accepted-badge"><SourceIcon name="verified" :stroke-width="2.6" /></view></view><view class="accepted-avatar accepted-avatar--other"><UserAvatar :src="request.other.avatar_url" :name="request.other.user_name" /><view v-if="request.other.verified" class="accepted-badge"><SourceIcon name="verified" :stroke-width="2.6" /></view></view></view>
+      <view class="accepted-avatars"><view class="accepted-avatar accepted-avatar--mine"><UserAvatar :src="store.current_user.avatar_url" :name="store.current_user.user_name" /><view v-if="store.current_user.verified" class="accepted-badge"><ConnectionIcon name="verified" /></view></view><view class="accepted-avatar accepted-avatar--other"><UserAvatar :src="request.other.avatar_url" :name="request.other.user_name" /><view v-if="request.other.verified" class="accepted-badge"><ConnectionIcon name="verified" /></view></view></view>
       <text class="accepted-title">You’re connected</text><text class="accepted-copy">You and {{ first_name }} can now start a conversation.</text>
       <view class="accepted-interests"><text class="connection-eyebrow">YOU BOTH LIKE</text><view v-if="connection.shared_interests.length" class="accepted-interests-row"><view v-for="(interest,index) in connection.shared_interests.slice(0,3)" :key="interest.item_id" class="accepted-interest"><view :class="{ pink: index > 0 }"><text>{{ interest.emoji }}</text></view><text>{{ interest.label }}</text></view></view><text v-else class="accepted-empty">A new connection, a new perspective.</text></view>
     </view>
@@ -61,8 +61,6 @@ const close = async () => { try { await frame.value.navigate_relaunch('/pages/ho
   width: 49.618rpx;
   height: 49.618rpx;
   border-radius: 50%;
-  border: 3.817rpx solid var(--cimoa-surface-card);
-  background: var(--cimoa-surface-card);
 }
 .accepted-title { font-size: 61.069rpx; font-weight: 800; letter-spacing: -.035em; }
 .accepted-copy { max-width: 553.435rpx; font-size: 32.443rpx; color: var(--cimoa-text-secondary); text-align: center; text-wrap: pretty; }

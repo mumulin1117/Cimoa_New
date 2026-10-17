@@ -3827,7 +3827,7 @@
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "source-mapped; implemented; local text/connection flow and Store synchronization passed; full group acceptance remains pending on entity microphone coverage",
-    "acceptance_notes": "2026-10-17: source AST overlay and real iPhone 17 Pro WKWebView geometry inspected; browser interactions passed. Full cross-page/media regression deferred to task final pass.",
+    "acceptance_notes": "2026-10-17: source SVG badge, avatars, natural shared-interest spacing and navigation passed latest browser + native pixel checks; final cross-page suite pending.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "visual_evidence": "docs/ui-restoration/connection-accepted"

@@ -10,6 +10,7 @@ const gradient_id = `connection-video-${getCurrentInstance().uid}`
     <template v-else-if="name === 'clock'"><circle cx="12" cy="12" r="9" stroke-width="2" /><path d="M12 7.5V12l3 2" stroke-width="2" /></template>
     <path v-else-if="name === 'closed'" d="M6.5 6.5l11 11M17.5 6.5l-11 11" stroke-width="2.4" />
     <path v-else-if="name === 'close'" d="M6 6l12 12M18 6 6 18" stroke-width="2.4" />
+    <template v-else-if="name === 'verified'"><circle cx="12" cy="12" r="11" fill="var(--cimoa-status-verified)" stroke="var(--cimoa-text-inverse)" stroke-width="2" /><path d="m7.5 12.4 3 3 6-6.4" stroke="var(--cimoa-text-inverse)" stroke-width="2.6" /></template>
     <template v-else-if="name === 'location'"><path d="M12 21s-7-6.2-7-11.4A7 7 0 0 1 19 9.6C19 14.8 12 21 12 21z" stroke-width="1.7" /><circle cx="12" cy="9.4" r="2.4" stroke-width="1.7" /></template>
     <path v-else-if="name === 'song-play'" d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z" fill="currentColor" stroke="none" />
     <template v-else-if="name === 'video'"><defs><linearGradient :id="gradient_id" x1="0" y1="0" x2="24" y2="0" gradientUnits="userSpaceOnUse"><stop class="video-cyan" /><stop offset="0.55" class="video-purple" /><stop offset="1" class="video-pink" /></linearGradient></defs><rect x="1.5" y="5.5" width="14.5" height="13" rx="3.2" :fill="`url(#${gradient_id})`" stroke="none" /><path d="M17 10.2 22 7v10l-5-3.2z" :fill="`url(#${gradient_id})`" stroke="none" /></template>
