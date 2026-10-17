@@ -13,15 +13,17 @@ import EventAudio from '@/components/EventAudio.vue'
 import EventConfirmDialog from '@/components/EventConfirmDialog.vue'
 import EvCancelConfirmDialog from '@/components/EvCancelConfirmDialog.vue'
 import EventActionLoading from '@/components/EventActionLoading.vue'
-const frame = ref(null), draft = ref(''), scroll_target = ref(''), preview = ref(''), active = ref(false)
+const frame = ref(null), draft = ref(''), scroll_target = ref(''), preview_id = ref(''), active = ref(false)
 const { height: viewport_height, keyboard_open } = use_visual_viewport()
 const { store, event_id, conversation_id, event, access_error, error, sheet, locked, is_loading, go, back, open, close, write, attendance, cancel } = use_event_page(frame, { joinedOnly: true })
 const group = computed(() => store.event_group(event_id.value, conversation_id.value))
+const preview = computed(() => group.value?.messages.find(message => message.message_id === preview_id.value && message.kind === 'image')?.media?.media_url || '')
 const group_error = computed(() => access_error.value || (!group.value ? 'This event and group do not match, or access has ended.' : ''))
 const { draft: media, recording, busy, seconds, clear, photo, start, stop } = use_event_media(error)
 let read_attempt = ''
-const clear_transient = () => { clear(); draft.value = ''; preview.value = ''; cancel() }
+const clear_transient = () => { clear(); draft.value = ''; preview_id.value = ''; cancel() }
 watch(group_error, value => { if (value) clear_transient() })
+watch(preview, value => { if (!value && sheet.value === 'preview') { preview_id.value = ''; close() } }, { flush: 'sync' })
 onHide(() => { active.value = false; clear_transient() }); onShow(() => { active.value = true; read_attempt = '' })
 const scroll_last = async () => { scroll_target.value = ''; await nextTick(); if (active.value && !group_error.value) scroll_target.value = group.value?.messages.at(-1)?.message_id || '' }
 watch(() => group.value?.messages.at(-1)?.message_id, scroll_last, { immediate: true }); onShow(scroll_last)
@@ -34,10 +36,14 @@ watch(() => [active.value, group.value?.unread_count, is_loading.value, locked.v
   const result = await write(() => store.mark_read(conversation_id.value))
   if (active.value && !group_error.value && !result.success && result.reason !== 'cancelled') error.value = result.message
 }, { immediate: true })
-const close_media = () => { if (is_loading.value) return; close(); clear(); preview.value = '' }
+const close_media = () => { if (is_loading.value) return; close(); clear(); preview_id.value = '' }
 const pick_photo = async () => { if (is_loading.value || locked.value || group_error.value) return; if (await photo()) open('media') }
 const voice = () => { if (group_error.value || locked.value || busy.value || is_loading.value) return; clear(); open('voice') }
-const show_image = url => { if (group_error.value || is_loading.value || locked.value) return; preview.value = url; open('preview') }
+const show_image = message_id => {
+  if (group_error.value || is_loading.value || locked.value) return
+  preview_id.value = message_id
+  if (preview.value) open('preview')
+}
 const send = async (with_media = false) => {
   if (is_loading.value || busy.value || group_error.value || (with_media ? !['media', 'voice'].includes(sheet.value) : locked.value)) return
   const content = with_media ? '' : draft.value, payload = with_media ? media.value : null
@@ -72,7 +78,7 @@ const navigate_menu = kind => { close(); go(kind) }
         <view v-if="!message.mine" class="event-message-avatar"><UserAvatar :src="message.sender?.avatar_url" :name="message.sender?.user_name" /></view>
         <view class="event-message-main"><view class="event-message-meta"><text v-if="message.mine" class="event-message-time">{{ message.time_label }}</text><text class="event-message-name">{{ message.mine ? 'You' : message.sender?.user_name }}</text><text v-if="!message.mine" class="event-message-time">{{ message.time_label }}</text></view><view class="event-message-bubble">
           <text v-if="message.kind === 'text'">{{ message.body }}</text>
-          <view v-else-if="message.kind === 'image'" class="event-message-image" role="button" tabindex="0" aria-label="Open shared photo" data-interaction="eventGroup.media.preview.click.1" @click="show_image(message.media?.media_url)" @keydown.enter="show_image(message.media?.media_url)"><ProfilePhoto :src="message.media?.media_url" name="Shared event photo" @ready="scroll_last" /></view>
+          <view v-else-if="message.kind === 'image'" class="event-message-image" role="button" tabindex="0" aria-label="Open shared photo" data-interaction="eventGroup.media.preview.click.1" @click="show_image(message.message_id)" @keydown.enter="show_image(message.message_id)"><ProfilePhoto :src="message.media?.media_url" name="Shared event photo" @ready="scroll_last" /></view>
           <EventAudio v-else :src="message.media?.media_url" :duration="message.media?.duration_ms" />
         </view></view><view v-if="message.mine" class="event-message-avatar"><UserAvatar :src="message.sender?.avatar_url" :name="message.sender?.user_name" /></view>
       </view>

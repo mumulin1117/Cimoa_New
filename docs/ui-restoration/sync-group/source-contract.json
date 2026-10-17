@@ -1,0 +1,436 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isEvGroup",
+    "source_query": "route=evGroup&joined=1",
+    "lines": [
+      2049,
+      2112
+    ],
+    "fragment_sha256": "51d97a6d83a3e021bd65e972786941243fbc9eee9b3202859516158a4d0c09fd",
+    "fragment": "<sc-if value=\"{{ isEvGroup }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Events / Group Chat / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:54px;left:0;right:0;height:80px;display:flex;align-items:center;gap:11px;padding:0 16px;background:rgba(255,255,255,0.88);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(16,36,74,0.07);z-index:25;box-sizing:border-box\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <img src=\"b8e65a72-456c-4c6d-ac60-b015015a3ac4\" alt=\"{{ evTitle }}\" style=\"width:44px;height:44px;border-radius:13px;object-fit:cover;display:block;flex:none\">\n          <div style=\"flex:1;min-width:0\">\n            <div style=\"font-size:17px;font-weight:800;letter-spacing:-0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ evTitle }}</div>\n            <div style=\"font-size:13.5px;color:#5b6b85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ evParticipantsLabel }}</div>\n          </div>\n          <div sc-camel-on-click=\"{{ openGroupMenu }}\" style=\"width:44px;height:44px;border-radius:22px;background:#fff;box-shadow:0 6px 16px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"#0b1b3a\"><circle cx=\"5\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"12\" cy=\"12\" r=\"1.9\"></circle><circle cx=\"19\" cy=\"12\" r=\"1.9\"></circle></svg>\n          </div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:134px;left:0;right:0;bottom:118px;overflow-y:auto;scrollbar-width:none;padding:16px 20px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px\">\n          <div style=\"display:flex;align-items:center;gap:14px;padding:16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\">\n            <div style=\"position:relative;flex:none\">\n              <div style=\"width:46px;height:46px;border-radius:23px;background:#eef2f8;display:flex;align-items:center;justify-content:center\"><svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 60 60\" fill=\"none\"><circle cx=\"30\" cy=\"18\" r=\"9\" fill=\"#f2b90c\"></circle><rect x=\"14\" y=\"27\" width=\"32\" height=\"4\" rx=\"1.5\" fill=\"#0b3a7a\"></rect><rect x=\"17\" y=\"31\" width=\"4.5\" height=\"18\" fill=\"#0b3a7a\"></rect><rect x=\"27.7\" y=\"31\" width=\"4.5\" height=\"18\" fill=\"#0b3a7a\"></rect><rect x=\"38\" y=\"31\" width=\"4.5\" height=\"18\" fill=\"#0b3a7a\"></rect><path d=\"M17 49 L30 58 L43 49 Z\" fill=\"#0b3a7a\"></path></svg></div>\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" style=\"position:absolute;right:-2px;bottom:-2px\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\" stroke=\"#fff\" stroke-width=\"2\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>\n            </div>\n            <div style=\"flex:1;min-width:0\">\n              <div style=\"font-size:17px;font-weight:800;letter-spacing:-0.02em\">HKUST Student Union</div>\n              <div style=\"font-size:15.5px;color:#5b6b85;margin-top:2px;text-wrap:pretty\">Meet by the sculpture at 5:20 PM.</div>\n            </div>\n          </div>\n          <sc-for list=\"{{ groupMsgs }}\" as=\"m\" hint-placeholder-count=\"3\">\n            <div style=\"display:flex;align-items:flex-end;gap:10px;justify-content:{{ m.justify }}\">\n              <sc-if value=\"{{ m.showLeftAvatar }}\" hint-placeholder-val=\"{{ false }}\">\n                <sc-if value=\"{{ m.isOrg }}\" hint-placeholder-val=\"{{ false }}\"><div style=\"width:36px;height:36px;border-radius:18px;background:#eef2f8;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 60 60\" fill=\"none\"><circle cx=\"30\" cy=\"18\" r=\"9\" fill=\"#f2b90c\"></circle><rect x=\"14\" y=\"27\" width=\"32\" height=\"4\" rx=\"1.5\" fill=\"#0b3a7a\"></rect><rect x=\"17\" y=\"31\" width=\"4.5\" height=\"18\" fill=\"#0b3a7a\"></rect><rect x=\"27.7\" y=\"31\" width=\"4.5\" height=\"18\" fill=\"#0b3a7a\"></rect><rect x=\"38\" y=\"31\" width=\"4.5\" height=\"18\" fill=\"#0b3a7a\"></rect><path d=\"M17 49 L30 58 L43 49 Z\" fill=\"#0b3a7a\"></path></svg></div></sc-if>\n                <sc-if value=\"{{ m.isMaya }}\" hint-placeholder-val=\"{{ false }}\"><img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"{{ m.name }}\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;flex:none\"></sc-if>\n                <sc-if value=\"{{ m.isAlex }}\" hint-placeholder-val=\"{{ false }}\"><img src=\"e8bd8155-5a13-4ecb-a022-bcadf12ae5f6\" alt=\"{{ m.name }}\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;flex:none\"></sc-if>\n                <sc-if value=\"{{ m.isZoe }}\" hint-placeholder-val=\"{{ true }}\"><img src=\"ceafb32c-3d48-4ad1-a03e-d45b4d907d80\" alt=\"{{ m.name }}\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;flex:none\"></sc-if>\n              </sc-if>\n              <div style=\"display:flex;flex-direction:column;align-items:{{ m.align }};gap:5px;max-width:74%\">\n                <div style=\"display:flex;align-items:center;gap:8px\">\n                  <sc-if value=\"{{ m.me }}\" hint-placeholder-val=\"{{ false }}\"><div style=\"font-size:12.5px;color:#8b95a6\">{{ m.time }}</div></sc-if>\n                  <div style=\"font-size:13px;font-weight:700;color:#5b6b85\">{{ m.name }}</div>\n                  <sc-if value=\"{{ m.notMe }}\" hint-placeholder-val=\"{{ true }}\"><div style=\"font-size:12.5px;color:#8b95a6\">{{ m.time }}</div></sc-if>\n                </div>\n                <div style=\"padding:13px 17px;border-radius:20px;background:{{ m.bg }};color:{{ m.ink }};font-size:16.5px;line-height:1.4;box-shadow:0 6px 18px rgba(16,36,74,0.07);text-wrap:pretty\">{{ m.text }}</div>\n              </div>\n              <sc-if value=\"{{ m.showRightAvatar }}\" hint-placeholder-val=\"{{ false }}\">\n                <img src=\"6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30\" alt=\"{{ m.name }}\" style=\"width:36px;height:36px;border-radius:18px;object-fit:cover;flex:none\">\n              </sc-if>\n            </div>\n          </sc-for>\n        </div>\n        <div style=\"position:absolute;left:0;right:0;bottom:0;height:118px;padding:12px 16px 28px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.9);backdrop-filter:blur(14px);box-sizing:border-box;z-index:25\">\n          <div sc-camel-on-click=\"{{ sendPhoto }}\" style=\"width:44px;height:44px;border-radius:22px;background:#eef2f8;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"2.5\" y=\"5\" width=\"19\" height=\"15\" rx=\"3\"></rect><circle cx=\"8.5\" cy=\"10.5\" r=\"1.7\"></circle><path d=\"m4 17 5-5 4 4 3-3 5 5\"></path></svg>\n          </div>\n          <div style=\"flex:1;height:48px;border-radius:24px;background:#eef2f8;display:flex;align-items:center;padding:0 16px;min-width:0\">\n            <input sc-camel-on-change=\"{{ onGroupDraft }}\" value=\"{{ groupDraft }}\" placeholder=\"Message the group\" style=\"flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-size:17px;color:#0b1b3a\">\n          </div>\n          <div sc-camel-on-click=\"{{ recordGroupVoice }}\" style=\"width:44px;height:44px;border-radius:22px;background:#eef2f8;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"21\" height=\"21\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.9\" stroke-linecap=\"round\"><rect x=\"9\" y=\"2.5\" width=\"6\" height=\"11\" rx=\"3\"></rect><path d=\"M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5\"></path></svg>\n          </div>\n          <div sc-camel-on-click=\"{{ sendGroup }}\" style=\"width:48px;height:48px;border-radius:24px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;box-shadow:0 8px 20px rgba(168,85,247,0.28)\">\n            <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 2 11 13\"></path><path d=\"M22 2 15 22l-4-9-9-4z\"></path></svg>\n          </div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/events/group",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; MessageComposer",
+  "scroll_region": "Header 与输入栏之间的消息 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/events/index、/pages/events/detail、/pages/events/upcoming、/pages/events/join-success）；无历史实例时 replace /pages/events/index，不创建伪造实体",
+  "styles": [
+    {
+      "line": 2050,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 2051,
+      "tag": "div",
+      "style": "position:absolute;top:54px;left:0;right:0;height:80px;display:flex;align-items:center;gap:11px;padding:0 16px;background:rgba(255,255,255,0.88);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(16,36,74,0.07);z-index:25;box-sizing:border-box"
+    },
+    {
+      "line": 2052,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 2055,
+      "tag": "img",
+      "style": "width:44px;height:44px;border-radius:13px;object-fit:cover;display:block;flex:none"
+    },
+    {
+      "line": 2056,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 2057,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:800;letter-spacing:-0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 2058,
+      "tag": "div",
+      "style": "font-size:13.5px;color:#5b6b85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 2060,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:22px;background:#fff;box-shadow:0 6px 16px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 2064,
+      "tag": "div",
+      "style": "position:absolute;top:134px;left:0;right:0;bottom:118px;overflow-y:auto;scrollbar-width:none;padding:16px 20px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px"
+    },
+    {
+      "line": 2065,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;padding:16px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 2066,
+      "tag": "div",
+      "style": "position:relative;flex:none"
+    },
+    {
+      "line": 2067,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#eef2f8;display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 2068,
+      "tag": "svg",
+      "style": "position:absolute;right:-2px;bottom:-2px"
+    },
+    {
+      "line": 2070,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 2071,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 2072,
+      "tag": "div",
+      "style": "font-size:15.5px;color:#5b6b85;margin-top:2px;text-wrap:pretty"
+    },
+    {
+      "line": 2076,
+      "tag": "div",
+      "style": "display:flex;align-items:flex-end;gap:10px;justify-content:{{ m.justify }}"
+    },
+    {
+      "line": 2078,
+      "tag": "div",
+      "style": "width:36px;height:36px;border-radius:18px;background:#eef2f8;display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 2079,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;flex:none"
+    },
+    {
+      "line": 2080,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;flex:none"
+    },
+    {
+      "line": 2081,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;flex:none"
+    },
+    {
+      "line": 2083,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:{{ m.align }};gap:5px;max-width:74%"
+    },
+    {
+      "line": 2084,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:8px"
+    },
+    {
+      "line": 2085,
+      "tag": "div",
+      "style": "font-size:12.5px;color:#8b95a6"
+    },
+    {
+      "line": 2086,
+      "tag": "div",
+      "style": "font-size:13px;font-weight:700;color:#5b6b85"
+    },
+    {
+      "line": 2087,
+      "tag": "div",
+      "style": "font-size:12.5px;color:#8b95a6"
+    },
+    {
+      "line": 2089,
+      "tag": "div",
+      "style": "padding:13px 17px;border-radius:20px;background:{{ m.bg }};color:{{ m.ink }};font-size:16.5px;line-height:1.4;box-shadow:0 6px 18px rgba(16,36,74,0.07);text-wrap:pretty"
+    },
+    {
+      "line": 2092,
+      "tag": "img",
+      "style": "width:36px;height:36px;border-radius:18px;object-fit:cover;flex:none"
+    },
+    {
+      "line": 2097,
+      "tag": "div",
+      "style": "position:absolute;left:0;right:0;bottom:0;height:118px;padding:12px 16px 28px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.9);backdrop-filter:blur(14px);box-sizing:border-box;z-index:25"
+    },
+    {
+      "line": 2098,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:22px;background:#eef2f8;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 2101,
+      "tag": "div",
+      "style": "flex:1;height:48px;border-radius:24px;background:#eef2f8;display:flex;align-items:center;padding:0 16px;min-width:0"
+    },
+    {
+      "line": 2102,
+      "tag": "input",
+      "style": "flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-size:17px;color:#0b1b3a"
+    },
+    {
+      "line": 2104,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:22px;background:#eef2f8;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 2107,
+      "tag": "div",
+      "style": "width:48px;height:48px;border-radius:24px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;box-shadow:0 8px 20px rgba(168,85,247,0.28)"
+    }
+  ],
+  "texts": [
+    {
+      "line": 2071,
+      "text": "HKUST Student Union"
+    },
+    {
+      "line": 2072,
+      "text": "Meet by the sculpture at 5:20 PM."
+    }
+  ],
+  "svg": [
+    {
+      "line": 2053,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    },
+    {
+      "line": 2061,
+      "sha256": "96de75681b2b35e6820d13518a4c8edc0fc0c63fdb8b582115b395b3830feeca"
+    },
+    {
+      "line": 2067,
+      "sha256": "671a8d394f33f20ce767cba3f446c22f06f9179f79738d1cb9dbc5ff8c890fa8"
+    },
+    {
+      "line": 2068,
+      "sha256": "bf5ed19e52084c92651b79af766428f33ea66ec64f243fb93f4930259c8b5675"
+    },
+    {
+      "line": 2078,
+      "sha256": "49b18ecd5d224801747844db1e8b29641630a44b994eb3e884b6dcdda1a38c27"
+    },
+    {
+      "line": 2099,
+      "sha256": "e83044ededb2d72a634f38b6912efaa09ed06053954005fac52e313cc798fa81"
+    },
+    {
+      "line": 2105,
+      "sha256": "1f3768a4540587df8a5b7a5dd8a3fada68c9c45f6b655854e1c22ba4ef7ef2b8"
+    },
+    {
+      "line": 2108,
+      "sha256": "9fe1b9a8dd27b40f1de1d1607bcbf3e0a6bc6fa344c1bf300d71512504ffa53e"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a13",
+        "local_path": "static/assets/head/maya-av.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "e8bd8155-5a13-4ecb-a022-bcadf12ae5f6",
+        "local_path": "static/assets/head/participant-e8bd8155.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a16",
+        "local_path": "static/assets/img/event-picnic.png",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a15",
+        "local_path": "static/assets/head/me.png",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a23",
+        "local_path": "static/assets/head/g1.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a0",
+        "local_path": "static/assets/songs/beautiful-things.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a3",
+        "local_path": "static/assets/songs/good-luck-babe.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a2",
+        "local_path": "static/assets/songs/birds.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a1",
+        "local_path": "static/assets/songs/espresso.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a6",
+        "local_path": "static/assets/songs/love-me-not.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      2053,
+      2061,
+      2067,
+      2068,
+      2078,
+      2099,
+      2105,
+      2108
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 2052,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 2060,
+      "event": "sc-camel-on-click",
+      "handler": "openGroupMenu"
+    },
+    {
+      "line": 2098,
+      "event": "sc-camel-on-click",
+      "handler": "sendPhoto"
+    },
+    {
+      "line": 2102,
+      "event": "sc-camel-on-change",
+      "handler": "onGroupDraft"
+    },
+    {
+      "line": 2104,
+      "event": "sc-camel-on-click",
+      "handler": "recordGroupVoice"
+    },
+    {
+      "line": 2107,
+      "event": "sc-camel-on-click",
+      "handler": "sendGroup"
+    }
+  ],
+  "interaction_ids": [
+    "evGroup.goBack.click.1",
+    "evGroup.openGroupMenu.click.1",
+    "evGroup.sendPhoto.click.1",
+    "evGroup.onGroupDraft.change.1",
+    "evGroup.recordGroupVoice.click.1",
+    "evGroup.sendGroup.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "evGroup.goBack.click.1",
+      "source": "route=evGroup&joined=1",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "events; event_memberships; organizers; group_list; group_messages; reports",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "evGroup.openGroupMenu.click.1",
+      "source": "route=evGroup&joined=1",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "events; event_memberships; organizers; group_list; group_messages; reports",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "evGroup.sendPhoto.click.1",
+      "source": "route=evGroup&joined=1",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "events; event_memberships; organizers; group_list; group_messages; reports",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "evGroup.onGroupDraft.change.1",
+      "source": "route=evGroup&joined=1",
+      "trigger": "input",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "events; event_memberships; organizers; group_list; group_messages; reports",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "evGroup.recordGroupVoice.click.1",
+      "source": "route=evGroup&joined=1",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "events; event_memberships; organizers; group_list; group_messages; reports",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "evGroup.sendGroup.click.1",
+      "source": "route=evGroup&joined=1",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "events; event_memberships; organizers; group_list; group_messages; reports",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "phase": "group",
+  "result": "passed",
+  "checks": [
+    "Card/detail/participants/group agree on privacy-filtered attendance; image/audio metadata and read state survive reload",
+    "Block hides both text and media from the group, updates its header and remains filtered after refresh without leaving the event"
+  ],
+  "errors": [],
+  "visual_acceptance": "pending",
+  "media_scope": "Controlled message fixtures; encoded test tone, not a microphone recording or a real peer response",
+  "server_pid": 23546,
+  "cleaned_up": true
+}
