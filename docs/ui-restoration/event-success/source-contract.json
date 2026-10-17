@@ -1,0 +1,163 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isEvJoinSuccess",
+    "source_query": "route=evJoinSuccess&joined=1",
+    "lines": [
+      1999,
+      2014
+    ],
+    "fragment_sha256": "82ffc10c15d3fbdcf634dbe3f72999d3f362a74931ad9631771465a9a3164160",
+    "fragment": "<sc-if value=\"{{ isEvJoinSuccess }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Events / Join / Success\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:186px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:16px\">\n          <div style=\"width:96px;height:96px;border-radius:48px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(168,85,247,0.28)\">\n            <svg width=\"44\" height=\"44\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m5 12.5 4.5 4.5L19 7.5\"></path></svg>\n          </div>\n          <div style=\"font-size:32px;font-weight:800;letter-spacing:-0.035em\">You’re going</div>\n          <div style=\"font-size:19px;font-weight:700\">{{ evTitle }}</div>\n          <div style=\"font-size:17px;color:#5b6b85;text-align:center\">{{ evWhen }} · {{ evPlace }}</div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ openJoined }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Open Event</div></div>\n          <div sc-camel-on-click=\"{{ openMyEvents }}\" style=\"height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">View My Events</div></div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/events/join-success",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "styles": [
+    {
+      "line": 2000,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 2001,
+      "tag": "div",
+      "style": "position:absolute;top:186px;left:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:16px"
+    },
+    {
+      "line": 2002,
+      "tag": "div",
+      "style": "width:96px;height:96px;border-radius:48px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(168,85,247,0.28)"
+    },
+    {
+      "line": 2005,
+      "tag": "div",
+      "style": "font-size:32px;font-weight:800;letter-spacing:-0.035em"
+    },
+    {
+      "line": 2006,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700"
+    },
+    {
+      "line": 2007,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85;text-align:center"
+    },
+    {
+      "line": 2009,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;gap:12px;z-index:20"
+    },
+    {
+      "line": 2010,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 2010,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 2011,
+      "tag": "div",
+      "style": "height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 2011,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:600;color:#0b1b3a"
+    }
+  ],
+  "texts": [
+    {
+      "line": 2005,
+      "text": "You’re going"
+    },
+    {
+      "line": 2007,
+      "text": " · "
+    },
+    {
+      "line": 2010,
+      "text": "Open Event"
+    },
+    {
+      "line": 2011,
+      "text": "View My Events"
+    }
+  ],
+  "svg": [
+    {
+      "line": 2003,
+      "tag": "svg",
+      "attrs": [
+        [
+          "width",
+          "44"
+        ],
+        [
+          "height",
+          "44"
+        ],
+        [
+          "sc-camel-view-box",
+          "0 0 24 24"
+        ],
+        [
+          "fill",
+          "none"
+        ],
+        [
+          "stroke",
+          "#fff"
+        ],
+        [
+          "stroke-width",
+          "2.6"
+        ],
+        [
+          "stroke-linecap",
+          "round"
+        ],
+        [
+          "stroke-linejoin",
+          "round"
+        ]
+      ]
+    },
+    {
+      "line": 2003,
+      "tag": "path",
+      "attrs": [
+        [
+          "d",
+          "m5 12.5 4.5 4.5L19 7.5"
+        ]
+      ]
+    }
+  ],
+  "resources": [],
+  "interaction_ids": [
+    "evJoinSuccess.openJoined.click.1",
+    "evJoinSuccess.openMyEvents.click.1"
+  ],
+  "approved_deltas": [
+    "Real safe area, fixed shared page skeleton, rpx responsive conversion and source cRise",
+    "Canonical user profiles, actual counts/relationships/event times instead of fake prototype totals",
+    "Explicit error/empty/expired state; local-only reports do not claim delivery",
+    "Media capture/preview/menu are user-authorized supplements; no fabricated peer messages",
+    "No source screenshot yet: visual_acceptance stays pending"
+  ],
+  "acceptance": {
+    "source_lock": "locked",
+    "visual_acceptance": "pending",
+    "full_acceptance": "pending"
+  }
+}
