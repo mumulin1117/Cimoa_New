@@ -17,6 +17,7 @@ onUnmounted(stop_clock)
 defineExpose({
   navigate_forward: url => transition.value.navigate_forward(url),
   navigate_replace: url => transition.value.navigate_replace(url),
+  navigate_relaunch: url => transition.value.navigate_relaunch(url),
   navigate_back: (fallback = '/pages/home/index') => route_depth() > 1 ? transition.value.navigate_back() : transition.value.navigate_replace(fallback),
 })
 </script>

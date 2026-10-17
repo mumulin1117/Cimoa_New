@@ -1,0 +1,29 @@
+{
+  "footer" : {
+    "bottom" : 840,
+    "height" : 96.125,
+    "width" : 402,
+    "x" : 0,
+    "y" : 743.875
+  },
+  "header" : {
+    "bottom" : 115.171875,
+    "height" : 49.09375,
+    "width" : 361.09375,
+    "x" : 20.453125,
+    "y" : 66.078125
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "photo" : null,
+  "safe" : [
+    62,
+    34
+  ],
+  "text" : "Introduction sent\nYour introduction was sent\n\n\nto Chloe Lin · HKUST\nICEBREAKER\nHow would you spend your ideal weekend?\nYOUR ANSWER\nA long walk and coffee by the sea.\nWaiting for Chloe\nChat and video calls unlock once Chloe accepts.\nDone\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}

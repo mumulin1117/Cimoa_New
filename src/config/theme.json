@@ -5,6 +5,7 @@
       "gradient": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
     },
     "surface": {
+      "connection_waiting": "#e8edf7",
       "event_people": "#fbe6f7",
       "event_group_header": "rgba(255,255,255,0.88)",
       "event_group_composer": "rgba(255,255,255,0.9)",
@@ -129,6 +130,8 @@
       "invite_ink": "#1e3a8a"
     },
     "brand": {
+      "connection_violet": "#8a6ff0",
+      "video_purple": "#8b5cf6",
       "cyan": "#1ec8f5",
       "blue": "#4a7bf7",
       "purple": "#a855f7",

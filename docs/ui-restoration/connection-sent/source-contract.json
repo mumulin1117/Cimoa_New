@@ -1,0 +1,268 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "source_query": "route=reqSent",
+    "condition": "isReqSent",
+    "lines": [
+      801,
+      839
+    ],
+    "fragment": "    <sc-if value=\"{{ isReqSent }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Connection / Request / Sent\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Introduction sent</div>\n          \n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:126px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 180px;box-sizing:border-box\">\n          <div style=\"display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:12px\">\n            <div style=\"width:88px;height:88px;border-radius:44px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(168,85,247,0.28)\">\n              <svg width=\"42\" height=\"42\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m5 12.5 4.5 4.5L19 7.5\"></path></svg>\n            </div>\n            <div style=\"font-size:27px;font-weight:800;letter-spacing:-0.03em;text-align:center\">Your introduction was sent</div>\n            <div style=\"display:flex;align-items:center;gap:10px;margin-top:2px\">\n              <img src=\"c448edd0-f94d-466e-bc08-4899beb0854a\" alt=\"Chloe Lin\" style=\"width:44px;height:44px;border-radius:22px;object-fit:cover;display:block\">\n              <div style=\"font-size:17px;color:#5b6b85\">to Chloe Lin · HKUST</div>\n            </div>\n          </div>\n          <div style=\"margin-top:22px\"><div style=\"padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"font-size:13px;font-weight:700;letter-spacing:0.08em;color:#8b95a6\">ICEBREAKER</div>\n            <div style=\"font-size:18px;font-weight:700;letter-spacing:-0.015em;margin-top:6px;text-wrap:pretty\">{{ qText }}</div>\n          </div></div>\n          <div style=\"margin-top:12px;padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"font-size:13px;font-weight:700;letter-spacing:0.08em;color:#8b95a6\">YOUR ANSWER</div>\n            <div style=\"font-size:17px;line-height:1.45;margin-top:6px;color:#26364f;text-wrap:pretty\">{{ answerPreview }}</div>\n          </div>\n          <div style=\"display:flex;align-items:center;justify-content:center;gap:9px;margin-top:18px;height:44px;border-radius:22px;background:#e8edf7\">\n            <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#44536b\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M12 7.5V12l3 2\"></path></svg>\n            <div style=\"font-size:16px;font-weight:600;color:#44536b\">Waiting for Chloe</div>\n          </div>\n          <div style=\"font-size:14.5px;color:#8b95a6;text-align:center;margin-top:12px;text-wrap:pretty\">Chat and video calls unlock once Chloe accepts.</div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ doneSent }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Done</div></div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "scale": 1,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "route": "/pages/connections/sent",
+  "parameters": [
+    "request_id"
+  ],
+  "entry_points": [
+    "spend@4926",
+    "confirmSend@5001",
+    "sendVoiceRequest@5315",
+    "openPending@5812"
+  ],
+  "return_owner": "Back pops previous instance; Done clears stack to Discover",
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "styles": [
+    {
+      "line": 802,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 803,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 804,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 807,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 807,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 810,
+      "tag": "div",
+      "style": "position:absolute;top:126px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 180px;box-sizing:border-box"
+    },
+    {
+      "line": 811,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:12px"
+    },
+    {
+      "line": 812,
+      "tag": "div",
+      "style": "width:88px;height:88px;border-radius:44px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 30px rgba(168,85,247,0.28)"
+    },
+    {
+      "line": 815,
+      "tag": "div",
+      "style": "font-size:27px;font-weight:800;letter-spacing:-0.03em;text-align:center"
+    },
+    {
+      "line": 816,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px;margin-top:2px"
+    },
+    {
+      "line": 817,
+      "tag": "img",
+      "style": "width:44px;height:44px;border-radius:22px;object-fit:cover;display:block"
+    },
+    {
+      "line": 818,
+      "tag": "div",
+      "style": "font-size:17px;color:#5b6b85"
+    },
+    {
+      "line": 821,
+      "tag": "div",
+      "style": "margin-top:22px"
+    },
+    {
+      "line": 821,
+      "tag": "div",
+      "style": "padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 822,
+      "tag": "div",
+      "style": "font-size:13px;font-weight:700;letter-spacing:0.08em;color:#8b95a6"
+    },
+    {
+      "line": 823,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:700;letter-spacing:-0.015em;margin-top:6px;text-wrap:pretty"
+    },
+    {
+      "line": 825,
+      "tag": "div",
+      "style": "margin-top:12px;padding:16px 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 826,
+      "tag": "div",
+      "style": "font-size:13px;font-weight:700;letter-spacing:0.08em;color:#8b95a6"
+    },
+    {
+      "line": 827,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1.45;margin-top:6px;color:#26364f;text-wrap:pretty"
+    },
+    {
+      "line": 829,
+      "tag": "div",
+      "style": "display:flex;align-items:center;justify-content:center;gap:9px;margin-top:18px;height:44px;border-radius:22px;background:#e8edf7"
+    },
+    {
+      "line": 831,
+      "tag": "div",
+      "style": "font-size:16px;font-weight:600;color:#44536b"
+    },
+    {
+      "line": 833,
+      "tag": "div",
+      "style": "font-size:14.5px;color:#8b95a6;text-align:center;margin-top:12px;text-wrap:pretty"
+    },
+    {
+      "line": 835,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;display:flex;flex-direction:column;gap:12px;z-index:20"
+    },
+    {
+      "line": 836,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 836,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    }
+  ],
+  "content": [
+    {
+      "line": 807,
+      "text": "Introduction sent"
+    },
+    {
+      "line": 815,
+      "text": "Your introduction was sent"
+    },
+    {
+      "line": 818,
+      "text": "to Chloe Lin · HKUST"
+    },
+    {
+      "line": 822,
+      "text": "ICEBREAKER"
+    },
+    {
+      "line": 826,
+      "text": "YOUR ANSWER"
+    },
+    {
+      "line": 831,
+      "text": "Waiting for Chloe"
+    },
+    {
+      "line": 833,
+      "text": "Chat and video calls unlock once Chloe accepts."
+    },
+    {
+      "line": 836,
+      "text": "Done"
+    }
+  ],
+  "svg": [
+    {
+      "line": 805,
+      "source": "<svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>"
+    },
+    {
+      "line": 813,
+      "source": "<svg width=\"42\" height=\"42\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m5 12.5 4.5 4.5L19 7.5\"></path></svg>"
+    },
+    {
+      "line": 830,
+      "source": "<svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#44536b\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M12 7.5V12l3 2\"></path></svg>"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a13",
+        "local_path": "static/assets/head/maya-av.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a6",
+        "local_path": "static/assets/songs/love-me-not.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      805,
+      813,
+      830
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "motion": {
+    "name": "cRise",
+    "duration_ms": 240,
+    "phase": "finished"
+  },
+  "states": [
+    "default",
+    "loading",
+    "error",
+    "empty",
+    "long-content",
+    "refresh",
+    "resolved",
+    "blocked",
+    "session-expired"
+  ],
+  "interaction_ids": [
+    "reqSent.goBack.click.1",
+    "reqSent.doneSent.click.1"
+  ],
+  "approved_deltas": [
+    "Cimoa branding and unified actual participant IDs",
+    "Real system safe areas; one scroll container and fixed footer",
+    "No invented online, music or voice success",
+    "Only real shared interests and verified badges",
+    "Store writes use confirmation and 500ms loading; no automatic peer acceptance",
+    "Resolved/blocked requests show actual state; decline does not claim delivered content was never shared",
+    "Date label is calculated from the real message timestamp"
+  ]
+}

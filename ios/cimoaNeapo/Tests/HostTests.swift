@@ -5,6 +5,53 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    private func connectionPixel(_ page: String) async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let output = root.appendingPathComponent("docs/ui-restoration/connection-\(page)")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: output.appendingPathComponent("native-fixture.json"))) as! [String: Any]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?connectionRestore=1#/pages/auth/splash")!))
+        }
+        do {
+            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data:fixture}));window.__connectionOld=true;return true", arguments: ["fixture": fixture["data"]!], in: nil, contentWorld: .page)
+            let route = fixture["route"] as! String
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?connectionPixel=\(page)#\(route)")!))
+            let selector = page == "chat" ? ".direct-chat-page" : ".connection-\(page)-page"
+            for _ in 0..<100 {
+                if (try? await script(host, "return !window.__connectionOld&&!!document.querySelector('\(selector)')")) as? Bool == true { break }
+                try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            try await waitFor(host, selector); host.publishSafeArea()
+            let metrics = try await script(host, """
+            await document.fonts.ready;await Promise.all([...document.images].map(image=>image.decode().catch(()=>{})));for(const animation of document.getAnimations())if(animation.effect.getComputedTiming().iterations!==Infinity)animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+            const root=document.querySelector('\(selector)'),box=selector=>{const el=document.querySelector(selector);if(!el)return null;const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};
+            return {viewport:{width:innerWidth,height:innerHeight},safe:[...root.children].filter(el=>el.classList.contains('safe-area')).map(el=>el.getBoundingClientRect().height),header:box('.connection-header,.chat-header'),footer:box('.connection-footer,.chat-composer'),photo:box('.received-photo-card'),overflow:document.documentElement.scrollWidth>innerWidth,images:[...root.querySelectorAll('img')].every(image=>image.complete&&image.naturalWidth>0),text:root.innerText,origin:location.origin};
+            """) as! [String: Any]
+            XCTAssertEqual(metrics["origin"] as? String, BundleHTTPServer.origin)
+            XCTAssertEqual(metrics["overflow"] as? Bool, false); XCTAssertEqual(metrics["images"] as? Bool, true)
+            let safe = metrics["safe"] as! [Double]
+            XCTAssertEqual(safe[0], Double(host.view.safeAreaInsets.top), accuracy: 1)
+            XCTAssertEqual(safe[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            let viewport = metrics["viewport"] as! [String: Double], scale = viewport["width"]! / 393
+            if let header = metrics["header"] as? [String: Double] { XCTAssertEqual(header["y"]!, safe[0] + (page == "chat" ? 2 : 4) * scale, accuracy: 1) }
+            if let footer = metrics["footer"] as? [String: Double] { XCTAssertLessThanOrEqual(footer["bottom"]!, viewport["height"]! - safe[1] + 1) }
+            try await Task.sleep(nanoseconds: 200_000_000)
+            let snapshot = try await host.webView.takeSnapshot(configuration: nil)
+            try snapshot.pngData()!.write(to: output.appendingPathComponent("actual-wkwebview.png"))
+            let attachment = XCTAttachment(image: snapshot); attachment.name = "Connection \(page) real WKWebView"; attachment.lifetime = .keepAlways; add(attachment)
+            try JSONSerialization.data(withJSONObject: metrics, options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("wkwebview-geometry.json"))
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
+    func testConnectionSentPixel() async throws { try await connectionPixel("sent") }
+    func testConnectionReceivedPixel() async throws { try await connectionPixel("received") }
+    func testConnectionAcceptedPixel() async throws { try await connectionPixel("accepted") }
+    func testConnectionDeclinedPixel() async throws { try await connectionPixel("declined") }
+    func testConnectionChatPixel() async throws { try await connectionPixel("chat") }
     private func rawHost() async throws -> WebViewController {
         for _ in 0..<100 {
             if let host = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).flatMap({ $0.windows }).compactMap({ $0.rootViewController as? WebViewController }).first, host.webView != nil, !host.webView.isLoading, host.isTrustedURL(host.webView.url) { return host }

@@ -1,0 +1,59 @@
+{
+  "page": "sent",
+  "result": "passed",
+  "checks": [
+    "Source geometry/copy, persisted pending, refresh and Done clear-stack to Discover",
+    "Narrow iPhone width with real safe-area budget has no horizontal clipping"
+  ],
+  "geometry": {
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "bottom": 105.984375
+    },
+    "footer": {
+      "x": 0,
+      "y": 758.015625,
+      "width": 393,
+      "height": 93.984375,
+      "bottom": 852
+    },
+    "hero": {
+      "x": 152.5,
+      "y": 137.984375,
+      "width": 87.984375,
+      "height": 87.984375,
+      "bottom": 225.96875
+    },
+    "question": {
+      "x": 20,
+      "y": 353.953125,
+      "width": 353,
+      "height": 95.953125,
+      "bottom": 449.90625
+    },
+    "answer": {
+      "x": 20,
+      "y": 461.90625,
+      "width": 353,
+      "height": 78.59375,
+      "bottom": 540.5
+    },
+    "photo": null,
+    "text": "Introduction sent\nYour introduction was sent\nto Chloe Lin · HKUST\nICEBREAKER\nHow would you spend your ideal weekend?\nYOUR ANSWER\nA long walk and coffee by the sea.\nWaiting for Chloe\nChat and video calls unlock once Chloe accepts.\nDone"
+  },
+  "errors": [],
+  "reference": "Offline HTML AST, original inline styles, no prototype script/runtime",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 75408,
+    "pixels_above_channel_delta_8": 9791,
+    "mean_absolute_channel_delta": 0.7993667048943364,
+    "max_channel_delta": 191
+  },
+  "cleaned_up": true
+}

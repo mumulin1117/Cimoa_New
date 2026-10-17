@@ -1,0 +1,23 @@
+{
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "browser": "browser-acceptance.json",
+  "wkwebview": {
+    "result": "passed",
+    "device": "iPhone 17 Pro",
+    "os": "26.5",
+    "result_bundle": "/tmp/cimoa-connection-sent.xcresult",
+    "geometry": "wkwebview-geometry.json"
+  },
+  "visual_review": "Reference/actual/overlay inspected: header, check, recipient, question/answer cards, status, caption and footer aligned. Native safe areas measured 62/34; native viewport402x874.",
+  "deferred": [
+    "received,accepted,declined,chat complete cross-page regression"
+  ],
+  "gates": [
+    "check:conventions passed without warning",
+    "git diff --check passed",
+    "build:h5 passed"
+  ]
+}
