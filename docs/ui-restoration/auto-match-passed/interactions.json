@@ -1,7 +1,7 @@
 [
   {
     "interaction_id": "amPassed.goBack.click.1",
-    "source_screen": "amPassed:1820",
+    "source_screen": "amPassed:1823",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -13,7 +13,7 @@
   },
   {
     "interaction_id": "amPassed.findAnother.click.1",
-    "source_screen": "amPassed:1820",
+    "source_screen": "amPassed:1836",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
@@ -25,7 +25,7 @@
   },
   {
     "interaction_id": "amPassed.returnHome.click.1",
-    "source_screen": "amPassed:1820",
+    "source_screen": "amPassed:1837",
     "trigger": "click / Enter",
     "preconditions": "Authenticated owner; current match_id and effective state; write revalidates eligibility/privacy/balance/consent.",
     "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",

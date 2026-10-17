@@ -1,0 +1,191 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1822": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1823": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1824": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1826": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1828": {
+      "x": 0,
+      "y": 190,
+      "width": 393,
+      "height": 246,
+      "text": "Match skippedNothing was shared and no connection was made. We’ll keep looking whenever you’re ready."
+    },
+    "1829": {
+      "x": 148.5,
+      "y": 190,
+      "width": 96,
+      "height": 96,
+      "text": ""
+    },
+    "1830": {
+      "x": 176.5,
+      "y": 218,
+      "width": 40,
+      "height": 40,
+      "text": ""
+    },
+    "1832": {
+      "x": 100.828125,
+      "y": 302,
+      "width": 191.34375,
+      "height": 34,
+      "text": "Match skipped"
+    },
+    "1833": {
+      "x": 46.5,
+      "y": 352,
+      "width": 300,
+      "height": 60,
+      "text": "Nothing was shared and no connection was made. We’ll keep looking whenever you’re ready."
+    },
+    "1835": {
+      "x": 0,
+      "y": 690,
+      "width": 393,
+      "height": 162,
+      "text": "Find Another MatchReturn Home"
+    },
+    "1836": {
+      "x": 20,
+      "y": 690,
+      "width": 353,
+      "height": 60,
+      "text": "Find Another Match"
+    },
+    "1837": {
+      "x": 20,
+      "y": 762,
+      "width": 353,
+      "height": 56,
+      "text": "Return Home"
+    }
+  },
+  "actual": {
+    "1822": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1823": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1824": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1826": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 48,
+      "text": "Auto Match"
+    },
+    "1828": {
+      "x": 0,
+      "y": 190,
+      "width": 393,
+      "height": 246,
+      "text": "Match skippedNothing was shared and no connection was made. We’ll keep looking whenever you’re ready."
+    },
+    "1829": {
+      "x": 148.5,
+      "y": 190,
+      "width": 96,
+      "height": 96,
+      "text": ""
+    },
+    "1830": {
+      "x": 176.5,
+      "y": 218,
+      "width": 40,
+      "height": 40,
+      "text": ""
+    },
+    "1832": {
+      "x": 100.859375,
+      "y": 302,
+      "width": 191.28125,
+      "height": 34,
+      "text": "Match skipped"
+    },
+    "1833": {
+      "x": 46.5,
+      "y": 352,
+      "width": 300,
+      "height": 60,
+      "text": "Nothing was shared and no connection was made. We’ll keep looking whenever you’re ready."
+    },
+    "1835": {
+      "x": 0,
+      "y": 690,
+      "width": 393,
+      "height": 162,
+      "text": "Find Another MatchReturn Home"
+    },
+    "1836": {
+      "x": 20,
+      "y": 690,
+      "width": 353,
+      "height": 60,
+      "text": "Find Another Match"
+    },
+    "1837": {
+      "x": 20,
+      "y": 762,
+      "width": 353,
+      "height": 56,
+      "text": "Return Home"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 27943,
+    "pixels_above_channel_delta_8": 1524,
+    "mean_absolute_channel_delta": 0.11442990001075153,
+    "max_channel_delta": 86
+  }
+}

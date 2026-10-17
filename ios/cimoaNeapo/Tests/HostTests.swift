@@ -24,8 +24,13 @@ final class HostTests: XCTestCase {
             host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?matchRestore=\(UUID().uuidString)#/pages/auth/splash")!))
         }
         do {
+            let encodedFixture=String(data: try JSONSerialization.data(withJSONObject: fixture), encoding: .utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const fixture=\(encodedFixture);const at=\(matchTime);const data=fixture.data;data.session.expires_at=at+86400000;for(const m of data.match_sessions)if(m.match_id==='match_pixel'&&m.status==='found')m.expires_at=at+45000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));", injectionTime: .atDocumentStart, forMainFrameOnly: true))
             _ = try await host.webView.callAsyncJavaScript("const data=fixture.data;data.session.expires_at=at+86400000;for(const m of data.match_sessions)if(m.match_id==='match_pixel'&&m.status==='found')m.expires_at=at+45000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture,"at":matchTime], in: nil, contentWorld: .page)
             await WKWebsiteDataStore.default().removeData(ofTypes: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache], modifiedSince: .distantPast)
+            let servedEntry = try await script(host, "return await (await fetch('/index.html?verify=' + Date.now(),{cache:'no-store'})).text()") as! String
+            let bundledEntry = try String(contentsOf: Bundle.main.url(forResource: "H5", withExtension: nil)!.appendingPathComponent("index.html"), encoding: .utf8)
+            XCTAssertEqual(servedEntry, bundledEntry, "The host must serve the installed H5 bundle, not an older app shell")
             try await loadFreshConnection(host, route: fixture["route"] as! String, selector: ".auto-match-\(phase)")
             host.publishSafeArea()
             let metrics = try await script(host, """
@@ -71,7 +76,7 @@ final class HostTests: XCTestCase {
             }
             try await restore()
         } catch {
-            if let debug = try? await script(host, "return {url:location.href,text:document.body.innerText,html:document.body.innerHTML.slice(0,4000)}") {
+            if let debug = try? await script(host, "return {url:location.href,text:document.body.innerText,html:document.body.innerHTML.slice(0,4000),scripts:[...document.scripts].map(s=>s.src),served:await (await fetch('/index.html?debug='+Date.now(),{cache:'no-store'})).text()}") {
                 try? JSONSerialization.data(withJSONObject: debug, options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("wkwebview-failure.json"))
             }
             try? await restore(); throw error
