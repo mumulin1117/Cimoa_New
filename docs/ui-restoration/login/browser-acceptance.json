@@ -1,7 +1,7 @@
 {
   "phase": "login-pixel-restoration",
   "result": "passed",
-  "server_pid": 84768,
+  "server_pid": 64131,
   "reference": {
     "kind": "source-derived locked reference with approved safe-area and local-mode deltas",
     "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
@@ -54,9 +54,9 @@
       "x": 0,
       "y": 121.96875,
       "width": 393,
-      "height": 535.78125,
+      "height": 426.828125,
       "right": 393,
-      "bottom": 657.75,
+      "bottom": 548.796875,
       "center_x": 196.5
     },
     "heading": {
@@ -68,78 +68,60 @@
       "bottom": 158.265625,
       "center_x": 196.5
     },
-    "apple": {
-      "x": 20,
-      "y": 176.25,
-      "width": 353,
-      "height": 55.984375,
-      "right": 373,
-      "bottom": 232.234375,
-      "center_x": 196.5
-    },
-    "divider": {
-      "x": 20,
-      "y": 250.21875,
-      "width": 353,
-      "height": 17,
-      "right": 373,
-      "bottom": 267.21875,
-      "center_x": 196.5
-    },
     "fields": [
       {
         "x": 20,
-        "y": 281.21875,
+        "y": 172.265625,
         "width": 353,
         "height": 79.984375,
-        "bottom": 361.203125
+        "bottom": 252.25
       },
       {
         "x": 20,
-        "y": 375.203125,
+        "y": 266.25,
         "width": 353,
         "height": 79.984375,
-        "bottom": 455.1875
+        "bottom": 346.234375
       }
     ],
     "forgot": {
       "x": 20,
-      "y": 471.171875,
+      "y": 362.21875,
       "width": 353,
       "height": 18,
       "right": 373,
-      "bottom": 489.171875,
+      "bottom": 380.21875,
       "center_x": 196.5
     },
     "tests": {
       "x": 20,
-      "y": 511.171875,
+      "y": 402.21875,
       "width": 353,
       "height": 63.984375,
       "right": 373,
-      "bottom": 575.15625,
+      "bottom": 466.203125,
       "center_x": 196.5
     },
     "tests_title": {
       "x": 20,
-      "y": 511.171875,
+      "y": 402.21875,
       "width": 353,
       "height": 16,
       "right": 373,
-      "bottom": 527.171875,
+      "bottom": 418.21875,
       "center_x": 196.5
     },
     "chips": [
       {
         "x": 20,
-        "y": 535.15625,
+        "y": 426.203125,
         "width": 144.734375,
         "height": 40,
         "text": "Wrong password"
       },
       {
         "x": 172.71875,
-        "y": 535.15625,
+        "y": 426.203125,
         "width": 159.5,
         "height": 40,
         "text": "Unverified account"
@@ -147,11 +129,11 @@
     ],
     "note": {
       "x": 20,
-      "y": 597.15625,
+      "y": 488.203125,
       "width": 353,
       "height": 40.59375,
       "right": 373,
-      "bottom": 637.75,
+      "bottom": 528.796875,
       "center_x": 196.5
     },
     "footer": {
@@ -188,8 +170,6 @@
     "text": {
       "header": "Log in",
       "heading": "Welcome back",
-      "apple": "Continue with Apple",
-      "divider": "or",
       "labels": [
         "Email",
         "Password"
@@ -218,16 +198,16 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 72626,
-    "pixels_above_channel_delta_8": 10594,
-    "mean_absolute_channel_delta": 0.8913229162933496,
-    "max_channel_delta": 162
+    "pixels_different": 70425,
+    "pixels_above_channel_delta_8": 9234,
+    "mean_absolute_channel_delta": 0.6855766703699722,
+    "max_channel_delta": 138
   },
   "checks": [
     "393x852 actual restores locked source geometry, exact copy, inputs, source test states and finished cRise frame",
     "reference, actual, overlay and absolute diff were generated from one hash-locked source state",
     "source test controls inspect real fixture or pending state without creating an account, session or false verification",
-    "Apple fails explicitly, password privacy is real, and Forgot password returns to Login without a guest-state write",
+    "Apple entry is absent, password privacy is real, and Forgot password returns to Login without a guest-state write",
     "320x568 safe-area scrolling and keyboard-height reduction keep the focused password visible while temporarily folding the source footer"
   ],
   "errors": [],

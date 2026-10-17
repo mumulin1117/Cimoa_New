@@ -71,5 +71,29 @@
     "git diff --check": "passed",
     "corepack pnpm build:h5": "passed; H5 packaged into ios/cimoaNeapo/Resources/H5"
   },
-  "commit": "included in the Signup local specialty commit"
+  "commit": "included in the Signup local specialty commit",
+  "revalidation_2026_10_17": {
+    "result": "passed",
+    "change": "User-requested email-only authentication: Apple controls, divider and handlers removed.",
+    "verification_code": "009789",
+    "browser_checks": 7,
+    "browser_report": "docs/ui-restoration/signup/browser-acceptance.json",
+    "comparison": {
+      "width": 393,
+      "height": 852,
+      "pixels_different": 60165,
+      "pixels_above_channel_delta_8": 12976,
+      "mean_absolute_channel_delta": 1.2606761220418354,
+      "max_channel_delta": 146
+    },
+    "wkwebview_test": "HostTests.testSignupPixelRestoration",
+    "wkwebview_report": "docs/evidence/social-entities/wkwebview-acceptance.json",
+    "unit_tests_passed": 104,
+    "gate_commands": [
+      "corepack pnpm check:conventions",
+      "git diff --check",
+      "corepack pnpm build:h5"
+    ],
+    "convention_warnings": 0
+  }
 }

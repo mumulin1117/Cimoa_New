@@ -1,4 +1,4 @@
-import { authenticated, owner_id, user_by_id, members, joined, visible } from './selectors.js'
+import { authenticated, owner_id, user_by_id, members, joined, visible, social_eligible } from './selectors.js'
 import { clone_data } from './seed.js'
 
 export const EVENT_TABS = Object.freeze([
@@ -38,7 +38,7 @@ export function event_feed(data, now) {
 }
 export function event_join_blocker(data, id, now) {
   if (!authenticated(data, now)) return 'Your session has expired. Please sign in again.'
-  if (user_by_id(data, owner_id(data))?.verification_status !== 'verified') return 'Student verification is required.'
+  if (!social_eligible(data)) return 'Complete account verification and profile setup first.'
   const event = data.events.find(row => row.event_id === id)
   if (!event) return 'This event is no longer available.'
   if (event.ends_at <= now) return 'This event has ended.'

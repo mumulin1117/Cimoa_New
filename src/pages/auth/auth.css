@@ -1,8 +1,4 @@
 .auth-heading { display: block; font-size: 62.977rpx; font-weight: 800; letter-spacing: -.035em; line-height: 1.1; }
-.auth-apple { display: flex; align-items: center; justify-content: center; gap: 19.084rpx; height: 106.87rpx; border-radius: 53.435rpx; background: var(--cimoa-surface-deep); color: var(--cimoa-text-inverse); margin-top: 34.351rpx; font-size: 34.351rpx; font-weight: 600; }
-.auth-apple .source-icon { width: 49.618rpx; height: 49.618rpx; margin-top: -5.725rpx; }
-.auth-divider { display: flex; align-items: center; gap: 22.901rpx; margin-top: 34.351rpx; color: var(--cimoa-text-auth-placeholder); font-size: 27.672rpx; }
-.auth-divider view { flex: 1; height: 1.908rpx; background: var(--cimoa-surface-auth-divider); }
 .auth-field { margin-top: 26.718rpx; }
 .auth-label { display: block; font-size: 27.672rpx; font-weight: 600; color: var(--cimoa-text-secondary); margin-bottom: 13.359rpx; }
 .auth-input-box { display: flex; align-items: center; gap: 19.084rpx; height: 106.87rpx; padding: 0 34.351rpx; border-radius: 34.351rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-auth-input); }

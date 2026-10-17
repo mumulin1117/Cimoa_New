@@ -38,8 +38,8 @@ test('source fixtures and independent UI scenarios have valid references and can
 })
 test('Discover deck is Store-backed with six complete profiles, three photos and playable introductions', () => {
   const { store } = fixture()
-  assert.deepEqual(store.discover_people.map((row) => row.user_id), DISCOVER_PROFILE_IDS)
-  for (const [index, person] of store.discover_people.entries()) {
+  assert.deepEqual(store.discover_people.slice(0, 6).map((row) => row.user_id), DISCOVER_PROFILE_IDS)
+  for (const [index, person] of store.discover_people.slice(0, 6).entries()) {
     assert.equal(person.discover_order, index)
     assert.equal(person.photos.length, 3)
     assert.equal(store.questions_for_user(person.user_id).length, 3)
@@ -184,7 +184,7 @@ test('purchase callbacks enforce package, owner, receipt, full timeout, retry an
   await clock.advance(7999); assert.equal(settled, false); await clock.advance(1); assert.equal((await promise).status, 'timeout'); assert.equal(bridge.resolve('host-1', receipt), false); assert.equal(clock.pending(), 0)
 })
 test('missing services and audio fail honestly without business changes', async () => {
-  const { store } = fixture(); const before = clone_data(store.data)
+  const { store } = fixture('default', { services: { matching_available: false } }); const before = clone_data(store.data)
   for (const result of [store.create_account({ email: 'new@example.com' }), store.reset_password(), store.apply_verification(), store.submit_support(), store.start_match('unavailable')]) assert.equal(result.success, false)
   assert.equal((await store.send_introduction({ user_id: 'user_liam', question_id: 'user_liam_q_0', kind: 'voice', audio_id: 'missing', operation_id: 'voice' })).success, false)
   assert.deepEqual(clone_data(store.data), before)

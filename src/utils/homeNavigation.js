@@ -10,7 +10,9 @@ export function home_destination(store, kind, id) {
     if (!card) throw new Error('This connection is no longer available.')
     if (card.kind === 'connected' && store.can_chat(id) && store.current_conversations.some((row) => row.conversation_id === card.conversation_id)) return `/pages/messages/chat?conversation_id=${encodeURIComponent(card.conversation_id)}`
     if (card.kind === 'invite' && store.request_by_id(card.request_id)?.status === 'pending') return `/pages/connections/received?request_id=${encodeURIComponent(card.request_id)}`
-    if (card.kind === 'auto_match' && store.match_by_id(card.match_id)?.status === 'found') return `/pages/auto-match/found?match_id=${encodeURIComponent(card.match_id)}`
+    if (card.kind === 'sent' && store.request_by_id(card.request_id)?.status === 'pending') return `/pages/connections/sent?request_id=${encodeURIComponent(card.request_id)}`
+    if (card.kind === 'match_invite' && store.match_invitation(card.match_id)?.status === 'pending') return `/pages/connections/received?match_id=${encodeURIComponent(card.match_id)}`
+    if (card.kind === 'auto_match' && ['found', 'waiting'].includes(store.match_by_id(card.match_id)?.status)) return `/pages/auto-match/${store.match_by_id(card.match_id).status}?match_id=${encodeURIComponent(card.match_id)}`
     throw new Error('This invitation or match is no longer available. Please check your latest connections.')
   }
   if (kind === 'status') {

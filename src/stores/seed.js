@@ -1,6 +1,7 @@
 // Independent, normalized fixture entities transcribed from the source detail screens.
 // These records are test data, not claims of live users, payments or services.
 import { ONBOARDING_FLOW } from '../utils/onboardingFlow.js'
+import { AVATAR_PROFILES } from './peopleCatalog.js'
 export const SCHEMA_VERSION = 2
 export const TEST_USER_ID = 'user_cimoa'
 export const TEST_EMAIL = 'cimoa@gmail.com'
@@ -143,11 +144,15 @@ export function create_seed(now = Date.now()) {
       avatar_url: discover_asset(item.slug, 'photo-1.jpg'),
       voice_intro: { audio_url: discover_asset(item.slug, 'voice-intro.mp3'), duration_ms: item.duration_ms, transcript: item.transcript },
     })),
+    ...AVATAR_PROFILES.map(({ questions, ...item }, index) => profile(item.user_id, item.user_name, item.university, 'me', {
+      ...item, discoverable: true, discover_order: DISCOVER_PROFILE_CONFIGS.length + index,
+    })),
   ]
   const profile_photos = []
   const icebreakers = []
   for (const user of users) {
     const discover_config = DISCOVER_PROFILE_CONFIGS.find((item) => item.user_id === user.user_id)
+    const avatar_config = AVATAR_PROFILES.find((item) => item.user_id === user.user_id)
     const images = discover_config
       ? [1, 2, 3].map((index) => discover_asset(discover_config.slug, `photo-${index}.jpg`))
       : ['user_chloe', 'user_lina'].includes(user.user_id) ? ['maya-full', 'maya-card', 'maya-av'].map(head) : [user.avatar_url]
@@ -156,7 +161,7 @@ export function create_seed(now = Date.now()) {
       profile_photos.push({ photo_id, user_id: user.user_id, media_url, position, ...(discover_config ? { focal_point: discover_config.focal_points[position] } : {}) })
       return photo_id
     })
-    user.icebreaker_ids = (discover_config?.questions || ['What’s your ideal Sunday?', 'Which song is on repeat?', 'Best hidden spot on campus?']).map((text, position) => {
+    user.icebreaker_ids = (discover_config?.questions || avatar_config?.questions || ['What’s your ideal Sunday?', 'Which song is on repeat?', 'Best hidden spot on campus?']).map((text, position) => {
       const question_id = `${user.user_id}_q_${position}`
       icebreakers.push({ question_id, user_id: user.user_id, text: user.user_id === me && position === 0 ? 'How would you spend your ideal weekend?' : text, position })
       return question_id
@@ -199,6 +204,8 @@ export function create_seed(now = Date.now()) {
     notes: 'Free to join. Bring a picnic mat. English & Cantonese.', accessibility: 'Step-free access', weather_plan: 'Moves indoors if it rains' })
   const memberships = ['user_chloe', 'user_alex', 'user_zoe'].map((user_id) => ({ membership_id: `member_picnic_${user_id}`, event_id: 'event_picnic', user_id, status: 'joined', joined_at: now - 86400000 }))
   memberships.push(...['user_alex', 'user_zoe'].map((user_id) => ({ membership_id: `member_badminton_${user_id}`, event_id: 'event_badminton', user_id, status: 'joined', joined_at: now })))
+  const campus_event_ids = ['event_sketch', 'event_photowalk', 'event_language', 'event_mic', 'event_yoga', 'event_games', 'event_hike', 'event_film', 'event_dumpling', 'event_run']
+  memberships.push(...AVATAR_PROFILES.map((person, index) => ({ membership_id: `member_catalog_${person.user_id}`, event_id: campus_event_ids[index % campus_event_ids.length], user_id: person.user_id, status: 'joined', joined_at: now - (index + 1) * 3600000 })))
   return clone_data({
     schema_version: SCHEMA_VERSION, revision: 0, updated_at: now, environment: 'fixture',
     accounts: [{ account_id: 'account_cimoa', user_id: me, email: TEST_EMAIL, status: 'active', auth_provider: 'fixture', credential_hash: '1048c6721624beee8dee35c9f99a8024b9d7fa1272b7d5d5246296f85032f9a2' }],

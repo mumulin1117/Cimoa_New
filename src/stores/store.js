@@ -1,6 +1,8 @@
 import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { create_seed, clone_data } from './seed.js'
+import { ensure_account_defaults, registration_profile, session_for, auth_context_key } from './accountDefaults.js'
+import { choose_match_candidate } from './localMatching.js'
 import { migrate_legacy, upgrade_additive_data } from './migration.js'
 import { normalize_email, valid_email, password_error, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
 import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
@@ -77,6 +79,11 @@ export const use_app_store = defineStore('app', {
       return this.discover_people[0] || null
     },
     introduction_blocker: (state) => (id) => state.hydration_status === 'ready' ? s.introduction_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
+    social_eligible: state => ready(state) && s.social_eligible(state.data),
+    relationship_state: state => id => ready(state) ? clone_data(s.relationship_state(state.data, id, state.clock_ms)) : null,
+    received_requests: state => ready(state) ? clone_data(state.data.requests.filter(row => row.recipient_id === s.owner_id(state.data) && s.visible(state.data, row.sender_id)).sort((a, b) => b.created_at - a.created_at)) : [],
+    sent_requests: state => ready(state) ? clone_data(state.data.requests.filter(row => row.sender_id === s.owner_id(state.data) && s.visible(state.data, row.recipient_id)).sort((a, b) => b.created_at - a.created_at)) : [],
+    friends: state => ready(state) ? state.data.users.filter(row => row.user_id !== s.owner_id(state.data) && s.connected(state.data, row.user_id)).map(row => ({ ...profile(state.data, row.user_id), ...s.relationship_state(state.data, row.user_id, state.clock_ms) })) : [],
     home_connections: (state) => ready(state) ? s.home_cards(state.data, state.clock_ms) : [],
     home_match_card: (state) => ready(state) ? s.home_match_card(state.data, state.clock_ms) : null,
     request_by_id: (state) => (id) => ready(state) ? clone_data(state.data.requests.find((row) => row.request_id === id && [row.sender_id, row.recipient_id].includes(s.owner_id(state.data)) && s.visible(state.data, row.sender_id) && s.visible(state.data, row.recipient_id)) || null) : null,
@@ -84,11 +91,18 @@ export const use_app_store = defineStore('app', {
       const request = this.request_by_id(id)
       if (!request) return null
       const other_id = request.sender_id === this.session.current_user_id ? request.recipient_id : request.sender_id
-      const audio = request.audio_id ? this.media_by_id(request.audio_id) : null
+      const audio = request.audio_id ? clone_data(this.data.media_files.find(row => row.media_id === request.audio_id && row.owner_user_id === request.sender_id) || null) : null
       return { ...request, other: this.user_by_id(other_id), question: this.data.icebreakers.find(row => row.question_id === request.question_id)?.text || '', audio }
     } },
     match_by_id: (state) => (id) => ready(state) ? s.owned_matches(state.data, state.clock_ms).find((row) => row.match_id === id) || null : null,
     match_detail() { return id => { const match = this.match_by_id(id); return match ? { ...match, candidate: match.candidate_id ? this.user_by_id(match.candidate_id) : null } : null } },
+    match_invitation: state => id => {
+      if (!ready(state)) return null
+      const owner = s.owner_id(state.data), row = state.data.match_sessions.find(match => match.match_id === id && [match.owner_user_id, match.candidate_id].includes(owner) && match.self_accepted)
+      if (!row || !s.visible(state.data, row.owner_user_id) || !s.visible(state.data, row.candidate_id)) return null
+      const status = row.status === 'connected' ? 'accepted' : row.status === 'passed' ? 'declined' : row.status === 'waiting' ? 'pending' : 'cancelled'
+      return { request_id: null, match_id: id, sender_id: row.owner_user_id, recipient_id: row.candidate_id, kind: 'match', status, other: profile(state.data, row.owner_user_id === owner ? row.candidate_id : row.owner_user_id) }
+    },
     match_history: (state) => ready(state) ? clone_data(s.owned_matches(state.data, state.clock_ms).filter(row => row.created_at >= state.clock_ms - 30 * 86400000).sort((a, b) => b.created_at - a.created_at)) : [],
     match_preferences: (state) => ready(state) ? clone_data(state.data.match_preferences.find(row => row.owner_user_id === s.owner_id(state.data)) || null) : null,
     media_by_id: (state) => (id) => ready(state) ? clone_data(state.data.media_files.find(row => row.media_id === id && row.owner_user_id === s.owner_id(state.data)) || null) : null,
@@ -140,7 +154,7 @@ export const use_app_store = defineStore('app', {
     my_event_groups: state => ready(state) ? ev.my_event_groups(state.data, state.clock_ms) : { featured: null, sections: [] },
     event_count() { return this.my_events.length },
     legacy_recovery: (state) => ready(state) && state.data.legacy_archive?.owner_user_id === s.owner_id(state.data) ? clone_data(state.data.legacy_archive.snapshot) : null,
-    relationships: (state) => ready(state) ? state.data.users.filter((row) => row.user_id !== s.owner_id(state.data)).map((row) => ({ to_user_id: row.user_id, status: s.connected(state.data, row.user_id) ? 'mutual' : 'none' })) : [],
+    relationships: (state) => ready(state) ? state.data.users.filter((row) => row.user_id !== s.owner_id(state.data)).map((row) => { const relation = s.relationship_state(state.data, row.user_id, state.clock_ms); return { to_user_id: row.user_id, ...relation, status: relation.connected ? 'mutual' : relation.status } }) : [],
     match: (state) => ({ ...(s.active_match(state.data, state.clock_ms) || { status: 'idle', candidate_id: null }), preferences: clone_data(state.data.match_preferences.find((row) => row.owner_user_id === s.owner_id(state.data)) || {}) }),
     posts: () => [], comments_for_post: () => () => [],
   },
@@ -165,6 +179,7 @@ export const use_app_store = defineStore('app', {
       }
     },
     async login(email, password, { is_current = () => true } = {}) {
+      const expected_context = auth_context_key(this.data)
       const email_key = String(email || '').trim().toLowerCase()
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_key) || !password) return failure('invalid_form', 'Enter a valid email and password.')
       try {
@@ -174,7 +189,11 @@ export const use_app_store = defineStore('app', {
         return transact(this, null, (data, now) => {
           const account = data.accounts.find(row => row.account_id === expected?.account_id && row.status === 'active' && row.credential_hash === expected.credential_hash)
           s.ensure(valid && account, 'Email or password is incorrect.')
-          data.session = { account_id: account.account_id, current_user_id: account.user_id, expires_at: now + 30 * 86400000 }; return account.user_id
+          s.ensure(auth_context_key(data) === expected_context, 'The account changed. Please sign in again.')
+          ensure_account_defaults(data, account.user_id)
+          data.session = session_for(account, now)
+          data.auth_flow = { flow_id: make_id('auth_flow'), step: 'welcome', email: account.email, verification_request_id: null, pending_registration_account_id: null, password_reset: null, agreements: { age: false, student: false, terms: false, privacy: false, community: false }, profile_draft: {} }
+          return account.user_id
         }, { public: true })
       } catch { return unavailable('Secure authentication') }
     },
@@ -238,6 +257,7 @@ export const use_app_store = defineStore('app', {
       return { ...result, data: { ...result.data, cleanup_warning: cleanup.some((row) => row.status === 'rejected') ? 'Some local media could not be removed. Clear app data before sharing this device.' : '' } }
     },
     async register_local_account(input, { is_current = () => true } = {}) {
+      const expected_context = auth_context_key(this.data)
       const email = normalize_email(input?.email), now = get_runtime(this).clock()
       const error = signup_error(input, now)
       if (error) return failure('invalid_form', error)
@@ -248,11 +268,13 @@ export const use_app_store = defineStore('app', {
         if (!is_current()) return failure('cancelled', 'Registration was cancelled.')
         return transact(this, null, (data, timestamp) => {
           s.ensure(!s.authenticated(data, timestamp), 'The account changed. Please retry.')
+          s.ensure(auth_context_key(data) === expected_context, 'The registration changed. Please retry.')
           s.ensure(!data.accounts.some(row => row.email === email), 'This email is already registered. Log in instead.')
           const user_id = make_id('user'), account_id = make_id('account')
           data.accounts.push({ account_id, user_id, email, status: 'active', ...credential, date_of_birth: input.date_of_birth, agreements: clone_data(input.agreements), created_at: timestamp })
-          data.users.push({ user_id, user_name: 'New member', age: age_from_date(input.date_of_birth, timestamp), avatar_url: '', university: '', major: '', mbti: '', bio: '', bio_font: 'system', country: '', goal_ids: [], interest_ids: [], photo_ids: [], icebreaker_ids: [], song_id: null, verification_status: 'pending', onboarding_status: 'not_started', discoverable: false, deleted: false })
-          data.auth_flow = { ...data.auth_flow, step: 'registered', email, verification_request_id: null, pending_registration_account_id: account_id, profile_draft: {}, agreements: { ...clone_data(input.agreements), age: true, student: false } }
+          data.users.push(registration_profile(user_id, age_from_date(input.date_of_birth, timestamp)))
+          ensure_account_defaults(data, user_id)
+          data.auth_flow = { flow_id: make_id('auth_flow'), step: 'registered', email, verification_request_id: null, pending_registration_account_id: account_id, password_reset: null, profile_draft: {}, agreements: { ...clone_data(input.agreements), age: true, student: false } }
           return { account_id, user_id, next_step: 'local_verification' }
         }, { public: true })
       } catch { return unavailable('Secure local authentication') }
@@ -419,8 +441,8 @@ export const use_app_store = defineStore('app', {
       return transact(this, operation(operation_id, 'introduction', [user_id, question_id, kind, text, audio_id, draft_id]), (data, now) => {
         const blocker = s.introduction_blocker(data, user_id, now)
         s.ensure(!blocker, blocker)
-        s.ensure(data.icebreakers.some((q) => q.question_id === question_id && q.user_id === user_id), 'Choose one of this person’s questions.')
-        s.ensure(kind === 'text' ? typeof text === 'string' && text.trim() : kind === 'voice', 'Write an introduction or record a voice note.')
+        s.ensure(data.users.find(row => row.user_id === user_id)?.icebreaker_ids.includes(question_id), 'Choose one of this person’s current questions.')
+        s.ensure(kind === 'text' ? typeof text === 'string' && text.trim() && text.length <= 300 : kind === 'voice', 'Write an introduction up to 300 characters or record a voice note.')
         if (kind === 'voice') s.ensure(s.privacy_for(data, user_id).allow_voice !== false, 'This person is not accepting voice introductions.')
         const request_id = make_id('request')
         if (kind === 'voice') add_transaction(data, -10, `voice:${request_id}`, 'spend', request_id, now)
@@ -446,7 +468,7 @@ export const use_app_store = defineStore('app', {
         if (payload.kind === 'voice_introduction') {
           const blocker = s.introduction_blocker(data, payload.user_id, now)
           s.ensure(!blocker, blocker)
-          s.ensure(data.icebreakers.some((row) => row.question_id === payload.question_id && row.user_id === payload.user_id), 'Choose one of this person’s questions.')
+          s.ensure(data.users.find(row => row.user_id === payload.user_id)?.icebreaker_ids.includes(payload.question_id), 'Choose one of this person’s current questions.')
           s.ensure(s.privacy_for(data, payload.user_id).allow_voice !== false, 'This person is not accepting voice introductions.')
           s.ensure(data.media_files.some((row) => row.media_id === payload.audio_id && row.owner_user_id === owner && row.kind === 'audio'), 'Saved media is unavailable. Please record it again.')
           const request_id = make_id('request')
@@ -468,15 +490,22 @@ export const use_app_store = defineStore('app', {
         s.ensure(row && row.status === 'pending' && ['accepted', 'declined', 'cancelled'].includes(decision), 'This request is no longer pending.')
         s.ensure((decision === 'cancelled' ? row.sender_id : row.recipient_id) === s.owner_id(data), 'You cannot change this request.')
         require_target(data, row.sender_id === s.owner_id(data) ? row.recipient_id : row.sender_id)
+        s.ensure(decision !== 'accepted' || s.social_eligible(data) && s.social_eligible(data, row.sender_id), 'Complete account verification and profile setup first.')
         row.status = decision; row.resolved_at = now
-        return decision === 'accepted' ? connect_users(data, row.sender_id, now) : id
+        if (decision !== 'accepted') return id
+        const conversation_id = connect_users(data, row.sender_id, now)
+        // The introduction is the first message, using the original sender and media.
+        if (row.kind === 'text' || data.media_files.some(media => media.media_id === row.audio_id)) data.messages.push({ message_id: `introduction_${row.request_id}`, conversation_id, sender_id: row.sender_id, kind: row.kind === 'voice' ? 'audio' : 'text', body: row.text, media_id: row.audio_id, sent_at: row.created_at, read_by: [row.sender_id] })
+        for (const request of data.requests) if (request.request_id !== id && request.status === 'pending' && [request.sender_id, request.recipient_id].includes(row.sender_id) && [request.sender_id, request.recipient_id].includes(row.recipient_id)) { request.status = 'cancelled'; request.resolved_at = now }
+        return conversation_id
       })
     },
     accept_request(id) { return this.resolve_request(id, 'accepted') },
     decline_request(id) { return this.resolve_request(id, 'declined') },
     cancel_request(id) { return this.resolve_request(id, 'cancelled') },
     start_match(operation_id) {
-      if (!get_runtime(this).services.matching_available) return unavailable('Auto Match service')
+      const availability = get_runtime(this).services.matching_available
+      if (availability === false) return unavailable('Auto Match service')
       return transact(this, operation(operation_id, 'match', []), (data, now) => {
         require_student(data); s.ensure(s.privacy_for(data, s.owner_id(data)).auto_match_visible !== false, 'Enable Auto Match visibility in Privacy before joining the queue.'); s.ensure(!s.active_match(data, now), 'A match session is already active.')
         const match_id = make_id('match'), date_key = s.utc_date_key(now)
@@ -484,7 +513,8 @@ export const use_app_store = defineStore('app', {
         if (!quota) { quota = { owner_user_id: s.owner_id(data), date_key, used_count: 0 }; data.match_quota.push(quota) }
         if (quota.used_count < 3) quota.used_count += 1
         else add_transaction(data, -10, `match:${match_id}`, 'spend', match_id, now)
-        data.match_sessions.push({ match_id, owner_user_id: s.owner_id(data), candidate_id: null, status: 'searching', created_at: now, started_at: now, paused_at: null, expires_at: null, priority_until: null, self_accepted: false, peer_accepted: false, queue_position: null, estimated_wait_seconds: null, fixture: false }); return match_id
+        const candidate = availability === undefined ? choose_match_candidate(data) : null
+        data.match_sessions.push({ match_id, owner_user_id: s.owner_id(data), candidate_id: candidate?.user_id || null, status: 'searching', created_at: now, started_at: now, paused_at: null, expires_at: availability === undefined && candidate ? now + 54000 : null, priority_until: null, self_accepted: false, peer_accepted: false, queue_position: null, estimated_wait_seconds: availability === undefined ? 9 : null, fixture: false, ...(availability === undefined ? { engine: 'device', search_ready_at: now + 9000, preference_snapshot: clone_data(data.match_preferences.find(row => row.owner_user_id === s.owner_id(data))) } : {}) }); return match_id
       })
     },
     transition_match(id, status) {
@@ -492,9 +522,22 @@ export const use_app_store = defineStore('app', {
         const row = require_owned(data, data.match_sessions, 'match_id', id)
         const allowed = { searching: ['paused', 'left'], paused: ['searching', 'left'], found: ['waiting', 'passed', 'left'], waiting: ['left'] }
         s.ensure(allowed[s.match_status(row, now)]?.includes(status), 'This match action is no longer available.')
+        if (row.engine === 'device' && status === 'paused') row.search_remaining_ms = Math.max(0, row.search_ready_at - now)
+        if (row.engine === 'device' && row.status === 'paused' && status === 'searching') { row.search_ready_at = now + row.search_remaining_ms; row.expires_at = row.candidate_id ? row.search_ready_at + 45000 : null }
         row.status = status; row.paused_at = status === 'paused' ? now : null
-        if (status === 'waiting') { require_target(data, row.candidate_id); row.self_accepted = true }
+        if (status === 'waiting') { require_target(data, row.candidate_id); s.ensure(s.match_visible(data, row.candidate_id) && s.social_eligible(data, row.candidate_id) && !s.connected(data, row.candidate_id), 'This person is no longer available for a new match.'); s.ensure(!data.requests.some(request => request.status === 'pending' && [request.sender_id, request.recipient_id].includes(s.owner_id(data)) && [request.sender_id, request.recipient_id].includes(row.candidate_id)), 'An introduction is already pending.'); row.self_accepted = true }
         return id
+      })
+    },
+    respond_to_match(id, decision) {
+      return transact(this, null, (data, now) => {
+        const row = data.match_sessions.find(match => match.match_id === id && match.candidate_id === s.owner_id(data))
+        s.ensure(row?.status === 'waiting' && row.self_accepted && ['accepted', 'declined'].includes(decision), 'This match invitation is no longer available.')
+        require_target(data, row.owner_user_id)
+        s.ensure(s.social_eligible(data), 'Complete account verification and profile setup first.')
+        row.status = decision === 'accepted' ? 'connected' : 'passed'
+        row.peer_accepted = decision === 'accepted'; row.resolved_at = now
+        return decision === 'accepted' ? connect_users(data, row.owner_user_id, now) : id
       })
     },
     async apply_match_event(event) {

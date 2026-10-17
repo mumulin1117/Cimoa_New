@@ -4,6 +4,7 @@ import { transact, get_runtime, failure, make_id } from './transactions.js'
 import { local_verification_context } from '../utils/localVerification.js'
 import { age_from_date } from '../utils/localAuth.js'
 import { ONBOARDING_FLOW, ONBOARDING_GOALS, onboarding_error } from '../utils/onboardingFlow.js'
+import { ensure_account_defaults, session_for } from './accountDefaults.js'
 
 export function onboarding_context(data, now) {
   if (!authenticated(data, now)) return null
@@ -76,11 +77,9 @@ export const onboarding_actions = {
       ensure(account.auth_provider === 'local' && (data.auth_flow.pending_registration_account_id === account.account_id || data.session.account_id === account.account_id && authenticated(data, now)), 'Please log in again to continue setup.')
       const user = data.users.find(row => row.user_id === account.user_id)
       account.onboarding ||= { step: 'basic', completed_steps: [] }
-      data.session = { account_id: account.account_id, current_user_id: user.user_id, expires_at: now + 30 * 86400000 }
+      data.session = session_for(account, now)
       user.onboarding_status = 'in_progress'
-      if (!data.settings.some(row => row.owner_user_id === user.user_id)) data.settings.push({ owner_user_id: user.user_id, language: 'en-US', muted_direct_user_ids: [], notifications: { master: false, requests: true, accepted: true, messages: true, auto_match: true, events: true, organizer: true, calls: true, product: false }, privacy: { discover_visible: true, auto_match_visible: true, show_online: true, show_year: true, show_field: true, show_mutual: true, allow_voice: true, allow_video: true, event_visible: true } })
-      if (!data.event_preferences.some(row => row.owner_user_id === user.user_id)) data.event_preferences.push({ owner_user_id: user.user_id, filters: {}, saved_event_ids: [], reminder_by_event: {} })
-      if (!data.match_preferences.some(row => row.owner_user_id === user.user_id)) data.match_preferences.push({ owner_user_id: user.user_id, age_min: 18, age_max: 100, height_min: 100, height_max: 250, distance_max: 100, university: 'All', major: 'All', interest_ids: [], interest_mode: 'Similar interests', mbti: 'All', religion: 'All', drinking: 'All', gender: 'Everyone', language: 'All', goal_id: 'friends' })
+      ensure_account_defaults(data, user.user_id)
       return account.onboarding.step
     }, { public: true })
   },
@@ -121,6 +120,7 @@ export const onboarding_actions = {
           ensure(ONBOARDING_FLOW.slice(0, -1).every(key => account.onboarding.completed_steps.includes(key)), 'Complete every profile step first.')
           for (const key of ['basic', 'uni', 'major', 'about', 'interests', 'goal', 'ice']) { const message = onboarding_error(key, { ...user, date_of_birth: account.date_of_birth, questions: user.icebreaker_ids.map(id => data.icebreakers.find(row => row.question_id === id)?.text) }, now); ensure(!message, message) }
           user.onboarding_status = 'complete'; user.discoverable = true; account.onboarding.completed_at = now
+          if (!Number.isInteger(user.discover_order)) user.discover_order = Math.max(-1, ...data.users.map(row => row.discover_order).filter(Number.isInteger)) + 1
           data.auth_flow.pending_registration_account_id = null
           return 'home'
         }

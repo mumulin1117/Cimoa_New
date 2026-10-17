@@ -31,7 +31,8 @@ const song = computed(() => store.song_for_user(user_id.value))
 const conversation = computed(() => store.current_conversations.find((row) => row.participant_id === user_id.value) || null)
 const photo = computed(() => photos.value[photo_index.value] || null)
 const is_self = computed(() => user_id.value === store.session.current_user_id)
-const primary_label = computed(() => is_self.value ? 'This is you' : conversation.value ? 'Chat' : 'Send shot')
+const relation = computed(() => store.relationship_state(user_id.value))
+const primary_label = computed(() => is_self.value ? 'This is you' : conversation.value ? 'Chat' : relation.value?.request_id ? relation.value.status === 'outgoing_request' ? 'Request sent' : 'View request' : relation.value?.match_id ? 'View match' : 'Send shot')
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
   : !store.session.is_authenticated
@@ -88,6 +89,12 @@ const say_hi = async () => {
       else await frame.value.navigate_forward(route)
       return
     }
+    if (relation.value?.request_id) { await frame.value.navigate_forward(`/pages/connections/${relation.value.status === 'outgoing_request' ? 'sent' : 'received'}?request_id=${encodeURIComponent(relation.value.request_id)}`); return }
+    if (relation.value?.match_id) {
+      const invitation = store.match_invitation(relation.value.match_id)
+      const route = invitation?.recipient_id === store.session.current_user_id ? `/pages/connections/received?match_id=${encodeURIComponent(relation.value.match_id)}` : `/pages/auto-match/${relation.value.match_status}?match_id=${encodeURIComponent(relation.value.match_id)}`
+      await frame.value.navigate_forward(route); return
+    }
     await frame.value.navigate_forward(require_discover_destination_ready(discover_destination(store, 'icebreaker', user_id.value)))
   } catch (cause) { error.value = cause.message }
 }
@@ -123,8 +130,8 @@ const confirm_block = async () => {
       <view class="expanded-photo-card">
         <view class="expanded-photo" role="button" tabindex="0" :aria-label="`Open photo ${photo_index + 1} of ${photos.length}`" :data-interaction="`expanded.openGallery.click.${Math.min(photo_index + 1, 3)}`" @click="open_gallery" @keydown.enter="open_gallery"><ProfilePhoto :src="photo?.media_url || ''" :name="person.user_name" :position="photo?.focal_point || '50% 22%'" /></view>
         <view v-if="song" class="expanded-song"><image :src="song.cover_url" mode="aspectFill" /><view><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view class="expanded-song-play" role="button" tabindex="0" aria-label="Play profile song" data-interaction="expanded.otherSongPlay.click.1" @click.stop="play_song" @keydown.enter.stop="play_song"><SourceIcon name="play" /></view></view>
-        <view class="expanded-photo-hit expanded-photo-hit--prev" role="button" tabindex="0" aria-label="Previous photo" data-interaction="expanded.prevPhoto.click.1" @click.stop="change_photo(-1)" @keydown.enter.stop="change_photo(-1)" />
-        <view class="expanded-photo-hit expanded-photo-hit--next" role="button" tabindex="0" aria-label="Next photo" data-interaction="expanded.nextPhoto.click.1" @click.stop="change_photo(1)" @keydown.enter.stop="change_photo(1)" />
+        <view v-if="photos.length > 1" class="expanded-photo-hit expanded-photo-hit--prev" role="button" tabindex="0" aria-label="Previous photo" data-interaction="expanded.prevPhoto.click.1" @click.stop="change_photo(-1)" @keydown.enter.stop="change_photo(-1)" />
+        <view v-if="photos.length > 1" class="expanded-photo-hit expanded-photo-hit--next" role="button" tabindex="0" aria-label="Next photo" data-interaction="expanded.nextPhoto.click.1" @click.stop="change_photo(1)" @keydown.enter.stop="change_photo(1)" />
         <view v-if="photos.length > 1" class="expanded-dots"><view v-for="(_, index) in photos" :key="index" :class="{ active: index === photo_index }" /></view>
       </view>
 

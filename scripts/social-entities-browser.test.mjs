@@ -1,0 +1,104 @@
+// Bounded built-H5 integration test; isolated browser storage and ephemeral server.
+import fs from 'node:fs'
+import path from 'node:path'
+import http from 'node:http'
+import assert from 'node:assert/strict'
+import { createRequire } from 'node:module'
+import { create_seed } from '../src/stores/seed.js'
+import { create_local_credential } from '../src/utils/localAuth.js'
+import { ensure_account_defaults, session_for } from '../src/stores/accountDefaults.js'
+import { ONBOARDING_FLOW } from '../src/utils/onboardingFlow.js'
+const require = createRequire(import.meta.url)
+const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
+const root = path.resolve('dist/build/h5'), output = path.resolve('docs/evidence/social-entities')
+const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.mp3': 'audio/mpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
+const server = http.createServer((req, res) => {
+  const file = path.resolve(root, '.' + new URL(req.url, 'http://localhost').pathname.replace(/^\/$/, '/index.html'))
+  if (!file.startsWith(root + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { res.writeHead(404); res.end(); return }
+  res.setHeader('Content-Type', mime[path.extname(file)] || 'application/octet-stream'); fs.createReadStream(file).pipe(res)
+})
+const data = create_seed(), now = Date.now()
+for (const slug of ['noah', 'sophie']) {
+  const user_id = `user_${slug}`
+  data.accounts.push({ account_id: `account_browser_${slug}`, user_id, email: `${slug}@campus.edu`, status: 'active', ...await create_local_credential('campus123'), local_verification: { method: 'fixed_code', status: 'verified', verified_at: now }, onboarding: { step: 'complete', completed_steps: [...ONBOARDING_FLOW], completed_at: now } })
+  Object.assign(data.users.find(row => row.user_id === user_id), { onboarding_status: 'complete', verification_status: 'pending' })
+  ensure_account_defaults(data, user_id)
+}
+data.session = session_for(data.accounts.find(row => row.user_id === 'user_noah'), now)
+data.users.find(row => row.user_id === 'user_sophie').gender = 'Non-binary'
+Object.assign(data.match_preferences.find(row => row.owner_user_id === 'user_noah'), { university: 'HKU', major: 'Psychology', gender: 'Non-binary', language: 'All' })
+const report = { result: 'failed', server_pid: process.pid, checks: [], errors: [] }
+const check = message => { report.checks.push(message); console.log(`PASS ${message}`) }
+let browser
+try {
+  fs.mkdirSync(output, { recursive: true })
+  await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve) })
+  const origin = `http://127.0.0.1:${server.address().port}`
+  console.log(`Temporary social-entity preview PID ${process.pid}, ${origin}`)
+  browser = await chromium.launch({ headless: true, ...(process.env.CIMOA_BROWSER_CHANNEL ? { channel: process.env.CIMOA_BROWSER_CHANNEL } : {}) })
+  const page = await browser.newPage({ viewport: { width: 393, height: 852 } }); page.setDefaultTimeout(12000)
+  page.on('pageerror', error => report.errors.push(error.message))
+  const open = route => page.goto(`${origin}/?social=${Date.now()}#${route}`)
+  const snapshot = () => page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data)
+  const seed = async () => { await page.goto(origin); await page.evaluate(snapshot => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data: snapshot })), data); await open('/pages/home/index'); await page.locator('.home-header').waitFor() }
+  const click = id => page.locator(`[data-interaction="${id}"]:visible`).click()
+  const shot = async filename => { await page.evaluate(() => Promise.all(document.getAnimations().filter(animation => animation.effect?.getComputedTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {})))); await page.screenshot({ path: path.join(output, filename) }) }
+  const field = label => page.locator(`uni-input[aria-label="${label}"] input, uni-textarea[aria-label="${label}"] textarea`)
+  const switch_account = async email => {
+    await open('/pages/settings/index'); await click('settings.openLogoutConfirm.click.1')
+    await page.getByRole('dialog').getByRole('button', { name: 'Log Out', exact: true }).click()
+    await page.locator('.welcome-page').waitFor(); await page.getByRole('button', { name: 'Log In', exact: true }).click()
+    await field('Email').fill(email); await field('Password').fill('campus123'); await click('login.loginNow.click.1'); await page.locator('.home-header').waitFor()
+  }
+  await seed()
+  await open('/pages/discover/profile?user_id=user_sophie'); await page.locator('.expanded-photo .profile-photo[data-media-status="ready"]').waitFor()
+  assert.match(await page.locator('.expanded-heading').innerText(), /Sophie Bennett/)
+  assert.equal(await page.locator('.expanded-question-list text, .expanded-question-list uni-text').count(), 3)
+  await shot('portrait-profile.png')
+  await click('expanded.sayHi.click.1'); await page.locator('[data-interaction="ibSelect.q.pick.click.1"]').first().click(); await click('ibSelect.answerGo.click.1')
+  await field('Your introduction').fill('A coffee walk after lectures sounds perfect.'); await click('ibText.continueText.click.1')
+  await page.locator('[data-interaction="reqSent.doneSent.click.1"]').waitFor()
+  const sent = (await snapshot()).requests.find(row => row.sender_id === 'user_noah')
+  assert.equal(sent.status, 'pending'); assert.equal(sent.recipient_id, 'user_sophie')
+  assert.equal((await snapshot()).coin_transactions.filter(row => row.owner_user_id === 'user_noah').length, 0)
+  await open('/pages/home/index'); await page.locator('[data-interaction="home.openSentRequest.click.1"]').waitFor()
+  await shot('sent-on-home.png')
+  await switch_account('sophie@campus.edu')
+  await page.locator(`[data-target="/pages/connections/received?request_id=${sent.request_id}"]`).click()
+  await click('reqReceived.accept.click.1'); await page.getByRole('dialog').getByRole('button', { name: 'Accept', exact: true }).click()
+  await click('reqAccepted.startChat.click.1'); await page.locator('.chat-composer').waitFor()
+  await field('Message').fill('Let’s go after the afternoon seminar.'); await click('chat.send.click.1')
+  await page.waitForFunction(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.messages.some(row => row.body === 'Let’s go after the afternoon seminar.'))
+  const connected = await snapshot(), conversation = connected.conversations.find(row => row.kind === 'direct' && row.participant_ids.includes('user_noah') && row.participant_ids.includes('user_sophie'))
+  assert.equal(connected.messages.filter(row => row.conversation_id === conversation.conversation_id).length, 2)
+  await page.reload(); await page.locator('.chat-composer').waitFor(); await click('chat.viewProfile.click.1')
+  assert.equal(await page.locator('[data-interaction="expanded.sayHi.click.1"]:visible').innerText(), 'Chat')
+  await click('expanded.sayHi.click.1'); await page.locator('.chat-composer').waitFor()
+  assert.ok(page.url().includes(conversation.conversation_id)); await shot('connected-chat.png')
+  check('Avatar profile → free introduction → sent Home card → real account switch → accept → one conversation; Chat CTA and messages survive refresh')
+  await open('/pages/discover/profile?user_id=user_noah'); await click('expanded.openSafetyMini.click.1'); await click('sheetSafetyMini.openBlock.click.1'); await click('sheetBlock.confirmBlock.click.1')
+  await page.locator('.discover-header:visible').waitFor()
+  const blocked = await snapshot(); assert.equal(blocked.relationships.some(row => [row.from_user_id, row.to_user_id].includes('user_noah')), false)
+  assert.equal(blocked.conversations.some(row => row.conversation_id === conversation.conversation_id), false)
+  check('Blocking the same user removes both friendship directions and the private conversation across Home and Discover')
+  await seed(); await open('/pages/auto-match/index'); await click('amEntry.joinPool.click.1')
+  await page.locator('[data-interaction="amSearching.pauseQueue.click.1"]').waitFor()
+  await page.locator('[data-interaction="amFound.connectAsk.click.1"]').waitFor({ timeout: 14000 })
+  await click('amFound.connectAsk.click.1'); await page.getByRole('dialog').getByRole('button', { name: 'Connect', exact: true }).click()
+  await page.locator('[data-interaction="amWaiting.returnHome.click.1"]').waitFor()
+  const matching = (await snapshot()).match_sessions.find(row => row.owner_user_id === 'user_noah')
+  assert.equal(matching.candidate_id, 'user_sophie'); assert.equal(matching.status, 'waiting'); assert.equal(matching.peer_accepted, false)
+  await open('/pages/discover/profile?user_id=user_sophie')
+  assert.equal(await page.locator('[data-interaction="expanded.sayHi.click.1"]:visible').innerText(), 'View match')
+  await click('expanded.sayHi.click.1'); await page.locator('[data-interaction="amWaiting.returnHome.click.1"]').waitFor()
+  assert.ok(page.url().includes(matching.match_id))
+  await switch_account('sophie@campus.edu'); await click('home.openMatchInvitation.click.1')
+  assert.equal(await page.getByText('You both found a match. Choose whether you would like to connect.').count(), 1)
+  assert.equal(await page.getByText('This voice recording is unavailable on this device.').count(), 0)
+  await click('reqReceived.accept.click.1'); await page.getByRole('dialog').getByRole('button', { name: 'Accept', exact: true }).click()
+  await click('reqAccepted.startChat.click.1'); await page.locator('.chat-composer').waitFor()
+  assert.equal((await snapshot()).match_sessions.find(row => row.match_id === matching.match_id).status, 'connected')
+  check('Saved preferences → device search → found → waiting and same-profile View match → peer Home invitation → explicit acceptance → shared chat')
+  assert.deepEqual(report.errors, []); report.result = 'passed'
+} catch (error) { report.errors.push(error.stack || error.message); throw error }
+finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); report.cleaned_up = true; fs.writeFileSync(path.join(output, 'browser-acceptance.json'), JSON.stringify(report, null, 2) + '\n') }

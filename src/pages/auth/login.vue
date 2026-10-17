@@ -10,7 +10,6 @@ import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { use_visual_viewport } from '@/composables/useEventViewport.js'
 import AuthPageFrame from '@/components/AuthPageFrame.vue'
 import AuthActionLoading from '@/components/AuthActionLoading.vue'
-import SourceIcon from '@/components/SourceIcon.vue'
 const store = use_app_store(), frame = ref(null), email = ref(store.auth_draft.email || ''), password = ref(''), shown = ref(false), error = ref('')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 const { height: viewport_height, keyboard_open } = use_visual_viewport()
@@ -20,7 +19,6 @@ onShow(() => { active = true })
 onHide(hide); onUnmounted(hide)
 const back = async () => { try { await frame.value.navigate_back() } catch (cause) { error.value = cause.message } }
 const go = async target => { if (is_loading.value) return; error.value = ''; try { await frame.value.navigate_forward(auth_destination(target)) } catch (cause) { error.value = cause.message } }
-const apple = () => { error.value = 'Apple sign-in is not configured. Use your local email and password.' }
 const apply_test_state = async kind => {
   if (is_loading.value) return
   error.value = ''
@@ -48,8 +46,6 @@ const login = async () => {
 <template>
   <AuthPageFrame ref="frame" class="login-page" :class="{ 'login-page--keyboard': keyboard_open }" title="Log in" back-interaction="login.goBack.click.1" :busy="is_loading" :style="{ height: viewport_height }" @back="back">
     <text class="auth-heading">Welcome back</text>
-    <view class="auth-apple" role="button" tabindex="0" data-interaction="login.appleAuth.click.1" @click="apple" @keydown.enter="apple"><SourceIcon name="apple" /><text>Continue with Apple</text></view>
-    <view class="auth-divider"><view /><text>or</text><view /></view>
     <view class="auth-field"><text class="auth-label">Email</text><view class="auth-input-box"><input v-model="email" class="auth-input" aria-label="Email" placeholder="you@university.edu" data-interaction="login.onEmail.change.1" :maxlength="254" :disabled="is_loading" autocomplete="username" /></view></view>
     <view class="auth-field"><text class="auth-label">Password</text><view class="auth-input-box"><input v-model="password" class="auth-input" aria-label="Password" placeholder="Your password" data-interaction="login.onPw.change.1" :password="!shown" :maxlength="128" :disabled="is_loading" autocomplete="current-password" @confirm="login" /><view class="auth-show" role="button" tabindex="0" :aria-label="shown ? 'Hide password' : 'Show password'" data-interaction="login.togglePw.click.1" @click="shown = !shown" @keydown.enter="shown = !shown">{{ shown ? 'Hide' : 'Show' }}</view></view></view>
     <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>

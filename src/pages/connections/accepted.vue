@@ -6,9 +6,9 @@ import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import FlowPageHeader from '@/components/FlowPageHeader.vue'
 import FlowStatePanel from '@/components/FlowStatePanel.vue'
 
-const store = use_app_store(), frame = ref(null), request_id = ref(''), error = ref('')
-onLoad(options => { request_id.value = String(options?.request_id || '') })
-const request = computed(() => store.request_detail(request_id.value)), conversation = computed(() => store.current_conversations.find(row => row.participant_id === request.value?.other?.user_id))
+const store = use_app_store(), frame = ref(null), request_id = ref(''), match_id = ref(''), error = ref('')
+onLoad(options => { request_id.value = String(options?.request_id || ''); match_id.value = String(options?.match_id || '') })
+const request = computed(() => match_id.value ? store.match_invitation(match_id.value) : store.request_detail(request_id.value)), conversation = computed(() => store.current_conversations.find(row => row.participant_id === request.value?.other?.user_id))
 const access_error = computed(() => !request.value || request.value.status !== 'accepted' || !conversation.value ? 'This accepted connection is unavailable.' : '')
 const go = async url => { try { await frame.value.navigate_replace(url) } catch (cause) { error.value = cause.message } }
 </script>

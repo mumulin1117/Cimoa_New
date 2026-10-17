@@ -1,5 +1,7 @@
 # Cimoa 认证入口逐页交互契约
 
+2026-10-17 用户覆盖：Login/Signup 的 Apple 按钮、分割线和处理方法已移除，原文相关条目仅是历史来源记录；当前验收检查入口缺席。固定验证码仍为 `009789`。账号、人物、关系及本机匹配的最新实现与证据见 [实体统一记录](./cimoa-account-social-entities.md)。
+
 Splash 像素专项已由本地提交 `745bd7d2` 封版，Welcome 已由本地提交 `491eb25d` 封版，Login 已由本地提交 `3c011d15` 封版，Age Confirmation 已由本地提交 `9e6b318f` 封版，Community Agreement 已由本地提交 `047e4c1d` 封版，Signup 已由本地提交 `4adc0b9a` 封版，Email Verification 已由本地提交 `250ab834` 封版，Verification Code 已由本地提交 `1f8b0326` 封版。Verification Success 的来源差异、浏览器/WKWebView 证据和资料引导原子入口均已通过，已按用户授权自动确认为 `verified / passed`；专项本地提交完成后立即锁定下一个认证模块页面。固定验证码仍为 `009789`，完整认证状态见[本地验证码](./cimoa-local-verification.md)。后续页面继续在全部证据通过且无未决差异时自动视觉确认并进入下一页，不再逐页等待人工回复。
 
 ## Splash

@@ -1,0 +1,26 @@
+{
+  "phase": "complete",
+  "result": "passed",
+  "server_pid": 73289,
+  "checks": [
+    "Splash → Welcome → Age; invalid/underage zero writes; custom Loading before adult draft save",
+    "Community exact six rules; Read sheet closes without accepting; all three explicit agreements persist after Loading",
+    "Signup source fields, mismatch and Show/Hide; real salted local credential; no plaintext/session/student certification",
+    "Email conflict rolls back; correction persists; Change email opens actual form; fixed code → Success",
+    "Incomplete local account cannot bypass profile setup via Home or Complete URL; guards preserve all data",
+    "Success establishes only current verified local session; Basic validates real fields and persists progress without student promotion",
+    "Cold launch resumes the next incomplete profile step without changing saved fields",
+    "University is self-reported, never pre-verified; year/field/graduation save to the current user",
+    "Major renders all 15 source cards; selection validates and updates one shared profile field",
+    "Photos source fan and fixed footer render; empty collection keeps Continue disabled with zero Loading, write or navigation",
+    "Real file chooser → decoded IndexedDB photos; Not Now/no-host Settings honest; primary/order/remove confirmation/replacement/refresh and two-photo gate",
+    "Optional About starts empty, follows source card/textarea, counts 300 characters and saves to shared profile",
+    "17 source interests; selection is only a draft; fewer than three cannot proceed; committed IDs share the entity catalog",
+    "All 15 source connection goals, multiple selections and missing shared goal metadata save atomically",
+    "Ice library six source questions, three-item limit, source custom validation, source edit-replace behavior and shared question persistence",
+    "Notification capability unavailable and no-host Settings fail without writes; Back returns pre-prompt; actual Chrome granted permission persists after Loading",
+    "Complete handles storage failure without unsourced recovery controls; successful commit relaunches Home at depth 1, consumes each Tab skeleton once and synchronizes Profile/media with no fake verification or gifts",
+    "Actual new-account password signs in again to the same completed Home without repeating onboarding"
+  ],
+  "errors": []
+}

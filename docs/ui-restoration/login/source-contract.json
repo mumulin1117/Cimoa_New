@@ -230,9 +230,9 @@
       "delta": "Display the exact local-mode disclosure: Local accounts are stored on this device. Signing in does not verify your student status. It must follow the complete source control group rather than replace it."
     },
     {
-      "id": "login-apple-unavailable",
-      "source": "INTERACTION_CONVENTIONS.md 9.2",
-      "delta": "Keep the source Apple button and icon, but without configured Apple service show an explicit unavailable error and do not navigate or claim success."
+      "id": "login-email-only",
+      "source": "User decision 2026-10-17",
+      "delta": "Remove Apple sign-in functionality, button, icon and or-divider. Email fields follow the unchanged source heading with the source 14px field margin. This supersedes the earlier Apple-unavailable delta; original Apple entries remain provenance only."
     },
     {
       "id": "login-write-loading",

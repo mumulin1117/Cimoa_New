@@ -1,0 +1,173 @@
+{
+  "source": "/Users/linqian/Downloads/大学生交友素材/头像",
+  "original_count": 26,
+  "unique_count": 23,
+  "exact_duplicates": [
+    "主页 2.jpg = 2.jpg",
+    "主页 3.jpg = 1.jpg",
+    "主页.jpg = 12.jpg"
+  ],
+  "assets": [
+    {
+      "user_id": "user_noah",
+      "source_file": "1.jpg",
+      "target": "/static/assets/people/avatar-01.jpg",
+      "byte_size": 109765,
+      "sha256": "caffdbfdc70c4b506547f4e3bb9611581a7cc74da36be8673dc9eb055f7af6a5"
+    },
+    {
+      "user_id": "user_sophie",
+      "source_file": "2.jpg",
+      "target": "/static/assets/people/avatar-02.jpg",
+      "byte_size": 104694,
+      "sha256": "5b5e7963de765a4e1a4769a2aadf95e7510004564fcceb495658f2f4148c8092"
+    },
+    {
+      "user_id": "user_ella",
+      "source_file": "3.jpg",
+      "target": "/static/assets/people/avatar-03.jpg",
+      "byte_size": 264580,
+      "sha256": "a69d24471c12e257290bbca5a1634b0080dadc4805ee7d38285a7c03a5729bf5"
+    },
+    {
+      "user_id": "user_oliver",
+      "source_file": "4.jpg",
+      "target": "/static/assets/people/avatar-04.jpg",
+      "byte_size": 127246,
+      "sha256": "a2281aabb7da77314060d68aa00f0c2133a2767ba1a46d5e24cb6e038457a80f"
+    },
+    {
+      "user_id": "user_grace",
+      "source_file": "5.jpg",
+      "target": "/static/assets/people/avatar-05.jpg",
+      "byte_size": 162003,
+      "sha256": "f6911df381a1279f01b429bae8951eefefceb9c1e042bbbdf091466bf2bb813a"
+    },
+    {
+      "user_id": "user_lucas",
+      "source_file": "6.jpg",
+      "target": "/static/assets/people/avatar-06.jpg",
+      "byte_size": 100694,
+      "sha256": "020973f852b22c2c4fe6335417a8089a7f79c1690cdea55b66c5349549fde4cb"
+    },
+    {
+      "user_id": "user_jack",
+      "source_file": "7.jpg",
+      "target": "/static/assets/people/avatar-07.jpg",
+      "byte_size": 200633,
+      "sha256": "546b0034802ed75c2dbf31d8281fe93ce46dd4a08440f2639fbf713c1443571f"
+    },
+    {
+      "user_id": "user_amelia",
+      "source_file": "8 2.jpg",
+      "target": "/static/assets/people/avatar-08.jpg",
+      "byte_size": 298700,
+      "sha256": "c012504eb307488faad31a5bbef776953db02d83073b426ef8054b01e9b05211"
+    },
+    {
+      "user_id": "user_lily",
+      "source_file": "8.jpg",
+      "target": "/static/assets/people/avatar-09.jpg",
+      "byte_size": 183140,
+      "sha256": "3659f428e7fe2aeefb86109d2bac48df361bf14c8d19966a7e73ec525e89080a"
+    },
+    {
+      "user_id": "user_mia",
+      "source_file": "10.jpg",
+      "target": "/static/assets/people/avatar-10.jpg",
+      "byte_size": 757801,
+      "sha256": "4ba9aac9f46e2a3fb0d438638e0f3e25c06e0bbabdc83919457ab11a4a233f1e"
+    },
+    {
+      "user_id": "user_isla",
+      "source_file": "11.jpg",
+      "target": "/static/assets/people/avatar-11.jpg",
+      "byte_size": 155031,
+      "sha256": "71bd03753a0483acca58e40f38af134d26034697c3f0641069144144c8887b43"
+    },
+    {
+      "user_id": "user_henry",
+      "source_file": "12.jpg",
+      "target": "/static/assets/people/avatar-12.jpg",
+      "byte_size": 122673,
+      "sha256": "847bfcfecef473257308ed307b9462f5847c296356d9448ee4fe108c8cf17abb"
+    },
+    {
+      "user_id": "user_theo",
+      "source_file": "上传图片进行搜索 2.jpg",
+      "target": "/static/assets/people/avatar-13.jpg",
+      "byte_size": 266271,
+      "sha256": "cced0b472172ebe5e12278fbf05db17449e88f7dcda120d1cafdac915affac2d"
+    },
+    {
+      "user_id": "user_finn",
+      "source_file": "上传图片进行搜索 3.jpg",
+      "target": "/static/assets/people/avatar-14.jpg",
+      "byte_size": 165552,
+      "sha256": "bd37abbe7ac48d3a17df7c08a794a8cef44793dd09f8ee891039465849800e18"
+    },
+    {
+      "user_id": "user_leo",
+      "source_file": "上传图片进行搜索.jpg",
+      "target": "/static/assets/people/avatar-15.jpg",
+      "byte_size": 1278890,
+      "sha256": "0f581e5e3d4cb70480ea864a0bfbfe885348cc6ecc36f235f5b960aa71e30806"
+    },
+    {
+      "user_id": "user_ava",
+      "source_file": "收藏到 havanna.jpg",
+      "target": "/static/assets/people/avatar-16.jpg",
+      "byte_size": 171167,
+      "sha256": "019974e4235e2e59def66492a309115d7fdf841d51db923a260b095a66c67a63"
+    },
+    {
+      "user_id": "user_archie",
+      "source_file": "收藏到 Millie’s camera roll.jpg",
+      "target": "/static/assets/people/avatar-17.jpg",
+      "byte_size": 91651,
+      "sha256": "46f68705f5da6950faad696ac5c50061300fa94884219539acd0a82f1214fe7a"
+    },
+    {
+      "user_id": "user_ruby",
+      "source_file": "主页 4.jpg",
+      "target": "/static/assets/people/avatar-18.jpg",
+      "byte_size": 151726,
+      "sha256": "c793bda16e6fe1af279df33b07335fff07b67cc1b748721ab51fa5c2821369e2"
+    },
+    {
+      "user_id": "user_freya",
+      "source_file": "主页 5.jpg",
+      "target": "/static/assets/people/avatar-19.jpg",
+      "byte_size": 204864,
+      "sha256": "7efb89fff9f291796507a5defc930d57abbc15f8e4130eda0de6317c14933b8e"
+    },
+    {
+      "user_id": "user_alice",
+      "source_file": "主页 6.jpg",
+      "target": "/static/assets/people/avatar-20.jpg",
+      "byte_size": 277137,
+      "sha256": "2cc412c444188d2a6c7e384e41c46768e7f60511d6c3aad64a450c258ef24296"
+    },
+    {
+      "user_id": "user_daisy",
+      "source_file": "主页 7.jpg",
+      "target": "/static/assets/people/avatar-21.jpg",
+      "byte_size": 203820,
+      "sha256": "e791ccc297968cb9a7e0eddf7f616eb7583dddb44f7510405fb3e1657068f10e"
+    },
+    {
+      "user_id": "user_oscar",
+      "source_file": "主页 8.jpg",
+      "target": "/static/assets/people/avatar-22.jpg",
+      "byte_size": 44150,
+      "sha256": "4382aba11e4f0bdd2678515cb3969bc6fd2872bba24d7575cf6c053cded69433"
+    },
+    {
+      "user_id": "user_max",
+      "source_file": "Ξ ⤹³ ʜ͜͡ɚ.†͜īʑī֟īᤐ ࣪  ⊹ ◌ ۪ ࣪.jpg",
+      "target": "/static/assets/people/avatar-23.jpg",
+      "byte_size": 149957,
+      "sha256": "bbd6a2810feffff0ef81758c900fc1217e8b1f97bb568c458576e88bf88c8935"
+    }
+  ]
+}

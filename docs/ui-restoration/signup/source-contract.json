@@ -223,9 +223,9 @@
       "delta": "Create Account validates the prior age and consent draft plus a valid email, an 8-128 character password containing a number and matching confirmation; then shows the custom 400-600ms Loading, derives a salted PBKDF2 credential, atomically creates the local account and enters fixed-code verification. No plaintext password, session or student certification is written."
     },
     {
-      "id": "signup-apple-unavailable",
-      "source": "User instruction that missing services must fail explicitly and never fake success",
-      "delta": "Apple remains visually present but reports that it is not configured, creates no account and does not navigate to verification."
+      "id": "signup-email-only",
+      "source": "User decision 2026-10-17",
+      "delta": "Remove Apple registration functionality, button, icon and or-divider. The first source field follows the unchanged heading with its 14px margin; all other form controls retain source styling. This supersedes the earlier Apple-unavailable delta."
     },
     {
       "id": "signup-local-disclosure",

@@ -416,7 +416,6 @@
     "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "signup.goBack.click.1",
-      "signup.appleAuth.click.1",
       "signup.onEmail.change.1",
       "signup.onPw.change.1",
       "signup.togglePw.click.1",
@@ -456,7 +455,7 @@
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "Signup source locked; every first-audit difference resolved; deterministic browser and iPhone 17 Pro WKWebView acceptance automatically confirmed; final checks and local specialty commit complete",
     "acceptance_evidence": "docs/ui-restoration/signup/acceptance.json",
-    "acceptance_notes": "Browser 7/7, registration Store 10/10, registration browser 3/3 and WKWebView 1/1 passed, including exact empty default, truthful validation states, Apple explicit failure, Loading zero-write, one salted local account, duplicate and injected failure rollback, refresh recovery, 320x568 scrolling, return ownership, 62/34 safe area and real iOS keyboard."
+    "acceptance_notes": "2026-10-17 email-only revalidation passed: Apple controls/divider/handler removed by user request; browser 7/7, complete registration 18/18, unit suite 104/104 and WKWebView targeted suite 5/5. Preserves source form styling, atomic salted registration, duplicate/failure rollback, refresh, 320x568, return ownership and native keyboard/safe areas."
   },
   {
     "source_screen": "Auth / Log In / Default",
@@ -486,7 +485,6 @@
     "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "login.goBack.click.1",
-      "login.appleAuth.click.1",
       "login.onEmail.change.1",
       "login.onPw.change.1",
       "login.togglePw.click.1",
@@ -527,7 +525,7 @@
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
     "mapping_status": "Login source locked; first-audit differences resolved; user visual confirmation, browser/WKWebView evidence and final gates passed",
-    "acceptance_notes": "Browser pixel/flow checks, Store tests, iPhone 17 Pro WKWebView and real soft-keyboard probes passed. User confirmed the screenshots on 2026-10-15; final gates passed and the page is included in the Login local specialty commit."
+    "acceptance_notes": "Original visual confirmation 2026-10-15; 2026-10-17 user-requested email-only revalidation passed with Apple controls/divider/handler removed. Browser 5/5, unit suite 104/104, WKWebView targeted suite 5/5 and all three gates pass; source form styling, keyboard, safe area and fixed-code routing preserved."
   },
   {
     "source_screen": "Auth / Email Verification / Enter Email",

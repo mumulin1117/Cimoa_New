@@ -1,4 +1,5 @@
 import { ONBOARDING_FLOW } from '../utils/onboardingFlow.js'
+import { clone_data } from './seed.js'
 export const owner_id = (data) => data.session.current_user_id
 export const authenticated = (data, now = Date.now()) => data.session.expires_at > now && data.accounts.some((account) => account.account_id === data.session.account_id && account.user_id === owner_id(data) && account.status === 'active')
 export const blocked = (data, user_id, owner = owner_id(data)) => data.blocked_users.some((row) => row.owner_user_id === owner && row.user_id === user_id)
@@ -9,28 +10,52 @@ export const user_by_id = (data, user_id) => {
   if (!visible(data, user_id)) return null
   const user = data.users.find((row) => row.user_id === user_id)
   const privacy = privacy_for(data, user_id)
-  return { ...user, ...(owner_id(data) !== user_id ? { year: privacy.show_year === false ? '' : user.year, major: privacy.show_field === false ? '' : user.major } : {}) }
+  return clone_data({ ...user, ...(owner_id(data) !== user_id ? { year: privacy.show_year === false ? '' : user.year, major: privacy.show_field === false ? '' : user.major } : {}) })
 }
 export const balance = (data, owner = owner_id(data)) => data.coin_transactions.filter((row) => row.owner_user_id === owner && row.status === 'completed').reduce((sum, row) => sum + row.amount, 0)
 export const connected = (data, user_id, owner = owner_id(data)) => !!owner && visible(data, user_id) && [[owner, user_id], [user_id, owner]].every(([from, to]) => data.relationships.some((row) => row.from_user_id === from && row.to_user_id === to))
+export const social_eligible = (data, user_id = owner_id(data)) => {
+  const user = data.users.find(row => row.user_id === user_id && !row.deleted)
+  if (!user) return false
+  if (user.verification_status === 'verified') return true
+  return user.verification_status === 'pending' && user.onboarding_status === 'complete' && data.accounts.some(row => row.user_id === user_id && row.status === 'active' && row.auth_provider === 'local' && row.local_verification?.method === 'fixed_code' && row.local_verification.status === 'verified')
+}
+// Shared read model for Home, profiles, participant lists and chat permissions.
+// Requests and directional consent remain the only persisted relationship facts.
+export const relationship_state = (data, target, now = Date.now()) => {
+  const owner = owner_id(data)
+  const unavailable = !owner || target === owner || !data.users.some(row => row.user_id === target && !row.deleted)
+  const blocked_by_me = blocked(data, target), blocked_by_them = blocked(data, owner, target)
+  const mutual = !unavailable && connected(data, target)
+  const request = data.requests.filter(row => row.status === 'pending' && [row.sender_id, row.recipient_id].includes(owner) && [row.sender_id, row.recipient_id].includes(target)).sort((a, b) => b.created_at - a.created_at)[0]
+  const match = data.match_sessions.filter(row => row.owner_user_id === owner && row.candidate_id === target || row.owner_user_id === target && row.candidate_id === owner && row.self_accepted).sort((a, b) => b.created_at - a.created_at)[0]
+  const conversation = mutual ? data.conversations.find(row => row.kind === 'direct' && row.participant_ids.includes(owner) && row.participant_ids.includes(target)) : null
+  const match_state = match ? match_status(match, now) : null
+  const status = unavailable ? 'unavailable' : blocked_by_me ? 'blocked' : blocked_by_them ? 'unavailable' : mutual ? 'connected' : request ? request.sender_id === owner ? 'outgoing_request' : 'incoming_request' : ['found', 'waiting'].includes(match_state) ? 'matched' : 'none'
+  return { user_id: target, status, blocked_by_me, blocked_by_them, connected: mutual, request_id: ['incoming_request', 'outgoing_request'].includes(status) ? request.request_id : null, conversation_id: conversation?.conversation_id || null, match_id: status === 'matched' ? match.match_id : null, match_status: status === 'matched' ? match_state : null }
+}
 export const introduction_blocker = (data, target, now = Date.now()) => {
   const owner = owner_id(data)
   if (!authenticated(data, now)) return 'Your session has expired. Please sign in again.'
-  if (data.users.find((row) => row.user_id === owner)?.verification_status !== 'verified') return 'Student verification is required.'
+  if (!social_eligible(data)) return 'Complete account verification and profile setup first.'
   if (target === owner || !visible(data, target)) return 'This profile is unavailable.'
   if (connected(data, target)) return 'You are already connected.'
   if (data.requests.some((row) => row.status === 'pending' && [row.sender_id, row.recipient_id].includes(owner) && [row.sender_id, row.recipient_id].includes(target))) return 'A request is already pending.'
+  if (data.match_sessions.some(row => row.status === 'waiting' && row.self_accepted && [row.owner_user_id, row.candidate_id].includes(owner) && [row.owner_user_id, row.candidate_id].includes(target))) return 'A match invitation is already pending.'
   return ''
 }
 export const utc_date_key = (now) => new Date(now).toISOString().slice(0, 10)
 export const remaining_quota = (data, now = Date.now()) => Math.max(0, data.quota_policy.free_daily_limit - (data.match_quota.find((row) => row.owner_user_id === owner_id(data) && row.date_key === utc_date_key(now))?.used_count || 0))
-export const match_status = (row, now) => row.status === 'found' && row.expires_at <= now ? 'expired' : row.status
+export const match_status = (row, now) => {
+  const status = row.engine === 'device' && row.status === 'searching' && now >= row.search_ready_at ? row.candidate_id ? 'found' : 'no_match' : row.status
+  return status === 'found' && row.expires_at <= now ? 'expired' : status
+}
 export const owned_matches = (data, now = Date.now()) => data.match_sessions.filter((row) => row.owner_user_id === owner_id(data) && (!row.candidate_id || visible(data, row.candidate_id))).map((row) => ({ ...row, status: match_status(row, now) }))
 export const active_match = (data, now = Date.now()) => owned_matches(data, now).find((row) => !row.fixture && ['searching', 'paused', 'found', 'waiting'].includes(row.status)) || null
 export const members = (data, event_id) => data.memberships.filter((row) => row.event_id === event_id && row.status === 'joined')
 export const joined = (data, event_id, user_id = owner_id(data)) => members(data, event_id).some((row) => row.user_id === user_id)
 export const can_open_conversation = (data, conversation) => !!conversation && (conversation.kind === 'group' ? joined(data, conversation.event_id) : conversation.participant_ids.includes(owner_id(data)) && connected(data, conversation.participant_ids.find((id) => id !== owner_id(data))))
-export const goals_for_user = (data, user_id) => (user_by_id(data, user_id)?.goal_ids || []).map((id) => data.goals.find((row) => row.item_id === id)).filter(Boolean)
+export const goals_for_user = (data, user_id) => clone_data((user_by_id(data, user_id)?.goal_ids || []).map((id) => data.goals.find((row) => row.item_id === id)).filter(Boolean))
 export const messages_for = (data, conversation_id) => can_open_conversation(data, data.conversations.find((row) => row.conversation_id === conversation_id)) ? data.messages.filter((row) => row.conversation_id === conversation_id && visible(data, row.sender_id)).sort((a, b) => a.sent_at - b.sent_at) : []
 export const home_cards = (data, now = Date.now()) => {
   const cards = new Map()
@@ -40,12 +65,18 @@ export const home_cards = (data, now = Date.now()) => {
     cards.set(user_id, { user_id, kind: 'connected', conversation_id: row.conversation_id })
   }
   for (const row of owned_matches(data, now)) {
-    if (!row.candidate_id || cards.has(row.candidate_id) || ['passed', 'left', 'no_match'].includes(row.status)) continue
+    if (!row.candidate_id || cards.has(row.candidate_id) || !['found', 'waiting'].includes(row.status)) continue
     cards.set(row.candidate_id, { user_id: row.candidate_id, kind: 'auto_match', match_id: row.match_id })
   }
+  for (const row of data.match_sessions) {
+    if (row.candidate_id !== owner_id(data) || row.status !== 'waiting' || !row.self_accepted || !visible(data, row.owner_user_id) || cards.has(row.owner_user_id)) continue
+    cards.set(row.owner_user_id, { user_id: row.owner_user_id, kind: 'match_invite', match_id: row.match_id })
+  }
   for (const row of data.requests) {
-    if (row.recipient_id !== owner_id(data) || row.status !== 'pending' || !visible(data, row.sender_id) || cards.has(row.sender_id)) continue
-    cards.set(row.sender_id, { user_id: row.sender_id, kind: 'invite', request_id: row.request_id })
+    if (![row.recipient_id, row.sender_id].includes(owner_id(data)) || row.status !== 'pending') continue
+    const user_id = row.sender_id === owner_id(data) ? row.recipient_id : row.sender_id
+    if (!visible(data, user_id) || cards.get(user_id)?.kind === 'connected') continue
+    cards.set(user_id, { user_id, kind: row.sender_id === owner_id(data) ? 'sent' : 'invite', request_id: row.request_id })
   }
   return [...cards.values()].map((row) => ({ ...row, user: user_by_id(data, row.user_id), goals: goals_for_user(data, row.user_id) }))
 }
@@ -69,7 +100,8 @@ export function validate_data(data) {
   ensure(data.schema_version === 2 && Number.isInteger(data.revision) && data.revision >= 0, 'Saved data version is invalid.')
   for (const [table, key] of Object.entries(tables)) ensure(Array.isArray(data[table]) && data[table].every((row) => typeof row[key] === 'string' && row[key]) && unique(data[table], (row) => row[key]), `Invalid ${table} identifiers.`)
   ensure(unique(data.accounts, (row) => row.email.toLowerCase()), 'Duplicate account email.')
-  for (const row of data.accounts) ensure(has('users', row.user_id) && ['active', 'deleted'].includes(row.status), 'Invalid account.')
+  ensure(unique(data.accounts, row => row.user_id), 'Duplicate account identity.')
+  for (const row of data.accounts) ensure(has('users', row.user_id) && typeof row.email === 'string' && row.email === row.email.trim().toLowerCase() && ['active', 'deleted'].includes(row.status), 'Invalid account.')
   for (const row of data.accounts) if (row.local_verification != null) ensure(row.local_verification.method === 'fixed_code' && row.local_verification.status === 'verified' && Number.isFinite(row.local_verification.verified_at), 'Invalid local verification.')
   for (const row of data.accounts) if (row.onboarding != null) {
     const progress = row.onboarding
@@ -86,6 +118,7 @@ export function validate_data(data) {
   for (const row of data.users) {
     ensure(typeof row.user_name === 'string' && row.user_name && (row.age === null || Number.isInteger(row.age) && row.age >= 18), 'Invalid profile.')
     for (const [field, table] of [['goal_ids', 'goals'], ['interest_ids', 'interests'], ['photo_ids', 'profile_photos'], ['icebreaker_ids', 'icebreakers']]) ensure(Array.isArray(row[field]) && new Set(row[field]).size === row[field].length && row[field].every((id) => has(table, id)), `Invalid ${field}.`)
+    ensure(row.photo_ids.every(id => data.profile_photos.some(photo => photo.photo_id === id && photo.user_id === row.user_id)) && row.icebreaker_ids.every(id => data.icebreakers.some(question => question.question_id === id && question.user_id === row.user_id)), 'Profile media or questions belong to another user.')
     ensure(!row.song_id || has('songs', row.song_id), 'Invalid song.')
     if (row.voice_intro != null) ensure(typeof row.voice_intro.audio_url === 'string' && row.voice_intro.audio_url.startsWith('/static/assets/') && Number.isFinite(row.voice_intro.duration_ms) && row.voice_intro.duration_ms > 0 && typeof row.voice_intro.transcript === 'string' && row.voice_intro.transcript.trim(), 'Invalid voice introduction.')
     ensure(balance(data, row.user_id) >= 0, 'Not enough coins.')
@@ -96,8 +129,11 @@ export function validate_data(data) {
   for (const row of data.relationships) ensure(has('users', row.from_user_id) && has('users', row.to_user_id) && row.from_user_id !== row.to_user_id, 'Invalid relationship.')
   ensure(unique(data.relationships, (row) => `${row.from_user_id}:${row.to_user_id}`), 'Duplicate relationship.')
   for (const row of data.requests) ensure(has('users', row.sender_id) && has('users', row.recipient_id) && row.sender_id !== row.recipient_id && data.icebreakers.some((q) => q.question_id === row.question_id && q.user_id === row.recipient_id) && ['pending', 'accepted', 'declined', 'cancelled'].includes(row.status) && ['text', 'voice'].includes(row.kind) && (row.kind === 'text' ? !!row.text.trim() : has('media_files', row.audio_id) || row.fixture_media_unavailable === true), 'Invalid request.')
+  ensure(unique(data.requests.filter(row => row.status === 'pending'), row => [row.sender_id, row.recipient_id].sort().join(':')), 'Duplicate pending request.')
+  for (const row of data.requests.filter(row => row.kind === 'voice' && row.audio_id)) ensure(data.media_files.some(media => media.media_id === row.audio_id && media.kind === 'audio' && media.owner_user_id === row.sender_id), 'Introduction media belongs to another user.')
   for (const row of data.match_sessions) ensure(has('users', row.owner_user_id) && (!row.candidate_id || has('users', row.candidate_id)) && ['searching', 'paused', 'found', 'waiting', 'connected', 'passed', 'expired', 'no_match', 'left'].includes(row.status) && (row.status !== 'connected' || row.self_accepted && row.peer_accepted), 'Invalid match.')
   for (const row of data.match_sessions) ensure((row.queue_position == null || Number.isInteger(row.queue_position) && row.queue_position > 0) && (row.estimated_wait_seconds == null || Number.isFinite(row.estimated_wait_seconds) && row.estimated_wait_seconds >= 0), 'Invalid queue details.')
+  for (const row of data.match_sessions.filter(row => row.engine === 'device')) ensure(Number.isFinite(row.search_ready_at) && (row.candidate_id === null || Number.isFinite(row.expires_at)), 'Invalid device matching deadline.')
   for (const row of data.match_preferences) ensure(['Similar interests', 'A mix', 'Surprise me'].includes(row.interest_mode), 'Invalid interest matching preference.')
   ensure(data.quota_policy.timezone === 'UTC', 'The quota timezone must be UTC.')
   ensure(unique(data.match_quota, (row) => `${row.owner_user_id}:${row.date_key}`), 'Duplicate daily quota.')
@@ -113,6 +149,7 @@ export function validate_data(data) {
   for (const row of data.memberships) ensure(has('users', row.user_id) && has('events', row.event_id) && ['joined', 'left'].includes(row.status), 'Invalid member.')
   ensure(unique(data.memberships, (row) => `${row.event_id}:${row.user_id}`), 'Duplicate member.')
   for (const row of data.conversations) ensure(row.kind === 'group' ? has('events', row.event_id) : row.kind === 'direct' && row.participant_ids.length === 2 && new Set(row.participant_ids).size === 2 && row.participant_ids.every((id) => has('users', id)), 'Invalid conversation.')
+  ensure(unique(data.conversations.filter(row => row.kind === 'direct'), row => [...row.participant_ids].sort().join(':')), 'Duplicate private conversation.')
   for (const row of data.messages) ensure(has('users', row.sender_id) && has('conversations', row.conversation_id) && row.read_by.every((id) => has('users', id)) && ['text', 'image', 'audio'].includes(row.kind) && (row.kind === 'text' ? !!row.body.trim() : has('media_files', row.media_id)), 'Invalid message.')
   ensure(unique(data.coin_transactions, (row) => `${row.owner_user_id}:${row.business_key}`), 'Duplicate coin transaction.')
   for (const row of data.coin_transactions) ensure(has('users', row.owner_user_id) && Number.isInteger(row.amount) && row.amount !== 0 && ['completed', 'cancelled', 'failed'].includes(row.status), 'Invalid transaction.')

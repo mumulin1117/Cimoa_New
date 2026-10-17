@@ -40,9 +40,9 @@ const navigate = async (kind, id) => {
     else await frame.value.navigate_forward(url)
   } catch (error) { navigation_error.value = error.message } finally { navigating.value = false }
 }
-const card_id = (card) => card.kind === 'connected' ? 'home.openMaya.click.1' : card.kind === 'auto_match' ? 'home.openLiam.click.1' : 'home.openJordan.click.1'
+const card_id = (card) => card.kind === 'connected' ? 'home.openMaya.click.1' : card.kind === 'auto_match' ? 'home.openLiam.click.1' : card.kind === 'sent' ? 'home.openSentRequest.click.1' : card.kind === 'match_invite' ? 'home.openMatchInvitation.click.1' : 'home.openJordan.click.1'
 const goal_id = (card) => card.kind === 'connected' ? 'home.popMaya.click.1' : card.kind === 'auto_match' ? 'home.popLiam.click.1' : 'home.popJordan.click.1'
-const status_label = (kind) => ({ connected: 'Connected', auto_match: 'Auto Match', invite: 'Invite' })[kind]
+const status_label = (kind) => ({ connected: 'Connected', auto_match: 'Auto Match', invite: 'Invite', sent: 'Sent', match_invite: 'Invite' })[kind]
 onHide(close_goals)
 onResize(close_goals)
 onUnmounted(close_goals)
@@ -182,7 +182,7 @@ onUnmounted(close_goals)
 }
 .connection-status--connected { background: var(--cimoa-status-connected-bg); color: var(--cimoa-status-connected-ink); }
 .connection-status--auto_match { background: var(--cimoa-gradient-match-badge); color: var(--cimoa-text-inverse); }
-.connection-status--invite { background: var(--cimoa-status-invite-bg); color: var(--cimoa-status-invite-ink); }
+.connection-status--invite, .connection-status--sent, .connection-status--match_invite { background: var(--cimoa-status-invite-bg); color: var(--cimoa-status-invite-ink); }
 .connection-info { flex: 1; min-width: 0; }
 .connection-heading { display: flex; align-items: center; gap: 15.267rpx; }
 .connection-name {

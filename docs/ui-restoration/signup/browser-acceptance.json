@@ -1,7 +1,7 @@
 {
   "phase": "signup-pixel-restoration",
   "result": "passed",
-  "server_pid": 9615,
+  "server_pid": 64130,
   "reference": {
     "kind": "source-derived locked reference with approved safe-area, truthful-local-registration and password-security deltas",
     "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
@@ -46,52 +46,36 @@
       "right": 373,
       "bottom": 158.265625
     },
-    "apple": {
-      "x": 20,
-      "y": 176.25,
-      "width": 353,
-      "height": 55.984375,
-      "right": 373,
-      "bottom": 232.234375
-    },
-    "divider": {
-      "x": 20,
-      "y": 250.21875,
-      "width": 353,
-      "height": 17,
-      "right": 373,
-      "bottom": 267.21875
-    },
     "fields": [
       {
         "x": 20,
-        "y": 281.21875,
+        "y": 172.265625,
         "width": 353,
         "height": 79.984375,
-        "bottom": 361.203125
+        "bottom": 252.25
       },
       {
         "x": 20,
-        "y": 375.203125,
+        "y": 266.25,
         "width": 353,
         "height": 102.96875,
-        "bottom": 478.171875
+        "bottom": 369.21875
       },
       {
         "x": 20,
-        "y": 492.171875,
+        "y": 383.21875,
         "width": 353,
         "height": 79.984375,
-        "bottom": 572.15625
+        "bottom": 463.203125
       }
     ],
     "note": {
       "x": 20,
-      "y": 588.140625,
+      "y": 479.1875,
       "width": 353,
       "height": 34,
       "right": 373,
-      "bottom": 622.140625
+      "bottom": 513.1875
     },
     "footer": {
       "x": 0,
@@ -124,8 +108,6 @@
     "text": {
       "header": "Sign up",
       "heading": "Create your account",
-      "apple": "Continue with Apple",
-      "divider": "or",
       "labels": [
         "University email",
         "Password",
@@ -157,7 +139,6 @@
       }
     ],
     "backInteraction": "signup.goBack.click.1",
-    "appleInteraction": "signup.appleAuth.click.1",
     "toggleInteraction": "signup.togglePw.click.1",
     "primaryInteraction": "signup.createAccount.click.1",
     "secondaryInteraction": "signup.goLogin.click.1",
@@ -173,16 +154,16 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 62290,
-    "pixels_above_channel_delta_8": 13936,
-    "mean_absolute_channel_delta": 1.3619891528987325,
-    "max_channel_delta": 162
+    "pixels_different": 60165,
+    "pixels_above_channel_delta_8": 12976,
+    "mean_absolute_channel_delta": 1.2606761220418354,
+    "max_channel_delta": 146
   },
   "checks": [
     "393x852 empty default restores locked source geometry, exact controls, approved truthful note, disabled CTA and finished cRise frame",
     "reference, actual, overlay and absolute diff were generated from one hash-locked default state",
     "short, missing-number and mismatch hints are truthful; keyboard Show/Hide controls both real password fields",
-    "Apple fails with zero write; editing clears stale error; 320x568 scrolling and keyboard-height reduction keep the focused field visible",
+    "Apple entry is absent; editing keeps the form usable; 320x568 scrolling and keyboard-height reduction keep the focused field visible",
     "duplicate email rolls back; one Loading creates one salted local account; no plaintext/session/student certification; refresh recovers verification with blank passwords",
     "injected persistence failure leaves the Store unchanged, preserves retryable credentials and never opens verification",
     "Login round-trip restores Signup and direct-entry Back falls back to Community without a guest-state write"

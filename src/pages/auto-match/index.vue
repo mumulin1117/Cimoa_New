@@ -10,7 +10,7 @@ import EventActionLoading from '@/components/EventActionLoading.vue'
 const store = use_app_store(), frame = ref(null), error = ref(''), navigating = ref(false)
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 const active = computed(() => store.active_match)
-const access_error = computed(() => !store.session.is_authenticated ? 'Your session has expired. Please sign in again.' : store.current_user.verification_status !== 'verified' ? 'Student verification is required before joining Auto Match.' : store.current_settings.privacy?.auto_match_visible === false ? 'Enable Auto Match visibility in Privacy before joining the pool.' : '')
+const access_error = computed(() => !store.session.is_authenticated ? 'Your session has expired. Please sign in again.' : !store.social_eligible ? 'Complete account verification and profile setup before joining Auto Match.' : store.current_settings.privacy?.auto_match_visible === false ? 'Enable Auto Match visibility in Privacy before joining the pool.' : '')
 const go = async url => { if (navigating.value || is_loading.value) return; navigating.value = true; error.value = ''; try { await frame.value.navigate_forward(url) } catch (cause) { error.value = cause.message } finally { navigating.value = false } }
 const back = async () => { if (navigating.value || is_loading.value) return; try { await frame.value.navigate_back('/pages/home/index') } catch (cause) { error.value = cause.message } }
 const join = async () => {

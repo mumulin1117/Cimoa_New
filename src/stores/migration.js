@@ -1,19 +1,32 @@
 import { create_seed, clone_data, TEST_USER_ID, DISCOVER_PROFILE_IDS } from './seed.js'
 import { ensure, validate_data } from './selectors.js'
+import { AVATAR_PROFILE_IDS } from './peopleCatalog.js'
+import { ensure_account_defaults, registration_profile } from './accountDefaults.js'
 export function upgrade_additive_data(value) {
   const data = clone_data(value)
   for (const row of data.settings || []) if (row.privacy && row.privacy.auto_match_visible === undefined) row.privacy.auto_match_visible = true
   for (const row of data.match_preferences || []) if (row.interest_mode === undefined) row.interest_mode = 'Similar interests'
   if (data.auth_flow && data.auth_flow.password_reset === undefined) data.auth_flow.password_reset = null
   const catalog = create_seed(Number.isFinite(data.updated_at) ? data.updated_at : Date.now())
-  const discover_ids = new Set(DISCOVER_PROFILE_IDS)
+  const discover_ids = new Set([...DISCOVER_PROFILE_IDS, ...AVATAR_PROFILE_IDS])
+  const added_user_ids = new Set()
   for (const baseline of catalog.users.filter((row) => discover_ids.has(row.user_id))) {
     const current = data.users.find((row) => row.user_id === baseline.user_id)
-    if (!current) data.users.push(clone_data(baseline))
-    else for (const key of ['discoverable', 'discover_order', 'voice_intro']) if (current[key] === undefined) current[key] = clone_data(baseline[key])
+    if (!current) { data.users.push(clone_data(baseline)); added_user_ids.add(baseline.user_id) }
+    else for (const key of ['discoverable', 'discover_order', 'voice_intro']) if (current[key] === undefined && baseline[key] !== undefined) current[key] = clone_data(baseline[key])
   }
   for (const baseline of catalog.profile_photos.filter((row) => discover_ids.has(row.user_id))) if (!data.profile_photos.some((row) => row.photo_id === baseline.photo_id)) data.profile_photos.push(clone_data(baseline))
   for (const baseline of catalog.icebreakers.filter((row) => discover_ids.has(row.user_id))) if (!data.icebreakers.some((row) => row.question_id === baseline.question_id)) data.icebreakers.push(clone_data(baseline))
+  for (const baseline of catalog.memberships.filter(row => added_user_ids.has(row.user_id))) if (!data.memberships.some(row => row.event_id === baseline.event_id && row.user_id === baseline.user_id) && data.events.some(row => row.event_id === baseline.event_id && row.capacity > data.memberships.filter(member => member.event_id === row.event_id && member.status === 'joined').length)) data.memberships.push(clone_data(baseline))
+  for (const account of data.accounts || []) {
+    if (account.status !== 'active') continue
+    ensure_account_defaults(data, account.user_id)
+    const user = data.users.find(row => row.user_id === account.user_id)
+    if (!user) continue
+    if (account.auth_provider === 'local') for (const [key, value] of Object.entries(registration_profile(user.user_id, user.age))) if (user[key] === undefined) user[key] = clone_data(value)
+    if (user.country === '') user.country = []
+    if (user.onboarding_status === 'complete' && !Number.isInteger(user.discover_order)) user.discover_order = Math.max(-1, ...data.users.map(row => row.discover_order).filter(Number.isInteger)) + 1
+  }
   return data
 }
 export function migrate_legacy(legacy, now) {

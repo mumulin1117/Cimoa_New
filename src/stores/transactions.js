@@ -12,7 +12,7 @@ export const failure = (reason, message) => ({ success: false, reason, message }
 export const unavailable = (label) => failure('service_unavailable', `${label} is not configured. No changes were made.`)
 export const require_auth = (data, now) => select.ensure(select.authenticated(data, now), 'Your session has expired. Please log in again.')
 export const require_target = (data, target) => select.ensure(target !== select.owner_id(data) && select.visible(data, target), 'This profile is unavailable.')
-export const require_student = (data) => select.ensure(data.users.find((row) => row.user_id === select.owner_id(data))?.verification_status === 'verified', 'Student verification is required.')
+export const require_student = (data) => select.ensure(select.social_eligible(data), 'Complete account verification and profile setup first.')
 
 export function transact(store, operation, mutation, options = {}) {
   if (store.hydration_status !== 'ready') return failure('storage_not_ready', 'Saved data is unavailable. Please retry loading it.')
@@ -62,6 +62,8 @@ export function connect_users(data, other, now) {
     conversation = { conversation_id: make_id('conversation'), kind: 'direct', participant_ids: [owner, other], event_id: null }
     data.conversations.push(conversation)
   }
+  for (const match of data.match_sessions) if ([match.owner_user_id, match.candidate_id].includes(owner) && [match.owner_user_id, match.candidate_id].includes(other) && ['searching', 'paused', 'found', 'waiting'].includes(match.status)) { match.status = 'left'; match.resolved_at = now; match.resolution = 'connected_elsewhere' }
+  for (const request of data.requests) if (request.status === 'pending' && [request.sender_id, request.recipient_id].includes(owner) && [request.sender_id, request.recipient_id].includes(other)) { request.status = 'cancelled'; request.resolved_at = now }
   return conversation.conversation_id
 }
 export function disconnect_for_block(data, target, now) {
@@ -73,7 +75,7 @@ export function disconnect_for_block(data, target, now) {
       row.resolved_at = now
     }
   }
-  for (const row of data.match_sessions) if (row.owner_user_id === owner && row.candidate_id === target && !['connected', 'passed', 'expired', 'no_match', 'left'].includes(row.status)) row.status = 'left'
+  for (const row of data.match_sessions) if ([row.owner_user_id, row.candidate_id].includes(owner) && [row.owner_user_id, row.candidate_id].includes(target) && !['connected', 'passed', 'expired', 'no_match', 'left'].includes(row.status)) row.status = 'left'
   const direct_ids = data.conversations.filter((row) => row.kind === 'direct' && row.participant_ids.includes(owner) && row.participant_ids.includes(target)).map((row) => row.conversation_id)
   data.conversations = data.conversations.filter((row) => !direct_ids.includes(row.conversation_id))
   data.messages = data.messages.filter((row) => !direct_ids.includes(row.conversation_id))

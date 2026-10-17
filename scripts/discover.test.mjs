@@ -14,28 +14,28 @@ const make = (name = 'default', transform) => {
 }
 test('Discover derives canonical visible person and their ordered photo without page fixtures', () => {
   const store = make(), before = JSON.stringify(store.data), person = store.discover_person
-  assert.deepEqual([person.user_id, person.user_name, person.age, person.university, person.major, person.mbti], ['user_chloe', 'Chloe Lin', 21, 'HKUST', 'Business', 'ENFP'])
-  assert.equal(person.photo.media_url, '/static/assets/head/maya-full.png')
+  assert.deepEqual([person.user_id, person.user_name, person.age, person.university, person.major, person.mbti], ['user_zane', 'Zane', 22, 'HKUST', 'Engineering', 'ESTP'])
+  assert.equal(person.photo.media_url, '/static/assets/discover/zane/photo-1.jpg')
   assert.equal(person.photo.user_id, person.user_id)
   person.photo.media_url = 'not-a-mutation'; assert.equal(JSON.stringify(store.data), before)
-  const reordered = make('default', data => { data.profile_photos.find(p => p.photo_id === data.users[1].photo_ids[1]).position = -1 })
-  assert.equal(reordered.discover_person.photo.photo_id, reordered.data.users[1].photo_ids[1])
+  const reordered = make('default', data => { data.profile_photos.find(p => p.photo_id === 'user_zane_photo_1').position = -1 })
+  assert.equal(reordered.discover_person.photo.photo_id, 'user_zane_photo_1')
 })
 test('Discover excludes hidden, blocked, deleted and other-account entities; no photo uses empty state', () => {
-  assert.equal(make('blocked').discover_person.user_id, 'user_liam')
+  assert.equal(make('blocked').discover_person.user_id, 'user_zane')
   assert.equal(make('discover_empty').discover_person, null)
-  assert.equal(make('discover_no_photo').discover_person.photo, null)
-  assert.equal(make('discover_private').discover_person.major, '')
+  assert.equal(make('default', data => { data.users.find(row => row.user_id === 'user_zane').photo_ids = [] }).discover_person.photo, null)
+  assert.equal(make('default', data => { data.settings.push({ owner_user_id: 'user_zane', privacy: { show_field: false } }) }).discover_person.major, '')
   for (const name of ['session_expired', 'account_deleted']) assert.equal(make(name).discover_person, null)
-  for (const transform of [d => { d.users[1].deleted = true }, d => { d.settings.push({ owner_user_id: 'user_chloe', privacy: { discover_visible: false } }) }, d => { d.blocked_users.push({ block_id: 'reverse_block', owner_user_id: 'user_chloe', user_id: d.users[0].user_id }) }]) assert.equal(make('default', transform).discover_person.user_id, 'user_liam')
-  assert.equal(make('default', d => { d.users[1].photo_ids = d.users[2].photo_ids }).discover_person.photo, null)
+  for (const transform of [d => { d.users.find(row => row.user_id === 'user_zane').deleted = true }, d => { d.settings.push({ owner_user_id: 'user_zane', privacy: { discover_visible: false } }) }, d => { d.blocked_users.push({ block_id: 'reverse_block', owner_user_id: 'user_zane', user_id: d.users[0].user_id }) }]) assert.equal(make('default', transform).discover_person.user_id, 'user_linden')
+  assert.throws(() => make('default', d => { d.users[1].photo_ids = d.users[2].photo_ids }), /ready/)
 })
 test('Discover builds source destinations with same user ID, no spending and explicit dependency guards', () => {
   const store = make('discover_unconnected'), before = JSON.stringify(store.data)
   assert.equal(store.coin_balance, 0)
   assert.equal(discover_destination(store, 'profile'), '/pages/profile/index')
   assert.equal(discover_destination(store, 'preferences'), '/pages/auto-match/preferences')
-  assert.equal(discover_destination(store, 'detail', 'user_chloe'), '/pages/discover/profile?user_id=user_chloe')
+  assert.equal(discover_destination(store, 'detail', 'user_zane'), '/pages/discover/profile?user_id=user_zane')
   assert.equal(discover_destination(store, 'icebreaker', 'user_chloe'), '/pages/discover/icebreaker/select?user_id=user_chloe')
   for (const route of DISCOVER_DEFERRED_ROUTES) assert.throws(() => require_discover_destination_ready(route + '?user_id=user_chloe'), /not been restored/)
   assert.equal(JSON.stringify(store.data), before)
@@ -59,16 +59,16 @@ test('entry and submit share verification, relationship and pending-request elig
 })
 test('a visible profile opened from another real entry can start its own eligible icebreaker', () => {
   const store = make('default', data => { data.requests.find(row => row.request_id === 'request_lina').status = 'declined' })
-  assert.equal(store.discover_person.user_id, 'user_chloe')
+  assert.equal(store.discover_person.user_id, 'user_zane')
   assert.equal(discover_destination(store, 'icebreaker', 'user_lina'), '/pages/discover/icebreaker/select?user_id=user_lina')
 })
 test('Store changes and rehydration preserve the same canonical profile and photo', () => {
   const store = make(), persisted = structuredClone(JSON.parse(JSON.stringify(store.data)))
-  persisted.users[1].user_name = 'Updated Chloe'
+  persisted.users.find(row => row.user_id === 'user_zane').user_name = 'Updated Zane'
   store.data = persisted
-  assert.equal(store.discover_person.user_name, 'Updated Chloe')
+  assert.equal(store.discover_person.user_name, 'Updated Zane')
   configure_store_runtime(store, { persistence: { read: () => persisted } })
   store.hydration_status = 'idle'; store.hydrate()
-  assert.equal(store.discover_person.user_name, 'Updated Chloe')
-  assert.equal(store.discover_person.photo.user_id, 'user_chloe')
+  assert.equal(store.discover_person.user_name, 'Updated Zane')
+  assert.equal(store.discover_person.photo.user_id, 'user_zane')
 })

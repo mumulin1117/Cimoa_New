@@ -49,7 +49,8 @@ export async function test_discover({ page, origin, evidence, check }) {
   assert.equal(await page.locator('.discover-photo-card').count(), 2)
   assert.equal(await page.locator('body').textContent().then((text) => /本地数据|模拟数据/.test(text)), false)
   const stored_ids = await page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.users.filter((row) => Number.isInteger(row.discover_order)).sort((a, b) => a.discover_order - b.discover_order).map((row) => row.user_id))
-  assert.deepEqual(stored_ids, DISCOVER_PROFILE_IDS)
+  assert.deepEqual(stored_ids.slice(0, 6), DISCOVER_PROFILE_IDS)
+  assert.equal(stored_ids.length, 29)
   const source = await fit()
   assert.ok(Math.abs(source.card.height - 542) < 1, `393x852 source geometry: ${JSON.stringify(source)}`)
   assert.ok(source.card.bottom <= source.viewport.bottom + 1)
@@ -83,6 +84,7 @@ export async function test_discover({ page, origin, evidence, check }) {
   assert.deepEqual(short_screen_ids, DISCOVER_PROFILE_IDS)
   check('one viewport contains the complete card on eight iPhone viewport sizes; the card shrinks without vertical browsing')
 
+  await load()
   await page.setViewportSize({ width: 393, height: 852 })
   const initial_id = await front().getAttribute('data-user-id')
   await swipe(-1, 0.08, true)

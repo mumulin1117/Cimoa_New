@@ -31,4 +31,4 @@ Discover 补充夹具（2026-10-13）：`discover_empty`、`discover_long`、`di
 
 `corepack pnpm check:conventions`、`git diff --check`、`corepack pnpm build:h5` 已依次通过。构建只使用独立源码，未导入原型。旧页面仅作基础数据接线和错误反馈修复，视觉仍待阶段 5；不据此标记页面 verified。
 
-真实邮件、学生认证、客服、匹配服务、合法歌曲音频及 StoreKit 商品仍未配置：默认明确失败。可信购买/匹配/退款成功事件只在测试适配器注入，不由生产 timer 或查询参数触发。模拟通话只验证等待与退出，不含假接通。
+上述外部服务记录为历史范围。2026-10-17 用户要求本机实体统一后，默认匹配已使用 Store 的 device 引擎从共同人物集合选择候选；保存搜索、暂停和过期时间，另一实际账号明确接受才建立连接。新增 23 位头像人物和 6 组实体测试，详见 [本次实体记录](./cimoa-account-social-entities.md)。真实邮件、官方学生认证、客服、合法歌曲音源及 StoreKit 商品仍未配置；其成功结果不由 timer 或查询参数制造。通话仍仅等待和退出。
