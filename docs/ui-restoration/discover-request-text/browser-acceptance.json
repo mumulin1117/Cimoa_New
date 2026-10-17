@@ -1,0 +1,71 @@
+{
+  "page": "text",
+  "result": "passed",
+  "checks": [
+    "Source person/question/input geometry, 300-character counter and last-saved text survive refresh",
+    "Keyboard-height visual viewport keeps the input flow and fixed controls accessible without duplicated safe area",
+    "Failed send preserves text, exact metadata and balance with no partial request; retry remains enabled",
+    "Repeated Continue creates one pending free request; no ledger entry, relationship or fake acceptance; result refresh preserves ID",
+    "Done returns to root Discover and its CTA reflects the same pending request"
+  ],
+  "errors": [],
+  "deferred": [],
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "server_pid": 45102,
+  "reference_geometry": {
+    "620": null,
+    "627": null,
+    "631": null,
+    "640": null,
+    "650": null,
+    "666": {
+      "x": 20,
+      "y": 120,
+      "width": 353,
+      "height": 115
+    },
+    "676": {
+      "x": 20,
+      "y": 259,
+      "width": 353,
+      "height": 38
+    },
+    "677": {
+      "x": 20,
+      "y": 311,
+      "width": 353,
+      "height": 235
+    },
+    "758": null,
+    "762": null
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 60146,
+    "pixels_above_channel_delta_8": 11061,
+    "mean_absolute_channel_delta": 1.514187542558148,
+    "max_channel_delta": 250
+  },
+  "geometry": {
+    "666": {
+      "x": 20,
+      "y": 119.96875,
+      "width": 353,
+      "height": 114.953125
+    },
+    "676": {
+      "x": 20,
+      "y": 258.921875,
+      "width": 353,
+      "height": 38
+    },
+    "677": {
+      "x": 20,
+      "y": 310.921875,
+      "width": 353,
+      "height": 234.9375
+    }
+  },
+  "cleaned_up": true
+}

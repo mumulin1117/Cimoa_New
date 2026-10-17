@@ -1,0 +1,10 @@
+{
+  "source_lock": "locked",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "visual_acceptance": "pending",
+  "status": "pending",
+  "browser": "5 checks passed; source geometry <=1px, 300 limit, save/refresh, keyboard-height viewport, failure atomicity/retry, duplicate send and zero-balance free request, Done root",
+  "gates": "Three mandatory checks passed without warning",
+  "deferred": ["Final same-bundle native regression; receiver decision and voice mode roundtrip"]
+}

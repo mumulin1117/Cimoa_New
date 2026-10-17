@@ -43,4 +43,4 @@ onHide(() => { navigating.value = false; cancel_loading() }); onUnmounted(cancel
     <template #overlays><EventActionLoading :visible="is_loading" label="Saving your question…" /></template>
   </SecondaryPageFrame>
 </template>
-<style src="./icebreaker.css"></style>
+<style scoped src="./icebreaker.css"></style>
