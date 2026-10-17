@@ -1,14 +1,85 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { use_app_store } from '@/stores/store.js'
-import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
-import FlowPageHeader from '@/components/FlowPageHeader.vue'
-import FlowStatePanel from '@/components/FlowStatePanel.vue'
-const store = use_app_store(), frame = ref(null), error = ref(''), navigating = ref(false)
-const user = computed(() => store.current_user), account = computed(() => store.data.accounts.find(row => row.account_id === store.session.account_id))
-const access_error = computed(() => !store.session.is_authenticated ? 'Your session has expired. Please sign in again.' : '')
-const go = async url => { if (navigating.value) return; navigating.value = true; try { await frame.value.navigate_forward(url) } catch (cause) { error.value = cause.message } finally { navigating.value = false } }
-const back = async () => { try { await frame.value.navigate_back('/pages/profile/index') } catch (cause) { error.value = cause.message } }
+import { use_profile_editor } from '@/composables/useProfileEditor.js'
+import ProfileEditorFrame from '@/components/ProfileEditorFrame.vue'
+import SourceIcon from '@/components/SourceIcon.vue'
+const frame = ref(null), { store, error, access_error, go, back, recover } = use_profile_editor(frame)
+const verification = computed(() => store.profile_verification)
+const rows = computed(() => verification.value ? [
+  ['University', verification.value.university || 'Not provided'],
+  ['Account email', verification.value.masked_email],
+  ['Verified on', verification.value.verified_at ? new Date(verification.value.verified_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : 'Not recorded'],
+  ['Status', verification.value.verified ? 'Active' : ({ pending: 'Pending', expired: 'Expired', required: 'Required' })[verification.value.status] || 'Unavailable'],
+] : [])
 </script>
-<template><SecondaryPageFrame ref="frame"><template #header><FlowPageHeader title="University verification" interaction="verified.goBack.click.1" :busy="navigating" @back="back" /><text v-if="error" class="flow-error" role="alert">{{ error }}</text></template><template v-if="!access_error"><FlowStatePanel :icon="user.verified ? 'verified' : 'shield'" :title="user.verified ? 'Verified student' : 'Student verification pending'" :copy="user.verified ? 'Your fixture student status is active in this local build.' : 'Your local account is verified only on this device. It is not student verification.'"><view class="flow-card verification-card"><view class="flow-status-line"><text>University</text><text>{{ user.university || 'Not provided' }}</text></view><view class="flow-status-line"><text>Account email</text><text>{{ account?.email || 'Unavailable' }}</text></view><view class="flow-status-line"><text>Student status</text><text>{{ user.verification_status }}</text></view><view class="flow-status-line"><text>Local code check</text><text>{{ account?.local_verification?.status || (account?.auth_provider === 'fixture' ? 'Fixture account' : 'Not completed') }}</text></view></view><text class="flow-note">Local code 009789 validates this device account only. It never changes student verification.</text></FlowStatePanel></template><view v-else class="flow-body"><view class="flow-card" role="alert">{{ access_error }}</view></view><template #footer><view v-if="!access_error" class="flow-footer"><view class="flow-primary" role="button" data-interaction="verified.openReverify.click.1" @click="go('/pages/profile/reverify')">Re-verify</view></view></template></SecondaryPageFrame></template>
-<style scoped>.verification-card { width: 100%; text-align: left; }</style>
+<template>
+  <ProfileEditorFrame ref="frame" class="profile-verification-page" title="University verification" source="verified" :error="error" :access-error="access_error" @back="back" @recover="recover">
+    <template v-if="verification">
+      <view class="verification-summary"><view class="verification-badge"><view><SourceIcon :name="verification.verified ? 'check' : 'shield'" :stroke-width="2.6" /></view></view><text>{{ verification.verified ? 'Verified student' : 'Student verification pending' }}</text></view>
+      <view class="verification-details"><view v-for="[label, value] in rows" :key="label" class="verification-row"><text>{{ label }}</text><text>{{ value }}</text></view></view>
+      <text class="verification-note">Your university email is never shown to other students.</text>
+      <text class="verification-note">Code 009789 checks your account on this device only. It does not verify student status. University verification is not configured.</text>
+    </template>
+    <template #footer><view v-if="!access_error" class="verification-footer"><view class="verification-cta" role="button" tabindex="0" data-interaction="verified.openReverify.click.1" @click="go('/pages/profile/reverify')" @keydown.enter="go('/pages/profile/reverify')">Re-verify</view></view></template>
+  </ProfileEditorFrame>
+</template>
+<style scoped>
+.verification-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22.901rpx;
+  padding: 49.618rpx 38.168rpx;
+  background: var(--cimoa-surface-card);
+  border-radius: 45.802rpx;
+  box-shadow: var(--cimoa-shadow-card);
+}
+.verification-badge {
+  width: 145.038rpx;
+  height: 145.038rpx;
+  border-radius: 50%;
+  background: var(--cimoa-gradient-primary);
+  box-shadow: var(--cimoa-shadow-profile-verification);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cimoa-text-inverse);
+}
+.verification-badge > view { width: 64.885rpx; height: 64.885rpx; }
+.verification-summary > text { font-size: 43.893rpx; font-weight: 800; letter-spacing: -.03em; text-align: center; }
+.verification-details { margin-top: 30.534rpx; padding: 11.45rpx 34.351rpx 22.901rpx; background: var(--cimoa-surface-card); border-radius: 45.802rpx; box-shadow: var(--cimoa-shadow-card); }
+.verification-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15.267rpx;
+  min-height: 99.237rpx;
+  padding: 11.45rpx 0;
+  border-bottom: 1px solid var(--cimoa-surface-event-divider);
+  font-size: 32.443rpx;
+}
+.verification-row > text:first-child { color: var(--cimoa-text-secondary); flex: none; }
+.verification-row > text:last-child { font-weight: 700; min-width: 0; text-align: right; overflow-wrap: anywhere; }
+.verification-note {
+  display: block;
+  font-size: 28.626rpx;
+  color: var(--cimoa-text-auth-placeholder);
+  margin-top: 26.718rpx;
+  text-wrap: pretty;
+  line-height: 1.4;
+}
+.verification-footer { padding: 19.084rpx 38.168rpx 64.885rpx; flex: none; }
+.verification-cta {
+  height: 106.87rpx;
+  border-radius: 53.435rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-connection-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34.351rpx;
+  font-weight: 600;
+  cursor: pointer;
+}
+.profile-verification-page :deep(.editor-body) { padding-bottom: 30.534rpx; }
+</style>

@@ -50,6 +50,12 @@ export const use_app_store = defineStore('app', {
     waiting_call: state => id => state.hydration_status === 'ready' ? waiting_call(state.data, id, state.clock_ms) : null,
     match_presentation: state => (id='',draft=null,query='') => match_presentation(state.data,id,state.clock_ms,state.hydration_status,draft,query),
     profile_editor: state => state.hydration_status === 'ready' ? profile_context(state.data, state.clock_ms) : null,
+    profile_verification: state => {
+      if (!ready(state)) return null
+      const user = state.data.users.find(row => row.user_id === s.owner_id(state.data)), account = state.data.accounts.find(row => row.account_id === state.data.session.account_id)
+      const [name, domain] = account.email.split('@')
+      return { university: user.university, verified: user.verification_status === 'verified', status: user.verification_status, masked_email: `${name.slice(0, 2)}•••@${domain}`, verified_at: Number.isFinite(user.student_verified_at) ? user.student_verified_at : null, local_code_verified: account.local_verification?.status === 'verified' }
+    },
     profile_catalog: state => ({ ...clone_data(state.data.picker_options), songs: clone_data(state.data.songs) }),
     auth_draft: state => clone_data(state.data.auth_flow),
     registration_catalog: () => ({ rules: clone_data(community_rules), agreements: clone_data(registration_agreements) }),

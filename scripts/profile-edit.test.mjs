@@ -97,3 +97,9 @@ test('async photo decoding cannot publish across same-account reauthentication; 
   store.logout(); await store.login('cimoa@gmail.com', '12341234'); const before = clone_data(store.data)
   release({ duration_ms: 0 }); assert.equal((await pending).success, false); assert.deepEqual(clone_data(store.data), before); assert.equal(blobs.size, 0)
 })
+test('verification read model masks private email and never invents a verification timestamp', () => {
+  const { store } = fixture(), v = store.profile_verification
+  assert.equal(v.masked_email, 'ci•••@gmail.com'); assert.equal(v.verified_at, null); assert.equal(v.verified, true)
+  store.data.users[0].verification_status = 'pending'; assert.equal(store.profile_verification.verified, false)
+  assert.equal('credential_hash' in store.profile_verification, false); store.logout(); assert.equal(store.profile_verification, null)
+})

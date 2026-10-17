@@ -24,7 +24,7 @@ const images = { '6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30': user.avatar_url, 'a9831
 const report = { result: 'failed', source_sha256: source.source_hash, checks: [], errors: [], visual_acceptance: 'pending', approved_deltas: ['Canonical user data and actual ledger balance', 'Real safe areas instead of simulated system bars', 'No invented university verification, purchase or moderation success'] }
 const check = value => { report.checks.push(value); console.log('PASS ' + value) }
 function reference(origin) {
-  const vars = { obName: user.user_name, obField: user.major, obBio: user.bio, balanceText: '260 coins', coinsNum: '260', language: 'English', selectedInterests: user.interest_ids.map(id => { const i = data.interests.find(i => i.item_id === id); return { ...i, icon: i.emoji } }) }
+  const vars = { obName: user.user_name, obField: user.major, obBio: user.bio, balanceText: '260 coins', coinsNum: '260', language: 'English', maskedEmail: 'ci•••@gmail.com', selectedInterests: user.interest_ids.map(id => { const i = data.interests.find(i => i.item_id === id); return { ...i, icon: i.emoji } }) }
   const escape = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;')
   const resolve = (key, scope) => key.split('.').reduce((v, k) => v?.[k], scope)
   const fill = (value, scope) => value.replace(/{{\s*([\w.]+)\s*}}/g, (_, k) => escape(resolve(k, scope)))
@@ -56,6 +56,13 @@ try {
   const saved = await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')); await page.reload(); await page.locator(ready).first().waitFor(); assert.equal(await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), saved)
   await page.setViewportSize({ width: 320, height: 568 }); await set_safe_area(page, 62, 34); await page.waitForFunction(() => document.documentElement.scrollWidth <= innerWidth)
   check('Read-only refresh retains entities and narrow layout avoids horizontal page scrolling')
+  if (key === 'verification') {
+    assert.match(await page.locator('.verification-details').innerText(), /ci•••@gmail.com/)
+    assert.match(await page.locator('.verification-details').innerText(), /Not recorded/)
+    await page.locator('[data-interaction="verified.openReverify.click.1"]').click(); await page.locator('[data-interaction="reverify.goVerEmail.click.1"]').waitFor()
+    await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.verification-summary').waitFor(); assert.equal(await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), saved)
+    check('Masked canonical email, no fabricated date, real Re-verify push/pop without writes')
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'; await context.close()
 } catch (error) { report.failure = String(error.stack || error); throw error }
 finally { await browser?.close(); await server?.close(); report.cleaned_up = true; fs.writeFileSync(path.join(output, 'source-browser-acceptance.json'), JSON.stringify(report, null, 2) + '\n') }
