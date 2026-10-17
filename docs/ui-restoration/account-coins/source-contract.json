@@ -1,0 +1,383 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isCoinStore",
+    "source_query": "route=coinStore",
+    "lines": [
+      1402,
+      1456
+    ],
+    "fragment_sha256": "1fe247cbc2a7f388408617898b734be94abf686fc9ddf3064c3cce2af4a5b79f",
+    "fragment": "<sc-if value=\"{{ isCoinStore }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Wallet / Coin Center / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1;text-align:center;font-size:21px;font-weight:800;letter-spacing:-0.02em\">Coin Center</div>\n          <div sc-camel-on-click=\"{{ openHistory2 }}\" style=\"height:38px;padding:0 16px;border-radius:19px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\"><div style=\"font-size:15px;font-weight:700\">History</div></div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 190px;box-sizing:border-box\">\n          <div style=\"position:relative;min-height:176px;padding:24px 22px;box-sizing:border-box;border-radius:28px;background:linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%);overflow:hidden;box-shadow:0 14px 30px rgba(120,110,245,0.22)\">\n            <div style=\"position:absolute;right:-40px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.12)\"></div>\n            <div style=\"position:absolute;right:30px;bottom:-90px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.10)\"></div>\n            <img src=\"501d6dc6-cd53-4ee4-b9ae-e49c37deca54\" alt=\"coins\" style=\"position:absolute;right:4px;top:50%;transform:translateY(-50%);width:138px;height:125px;object-fit:contain;display:block;-webkit-mask-image:radial-gradient(ellipse 72% 72% at 55% 55%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 72% 72% at 55% 55%,#000 62%,transparent 100%)\">\n            <div style=\"position:relative;max-width:210px\">\n              <div style=\"font-size:17px;font-weight:600;color:#fff\">My Coins</div>\n              <div style=\"font-size:60px;font-weight:900;letter-spacing:-0.04em;line-height:1;color:#fff;margin-top:8px\">{{ coinsNum }}</div>\n              <div style=\"font-size:15px;color:#fff;margin-top:10px;line-height:1.35\">Use coins for connection requests and extra features</div>\n            </div>\n          </div>\n          <div class=\"cscroll\" style=\"display:flex;gap:10px;margin:8px -20px 0;padding:14px 20px 12px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;scroll-padding:0 20px\">\n            <sc-for list=\"{{ packages }}\" as=\"p\" hint-placeholder-count=\"3\">\n              <div sc-camel-on-click=\"{{ p.pick }}\" style=\"position:relative;flex:none;width:calc((100% - 20px) / 3);box-sizing:border-box;scroll-snap-align:start;padding:22px 10px 14px;border-radius:22px;background:{{ p.bg }};border:{{ p.border }};box-shadow:{{ p.shadow }};cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px\">\n                <sc-if value=\"{{ p.hasTag }}\" hint-placeholder-val=\"{{ false }}\">\n                  <div style=\"position:absolute;top:-12px;left:50%;transform:translateX(-50%);height:24px;padding:0 12px;border-radius:12px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;white-space:nowrap\"><div style=\"font-size:11.5px;font-weight:700;color:#fff\">{{ p.tag }}</div></div>\n                </sc-if>\n                <img src=\"{{ p.img }}\" alt=\"coins\" style=\"width:70px;height:58px;object-fit:contain;display:block\">\n                <div style=\"font-size:17px;font-weight:700;letter-spacing:-0.01em;white-space:nowrap\">{{ p.coins }}</div>\n                <div style=\"height:1px;background:#eef1f6;width:100%\"></div>\n                <div style=\"align-self:stretch;height:40px;border-radius:20px;background:#f1f3f8;display:flex;align-items:center;justify-content:center\"><div style=\"font-size:18px;font-weight:800\">{{ p.price }}</div></div>\n              </div>\n            </sc-for>\n          </div>\n          <div style=\"margin-top:22px;padding:20px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"font-size:20px;font-weight:800;letter-spacing:-0.02em\">What can coins do?</div>\n            <div style=\"display:flex;flex-direction:column;margin-top:14px\">\n              <sc-for list=\"{{ coinFeatures }}\" as=\"f\" hint-placeholder-count=\"3\">\n                <div style=\"display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:{{ f.border }}\">\n                  <img src=\"{{ f.img }}\" alt=\"\" style=\"width:50px;height:50px;border-radius:25px;display:block;flex:none\">\n                  <div style=\"flex:1;min-width:0\">\n                    <div style=\"font-size:17px;font-weight:700\">{{ f.title }}</div>\n                    <div style=\"font-size:14px;color:#8b95a6;margin-top:2px;text-wrap:pretty\">{{ f.sub }}</div>\n                  </div>\n                  <div style=\"display:flex;align-items:center;gap:6px;flex:none\"><img src=\"a9831494-dfeb-464f-8617-1e3468ad74f0\" alt=\"coin\" style=\"width:24px;height:24px;display:block;flex:none\"><div style=\"font-size:18px;font-weight:800\">{{ f.cost }}</div></div>\n                </div>\n              </sc-for>\n            </div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20;display:flex;flex-direction:column;align-items:center;gap:10px\">\n          <div sc-camel-on-click=\"{{ continuePurchase }}\" style=\"width:100%;height:60px;border-radius:30px;background:{{ storeBtnBg }};display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:{{ storeBtnInk }}\">Get Coins</div></div>\n          <div style=\"font-size:13.5px;color:#8b95a6\">Payment is processed through the App Store</div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/coins/index",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/profile/index、/pages/discover/icebreaker/preview、/pages/auto-match/index、/pages/auto-match/searching）；无历史实例时 replace /pages/profile/index，不创建伪造实体",
+  "styles": [
+    {
+      "line": 1403,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 1404,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 1405,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1408,
+      "tag": "div",
+      "style": "flex:1;text-align:center;font-size:21px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1409,
+      "tag": "div",
+      "style": "height:38px;padding:0 16px;border-radius:19px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 1409,
+      "tag": "div",
+      "style": "font-size:15px;font-weight:700"
+    },
+    {
+      "line": 1411,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 190px;box-sizing:border-box"
+    },
+    {
+      "line": 1412,
+      "tag": "div",
+      "style": "position:relative;min-height:176px;padding:24px 22px;box-sizing:border-box;border-radius:28px;background:linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%);overflow:hidden;box-shadow:0 14px 30px rgba(120,110,245,0.22)"
+    },
+    {
+      "line": 1413,
+      "tag": "div",
+      "style": "position:absolute;right:-40px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.12)"
+    },
+    {
+      "line": 1414,
+      "tag": "div",
+      "style": "position:absolute;right:30px;bottom:-90px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.10)"
+    },
+    {
+      "line": 1415,
+      "tag": "img",
+      "style": "position:absolute;right:4px;top:50%;transform:translateY(-50%);width:138px;height:125px;object-fit:contain;display:block;-webkit-mask-image:radial-gradient(ellipse 72% 72% at 55% 55%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 72% 72% at 55% 55%,#000 62%,transparent 100%)"
+    },
+    {
+      "line": 1416,
+      "tag": "div",
+      "style": "position:relative;max-width:210px"
+    },
+    {
+      "line": 1417,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:600;color:#fff"
+    },
+    {
+      "line": 1418,
+      "tag": "div",
+      "style": "font-size:60px;font-weight:900;letter-spacing:-0.04em;line-height:1;color:#fff;margin-top:8px"
+    },
+    {
+      "line": 1419,
+      "tag": "div",
+      "style": "font-size:15px;color:#fff;margin-top:10px;line-height:1.35"
+    },
+    {
+      "line": 1422,
+      "tag": "div",
+      "style": "display:flex;gap:10px;margin:8px -20px 0;padding:14px 20px 12px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;scroll-padding:0 20px"
+    },
+    {
+      "line": 1424,
+      "tag": "div",
+      "style": "position:relative;flex:none;width:calc((100% - 20px) / 3);box-sizing:border-box;scroll-snap-align:start;padding:22px 10px 14px;border-radius:22px;background:{{ p.bg }};border:{{ p.border }};box-shadow:{{ p.shadow }};cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px"
+    },
+    {
+      "line": 1426,
+      "tag": "div",
+      "style": "position:absolute;top:-12px;left:50%;transform:translateX(-50%);height:24px;padding:0 12px;border-radius:12px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;white-space:nowrap"
+    },
+    {
+      "line": 1426,
+      "tag": "div",
+      "style": "font-size:11.5px;font-weight:700;color:#fff"
+    },
+    {
+      "line": 1428,
+      "tag": "img",
+      "style": "width:70px;height:58px;object-fit:contain;display:block"
+    },
+    {
+      "line": 1429,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700;letter-spacing:-0.01em;white-space:nowrap"
+    },
+    {
+      "line": 1430,
+      "tag": "div",
+      "style": "height:1px;background:#eef1f6;width:100%"
+    },
+    {
+      "line": 1431,
+      "tag": "div",
+      "style": "align-self:stretch;height:40px;border-radius:20px;background:#f1f3f8;display:flex;align-items:center;justify-content:center"
+    },
+    {
+      "line": 1431,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:800"
+    },
+    {
+      "line": 1435,
+      "tag": "div",
+      "style": "margin-top:22px;padding:20px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 1436,
+      "tag": "div",
+      "style": "font-size:20px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 1437,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;margin-top:14px"
+    },
+    {
+      "line": 1439,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:{{ f.border }}"
+    },
+    {
+      "line": 1440,
+      "tag": "img",
+      "style": "width:50px;height:50px;border-radius:25px;display:block;flex:none"
+    },
+    {
+      "line": 1441,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 1442,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 1443,
+      "tag": "div",
+      "style": "font-size:14px;color:#8b95a6;margin-top:2px;text-wrap:pretty"
+    },
+    {
+      "line": 1445,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;flex:none"
+    },
+    {
+      "line": 1445,
+      "tag": "img",
+      "style": "width:24px;height:24px;display:block;flex:none"
+    },
+    {
+      "line": 1445,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:800"
+    },
+    {
+      "line": 1451,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20;display:flex;flex-direction:column;align-items:center;gap:10px"
+    },
+    {
+      "line": 1452,
+      "tag": "div",
+      "style": "width:100%;height:60px;border-radius:30px;background:{{ storeBtnBg }};display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 1452,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:{{ storeBtnInk }}"
+    },
+    {
+      "line": 1453,
+      "tag": "div",
+      "style": "font-size:13.5px;color:#8b95a6"
+    }
+  ],
+  "texts": [
+    {
+      "line": 1408,
+      "text": "Coin Center"
+    },
+    {
+      "line": 1409,
+      "text": "History"
+    },
+    {
+      "line": 1417,
+      "text": "My Coins"
+    },
+    {
+      "line": 1419,
+      "text": "Use coins for connection requests and extra features"
+    },
+    {
+      "line": 1436,
+      "text": "What can coins do?"
+    },
+    {
+      "line": 1452,
+      "text": "Get Coins"
+    },
+    {
+      "line": 1453,
+      "text": "Payment is processed through the App Store"
+    }
+  ],
+  "svg": [
+    {
+      "line": 1406,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a9831494-dfeb-464f-8617-1e3468ad74f0",
+        "local_path": "static/assets/coins/home-coin-badge.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "501d6dc6-cd53-4ee4-b9ae-e49c37deca54",
+        "local_path": "static/assets/coins/store-coin-hero.png",
+        "mime": "image/png"
+      },
+      {
+        "source_id": "a6",
+        "local_path": "static/assets/songs/love-me-not.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a5",
+        "local_path": "static/assets/songs/risk-it-all.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a9",
+        "local_path": "static/assets/songs/beauty-beat.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      1406
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 1405,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 1409,
+      "event": "sc-camel-on-click",
+      "handler": "openHistory2"
+    },
+    {
+      "line": 1424,
+      "event": "sc-camel-on-click",
+      "handler": "p.pick"
+    },
+    {
+      "line": 1452,
+      "event": "sc-camel-on-click",
+      "handler": "continuePurchase"
+    }
+  ],
+  "interaction_ids": [
+    "coinStore.goBack.click.1",
+    "coinStore.openHistory2.click.1",
+    "coinStore.p.pick.click.1",
+    "coinStore.continuePurchase.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "coinStore.goBack.click.1",
+      "source": "route=coinStore",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "coinStore.openHistory2.click.1",
+      "source": "route=coinStore",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "coinStore.p.pick.click.1",
+      "source": "route=coinStore",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "coinStore.continuePurchase.click.1",
+      "source": "route=coinStore",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "coin_packages; purchase_requests; coin_transactions",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}

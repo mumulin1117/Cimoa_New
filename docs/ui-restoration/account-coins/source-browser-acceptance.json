@@ -1,0 +1,116 @@
+{
+  "result": "passed",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "checks": [
+    "Independent HTML source and deterministic 393×852 actual, overlay and diff captured; visual approval is separate",
+    "Read-only refresh retains entities and narrow layout avoids horizontal page scrolling"
+  ],
+  "errors": [],
+  "visual_acceptance": "pending",
+  "approved_deltas": [
+    "Canonical user data and actual ledger balance",
+    "Real safe areas instead of simulated system bars",
+    "No invented university verification, purchase or moderation success"
+  ],
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 138577,
+    "pixels_above_channel_delta_8": 55143,
+    "mean_absolute_channel_delta": 6.105303043878197,
+    "max_channel_delta": 244
+  },
+  "geometry": [
+    {
+      "tag": "UNI-VIEW",
+      "text": "My Coins260Use coins for connection requests and extra features",
+      "width": 209.984375,
+      "height": 138.484375,
+      "font": "15px",
+      "weight": "600",
+      "line_height": "normal"
+    },
+    {
+      "tag": "UNI-TEXT",
+      "text": "My Coins",
+      "width": 209.984375,
+      "height": 20,
+      "font": "17.0001px",
+      "weight": "600",
+      "line_height": "normal"
+    },
+    {
+      "tag": "UNI-TEXT",
+      "text": "260",
+      "width": 209.984375,
+      "height": 60,
+      "font": "60.0001px",
+      "weight": "900",
+      "line_height": "60.0001px"
+    },
+    {
+      "tag": "UNI-TEXT",
+      "text": "Use coins for connection requests and extra features",
+      "width": 209.984375,
+      "height": 40.5,
+      "font": "15px",
+      "weight": "400",
+      "line_height": "20.25px"
+    },
+    {
+      "tag": "UNI-VIEW",
+      "text": "60 Coins$0.99",
+      "width": 110.984375,
+      "height": 189,
+      "font": "16px",
+      "weight": "400",
+      "line_height": "normal"
+    },
+    {
+      "tag": "UNI-VIEW",
+      "text": "Most Popular300 Coins$3.99",
+      "width": 110.984375,
+      "height": 189,
+      "font": "16px",
+      "weight": "400",
+      "line_height": "normal"
+    },
+    {
+      "tag": "UNI-VIEW",
+      "text": "680 Coins$6.99",
+      "width": 110.984375,
+      "height": 189,
+      "font": "16px",
+      "weight": "400",
+      "line_height": "normal"
+    },
+    {
+      "tag": "UNI-VIEW",
+      "text": "1,280 Coins$12.99",
+      "width": 110.984375,
+      "height": 189,
+      "font": "16px",
+      "weight": "400",
+      "line_height": "normal"
+    },
+    {
+      "tag": "UNI-VIEW",
+      "text": "Best Value2,800 Coins$24.99",
+      "width": 110.984375,
+      "height": 189,
+      "font": "16px",
+      "weight": "400",
+      "line_height": "normal"
+    },
+    {
+      "tag": "UNI-VIEW",
+      "text": "6,000 Coins$49.99",
+      "width": 110.984375,
+      "height": 189,
+      "font": "16px",
+      "weight": "400",
+      "line_height": "normal"
+    }
+  ],
+  "cleaned_up": true
+}

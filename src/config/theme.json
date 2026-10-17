@@ -191,7 +191,8 @@
     "match_badge": "linear-gradient(95deg,#1ec8f5 0%,#a855f7 60%,#f81ce5 100%)",
     "coin_hero": "linear-gradient(115deg,#35d3f7 0%,#6f8ff8 42%,#a879f6 72%,#ee6cf3 100%)",
     "auto_match_16": "linear-gradient(95deg,#1ec8f5,#a855f7)",
-    "auto_match_17": "linear-gradient(to top,rgba(6,14,28,0.8) 0%,rgba(6,14,28,0.35) 55%,rgba(6,14,28,0) 100%)"
+    "auto_match_17": "linear-gradient(to top,rgba(6,14,28,0.8) 0%,rgba(6,14,28,0.35) 55%,rgba(6,14,28,0) 100%)",
+    "coin_hero_mask": "radial-gradient(ellipse 72% 72% at 55% 55%,#000 62%,transparent 100%)"
   },
   "shadows": {
     "event_group_menu": "0 11.45rpx 30.534rpx rgba(16,36,74,0.10)",

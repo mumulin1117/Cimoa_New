@@ -1,0 +1,5 @@
+# Coin Center audit — 2026-10-17
+
+HTML 1402–1456 locked. Reuse canonical ledger/six packages, source hero/three-across horizontal cards/features/Get Coins. Found source differences: title uses arbitrary absolute centering instead of original flex, 109px packages instead of111px, 16px amount instead of17px, hero label/body typography and radial image mask omitted. Correct these source values with theme tokens/rpx, while retaining authorized free-text and unavailable-payment disclosures.
+
+Behavior: package selection must be locked/captured during 500ms pending-request creation; old account scope cancels work. Preserve validated return_context_id through History/detail/help reload fallbacks. Begin exactly one owned purchase, wait the full persisted 8000ms window, never charge or add coins without configured products/trusted verification. Timeout recovery belongs in iapBridge/Store, not page-shortened waits. Do not repeat native purchase dispatch on refresh. Pixel/full acceptance remains pending until independent browser and WK evidence passes.

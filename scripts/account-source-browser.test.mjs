@@ -4,6 +4,7 @@ import path from 'node:path'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { create_seed } from '../src/stores/seed.js'
+import { COIN_FEATURES, package_image } from '../src/utils/coinPresentation.js'
 import { read_circa_source, walk_html, attribute, binding } from './lib/circa-source.mjs'
 import { serve_h5, context_for, set_safe_area, write_comparison } from './lib/pixel-acceptance.mjs'
 const require = createRequire(import.meta.url), { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
@@ -25,12 +26,17 @@ const report = { result: 'failed', source_sha256: source.source_hash, checks: []
 const check = value => { report.checks.push(value); console.log('PASS ' + value) }
 function reference(origin) {
   const vars = { obName: user.user_name, obField: user.major, obBio: user.bio, balanceText: '260 coins', coinsNum: '260', language: 'English', maskedEmail: 'ci•••@gmail.com', selectedInterests: user.interest_ids.map(id => { const i = data.interests.find(i => i.item_id === id); return { ...i, icon: i.emoji } }) }
+  const gradient = 'linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%)'
+  vars.storeBtnBg = gradient; vars.storeBtnInk = '#fff'
+  vars.packages = data.coin_packages.map(p => ({ img: package_image(p.coins), coins: p.coins + ' Coins', price: p.price, tag: p.badge, hasTag: !!p.badge, bg: p.coins === 300 ? 'linear-gradient(#fff,#fff) padding-box,' + gradient + ' border-box' : '#fff', border: p.coins === 300 ? '2px solid transparent' : '2px solid rgba(16,36,74,0.06)', shadow: p.coins === 300 ? '0 10px 26px rgba(168,85,247,0.18)' : '0 8px 22px rgba(16,36,74,0.06)' }))
+  vars.coinFeatures = COIN_FEATURES.map((f, i) => ({ img: f.image_url, title: f.title, sub: f.description, cost: f.cost, border: i === COIN_FEATURES.length - 1 ? 'none' : '1px solid #eef1f6' }))
   const escape = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('"', '&quot;')
   const resolve = (key, scope) => key.split('.').reduce((v, k) => v?.[k], scope)
   const fill = (value, scope) => value.replace(/{{\s*([\w.]+)\s*}}/g, (_, k) => escape(resolve(k, scope)))
   const render = (node, scope = vars) => {
     if (node.type === 2 || node.type === 5) return fill(node.type === 2 ? node.content : node.loc.source, scope)
     if (node.type !== 1) return ''
+    if (key === 'coins' && node.tag === 'img' && node.loc.start.line === 1445 && scope.f?.cost === 'Free') return ''
     if (node.tag === 'sc-if') return resolve(binding(attribute(node, 'value')), scope) ? node.children.map(n => render(n, scope)).join('') : ''
     if (node.tag === 'sc-for') return (resolve(binding(attribute(node, 'list')), scope) || []).map(row => node.children.map(n => render(n, { ...scope, [attribute(node, 'as')]: row })).join('')).join('')
     const attrs = node.props.filter(p => p.type === 6 && !p.name.startsWith('sc-camel-on-') && !p.name.startsWith('hint-')).map(p => {
@@ -52,6 +58,7 @@ try {
   await page.goto(server.origin + '/#' + route); await page.locator(ready).first().waitFor(); await set_safe_area(page, 54, 0)
   await page.evaluate(async () => { for (const a of document.getAnimations()) if (a.effect?.getComputedTiming().iterations !== Infinity) a.finish(); await document.fonts.ready; await Promise.all([...document.images].map(i => i.decode())); await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))) })
   await page.screenshot({ path: path.join(output, 'actual-browser.png') }); report.comparison = await write_comparison(browser, output, path.join(output, 'reference.png'), path.join(output, 'actual-browser.png'))
+  if (key === 'coins') report.geometry = await page.evaluate(() => [...document.querySelectorAll('.coin-hero-copy, .coin-hero-copy > *, .coin-package')].map(e => { const r = e.getBoundingClientRect(), s = getComputedStyle(e); return { tag: e.tagName, text: e.textContent, width: r.width, height: r.height, font: s.fontSize, weight: s.fontWeight, line_height: s.lineHeight } }))
   check('Independent HTML source and deterministic 393×852 actual, overlay and diff captured; visual approval is separate')
   const saved = await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')); await page.reload(); await page.locator(ready).first().waitFor(); assert.equal(await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), saved)
   await page.setViewportSize({ width: 320, height: 568 }); await set_safe_area(page, 62, 34); await page.waitForFunction(() => document.documentElement.scrollWidth <= innerWidth)
