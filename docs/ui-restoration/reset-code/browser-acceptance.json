@@ -1,0 +1,103 @@
+{
+  "phase": "reset-code-pixel-restoration",
+  "result": "passed",
+  "server_pid": 22433,
+  "reference": {
+    "kind": "source-derived locked reference with approved fixed-code and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "d352e82f09e13511bc5df7395fe2f1c82d16483aabf3fee46055fae9c902a450",
+    "behavior_fragment_sha256": "b0d9d5e330f18931bdd0935573d1a7214274b1cf5a429054f5c94e5d5c89ec7a",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "bottom": 105.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "bottom": 104.984375
+    },
+    "heading": {
+      "x": 20,
+      "y": 121.96875,
+      "width": 353,
+      "height": 36.296875,
+      "bottom": 158.265625
+    },
+    "description": {
+      "x": 20,
+      "y": 168.265625,
+      "width": 353,
+      "height": 49.28125,
+      "bottom": 217.546875
+    },
+    "input": {
+      "x": 20,
+      "y": 237.546875,
+      "width": 353,
+      "height": 72,
+      "bottom": 309.546875
+    },
+    "resend": {
+      "x": 20,
+      "y": 327.53125,
+      "width": 353,
+      "height": 18,
+      "bottom": 345.53125
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "bottom": 818.015625
+    },
+    "safes": [
+      54,
+      0
+    ],
+    "text": {
+      "header": "Reset password",
+      "heading": "Enter reset code",
+      "description": "Enter the fixed code 009789. No email was sent and the code does not expire.",
+      "resend": "Show code again",
+      "primary": "Continue"
+    },
+    "interactions": [
+      "fpCode.goBack.click.1",
+      "fpCode.onCode.change.1",
+      "fpCode.resend.click.1",
+      "fpCode.goFpNew.click.1"
+    ],
+    "extraDisclosure": false,
+    "extraLabel": false
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 51932,
+    "pixels_above_channel_delta_8": 7781,
+    "mean_absolute_channel_delta": 0.8270601130105485,
+    "max_channel_delta": 183
+  },
+  "checks": [
+    "393x852 restores locked hierarchy, 72px input, approved fixed-code copy and no unsourced disclosure card",
+    "wrong code is zero-write and remains on the owned reset",
+    "Show code again and refresh disclose truthfully without persisting secret input or state",
+    "exact fixed code writes once only after custom Loading and enters the owned New Password route",
+    "320x568 and 62/34 safe areas preserve the fixed action and one middle scroll owner"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

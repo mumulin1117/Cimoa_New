@@ -80,7 +80,7 @@ try {
     const reset = (await state()).auth_flow.password_reset
     assert.equal(reset.email, 'cimoa@gmail.com')
     assert.equal(reset.verified_at, null)
-    assert.match(await page.locator('.reset-code-disclosure').innerText(), /009789/)
+    assert.match(await page.locator('.auth-description').innerText(), /009789/)
     check('Code shows the fixed local-only value and keeps reset verification pending on arrival')
 
     await field('Reset code').fill('111111')

@@ -38,28 +38,26 @@ const next = async () => {
 </script>
 
 <template>
-  <AuthPageFrame ref="frame" class="reset-code-page" title="Enter code" back-interaction="fpCode.goBack.click.1" :busy="is_loading" @back="back">
+  <AuthPageFrame ref="frame" class="reset-code-page" title="Reset password" back-interaction="fpCode.goBack.click.1" :busy="is_loading" @back="back">
     <view v-if="access_error" class="auth-error-box" role="alert">{{ access_error }}</view>
     <template v-else>
-      <text class="auth-heading">Use the local reset code</text>
-      <text class="auth-description">No email is sent in this build. Enter the fixed six-digit code shown below for {{ reset.email }}.</text>
-      <view class="reset-code-disclosure"><text>Local demo code</text><text>{{ store.local_verification_code }}</text></view>
-      <view class="auth-field"><text class="auth-label">Verification code</text><view class="auth-input-box"><input v-model="code" class="auth-input reset-code-input" aria-label="Reset code" inputmode="numeric" placeholder="000000" :maxlength="6" :disabled="is_loading" data-interaction="fpCode.onCode.change.1" /></view></view>
+      <text class="auth-heading">Enter reset code</text>
+      <text class="auth-description">Enter the fixed code {{ store.local_verification_code }}. No email was sent and the code does not expire.</text>
+      <view class="auth-input-box reset-code-box"><input v-model="code" class="auth-input reset-code-input" aria-label="Reset code" inputmode="numeric" placeholder="000000" :maxlength="6" :disabled="is_loading" data-interaction="fpCode.onCode.change.1" /></view>
       <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
       <text v-if="notice" class="reset-code-notice" role="status">{{ notice }}</text>
-      <view class="auth-link reset-resend" role="button" :aria-disabled="is_loading" data-interaction="fpCode.resend.click.1" @click="resend">Resend code</view>
+      <view class="auth-link reset-resend" role="button" :aria-disabled="is_loading" data-interaction="fpCode.resend.click.1" @click="resend">Show code again</view>
     </template>
-    <template #footer><view v-if="!access_error" class="auth-primary" role="button" :aria-disabled="is_loading || code.length !== 6" data-interaction="fpCode.goFpNew.click.1" @click="next">Verify code</view></template>
+    <template #footer><view v-if="!access_error" class="auth-primary" role="button" :aria-disabled="is_loading || code.length !== 6" data-interaction="fpCode.goFpNew.click.1" @click="next">Continue</view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Verifying local code…" /></template>
   </AuthPageFrame>
 </template>
 
 <style>
 @import '../auth.css';
-.reset-code-disclosure { display: flex; margin-top: 34.351rpx; padding: 30.534rpx 34.351rpx; align-items: center; justify-content: space-between; border-radius: 38.168rpx; color: var(--cimoa-text-inverse); background: var(--cimoa-gradient-primary); box-shadow: var(--cimoa-shadow-auth-action); }
-.reset-code-disclosure > text:first-child { font-size: 28.626rpx; font-weight: 600; }
-.reset-code-disclosure > text:last-child { font-size: 41.985rpx; font-weight: 900; letter-spacing: .12em; }
+.reset-code-box { height: 137.405rpx; margin-top: 38.168rpx; padding: 0 38.168rpx; border-radius: 38.168rpx; }
 .reset-code-input { font-size: 38.168rpx; font-weight: 800; letter-spacing: .2em; text-align: center; }
 .reset-code-notice { display: block; margin-top: 22.901rpx; padding: 26.718rpx; border-radius: 30.534rpx; color: var(--cimoa-text-verification-pill); background: var(--cimoa-surface-verification-pill); font-size: 26.718rpx; line-height: 1.45; }
-.reset-resend { margin-top: 30.534rpx; text-align: center; }
+.reset-resend { margin-top: 34.351rpx; color: var(--cimoa-text-auth-muted); text-align: left; }
+.reset-code-page :deep(.auth-footer) { padding-bottom: 64.885rpx; }
 </style>

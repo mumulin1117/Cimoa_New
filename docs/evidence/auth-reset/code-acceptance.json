@@ -1,7 +1,7 @@
 {
   "phase": "code",
   "result": "passed",
-  "server_pid": 54408,
+  "server_pid": 22525,
   "checks": [
     "Code shows the fixed local-only value and keeps reset verification pending on arrival",
     "Wrong reset code is rejected without a persisted write",

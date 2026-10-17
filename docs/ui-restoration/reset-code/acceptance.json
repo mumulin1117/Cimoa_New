@@ -1,0 +1,59 @@
+{
+  "phase": "reset-code-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-17",
+  "auto_confirmation_basis": "User authorized automatic confirmation and immediate next-page source locking when source, browser, WKWebView, behavior and final-gate evidence pass without unresolved uncertainty.",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 5,
+    "behavior_checks_passed": 5,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": { "top": 54, "bottom": 0 },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": { "top": 62, "bottom": 34 },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/reset-code/browser-acceptance.json",
+    "behavior_report": "docs/evidence/auth-reset/code-acceptance.json",
+    "comparison": {
+      "pixels_different": 51932,
+      "pixels_above_channel_delta_8": 7781,
+      "mean_absolute_channel_delta": 0.8270601130105485,
+      "max_channel_delta": 183
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testResetCodePixelRestoration",
+    "tests": 1,
+    "failures": 0,
+    "screenshot": "docs/ui-restoration/reset-code/actual-wkwebview.png"
+  },
+  "verified_flows": [
+    "locked source hierarchy, 72px field, fixed footer and all four interaction IDs match the Reset Code contract",
+    "wrong code and Show code again remain zero-write and explicitly avoid an email-delivery claim",
+    "refresh clears the secret field while preserving only the owned reset record",
+    "exact 009789 writes verified_at only after 500ms custom Loading and opens the owned New Password route",
+    "browser small-screen and native WKWebView safe areas preserve one scroll owner, input behavior and both Back owners"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/reset-code/reference.png",
+    "docs/ui-restoration/reset-code/actual-browser.png",
+    "docs/ui-restoration/reset-code/overlay.png",
+    "docs/ui-restoration/reset-code/diff.png",
+    "docs/ui-restoration/reset-code/source-contract.json",
+    "docs/ui-restoration/reset-code/difference-audit.md"
+  ],
+  "final_gates": {
+    "check_conventions": "passed",
+    "git_diff_check": "passed",
+    "build_h5": "passed"
+  }
+}

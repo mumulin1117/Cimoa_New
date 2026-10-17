@@ -931,10 +931,15 @@
       ]
     },
     "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/reset-code/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/reset-code/difference-audit.md",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; verified in browser and iPhone 17 Pro WKWebView with disclosed local-only code 009789, owned reset_id, zero-write wrong code and resend, custom Loading, refresh recovery and correct Back ownership"
+    "mapping_status": "source locked; source hierarchy and 72px code field restored; unsourced disclosure card removed; approved fixed-code truth retained; browser pixel, behavior, refresh/back, small-screen/safe-area and iPhone 17 Pro WKWebView checks passed",
+    "acceptance_evidence": "docs/ui-restoration/reset-code/acceptance.json"
   },
   {
     "source_screen": "Auth / Forgot Password / New Password",

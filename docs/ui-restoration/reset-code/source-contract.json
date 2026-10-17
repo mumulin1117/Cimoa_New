@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "page": "Reset Code",
+  "route": "/pages/auth/reset/code",
+  "source_screen": "Auth / Forgot Password / Code",
+  "source_query": "route=fpCode",
+  "source_lock": "locked",
+  "locked_at": "2026-10-17",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isFpCode",
+    "visual_lines": "2840-2858",
+    "visual_fragment_sha256": "d352e82f09e13511bc5df7395fe2f1c82d16483aabf3fee46055fae9c902a450",
+    "behavior_lines": [4782, 5155, 5539, 5598, 5629, 5632],
+    "behavior_fragment_sha256": "b0d9d5e330f18931bdd0935573d1a7214274b1cf5a429054f5c94e5d5c89ec7a"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "header": "top 58px; left/right 20px; height 48px; 46px circular Back; centered 21px title",
+    "scroll": "top 122px; left/right 20px; source bottom padding 160px",
+    "footer": "left/right 20px; bottom 34px; 60px primary",
+    "field": "top gap 20px; height 72px; horizontal padding 20px; radius 20px",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "content": {
+    "header_title": "Reset password",
+    "heading": "Enter reset code",
+    "description": {
+      "source_copy": "Six digits, valid for ten minutes.",
+      "approved_local_copy": "Enter the fixed code 009789. No email was sent and the code does not expire."
+    },
+    "field": { "placeholder": "000000", "height_css_px": 72, "radius_css_px": 20 },
+    "resend": { "source_copy": "Resend code", "approved_local_copy": "Show code again", "interaction_id": "fpCode.resend.click.1" },
+    "primary": { "copy": "Continue", "interaction_id": "fpCode.goFpNew.click.1", "height_css_px": 60, "radius_css_px": 30 }
+  },
+  "approved_deltas": [
+    { "id": "reset-code-safe-area-skeleton", "source": "DEVELOPMENT_CONVENTIONS.md sections 2 and 15", "delta": "Measured safe areas and one middle scroll-view preserve source coordinates and fixed footer behavior." },
+    { "id": "reset-code-local-truth", "source": "User fixed-code decision and INTERACTION_CONVENTIONS.md section 9.2", "delta": "The reset flow does not send email or expire the fixed code. The source delivery and ten-minute claims are replaced with explicit truthful copy." },
+    { "id": "reset-code-source-hierarchy", "source": "User pixel-source rule", "delta": "Remove the unsourced gradient disclosure card and field label; restore the single 72px source input, left-aligned secondary action and source CTA." },
+    { "id": "reset-code-owned-write", "source": "Existing Store password-reset contract", "delta": "Only exact 009789 for the owned reset writes verified_at after 500ms Loading; wrong, stale, repeated-resend and persistence failure paths remain zero-write." }
+  ],
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/reset-code/reference.png",
+    "actual_browser_png": "docs/ui-restoration/reset-code/actual-browser.png",
+    "actual_browser_error_png": "docs/ui-restoration/reset-code/actual-browser-error.png",
+    "actual_browser_small_png": "docs/ui-restoration/reset-code/actual-browser-small.png",
+    "overlay_png": "docs/ui-restoration/reset-code/overlay.png",
+    "diff_png": "docs/ui-restoration/reset-code/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/reset-code/actual-wkwebview.png",
+    "visual_acceptance": "passed"
+  }
+}
