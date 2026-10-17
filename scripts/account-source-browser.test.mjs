@@ -63,6 +63,11 @@ try {
     await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.verification-summary').waitFor(); assert.equal(await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), saved)
     check('Masked canonical email, no fabricated date, real Re-verify push/pop without writes')
   }
+  if (key === 'reverify') {
+    await page.locator('[data-interaction="reverify.goVerEmail.click.1"]').click(); await page.locator('.loading:visible').waitFor(); assert.equal(await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), saved)
+    await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /not configured/); assert.equal(await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), saved)
+    check('Unavailable university service shows explicit failure after custom Loading; never changes status, sends email or navigates to a fake code success')
+  }
   assert.deepEqual(report.errors, []); report.result = 'passed'; await context.close()
 } catch (error) { report.failure = String(error.stack || error); throw error }
 finally { await browser?.close(); await server?.close(); report.cleaned_up = true; fs.writeFileSync(path.join(output, 'source-browser-acceptance.json'), JSON.stringify(report, null, 2) + '\n') }

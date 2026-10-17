@@ -1,15 +1,30 @@
 <script setup>
-import { onUnmounted, ref } from 'vue'
-import { onHide } from '@dcloudio/uni-app'
-import { use_app_store } from '@/stores/store.js'
-import { use_write_loading } from '@/composables/useWriteLoading.js'
-import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
-import FlowPageHeader from '@/components/FlowPageHeader.vue'
-import EventActionLoading from '@/components/EventActionLoading.vue'
-const store = use_app_store(), frame = ref(null), error = ref('')
-const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
-const back = async () => { try { await frame.value.navigate_back('/pages/profile/verification') } catch (cause) { error.value = cause.message } }
-const start = async () => { const result = await run_with_loading(() => store.start_student_reverification()); if (result.reason !== 'cancelled' && !result.success) error.value = result.message }
-onHide(cancel_loading); onUnmounted(cancel_loading)
+import { ref } from 'vue'
+import { use_profile_editor } from '@/composables/useProfileEditor.js'
+import ProfileEditorFrame from '@/components/ProfileEditorFrame.vue'
+const frame = ref(null), { store, error, access_error, is_loading, run_with_loading, back, recover } = use_profile_editor(frame, '/pages/profile/verification')
+const start = async () => {
+  if (is_loading.value || access_error.value) return
+  error.value = ''
+  const result = await run_with_loading(() => store.start_student_reverification())
+  if (result.reason !== 'cancelled' && !result.success) error.value = result.message
+}
 </script>
-<template><SecondaryPageFrame ref="frame"><template #header><FlowPageHeader title="Re-verify university" interaction="reverify.goBack.click.1" :busy="is_loading" @back="back" /><text v-if="error" class="flow-error" role="alert">{{ error }}</text></template><view class="flow-body"><text class="flow-title">Re-verify university</text><text class="flow-copy">Needed if your university email changed, your previous verification expired, or your account needs a status review.</text><view class="flow-card"><text class="flow-label">While verification is pending</text><text class="flow-copy">Your existing conversations stay visible. Discover, Auto Match, and new connection requests remain restricted until a real verification service confirms your status.</text></view><text class="flow-note">University verification service is not configured in this local build. The fixed local account code does not verify student status.</text></view><template #footer><view class="flow-footer"><view class="flow-primary" role="button" :aria-disabled="is_loading" data-interaction="reverify.goVerEmail.click.1" @click="start">Start Re-verification</view><view class="flow-secondary" role="button" :aria-disabled="is_loading" @click="back">Return</view></view></template><template #overlays><EventActionLoading :visible="is_loading" label="Contacting university verification…" /></template></SecondaryPageFrame></template>
+<template>
+  <ProfileEditorFrame ref="frame" class="profile-reverify-page" title="Re-verify university" source="reverify" :busy="is_loading" loading-label="Checking verification availability…" :error="error" :access-error="access_error" @back="back" @recover="recover">
+    <view class="reverify-body">
+      <text class="reverify-introduction">Needed if your university email changed, your last verification expired, or your account needs a status review.</text>
+      <view class="reverify-pending"><text>While this is pending</text><text>Your existing conversations stay visible. Discover, Auto Match, and new connection requests are temporarily restricted until verification finishes.</text></view>
+      <text class="reverify-note">University verification service is not configured. Starting this check will not change your saved student status or send an email. The account code does not verify student status.</text>
+    </view>
+    <template #footer><view v-if="!access_error" class="reverify-footer"><view class="editor-save" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="reverify.goVerEmail.click.1" @click="start" @keydown.enter="start">Start Re-verification</view></view></template>
+  </ProfileEditorFrame>
+</template>
+<style scoped>
+.reverify-introduction { display: block; font-size: 30.534rpx; color: var(--cimoa-text-secondary); text-wrap: pretty; }
+.reverify-pending { margin-top: 30.534rpx; padding: 34.351rpx; border-radius: 41.985rpx; background: var(--cimoa-surface-profile-pending); }
+.reverify-pending > text:first-child { display: block; font-size: 30.534rpx; font-weight: 700; }
+.reverify-pending > text:last-child { display: block; margin-top: 11.45rpx; font-size: 29.58rpx; color: var(--cimoa-text-profile-icon); line-height: 1.5; text-wrap: pretty; }
+.reverify-note { display: block; margin-top: 26.718rpx; font-size: 26.718rpx; color: var(--cimoa-text-auth-placeholder); line-height: 1.4; }
+.reverify-footer { padding: 19.084rpx 38.168rpx 64.885rpx; flex: none; }
+</style>

@@ -54,7 +54,8 @@
       "verification_shield_border": "#e2e8f0",
       "verification_pill": "#e8f1fd",
       "coin_hero_orb_primary": "rgba(255,255,255,0.12)",
-      "coin_hero_orb_secondary": "rgba(255,255,255,0.10)"
+      "coin_hero_orb_secondary": "rgba(255,255,255,0.10)",
+      "profile_pending": "rgba(255,255,255,0.7)"
     },
     "text": {
       "call_waiting": "rgba(255,255,255,0.85)",

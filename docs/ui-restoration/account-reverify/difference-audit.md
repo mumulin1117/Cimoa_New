@@ -1,0 +1,3 @@
+# Re-verification audit — 2026-10-17
+
+HTML 3662–3679 locked before changes. Generic page currently adds duplicate heading and an unsourced Return CTA. Restore source header, 16px introduction, 22-radius translucent pending card, original 60px Start Re-verification CTA. Keep the concise service-not-configured disclosure and exact source restriction description as a conditional policy, not a claim that pressing an unavailable action changed status. Guard hydration/full session context; failed action must not change user or requests. No fake email/code or university certification. Functional failure-path evidence cannot be counted as production certification success.

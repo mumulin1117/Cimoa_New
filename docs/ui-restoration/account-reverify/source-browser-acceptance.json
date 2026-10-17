@@ -1,0 +1,25 @@
+{
+  "result": "passed",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "checks": [
+    "Independent HTML source and deterministic 393×852 actual, overlay and diff captured; visual approval is separate",
+    "Read-only refresh retains entities and narrow layout avoids horizontal page scrolling",
+    "Unavailable university service shows explicit failure after custom Loading; never changes status, sends email or navigates to a fake code success"
+  ],
+  "errors": [],
+  "visual_acceptance": "pending",
+  "approved_deltas": [
+    "Canonical user data and actual ledger balance",
+    "Real safe areas instead of simulated system bars",
+    "No invented university verification, purchase or moderation success"
+  ],
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 51986,
+    "pixels_above_channel_delta_8": 16798,
+    "mean_absolute_channel_delta": 1.6837787752810331,
+    "max_channel_delta": 180
+  },
+  "cleaned_up": true
+}
