@@ -693,7 +693,7 @@ export const use_app_store = defineStore('app', {
       })
     },
     expire_purchases() { return transact(this, null, (data, now) => { for (const row of own(data, data.purchase_requests)) if (row.status === 'pending' && now - row.created_at >= 8000) row.status = 'timeout' }) },
-    async settle_purchase(id, result) {
+    async settle_purchase(id, result, { is_current = () => true, expected_context = auth_context_key(this.data), received_at } = {}) {
       const owner = s.owner_id(this.data), before = this.data.purchase_requests.find((row) => row.request_id === id && row.owner_user_id === owner)
       if (!before || before.status !== 'pending') return failure('stale_callback', 'This purchase request is no longer pending.')
       if (result.status === 'success') {
@@ -702,9 +702,12 @@ export const use_app_store = defineStore('app', {
         if (!valid) result = { status: 'failure' }
       }
       return transact(this, null, (data, now) => {
+        s.ensure(is_current() && auth_context_key(data) === expected_context, 'The account changed. Reopen the purchase to continue.')
         const row = require_owned(data, data.purchase_requests, 'request_id', id)
         s.ensure(row.status === 'pending' && ['success', 'failure', 'cancelled', 'timeout'].includes(result.status), 'This purchase callback is no longer valid.')
-        if (result.status === 'success' && now - row.created_at >= 8000) { row.status = 'timeout'; return { status: row.status } }
+        const delivered_at = received_at ?? now
+        s.ensure(Number.isFinite(delivered_at) && delivered_at >= row.created_at && delivered_at <= now, 'The purchase callback time is invalid.')
+        if (result.status === 'success' && delivered_at - row.created_at >= 8000) { row.status = 'timeout'; return { status: row.status } }
         if (result.status === 'success') {
           const pack = data.coin_packages.find((entry) => entry.package_id === row.package_id)
           s.ensure(pack.product_id && result.product_id === pack.product_id && result.package_id === row.package_id && result.owner_user_id === owner && result.receipt_id && !data.purchase_requests.some((entry) => entry.receipt_id === result.receipt_id), 'Purchase details do not match.')

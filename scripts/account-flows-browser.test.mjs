@@ -44,6 +44,23 @@ try {
     await go('/pages/profile/prefs'); await page.reload(); await page.getByRole('radio', { name: 'Within 5 km', exact: true }).waitFor(); assert.equal(await page.getByRole('radio', { name: 'Within 5 km', exact: true }).getAttribute('aria-checked'), 'true')
     await page.getByRole('radio', { name: 'On campus', exact: true }).click(); await page.getByRole('button', { name: 'Back', exact: true }).click(); assert.equal((await state()).match_preferences[0].distance_max, 5)
     check('Twelve source chip groups: draft selection, 500ms Save, shared Auto Match numeric fields, refresh and cancel without implicit range resets')
+  } else if (phase === 'purchase-recovery') {
+    const posted = []; await page.exposeFunction('__recordPurchaseDispatch', payload => { posted.push(payload) })
+    await context.addInitScript(() => { window.webkit = { messageHandlers: { CimoaPurchase: { postMessage(payload) { window.__recordPurchaseDispatch(payload) } } } } })
+    await go('/pages/coins/index'); await page.locator('.coin-buy').waitFor(); const ledger_before = (await state()).coin_transactions; await click('coinStore.continuePurchase.click.1'); await page.locator('.loading:visible').waitFor()
+    await page.locator('[data-package-id="pkg_60"]').evaluate(e => e.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })))
+    await page.locator('.coin-purchasing-page').waitFor(); const request = (await state()).purchase_requests[0]; assert.equal(request.package_id, 'pkg_300'); assert.equal(posted.length, 1)
+    await page.waitForTimeout(3500); await page.reload(); await page.locator('.coin-purchasing-page').waitFor(); assert.equal(posted.length, 1)
+    await page.locator('.coin-failed-page').waitFor(); assert.ok(Date.now() - request.created_at < 10500); assert.equal((await state()).purchase_requests[0].status, 'timeout'); assert.deepEqual((await state()).coin_transactions, ledger_before)
+    check('Loading locks the selected package; reload keeps the original 8000ms deadline, one native dispatch, one request and unchanged ledger')
+    await click('coinFailed.tryAgainPurchase.click.1'); await page.locator('.coin-purchasing-page').waitFor(); assert.equal(posted.length, 2)
+    const pending = (await state()).purchase_requests.find(p => p.status === 'pending')
+    await page.evaluate(() => { location.hash = '#/pages/settings/index' }); await page.locator('.settings-page:visible').waitFor()
+    assert.equal(await page.evaluate(p => window.CimoaPurchaseBridge.resolve(p.request_id, { ...p, status: 'failure' }), posted[1]), true)
+    await page.waitForTimeout(650); assert.equal((await state()).purchase_requests.find(p => p.request_id === pending.request_id).status, 'pending'); assert.equal(await page.locator('.settings-page:visible').count(), 1)
+    await page.goBack(); await page.locator('.coin-failed-page:visible').waitFor()
+    assert.equal((await state()).purchase_requests.find(p => p.request_id === pending.request_id).status, 'failure'); assert.equal(posted.length, 2)
+    check('A controlled native callback while the page is hidden cannot write or navigate; returning consumes the same callback once after custom Loading')
   } else throw Error('Unknown phase: ' + phase)
   assert.deepEqual(report.errors, []); await context.close(); report.result = 'passed'
 } catch (error) { report.failure = String(error.stack || error); throw error }

@@ -8,6 +8,7 @@ import SourceIcon from '@/components/SourceIcon.vue'
 import CoinActionLoading from '@/components/CoinActionLoading.vue'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { coin_center_route } from '@/utils/coinReturnContext.js'
+import { watch_purchase } from '@/utils/iapBridge.js'
 
 const store = use_app_store(), frame = ref(null), request_id = ref(''), navigating = ref(false), error = ref('')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
@@ -45,6 +46,8 @@ const retry = () => {
   run_with_loading(() => store.begin_purchase(pack.value.package_id, make_operation_id('purchase-retry'), request.value?.return_context_id || null)).then(result => {
     if (result.reason === 'cancelled') return
     if (!result.success) { error.value = result.message; return }
+    const created = store.purchase_by_id(result.data)
+    if (created && !access_error.value) watch_purchase(created, store.coin_package_by_id(created.package_id), true)
     replace(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(result.data)}`)
   })
 }

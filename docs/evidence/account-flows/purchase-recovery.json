@@ -1,0 +1,12 @@
+{
+  "phase": "purchase-recovery",
+  "result": "passed",
+  "checks": [
+    "Loading locks the selected package; reload keeps the original 8000ms deadline, one native dispatch, one request and unchanged ledger",
+    "A controlled native callback while the page is hidden cannot write or navigate; returning consumes the same callback once after custom Loading"
+  ],
+  "errors": [],
+  "physical_microphone": "not tested: controlled browser media device",
+  "server_pid": 3667,
+  "cleaned_up": true
+}

@@ -8041,7 +8041,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/coins/purchasing",
-    "component": "src/pages/coins/purchasing.vue; src/components/CoinActionLoading.vue",
+    "component": "src/pages/coins/purchasing.vue",
     "parent_route": "/pages/coins/index",
     "allowed_origin_routes": [
       "/pages/coins/index"
@@ -8108,7 +8108,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; real bridge request, full callback timeout, cancellation and result settlement implemented; destination result pages and WKWebView acceptance pending"
+    "mapping_status": "source-locked; canonical data/actions, full auth-context cancellation, read-only navigation, browser regression passed; full visual/WK acceptance pending",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-purchasing/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-purchasing/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/coins/purchasing-acceptance.json"
   },
   {
     "source_screen": "Coins / Purchase / Apple Confirmation",

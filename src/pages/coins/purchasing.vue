@@ -1,24 +1,28 @@
 <script setup>
 import { computed, onUnmounted, ref } from 'vue'
-import { onHide, onLoad, onReady } from '@dcloudio/uni-app'
+import { onHide, onLoad, onReady, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import CoinActionLoading from '@/components/CoinActionLoading.vue'
-import { request_purchase, cancel_purchase_request } from '@/utils/iapBridge.js'
+import { watch_purchase, cancel_purchase_request, suspend_purchase_request, forget_purchase_request } from '@/utils/iapBridge.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { coin_center_route } from '@/utils/coinReturnContext.js'
+import { MOTION } from '@/config/navigation.js'
 
 const store = use_app_store(), frame = ref(null), request_id = ref(''), navigating = ref(false), error = ref(''), resolving = ref(false), account_id = store.session.account_id
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
-let active = true, started = false
+let active = true, started = false, ready = false, generation = 0
+const leave = () => { active = false; generation++; started = false; resolving.value = false; cancel_loading(); suspend_purchase_request(request_id.value) }
+const account_scope = use_account_scope(store, leave)
 onLoad(options => { request_id.value = String(options?.purchase_request_id || '') })
 const request = computed(() => store.purchase_by_id(request_id.value))
 const pack = computed(() => store.coin_package_by_id(request.value?.package_id))
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved purchase data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !request_id.value || !request.value
       ? 'This purchase request is unavailable. No coins were added.'
@@ -38,23 +42,29 @@ const navigate_result = async status => {
   catch (cause) { error.value = `${status_message.value} ${cause.message}` }
 }
 const finish = async result => {
-  if (!active || resolving.value || !pending.value) return
+  if (!active || resolving.value || !pending.value || access_error.value || result.status === 'interrupted') return
+  const token = generation
   resolving.value = true
-  const settled = await run_with_loading(() => store.settle_purchase(request_id.value, result))
+  const settled = await run_with_loading(scope => store.settle_purchase(request_id.value, result, { ...scope, expected_context: account_scope.auth_context, received_at: result.received_at }))
+  if (token !== generation) return
   resolving.value = false
   if (!active || settled.reason === 'cancelled') return
   if (!settled.success) { error.value = settled.message; return }
+  forget_purchase_request(request_id.value)
   await navigate_result(settled.data.status)
 }
 const start = async () => {
-  if (started || access_error.value || !pending.value || !pack.value) return
+  if (!ready || !active || started || access_error.value || !pack.value) return
+  if (!pending.value) { await navigate_result(request.value.status); return }
   started = true; error.value = ''
-  const result = await request_purchase({ request_id: request_id.value, package_id: pack.value.package_id, owner_user_id: store.current_user.user_id, product_id: pack.value.product_id })
+  const token = generation, result = await watch_purchase(request.value, pack.value)
+  if (token !== generation) return
   await finish(result)
 }
 const cancel = () => {
   if (navigating.value || is_loading.value) return
-  if (pending.value) { cancel_purchase_request(request_id.value); return }
+  if (access_error.value) return
+  if (pending.value) { if (!cancel_purchase_request(request_id.value)) finish({ status: 'cancelled' }); return }
   navigate_store()
 }
 const navigate_store = async () => {
@@ -62,14 +72,15 @@ const navigate_store = async () => {
   navigating.value = true; error.value = ''
   try { await frame.value.navigate_back(coin_center_route(store, request.value?.return_context_id)) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
-onReady(() => { if (!pending.value && !access_error.value) navigate_result(request.value.status); else start() })
-onHide(() => { navigating.value = false })
-onUnmounted(() => { active = false; cancel_loading() })
+onReady(() => { ready = true; start() })
+onShow(() => { active = true; start() })
+onHide(() => { navigating.value = false; leave() })
+onUnmounted(leave)
 </script>
 
 <template>
-  <SecondaryPageFrame ref="frame" class="coin-purchasing-page">
-    <template #header><view class="purchase-header"><view class="purchase-back" role="button" aria-label="Back" :aria-disabled="is_loading || navigating" data-interaction="coinPurchasing.goBack.click.1" @click="cancel"><SourceIcon name="back" /></view><text>Coins</text></view><text v-if="error" class="purchase-error" role="alert">{{ error }}</text></template>
+  <SecondaryPageFrame ref="frame" class="coin-purchasing-page" :style="{ '--coin-pulse-duration': `${MOTION.coin_pulse}ms` }">
+    <template #header><view class="purchase-header"><view class="purchase-back" role="button" tabindex="0" aria-label="Back" :aria-disabled="is_loading || navigating" data-interaction="coinPurchasing.goBack.click.1" @click="cancel" @keydown.enter="cancel"><SourceIcon name="back" /></view><text>Coins</text></view><text v-if="error" class="purchase-error" role="alert">{{ error }}</text></template>
     <view class="purchase-content">
       <view v-if="access_error" class="purchase-access" role="alert">{{ access_error }}</view>
       <template v-else-if="pack">
@@ -83,7 +94,7 @@ onUnmounted(() => { active = false; cancel_loading() })
         </view>
       </template>
     </view>
-    <template #footer><view v-if="!access_error" class="purchase-footer"><view class="purchase-cancel" role="button" :aria-disabled="is_loading || navigating" data-interaction="coinPurchasing.backToStore.click.1" @click="cancel">{{ pending ? 'Cancel' : 'Back to Coin Store' }}</view></view></template>
+    <template #footer><view v-if="!access_error" class="purchase-footer"><view class="purchase-cancel" role="button" tabindex="0" :aria-disabled="is_loading || navigating" data-interaction="coinPurchasing.backToStore.click.1" @click="cancel" @keydown.enter="cancel">{{ pending ? 'Cancel' : 'Back to Coin Store' }}</view></view></template>
     <template #overlays><CoinActionLoading :visible="is_loading" label="Finalizing purchase result…" /></template>
   </SecondaryPageFrame>
 </template>
@@ -101,7 +112,7 @@ onUnmounted(() => { active = false; cancel_loading() })
 .purchase-package > view > text:last-child { margin-top: 3.817rpx; color: var(--cimoa-text-secondary); font-size: 28.626rpx; }
 .purchase-package > text { font-size: 34.351rpx; font-weight: 700; }
 .purchase-status { display: flex; flex-direction: column; align-items: center; gap: 30.534rpx; margin-top: 76.336rpx; text-align: center; }
-.purchase-pulse { width: 141.221rpx; height: 141.221rpx; border-radius: 70.611rpx; background: var(--cimoa-gradient-primary); opacity: .9; animation: coin-pulse 1800ms ease-in-out infinite; }
+.purchase-pulse { width: 141.221rpx; height: 141.221rpx; border-radius: 70.611rpx; background: var(--cimoa-gradient-primary); opacity: .9; animation: coin-pulse var(--coin-pulse-duration) ease-in-out infinite; }
 .purchase-status-icon { display: flex; align-items: center; justify-content: center; width: 141.221rpx; height: 141.221rpx; padding: 38.168rpx; border-radius: 70.611rpx; color: var(--cimoa-text-secondary); background: var(--cimoa-surface-skeleton); }
 .purchase-status > text:nth-of-type(1) { font-size: 36.26rpx; font-weight: 700; }
 .purchase-status > text:nth-of-type(2) { max-width: 534.351rpx; color: var(--cimoa-text-secondary); font-size: 30.534rpx; line-height: 1.45; }
@@ -109,5 +120,5 @@ onUnmounted(() => { active = false; cancel_loading() })
 .purchase-access { padding: 34.351rpx; border-radius: 45.802rpx; color: var(--cimoa-status-danger); background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); font-size: 28.626rpx; line-height: 1.45; }
 .purchase-footer { flex: none; padding: 19.084rpx 38.168rpx 64.885rpx; }
 .purchase-cancel { display: flex; align-items: center; justify-content: center; height: 106.87rpx; border-radius: 53.435rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); font-size: 34.351rpx; font-weight: 600; cursor: pointer; }
-@keyframes coin-pulse { 0%, 100% { transform: scale(.86); opacity: .58; } 50% { transform: scale(1); opacity: .92; } }
+@keyframes coin-pulse { 0%, 100% { transform: scale(.94); opacity: .16; } 50% { transform: scale(1.04); opacity: .3; } }
 </style>

@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-17",
+  "local_acceptance": "passed",
+  "visual_acceptance": "pending",
+  "full_acceptance": "pending",
+  "domain_tests": "scripts/coins-state.test.mjs 7/7; existing data tests 24/24",
+  "browser": [
+    "docs/evidence/coins/purchasing-acceptance.json",
+    "docs/evidence/account-flows/purchase-recovery.json"
+  ],
+  "checks": [
+    "One persisted 8000ms request window; initial pre-navigation dispatch has no orphan timer",
+    "Reload never re-dispatches native payment; no-handler times out with unchanged ledger",
+    "Exact native callback can be cached while hidden; hidden page cannot write/navigate; foreground finalizes after custom500ms",
+    "Owner/package/product/receipt checks and full auth context; verified on-time delivery is not expired by mandatory Loading",
+    "Original source cPulse 1800ms phase values restored; first caller Coin Center/retry wired to shared dispatch tool"
+  ],
+  "pending": [
+    "Full source Apple-confirmation UI is deliberately not faked; real StoreKit products/verification unavailable",
+    "WKWebView module regression",
+    "Complete independent pixel evidence"
+  ]
+}

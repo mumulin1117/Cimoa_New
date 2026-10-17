@@ -1,7 +1,7 @@
 {
   "phase": "purchasing",
   "result": "passed",
-  "server_pid": 70862,
+  "server_pid": 3885,
   "checks": [
     "Get Coins waits for custom Loading, creates exactly one pending request and opens Purchasing",
     "Browser without a native handler waits the full callback deadline, records timeout, opens Failed and adds no coins",

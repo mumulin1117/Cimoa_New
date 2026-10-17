@@ -11,6 +11,7 @@ import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { COIN_FEATURES, package_image } from '@/utils/coinPresentation.js'
 import { coin_source_route } from '@/utils/coinReturnContext.js'
+import { watch_purchase } from '@/utils/iapBridge.js'
 
 const store = use_app_store(), frame = ref(null), navigating = ref(false), error = ref('')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
@@ -54,6 +55,8 @@ const continue_purchase = () => {
   run_with_loading(() => store.begin_purchase(package_id, make_operation_id('purchase'), return_id)).then(result => {
     if (result.reason === 'cancelled') return
     if (!result.success) { error.value = result.message; return }
+    const request = store.purchase_by_id(result.data)
+    if (request && !access_error.value) watch_purchase(request, store.coin_package_by_id(request.package_id), true)
     navigate(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(result.data)}`)
   })
 }
