@@ -1,0 +1,226 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isSetLegal",
+    "source_query": "route=setLegal",
+    "lines": [
+      3964,
+      3981
+    ],
+    "fragment_sha256": "351c468bcac9dad4c89b4c7f7054d11550cb429691933d4b1574259cfda3ba51",
+    "fragment": "<sc-if value=\"{{ isSetLegal }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Settings / Legal / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Legal</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 60px;box-sizing:border-box\">\n          <div style=\"display:flex;flex-direction:column;gap:10px\">\n            <a href=\"https://unimatch.hk/terms\" target=\"_blank\" style=\"display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);text-decoration:none;color:#0b1b3a\"><div style=\"flex:1;font-size:17px;font-weight:600\">Terms of Use</div><svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M9 5l7 7-7 7\"></path></svg></a>\n            <a href=\"https://unimatch.hk/privacy\" target=\"_blank\" style=\"display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);text-decoration:none;color:#0b1b3a\"><div style=\"flex:1;font-size:17px;font-weight:600\">Privacy Policy</div><svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M9 5l7 7-7 7\"></path></svg></a>\n            <div sc-camel-on-click=\"{{ openAgreeInfo }}\" style=\"display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:600\">Community Guidelines</div><svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M9 5l7 7-7 7\"></path></svg></div>\n            <div sc-camel-on-click=\"{{ openCoinHelp }}\" style=\"display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer\"><div style=\"flex:1;font-size:17px;font-weight:600\">Coin and Purchase Information</div><svg width=\"16\" height=\"16\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#94a3b8\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M9 5l7 7-7 7\"></path></svg></div>\n          </div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/settings/legal",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
+  "styles": [
+    {
+      "line": 3965,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 3966,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 3967,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 3970,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 3970,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 3972,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 60px;box-sizing:border-box"
+    },
+    {
+      "line": 3973,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:10px"
+    },
+    {
+      "line": 3974,
+      "tag": "a",
+      "style": "display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);text-decoration:none;color:#0b1b3a"
+    },
+    {
+      "line": 3974,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    },
+    {
+      "line": 3975,
+      "tag": "a",
+      "style": "display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);text-decoration:none;color:#0b1b3a"
+    },
+    {
+      "line": 3975,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    },
+    {
+      "line": 3976,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 3976,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    },
+    {
+      "line": 3977,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07);cursor:pointer"
+    },
+    {
+      "line": 3977,
+      "tag": "div",
+      "style": "flex:1;font-size:17px;font-weight:600"
+    }
+  ],
+  "texts": [
+    {
+      "line": 3970,
+      "text": "Legal"
+    },
+    {
+      "line": 3974,
+      "text": "Terms of Use"
+    },
+    {
+      "line": 3975,
+      "text": "Privacy Policy"
+    },
+    {
+      "line": 3976,
+      "text": "Community Guidelines"
+    },
+    {
+      "line": 3977,
+      "text": "Coin and Purchase Information"
+    }
+  ],
+  "svg": [
+    {
+      "line": 3968,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    },
+    {
+      "line": 3974,
+      "sha256": "b0ba861c383fb0cabd9efa93cf2b3ac1ab15f7e6495e1b8537e6096779fb7f3c"
+    },
+    {
+      "line": 3975,
+      "sha256": "b0ba861c383fb0cabd9efa93cf2b3ac1ab15f7e6495e1b8537e6096779fb7f3c"
+    },
+    {
+      "line": 3976,
+      "sha256": "b0ba861c383fb0cabd9efa93cf2b3ac1ab15f7e6495e1b8537e6096779fb7f3c"
+    },
+    {
+      "line": 3977,
+      "sha256": "b0ba861c383fb0cabd9efa93cf2b3ac1ab15f7e6495e1b8537e6096779fb7f3c"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a3",
+        "local_path": "static/assets/songs/good-luck-babe.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      3968,
+      3974,
+      3975,
+      3976,
+      3977
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 3967,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 3976,
+      "event": "sc-camel-on-click",
+      "handler": "openAgreeInfo"
+    },
+    {
+      "line": 3977,
+      "event": "sc-camel-on-click",
+      "handler": "openCoinHelp"
+    }
+  ],
+  "interaction_ids": [
+    "setLegal.goBack.click.1",
+    "setLegal.openAgreeInfo.click.1",
+    "setLegal.openCoinHelp.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "setLegal.goBack.click.1",
+      "source": "route=setLegal",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "setLegal.openAgreeInfo.click.1",
+      "source": "route=setLegal",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "setLegal.openCoinHelp.click.1",
+      "source": "route=setLegal",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}

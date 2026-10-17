@@ -1,7 +1,7 @@
 {
   "phase": "legal-landing",
   "result": "passed",
-  "server_pid": 60134,
+  "server_pid": 96056,
   "checks": [
     "Settings opens the source four-row Legal page with an explicit local-build disclosure",
     "Terms and Privacy open as real local pages, return to Legal, never open external sites and change no account data",
