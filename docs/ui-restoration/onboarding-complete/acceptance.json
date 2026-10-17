@@ -1,0 +1,42 @@
+{
+  "screen": "Onboarding / Complete / Default",
+  "route": "/pages/onboarding/complete",
+  "result": "passed",
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "browser": {
+    "source_checks_passed": 4,
+    "registration_checks_passed": 18,
+    "checks_failed": 0,
+    "viewport": "393x852",
+    "compact_viewport": "320x568",
+    "mean_absolute_channel_delta": 1.241220328757959,
+    "cleaned_up": true,
+    "source_report": "docs/ui-restoration/onboarding-complete/browser-acceptance.json",
+    "registration_report": "docs/evidence/registration/complete-browser.json",
+    "actual": "docs/ui-restoration/onboarding-complete/actual-browser.png"
+  },
+  "wkwebview": {
+    "source_checks_passed": 1,
+    "registration_checks_passed": 1,
+    "checks_failed": 0,
+    "device": "iPhone 17 Pro simulator",
+    "os": "iOS 26.5",
+    "safe_area": "62/34",
+    "source_test": "HostTests/testOnboardingCompletePixelRestoration()",
+    "registration_test": "HostTests/testFreshRegistrationToHomeWithOwnedPhotos()",
+    "registration_xcresult": "Test-cimoaNeapo-2026.10.17_09-37-23-+0800.xcresult",
+    "actual": "docs/ui-restoration/onboarding-complete/actual-wkwebview.png"
+  },
+  "behavior": {
+    "validates_all_steps": true,
+    "validates_owned_photo_blobs": true,
+    "loading_before_write": true,
+    "persistence_failure_rolls_back": true,
+    "duplicate_tap_single_write": true,
+    "home_relaunch_depth_one": true,
+    "tab_skeleton_once_each": true,
+    "profile_media_sync": true,
+    "refresh_and_relogin_restore": true
+  }
+}

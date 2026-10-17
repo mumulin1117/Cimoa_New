@@ -5,7 +5,7 @@ import { relaunch_route } from '@/utils/routeTransition.js'
 import { prepare_main_tab_skeleton } from '@/utils/mainTabSkeleton.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import AuthActionLoading from '@/components/AuthActionLoading.vue'
-const frame = ref(null), { store, context, allowed, access_error, error, is_loading, run_with_loading, go, recover } = use_onboarding('complete', frame)
+const frame = ref(null), { store, context, allowed, access_error, error, is_loading, run_with_loading, recover } = use_onboarding('complete', frame)
 const enter = async () => {
   if (is_loading.value) return
   error.value = ''
@@ -23,7 +23,7 @@ const enter = async () => {
 <template>
   <SecondaryPageFrame ref="frame" class="onboarding-complete-page">
     <view class="notice-content"><view class="notice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg></view><text class="notice-title">Your profile is ready</text><text class="notice-copy">Say hi to someone, join the matching pool, or find an event happening this week.</text>
-      <text v-if="error || (access_error && !context?.completed)" class="auth-error-box" role="alert">{{ error || access_error }}</text><view v-if="error && !context?.completed" class="complete-recovery"><view role="button" tabindex="0" @click="go('/pages/onboarding/photos')" @keydown.enter="go('/pages/onboarding/photos')">Review Photos</view><view role="button" tabindex="0" @click="go('/pages/onboarding/basic')" @keydown.enter="go('/pages/onboarding/basic')">Review Profile</view></view>
+      <text v-if="error || (access_error && !context?.completed)" class="auth-error-box" role="alert">{{ error || access_error }}</text>
     </view>
     <template #footer><view class="notice-footer"><view v-if="!access_error || context?.completed" class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="obComplete.enterApp.click.1" @click="enter" @keydown.enter="enter">Explore Cimoa</view><view v-else class="auth-primary" role="button" tabindex="0" @click="recover" @keydown.enter="recover">Continue account setup</view></view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Finishing your profile…" /></template>
@@ -39,6 +39,4 @@ const enter = async () => {
 .notice-title { font-size: 59.16rpx; }
 .notice-copy { max-width: 553.435rpx; }
 .notice-footer { padding-bottom: 64.885rpx; }
-.complete-recovery { display: flex; gap: 26.718rpx; color: var(--cimoa-text-link); font-size: 30.534rpx; }
-.complete-recovery view { padding: 19.084rpx 0; text-decoration: underline; }
 </style>

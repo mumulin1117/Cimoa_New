@@ -1,0 +1,79 @@
+{
+  "phase": "onboarding-complete-pixel-restoration",
+  "result": "passed",
+  "server_pid": 11860,
+  "reference": {
+    "kind": "source-derived locked reference with approved brand, validation and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "34efd6b53b939a7944c02a3e2c2265b234dbd3f7c815829b97eb9403cc93aed4",
+    "behavior_fragment_sha256": "40fa6a36ec7683bca611201d8485457de5ddbfb9a9840355bc6b3356e5176dec",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "icon": {
+      "x": 148.5,
+      "y": 205.984375,
+      "width": 95.984375,
+      "height": 95.984375,
+      "right": 244.484375,
+      "bottom": 301.96875
+    },
+    "title": {
+      "x": 61.453125,
+      "y": 317.953125,
+      "width": 270.078125,
+      "height": 35.640625,
+      "right": 331.53125,
+      "bottom": 353.59375
+    },
+    "copy": {
+      "x": 51.5,
+      "y": 369.578125,
+      "width": 289.984375,
+      "height": 76.5,
+      "right": 341.484375,
+      "bottom": 446.078125
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 818.015625
+    },
+    "text": {
+      "title": "Your profile is ready",
+      "copy": "Say hi to someone, join the matching pool, or find an event happening this week.",
+      "primary": "Explore Cimoa"
+    },
+    "interactions": [
+      "obComplete.enterApp.click.1"
+    ],
+    "recovery": false
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 39704,
+    "pixels_above_channel_delta_8": 7755,
+    "mean_absolute_channel_delta": 1.241220328757959,
+    "max_channel_delta": 223
+  },
+  "checks": [
+    "393x852 source geometry, approved Cimoa brand, fixed footer and exact interaction ID match",
+    "already-completed account reLaunches Home once, preserves state bytes and refresh restores Home",
+    "missing auth context cannot enter Home and exposes one honest recovery action without unsourced links",
+    "320x568 keeps the complete source frame above the fixed footer"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

@@ -1983,12 +1983,19 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; ten-field contract: docs/cimoa-registration-onboarding.md",
-    "acceptance_evidence": "docs/evidence/registration/complete-browser.json"
+    "mapping_status": "source-locked; pixel-restored; browser and WKWebView full registration acceptance passed",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "restoration_artifacts": [
+      "docs/ui-restoration/onboarding-complete/source-contract.json",
+      "docs/ui-restoration/onboarding-complete/difference-audit.md",
+      "docs/ui-restoration/onboarding-complete/acceptance.json"
+    ],
+    "acceptance_evidence": "docs/ui-restoration/onboarding-complete/acceptance.json"
   },
   {
     "source_screen": "Home / People Met / Empty",

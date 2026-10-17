@@ -273,7 +273,7 @@ try {
     await page.evaluate(() => { window.__setItem = Storage.prototype.setItem; Storage.prototype.setItem = function(k,v) { if (k==='cimoa_app_state_v2') throw Error('Storage full'); return window.__setItem.call(this,k,v) } })
     await click('obComplete.enterApp.click.1'); await page.getByRole('alert').waitFor(); assert.deepEqual(await snapshot(), before)
     await page.evaluate(() => { Storage.prototype.setItem = window.__setItem; delete window.__setItem })
-    await page.getByRole('button', { name: 'Review Photos', exact: true }).click(); await page.locator('.onboarding-photos-page').waitFor(); await page.locator('.onboarding-back').click(); await page.locator('.onboarding-complete-page').waitFor()
+    assert.equal(await page.getByRole('button', { name: 'Review Photos', exact: true }).count(), 0)
     await click('obComplete.enterApp.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
     await page.locator('.home-header').waitFor(); await page.locator('.main-skeleton').waitFor(); await page.locator('.main-skeleton').waitFor({ state: 'detached' })
     const completed = await snapshot(), owner = completed.session.current_user_id, user = completed.users.find(u=>u.user_id===owner)
@@ -290,7 +290,7 @@ try {
     await page.waitForFunction(() => document.querySelector('.profile-photo')?.dataset.mediaStatus==='ready'); await shot('new-profile')
     await click('profile.goBack.click.1'); await page.locator('.home-header').waitFor(); assert.deepEqual(await snapshot(), completed)
     await page.reload(); await page.locator('.home-header').waitFor(); assert.equal(await page.locator('.main-skeleton').count(), 0); assert.deepEqual(await snapshot(), completed)
-    check('Complete handles storage failure and review/back; successful commit relaunches Home at depth 1, consumes each Tab skeleton once and synchronizes Profile/media with no fake verification or gifts')
+    check('Complete handles storage failure without unsourced recovery controls; successful commit relaunches Home at depth 1, consumes each Tab skeleton once and synchronizes Profile/media with no fake verification or gifts')
     // Isolated-test session expiry: exercise real credential login, not an unimplemented Settings logout UI.
     await page.evaluate(() => { const e=JSON.parse(localStorage.getItem('cimoa_app_state_v2')); e.data.session={account_id:null,current_user_id:null,expires_at:null};localStorage.setItem('cimoa_app_state_v2',JSON.stringify(e)) })
     await page.goto(`${origin}/?relogin=completed#/pages/auth/login`); await page.locator('.login-page').waitFor()

@@ -1,0 +1,40 @@
+{
+  "screen": "Onboarding / Complete / Default",
+  "route": "/pages/onboarding/complete",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_lines": [3195, 3206],
+    "visual_fragment_sha256": "34efd6b53b939a7944c02a3e2c2265b234dbd3f7c815829b97eb9403cc93aed4",
+    "behavior_lines": [5590],
+    "behavior_fragment_sha256": "40fa6a36ec7683bca611201d8485457de5ddbfb9a9840355bc6b3356e5176dec"
+  },
+  "viewport": { "width": 393, "height": 852 },
+  "layout": {
+    "content_top": 196,
+    "content_inset": 24,
+    "content_gap": 16,
+    "icon_size": 96,
+    "title_size": 31,
+    "copy_size": 17,
+    "copy_max_width": 290,
+    "footer_inset": 20,
+    "footer_bottom": 34,
+    "primary_height": 60
+  },
+  "content": {
+    "title": "Your profile is ready",
+    "copy": "Say hi to someone, join the matching pool, or find an event happening this week.",
+    "source_primary": "Explore CIRCA",
+    "product_primary": "Explore Cimoa"
+  },
+  "interactions": ["obComplete.enterApp.click.1"],
+  "approved_deltas": [
+    "Replace the prototype name CIRCA with the configured product brand Cimoa.",
+    "Use real safe areas instead of fixed canvas insets.",
+    "Validate every onboarding entity and owned photo blob before completing the account.",
+    "Show the required custom Loading before the final Store transaction.",
+    "Prepare each main Tab's one-time skeleton before reLaunch to Home.",
+    "Persistence or media failures remain on the page with a real in-page error."
+  ]
+}
