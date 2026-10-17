@@ -1,0 +1,3 @@
+# Delete success audit — 2026-10-17
+
+HTML 4053–4063 locked. Keep source success layout and Return to Welcome, with the authorized truthful local-deletion result rather than a remote request claim. The prior last-deleted-record getter could show success for an unrelated historical deletion. The deletion action now records its account ID in auth_flow; the getter requires that completed flow and no authenticated replacement session. Refresh remains supported; arbitrary/direct access has a real error. Add keyboard/double-navigation protection. End-to-end browser regression must prove storage failure rollback, actual private entity/Blob removal and invalid old credentials. Full visual/native-system acceptance stays pending.

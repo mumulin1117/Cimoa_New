@@ -8,10 +8,11 @@ import SourceIcon from '@/components/SourceIcon.vue'
 
 const store = use_app_store()
 const error = ref('')
+const navigating = ref(false)
 const cleanup_warning = ref(false)
 const deletion = computed(() => store.last_deleted_account)
 onLoad(options => { cleanup_warning.value = options?.warning === '1' })
-const welcome = async () => { try { await relaunch_route('/pages/auth/welcome') } catch (cause) { error.value = cause.message } }
+const welcome = async () => { if (navigating.value) return; navigating.value = true; try { await relaunch_route('/pages/auth/welcome') } catch (cause) { error.value = cause.message } finally { navigating.value = false } }
 </script>
 
 <template>
@@ -23,7 +24,7 @@ const welcome = async () => { try { await relaunch_route('/pages/auth/welcome') 
       <text v-if="cleanup_warning" class="delete-page-disclosure" role="alert">Some local media could not be removed. Clear Cimoa app data before sharing this device.</text>
     </view>
     <view v-else class="delete-page-body delete-success-error" role="alert"><text class="delete-page-title">No completed local deletion</text><text class="delete-page-copy">This status page is only available after an account has been deleted on this device.</text></view>
-    <template #footer><text v-if="error" class="event-page-error" role="alert">{{ error }}</text><view class="delete-success-footer"><view class="delete-success-return" role="button" data-interaction="delSuccess.returnToWelcome.click.1" @click="welcome">Return to Welcome</view></view></template>
+    <template #footer><text v-if="error" class="event-page-error" role="alert">{{ error }}</text><view class="delete-success-footer"><view class="delete-success-return" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="delSuccess.returnToWelcome.click.1" @click="welcome" @keydown.enter="welcome">Return to Welcome</view></view></template>
   </SecondaryPageFrame>
 </template>
 
