@@ -1,0 +1,58 @@
+{
+  "phase": "reset-email-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-17",
+  "auto_confirmation_basis": "User authorized automatic confirmation and immediate next-page source locking when source, browser, WKWebView, behavior and final-gate evidence pass without unresolved uncertainty.",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 4,
+    "behavior_checks_passed": 3,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": { "top": 54, "bottom": 0 },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": { "top": 62, "bottom": 34 },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/reset-email/browser-acceptance.json",
+    "behavior_report": "docs/evidence/auth-reset/email-acceptance.json",
+    "comparison": {
+      "pixels_different": 51056,
+      "pixels_above_channel_delta_8": 6819,
+      "mean_absolute_channel_delta": 0.5533776236724844,
+      "max_channel_delta": 183
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testResetEmailPixelRestoration",
+    "tests": 1,
+    "failures": 0,
+    "screenshot": "docs/ui-restoration/reset-email/actual-wkwebview.png"
+  },
+  "verified_flows": [
+    "source heading, field geometry, fixed footer and interaction IDs match the locked Reset Email contract",
+    "invalid and unknown accounts remain zero-write while an active device account creates exactly one owned reset after 500ms custom Loading",
+    "refresh never restores unsaved email input and direct-entry Back restores Login without a state mutation",
+    "browser small-screen and native WKWebView safe areas preserve one scroll owner and the fixed action"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/reset-email/reference.png",
+    "docs/ui-restoration/reset-email/actual-browser.png",
+    "docs/ui-restoration/reset-email/overlay.png",
+    "docs/ui-restoration/reset-email/diff.png",
+    "docs/ui-restoration/reset-email/source-contract.json",
+    "docs/ui-restoration/reset-email/difference-audit.md"
+  ],
+  "final_gates": {
+    "check_conventions": "passed",
+    "git_diff_check": "passed",
+    "build_h5": "passed"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "page": "Reset Email",
+  "route": "/pages/auth/reset/email",
+  "source_screen": "Auth / Forgot Password / Email",
+  "source_query": "route=fpEmail",
+  "source_lock": "locked",
+  "locked_at": "2026-10-17",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isFpEmail",
+    "visual_lines": "2819-2839",
+    "visual_fragment_sha256": "91735bf7fb883c9c3fab21f134d4ee467aa69b980e3b0f3684bd55472385230a",
+    "behavior_lines": [4782, 5155, 5538, 5596, 5597, 5605, 5606],
+    "behavior_fragment_sha256": "1326b65eb55e90cc16f60ae3b0d1a5e3e34b05d7ffff20f26526fa0b762426ca"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "header": "top 58px; left/right 20px; height 48px; 46px circular Back; centered 21px title",
+    "scroll": "top 122px; left/right 20px; source bottom padding 140px",
+    "footer": "left/right 20px; bottom 34px; 60px primary",
+    "project_skeleton": "TopSafeArea; SecondaryPageHeader; one middle scroll-view; fixed footer; BottomSafeArea",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "content": {
+    "header_title": "Reset password",
+    "heading": "Reset your password",
+    "description": {
+      "source_copy": "Enter the university email on your account and we’ll send a reset code.",
+      "approved_local_copy": "Enter the email for an active account saved on this device. No email will be sent."
+    },
+    "field": { "label": "Email", "placeholder": "you@university.edu", "height_css_px": 56, "radius_css_px": 18 },
+    "primary": {
+      "source_copy": "Send Reset Code",
+      "approved_local_copy": "Continue",
+      "interaction_id": "fpEmail.goFpCode.click.1",
+      "height_css_px": 60,
+      "radius_css_px": 30
+    }
+  },
+  "approved_deltas": [
+    { "id": "reset-email-safe-area-skeleton", "source": "DEVELOPMENT_CONVENTIONS.md sections 2 and 15", "delta": "Measured safe areas and one middle scroll-view preserve source coordinates at 393x852 and keep the footer fixed." },
+    { "id": "reset-email-local-truth", "source": "User-authorized local account scope and INTERACTION_CONVENTIONS.md section 9.2", "delta": "No email service exists. Replace only the send claim and CTA verb with explicit on-device lookup copy; do not show a fake sent state." },
+    { "id": "reset-email-owned-reset", "source": "Existing Store password-reset contract", "delta": "Valid active on-device accounts create one owned reset_id after 500ms Loading. Invalid, missing, authenticated, unknown-account and persistence-failure paths remain zero-write." },
+    { "id": "reset-email-no-unsourced-note", "source": "User pixel-source rule", "delta": "Remove the extra implementation-only account-type note; the approved description already discloses the local scope." }
+  ],
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/reset-email/reference.png",
+    "actual_browser_png": "docs/ui-restoration/reset-email/actual-browser.png",
+    "actual_browser_error_png": "docs/ui-restoration/reset-email/actual-browser-error.png",
+    "actual_browser_small_png": "docs/ui-restoration/reset-email/actual-browser-small.png",
+    "overlay_png": "docs/ui-restoration/reset-email/overlay.png",
+    "diff_png": "docs/ui-restoration/reset-email/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/reset-email/actual-wkwebview.png",
+    "visual_acceptance": "passed"
+  }
+}

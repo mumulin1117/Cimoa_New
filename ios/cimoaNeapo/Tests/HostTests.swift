@@ -1526,6 +1526,44 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { try? await restore(); throw error }
     }
+    func testResetEmailPixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+        if saved is NSNull {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?resetEmail=fixture#/pages/auth/welcome")!)); try await waitFor(host, ".welcome-page"); try await signIn(host)
+        }
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("if(snapshot===null)localStorage.removeItem('cimoa_app_state_v2');else localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?resetEmail=restored#/pages/auth/welcome")!)); try await waitFor(host, ".welcome-page")
+        }
+        do {
+            _ = try await script(host, "const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),account=envelope.data.accounts.find(row=>row.status==='active');account.email='reset.native@campus.edu';envelope.data.session={account_id:null,current_user_id:null,expires_at:null};envelope.data.auth_flow.password_reset=null;envelope.data.auth_flow.email='';localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?resetEmail=native#/pages/auth/reset/email")!)); try await waitFor(host, ".reset-email-page")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,bottom:rect.bottom}},root=box('.reset-email-page'),header=box('.auth-header'),back=box('.auth-back'),heading=box('.auth-heading'),description=box('.auth-description'),field=box('.auth-field'),input=box('.auth-input-box'),primary=box('[data-interaction="fpEmail.goFpCode.click.1"]'),safes=[...document.querySelectorAll('.reset-email-page>.safe-area')].map(element=>element.getBoundingClientRect().height);return {root,header,back,heading,description,field,input,primary,safes,text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.auth-heading').textContent,description:document.querySelector('.auth-description').textContent,label:document.querySelector('.auth-label').textContent,primary:document.querySelector('[data-interaction="fpEmail.goFpCode.click.1"]').textContent.trim()},interactions:[...document.querySelectorAll('.reset-email-page [data-interaction]')].map(element=>element.dataset.interaction),extraNote:!!document.querySelector('.auth-local-note')}
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root=metrics["root"] as! [String:Double],header=metrics["header"] as! [String:Double],back=metrics["back"] as! [String:Double],heading=metrics["heading"] as! [String:Double],description=metrics["description"] as! [String:Double],field=metrics["field"] as! [String:Double],input=metrics["input"] as! [String:Double],primary=metrics["primary"] as! [String:Double],safes=metrics["safes"] as! [Double],text=metrics["text"] as! [String:String],interactions=metrics["interactions"] as! [String],scale=root["width"]!/393
+            XCTAssertEqual(safes[0],Double(host.view.safeAreaInsets.top),accuracy:1); XCTAssertEqual(safes[1],Double(host.view.safeAreaInsets.bottom),accuracy:1); XCTAssertEqual(header["y"]!,safes[0]+4*scale,accuracy:1); XCTAssertEqual(back["width"]!,46*scale,accuracy:1); XCTAssertEqual(heading["y"]!,safes[0]+68*scale,accuracy:1.5); XCTAssertEqual(description["y"]!-heading["bottom"]!,10*scale,accuracy:1); XCTAssertEqual(field["y"]!-description["bottom"]!,14*scale,accuracy:1); XCTAssertEqual(input["height"]!,56*scale,accuracy:1); XCTAssertEqual(primary["height"]!,60*scale,accuracy:1); XCTAssertEqual(primary["bottom"]!,root["height"]!-safes[1]-34*scale,accuracy:2)
+            XCTAssertEqual(text["header"],"Reset password"); XCTAssertEqual(text["heading"],"Reset your password"); XCTAssertEqual(text["description"],"Enter the email for an active account saved on this device. No email will be sent."); XCTAssertEqual(text["label"],"Email"); XCTAssertEqual(text["primary"],"Continue"); XCTAssertEqual(metrics["extraNote"] as? Bool,false); for id in ["fpEmail.goBack.click.1","fpEmail.onEmail.change.1","fpEmail.goFpCode.click.1"] { XCTAssertTrue(interactions.contains(id)) }
+            let shot=XCTAttachment(image:try await host.webView.takeSnapshot(configuration:nil)); shot.name="WKWebView Reset Email default"; shot.lifetime = .keepAlways; add(shot); print("CIMOA_RESET_EMAIL_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+            let before=try await script(host,"return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host,"const input=document.querySelector('uni-input[aria-label=\"Reset email\"] input'),set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(input,'invalid');input.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('[data-interaction=\"fpEmail.goFpCode.click.1\"]').click();return true"); try await waitFor(host,".reset-email-page [role=alert]")
+            let invalidState = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(invalidState,before)
+            _ = try await script(host,"const input=document.querySelector('uni-input[aria-label=\"Reset email\"] input'),set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(input,'reset.native@campus.edu');input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,100));document.querySelector('[data-interaction=\"fpEmail.goFpCode.click.1\"]').click();return true"); try await waitFor(host,".loading")
+            let stateDuringLoading = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(stateDuringLoading,before); try await waitFor(host,".reset-code-page")
+            let created=try await script(host,"const reset=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.auth_flow.password_reset;return {email:reset.email,verified:reset.verified_at}") as! [String:Any]
+            XCTAssertEqual(created["email"] as? String,"reset.native@campus.edu"); XCTAssertTrue(created["verified"] is NSNull)
+            try await restore()
+        } catch { try? await restore(); throw error }
+    }
     func testLocalPasswordResetAndRelogin() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

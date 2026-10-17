@@ -1,0 +1,100 @@
+{
+  "phase": "reset-email-pixel-restoration",
+  "result": "passed",
+  "server_pid": 19272,
+  "reference": {
+    "kind": "source-derived locked reference with approved local-only and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "91735bf7fb883c9c3fab21f134d4ee467aa69b980e3b0f3684bd55472385230a",
+    "behavior_fragment_sha256": "1326b65eb55e90cc16f60ae3b0d1a5e3e34b05d7ffff20f26526fa0b762426ca",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "bottom": 105.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "bottom": 104.984375
+    },
+    "heading": {
+      "x": 20,
+      "y": 121.96875,
+      "width": 353,
+      "height": 36.296875,
+      "bottom": 158.265625
+    },
+    "description": {
+      "x": 20,
+      "y": 168.265625,
+      "width": 353,
+      "height": 49.28125,
+      "bottom": 217.546875
+    },
+    "field": {
+      "x": 20,
+      "y": 231.546875,
+      "width": 353,
+      "height": 79.984375,
+      "bottom": 311.53125
+    },
+    "input": {
+      "x": 20,
+      "y": 255.546875,
+      "width": 353,
+      "height": 55.984375,
+      "bottom": 311.53125
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "bottom": 818.015625
+    },
+    "safes": [
+      54,
+      0
+    ],
+    "text": {
+      "header": "Reset password",
+      "heading": "Reset your password",
+      "description": "Enter the email for an active account saved on this device. No email will be sent.",
+      "label": "Email",
+      "primary": "Continue"
+    },
+    "interactions": [
+      "fpEmail.goBack.click.1",
+      "fpEmail.onEmail.change.1",
+      "fpEmail.goFpCode.click.1"
+    ],
+    "extraNote": false
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 51056,
+    "pixels_above_channel_delta_8": 6819,
+    "mean_absolute_channel_delta": 0.5533776236724844,
+    "max_channel_delta": 183
+  },
+  "checks": [
+    "393x852 restores locked geometry, source heading, approved local copy and no unsourced note",
+    "invalid input and refresh are zero-write and unsaved email never persists",
+    "direct-entry Back replaces Login without mutating guest state",
+    "320x568 and 62/34 safe areas keep the footer fixed and one middle scroll owner"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}
