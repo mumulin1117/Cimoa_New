@@ -9315,7 +9315,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/profile/preview",
-    "component": null,
+    "component": "src/pages/profile/preview.vue",
     "parent_route": "/pages/profile/index",
     "allowed_origin_routes": [
       "/pages/profile/index"
@@ -9421,7 +9421,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-profile-account-loop.md"
+    "mapping_status": "source-locked; canonical text/photo/voice preview, edits and return/refresh passed; long-page pixel and physical audio acceptance pending",
+    "visual_acceptance": "pending",
+    "source_lock_artifact": "docs/ui-restoration/account-preview/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/account-preview/difference-audit.md",
+    "acceptance_evidence": "docs/evidence/profile-edit/preview-acceptance.json"
   },
   {
     "source_screen": "Profile / Edit / All",

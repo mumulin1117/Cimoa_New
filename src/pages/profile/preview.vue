@@ -5,10 +5,12 @@ import SourceIcon from '@/components/SourceIcon.vue'
 import ProfilePhoto from '@/components/ProfilePhoto.vue'
 import { use_profile_editor } from '@/composables/useProfileEditor.js'
 import { bio_style, profile_preview_tags } from '@/utils/profilePresentation.js'
+import EventAudio from '@/components/EventAudio.vue'
 const frame = ref(null), { store, error, access_error, go, back, recover } = use_profile_editor(frame)
 const user = computed(() => store.current_user), photos = computed(() => store.current_photos), photo_index = ref(0)
 const tags = computed(() => profile_preview_tags(user.value, store.current_settings)), goals = computed(() => store.goals_for_user(user.value.user_id))
 const song = computed(() => store.profile_catalog.songs.find(row => row.song_id === user.value.song_id))
+const audio = computed(() => store.profile_editor?.audio)
 watch(photos, value => { photo_index.value = Math.min(photo_index.value, Math.max(0, value.length - 1)) })
 const turn_photo = direction => { if (photos.value.length > 1) photo_index.value = (photo_index.value + direction + photos.value.length) % photos.value.length }
 const edit = () => go('/pages/profile/edit')
@@ -21,7 +23,7 @@ const edit = () => go('/pages/profile/edit')
         <view v-if="song" class="preview-song"><image :src="song.cover_url" mode="aspectFill" /><view class="song-labels"><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view class="song-play" role="button" :aria-label="`Play ${song.title}`" data-interaction="profilePreview.eaSongPlay.click.1" @click="error = 'No playable audio is configured for this song.'"><svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z" fill="currentColor" /></svg></view></view>
       </view>
       <view class="preview-card preview-tags"><view v-for="tag in tags" :key="tag.key" class="preview-tag"><view v-if="tag.icon" class="tag-icon"><SourceIcon :name="tag.icon" :stroke-width="1.7" /></view><text v-else class="tag-emoji">{{ tag.emoji }}</text><text>{{ tag.label }}</text></view><text v-if="!tags.length" class="editor-copy">No details shared yet.</text></view>
-      <view class="preview-card"><text v-if="user.bio" class="editor-bio" :style="bio_style(user.bio_font)">{{ user.bio }}</text><text v-else class="editor-copy">No introduction yet.</text></view>
+      <view class="preview-card"><EventAudio v-if="audio" :src="audio.media_url" :duration="audio.duration_ms" interaction="profilePreview.evTogglePlay.click.1" /><text v-if="user.bio" class="editor-bio" :style="bio_style(user.bio_font)">{{ user.bio }}</text><text v-else class="editor-copy">No introduction yet.</text></view>
       <view class="preview-card"><view class="preview-heading"><view class="heading-icon goals-icon"><SourceIcon name="people" :stroke-width="1.9" /></view><text>Looking for</text></view><view class="preview-tags section-tags"><view v-for="goal in goals" :key="goal.item_id" class="preview-tag"><text>{{ goal.emoji }}</text><text>{{ goal.label }}</text></view></view><text v-if="!goals.length" class="editor-copy">No connection goals selected yet.</text></view>
       <view class="preview-card"><view class="preview-heading"><view class="heading-icon interests-icon"><SourceIcon name="sparkle" :stroke-width="1.9" /></view><text>Interests</text></view><view class="preview-tags section-tags"><view v-for="interest in store.current_interests" :key="interest.item_id" class="preview-tag"><text>{{ interest.emoji }}</text><text>{{ interest.label }}</text></view></view><text v-if="!store.current_interests.length" class="editor-copy">No interests selected yet.</text></view>
     </template></view>

@@ -1,0 +1,747 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isProfilePreview",
+    "source_query": "route=profilePreview",
+    "lines": [
+      3355,
+      3468
+    ],
+    "fragment_sha256": "b4e993a8b1bab11ca38ab7635bb3c84a632c39268a7a901c9002dc8efbe3d6d1",
+    "fragment": "<sc-if value=\"{{ isProfilePreview }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Profile / Personal / Preview\" style=\"position:absolute;inset:0;animation:cRise 260ms ease both\">\n        <div style=\"position:absolute;top:60px;left:20px;right:20px;height:54px;display:flex;align-items:center;justify-content:space-between;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer\">\n            <svg width=\"24\" height=\"24\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"display:flex;align-items:center;gap:7px\"><div style=\"font-size:23px;font-weight:700;letter-spacing:-0.02em\">{{ obName }}, 22</div><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"#1d9bf0\"></circle><path d=\"m7.5 12.4 3 3 6-6.4\" stroke=\"#fff\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></div>\n          <div sc-camel-on-click=\"{{ openEditBasic }}\" style=\"position:relative;width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 20h4L19 9l-4-4L4 16z\"></path><path d=\"M13.5 6.5l4 4\"></path></svg>\n          </div>\n        </div>\n\n        <div class=\"cscroll\" style=\"position:absolute;top:126px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 190px;box-sizing:border-box\">\n          <div style=\"position:relative;width:100%;aspect-ratio:3/4;border-radius:24px;overflow:hidden;box-shadow:0 12px 30px rgba(16,36,74,0.12)\">\n            <img src=\"6cba2be3-a0e0-4813-b4ab-4aa65ed6aa30\" alt=\"My photo\" style=\"width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;cursor:pointer\">\n            <sc-if value=\"{{ eaHasSong }}\" hint-placeholder-val=\"{{ false }}\">\n              <div style=\"position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;gap:12px;padding:8px 8px 8px 8px;border-radius:22px;background:rgba(8,16,31,0.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:3\">\n                <div style=\"width:44px;height:44px;border-radius:12px;background:{{ eaSongArt }};flex:none;display:flex;align-items:center;justify-content:center;font-size:20px\">{{ eaSongEmoji }}</div>\n                <div style=\"flex:1;min-width:0\"><div style=\"font-size:15.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ eaSongTitle }}</div><div style=\"font-size:13px;color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">{{ eaSongArtist }}</div></div>\n                <div sc-camel-on-click=\"{{ eaSongPlay }}\" style=\"width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer\"><sc-if value=\"{{ eaSongPlayingNot }}\" hint-placeholder-val=\"{{ true }}\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" style=\"margin-left:2px\"><path d=\"M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z\" fill=\"#a855f7\"></path></svg></sc-if><sc-if value=\"{{ eaSongPlaying }}\" hint-placeholder-val=\"{{ false }}\"><svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\"><rect x=\"6\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#a855f7\"></rect><rect x=\"14\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1.3\" fill=\"#a855f7\"></rect></svg></sc-if></div>\n              </div>\n            </sc-if>\n            <div sc-camel-on-click=\"{{ prevPhoto }}\" style=\"position:absolute;left:0;top:0;bottom:0;width:35%;cursor:pointer\"></div>\n            <div sc-camel-on-click=\"{{ nextPhoto }}\" style=\"position:absolute;right:0;top:0;bottom:0;width:35%;cursor:pointer\"></div>\n            <div style=\"position:absolute;top:14px;left:14px;right:14px;display:flex;gap:6px\">\n              <sc-for list=\"{{ profileDots }}\" as=\"d\" hint-placeholder-count=\"3\">\n                <div style=\"flex:1;height:3px;border-radius:2px;background:{{ d.bg }}\"></div>\n              </sc-for>\n            </div>\n          </div>\n\n          <div style=\"padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06);margin-top:20px;display:flex;flex-wrap:wrap;gap:8px\">\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 2v20M16 2v20M8 6h4M8 12h4M8 18h4\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">178 cm</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2 8.5l10-4.5 10 4.5-10 4.5z\"></path><path d=\"M6 10.8v4.4c0 1.4 2.7 2.8 6 2.8s6-1.4 6-2.8v-4.4\"></path><path d=\"M22 8.5v5\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">HKUST</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 5.5c3.2-1 6.3-.7 9.5 1.2 3.2-1.9 6.3-2.2 9.5-1.2v13c-3.2-1-6.3-.7-9.5 1.2-3.2-1.9-6.3-2.2-9.5-1.2z\"></path><path d=\"M12 6.7v13\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Design</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9.2 3.8a2.3 2.3 0 0 1 4.6 0V5H17a1 1 0 0 1 1 1v3.3h1.2a2.3 2.3 0 0 1 0 4.6H18V18a1 1 0 0 1-1 1h-3.3v-1.2a2.3 2.3 0 0 0-4.6 0V19H6a1 1 0 0 1-1-1v-3.4h1.2a2.3 2.3 0 0 0 0-4.6H5V6a1 1 0 0 1 1-1h3.2z\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">INFP</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:17px;line-height:1;flex:none\">🇨🇳</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">China</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:17px;line-height:1;flex:none\">🍷</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">{{ eaDrinkTxt }}</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:17px;line-height:1;flex:none\">🚭</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">{{ eaSmokeTxt }}</div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:17px;line-height:1;flex:none\">🕊️</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">{{ eaReligionTxt }}</div>\n            </div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Photo Society</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21s-7-6.2-7-11.4A7 7 0 0 1 19 9.6C19 14.8 12 21 12 21z\"></path><circle cx=\"12\" cy=\"9.4\" r=\"2.4\"></circle></svg>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Clear Water Bay</div>\n            </div>\n          </div>\n\n          <div style=\"margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)\">\n            <div style=\"font-family:'Caveat',cursive;font-size:27px;font-weight:600;line-height:1.25;color:#26364f;text-align:center;text-wrap:balance\">{{ obBio }}</div>\n          </div>\n\n          <div style=\"margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)\">\n            <div style=\"display:flex;align-items:center;gap:10px\"><div style=\"width:36px;height:36px;border-radius:18px;background:#efe9fb;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"9\" cy=\"8\" r=\"3.4\"></circle><path d=\"M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4\"></path></svg></div><div style=\"font-size:22px;font-weight:800;letter-spacing:-0.02em\">Looking for</div></div>\n            <div style=\"display:flex;flex-wrap:wrap;gap:8px;margin-top:12px\">\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">🤝 New friends</div>\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">📚 Study buddy</div>\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">☕ Coffee chats</div>\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">🗣️ Language exchange</div>\n              <div style=\"height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f\">🎉 Campus events</div>\n            </div>\n          </div>\n\n          <div style=\"margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)\">\n            <div style=\"display:flex;align-items:center;gap:10px\"><div style=\"width:36px;height:36px;border-radius:18px;background:#e5f0ff;display:flex;align-items:center;justify-content:center;flex:none\"><svg width=\"18\" height=\"18\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3l1.6 4.8L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.2z\"></path></svg></div><div style=\"font-size:22px;font-weight:800;letter-spacing:-0.02em\">Interests</div></div>\n            <div style=\"display:flex;flex-wrap:wrap;gap:8px;margin-top:12px\">\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:13px;line-height:1;flex:none\">📷</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Photography</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:13px;line-height:1;flex:none\">☕</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Coffee</div>\n            </div>\n            <div style=\"display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb\">\n              <div style=\"font-size:13px;line-height:1;flex:none\">🎵</div>\n              <div style=\"font-size:14px;font-weight:500;color:#26364f\">Live music</div>\n            </div>\n          </div>\n        </div>\n        </div>\n\n        <div sc-camel-on-click=\"{{ openEditBasic }}\" style=\"position:absolute;left:20px;right:20px;bottom:34px;height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);box-shadow:0 12px 28px rgba(168,85,247,0.32);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20\">\n          <svg width=\"20\" height=\"20\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"margin-right:8px\"><path d=\"M4 20h4L19 9l-4-4L4 16z\"></path><path d=\"M13.5 6.5l4 4\"></path></svg>\n          <div style=\"font-size:21px;font-weight:700;color:#fff\">Edit Profile</div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/profile/preview",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/profile/index）；无历史实例时 replace /pages/profile/index，不创建伪造实体",
+  "styles": [
+    {
+      "line": 3356,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 260ms ease both"
+    },
+    {
+      "line": 3357,
+      "tag": "div",
+      "style": "position:absolute;top:60px;left:20px;right:20px;height:54px;display:flex;align-items:center;justify-content:space-between;z-index:20"
+    },
+    {
+      "line": 3358,
+      "tag": "div",
+      "style": "width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 3361,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:7px"
+    },
+    {
+      "line": 3361,
+      "tag": "div",
+      "style": "font-size:23px;font-weight:700;letter-spacing:-0.02em"
+    },
+    {
+      "line": 3362,
+      "tag": "div",
+      "style": "position:relative;width:54px;height:54px;border-radius:27px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 3367,
+      "tag": "div",
+      "style": "position:absolute;top:126px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 190px;box-sizing:border-box"
+    },
+    {
+      "line": 3368,
+      "tag": "div",
+      "style": "position:relative;width:100%;aspect-ratio:3/4;border-radius:24px;overflow:hidden;box-shadow:0 12px 30px rgba(16,36,74,0.12)"
+    },
+    {
+      "line": 3369,
+      "tag": "img",
+      "style": "width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;cursor:pointer"
+    },
+    {
+      "line": 3371,
+      "tag": "div",
+      "style": "position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;gap:12px;padding:8px 8px 8px 8px;border-radius:22px;background:rgba(8,16,31,0.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:3"
+    },
+    {
+      "line": 3372,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:12px;background:{{ eaSongArt }};flex:none;display:flex;align-items:center;justify-content:center;font-size:20px"
+    },
+    {
+      "line": 3373,
+      "tag": "div",
+      "style": "flex:1;min-width:0"
+    },
+    {
+      "line": 3373,
+      "tag": "div",
+      "style": "font-size:15.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 3373,
+      "tag": "div",
+      "style": "font-size:13px;color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"
+    },
+    {
+      "line": 3374,
+      "tag": "div",
+      "style": "width:44px;height:44px;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer"
+    },
+    {
+      "line": 3374,
+      "tag": "svg",
+      "style": "margin-left:2px"
+    },
+    {
+      "line": 3377,
+      "tag": "div",
+      "style": "position:absolute;left:0;top:0;bottom:0;width:35%;cursor:pointer"
+    },
+    {
+      "line": 3378,
+      "tag": "div",
+      "style": "position:absolute;right:0;top:0;bottom:0;width:35%;cursor:pointer"
+    },
+    {
+      "line": 3379,
+      "tag": "div",
+      "style": "position:absolute;top:14px;left:14px;right:14px;display:flex;gap:6px"
+    },
+    {
+      "line": 3381,
+      "tag": "div",
+      "style": "flex:1;height:3px;border-radius:2px;background:{{ d.bg }}"
+    },
+    {
+      "line": 3386,
+      "tag": "div",
+      "style": "padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06);margin-top:20px;display:flex;flex-wrap:wrap;gap:8px"
+    },
+    {
+      "line": 3387,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3389,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3391,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3393,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3395,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3397,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3399,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3401,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3403,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3404,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1;flex:none"
+    },
+    {
+      "line": 3405,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3407,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3408,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1;flex:none"
+    },
+    {
+      "line": 3409,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3411,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3412,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1;flex:none"
+    },
+    {
+      "line": 3413,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3414,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3415,
+      "tag": "div",
+      "style": "font-size:17px;line-height:1;flex:none"
+    },
+    {
+      "line": 3416,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3419,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3421,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3423,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3425,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3429,
+      "tag": "div",
+      "style": "margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 3430,
+      "tag": "div",
+      "style": "font-family:'Caveat',cursive;font-size:27px;font-weight:600;line-height:1.25;color:#26364f;text-align:center;text-wrap:balance"
+    },
+    {
+      "line": 3433,
+      "tag": "div",
+      "style": "margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 3434,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px"
+    },
+    {
+      "line": 3434,
+      "tag": "div",
+      "style": "width:36px;height:36px;border-radius:18px;background:#efe9fb;display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 3434,
+      "tag": "div",
+      "style": "font-size:22px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 3435,
+      "tag": "div",
+      "style": "display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"
+    },
+    {
+      "line": 3436,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3437,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3438,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3439,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3440,
+      "tag": "div",
+      "style": "height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3444,
+      "tag": "div",
+      "style": "margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.06)"
+    },
+    {
+      "line": 3445,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:10px"
+    },
+    {
+      "line": 3445,
+      "tag": "div",
+      "style": "width:36px;height:36px;border-radius:18px;background:#e5f0ff;display:flex;align-items:center;justify-content:center;flex:none"
+    },
+    {
+      "line": 3445,
+      "tag": "div",
+      "style": "font-size:22px;font-weight:800;letter-spacing:-0.02em"
+    },
+    {
+      "line": 3446,
+      "tag": "div",
+      "style": "display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"
+    },
+    {
+      "line": 3447,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3448,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1;flex:none"
+    },
+    {
+      "line": 3449,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3451,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3452,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1;flex:none"
+    },
+    {
+      "line": 3453,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3455,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:17px;background:#f4f7fb"
+    },
+    {
+      "line": 3456,
+      "tag": "div",
+      "style": "font-size:13px;line-height:1;flex:none"
+    },
+    {
+      "line": 3457,
+      "tag": "div",
+      "style": "font-size:14px;font-weight:500;color:#26364f"
+    },
+    {
+      "line": 3463,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);box-shadow:0 12px 28px rgba(168,85,247,0.32);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20"
+    },
+    {
+      "line": 3464,
+      "tag": "svg",
+      "style": "margin-right:8px"
+    },
+    {
+      "line": 3465,
+      "tag": "div",
+      "style": "font-size:21px;font-weight:700;color:#fff"
+    }
+  ],
+  "texts": [
+    {
+      "line": 3361,
+      "text": ", 22"
+    },
+    {
+      "line": 3389,
+      "text": "178 cm"
+    },
+    {
+      "line": 3393,
+      "text": "HKUST"
+    },
+    {
+      "line": 3397,
+      "text": "Design"
+    },
+    {
+      "line": 3401,
+      "text": "INFP"
+    },
+    {
+      "line": 3404,
+      "text": "🇨🇳"
+    },
+    {
+      "line": 3405,
+      "text": "China"
+    },
+    {
+      "line": 3408,
+      "text": "🍷"
+    },
+    {
+      "line": 3412,
+      "text": "🚭"
+    },
+    {
+      "line": 3415,
+      "text": "🕊️"
+    },
+    {
+      "line": 3421,
+      "text": "Photo Society"
+    },
+    {
+      "line": 3425,
+      "text": "Clear Water Bay"
+    },
+    {
+      "line": 3434,
+      "text": "Looking for"
+    },
+    {
+      "line": 3436,
+      "text": "🤝 New friends"
+    },
+    {
+      "line": 3437,
+      "text": "📚 Study buddy"
+    },
+    {
+      "line": 3438,
+      "text": "☕ Coffee chats"
+    },
+    {
+      "line": 3439,
+      "text": "🗣️ Language exchange"
+    },
+    {
+      "line": 3440,
+      "text": "🎉 Campus events"
+    },
+    {
+      "line": 3445,
+      "text": "Interests"
+    },
+    {
+      "line": 3448,
+      "text": "📷"
+    },
+    {
+      "line": 3449,
+      "text": "Photography"
+    },
+    {
+      "line": 3452,
+      "text": "☕"
+    },
+    {
+      "line": 3453,
+      "text": "Coffee"
+    },
+    {
+      "line": 3456,
+      "text": "🎵"
+    },
+    {
+      "line": 3457,
+      "text": "Live music"
+    },
+    {
+      "line": 3465,
+      "text": "Edit Profile"
+    }
+  ],
+  "svg": [
+    {
+      "line": 3359,
+      "sha256": "39da3db5b5dacb3110b456553095d9c3392e6dc0aa79f14dfd12fc3c1b1d8501"
+    },
+    {
+      "line": 3361,
+      "sha256": "2fa0545f533974c3cfc2b09d5684156981d83073be2ef72ce4e6831e26039da8"
+    },
+    {
+      "line": 3363,
+      "sha256": "307f01a7e8aa2eaff3e99a58b979e2f420b2071f86b8f37d6b593441582f225d"
+    },
+    {
+      "line": 3374,
+      "sha256": "e2da087f6da63b01a145642b279192182d3b28538a68ff961392bc921b7f8e83"
+    },
+    {
+      "line": 3374,
+      "sha256": "8849a52ef30d23d7634d6731daed1d4adaa0ad30ae6cea3f5ca7311a5e42a01c"
+    },
+    {
+      "line": 3388,
+      "sha256": "445084d3f6323c28e2f8ad89912c0934a2ef3b577d5ce8d2a7c9bfb9643c84a6"
+    },
+    {
+      "line": 3392,
+      "sha256": "59a9d7b240b66944a38bdd6203e61d3a4f4121c44d089e1a98f44301f27d68bf"
+    },
+    {
+      "line": 3396,
+      "sha256": "b021a6beea223eebbbc13643d9204f1d3d455585d26c1dd66b2942bd398a891e"
+    },
+    {
+      "line": 3400,
+      "sha256": "844c89f297cbe8ffa93588243856a641d29b6a1aed80bcae462b8c4d0b06b10f"
+    },
+    {
+      "line": 3420,
+      "sha256": "6b9fa7ce81fa06555f5e0fa5f752df5bd59dcae0fe7e489923826f2cb88f13d6"
+    },
+    {
+      "line": 3424,
+      "sha256": "46809dc28d38e80ebdbd9e3bf6c0cf5ce523cde465a3e6cfd69e71a24b002c19"
+    },
+    {
+      "line": 3434,
+      "sha256": "5d893ab53ae741a6e54f95b93f75c58a62d97528778d490efd87b730c07160a4"
+    },
+    {
+      "line": 3445,
+      "sha256": "5569ec280fd56997cdb513ef6b78689f1369f1e36137629f8563a30378deb6f1"
+    },
+    {
+      "line": 3464,
+      "sha256": "5a23fc7b7f77c0a22e7b1d9e338c17175b6a4468f4d97fa6457f2566c350f651"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a15",
+        "local_path": "static/assets/head/me.png",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a0",
+        "local_path": "static/assets/songs/beautiful-things.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a3",
+        "local_path": "static/assets/songs/good-luck-babe.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a2",
+        "local_path": "static/assets/songs/birds.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a1",
+        "local_path": "static/assets/songs/espresso.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a6",
+        "local_path": "static/assets/songs/love-me-not.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a5",
+        "local_path": "static/assets/songs/risk-it-all.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      3359,
+      3361,
+      3363,
+      3374,
+      3374,
+      3388,
+      3392,
+      3396,
+      3400,
+      3420,
+      3424,
+      3434,
+      3445,
+      3464
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 3358,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 3362,
+      "event": "sc-camel-on-click",
+      "handler": "openEditBasic"
+    },
+    {
+      "line": 3374,
+      "event": "sc-camel-on-click",
+      "handler": "eaSongPlay"
+    },
+    {
+      "line": 3377,
+      "event": "sc-camel-on-click",
+      "handler": "prevPhoto"
+    },
+    {
+      "line": 3378,
+      "event": "sc-camel-on-click",
+      "handler": "nextPhoto"
+    },
+    {
+      "line": 3463,
+      "event": "sc-camel-on-click",
+      "handler": "openEditBasic"
+    }
+  ],
+  "interaction_ids": [
+    "profilePreview.goBack.click.1",
+    "profilePreview.openEditBasic.click.1",
+    "profilePreview.eaSongPlay.click.1",
+    "profilePreview.prevPhoto.click.1",
+    "profilePreview.nextPhoto.click.1",
+    "profilePreview.openEditBasic.click.2"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "profilePreview.goBack.click.1",
+      "source": "route=profilePreview",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "profilePreview.openEditBasic.click.1",
+      "source": "route=profilePreview",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "profilePreview.eaSongPlay.click.1",
+      "source": "route=profilePreview",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "profilePreview.prevPhoto.click.1",
+      "source": "route=profilePreview",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "profilePreview.nextPhoto.click.1",
+      "source": "route=profilePreview",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "profilePreview.openEditBasic.click.2",
+      "source": "route=profilePreview",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "users; profile_photos; interests; goals; icebreakers; profile_song",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}
