@@ -1,0 +1,244 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isDelInfo",
+    "source_query": "route=delInfo",
+    "lines": [
+      3985,
+      4009
+    ],
+    "fragment_sha256": "40816932a81190b1ce10175151a508734c503b588de3b04be6d6d1b8ab41e65d",
+    "fragment": "<sc-if value=\"{{ isDelInfo }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Settings / Delete Account / Information\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Delete account</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 190px;box-sizing:border-box\">\n          <div style=\"font-size:26px;font-weight:800;letter-spacing:-0.03em\">This removes your account</div>\n          <div style=\"font-size:16px;color:#5b6b85;margin-top:10px;line-height:1.5;text-wrap:pretty\">Logging out keeps your account. Deleting it is different — it permanently affects:</div>\n          <div style=\"display:flex;flex-direction:column;gap:9px;margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n            <div style=\"font-size:16.5px;color:#26364f\">Your profile and photos</div>\n            <div style=\"font-size:16.5px;color:#26364f\">Your connections and chat history</div>\n            <div style=\"font-size:16.5px;color:#26364f\">Your event participation</div>\n            <div style=\"font-size:16.5px;color:#26364f\">Your Auto Match history</div>\n            <div style=\"font-size:16.5px;color:#26364f\">Your remaining coin balance ({{ balanceText }})</div>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:10px;z-index:20\">\n          <div sc-camel-on-click=\"{{ openDelReason }}\" style=\"height:58px;border-radius:29px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:700;color:#0b1b3a\">Continue Account Deletion</div></div>\n          <div sc-camel-on-click=\"{{ keepAccount }}\" style=\"height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#0b1b3a\">Keep My Account</div></div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/settings/delete/info",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
+  "styles": [
+    {
+      "line": 3986,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 3987,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 3988,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 3991,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 3991,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 3993,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 190px;box-sizing:border-box"
+    },
+    {
+      "line": 3994,
+      "tag": "div",
+      "style": "font-size:26px;font-weight:800;letter-spacing:-0.03em"
+    },
+    {
+      "line": 3995,
+      "tag": "div",
+      "style": "font-size:16px;color:#5b6b85;margin-top:10px;line-height:1.5;text-wrap:pretty"
+    },
+    {
+      "line": 3996,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:9px;margin-top:16px;padding:18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 3997,
+      "tag": "div",
+      "style": "font-size:16.5px;color:#26364f"
+    },
+    {
+      "line": 3998,
+      "tag": "div",
+      "style": "font-size:16.5px;color:#26364f"
+    },
+    {
+      "line": 3999,
+      "tag": "div",
+      "style": "font-size:16.5px;color:#26364f"
+    },
+    {
+      "line": 4000,
+      "tag": "div",
+      "style": "font-size:16.5px;color:#26364f"
+    },
+    {
+      "line": 4001,
+      "tag": "div",
+      "style": "font-size:16.5px;color:#26364f"
+    },
+    {
+      "line": 4004,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:10px;z-index:20"
+    },
+    {
+      "line": 4005,
+      "tag": "div",
+      "style": "height:58px;border-radius:29px;background:#f4f7fb;display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 4005,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:700;color:#0b1b3a"
+    },
+    {
+      "line": 4006,
+      "tag": "div",
+      "style": "height:56px;border-radius:28px;background:#fff;box-shadow:0 8px 22px rgba(16,36,74,0.07);display:flex;align-items:center;justify-content:center;cursor:pointer"
+    },
+    {
+      "line": 4006,
+      "tag": "div",
+      "style": "font-size:18px;font-weight:600;color:#0b1b3a"
+    }
+  ],
+  "texts": [
+    {
+      "line": 3991,
+      "text": "Delete account"
+    },
+    {
+      "line": 3994,
+      "text": "This removes your account"
+    },
+    {
+      "line": 3995,
+      "text": "Logging out keeps your account. Deleting it is different — it permanently affects:"
+    },
+    {
+      "line": 3997,
+      "text": "Your profile and photos"
+    },
+    {
+      "line": 3998,
+      "text": "Your connections and chat history"
+    },
+    {
+      "line": 3999,
+      "text": "Your event participation"
+    },
+    {
+      "line": 4000,
+      "text": "Your Auto Match history"
+    },
+    {
+      "line": 4001,
+      "text": "Your remaining coin balance ("
+    },
+    {
+      "line": 4001,
+      "text": ")"
+    },
+    {
+      "line": 4005,
+      "text": "Continue Account Deletion"
+    },
+    {
+      "line": 4006,
+      "text": "Keep My Account"
+    }
+  ],
+  "svg": [
+    {
+      "line": 3989,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    }
+  ],
+  "assets": {
+    "media": [],
+    "svg_source_lines": [
+      3989
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 3988,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 4005,
+      "event": "sc-camel-on-click",
+      "handler": "openDelReason"
+    },
+    {
+      "line": 4006,
+      "event": "sc-camel-on-click",
+      "handler": "keepAccount"
+    }
+  ],
+  "interaction_ids": [
+    "delInfo.goBack.click.1",
+    "delInfo.openDelReason.click.1",
+    "delInfo.keepAccount.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "delInfo.goBack.click.1",
+      "source": "route=delInfo",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "delInfo.openDelReason.click.1",
+      "source": "route=delInfo",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "delInfo.keepAccount.click.1",
+      "source": "route=delInfo",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { relaunch_route } from '@/utils/routeTransition.js'
 import { startup_destination } from '@/utils/authNavigation.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
@@ -10,9 +11,10 @@ const store = use_app_store()
 const frame = ref(null)
 const error = ref('')
 const account_id = store.session.account_id
+const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const impacts = computed(() => [
