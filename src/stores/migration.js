@@ -7,6 +7,7 @@ export function upgrade_additive_data(value) {
   for (const row of data.settings || []) if (row.privacy && row.privacy.auto_match_visible === undefined) row.privacy.auto_match_visible = true
   for (const row of data.match_preferences || []) if (row.interest_mode === undefined) row.interest_mode = 'Similar interests'
   if (data.auth_flow && data.auth_flow.password_reset === undefined) data.auth_flow.password_reset = null
+  for (const row of data.requests || []) if (row.question_text === undefined) row.question_text = data.icebreakers.find(question => question.question_id === row.question_id)?.text || ''
   const catalog = create_seed(Number.isFinite(data.updated_at) ? data.updated_at : Date.now())
   const discover_ids = new Set([...DISCOVER_PROFILE_IDS, ...AVATAR_PROFILE_IDS])
   const added_user_ids = new Set()

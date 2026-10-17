@@ -1,19 +1,30 @@
 import { clone_data } from './seed.js'
 import { authenticated, owner_id, ensure, can_open_conversation, messages_for, user_by_id } from './selectors.js'
 import { transact, get_runtime, make_id, operation, failure } from './transactions.js'
+import { connection_for } from './connectionEntities.js'
 
 export function direct_conversation(data, conversation_id, now) {
   const conversation = data.conversations.find(row => row.conversation_id === conversation_id && row.kind === 'direct')
   if (!authenticated(data, now) || !can_open_conversation(data, conversation)) return null
   const participant_id = conversation.participant_ids.find(id => id !== owner_id(data))
+  const messages = messages_for(data, conversation_id)
+  const last_message = messages.at(-1) || null
+  const connection = connection_for(data, participant_id, now)
   return {
     ...clone_data(conversation),
     participant_id,
     participant: clone_data(user_by_id(data, participant_id)),
-    messages: messages_for(data, conversation_id).map(row => ({
+    connection_id: connection?.connection_id || null,
+    created_at: connection?.created_at || messages[0]?.sent_at || 0,
+    updated_at: last_message?.sent_at || connection?.created_at || 0,
+    last_message: clone_data(last_message),
+    preview: last_message ? last_message.kind === 'text' ? last_message.body : last_message.kind === 'image' ? 'Photo' : 'Voice message' : 'Start a conversation',
+    unread_count: messages.filter(row => row.sender_id !== owner_id(data) && !row.read_by.includes(owner_id(data))).length,
+    messages: messages.map(row => ({
       ...clone_data(row),
       mine: row.sender_id === owner_id(data),
       time_label: new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(row.sent_at),
+      day_label: new Date(row.sent_at).toDateString() === new Date(now).toDateString() ? 'Today' : new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(row.sent_at),
       media: clone_data(data.media_files.find(media => media.media_id === row.media_id) || null),
     })),
   }

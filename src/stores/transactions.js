@@ -54,9 +54,9 @@ export function add_transaction(data, amount, key, kind, related_id, now) {
   data.coin_transactions.push(row)
   return row
 }
-export function connect_users(data, other, now) {
+export function connect_users(data, other, now, source = {}) {
   const owner = select.owner_id(data)
-  for (const [from_user_id, to_user_id] of [[owner, other], [other, owner]]) if (!data.relationships.some((row) => row.from_user_id === from_user_id && row.to_user_id === to_user_id)) data.relationships.push({ relationship_id: make_id('rel'), from_user_id, to_user_id, created_at: now })
+  for (const [from_user_id, to_user_id] of [[owner, other], [other, owner]]) if (!data.relationships.some((row) => row.from_user_id === from_user_id && row.to_user_id === to_user_id)) data.relationships.push({ relationship_id: make_id('rel'), from_user_id, to_user_id, created_at: now, source_request_id: source.request_id || null, source_match_id: source.match_id || null })
   let conversation = data.conversations.find((row) => row.kind === 'direct' && row.participant_ids.includes(owner) && row.participant_ids.includes(other))
   if (!conversation) {
     conversation = { conversation_id: make_id('conversation'), kind: 'direct', participant_ids: [owner, other], event_id: null }
