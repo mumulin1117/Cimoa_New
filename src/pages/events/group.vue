@@ -132,8 +132,8 @@ const navigate_menu = kind => { close(); go(kind) }
 .event-group-notice-copy { flex: 1; min-width: 0; }
 .event-group-notice .event-person-name { font-size: 32.443rpx; font-weight: 800; letter-spacing: -0.02em; }
 .event-group-notice-copy > text + text { display: block; margin-top: 3.817rpx; font-size: 29.58rpx; color: var(--cimoa-text-secondary); }
-.event-message-main { display: flex; flex-direction: column; align-items: flex-start; gap: 9.542rpx; width: max-content; }
-.event-message-bubble { max-width: 100%; }
+.event-message-main { display: flex; flex-direction: column; align-items: flex-start; gap: 9.542rpx; }
+.event-message-bubble { max-width: 100%; white-space: normal; text-wrap: pretty; }
 .event-message--mine .event-message-main { align-items: flex-end; }
 .event-message-meta { padding: 0; align-items: center; color: var(--cimoa-text-secondary); }
 .event-message-meta .event-message-name { color: var(--cimoa-text-secondary); font-size: 24.809rpx; font-weight: 700; }

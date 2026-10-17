@@ -1,7 +1,7 @@
 {
   "phase": "group",
   "result": "passed",
-  "server_pid": 70859,
+  "server_pid": 77216,
   "checks": [
     "Group text validates/loads/saves, failure preserves draft; real photo chooser → confirmation → atomic Blob/message → refresh and preview",
     "Denied microphone has no fake success; controlled real tone records/decodes/previews/sends and plays after IndexedDB refresh",

@@ -2539,7 +2539,8 @@ final class HostTests: XCTestCase {
             let metrics = try await script(host, """
             const box=s=>{const r=document.querySelector(s).getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}};
             const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
-            return {header:box('.event-group-header'),footer:box('.event-group-composer'),safeTop:box('.event-group-page > .safe-area').height,width:innerWidth,height:innerHeight,mineAvatars:document.querySelectorAll('.event-message--mine .event-message-avatar').length,read:data.messages.find(m=>m.message_id==='group_pixel_1').read_by,placeholder:document.querySelector('.event-group-composer .uni-input-placeholder').textContent,state:localStorage.getItem('cimoa_app_state_v2')}
+            const messageStyles=['.event-group-messages','.event-message','.event-message-main','.event-message-bubble','.event-message-bubble uni-text'].map(selector=>{const e=document.querySelector(selector),c=getComputedStyle(e);return{selector,box:box(selector),font:c.font,width:c.width,maxWidth:c.maxWidth,flex:c.flex,whiteSpace:c.whiteSpace,wordBreak:c.wordBreak,overflowWrap:c.overflowWrap}});
+            return {header:box('.event-group-header'),footer:box('.event-group-composer'),safeTop:box('.event-group-page > .safe-area').height,width:innerWidth,height:innerHeight,messageStyles,mineAvatars:document.querySelectorAll('.event-message--mine .event-message-avatar').length,read:data.messages.find(m=>m.message_id==='group_pixel_1').read_by,placeholder:document.querySelector('.event-group-composer .uni-input-placeholder').textContent,state:localStorage.getItem('cimoa_app_state_v2')}
             """) as! [String:Any]
             let footer = metrics["footer"] as! [String:Double], header = metrics["header"] as! [String:Double]
             XCTAssertEqual(header["height"]!, 80 * (metrics["width"] as! Double) / 393, accuracy: 1)
@@ -2547,6 +2548,9 @@ final class HostTests: XCTestCase {
             XCTAssertLessThanOrEqual(footer["bottom"]!, (metrics["height"] as! Double) - Double(host.view.safeAreaInsets.bottom) + 1)
             XCTAssertEqual(metrics["mineAvatars"] as? Int, 1)
             XCTAssertEqual(metrics["placeholder"] as? String, "Message the group")
+            let messageStyles = metrics["messageStyles"] as! [[String:Any]]
+            let firstBubble = messageStyles.first { $0["selector"] as? String == ".event-message-bubble" }!["box"] as! [String:Double]
+            XCTAssertLessThan(firstBubble["height"]!, 60 * (metrics["width"] as! Double) / 393, "Short messages must not acquire an extra pre-wrap line in WebKit")
             XCTAssertTrue((metrics["read"] as! [String]).contains("user_cimoa"))
             let image = try await host.webView.takeSnapshot(configuration: nil)
             try image.pngData()!.write(to: output.appendingPathComponent("actual-wkwebview.png"))

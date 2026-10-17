@@ -1,0 +1,28 @@
+{
+  "result": "passed",
+  "passed_tests": 2,
+  "failed_tests": 0,
+  "device": {
+    "architecture": "arm64",
+    "deviceId": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "deviceName": "iPhone 17 Pro",
+    "modelName": "iPhone 17 Pro",
+    "osBuildNumber": "23F77",
+    "osVersion": "26.5",
+    "platform": "iOS Simulator"
+  },
+  "xcresult_path": "/tmp/cimoa-events-sourcefix-final.xcresult",
+  "checks": [
+    "Actual bundled H5, native safe-area ownership, original header/composer geometry and short source message remains one line",
+    "Joined-only group access, read receipt restoration without duplicate writes, participant push/pop",
+    "Correct event report target, report leaves membership unchanged and returns to group",
+    "Actual image decoding/persistence/reload, local mute, attendance cancel revokes messages/composer"
+  ],
+  "not_claimed": [
+    "Physical microphone recording success",
+    "Manual iOS photo picker/permission prompts/keyboard/background resume while Mac is locked",
+    "Full pixel acceptance of all Events pages"
+  ],
+  "xcresult_result": "Passed",
+  "bundle_manifest_sha256": "f652a77874745c14cc9d5ab9c2b29d9b3a038585eaafaed21fb54501dce5dd8c"
+}
