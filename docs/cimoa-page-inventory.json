@@ -2806,17 +2806,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-deck/source-contract.json",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_evidence": "docs/ui-restoration/discover-request-deck/acceptance.json",
     "visual_audit_artifact": "docs/ui-restoration/discover-request-deck/difference-audit.md",
-    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app."
+    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Discover / Profile / Expanded",
@@ -2952,17 +2953,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_evidence": "docs/ui-restoration/discover-request-profile/acceptance.json",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-profile/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/discover-request-profile/difference-audit.md",
-    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app."
+    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Events / Explore / Default",
@@ -3179,17 +3181,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-select/source-contract.json",
     "acceptance_evidence": "docs/ui-restoration/discover-request-select/acceptance.json",
-    "visual_audit_artifact": "docs/ui-restoration/discover-request-select/difference-audit.md"
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-select/difference-audit.md",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Discover / Icebreaker / Text Reply",
@@ -3263,17 +3266,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-text/source-contract.json",
     "acceptance_evidence": "docs/ui-restoration/discover-request-text/acceptance.json",
-    "visual_audit_artifact": "docs/ui-restoration/discover-request-text/difference-audit.md"
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-text/difference-audit.md",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Discover / Icebreaker Answer / Voice",
@@ -3381,17 +3385,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-voice/source-contract.json",
     "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json",
-    "visual_audit_artifact": "docs/ui-restoration/discover-request-voice/difference-audit.md"
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-voice/difference-audit.md",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Discover / Icebreaker / Voice Preview",
@@ -3486,17 +3491,18 @@
         "back"
       ]
     },
-    "status": "in_progress",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Source/actual/overlay/diff and bundled native review passed; all current module dependencies passed; local implementation commit gate remains pending.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-preview/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/discover-request-preview/difference-audit.md",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-preview/acceptance.json"
+    "acceptance_evidence": "docs/ui-restoration/discover-request-preview/acceptance.json",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Permissions / Microphone / Prompt",
@@ -3605,17 +3611,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "First-use source Sheet restored; Store-derived dynamic balance/identity; source pixels and browser/native functional regression passed; waiting local implementation commit.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-voice/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/discover-request-voice/microphone/overlay.png",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json"
+    "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Connection / Request / Sent",
@@ -8388,17 +8395,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "First-use source Sheet restored; Store-derived dynamic balance/identity; source pixels and browser/native functional regression passed; waiting local implementation commit.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-preview/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/discover-request-preview/insufficient/overlay.png",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-preview/acceptance.json"
+    "acceptance_evidence": "docs/ui-restoration/discover-request-preview/acceptance.json",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Coins / Spend / Voice Confirmation",
@@ -8493,17 +8501,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "First-use source Sheet restored; Store-derived dynamic balance/identity; source pixels and browser/native functional regression passed; waiting local implementation commit.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-preview/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/discover-request-preview/confirmation/overlay.png",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-preview/acceptance.json"
+    "acceptance_evidence": "docs/ui-restoration/discover-request-preview/acceptance.json",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Coins / Spend / Priority Match Confirmation",
@@ -12646,17 +12655,18 @@
         "back"
       ]
     },
-    "status": "pending",
+    "status": "verified",
     "local_acceptance": "passed",
-    "full_acceptance": "pending",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "First-use source Sheet restored; Store-derived dynamic balance/identity; source pixels and browser/native functional regression passed; waiting local implementation commit.",
+    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
     "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
     "source_lock_artifact": "docs/ui-restoration/discover-request-voice/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/discover-request-voice/discard/overlay.png",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json"
+    "acceptance_evidence": "docs/ui-restoration/discover-request-voice/acceptance.json",
+    "implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Onboarding / Icebreakers / Library",

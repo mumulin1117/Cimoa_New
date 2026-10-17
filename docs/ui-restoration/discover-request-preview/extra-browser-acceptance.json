@@ -1,0 +1,13 @@
+{
+  "result": "passed",
+  "checks": [
+    "Confirmed preview re-record removes only the unsent draft Blob/reference and returns to one actual Voice page",
+    "Voice menu Re-record and Delete act on the real unsaved recording without sending, charging or fabricated media",
+    "Voice/Text switching persists and restores both payloads; deleting saved audio retains the text and clears the same media reference",
+    "Keep Recording preserves real media; confirmed unsaved discard returns to Select with no request or debit"
+  ],
+  "errors": [],
+  "capture": "Chrome isolated test device, not production audio",
+  "server_pid": 92318,
+  "cleaned_up": true
+}

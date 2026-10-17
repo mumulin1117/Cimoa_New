@@ -1,9 +1,9 @@
 {
   "source_lock": "locked",
   "local_acceptance": "passed",
-  "full_acceptance": "pending",
+  "full_acceptance": "passed",
   "visual_acceptance": "passed",
-  "status": "pending",
+  "status": "verified",
   "browser": {
     "result": "passed",
     "checks": 8,
@@ -25,12 +25,34 @@
     "unresolved": []
   },
   "gates": "check:conventions without warnings; git diff --check; build:h5; 391 files packaged without prototype",
-  "deferred": [
-    "Local implementation commit required before final verified record"
-  ],
+  "deferred": [],
   "limits": [
     "Local-account product scope; no fabricated remote reply or consent",
     "No StoreKit product/signing configuration: cancel/timeout/failure only; no purchase success claim",
     "Browser recording uses an isolated capture device; authorized native test uses real getUserMedia/MediaRecorder, then deletes the test Blob"
-  ]
+  ],
+  "implementation_commit": "fdc3a004",
+  "integration_commit": "f8924a99",
+  "verified_components": [
+    {
+      "component": "src/components/IcebreakerHeader.vue:text",
+      "status": "verified",
+      "scope": "Only the source variants and consumers exercised by this module; not an all-app acceptance"
+    },
+    {
+      "component": "src/components/IcebreakerPerson.vue:text",
+      "status": "verified",
+      "scope": "Only the source variants and consumers exercised by this module; not an all-app acceptance"
+    },
+    {
+      "component": "src/components/IcebreakerIcon.vue",
+      "status": "verified",
+      "scope": "Only the source variants and consumers exercised by this module; not an all-app acceptance"
+    }
+  ],
+  "boundary_regression": {
+    "artifact": "docs/ui-restoration/discover-request-preview/extra-browser-acceptance.json",
+    "result": "passed",
+    "checks": 4
+  }
 }

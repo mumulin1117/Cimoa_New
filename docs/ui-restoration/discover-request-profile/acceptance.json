@@ -1,9 +1,9 @@
 {
   "source_lock": "locked",
   "local_acceptance": "passed",
-  "full_acceptance": "pending",
+  "full_acceptance": "passed",
   "visual_acceptance": "passed",
-  "status": "pending",
+  "status": "verified",
   "browser": {
     "result": "passed",
     "checks": 6,
@@ -25,12 +25,13 @@
     "unresolved": []
   },
   "gates": "check:conventions without warnings; git diff --check; build:h5; 391 files packaged without prototype",
-  "deferred": [
-    "Local implementation commit required before final verified record"
-  ],
+  "deferred": [],
   "limits": [
     "Local-account product scope; no fabricated remote reply or consent",
     "No StoreKit product/signing configuration: cancel/timeout/failure only; no purchase success claim",
     "Browser recording uses an isolated capture device; authorized native test uses real getUserMedia/MediaRecorder, then deletes the test Blob"
-  ]
+  ],
+  "implementation_commit": "b460faf6",
+  "integration_commit": "f8924a99",
+  "verified_components": []
 }
