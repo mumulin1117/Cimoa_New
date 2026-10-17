@@ -1,7 +1,7 @@
 {
   "phase": "delete-reason",
   "result": "passed",
-  "server_pid": 59937,
+  "server_pid": 97482,
   "checks": [
     "Delete reason restores the eight source choices, adapts the brand to Cimoa and keeps selection transient before Continue",
     "Deletion reason persistence failure follows Loading, remains retryable and creates no partial draft",

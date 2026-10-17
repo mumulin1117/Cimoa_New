@@ -1,0 +1,188 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isDelReason",
+    "source_query": "route=delReason",
+    "lines": [
+      4010,
+      4028
+    ],
+    "fragment_sha256": "1c49312e803f1dfe07a816d4c653d006b4756c38838344fa53e99bf795c85c02",
+    "fragment": "<sc-if value=\"{{ isDelReason }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Settings / Delete Account / Reason\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Before you go</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box\">\n          <div style=\"font-size:16px;color:#5b6b85;text-wrap:pretty\">Optional — tell us why. You can continue without choosing one.</div>\n          <div style=\"display:flex;flex-direction:column;gap:10px;margin-top:14px\">\n            <sc-for list=\"{{ delReasonOptions }}\" as=\"r\" hint-placeholder-count=\"8\">\n              <div sc-camel-on-click=\"{{ r.pick }}\" style=\"padding:16px 18px;border-radius:20px;background:{{ r.bg }};border:{{ r.border }};box-shadow:0 8px 22px rgba(16,36,74,0.05);cursor:pointer;font-size:16.5px;font-weight:{{ r.weight }}\">{{ r.label }}</div>\n            </sc-for>\n          </div>\n        </div>\n        <div style=\"position:absolute;left:20px;right:20px;bottom:34px;z-index:20\"><div sc-camel-on-click=\"{{ openDelFinal }}\" style=\"height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)\"><div style=\"font-size:19px;font-weight:700;color:#fff\">Continue</div></div></div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/settings/delete/reason",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/settings/delete/info）；无历史实例时 replace /pages/settings/delete/info，不创建伪造实体",
+  "styles": [
+    {
+      "line": 4011,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 4012,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 4013,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 4016,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 4016,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 4018,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 130px;box-sizing:border-box"
+    },
+    {
+      "line": 4019,
+      "tag": "div",
+      "style": "font-size:16px;color:#5b6b85;text-wrap:pretty"
+    },
+    {
+      "line": 4020,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:10px;margin-top:14px"
+    },
+    {
+      "line": 4022,
+      "tag": "div",
+      "style": "padding:16px 18px;border-radius:20px;background:{{ r.bg }};border:{{ r.border }};box-shadow:0 8px 22px rgba(16,36,74,0.05);cursor:pointer;font-size:16.5px;font-weight:{{ r.weight }}"
+    },
+    {
+      "line": 4026,
+      "tag": "div",
+      "style": "position:absolute;left:20px;right:20px;bottom:34px;z-index:20"
+    },
+    {
+      "line": 4026,
+      "tag": "div",
+      "style": "height:60px;border-radius:30px;background:linear-gradient(95deg,#1ec8f5 0%,#4a7bf7 34%,#a855f7 64%,#f81ce5 100%);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 26px rgba(168,85,247,0.24)"
+    },
+    {
+      "line": 4026,
+      "tag": "div",
+      "style": "font-size:19px;font-weight:700;color:#fff"
+    }
+  ],
+  "texts": [
+    {
+      "line": 4016,
+      "text": "Before you go"
+    },
+    {
+      "line": 4019,
+      "text": "Optional — tell us why. You can continue without choosing one."
+    },
+    {
+      "line": 4026,
+      "text": "Continue"
+    }
+  ],
+  "svg": [
+    {
+      "line": 4014,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    }
+  ],
+  "assets": {
+    "media": [
+      {
+        "source_id": "a7",
+        "local_path": "static/assets/songs/stupid-song.jpg",
+        "mime": "image/jpeg"
+      },
+      {
+        "source_id": "a8",
+        "local_path": "static/assets/songs/stateside.jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "svg_source_lines": [
+      4014
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 4013,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 4022,
+      "event": "sc-camel-on-click",
+      "handler": "r.pick"
+    },
+    {
+      "line": 4026,
+      "event": "sc-camel-on-click",
+      "handler": "openDelFinal"
+    }
+  ],
+  "interaction_ids": [
+    "delReason.goBack.click.1",
+    "delReason.r.pick.click.1",
+    "delReason.openDelFinal.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "delReason.goBack.click.1",
+      "source": "route=delReason",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "delReason.r.pick.click.1",
+      "source": "route=delReason",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "delReason.openDelFinal.click.1",
+      "source": "route=delReason",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}
