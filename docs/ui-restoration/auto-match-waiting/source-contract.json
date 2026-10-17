@@ -145,6 +145,7 @@
     "amWaiting.goBack.click.1",
     "amWaiting.returnHome.click.1",
     "amWaiting.cancelRequest.click.1",
-    "amWaiting.confirmCancel.click.1"
+    "amWaiting.confirmCancel.click.1",
+    "amWaiting.returnHome.error.click.1"
   ]
 }

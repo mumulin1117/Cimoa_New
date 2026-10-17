@@ -296,7 +296,8 @@
     "Local-account matching engine; no timer grants peer consent; no fabricated online count",
     "UTC daily quota and atomic admission costs; user-authorized same-admission retries consume no extra quota or coins",
     "User-authorized persisted campus-area distances, not GPS or real-time location; unknown distance fails; 100+ km is unrestricted",
-    "Source options screen does not falsify an active session as no_match"
+    "Source options screen does not falsify an active session as no_match",
+    "Long campus/major labels wrap within the photo overlay and grow beyond source minimum height, preserving default dimensions and font size."
   ],
   "interaction_ids": [
     "amFound.askLeaveMatch.click.1",
@@ -309,6 +310,7 @@
     "sheetAccepting.closeSheet.click.2",
     "sheetAmFoundLeave.closeSheet.click.1",
     "sheetAmFoundLeave.passMatch.click.1",
-    "sheetAmFoundLeave.closeSheet.click.2"
+    "sheetAmFoundLeave.closeSheet.click.2",
+    "amFound.returnHome.error.click.1"
   ]
 }

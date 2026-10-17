@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checks": [
+    "index: expired auth hides data and writes nothing",
+    "preferences: expired auth hides data and writes nothing",
+    "searching: expired auth hides data and writes nothing",
+    "paused: expired auth hides data and writes nothing",
+    "found: expired auth hides data and writes nothing",
+    "waiting: expired auth hides data and writes nothing",
+    "connected: expired auth hides data and writes nothing",
+    "passed: expired auth hides data and writes nothing",
+    "expired: expired auth hides data and writes nothing",
+    "no-match: expired auth hides data and writes nothing",
+    "history: expired auth hides data and writes nothing",
+    "320x568 long profile scrolls without moving footer, overflowing name or losing tags",
+    "Invalid entity route fails closed",
+    "Corrupt storage is not overwritten or replaced by an apparently successful session",
+    "Insufficient Priority -> Coin Center -> refresh -> same owned search, without payment or renewed priority"
+  ],
+  "server_pid": 51242,
+  "cleaned_up": true
+}

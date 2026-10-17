@@ -9,8 +9,8 @@ const {frame,c,error,modal,query,busy,is_loading,guard,action,motion_style}=use_
 </script>
 <template>
 <SecondaryPageFrame ref="frame" class="auto-match-page auto-match-no-match" :scroll-locked="!!modal" :style="motion_style">
-<template #header><view data-source-line="1868" class="am-1868-1"><view data-source-line="1869" class="am-1869-2" data-interaction="amNoMatch.goBack.click.1" @click="action('goBack',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('goBack',$event)" aria-label="Back"><svg data-source-line="1870" class="am-1870-3" viewBox="0 0 24 24" fill="none" stroke="var(--cimoa-surface-deep)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path data-source-line="1870" d="M15 5l-7 7 7 7"></path></svg></view><view data-source-line="1872" class="am-1872-5"></view><view data-source-line="1872" class="am-1872-6">Auto Match</view></view><text v-if="error" class="am-error" role="alert">{{ error }}</text></template>
-<view v-if="guard" class="am-error" role="alert">{{ guard }}<view role="button" @click="action('returnHome')">Return Home</view></view>
+<template #header><view data-source-line="1868" class="am-1868-1"><view data-source-line="1869" class="am-1869-2" data-interaction="amNoMatch.goBack.click.1" @click="action('goBack',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('goBack',$event)" aria-label="Back"><svg data-source-line="1870" class="am-1870-3" viewBox="0 0 24 24" fill="none" stroke="var(--cimoa-icon-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path data-source-line="1870" d="M15 5l-7 7 7 7"></path></svg></view><view data-source-line="1872" class="am-1872-5"></view><view data-source-line="1872" class="am-1872-6">Auto Match</view></view><text v-if="error" class="am-error" role="alert">{{ error }}</text></template>
+<view v-if="guard" class="am-error" role="alert">{{ guard }}<view role="button" tabindex="0" data-interaction="amNoMatch.returnHome.error.click.1" @click="action('returnHome')" @keydown.enter="action('returnHome')">Return Home</view></view>
 <template v-else><view data-source-line="1874" class="am-1874-7"><view data-source-line="1875" class="am-1875-8"><svg data-source-line="1876" class="am-1876-9" viewBox="0 0 24 24" fill="none" stroke="var(--cimoa-text-link)" stroke-width="2" stroke-linecap="round"><circle data-source-line="1876" cx="11" cy="11" r="7"></circle><path data-source-line="1876" d="M16.2 16.2 21 21"></path></svg></view><view data-source-line="1878" class="am-1878-12">No compatible matches are available right now</view><view data-source-line="1879" class="am-1879-13">You can stay in the pool, adjust your preferences, or try again later.</view></view></template>
 <template #footer><template v-if="!guard"><view data-source-line="1881" class="am-footer am-1881-14"><view data-source-line="1882" class="am-1882-15" data-interaction="amNoMatch.findAnother.click.1" @click="action('findAnother',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('findAnother',$event)"><view data-source-line="1882" class="am-1882-16">Stay in Pool</view></view><view data-source-line="1883" class="am-1883-17" data-interaction="amNoMatch.adjustPrefs.click.1" @click="action('adjustPrefs',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('adjustPrefs',$event)"><view data-source-line="1883" class="am-1883-18">Adjust Preferences</view></view><view data-source-line="1884" class="am-1884-19" data-interaction="amNoMatch.returnHome.click.1" @click="action('returnHome',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('returnHome',$event)">Return Home</view></view></template></template>
 <template #overlays><AutoMatchConfirmDialog :modal="modal" :context="c" :busy="busy" @action="action" /><EventActionLoading :visible="is_loading" label="Updating your match…" /></template>
@@ -116,7 +116,7 @@ const {frame,c,error,modal,query,busy,is_loading,guard,action,motion_style}=use_
   cursor: pointer;
   box-shadow: var(--cimoa-shadow-connection-action);
 }
-.am-1882-16 { font-size: 36.259rpx; font-weight: 700; color: var(--cimoa-surface-card); }
+.am-1882-16 { font-size: 36.259rpx; font-weight: 700; color: var(--cimoa-text-inverse); }
 .am-1883-17 {
   height: 106.871rpx;
   border-radius: 53.436rpx;
@@ -127,7 +127,7 @@ const {frame,c,error,modal,query,busy,is_loading,guard,action,motion_style}=use_
   justify-content: center;
   cursor: pointer;
 }
-.am-1883-18 { font-size: 34.351rpx; font-weight: 600; color: var(--cimoa-surface-deep); }
+.am-1883-18 { font-size: 34.351rpx; font-weight: 600; color: var(--cimoa-text-title); }
 .am-1884-19 {
   height: 87.787rpx;
   display: flex;

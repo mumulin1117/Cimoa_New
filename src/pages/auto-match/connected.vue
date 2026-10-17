@@ -9,8 +9,8 @@ const {frame,c,error,modal,query,busy,is_loading,guard,action,motion_style}=use_
 </script>
 <template>
 <SecondaryPageFrame ref="frame" class="auto-match-page auto-match-connected" :scroll-locked="!!modal" :style="motion_style">
-<template #header><view data-source-line="1797" class="am-1797-1"><view data-source-line="1798" class="am-1798-2" data-interaction="amConnected.goBack.click.1" @click="action('goBack',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('goBack',$event)" aria-label="Back"><svg data-source-line="1799" class="am-1799-3" viewBox="0 0 24 24" fill="none" stroke="var(--cimoa-surface-deep)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path data-source-line="1799" d="M15 5l-7 7 7 7"></path></svg></view><view data-source-line="1801" class="am-1801-5"></view><view data-source-line="1801" class="am-1801-6">Auto Match</view></view><text v-if="error" class="am-error" role="alert">{{ error }}</text></template>
-<view v-if="guard" class="am-error" role="alert">{{ guard }}<view role="button" @click="action('returnHome')">Return Home</view></view>
+<template #header><view data-source-line="1797" class="am-1797-1"><view data-source-line="1798" class="am-1798-2" data-interaction="amConnected.goBack.click.1" @click="action('goBack',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('goBack',$event)" aria-label="Back"><svg data-source-line="1799" class="am-1799-3" viewBox="0 0 24 24" fill="none" stroke="var(--cimoa-icon-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path data-source-line="1799" d="M15 5l-7 7 7 7"></path></svg></view><view data-source-line="1801" class="am-1801-5"></view><view data-source-line="1801" class="am-1801-6">Auto Match</view></view><text v-if="error" class="am-error" role="alert">{{ error }}</text></template>
+<view v-if="guard" class="am-error" role="alert">{{ guard }}<view role="button" tabindex="0" data-interaction="amConnected.returnHome.error.click.1" @click="action('returnHome')" @keydown.enter="action('returnHome')">Return Home</view></view>
 <template v-else><view data-source-line="1803" class="am-1803-7"><view data-source-line="1804" class="am-1804-8"><view data-source-line="1804" class="am-1804-9"><UserAvatar data-source-line="1805" :src="c.me_img" :name="c.me.user_name" class="am-1805-10" /><UserAvatar data-source-line="1806" :src="c.candidate_avatar" :name="c.person_name" class="am-1806-11" /></view></view><view data-source-line="1808" class="am-1808-12">You both connected</view><view data-source-line="1809" class="am-1809-13">{{ c.connected_copy }}</view><view data-source-line="1810" class="am-1810-14">Matched via Auto Match</view></view></template>
 <template #footer><template v-if="!guard"><view data-source-line="1812" class="am-footer am-1812-15"><view data-source-line="1813" class="am-1813-16" data-interaction="amConnected.startChat.click.1" @click="action('startChat',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('startChat',$event)"><view data-source-line="1813" class="am-1813-17">Start Chatting</view></view><view data-source-line="1814" class="am-1814-18" data-interaction="amConnected.viewProfile.click.1" @click="action('viewProfile',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('viewProfile',$event)"><view data-source-line="1814" class="am-1814-19">View Profile</view></view></view></template></template>
 <template #overlays><AutoMatchConfirmDialog :modal="modal" :context="c" :busy="busy" @action="action" /><EventActionLoading :visible="is_loading" label="Updating your match…" /></template>
@@ -128,7 +128,7 @@ const {frame,c,error,modal,query,busy,is_loading,guard,action,motion_style}=use_
   cursor: pointer;
   box-shadow: var(--cimoa-shadow-connection-action);
 }
-.am-1813-17 { font-size: 36.259rpx; font-weight: 700; color: var(--cimoa-surface-card); }
+.am-1813-17 { font-size: 36.259rpx; font-weight: 700; color: var(--cimoa-text-inverse); }
 .am-1814-18 {
   height: 106.871rpx;
   border-radius: 53.436rpx;
@@ -139,7 +139,7 @@ const {frame,c,error,modal,query,busy,is_loading,guard,action,motion_style}=use_
   justify-content: center;
   cursor: pointer;
 }
-.am-1814-19 { font-size: 34.351rpx; font-weight: 600; color: var(--cimoa-surface-deep); }
+.am-1814-19 { font-size: 34.351rpx; font-weight: 600; color: var(--cimoa-text-title); }
 @keyframes cRise {
   from { opacity: 0; transform: translateY(26.718rpx); }
   to { opacity: 1; transform: translateY(0); }

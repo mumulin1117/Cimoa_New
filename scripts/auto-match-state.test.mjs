@@ -5,6 +5,7 @@ import {use_app_store,configure_store_runtime} from '../src/stores/store.js'
 import {create_seed} from '../src/stores/seed.js'
 import {matching_distance} from '../src/stores/matchingCatalog.js'
 import {match_candidates} from '../src/stores/localMatching.js'
+import {ensure_account_defaults} from '../src/stores/accountDefaults.js'
 const epoch=Date.UTC(2026,9,17,12),fixture=(saved,services={})=>{
   setActivePinia(createPinia());const store=use_app_store();let now=epoch,disk=saved||create_seed(epoch)
   configure_store_runtime(store,{clock:()=>now,persistence:{read:()=>disk,write:(_key,data)=>{disk=data}},services});assert.ok(store.hydrate().success)
@@ -88,4 +89,12 @@ test('paid admission is debited once; retry failure rolls back links and never r
   configure_store_runtime(f.store,{persistence:{read:()=>null,write(){throw Error('Storage full')}}});assert.equal(f.store.retry_match(id,'failed').success,false);assert.equal(JSON.stringify(f.store.data),before)
   configure_store_runtime(f.store,{persistence:{read:()=>null,write(){}}});f.advance(900001);const next=f.store.retry_match(id,'retry').data;assert.equal(f.store.match_by_id(next).priority_until,null);assert.equal(f.store.match_by_id(next).search_ready_at,f.store.clock_ms+9000);assert.equal(f.store.coin_balance,250);assert.equal(f.store.free_matches_remaining,0)
   assert.equal(f.store.retry_match(next,'active').success,false)
+})
+test('deleting an earlier candidate cannot corrupt another account admission/retry links',async()=>{
+  const f=fixture(),id=f.store.start_match('start').data;f.advance(9000)
+  const peer=f.store.match_by_id(id).candidate_id;f.store.transition_match(id,'passed');const next=f.store.retry_match(id,'retry').data
+  const account={...f.store.data.accounts[0],account_id:'account_deleted_peer',user_id:peer,email:'peer@cimoa.test'};f.store.data.accounts.push(account);ensure_account_defaults(f.store.data,peer);f.store.data.session={account_id:account.account_id,current_user_id:peer,expires_at:epoch+86400000}
+  const result=await f.store.delete_account('12341234');assert.ok(result.success,result.message)
+  const root=f.store.data.match_sessions.find(m=>m.match_id===id);assert.equal(root.candidate_id,null);assert.equal(root.next_match_id,next);assert.equal(root.resolution,'account_deleted')
+  f.store.data.session={account_id:'account_cimoa',current_user_id:'user_cimoa',expires_at:epoch+86400000};assert.equal(f.store.retry_match(id,'existing').data,next);assert.equal(f.store.hydrate().success,true)
 })

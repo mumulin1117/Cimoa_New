@@ -2,20 +2,18 @@
   "source_lock": "locked",
   "visual_acceptance": "passed",
   "local_acceptance": "passed",
+  "module_regression": "passed",
   "full_acceptance": "pending",
   "status": "pending",
-  "automatic_confirmation": "Source/actual overlay reviewed, <=1 CSS px geometry, current browser and WKWebView evidence, no unresolved visual differences",
+  "automatic_confirmation": "Source overlay reviewed, <=1 CSS pixel browser geometry; native screenshots and 12/12 current build tests passed.",
   "browser": "browser-acceptance.json",
   "native": "wkwebview-geometry.json",
-  "native_result": "/tmp/cimoa-match-passed-document-20261017.xcresult",
-  "native_tests": 1,
+  "native_result": "/tmp/cimoa-auto-match-releasecheck-20261017.xcresult",
+  "native_summary": "../../evidence/auto-match/native-tests.json",
   "unresolved_visual_differences": [],
   "deferred": [
-    "Final complete module cross-page restoration/regression"
+    "Coin Center, processing and failure dependency pages remain pending in page inventory.",
+    "Real StoreKit purchase success requires configured products and signed receipt validation; never replaced by local credits."
   ],
-  "git": "local commit only; no push",
-  "notes": [
-    "Native installed-entry bytes verified; document-start fixture isolates previous document state; earlier failure retained.",
-    "Retry preserves admission with no quota/ledger change, browser reload confirmed."
-  ]
+  "git": "Local commits only; no push"
 }

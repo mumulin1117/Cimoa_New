@@ -53,7 +53,8 @@ export function theme_converter(theme){
     const at=decl.indexOf(':'),key=decl.slice(0,at).trim();let value=decl.slice(at+1).trim()
     if(value.includes('{{'))return {key,value,dynamic:true}
     if(key==='animation')value=value.replace('2600ms','var(--match-pulse-duration)').replace('400ms','var(--match-pulse-delay)').replace('520ms','var(--match-connected-duration)')
-    if(key==='box-shadow')value=get(value,'shadow')
+    if(key==='color'&&['#fff','#ffffff','#0b1b3a'].includes(value.toLowerCase()))value=value.toLowerCase()==='#0b1b3a'?'var(--cimoa-text-title)':'var(--cimoa-text-inverse)'
+    else if(key==='box-shadow')value=get(value,'shadow')
     else if(/(?:linear|radial)-gradient/.test(value))value=get(value,'gradient')
     else value=value.replace(/rgba?\([^)]+\)|#[0-9a-fA-F]{3,8}\b|\btransparent\b/g,m=>get(m,'color'))
     // Border widths retain the existing one-pixel hairline exception.
@@ -73,6 +74,8 @@ export function vue_design(page,theme,sheet=null){
     if(node.tag==='sc-if')return `<template v-if="${/^[oh]\./.test(binding(attribute(node,'value')))?expr(binding(attribute(node,'value'))):'c.'+expr(binding(attribute(node,'value')))}">${children()}</template>`
     if(node.tag==='sc-for'){const list=expr(binding(attribute(node,'list'))),as=attribute(node,'as');return `<template v-for="${as} in c.${list}" :key="${as}.value || ${as}.match_id || ${as}.item_id">${node.children.map(n=>render(n,{...context,list})).join('')}</template>`}
     let tag=node.tag==='div'?'view':node.tag,attrs=` data-source-line="${line}"`,style=attribute(node,'style'),classes=[]
+    if(page==='found'&&[1730,1734,1738].includes(line))style=style.replace('height:36px','min-height:36px;max-width:100%')
+    if(page==='found'&&[1732,1736,1740].includes(line))style=style.replace('white-space:nowrap','white-space:normal;overflow-wrap:anywhere;min-width:0;padding:5.24px 0')
     if(page==='found'&&style.includes('flex-wrap:nowrap'))style=style.replace('flex-wrap:nowrap','flex-wrap:wrap')
     if(page==='found'&&node.tag==='svg'&&node.children.some(n=>n.tag==='circle'&&attribute(n,'fill')==='#1d9bf0'))attrs+=' v-if="c.candidate_verified"'
     if(node===header){style=style.replace(/position:absolute;|top:58px;|left:20px;|right:20px;/g,'');style+=`;position:relative;margin:4px 20px ${attribute(body,'style').includes('top:120px')?14:12}px`}
@@ -94,7 +97,7 @@ export function vue_design(page,theme,sheet=null){
     for(const prop of node.props.filter(p=>p.type===6&&!['style','class','src','alt','value'].includes(p.name)&&!p.name.startsWith('hint-')&&!p.name.startsWith('sc-camel-on-'))){
       if(['width','height'].includes(prop.name)&&['svg','img'].includes(node.tag))continue
       const name=prop.name.replace('sc-camel-view-box','viewBox'),value=prop.value?.content||''
-      if(['fill','stroke'].includes(name)&&value!=='none'&&value!=='currentColor')attrs+=` ${name}="${convert.color(value)}"`
+      if(['fill','stroke'].includes(name)&&value!=='none'&&value!=='currentColor')attrs+=` ${name}="${value==='#0b1b3a'?'var(--cimoa-icon-primary)':value==='#fff'?'var(--cimoa-text-inverse)':convert.color(value)}"`
       else if(value.includes('{{'))attrs+=` :${name}="${/^[oh]\./.test(binding(value))?expr(binding(value)):'c.'+expr(binding(value))}"`
       else attrs+=` ${name}="${value.replaceAll('"','&quot;')}"`
     }

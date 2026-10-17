@@ -2,23 +2,18 @@
   "source_lock": "locked",
   "visual_acceptance": "passed",
   "local_acceptance": "passed",
+  "module_regression": "passed",
   "full_acceptance": "pending",
   "status": "pending",
-  "automatic_confirmation": "393x852 source/actual, phase-0 cPulse, and help/boost/leaving overlays reviewed; native page and Sheets captured",
+  "automatic_confirmation": "Source overlay reviewed, <=1 CSS pixel browser geometry; native screenshots and 12/12 current build tests passed.",
   "browser": "browser-acceptance.json",
   "native": "wkwebview-geometry.json",
-  "native_result": "/tmp/cimoa-match-searching-20261017.xcresult",
-  "native_tests": 1,
-  "geometry_tolerance_px": 1,
+  "native_result": "/tmp/cimoa-auto-match-releasecheck-20261017.xcresult",
+  "native_summary": "../../evidence/auto-match/native-tests.json",
   "unresolved_visual_differences": [],
   "deferred": [
-    "Paused and found/no-match options round-trip full regression after dependencies"
+    "Coin Center, processing and failure dependency pages remain pending in page inventory.",
+    "Real StoreKit purchase success requires configured products and signed receipt validation; never replaced by local credits."
   ],
-  "checks": [
-    "Cancel/continue-standard/read-only",
-    "Priority writes after Loading, one debit, fixed deadline on reload",
-    "Confirmed leave clears canonical Home status and relaunches depth1",
-    "Three convention/whitespace/build gates passed"
-  ],
-  "git": "local page commit; no push"
+  "git": "Local commits only; no push"
 }

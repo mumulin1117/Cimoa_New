@@ -143,6 +143,7 @@
   "interaction_ids": [
     "amConnected.goBack.click.1",
     "amConnected.startChat.click.1",
-    "amConnected.viewProfile.click.1"
+    "amConnected.viewProfile.click.1",
+    "amConnected.returnHome.error.click.1"
   ]
 }

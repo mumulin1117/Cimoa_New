@@ -249,7 +249,15 @@ export const use_app_store = defineStore('app', {
         data.media_files = data.media_files.filter((row) => row.owner_user_id !== owner)
         data.relationships = data.relationships.filter((row) => row.from_user_id !== owner && row.to_user_id !== owner)
         data.requests = data.requests.filter((row) => row.sender_id !== owner && row.recipient_id !== owner)
-        data.match_sessions = data.match_sessions.filter((row) => row.owner_user_id !== owner && row.candidate_id !== owner)
+        data.match_sessions = data.match_sessions.filter(row=>row.owner_user_id!==owner)
+        // Keep another person's admission/retry links, but remove the deleted
+        // participant and their consent from the affected historical attempt.
+        for(const row of data.match_sessions.filter(row=>row.candidate_id===owner)){
+          const was_active=['searching','paused','found','waiting'].includes(s.match_status(row,now))
+          row.candidate_id=null;row.status='left';row.self_accepted=false;row.peer_accepted=false;row.resolved_at=now;row.resolution='account_deleted'
+          const root=data.match_sessions.find(match=>match.match_id===(row.pool_id||row.match_id))
+          if(root&&was_active)root.pool_closed_at=now
+        }
         data.match_preferences = data.match_preferences.filter((row) => row.owner_user_id !== owner)
         data.match_quota = data.match_quota.filter((row) => row.owner_user_id !== owner)
         data.memberships = data.memberships.filter((row) => row.user_id !== owner)

@@ -201,6 +201,7 @@
     "amPaused.askLeave.click.1",
     "sheetLeaving.closeSheet.click.1",
     "sheetLeaving.stayInPool.click.1",
-    "sheetLeaving.confirmLeave.click.1"
+    "sheetLeaving.confirmLeave.click.1",
+    "amPaused.returnHome.error.click.1"
   ]
 }

@@ -299,6 +299,7 @@
     "sheetInsufficient.getCoins2.click.1",
     "sheetInsufficient.freeAlt.click.1",
     "sheetInsufficient.closeSheet.click.2",
-    "amEntry.openHistory.click.1"
+    "amEntry.openHistory.click.1",
+    "amEntry.returnHome.error.click.1"
   ]
 }

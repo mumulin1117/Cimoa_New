@@ -33,7 +33,7 @@ const action=(name,event,row)=>{if(!busy.value)emit('action',({getCoins2:'getCoi
   margin-top: 38.168rpx;
   box-shadow: var(--cimoa-shadow-connection-action);
 }
-.am-4407-14 { font-size: 36.259rpx; font-weight: 700; color: var(--cimoa-surface-card); }
+.am-4407-14 { font-size: 36.259rpx; font-weight: 700; color: var(--cimoa-text-inverse); }
 .am-4408-15 {
   height: 106.871rpx;
   border-radius: 53.436rpx;
@@ -44,7 +44,7 @@ const action=(name,event,row)=>{if(!busy.value)emit('action',({getCoins2:'getCoi
   cursor: pointer;
   margin-top: 19.084rpx;
 }
-.am-4408-16 { font-size: 34.351rpx; font-weight: 600; color: var(--cimoa-surface-deep); }
+.am-4408-16 { font-size: 34.351rpx; font-weight: 600; color: var(--cimoa-text-title); }
 .am-4409-17 { height: 99.237rpx; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .am-4409-18 { font-size: 34.351rpx; font-weight: 600; color: var(--cimoa-text-connection-audio); }
 </style>

@@ -120,6 +120,7 @@
   ],
   "interaction_ids": [
     "amHistory.goBack.click.1",
-    "amHistory.h.go.click.1"
+    "amHistory.h.go.click.1",
+    "amHistory.returnHome.error.click.1"
   ]
 }

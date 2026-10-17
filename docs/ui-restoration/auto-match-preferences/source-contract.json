@@ -437,6 +437,7 @@
     "sheetUniPicker.o.pick.click.1",
     "sheetInterestsPicker.closeSheet.click.1",
     "sheetInterestsPicker.o.pick.click.1",
-    "sheetInterestsPicker.closeSheet.click.2"
+    "sheetInterestsPicker.closeSheet.click.2",
+    "amPrefs.returnHome.error.click.1"
   ]
 }

@@ -22,5 +22,5 @@ const action=(name,event,row)=>{if(!busy.value)emit('action',({getCoins2:'getCoi
   cursor: pointer;
   margin-top: 38.168rpx;
 }
-.am-4421-4 { font-size: 34.351rpx; font-weight: 700; color: var(--cimoa-surface-card); }
+.am-4421-4 { font-size: 34.351rpx; font-weight: 700; color: var(--cimoa-text-inverse); }
 </style>

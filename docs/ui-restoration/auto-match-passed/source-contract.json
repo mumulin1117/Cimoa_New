@@ -128,6 +128,7 @@
   "interaction_ids": [
     "amPassed.goBack.click.1",
     "amPassed.findAnother.click.1",
-    "amPassed.returnHome.click.1"
+    "amPassed.returnHome.click.1",
+    "amPassed.returnHome.error.click.1"
   ]
 }

@@ -239,9 +239,9 @@
   "pixels": {
     "width": 393,
     "height": 852,
-    "pixels_different": 45618,
-    "pixels_above_channel_delta_8": 9477,
-    "mean_absolute_channel_delta": 0.7786894181031908,
+    "pixels_different": 45621,
+    "pixels_above_channel_delta_8": 9487,
+    "mean_absolute_channel_delta": 0.7781451217909663,
     "max_channel_delta": 250
   }
 }

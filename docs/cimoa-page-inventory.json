@@ -4072,7 +4072,7 @@
     ],
     "page_level": "二级",
     "route": "/pages/auto-match/index",
-    "component": null,
+    "component": "src/pages/auto-match/index.vue",
     "parent_route": "/pages/home/index",
     "allowed_origin_routes": [
       "/pages/home/index"
@@ -4082,7 +4082,7 @@
       "startAutoMatch@5263",
       "startAutoMatch2@5774"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/home/index）；无历史实例时 replace /pages/home/index，不创建伪造实体",
+    "return_owner": "pop origin; fallback Home",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -4095,7 +4095,9 @@
       "sheetInsufficient.closeSheet.click.1",
       "sheetInsufficient.getCoins2.click.1",
       "sheetInsufficient.freeAlt.click.1",
-      "sheetInsufficient.closeSheet.click.2"
+      "sheetInsufficient.closeSheet.click.2",
+      "amEntry.openHistory.click.1",
+      "amEntry.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -4150,11 +4152,12 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-index/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-index/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-index/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Preferences / Default",
@@ -4164,7 +4167,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/auto-match/preferences",
-    "component": null,
+    "component": "src/pages/auto-match/preferences.vue",
     "parent_route": "/pages/auto-match/index",
     "allowed_origin_routes": [
       "/pages/auto-match/index",
@@ -4177,7 +4180,7 @@
       "openPrefs@6060",
       "adjustPrefs@6183"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auto-match/index、/pages/discover/index、/pages/auto-match/no-match）；无历史实例时 replace /pages/auto-match/index，不创建伪造实体",
+    "return_owner": "pop actual origin; fallback owned active state or Entry",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -4202,7 +4205,8 @@
       "sheetUniPicker.o.pick.click.1",
       "sheetInterestsPicker.closeSheet.click.1",
       "sheetInterestsPicker.o.pick.click.1",
-      "sheetInterestsPicker.closeSheet.click.2"
+      "sheetInterestsPicker.closeSheet.click.2",
+      "amPrefs.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -4261,11 +4265,12 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-preferences/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-preferences/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-preferences/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Queue / Searching",
@@ -4275,7 +4280,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/auto-match/searching",
-    "component": null,
+    "component": "src/pages/auto-match/searching.vue",
     "parent_route": "/pages/auto-match/index",
     "allowed_origin_routes": [
       "/pages/auto-match/index",
@@ -4295,7 +4300,7 @@
       "findAnother@6179",
       "amCardGo@6203"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auto-match/index、/pages/home/index）；无历史实例时 replace /pages/auto-match/index，不创建伪造实体",
+    "return_owner": "Back opens Leave Pool confirmation; cancel stays; confirmed leave reLaunch Home",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -4321,7 +4326,8 @@
       "sheetBoost.standardMatch.click.1",
       "sheetBoost.closeSheet.click.2",
       "sheetAmHelp.closeSheet.click.1",
-      "sheetAmHelp.closeSheet.click.2"
+      "sheetAmHelp.closeSheet.click.2",
+      "amSearching.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -4411,11 +4417,12 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-searching/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-searching/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-searching/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Queue / Paused",
@@ -4425,7 +4432,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/auto-match/paused",
-    "component": null,
+    "component": "src/pages/auto-match/paused.vue",
     "parent_route": "/pages/auto-match/searching",
     "allowed_origin_routes": [
       "/pages/auto-match/searching",
@@ -4438,7 +4445,7 @@
       "pauseQueue@6165",
       "amCardGo@6202"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auto-match/searching、/pages/home/index）；无历史实例时 replace /pages/auto-match/searching，不创建伪造实体",
+    "return_owner": "Back opens Leave Pool confirmation; cancel stays; confirmed leave reLaunch Home",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -4448,7 +4455,11 @@
       "amPaused.goBack.click.1",
       "amPaused.openPrefs.click.1",
       "amPaused.resumeQueue.click.1",
-      "amPaused.askLeave.click.1"
+      "amPaused.askLeave.click.1",
+      "sheetLeaving.closeSheet.click.1",
+      "sheetLeaving.stayInPool.click.1",
+      "sheetLeaving.confirmLeave.click.1",
+      "amPaused.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -4504,11 +4515,12 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-paused/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-paused/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-paused/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Queue / Leaving",
@@ -4518,7 +4530,7 @@
     ],
     "page_level": "确认弹窗",
     "route": "component",
-    "component": "src/components/AmLeavingConfirmDialog.vue",
+    "component": "src/components/AutoMatchLeavingConfirmDialog.vue",
     "parent_route": "/pages/auto-match/searching",
     "allowed_origin_routes": [
       "/pages/auto-match/searching"
@@ -4654,8 +4666,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "Independent source-derived Sheet; browser/native local regression passed; parent dependency acceptance pending",
+    "acceptance_notes": "2026-10-17: source-locked browser overlays, WKWebView screenshots, Loading and cancellation tested.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "evidence": "docs/ui-restoration/auto-match-searching/acceptance.json"
   },
   {
     "source_screen": "Auto Match / Found / Preview",
@@ -4665,7 +4680,7 @@
     ],
     "page_level": "二级",
     "route": "/pages/auto-match/found",
-    "component": null,
+    "component": "src/pages/auto-match/found.vue",
     "parent_route": "/pages/home/index",
     "allowed_origin_routes": [
       "/pages/home/index",
@@ -4679,28 +4694,25 @@
       "openLiam@5243",
       "amCardGo@6200"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/home/index、/pages/auto-match/searching、/pages/auto-match/history）；无历史实例时 replace /pages/home/index，不创建伪造实体",
+    "return_owner": "Back opens source skip confirmation; cancel stays; confirm opens Passed for same match_id",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
-    "bottom_safe_area_owner": "BottomCTA",
+    "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "amFound.askLeaveMatch.click.1",
       "amFound.openLimitedProfile.click.1",
       "amFound.connectAsk.click.1",
       "amFound.passMatch.click.1",
       "amFound.openLimitedProfile.click.2",
-      "sheetSafetyMini.closeSheet.click.1",
-      "sheetSafetyMini.openReport.click.1",
-      "sheetSafetyMini.openBlock.click.1",
-      "sheetSafetyMini.closeSheet.click.2",
       "sheetAccepting.closeSheet.click.1",
       "sheetAccepting.confirmConnect.click.1",
       "sheetAccepting.closeSheet.click.2",
       "sheetAmFoundLeave.closeSheet.click.1",
       "sheetAmFoundLeave.passMatch.click.1",
-      "sheetAmFoundLeave.closeSheet.click.2"
+      "sheetAmFoundLeave.closeSheet.click.2",
+      "amFound.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -4762,11 +4774,12 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-found/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-found/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-found/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Found / Accepting",
@@ -4776,7 +4789,7 @@
     ],
     "page_level": "确认弹窗",
     "route": "component",
-    "component": "src/components/AmAcceptingConfirmDialog.vue",
+    "component": "src/components/AutoMatchAcceptingConfirmDialog.vue",
     "parent_route": "/pages/auto-match/found",
     "allowed_origin_routes": [
       "/pages/auto-match/found"
@@ -4872,8 +4885,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "Independent source-derived Sheet; browser/native local regression passed; parent dependency acceptance pending",
+    "acceptance_notes": "2026-10-17: source-locked browser overlays, WKWebView screenshots, Loading and cancellation tested.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "evidence": "docs/ui-restoration/auto-match-found/acceptance.json"
   },
   {
     "source_screen": "Auto Match / Found / Waiting",
@@ -4883,7 +4899,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/auto-match/waiting",
-    "component": null,
+    "component": "src/pages/auto-match/waiting.vue",
     "parent_route": "/pages/auto-match/found",
     "allowed_origin_routes": [
       "/pages/auto-match/found",
@@ -4897,7 +4913,7 @@
       "go@6187",
       "amCardGo@6201"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auto-match/found、/pages/home/index）；无历史实例时 replace /pages/auto-match/found，不创建伪造实体",
+    "return_owner": "Back/Return Home reLaunch Home; preserve active waiting/search options state unless explicitly cancelled",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -4906,7 +4922,9 @@
     "interaction_ids": [
       "amWaiting.goBack.click.1",
       "amWaiting.returnHome.click.1",
-      "amWaiting.cancelRequest.click.1"
+      "amWaiting.cancelRequest.click.1",
+      "amWaiting.confirmCancel.click.1",
+      "amWaiting.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -4980,11 +4998,12 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-waiting/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-waiting/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-waiting/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Result / Connected",
@@ -4994,7 +5013,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/auto-match/connected",
-    "component": null,
+    "component": "src/pages/auto-match/connected.vue",
     "parent_route": "/pages/auto-match/found",
     "allowed_origin_routes": [
       "/pages/auto-match/found",
@@ -5006,7 +5025,7 @@
     "entry_points": [
       "amTick@4887"
     ],
-    "return_owner": "Header Back / Return Home completion → reLaunch /pages/home/index; Start Chatting / View Profile remain their existing forward routes",
+    "return_owner": "Back/Return Home reLaunch Home; preserve active waiting/search options state unless explicitly cancelled",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -5015,7 +5034,8 @@
     "interaction_ids": [
       "amConnected.goBack.click.1",
       "amConnected.startChat.click.1",
-      "amConnected.viewProfile.click.1"
+      "amConnected.viewProfile.click.1",
+      "amConnected.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -5083,13 +5103,14 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "dependency_navigation_evidence": "docs/ui-restoration/home/browser-acceptance.json (four consumers) and wkwebview-acceptance.json (Pass → root)",
     "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-connected/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-connected/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-connected/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Result / Passed",
@@ -5099,7 +5120,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/auto-match/passed",
-    "component": null,
+    "component": "src/pages/auto-match/passed.vue",
     "parent_route": "/pages/auto-match/found",
     "allowed_origin_routes": [
       "/pages/auto-match/found",
@@ -5111,7 +5132,7 @@
     "entry_points": [
       "passMatch@6178"
     ],
-    "return_owner": "Header Back / Return Home completion → reLaunch /pages/home/index; Start Chatting / View Profile remain their existing forward routes",
+    "return_owner": "Back/Return Home reLaunch Home; preserve active waiting/search options state unless explicitly cancelled",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -5120,7 +5141,8 @@
     "interaction_ids": [
       "amPassed.goBack.click.1",
       "amPassed.findAnother.click.1",
-      "amPassed.returnHome.click.1"
+      "amPassed.returnHome.click.1",
+      "amPassed.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -5164,13 +5186,14 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "dependency_navigation_evidence": "docs/ui-restoration/home/browser-acceptance.json (four consumers) and wkwebview-acceptance.json (Pass → root)",
     "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-passed/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-passed/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-passed/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Result / Expired",
@@ -5180,7 +5203,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/auto-match/expired",
-    "component": null,
+    "component": "src/pages/auto-match/expired.vue",
     "parent_route": "/pages/auto-match/found",
     "allowed_origin_routes": [
       "/pages/auto-match/found",
@@ -5193,7 +5216,7 @@
       "go@6187",
       "go@6189"
     ],
-    "return_owner": "Header Back / Return Home completion → reLaunch /pages/home/index; Start Chatting / View Profile remain their existing forward routes",
+    "return_owner": "Back/Return Home reLaunch Home; preserve active waiting/search options state unless explicitly cancelled",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -5202,7 +5225,8 @@
     "interaction_ids": [
       "amExpired.goBack.click.1",
       "amExpired.findAnother.click.1",
-      "amExpired.returnHome.click.1"
+      "amExpired.returnHome.click.1",
+      "amExpired.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -5246,13 +5270,14 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "dependency_navigation_evidence": "docs/ui-restoration/home/browser-acceptance.json (four consumers) and wkwebview-acceptance.json (Pass → root)",
     "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-expired/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-expired/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-expired/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Queue / No Match",
@@ -5262,7 +5287,7 @@
     ],
     "page_level": "流程状态页",
     "route": "/pages/auto-match/no-match",
-    "component": null,
+    "component": "src/pages/auto-match/no-match.vue",
     "parent_route": "/pages/auto-match/searching",
     "allowed_origin_routes": [
       "/pages/auto-match/searching"
@@ -5273,7 +5298,7 @@
     "entry_points": [
       "showNoMatch@6174"
     ],
-    "return_owner": "Header Back / Return Home completion → reLaunch /pages/home/index; Start Chatting / View Profile remain their existing forward routes",
+    "return_owner": "Back/Return Home reLaunch Home; preserve active waiting/search options state unless explicitly cancelled",
     "completion_navigation": "确认退出/完成 → reLaunch /pages/home/index；不得恢复结束会话",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -5283,7 +5308,8 @@
       "amNoMatch.goBack.click.1",
       "amNoMatch.findAnother.click.1",
       "amNoMatch.adjustPrefs.click.1",
-      "amNoMatch.returnHome.click.1"
+      "amNoMatch.returnHome.click.1",
+      "amNoMatch.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -5327,13 +5353,14 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "dependency_navigation_evidence": "docs/ui-restoration/home/browser-acceptance.json (four consumers) and wkwebview-acceptance.json (Pass → root)",
     "dependency_navigation_note": "2026-10-17 shared Home root-return correction only; this does not change this page's visual/status acceptance",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-no-match/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-no-match/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-no-match/source-contract.json"
   },
   {
     "source_screen": "Auto Match / History / Default",
@@ -5343,7 +5370,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/auto-match/history",
-    "component": null,
+    "component": "src/pages/auto-match/history.vue",
     "parent_route": "/pages/auto-match/index",
     "allowed_origin_routes": [
       "/pages/auto-match/index",
@@ -5353,7 +5380,7 @@
     "entry_points": [
       "openHistory@6184"
     ],
-    "return_owner": "pop origin_route（允许来源：/pages/auto-match/index、/pages/auto-match/searching）；无历史实例时 replace /pages/auto-match/index，不创建伪造实体",
+    "return_owner": "pop Entry; direct URL fallback Entry",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
     "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
@@ -5361,7 +5388,8 @@
     "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "amHistory.goBack.click.1",
-      "amHistory.h.go.click.1"
+      "amHistory.h.go.click.1",
+      "amHistory.returnHome.error.click.1"
     ],
     "entities": "match_sessions; match_preferences; match_quota; users; user_relationships; coin_transactions",
     "assets": {
@@ -5388,11 +5416,12 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md.",
+    "mapping_status": "source-locked; independent Vue implementation and module regression passed; full acceptance pending Coin Center/processing/failure dependencies",
+    "acceptance_notes": "2026-10-17: 146 domain tests, all 11 browser source comparisons, cross-account flow, guarded recovery, native 12/12 including real simulator background/foreground; no automatic peer consent. Only local commits.",
     "source_lock": "locked",
     "visual_acceptance": "passed",
-    "evidence": "docs/ui-restoration/auto-match-history/acceptance.json"
+    "evidence": "docs/ui-restoration/auto-match-history/acceptance.json",
+    "source_lock_artifact": "docs/ui-restoration/auto-match-history/source-contract.json"
   },
   {
     "source_screen": "Auto Match / Boost / Confirmation",
@@ -5402,7 +5431,7 @@
     ],
     "page_level": "确认弹窗",
     "route": "component",
-    "component": "src/components/AmBoostConfirmDialog.vue",
+    "component": "src/components/AutoMatchBoostConfirmDialog.vue",
     "parent_route": "/pages/auto-match/searching",
     "allowed_origin_routes": [
       "/pages/auto-match/searching"
@@ -5538,8 +5567,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "Independent source-derived Sheet; browser/native local regression passed; parent dependency acceptance pending",
+    "acceptance_notes": "2026-10-17: source-locked browser overlays, WKWebView screenshots, Loading and cancellation tested.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "evidence": "docs/ui-restoration/auto-match-searching/acceptance.json"
   },
   {
     "source_screen": "Home / Auto Match / Searching",
@@ -8555,7 +8587,7 @@
     ],
     "page_level": "确认弹窗",
     "route": "component",
-    "component": "src/components/AmBoostConfirmDialog.vue",
+    "component": "src/components/AutoMatchBoostConfirmDialog.vue",
     "parent_route": "/pages/auto-match/searching",
     "allowed_origin_routes": [
       "/pages/auto-match/searching"
@@ -8691,8 +8723,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; atomic ledger failure/idempotency and UI error states passed; full paid dependency path remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "Independent source-derived Sheet; browser/native local regression passed; parent dependency acceptance pending",
+    "acceptance_notes": "2026-10-17: source-locked browser overlays, WKWebView screenshots, Loading and cancellation tested.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "evidence": "docs/ui-restoration/auto-match-searching/acceptance.json"
   },
   {
     "source_screen": "Coins / Spend / Processing",
@@ -13056,7 +13091,7 @@
     ],
     "page_level": "Sheet",
     "route": "component",
-    "component": "src/components/AmHelpSheet.vue",
+    "component": "src/components/AutoMatchHelpConfirmDialog.vue",
     "parent_route": "/pages/auto-match/searching",
     "allowed_origin_routes": [
       "/pages/auto-match/searching"
@@ -13192,8 +13227,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "Independent source-derived Sheet; browser/native local regression passed; parent dependency acceptance pending",
+    "acceptance_notes": "2026-10-17: source-locked browser overlays, WKWebView screenshots, Loading and cancellation tested.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "evidence": "docs/ui-restoration/auto-match-searching/acceptance.json"
   },
   {
     "source_screen": "Auto Match / Found / Leave",
@@ -13203,7 +13241,7 @@
     ],
     "page_level": "确认弹窗",
     "route": "component",
-    "component": "src/components/AmFoundLeaveConfirmDialog.vue",
+    "component": "src/components/AutoMatchFoundLeaveConfirmDialog.vue",
     "parent_route": "/pages/auto-match/found",
     "allowed_origin_routes": [
       "/pages/auto-match/found"
@@ -13299,8 +13337,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "Independent source-derived Sheet; browser/native local regression passed; parent dependency acceptance pending",
+    "acceptance_notes": "2026-10-17: source-locked browser overlays, WKWebView screenshots, Loading and cancellation tested.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "evidence": "docs/ui-restoration/auto-match-found/acceptance.json"
   },
   {
     "source_screen": "Auto Match / Preferences / University",
@@ -13310,7 +13351,7 @@
     ],
     "page_level": "Sheet",
     "route": "component",
-    "component": "src/components/UniPickerSheet.vue",
+    "component": "src/components/AutoMatchPreferenceConfirmDialog.vue",
     "parent_route": "/pages/auto-match/preferences",
     "allowed_origin_routes": [
       "/pages/auto-match/preferences"
@@ -13406,8 +13447,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "Independent source-derived Sheet; browser/native local regression passed; parent dependency acceptance pending",
+    "acceptance_notes": "2026-10-17: source-locked browser overlays, WKWebView screenshots, Loading and cancellation tested.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "evidence": "docs/ui-restoration/auto-match-preferences/acceptance.json"
   },
   {
     "source_screen": "Auto Match / Preferences / Interests",
@@ -13417,7 +13461,7 @@
     ],
     "page_level": "Sheet",
     "route": "component",
-    "component": "src/components/InterestsPickerSheet.vue",
+    "component": "src/components/AutoMatchPreferenceConfirmDialog.vue",
     "parent_route": "/pages/auto-match/preferences",
     "allowed_origin_routes": [
       "/pages/auto-match/preferences"
@@ -13513,8 +13557,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; Store state machine and local UI acceptance passed; production matching service and trusted event channel are not configured, so full acceptance remains pending",
-    "acceptance_notes": "2026-10-14 batch evidence: 100 non-browser tests passed; browser smoke passed; iPhone 17 Pro iOS 26.5 HostTests 11/11 passed. See cimoa-stage5-dependency-flows.md."
+    "mapping_status": "Independent source-derived Sheet; browser/native local regression passed; parent dependency acceptance pending",
+    "acceptance_notes": "2026-10-17: source-locked browser overlays, WKWebView screenshots, Loading and cancellation tested.",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "evidence": "docs/ui-restoration/auto-match-preferences/acceptance.json"
   },
   {
     "source_screen": "Events / Explore / Filters",

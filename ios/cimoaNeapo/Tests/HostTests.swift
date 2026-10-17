@@ -93,6 +93,78 @@ final class HostTests: XCTestCase {
     func testAutoMatchExpiredPixel() async throws { try await autoMatchPixel("expired") }
     func testAutoMatchNoMatchPixel() async throws { try await autoMatchPixel("no-match") }
     func testAutoMatchHistoryPixel() async throws { try await autoMatchPixel("history") }
+    func testAutoMatchFullRecoveryFlow() async throws {
+        let host=try await rawHost()
+        let snapshot=try await script(host,"return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        let originalScripts=host.webView.configuration.userContentController.userScripts
+        var root=URL(fileURLWithPath:#filePath);for _ in 0..<4 {root.deleteLastPathComponent()}
+        let folder=root.appendingPathComponent("docs/evidence/auto-match")
+        let fixture=try JSONSerialization.jsonObject(with:Data(contentsOf:folder.appendingPathComponent("flow-native-fixture.json"))) as! [String:Any]
+        var checks=[String]()
+        func click(_ id:String) async throws {
+            _=try await script(host,"const e=[...document.querySelectorAll('[data-interaction=\"\(id)\"]')].find(e=>e.closest('uni-page')===[...document.querySelectorAll('uni-page')].at(-1));if(!e)throw Error('Missing \(id)');e.scrollIntoView({block:'center'});e.click();await new Promise(r=>setTimeout(r,280));return true")
+        }
+        func open(_ route:String,_ selector:String) async throws {try await loadFreshConnection(host,route:route,selector:selector)}
+        func login(_ email:String) async throws {
+            try await open("/pages/settings/index",".settings-page")
+            try await click("settings.openLogoutConfirm.click.1");try await click("sheetLogout.logOut2.click.1");try await waitFor(host,".welcome-page")
+            _=try await script(host,"document.querySelector('.welcome-login').click();return true");try await waitFor(host,".login-page input")
+            _=try await host.webView.callAsyncJavaScript("await new Promise(r=>setTimeout(r,280));const inputs=document.querySelectorAll('.login-page input');for(const [i,v]of[email,'12341234'].entries()){inputs[i].value=v;inputs[i].dispatchEvent(new Event('input',{bubbles:true}))}await Promise.resolve();document.querySelector('[data-interaction=\"login.loginNow.click.1\"]').click();return true",arguments:["email":email],in:nil,contentWorld:.page)
+            try await waitFor(host,".home-header");try await Task.sleep(nanoseconds:800_000_000)
+        }
+        func restore() async throws {
+            host.webView.configuration.userContentController.removeAllUserScripts();for item in originalScripts {host.webView.configuration.userContentController.addUserScript(item)}
+            _=try await host.webView.callAsyncJavaScript("for(const [k,v]of[['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}return true",arguments:["saved":snapshot],in:nil,contentWorld:.page)
+            host.webView.load(URLRequest(url:URL(string:BundleHTTPServer.origin+"/index.html?matchFlowRestore=\(UUID().uuidString)#/pages/auth/splash")!))
+        }
+        do {
+            let text=String(data:try JSONSerialization.data(withJSONObject:fixture),encoding:.utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source:"const data=\(text);data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));",injectionTime:.atDocumentStart,forMainFrameOnly:true))
+            await WKWebsiteDataStore.default().removeData(ofTypes:[WKWebsiteDataTypeDiskCache,WKWebsiteDataTypeMemoryCache],modifiedSince:.distantPast)
+            try await open("/pages/auto-match/index",".auto-match-index")
+            host.webView.configuration.userContentController.removeAllUserScripts();for item in originalScripts {host.webView.configuration.userContentController.addUserScript(item)}
+            try await click("amEntry.joinPool.click.1");try await waitFor(host,".auto-match-searching")
+            let id=try await script(host,"return JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.match_sessions.find(m=>m.owner_user_id==='user_cimoa').match_id") as! String
+            try await click("amSearching.pauseQueue.click.1");try await waitFor(host,".auto-match-paused")
+            let remaining=try await script(host,"return JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.match_sessions.find(m=>m.match_id==='\(id)').search_remaining_ms") as! Double
+            let backgroundToken=UUID().uuidString
+            try Data(backgroundToken.utf8).write(to:folder.appendingPathComponent("native-background-ready.txt"))
+            var backgroundReturned=false
+            for _ in 0..<120 {
+                if (try? String(contentsOf:folder.appendingPathComponent("native-background-done.txt"),encoding:.utf8))==backgroundToken {backgroundReturned=true;break}
+                try await Task.sleep(nanoseconds:100_000_000)
+            }
+            XCTAssertTrue(backgroundReturned,"The simulator background/foreground check must finish before recovery")
+            try await open("/pages/auto-match/paused?match_id=\(id)",".auto-match-paused")
+            let restored=try await script(host,"return JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.match_sessions.find(m=>m.match_id==='\(id)').search_remaining_ms") as! Double
+            XCTAssertEqual(remaining,restored)
+            try await open("/pages/home/index",".home-header");try await click("home.amCardGo.click.1");try await waitFor(host,".auto-match-paused")
+            try await click("amPaused.resumeQueue.click.1");try await waitFor(host,".auto-match-searching");try await waitFor(host,".auto-match-found")
+            checks.append("Actual simulator background/foreground, device-engine search, same-ID pause/reload/resume, Home recovery")
+            try await click("amFound.connectAsk.click.1");try await click("sheetAccepting.confirmConnect.click.1");try await waitFor(host,".auto-match-waiting")
+            try await click("amWaiting.returnHome.click.1");try await waitFor(host,".home-header");try await click("home.amCardGo.click.1");try await waitFor(host,".auto-match-waiting")
+            try await open("/pages/auto-match/waiting?match_id=\(id)",".auto-match-waiting")
+            let noConsent=try await script(host,"return JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.match_sessions.find(m=>m.match_id==='\(id)').peer_accepted") as! Bool;XCTAssertFalse(noConsent)
+            checks.append("Invitation persists through Home and a fresh WKWebView document, without peer consent")
+            try await login("zane@cimoa.test");try await click("home.openMatchInvitation.click.1");try await waitFor(host,".connection-received-page")
+            try await click("reqReceived.accept.click.1");_=try await script(host,"document.querySelector('.dialog__confirm').click();return true");try await waitFor(host,".connection-accepted-page")
+            try await login("cimoa@gmail.com");try await open("/pages/auto-match/waiting?match_id=\(id)",".auto-match-connected")
+            try await click("amConnected.startChat.click.1");try await waitFor(host,".direct-chat-page");try await click("chat.goBack.click.1");try await waitFor(host,".auto-match-connected")
+            try await click("amConnected.viewProfile.click.1");try await waitFor(host,".expanded-profile-page")
+            let chat=try await script(host,"return [...document.querySelectorAll('[data-interaction=\"expanded.sayHi.click.1\"]')].some(e=>e.textContent.trim()==='Chat')") as! Bool;XCTAssertTrue(chat)
+            try await click("expanded.collapse.click.1");try await waitFor(host,".auto-match-connected");try await click("amConnected.goBack.click.1");try await waitFor(host,".home-header")
+            checks.append("Signed-in peer accepts via UI; reciprocal consent, owner recovery, profile Chat and existing Conversation")
+            try await open("/pages/auto-match/index",".auto-match-index");try await click("amEntry.openHistory.click.1");try await waitFor(host,".auto-match-history");try await click("amHistory.h.go.click.1");try await waitFor(host,".auto-match-connected")
+            let report=try await script(host,"const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,m=d.match_sessions.find(m=>m.match_id==='\(id)');return {match_id:m.match_id,state:m.status,consents:d.relationships.filter(r=>r.source_match_id===m.match_id).length,quota:d.match_quota.find(q=>q.owner_user_id==='user_cimoa').used_count,balance:d.coin_transactions.filter(t=>t.owner_user_id==='user_cimoa'&&t.status==='completed').reduce((n,t)=>n+t.amount,0),overflow:document.documentElement.scrollWidth>innerWidth,origin:location.origin}") as! [String:Any]
+            XCTAssertEqual(report["state"] as? String,"connected");XCTAssertEqual(report["consents"] as? Int,2);XCTAssertEqual(report["quota"] as? Int,1);XCTAssertEqual(report["balance"] as? Int,260);XCTAssertEqual(report["overflow"] as? Bool,false)
+            checks.append("Entry History restores the same result; one admission, unchanged ledger, correct bundle origin")
+            try JSONSerialization.data(withJSONObject:["passed":true,"checks":checks,"state":report],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("flow-wkwebview.json"))
+            try await restore()
+        } catch {
+            if let debug=try? await script(host,"return {url:location.href,text:document.body.innerText}"){try? JSONSerialization.data(withJSONObject:debug,options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("flow-wkwebview-failure.json"))}
+            try? await restore();throw error
+        }
+    }
     private func discoverRequestPixel(_ phase: String) async throws {
         let host = try await rawHost()
         let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]

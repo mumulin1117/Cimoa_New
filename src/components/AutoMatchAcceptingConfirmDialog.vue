@@ -32,7 +32,7 @@ const action=(name,event,row)=>{if(!busy.value)emit('action',({getCoins2:'getCoi
   margin-top: 38.168rpx;
   box-shadow: var(--cimoa-shadow-connection-action);
 }
-.am-4380-6 { font-size: 36.259rpx; font-weight: 700; color: var(--cimoa-surface-card); }
+.am-4380-6 { font-size: 36.259rpx; font-weight: 700; color: var(--cimoa-text-inverse); }
 .am-4381-7 {
   height: 106.871rpx;
   border-radius: 53.436rpx;

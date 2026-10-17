@@ -2,23 +2,18 @@
   "source_lock": "locked",
   "visual_acceptance": "passed",
   "local_acceptance": "passed",
+  "module_regression": "passed",
   "full_acceptance": "pending",
   "status": "pending",
-  "automatic_confirmation": "Source/actual overlay reviewed, <=1 CSS px geometry, current browser and WKWebView evidence, no unresolved visual differences",
+  "automatic_confirmation": "Source overlay reviewed, <=1 CSS pixel browser geometry; native screenshots and 12/12 current build tests passed.",
   "browser": "browser-acceptance.json",
   "native": "wkwebview-geometry.json",
-  "native_result": "/tmp/cimoa-match-waiting-sheet-20261017.xcresult",
-  "native_tests": 1,
+  "native_result": "/tmp/cimoa-auto-match-releasecheck-20261017.xcresult",
+  "native_summary": "../../evidence/auto-match/native-tests.json",
   "unresolved_visual_differences": [],
   "deferred": [
-    "Connected/Passed pages and final whole-module regression"
+    "Coin Center, processing and failure dependency pages remain pending in page inventory.",
+    "Real StoreKit purchase success requires configured products and signed receipt validation; never replaced by local credits."
   ],
-  "git": "local commit only; no push",
-  "checks": [
-    "120-second advance still waiting, never auto-accepts",
-    "Home/reload preserve the same invitation and state",
-    "Cancel dismiss read-only; confirm updates one session and relaunches depth1"
-  ],
-  "supplement": "Source Leave Sheet reused for explicit cancellation, with busy/animation/safe-area ownership",
-  "resolved_test_issue": "Reapply the same 54px test safe area after browser refresh before Sheet comparison; native host reports real safe areas."
+  "git": "Local commits only; no push"
 }

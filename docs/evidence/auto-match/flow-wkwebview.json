@@ -1,0 +1,18 @@
+{
+  "checks" : [
+    "Actual simulator background\/foreground, device-engine search, same-ID pause\/reload\/resume, Home recovery",
+    "Invitation persists through Home and a fresh WKWebView document, without peer consent",
+    "Signed-in peer accepts via UI; reciprocal consent, owner recovery, profile Chat and existing Conversation",
+    "Entry History restores the same result; one admission, unchanged ledger, correct bundle origin"
+  ],
+  "passed" : true,
+  "state" : {
+    "balance" : 260,
+    "consents" : 2,
+    "match_id" : "match_32b795fe-605c-49ad-b963-7fe7561ffda2",
+    "origin" : "http:\/\/127.0.0.1:18765",
+    "overflow" : false,
+    "quota" : 1,
+    "state" : "connected"
+  }
+}

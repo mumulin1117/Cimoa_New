@@ -22,5 +22,17 @@
     "persistence": "Store match_sessions/preferences/quota/ledger only; deadline-derived clocks are read-only.",
     "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
     "acceptance": "scripts/auto-match-browser.test.mjs --page=history; native HostTests; screenshots in this directory."
+  },
+  {
+    "interaction_id": "amHistory.returnHome.error.click.1",
+    "source_screen": "Guarded error-state technical supplement",
+    "trigger": "click / Enter",
+    "preconditions": "Invalid auth, hydration or match entity; no mutation",
+    "visible_feedback": "Source control and Sheet; pure navigation is read-only; writes use custom 500ms Loading and duplicate lock.",
+    "success_result": "Return Home via normal transition, no business writes",
+    "failure_result": "Inline readable error; original state, deadline, quota and balance preserved; stale/cancelled operation cannot commit.",
+    "persistence": "none",
+    "sync_scope": "Home, Discover primary, Auto Match status/history, authorized incoming invitation and conversation.",
+    "acceptance": "Expired-auth and invalid-ID edge browser checks; Home remains reachable"
   }
 ]

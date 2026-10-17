@@ -137,6 +137,7 @@
     "amNoMatch.goBack.click.1",
     "amNoMatch.findAnother.click.1",
     "amNoMatch.adjustPrefs.click.1",
-    "amNoMatch.returnHome.click.1"
+    "amNoMatch.returnHome.click.1",
+    "amNoMatch.returnHome.error.click.1"
   ]
 }

@@ -17,7 +17,9 @@ export function auto_match_reference(page,data,origin,sheet='',at=Date.now()){
     const line=node.loc.start.line
     if(page==='found'&&line===1748)return `<div data-source-line="${line}" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">${c.shared_chips.map(i=>`<div style="display:flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:22px;background:${i.bg};color:${i.ink};font-size:16px;font-weight:700"><div style="font-size:19px;line-height:1;flex:none">${i.emoji}</div><div>${i.label}</div></div>`).join('')}</div>`
     if(page==='found'&&node.tag==='svg'&&node.children.some(n=>n.tag==='circle'&&attribute(n,'fill')==='#1d9bf0')&&!c.candidate_verified)return ''
-    let style=attribute(node,'style');if(page==='history'&&line===1906)style=style.replace('white-space:nowrap','white-space:normal;overflow-wrap:anywhere')
+    let style=attribute(node,'style');if(page==='found'&&[1730,1734,1738].includes(line))style=style.replace('height:36px','min-height:36px;max-width:100%')
+    if(page==='found'&&[1732,1736,1740].includes(line))style=style.replace('white-space:nowrap','white-space:normal;overflow-wrap:anywhere;min-width:0;padding:5.24px 0')
+    if(page==='history'&&line===1906)style=style.replace('white-space:nowrap','white-space:normal;overflow-wrap:anywhere')
     if(page==='found'&&style.includes('flex-wrap:nowrap'))style=style.replace('flex-wrap:nowrap','flex-wrap:wrap')
     if(node===header)style=style.replace(/position:absolute;|top:58px;|left:20px;|right:20px;/g,'')+`;position:relative;margin:4px 20px ${attribute(body,'style').includes('top:120px')?14:12}px;flex:none`
     if(node===body){if(style.includes('overflow-y:auto'))style='padding:0 20px 24px;box-sizing:border-box';else{const top=Number(style.match(/top:(\d+)px/)?.[1]||118);style=style.replace(/position:absolute;|top:\d+px;|left:20px;|right:20px;/g,'')+`;margin-top:${top-118}px;padding:0 20px 24px`}}

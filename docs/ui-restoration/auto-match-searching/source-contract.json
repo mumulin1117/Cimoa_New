@@ -330,6 +330,7 @@
     "sheetBoost.standardMatch.click.1",
     "sheetBoost.closeSheet.click.2",
     "sheetAmHelp.closeSheet.click.1",
-    "sheetAmHelp.closeSheet.click.2"
+    "sheetAmHelp.closeSheet.click.2",
+    "amSearching.returnHome.error.click.1"
   ]
 }

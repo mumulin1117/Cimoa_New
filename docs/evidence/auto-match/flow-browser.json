@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checks": [
+    "One admission survives pause, refresh, background time and Home recovery",
+    "See options / Stay in Pool preserves active search and never charges",
+    "Candidate/profile uses the same entity; waiting persists beyond 45 seconds without fabricated consent",
+    "The signed-in peer explicitly accepts; cancellation stays read-only; one Connection and Conversation result",
+    "Stale Waiting URL restores Connected; profile Chat and private conversation retain the same ID; Home clears stack",
+    "Entry History reopens the same result; refresh and account changes never replay quota or payment"
+  ],
+  "errors": [],
+  "match_id": "match_fb5b68ec-9431-4018-8a03-3d7b1977d853",
+  "conversation_id": "conversation_0c289fa7-effd-403a-bac7-1e196440f744",
+  "server_pid": 50540,
+  "cleaned_up": true
+}

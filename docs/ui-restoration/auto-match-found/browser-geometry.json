@@ -150,9 +150,9 @@
     },
     "1732": {
       "x": 75,
-      "y": 372,
+      "y": 366.765625,
       "width": 51.765625,
-      "height": 18,
+      "height": 28.46875,
       "text": "HKUST"
     },
     "1734": {
@@ -171,9 +171,9 @@
     },
     "1736": {
       "x": 181.765625,
-      "y": 372,
+      "y": 366.765625,
       "width": 85.40625,
-      "height": 18,
+      "height": 28.46875,
       "text": "Engineering"
     },
     "1738": {
@@ -192,9 +192,9 @@
     },
     "1740": {
       "x": 75,
-      "y": 415,
+      "y": 409.765625,
       "width": 37.890625,
-      "height": 18,
+      "height": 28.46875,
       "text": "ESTP"
     },
     "1746": {
@@ -404,9 +404,9 @@
     },
     "1732": {
       "x": 75,
-      "y": 372.5,
+      "y": 367.265625,
       "width": 51.71875,
-      "height": 17,
+      "height": 27.46875,
       "text": "HKUST"
     },
     "1734": {
@@ -425,9 +425,9 @@
     },
     "1736": {
       "x": 181.71875,
-      "y": 372.5,
+      "y": 367.265625,
       "width": 85.34375,
-      "height": 17,
+      "height": 27.46875,
       "text": "Engineering"
     },
     "1738": {
@@ -446,9 +446,9 @@
     },
     "1740": {
       "x": 75,
-      "y": 415.5,
+      "y": 410.265625,
       "width": 37.859375,
-      "height": 17,
+      "height": 27.46875,
       "text": "ESTP"
     },
     "1746": {
@@ -519,9 +519,9 @@
   "pixels": {
     "width": 393,
     "height": 852,
-    "pixels_different": 163752,
-    "pixels_above_channel_delta_8": 39365,
-    "mean_absolute_channel_delta": 2.1642766906784217,
+    "pixels_different": 164279,
+    "pixels_above_channel_delta_8": 39561,
+    "mean_absolute_channel_delta": 2.1643782329259698,
     "max_channel_delta": 210
   }
 }
