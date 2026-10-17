@@ -1,7 +1,7 @@
 {
   "phase": "new",
   "result": "passed",
-  "server_pid": 54356,
+  "server_pid": 25296,
   "checks": [
     "New Password rejects direct access without a verified owned reset",
     "Fixed code reaches New Password with the verified reset owned by the local account",

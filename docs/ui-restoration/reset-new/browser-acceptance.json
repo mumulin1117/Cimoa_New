@@ -1,0 +1,146 @@
+{
+  "phase": "reset-new-pixel-restoration",
+  "result": "passed",
+  "server_pid": 25256,
+  "reference": {
+    "kind": "source-derived locked reference with approved signed-out completion and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "38c860a9c6252b08c9c234f7de79cc89f2e6d74cb7cf22d293f5ca09a8011e55",
+    "behavior_fragment_sha256": "009fd1f37e735dafd87c2ad0720a9605cea358ab504154766271cc5f5b2bcc2a",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "bottom": 105.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "bottom": 104.984375
+    },
+    "heading": {
+      "x": 20,
+      "y": 121.96875,
+      "width": 353,
+      "height": 72.59375,
+      "bottom": 194.5625
+    },
+    "fields": [
+      {
+        "x": 20,
+        "y": 208.5625,
+        "width": 353,
+        "height": 102.96875,
+        "bottom": 311.53125
+      },
+      {
+        "x": 20,
+        "y": 325.53125,
+        "width": 353,
+        "height": 79.984375,
+        "bottom": 405.515625
+      }
+    ],
+    "boxes": [
+      {
+        "x": 20,
+        "y": 232.5625,
+        "width": 353,
+        "height": 55.984375,
+        "bottom": 288.546875
+      },
+      {
+        "x": 20,
+        "y": 349.53125,
+        "width": 353,
+        "height": 55.984375,
+        "bottom": 405.515625
+      }
+    ],
+    "labels": [
+      {
+        "x": 20,
+        "y": 208.5625,
+        "width": 353,
+        "height": 17,
+        "bottom": 225.5625
+      },
+      {
+        "x": 20,
+        "y": 325.53125,
+        "width": 353,
+        "height": 17,
+        "bottom": 342.53125
+      }
+    ],
+    "hint": {
+      "x": 20,
+      "y": 294.53125,
+      "width": 353,
+      "height": 17,
+      "bottom": 311.53125
+    },
+    "primary": {
+      "x": 20,
+      "y": 758.015625,
+      "width": 353,
+      "height": 60,
+      "bottom": 818.015625
+    },
+    "safes": [
+      54,
+      0
+    ],
+    "text": {
+      "header": "Reset password",
+      "heading": "Choose a new password",
+      "labels": [
+        "New password",
+        "Confirm new password"
+      ],
+      "placeholders": [
+        "At least 8 characters",
+        "Repeat it"
+      ],
+      "hint": "At least 8 characters with a number",
+      "show": "Show",
+      "primary": "Update password"
+    },
+    "interactions": [
+      "fpNew.goBack.click.1",
+      "fpNew.onPw.change.1",
+      "fpNew.togglePw.click.1",
+      "fpNew.onPw2.change.1",
+      "fpNew.finishReset.click.1"
+    ],
+    "extraDescription": false,
+    "extraNote": false
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 60528,
+    "pixels_above_channel_delta_8": 7554,
+    "mean_absolute_channel_delta": 0.6582199942658495,
+    "max_channel_delta": 183
+  },
+  "checks": [
+    "393x852 restores locked fields, source copy, fixed footer and no unsourced explanatory blocks",
+    "weak and mismatched passwords expose source-aligned errors and remain zero-write",
+    "Show works while refresh clears both secrets and preserves only the verified reset",
+    "credential changes only after custom Loading, clears reset state and returns signed out to Login",
+    "320x568 and 62/34 safe areas preserve the fixed action and one middle scroll owner"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

@@ -1005,10 +1005,15 @@
       ]
     },
     "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/reset-new/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/reset-new/difference-audit.md",
     "local_acceptance": "passed",
     "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implemented; verified in browser and iPhone 17 Pro WKWebView with direct-access guard, password validation, visibility toggle, custom Loading, secret clearing on refresh, fixture-to-local credential migration, old-password rejection and new-password return to Home"
+    "mapping_status": "source locked; source header, fields, hints and placeholder restored; unsourced explanatory blocks removed; truthful signed-out completion retained; browser pixel, credential, refresh/back, small-screen/safe-area and iPhone 17 Pro WKWebView full-flow checks passed",
+    "acceptance_evidence": "docs/ui-restoration/reset-new/acceptance.json"
   },
   {
     "source_screen": "Onboarding / Basic Info / Default",

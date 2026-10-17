@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "page": "Reset New Password",
+  "route": "/pages/auth/reset/new",
+  "source_screen": "Auth / Forgot Password / New Password",
+  "source_query": "route=fpNew",
+  "source_lock": "locked",
+  "locked_at": "2026-10-17",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isFpNew",
+    "visual_lines": "2859-2888",
+    "visual_fragment_sha256": "38c860a9c6252b08c9c234f7de79cc89f2e6d74cb7cf22d293f5ca09a8011e55",
+    "behavior_lines": [4784, 5155, 5540, 5599, 5608, 5610, 5613, 5614, 5615, 5616],
+    "behavior_fragment_sha256": "009fd1f37e735dafd87c2ad0720a9605cea358ab504154766271cc5f5b2bcc2a"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "header": "top 58px; left/right 20px; height 48px; 46px circular Back; centered 21px title",
+    "scroll": "top 122px; left/right 20px; source bottom padding 160px",
+    "footer": "left/right 20px; bottom 34px; 60px primary",
+    "fields": "14px first gap; 14.5px labels; 7px label gap; 56px inputs; 18px radius; 6px hints",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "content": {
+    "header_title": "Reset password",
+    "heading": "Choose a new password",
+    "first_field": { "label": "New password", "placeholder": "At least 8 characters", "toggle": "Show/Hide" },
+    "hint": "At least 8 characters with a number",
+    "second_field": { "label": "Confirm new password", "placeholder": "Repeat it" },
+    "mismatch": "Passwords don’t match yet",
+    "primary": { "source_copy": "Save and Log In", "approved_local_copy": "Update password", "interaction_id": "fpNew.finishReset.click.1" }
+  },
+  "approved_deltas": [
+    { "id": "reset-new-safe-area-skeleton", "source": "DEVELOPMENT_CONVENTIONS.md sections 2 and 15", "delta": "Measured safe areas and one middle scroll-view preserve source coordinates and fixed footer behavior." },
+    { "id": "reset-new-no-fake-login", "source": "Existing password-reset contract and INTERACTION_CONVENTIONS.md section 9.2", "delta": "The source CTA claims an automatic login, but the secure local flow must stay signed out and reLaunch Login. Use Update password rather than claim a session that is not created." },
+    { "id": "reset-new-source-copy", "source": "User pixel-source rule", "delta": "Restore source header and Repeat it placeholder; remove implementation-only description and local note." },
+    { "id": "reset-new-secure-write", "source": "Existing Store password-reset contract", "delta": "Credential change occurs only for the verified owned reset after 500ms Loading; weak, mismatched, stale, cancelled and persistence-failure paths remain zero-write, and secrets are never persisted." }
+  ],
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/reset-new/reference.png",
+    "actual_browser_png": "docs/ui-restoration/reset-new/actual-browser.png",
+    "actual_browser_error_png": "docs/ui-restoration/reset-new/actual-browser-error.png",
+    "actual_browser_small_png": "docs/ui-restoration/reset-new/actual-browser-small.png",
+    "overlay_png": "docs/ui-restoration/reset-new/overlay.png",
+    "diff_png": "docs/ui-restoration/reset-new/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/reset-new/actual-wkwebview.png",
+    "visual_acceptance": "passed"
+  }
+}

@@ -50,11 +50,10 @@ const finish = async () => {
 </script>
 
 <template>
-  <AuthPageFrame ref="frame" class="reset-new-page" title="New password" back-interaction="fpNew.goBack.click.1" :busy="is_loading" @back="back">
+  <AuthPageFrame ref="frame" class="reset-new-page" title="Reset password" back-interaction="fpNew.goBack.click.1" :busy="is_loading" @back="back">
     <view v-if="access_error" class="auth-error-box" role="alert">{{ access_error }}</view>
     <template v-else>
       <text class="auth-heading">Choose a new password</text>
-      <text class="auth-description">Update the local password for {{ reset.email }}. This changes only the account stored on this device.</text>
       <view class="auth-field">
         <text class="auth-label">New password</text>
         <view class="auth-input-box"><input v-model="password" class="auth-input" aria-label="New password" placeholder="At least 8 characters" :password="!shown" :maxlength="128" :disabled="is_loading" autocomplete="new-password" data-interaction="fpNew.onPw.change.1" /><view class="auth-show" role="button" tabindex="0" data-interaction="fpNew.togglePw.click.1" @click="shown = !shown" @keydown.enter="shown = !shown">{{ shown ? 'Hide' : 'Show' }}</view></view>
@@ -62,11 +61,10 @@ const finish = async () => {
       </view>
       <view class="auth-field">
         <text class="auth-label">Confirm new password</text>
-        <view class="auth-input-box"><input v-model="confirmation" class="auth-input" aria-label="Confirm new password" placeholder="Repeat your new password" :password="!shown" :maxlength="128" :disabled="is_loading" autocomplete="new-password" data-interaction="fpNew.onPw2.change.1" @confirm="finish" /></view>
+        <view class="auth-input-box"><input v-model="confirmation" class="auth-input" aria-label="Confirm new password" placeholder="Repeat it" :password="!shown" :maxlength="128" :disabled="is_loading" autocomplete="new-password" data-interaction="fpNew.onPw2.change.1" @confirm="finish" /></view>
         <text v-if="confirmation && password !== confirmation" class="reset-password-hint is-error">Passwords don’t match yet</text>
       </view>
       <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
-      <text class="auth-local-note">Finishing does not sign you in. Return to Log in and use the new local password.</text>
     </template>
     <template #footer><view v-if="!access_error" class="auth-primary" role="button" :aria-disabled="is_loading" data-interaction="fpNew.finishReset.click.1" @click="finish">Update password</view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Securing your local password…" /></template>
@@ -78,4 +76,5 @@ const finish = async () => {
 .reset-password-hint { display: block; margin-top: 11.45rpx; color: var(--cimoa-text-auth-placeholder); font-size: 26.718rpx; font-weight: 600; }
 .reset-password-hint.is-valid { color: var(--cimoa-status-success); }
 .reset-password-hint.is-error { color: var(--cimoa-status-danger); }
+.reset-new-page :deep(.auth-footer) { padding-bottom: 64.885rpx; }
 </style>

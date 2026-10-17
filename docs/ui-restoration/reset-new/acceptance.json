@@ -1,0 +1,60 @@
+{
+  "phase": "reset-new-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-17",
+  "auto_confirmation_basis": "User authorized automatic confirmation and immediate next-page source locking when source, browser, WKWebView, behavior and final-gate evidence pass without unresolved uncertainty.",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 5,
+    "behavior_checks_passed": 6,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": { "top": 54, "bottom": 0 },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": { "top": 62, "bottom": 34 },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/reset-new/browser-acceptance.json",
+    "behavior_report": "docs/evidence/auth-reset/new-acceptance.json",
+    "comparison": {
+      "pixels_different": 60528,
+      "pixels_above_channel_delta_8": 7554,
+      "mean_absolute_channel_delta": 0.6582199942658495,
+      "max_channel_delta": 183
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testLocalPasswordResetAndRelogin",
+    "tests": 1,
+    "failures": 0,
+    "screenshot": "docs/ui-restoration/reset-new/actual-wkwebview.png"
+  },
+  "verified_flows": [
+    "locked source header, fields, Show toggle, hints, fixed footer and five interaction IDs match the Reset New contract",
+    "direct access, weak and mismatched credentials remain zero-write",
+    "refresh clears both password secrets while preserving the verified owned reset only",
+    "credential changes only after 500ms custom Loading, clears reset state and returns signed out with Login email prefilled",
+    "old fixture password is rejected and the new local password restores the completed account session",
+    "browser small-screen and native WKWebView safe areas preserve one scroll owner, keyboard input and Back ownership"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/reset-new/reference.png",
+    "docs/ui-restoration/reset-new/actual-browser.png",
+    "docs/ui-restoration/reset-new/overlay.png",
+    "docs/ui-restoration/reset-new/diff.png",
+    "docs/ui-restoration/reset-new/source-contract.json",
+    "docs/ui-restoration/reset-new/difference-audit.md"
+  ],
+  "final_gates": {
+    "check_conventions": "passed",
+    "git_diff_check": "passed",
+    "build_h5": "passed"
+  }
+}

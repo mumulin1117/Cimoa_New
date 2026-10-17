@@ -1600,36 +1600,41 @@ final class HostTests: XCTestCase {
         } catch { try? await restore(); throw error }
     }
     func testLocalPasswordResetAndRelogin() async throws {
-        let host = try await host()
-        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+        let host = try await rawHost()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
         func restore() async throws {
-            _ = try await host.webView.callAsyncJavaScript("localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
-            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?passwordReset=restored#/pages/home/index")!))
-            try await waitFor(host, ".home-header")
+            _ = try await host.webView.callAsyncJavaScript("if(snapshot===null)localStorage.removeItem('cimoa_app_state_v2');else localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?passwordReset=restored#/pages/auth/welcome")!))
+            try await waitFor(host, ".welcome-page")
         }
         do {
-            _ = try await script(host, "const e=JSON.parse(localStorage.getItem('cimoa_app_state_v2'));e.data.session={account_id:null,current_user_id:null,expires_at:null};e.data.auth_flow.password_reset=null;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(e));return true")
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');return true")
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?passwordReset=fresh#/pages/auth/welcome")!)); try await waitFor(host, ".welcome-page")
             host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?passwordReset=native#/pages/auth/login")!))
             try await waitFor(host, ".login-page")
             let arrived = try await script(host, """
-            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+            const delay=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),state=()=>{const raw=localStorage.getItem('cimoa_app_state_v2');return raw?JSON.parse(raw).data:null};
             const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Password reset timeout: '+location.hash+' '+document.body.innerText)};
             const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));await delay(320);e.click();await delay(80)};
             const fill=async(label,value)=>{const e=await wait(()=>visible('uni-input[aria-label="'+label+'"] input'));const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(e,value);e.dispatchEvent(new Event('input',{bubbles:true}));await delay(100)};
-            const original=state(),users=JSON.stringify(original.users),coins=JSON.stringify(original.coin_transactions);
-            window.__passwordReset={delay,visible,wait,click,fill,users,coins};
+            window.__passwordReset={delay,visible,wait,click,fill};
             await click('login.goFpEmail.click.1');await wait(()=>visible('.reset-email-page'));await fill('Reset email','cimoa@gmail.com');await click('fpEmail.goFpCode.click.1');
-            const emailLoading=!!visible('.loading')&&state().auth_flow.password_reset===null;await wait(()=>visible('.reset-code-page'));
+            const emailLoading=!!visible('.loading')&&state()?.auth_flow?.password_reset==null;await wait(()=>visible('.reset-code-page'));const original=state();window.__passwordReset.users=JSON.stringify(original.users);window.__passwordReset.coins=JSON.stringify(original.coin_transactions);
             await fill('Reset code','111111');await click('fpCode.goFpNew.click.1');await wait(()=>visible('.reset-code-page [role=alert]'));const wrongUnchanged=state().auth_flow.password_reset.verified_at===null;
             await fill('Reset code','009789');await click('fpCode.goFpNew.click.1');const codeLoading=!!visible('.loading')&&state().auth_flow.password_reset.verified_at===null;await wait(()=>visible('.reset-new-page'));
             return {emailLoading,wrongUnchanged,codeLoading,code:document.body.innerText.includes('Choose a new password')}
             """) as! [String: Any]
             XCTAssertEqual(arrived["emailLoading"] as? Bool, true); XCTAssertEqual(arrived["wrongUnchanged"] as? Bool, true)
             XCTAssertEqual(arrived["codeLoading"] as? Bool, true); XCTAssertEqual(arrived["code"] as? Bool, true)
-            _ = try await script(host, "await document.fonts.ready;await Promise.all(document.querySelector('.reset-new-page .page-transition').getAnimations().map(animation=>animation.finished));await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));return true")
+            let metrics = try await script(host, """
+            await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));const box=target=>{const element=typeof target==='string'?document.querySelector(target):target,rect=element.getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,bottom:rect.bottom}},root=box('.reset-new-page'),header=box('.auth-header'),back=box('.auth-back'),heading=box('.auth-heading'),fields=[...document.querySelectorAll('.auth-field')],boxes=[...document.querySelectorAll('.auth-input-box')],hint=box('.reset-password-hint'),primary=box('[data-interaction="fpNew.finishReset.click.1"]'),safes=[...document.querySelectorAll('.reset-new-page>.safe-area')].map(element=>element.getBoundingClientRect().height),inputs=[...document.querySelectorAll('.auth-input')];return {root,header,back,heading,fields:fields.map(box),boxes:boxes.map(box),hint,primary,safes,text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.auth-heading').textContent,labels:[...document.querySelectorAll('.auth-label')].map(element=>element.textContent),placeholders:inputs.map(element=>element.querySelector('.uni-input-placeholder')?.textContent||element.getAttribute('placeholder')),hint:document.querySelector('.reset-password-hint').textContent,show:document.querySelector('.auth-show').textContent,primary:document.querySelector('[data-interaction="fpNew.finishReset.click.1"]').textContent.trim()},interactions:[...document.querySelectorAll('.reset-new-page [data-interaction]')].map(element=>element.dataset.interaction),extraDescription:!!document.querySelector('.auth-description'),extraNote:!!document.querySelector('.auth-local-note')}
+            """) as! [String: Any]
+            let root=metrics["root"] as! [String:Double],header=metrics["header"] as! [String:Double],back=metrics["back"] as! [String:Double],heading=metrics["heading"] as! [String:Double],fields=metrics["fields"] as! [[String:Double]],boxes=metrics["boxes"] as! [[String:Double]],hint=metrics["hint"] as! [String:Double],primary=metrics["primary"] as! [String:Double],safes=metrics["safes"] as! [Double],text=metrics["text"] as! [String:Any],interactions=metrics["interactions"] as! [String],scale=root["width"]!/393
+            XCTAssertEqual(safes[0],Double(host.view.safeAreaInsets.top),accuracy:1); XCTAssertEqual(safes[1],Double(host.view.safeAreaInsets.bottom),accuracy:1); XCTAssertEqual(header["y"]!,safes[0]+4*scale,accuracy:1); XCTAssertEqual(back["width"]!,46*scale,accuracy:1); XCTAssertEqual(heading["y"]!,safes[0]+68*scale,accuracy:1.5); XCTAssertEqual(fields[0]["y"]!-heading["bottom"]!,14*scale,accuracy:1); XCTAssertEqual(boxes[0]["height"]!,56*scale,accuracy:1); XCTAssertEqual(hint["y"]!-boxes[0]["bottom"]!,6*scale,accuracy:1); XCTAssertEqual(fields[1]["y"]!-hint["bottom"]!,14*scale,accuracy:1); XCTAssertEqual(boxes[1]["height"]!,56*scale,accuracy:1); XCTAssertEqual(primary["height"]!,60*scale,accuracy:1); XCTAssertEqual(primary["bottom"]!,root["height"]!-safes[1]-34*scale,accuracy:2)
+            XCTAssertEqual(text["header"] as? String,"Reset password"); XCTAssertEqual(text["heading"] as? String,"Choose a new password"); XCTAssertEqual(text["labels"] as? [String],["New password","Confirm new password"]); XCTAssertEqual(text["placeholders"] as? [String],["At least 8 characters","Repeat it"]); XCTAssertEqual(text["hint"] as? String,"At least 8 characters with a number"); XCTAssertEqual(text["show"] as? String,"Show"); XCTAssertEqual(text["primary"] as? String,"Update password"); XCTAssertEqual(metrics["extraDescription"] as? Bool,false); XCTAssertEqual(metrics["extraNote"] as? Bool,false); for id in ["fpNew.goBack.click.1","fpNew.onPw.change.1","fpNew.togglePw.click.1","fpNew.onPw2.change.1","fpNew.finishReset.click.1"] { XCTAssertTrue(interactions.contains(id)) }
             try await Task.sleep(nanoseconds: 250_000_000)
             let resetPage = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
-            resetPage.name = "WKWebView local password reset"; resetPage.lifetime = .keepAlways; add(resetPage)
+            resetPage.name = "WKWebView Reset New Password default"; resetPage.lifetime = .keepAlways; add(resetPage); print("CIMOA_RESET_NEW_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
             let result = try await script(host, """
             const {delay,visible,wait,click,fill,users,coins}=window.__passwordReset,state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
             await fill('New password','nativepass123');await fill('Confirm new password','nativepass123');const before=state().accounts.find(a=>a.email==='cimoa@gmail.com').credential_hash;await click('fpNew.finishReset.click.1');
