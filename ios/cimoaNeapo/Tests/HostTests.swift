@@ -794,6 +794,73 @@ final class HostTests: XCTestCase {
             try await restore()
         } catch { XCTFail("Verification Success WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
     }
+    func testVerificationUnsupportedPixelRestoration() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
+        if saved is NSNull {
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationUnsupported=fixture#/pages/auth/welcome")!))
+            try await waitFor(host, ".welcome-page")
+            try await signIn(host)
+        }
+        func restore() async throws {
+            _ = try? await script(host, "document.activeElement?.blur();return true")
+            _ = try await host.webView.callAsyncJavaScript("if(snapshot===null)localStorage.removeItem('cimoa_app_state_v2');else localStorage.setItem('cimoa_app_state_v2',snapshot);return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationUnsupported=restored#/pages/auth/welcome")!))
+            try await waitFor(host, ".welcome-page")
+        }
+        var stage = "prepare unsupported registration"
+        do {
+            _ = try await script(host, """
+            const envelope=JSON.parse(localStorage.getItem('cimoa_app_state_v2')),data=envelope.data,account=data.accounts.find(row=>row.status==='active'),user=data.users.find(row=>row.user_id===account.user_id);
+            account.email='unsupported.native@example.com';account.auth_provider='local';delete account.local_verification;delete account.onboarding;user.onboarding_status='not_started';user.verification_status='pending';data.session={account_id:null,current_user_id:null,expires_at:null};data.auth_flow={flow_id:'native-unsupported-flow',step:'registered',email:account.email,verification_request_id:null,pending_registration_account_id:account.account_id,password_reset:null,agreements:{age:true,student:false,terms:true,privacy:true,community:true},profile_draft:{}};localStorage.setItem('cimoa_app_state_v2',JSON.stringify(envelope));return true
+            """)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?verificationUnsupported=native#/pages/auth/verification/unsupported?auth_flow_id=native-unsupported-flow")!))
+            try await waitFor(host, ".unsupported-hero")
+            var metrics: [String: Any] = [:]
+            for _ in 0..<50 {
+                metrics = try await script(host, """
+                await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+                const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom}},root=box('.verification-unsupported-page'),header=box('.auth-header'),back=box('.auth-back'),icon=box('.unsupported-emblem'),svg=box('.unsupported-emblem svg'),heading=box('.unsupported-title'),description=box('.unsupported-description'),primary=box('[data-interaction="verUnsupported.changeEmail.click.1"]'),support=box('[data-interaction="verUnsupported.supportUni.click.1"]'),logout=box('[data-interaction="verUnsupported.logOut.click.1"]'),safes=[...document.querySelectorAll('.verification-unsupported-page>.safe-area')].map(element=>element.getBoundingClientRect().height);
+                return {root,header,back,icon,svg,heading,description,primary,support,logout,safes,text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.unsupported-title').textContent,description:document.querySelector('.unsupported-description').textContent,primary:document.querySelector('[data-interaction="verUnsupported.changeEmail.click.1"]').textContent.trim(),support:document.querySelector('[data-interaction="verUnsupported.supportUni.click.1"]').textContent.trim(),logout:document.querySelector('[data-interaction="verUnsupported.logOut.click.1"]').textContent.trim()},interactions:[...document.querySelectorAll('.verification-unsupported-page [data-interaction]')].map(element=>element.dataset.interaction)};
+                """) as! [String: Any]
+                let safes = metrics["safes"] as! [Double]
+                if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
+                host.publishSafeArea(); try await Task.sleep(nanoseconds: 100_000_000)
+            }
+            let root = metrics["root"] as! [String: Double], header = metrics["header"] as! [String: Double], back = metrics["back"] as! [String: Double], icon = metrics["icon"] as! [String: Double], svg = metrics["svg"] as! [String: Double], primary = metrics["primary"] as! [String: Double], support = metrics["support"] as! [String: Double], logout = metrics["logout"] as! [String: Double], safes = metrics["safes"] as! [Double], text = metrics["text"] as! [String: String], interactions = metrics["interactions"] as! [String]
+            let scale = root["width"]! / 393
+            XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
+            XCTAssertEqual(header["y"]!, safes[0] + 4 * scale, accuracy: 1); XCTAssertEqual(back["width"]!, 46 * scale, accuracy: 1)
+            XCTAssertEqual(icon["y"]!, safes[0] + 124 * scale, accuracy: 1.5); XCTAssertEqual(icon["width"]!, 92 * scale, accuracy: 1); XCTAssertEqual(icon["height"]!, 92 * scale, accuracy: 1); XCTAssertEqual(svg["width"]!, 40 * scale, accuracy: 1)
+            XCTAssertEqual(primary["height"]!, 60 * scale, accuracy: 1); XCTAssertEqual(support["height"]!, 56 * scale, accuracy: 1); XCTAssertEqual(logout["height"]!, 46 * scale, accuracy: 1); XCTAssertEqual(logout["bottom"]!, root["height"]! - safes[1] - 30 * scale, accuracy: 2)
+            XCTAssertEqual(text["header"], "University verification"); XCTAssertEqual(text["heading"], "That university isn’t supported yet"); XCTAssertEqual(text["description"], "Try another university email to continue. Support delivery isn’t available yet."); XCTAssertEqual(text["primary"], "Try Another University Email"); XCTAssertEqual(text["support"], "Contact Support"); XCTAssertEqual(text["logout"], "Log Out")
+            for id in ["verUnsupported.goBack.click.1", "verUnsupported.changeEmail.click.1", "verUnsupported.supportUni.click.1", "verUnsupported.logOut.click.1"] { XCTAssertTrue(interactions.contains(id), "Missing \(id)") }
+            let defaultShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); defaultShot.name = "WKWebView Verification Unsupported default"; defaultShot.lifetime = .keepAlways; add(defaultShot)
+            print("CIMOA_VERIFICATION_UNSUPPORTED_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
+
+            stage = "truthful unavailable support"
+            let supportBefore = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            _ = try await script(host, "document.querySelector('[data-interaction=\"verUnsupported.supportUni.click.1\"]').click();return true")
+            try await waitFor(host, ".verification-unsupported-page [role=alert]")
+            let supportResult = try await script(host, "return {message:document.querySelector('.verification-unsupported-page [role=alert]').textContent,state:localStorage.getItem('cimoa_app_state_v2')}") as! [String: Any]
+            XCTAssertTrue((supportResult["message"] as? String)?.contains("not configured") == true); XCTAssertEqual(supportResult["state"] as? String, supportBefore)
+            let errorShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); errorShot.name = "WKWebView Verification Unsupported support unavailable"; errorShot.lifetime = .keepAlways; add(errorShot)
+
+            stage = "confirmed atomic logout"
+            _ = try await script(host, "document.querySelector('[data-interaction=\"verUnsupported.logOut.click.1\"]').click();return true"); try await waitFor(host, ".logout-dialog")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"sheetLogout.closeSheet.click.2\"]').click();return true"); try await Task.sleep(nanoseconds: 350_000_000)
+            let stateAfterCancel = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(stateAfterCancel, supportBefore)
+            _ = try await script(host, "const original=Storage.prototype.setItem;window.__unsupportedNativeBefore=localStorage.getItem('cimoa_app_state_v2');window.__unsupportedNativeWrites=0;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')window.__unsupportedNativeWrites++;return original.call(this,key,value)};document.querySelector('[data-interaction=\"verUnsupported.logOut.click.1\"]').click();return true"); try await waitFor(host, ".logout-dialog")
+            _ = try await script(host, "const action=document.querySelector('[data-interaction=\"sheetLogout.logOut2.click.1\"]');action.click();action.click();return true"); try await waitFor(host, ".loading")
+            let unchangedDuringLoading = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===window.__unsupportedNativeBefore") as? Bool
+            XCTAssertEqual(unchangedDuringLoading, true)
+            try await waitFor(host, ".welcome-page")
+            let loggedOut = try await script(host, "const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return {pending:data.auth_flow.pending_registration_account_id,account:data.accounts.some(row=>row.email==='unsupported.native@example.com'),writes:window.__unsupportedNativeWrites,depth:document.querySelector('.welcome-page').dataset.pageDepth}") as! [String: Any]
+            XCTAssertTrue(loggedOut["pending"] is NSNull); XCTAssertEqual(loggedOut["account"] as? Bool, true); XCTAssertEqual(loggedOut["writes"] as? Int, 1); XCTAssertEqual(loggedOut["depth"] as? String, "1")
+            try await restore()
+        } catch { XCTFail("Verification Unsupported WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
+    }
     func testOnboardingBasicPixelRestoration() async throws {
         let host = try await host()
         let saved = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String

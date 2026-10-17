@@ -2,7 +2,7 @@
 import { computed, onUnmounted, ref } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
-import { valid_email, normalize_email } from '@/utils/localAuth.js'
+import { valid_email, normalize_email, is_source_supported_university_email } from '@/utils/localAuth.js'
 import { auth_destination } from '@/utils/authNavigation.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { use_visual_viewport } from '@/composables/useEventViewport.js'
@@ -30,6 +30,11 @@ const next = async () => {
     if (!result.success) { error.value = result.message; return }
   }
   if (!active) return
+  const draft = store.auth_draft
+  if (!context.value.verified && draft.pending_registration_account_id === context.value.account_id && !is_source_supported_university_email(context.value.email)) {
+    try { await frame.value.navigate_forward(auth_destination(`/pages/auth/verification/unsupported?auth_flow_id=${encodeURIComponent(draft.flow_id)}`)) } catch (cause) { error.value = cause.message }
+    return
+  }
   try { await frame.value.navigate_forward(auth_destination(context.value.verified ? '/pages/auth/verification/success' : '/pages/auth/verification/code')) } catch (cause) { error.value = cause.message }
 }
 </script>

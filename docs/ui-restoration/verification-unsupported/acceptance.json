@@ -1,0 +1,64 @@
+{
+  "phase": "verification-unsupported-pixel-restoration",
+  "status": "verified",
+  "visual_acceptance": "passed",
+  "requires_user_confirmation": false,
+  "auto_confirmed_at": "2026-10-17",
+  "auto_confirmation_basis": "User authorized automatic confirmation and immediate next-page source locking when source, browser, WKWebView, behavior and final-gate evidence pass without unresolved uncertainty.",
+  "browser": {
+    "result": "passed",
+    "pixel_checks_passed": 9,
+    "auth_store_checks_passed": 11,
+    "viewport_css_px": "393x852",
+    "source_safe_area_css_px": { "top": 54, "bottom": 0 },
+    "small_viewport_css_px": "320x568",
+    "safe_area_probe_css_px": { "top": 62, "bottom": 34 },
+    "entry_animation": "finished",
+    "report": "docs/ui-restoration/verification-unsupported/browser-acceptance.json",
+    "comparison": {
+      "pixels_different": 50181,
+      "pixels_above_channel_delta_8": 7673,
+      "mean_absolute_channel_delta": 0.5645771362696962,
+      "max_channel_delta": 134
+    }
+  },
+  "wkwebview": {
+    "result": "passed",
+    "host": "cimoaNeapo",
+    "simulator": "iPhone 17 Pro",
+    "simulator_udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "os": "iOS 26.5",
+    "screenshot_device_px": "1206x2622",
+    "safe_area_css_px": { "top": 62, "bottom": 34 },
+    "test": "cimoaNeapoTests.HostTests.testVerificationUnsupportedPixelRestoration",
+    "tests": 1,
+    "failures": 0,
+    "screenshots": [
+      "docs/ui-restoration/verification-unsupported/actual-wkwebview.png",
+      "docs/ui-restoration/verification-unsupported/actual-wkwebview-error.png"
+    ]
+  },
+  "verified_flows": [
+    "pending new registration with a non-university source domain enters the hash-locked Unsupported screen and Change Email restores the original Verification Email instance",
+    "Contact Support explicitly reports that delivery is not configured and writes no ticket or state",
+    "Log Out opens the shared custom confirmation; cancel is zero-write and confirm shows 500ms Loading before one Store write and a stack-clearing Welcome relaunch",
+    "logout persistence failure rolls back and preserves the confirmation for retry",
+    "stale auth_flow_id and missing entity expose only a zero-write recovery path",
+    "refresh restores the same pending account and auth flow without another write",
+    "verified local and bundled accounts bypass domain gating without losing their existing verification",
+    "browser small-screen and native WKWebView safe areas preserve fixed actions and a single scroll owner"
+  ],
+  "artifacts": [
+    "docs/ui-restoration/verification-unsupported/reference.png",
+    "docs/ui-restoration/verification-unsupported/actual-browser.png",
+    "docs/ui-restoration/verification-unsupported/overlay.png",
+    "docs/ui-restoration/verification-unsupported/diff.png",
+    "docs/ui-restoration/verification-unsupported/source-contract.json",
+    "docs/ui-restoration/verification-unsupported/difference-audit.md"
+  ],
+  "final_gates": {
+    "check_conventions": "passed",
+    "git_diff_check": "passed",
+    "build_h5": "passed"
+  }
+}

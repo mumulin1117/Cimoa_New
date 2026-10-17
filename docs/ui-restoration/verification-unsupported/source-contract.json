@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "page": "Verification Unsupported",
+  "route": "/pages/auth/verification/unsupported",
+  "source_screen": "Auth / Email Verification / Unsupported",
+  "source_query": "route=verUnsupported",
+  "source_lock": "locked",
+  "locked_at": "2026-10-17",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isVerUnsupported",
+    "visual_lines": "2795-2816",
+    "visual_fragment_sha256": "b249266da3fa122d589bc8b6fbf4978597ff396a97dc0b539def637c3b15cc97",
+    "behavior_lines": [4781, 5155, 5537, 5566, 5633, 5634, 5635],
+    "behavior_fragment_sha256": "4dbaea0305857690ed6e94947db2e7e529aaf6bf3a07716e5d464a74945d02ce"
+  },
+  "reference_viewport": { "width_css_px": 393, "height_css_px": 852, "scale": 1 },
+  "structure": {
+    "root": "absolute inset 0; cRise 240ms ease both",
+    "header": "top 58px; left/right 20px; 48px high; 46px circular Back; centered 21px title",
+    "status_group": "top 178px; left/right 20px; centered column; 16px gap",
+    "footer": "left/right 20px; bottom 30px; column; 10px gap",
+    "project_skeleton": "TopSafeArea; SecondaryPageHeader; one middle scroll-view; fixed footer; BottomSafeArea",
+    "background": "linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%)"
+  },
+  "content": {
+    "header_title": "University verification",
+    "emblem": { "size_css_px": "92x92", "radius_css_px": 46, "background": "#e8edf7", "svg_css_px": "40x40", "stroke": "#6b7a93" },
+    "heading": { "copy": "That university isn’t supported yet", "font_size_css_px": 27, "font_weight": 800, "letter_spacing": "-0.035em" },
+    "description": {
+      "source_copy": "We’re adding campuses steadily. Tell support which university you attend and we’ll let you know when it opens.",
+      "approved_truthful_copy": "Try another university email to continue. Support delivery isn’t available yet.",
+      "font_size_css_px": 17,
+      "line_height": 1.4,
+      "max_width_css_px": 300,
+      "color": "#5b6b85"
+    }
+  },
+  "footer": {
+    "change_email": { "interaction_id": "verUnsupported.changeEmail.click.1", "copy": "Try Another University Email", "height_css_px": 60, "radius_css_px": 30 },
+    "support": { "interaction_id": "verUnsupported.supportUni.click.1", "copy": "Contact Support", "height_css_px": 56, "radius_css_px": 28 },
+    "logout": { "interaction_id": "verUnsupported.logOut.click.1", "copy": "Log Out", "height_css_px": 46 }
+  },
+  "approved_deltas": [
+    {
+      "id": "unsupported-safe-area-and-scroll-skeleton",
+      "source": "DEVELOPMENT_CONVENTIONS.md sections 2 and 15",
+      "delta": "Use measured safe areas and one middle scroll-view while preserving source geometry at 393x852 and keeping the footer fixed."
+    },
+    {
+      "id": "unsupported-truthful-service-copy",
+      "source": "INTERACTION_CONVENTIONS.md lines 13, 15, 32 and 205",
+      "delta": "Remove the unsupported promise that support will accept a campus request or notify the user. The source Contact Support control remains, but it returns an explicit no-service error and writes nothing."
+    },
+    {
+      "id": "unsupported-source-domain-entry",
+      "source": "Prototype goVerCode behavior line 5566 and the user-approved local-account scope",
+      "delta": "Only a pending new registration with a non-source-supported university domain can enter this page. Existing verified test accounts remain valid; the fixed code still does not verify email ownership or student identity."
+    },
+    {
+      "id": "unsupported-flow-identity-guard",
+      "source": "Page inventory required auth_flow_id and DEVELOPMENT_CONVENTIONS.md section 5",
+      "delta": "Require the current auth_flow_id and pending account. Stale/direct routes show recovery and never invent or mutate an account."
+    },
+    {
+      "id": "unsupported-confirmed-logout",
+      "source": "INTERACTION_CONVENTIONS.md line 206",
+      "delta": "The source Log Out control opens the shared custom confirmation sheet; confirmation shows 500ms custom Loading before clearing only session/auth-entry state and relaunching Welcome."
+    }
+  ],
+  "planned_capture": {
+    "reference_png": "docs/ui-restoration/verification-unsupported/reference.png",
+    "actual_browser_png": "docs/ui-restoration/verification-unsupported/actual-browser.png",
+    "actual_browser_error_png": "docs/ui-restoration/verification-unsupported/actual-browser-error.png",
+    "actual_browser_small_png": "docs/ui-restoration/verification-unsupported/actual-browser-small.png",
+    "overlay_png": "docs/ui-restoration/verification-unsupported/overlay.png",
+    "diff_png": "docs/ui-restoration/verification-unsupported/diff.png",
+    "actual_wkwebview_png": "docs/ui-restoration/verification-unsupported/actual-wkwebview.png",
+    "browser_report": "docs/ui-restoration/verification-unsupported/browser-acceptance.json",
+    "acceptance_report": "docs/ui-restoration/verification-unsupported/acceptance.json",
+    "visual_acceptance": "passed"
+  }
+}

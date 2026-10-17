@@ -719,7 +719,7 @@
     ],
     "page_level": "三级",
     "route": "/pages/auth/verification/unsupported",
-    "component": null,
+    "component": "src/pages/auth/verification/unsupported.vue",
     "parent_route": "/pages/auth/verification/email",
     "allowed_origin_routes": [
       "/pages/auth/verification/email"
@@ -779,11 +779,17 @@
         "back"
       ]
     },
-    "status": "pending",
-    "local_acceptance": "pending",
-    "full_acceptance": "pending",
+    "status": "verified",
+    "source_lock": "locked",
+    "visual_acceptance": "passed",
+    "source_lock_artifact": "docs/ui-restoration/verification-unsupported/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/verification-unsupported/difference-audit.md",
+    "local_acceptance": "passed",
+    "full_acceptance": "passed",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-mapped; implementation pending; ten-field contract required before page work"
+    "mapping_status": "Verification Unsupported source locked; pixel restoration automatically confirmed after deterministic browser and iPhone 17 Pro WKWebView acceptance; final checks and local specialty commit complete",
+    "acceptance_evidence": "docs/ui-restoration/verification-unsupported/acceptance.json",
+    "acceptance_notes": "Pixel browser 9/9, Auth Store 11/11 and WKWebView 1/1 passed, including source geometry, truthful unavailable support, auth_flow_id guard, refresh, safe areas, confirmed Loading logout, rollback and verified-account bypass."
   },
   {
     "source_screen": "Auth / Forgot Password / Email",

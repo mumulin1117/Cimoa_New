@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_seed, clone_data } from '../src/stores/seed.js'
 import { STATE_KEY } from '../src/utils/statePersistence.js'
-import { signup_error, age_from_date } from '../src/utils/localAuth.js'
+import { signup_error, age_from_date, is_source_supported_university_email } from '../src/utils/localAuth.js'
 const now = Date.UTC(2026, 9, 13)
 function fixture(saved = null) {
   const disk = new Map(saved ? [[STATE_KEY, saved]] : []), store = use_app_store(createPinia())
@@ -29,6 +29,10 @@ test('local registration checks valid dates, exact 18th birthday, password, agre
   for (const invalid of ['2004-02-30', '2027-01-01', '2000-13-01', '2004-2-03']) assert.equal(age_from_date(invalid, now), null)
   assert.equal(signup_error(form(), now), '')
   for (const patch of [{ email: 'no-address' }, { password: 'short' }, { password: 'abcdefgh', confirmation: 'abcdefgh' }, { confirmation: 'different' }, { date_of_birth: '2008-10-14' }, { agreements: { terms: true, privacy: false, community: true } }]) assert.ok(signup_error({ ...form(), ...patch }, now))
+})
+test('source university-domain branch is deterministic and does not treat the bundled Gmail account as student verification', () => {
+  for (const email of ['student@campus.edu', 'student@connect.hkust.hk', 'student@college.ac.uk', 'STUDENT@CAMPUS.EDU']) assert.equal(is_source_supported_university_email(email), true)
+  for (const email of ['cimoa@gmail.com', 'student@example.com', 'student@education.example', '', null]) assert.equal(is_source_supported_university_email(email), false)
 })
 test('registration saves salted credentials with no fake certification, session or coins and supports local login', async () => {
   const { store, disk } = fixture(), input = form(' Student@Campus.edu ')

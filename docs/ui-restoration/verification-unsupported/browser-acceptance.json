@@ -1,0 +1,148 @@
+{
+  "phase": "verification-unsupported-pixel-restoration",
+  "result": "passed",
+  "server_pid": 15881,
+  "reference": {
+    "kind": "source-derived locked reference with approved truthful-service, auth-flow-guard, safe-area and confirmed-logout deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "b249266da3fa122d589bc8b6fbf4978597ff396a97dc0b539def637c3b15cc97",
+    "behavior_fragment_sha256": "4dbaea0305857690ed6e94947db2e7e529aaf6bf3a07716e5d464a74945d02ce",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "right": 393,
+      "bottom": 852
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "right": 65.984375,
+      "bottom": 104.984375
+    },
+    "hero": {
+      "x": 20,
+      "y": 121.96875,
+      "width": 353,
+      "height": 313.4375,
+      "right": 373,
+      "bottom": 435.40625
+    },
+    "icon": {
+      "x": 150.5,
+      "y": 177.953125,
+      "width": 92,
+      "height": 92,
+      "right": 242.5,
+      "bottom": 269.953125
+    },
+    "svg": {
+      "x": 176.5,
+      "y": 203.953125,
+      "width": 40,
+      "height": 40,
+      "right": 216.5,
+      "bottom": 243.953125
+    },
+    "heading": {
+      "x": 20,
+      "y": 285.9375,
+      "width": 353,
+      "height": 62.09375,
+      "right": 373,
+      "bottom": 348.03125
+    },
+    "description": {
+      "x": 46.5,
+      "y": 364.015625,
+      "width": 299.984375,
+      "height": 71.390625,
+      "right": 346.484375,
+      "bottom": 435.40625
+    },
+    "primary": {
+      "x": 20,
+      "y": 640.03125,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 700.03125
+    },
+    "support": {
+      "x": 20,
+      "y": 710.03125,
+      "width": 353,
+      "height": 55.984375,
+      "right": 373,
+      "bottom": 766.015625
+    },
+    "logout": {
+      "x": 20,
+      "y": 776.015625,
+      "width": 353,
+      "height": 45.984375,
+      "right": 373,
+      "bottom": 822
+    },
+    "safes": [
+      54,
+      0
+    ],
+    "text": {
+      "header": "University verification",
+      "heading": "That university isn’t supported yet",
+      "description": "Try another university email to continue. Support delivery isn’t available yet.",
+      "primary": "Try Another University Email",
+      "support": "Contact Support",
+      "logout": "Log Out"
+    },
+    "interactions": [
+      "verUnsupported.goBack.click.1",
+      "verUnsupported.changeEmail.click.1",
+      "verUnsupported.supportUni.click.1",
+      "verUnsupported.logOut.click.1",
+      "sheetLogout.closeSheet.click.1",
+      "sheetLogout.closeSheet.click.2",
+      "sheetLogout.logOut2.click.1"
+    ]
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 50181,
+    "pixels_above_channel_delta_8": 7673,
+    "mean_absolute_channel_delta": 0.5645771362696962,
+    "max_channel_delta": 134
+  },
+  "checks": [
+    "393x852 state restores locked source geometry, exact source controls and approved truthful service copy",
+    "refresh restores the same auth-flow entity with zero writes",
+    "non-university domain follows the real source entry and Change Email restores the source page without a write",
+    "Contact Support reports the missing delivery service and performs no write or fake submission",
+    "custom confirmation cancellation is zero-write; double-confirm logs out once after Loading, keeps the account and clears the route stack to Welcome",
+    "logout persistence failure rolls back and remains retryable in the confirmation sheet",
+    "stale auth_flow_id exposes only a zero-write recovery path and no source actions on a fabricated entity",
+    "320x568 and 62/34 safe areas keep the three source actions fixed while the only middle region scrolls",
+    "a previously verified bundled or local account bypasses domain gating and never loses its saved verification"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

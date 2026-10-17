@@ -3,6 +3,10 @@ const hex = bytes => [...new Uint8Array(bytes)].map(byte => byte.toString(16).pa
 const decode = value => Uint8Array.from(value.match(/../g), part => Number.parseInt(part, 16))
 export const normalize_email = value => String(value || '').trim().toLowerCase()
 export const valid_email = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalize_email(value))
+export const is_source_supported_university_email = value => {
+  const domain = normalize_email(value).split('@')[1] || ''
+  return /(^|\.)(edu|hkust)(\.|$)|(^|\.)ac\.[a-z]{2}$/i.test(domain)
+}
 export const password_error = (password, confirmation = password) => {
   if (typeof password !== 'string' || password.length < 8 || password.length > 128 || !/\d/.test(password)) return 'Use 8–128 characters with at least one number.'
   if (password !== confirmation) return 'Passwords do not match.'
