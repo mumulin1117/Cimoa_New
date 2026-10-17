@@ -1,7 +1,7 @@
 {
   "phase": "failed",
   "result": "passed",
-  "server_pid": 71215,
+  "server_pid": 4622,
   "checks": [
     "Purchasing routes a real browser timeout to Failed with unchanged balance and timeout-specific copy",
     "Failed restores the owned terminal request after refresh without resubmitting it",
