@@ -1,0 +1,3 @@
+# Privacy audit — 2026-10-17
+
+HTML 3816–3842 locked. Reuse original visibility choices/toggle cards, canonical privacy getter/action and fixed source skeleton. Existing functional filtering covers Discover, Auto Match, academic year/field, mutual interests, voice/video and event participant visibility. Account-ID-only delayed writes could cross a same-account replacement session. Bind full scope and synchronously cancel custom Loading; preserve stored values on failure/hide. Browser regression must exercise all consumers/refresh, no fake system or service state. Source-only visual acceptance remains pending where approved capability copy differs.

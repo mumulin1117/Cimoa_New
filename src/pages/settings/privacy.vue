@@ -2,6 +2,7 @@
 import { computed, ref, onUnmounted } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
+import { use_account_scope } from '@/composables/useAccountScope.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { relaunch_route } from '@/utils/routeTransition.js'
 import { startup_destination } from '@/utils/authNavigation.js'
@@ -15,9 +16,10 @@ const account_id = store.session.account_id
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 let active = true
 
+const account_scope = use_account_scope(store, cancel_loading)
 const access_error = computed(() => store.hydration_status !== 'ready'
   ? 'Saved data is unavailable. Please return and retry.'
-  : !store.session.is_authenticated || store.session.account_id !== account_id
+  : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
 const visibility = computed(() => store.privacy_visibility)
@@ -50,7 +52,7 @@ onUnmounted(leave)
 const recover = async () => { try { await relaunch_route(startup_destination(store)) } catch (cause) { error.value = cause.message } }
 const back = async () => { if (is_loading.value) return; try { await frame.value.navigate_back('/pages/settings/index') } catch (cause) { error.value = cause.message } }
 const persist = async action => {
-  if (is_loading.value || access_error.value) return
+  if (!active || is_loading.value || access_error.value) return
   error.value = ''
   const result = await run_with_loading(action)
   if (!active || result.reason === 'cancelled') return

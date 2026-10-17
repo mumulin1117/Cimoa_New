@@ -1,0 +1,188 @@
+{
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "condition": "isSetPrivacy",
+    "source_query": "route=setPrivacy",
+    "lines": [
+      3816,
+      3842
+    ],
+    "fragment_sha256": "17dcfb0aa7db2833ec2ee0267d36eceef12aaffd3778148abfbff1acf67175fa",
+    "fragment": "<sc-if value=\"{{ isSetPrivacy }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Settings / Privacy / Default\" style=\"position:absolute;inset:0;animation:cRise 240ms ease both\">\n        <div style=\"position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20\">\n          <div sc-camel-on-click=\"{{ goBack }}\" style=\"width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none\">\n            <svg width=\"22\" height=\"22\" sc-camel-view-box=\"0 0 24 24\" fill=\"none\" stroke=\"#0b1b3a\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 5l-7 7 7 7\"></path></svg>\n          </div>\n          <div style=\"flex:1\"></div><div style=\"position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em\">Privacy</div>\n        </div>\n        <div class=\"cscroll\" style=\"position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 60px;box-sizing:border-box\">\n          <div style=\"font-size:17px;font-weight:700\">Discover profile visibility</div>\n          <div style=\"display:flex;flex-direction:column;gap:10px;margin-top:10px\">\n            <sc-for list=\"{{ privacyVisOptions }}\" as=\"o\" hint-placeholder-count=\"3\">\n              <div sc-camel-on-click=\"{{ o.pick }}\" style=\"padding:16px 18px;border-radius:20px;background:{{ o.bg }};border:{{ o.border }};box-shadow:0 8px 22px rgba(16,36,74,0.05);cursor:pointer;font-size:16.5px;font-weight:{{ o.weight }}\">{{ o.label }}</div>\n            </sc-for>\n          </div>\n          <div style=\"font-size:15px;color:#5b6b85;margin-top:10px;line-height:1.45;text-wrap:pretty\">{{ privacyNote }}</div>\n          <div style=\"display:flex;flex-direction:column;gap:10px;margin-top:20px\">\n            <sc-for list=\"{{ privacyToggles }}\" as=\"p\" hint-placeholder-count=\"7\">\n              <div style=\"display:flex;align-items:center;gap:12px;height:58px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)\">\n                <div style=\"flex:1;font-size:16.5px;font-weight:600\">{{ p.label }}</div>\n                <div sc-camel-on-click=\"{{ p.toggle }}\" style=\"width:50px;height:30px;border-radius:15px;background:{{ p.bg }};position:relative;cursor:pointer;flex:none\"><div style=\"position:absolute;top:2px;left:{{ p.dotPos }};width:26px;height:26px;border-radius:13px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.2);transition:left 160ms ease\"></div></div>\n              </div>\n            </sc-for>\n          </div>\n        </div>\n      </div>\n    </sc-if>"
+  },
+  "route": "/pages/settings/privacy",
+  "viewport": {
+    "width": 393,
+    "height": 852,
+    "safe_top": 54,
+    "safe_bottom": 0
+  },
+  "fixed_regions": "TopSafeArea; SecondaryPageHeader; BottomSafeArea",
+  "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
+  "return_owner": "pop origin_route（允许来源：/pages/settings/index）；无历史实例时 replace /pages/settings/index，不创建伪造实体",
+  "styles": [
+    {
+      "line": 3817,
+      "tag": "div",
+      "style": "position:absolute;inset:0;animation:cRise 240ms ease both"
+    },
+    {
+      "line": 3818,
+      "tag": "div",
+      "style": "position:absolute;top:58px;left:20px;right:20px;height:48px;display:flex;align-items:center;gap:12px;z-index:20"
+    },
+    {
+      "line": 3819,
+      "tag": "div",
+      "style": "width:46px;height:46px;border-radius:23px;background:#fff;box-shadow:0 6px 18px rgba(16,36,74,0.10);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"
+    },
+    {
+      "line": 3822,
+      "tag": "div",
+      "style": "flex:1"
+    },
+    {
+      "line": 3822,
+      "tag": "div",
+      "style": "position:absolute;left:58px;right:58px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.15;pointer-events:none;font-size:21px;font-weight:700;letter-spacing:-0.025em"
+    },
+    {
+      "line": 3824,
+      "tag": "div",
+      "style": "position:absolute;top:118px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding:0 20px 60px;box-sizing:border-box"
+    },
+    {
+      "line": 3825,
+      "tag": "div",
+      "style": "font-size:17px;font-weight:700"
+    },
+    {
+      "line": 3826,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:10px;margin-top:10px"
+    },
+    {
+      "line": 3828,
+      "tag": "div",
+      "style": "padding:16px 18px;border-radius:20px;background:{{ o.bg }};border:{{ o.border }};box-shadow:0 8px 22px rgba(16,36,74,0.05);cursor:pointer;font-size:16.5px;font-weight:{{ o.weight }}"
+    },
+    {
+      "line": 3831,
+      "tag": "div",
+      "style": "font-size:15px;color:#5b6b85;margin-top:10px;line-height:1.45;text-wrap:pretty"
+    },
+    {
+      "line": 3832,
+      "tag": "div",
+      "style": "display:flex;flex-direction:column;gap:10px;margin-top:20px"
+    },
+    {
+      "line": 3834,
+      "tag": "div",
+      "style": "display:flex;align-items:center;gap:12px;height:58px;padding:0 18px;background:#fff;border-radius:24px;box-shadow:0 8px 24px rgba(16,36,74,0.07)"
+    },
+    {
+      "line": 3835,
+      "tag": "div",
+      "style": "flex:1;font-size:16.5px;font-weight:600"
+    },
+    {
+      "line": 3836,
+      "tag": "div",
+      "style": "width:50px;height:30px;border-radius:15px;background:{{ p.bg }};position:relative;cursor:pointer;flex:none"
+    },
+    {
+      "line": 3836,
+      "tag": "div",
+      "style": "position:absolute;top:2px;left:{{ p.dotPos }};width:26px;height:26px;border-radius:13px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.2);transition:left 160ms ease"
+    }
+  ],
+  "texts": [
+    {
+      "line": 3822,
+      "text": "Privacy"
+    },
+    {
+      "line": 3825,
+      "text": "Discover profile visibility"
+    }
+  ],
+  "svg": [
+    {
+      "line": 3820,
+      "sha256": "34746d79676b55d616a1ef6d74a2e1c71a81e54ea9af33e19105ef5dbae26300"
+    }
+  ],
+  "assets": {
+    "media": [],
+    "svg_source_lines": [
+      3820
+    ],
+    "fonts": "static/assets/fonts/source-fonts.css",
+    "dynamic_media": "以用户/照片/活动/歌曲实体引用 manifest 中的本地图片；音频不存在时明确不可用"
+  },
+  "events": [
+    {
+      "line": 3819,
+      "event": "sc-camel-on-click",
+      "handler": "goBack"
+    },
+    {
+      "line": 3828,
+      "event": "sc-camel-on-click",
+      "handler": "o.pick"
+    },
+    {
+      "line": 3836,
+      "event": "sc-camel-on-click",
+      "handler": "p.toggle"
+    }
+  ],
+  "interaction_ids": [
+    "setPrivacy.goBack.click.1",
+    "setPrivacy.o.pick.click.1",
+    "setPrivacy.p.toggle.click.1"
+  ],
+  "contracts": [
+    {
+      "interaction_id": "setPrivacy.goBack.click.1",
+      "source": "route=setPrivacy",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "setPrivacy.o.pick.click.1",
+      "source": "route=setPrivacy",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "setPrivacy.p.toggle.click.1",
+      "source": "route=setPrivacy",
+      "trigger": "click",
+      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
+      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
+      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
+      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
+      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
+      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
+      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
+      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    }
+  ]
+}
