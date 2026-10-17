@@ -1,0 +1,23 @@
+{
+  "source_lock": "locked",
+  "visual_acceptance": "passed",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "status": "pending",
+  "automatic_confirmation": "Source/actual overlay reviewed, <=1 CSS px geometry, current browser and WKWebView evidence, no unresolved visual differences",
+  "browser": "browser-acceptance.json",
+  "native": "wkwebview-geometry.json",
+  "native_result": "/tmp/cimoa-match-found-sheets-20261017.xcresult",
+  "native_tests": 1,
+  "unresolved_visual_differences": [],
+  "deferred": [
+    "Waiting/terminal pages and full cross-page regression"
+  ],
+  "git": "local commit only; no push",
+  "resolved_test_issue": "An uncontrolled fixture expired during Xcode build. WKWebView now fixes Date.now at document start for this deterministic visual test only and restores all pre-existing WK user scripts and account storage.",
+  "source_data_deltas": [
+    "Actual shared-interest intersection",
+    "Long tags wrap rather than clip",
+    "Student badge conditional on canonical verification field"
+  ]
+}

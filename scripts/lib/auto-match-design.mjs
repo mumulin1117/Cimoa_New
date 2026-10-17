@@ -29,10 +29,10 @@ export function adjusted_text(node){
 }
 export function source_image(node){
   const line=node.loc.start.line
-  if(attribute(node,'alt')==='You'||[1777,1804].includes(line))return ['me_img','me.user_name']
+  if(['You','Alex Chan'].includes(attribute(node,'alt')))return ['me_img','me.user_name']
   if(attribute(node,'alt')==='Potential match')return ['search_avatar',"'Potential match'"]
   if(binding(attribute(node,'src'))==='amImg')return ['am_img','person_name']
-  if(line>=1890)return ['h.img','h.name']
+  if(line>=1890&&line<=1915)return ['h.img','h.name']
   return ['candidate_avatar','person_name']
 }
 const norm=value=>value.toLowerCase().replace(/(-?\d*\.?\d+)rpx\b/g,(_,n)=>Math.round(Number(n)*393/750*100)/100+'px').replaceAll(/\s/g,'').replaceAll('#fff,','#ffffff,').replace(/^#fff$/,'#ffffff').replaceAll(',0.',',.').replaceAll('(0.','(.')
@@ -69,10 +69,12 @@ export function vue_design(page,theme,sheet=null){
     if(node.type===2||node.type===5)return interpolate(adjusted_text(node))
     if(node.type!==1)return ''
     const line=node.loc.start.line,index=++node_index,children=()=>node.children.map(n=>render(n,context)).join('')
-    if(page==='found'&&line===1751){const item=elements(node)[0];return `<view class="am-shared"><view v-for="i in c.shared_chips" :key="i.item_id" class="am-interest" :style="{background:i.bg,color:i.ink}"><view class="am-emoji">{{ i.emoji }}</view><view>{{ i.label }}</view></view></view>`}
+    if(page==='found'&&line===1748){const item=elements(node)[0];return `<view data-source-line="1748" class="am-shared"><view v-for="i in c.shared_chips" :key="i.item_id" class="am-interest" :style="{background:i.bg,color:i.ink}"><view class="am-emoji">{{ i.emoji }}</view><view>{{ i.label }}</view></view></view>`}
     if(node.tag==='sc-if')return `<template v-if="${/^[oh]\./.test(binding(attribute(node,'value')))?expr(binding(attribute(node,'value'))):'c.'+expr(binding(attribute(node,'value')))}">${children()}</template>`
     if(node.tag==='sc-for'){const list=expr(binding(attribute(node,'list'))),as=attribute(node,'as');return `<template v-for="${as} in c.${list}" :key="${as}.value || ${as}.match_id || ${as}.item_id">${node.children.map(n=>render(n,{...context,list})).join('')}</template>`}
     let tag=node.tag==='div'?'view':node.tag,attrs=` data-source-line="${line}"`,style=attribute(node,'style'),classes=[]
+    if(page==='found'&&style.includes('flex-wrap:nowrap'))style=style.replace('flex-wrap:nowrap','flex-wrap:wrap')
+    if(page==='found'&&node.tag==='svg'&&node.children.some(n=>n.tag==='circle'&&attribute(n,'fill')==='#1d9bf0'))attrs+=' v-if="c.candidate_verified"'
     if(node===header){style=style.replace(/position:absolute;|top:58px;|left:20px;|right:20px;/g,'');style+=`;position:relative;margin:4px 20px ${attribute(body,'style').includes('top:120px')?14:12}px`}
     if(node===body){if(style.includes('overflow-y:auto'))style='padding:0 20px 24px;box-sizing:border-box';else{const top=Number(style.match(/top:(\d+)px/)?.[1]||118);style=style.replace(/position:absolute;|top:\d+px;|left:20px;|right:20px;/g,'')+`;margin-top:${top-118}px;padding:0 20px 24px`}}
     if(node===footer){style=style.replace(/position:absolute;|left:20px;|right:20px;|bottom:\d+px;/g,'');style+=`;padding:0 20px ${attribute(node,'style').match(/bottom:(\d+)px/)?.[1]||30}px;flex:none`;classes.push('am-footer')}

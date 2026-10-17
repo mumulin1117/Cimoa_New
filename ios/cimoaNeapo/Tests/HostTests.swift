@@ -12,12 +12,19 @@ final class HostTests: XCTestCase {
         for _ in 0..<4 { root.deleteLastPathComponent() }
         let folder = root.appendingPathComponent("docs/ui-restoration/auto-match-\(phase)")
         let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("native-fixture.json"))) as! [String: Any]
+        let scripts = host.webView.configuration.userContentController.userScripts
+        let matchTime = Date().timeIntervalSince1970 * 1000
+        if phase == "found" {
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "Date.now=()=>\(matchTime);", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+        }
         func restore() async throws {
+            host.webView.configuration.userContentController.removeAllUserScripts()
+            for script in scripts { host.webView.configuration.userContentController.addUserScript(script) }
             _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}return true", arguments: ["saved": snapshot], in: nil, contentWorld: .page)
             host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?matchRestore=\(UUID().uuidString)#/pages/auth/splash")!))
         }
         do {
-            _ = try await host.webView.callAsyncJavaScript("const data=fixture.data;data.session.expires_at=Date.now()+86400000;for(const m of data.match_sessions)if(m.match_id==='match_pixel'&&m.status==='found')m.expires_at=Date.now()+3600000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture], in: nil, contentWorld: .page)
+            _ = try await host.webView.callAsyncJavaScript("const data=fixture.data;data.session.expires_at=at+86400000;for(const m of data.match_sessions)if(m.match_id==='match_pixel'&&m.status==='found')m.expires_at=at+45000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true", arguments: ["fixture": fixture,"at":matchTime], in: nil, contentWorld: .page)
             try await loadFreshConnection(host, route: fixture["route"] as! String, selector: ".auto-match-\(phase)")
             host.publishSafeArea()
             let metrics = try await script(host, """
@@ -42,8 +49,9 @@ final class HostTests: XCTestCase {
                     _ = try await script(host, "document.querySelector('.match-picker .event-dialog-mask').click();await new Promise(r=>setTimeout(r,300));return true")
                 }
             }
-            if phase == "searching" {
-                for (entry,name) in [("amSearching.openAmHelp.click.1","help"),("amSearching.openBoost.click.1","boost"),("amSearching.askLeave.click.1","leaving")] {
+            if phase == "searching" || phase == "found" {
+                let cases = phase == "searching" ? [("amSearching.openAmHelp.click.1","help"),("amSearching.openBoost.click.1","boost"),("amSearching.askLeave.click.1","leaving")] : [("amFound.connectAsk.click.1","accepting"),("amFound.askLeaveMatch.click.1","leave-match")]
+                for (entry,name) in cases {
                     _ = try await script(host, "document.querySelector('[data-interaction=\"\(entry)\"]').click();await new Promise(r=>setTimeout(r,350));return true")
                     let output = folder.appendingPathComponent(name)
                     try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)

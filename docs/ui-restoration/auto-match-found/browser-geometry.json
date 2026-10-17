@@ -1,0 +1,527 @@
+{
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "safe": [
+    54,
+    0
+  ],
+  "expected": {
+    "1707": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Match found0:45"
+    },
+    "1708": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1709": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1711": {
+      "x": 78,
+      "y": 60,
+      "width": 198.5,
+      "height": 44,
+      "text": "Match found"
+    },
+    "1712": {
+      "x": 164.25,
+      "y": 60,
+      "width": 26,
+      "height": 18,
+      "text": ""
+    },
+    "1713": {
+      "x": 118.34375,
+      "y": 80,
+      "width": 117.8125,
+      "height": 24,
+      "text": "Match found"
+    },
+    "1715": {
+      "x": 288.5,
+      "y": 63,
+      "width": 84.5,
+      "height": 38,
+      "text": "0:45"
+    },
+    "1716": {
+      "x": 302.5,
+      "y": 74.5,
+      "width": 15,
+      "height": 15,
+      "text": ""
+    },
+    "1717": {
+      "x": 324.5,
+      "y": 73,
+      "width": 34.5,
+      "height": 18,
+      "text": "0:45"
+    },
+    "1720": {
+      "x": 0,
+      "y": 118,
+      "width": 393,
+      "height": 542.28125,
+      "text": "Zane, 22HKUSTEngineeringESTPMeet someone newExplore their profile to learn more.Basketball, running, weekend hikes, and the search for the best post-workout meal."
+    },
+    "1721": {
+      "x": 20,
+      "y": 118,
+      "width": 353,
+      "height": 340,
+      "text": "Zane, 22HKUSTEngineeringESTP"
+    },
+    "1722": {
+      "x": 20,
+      "y": 118,
+      "width": 353,
+      "height": 340,
+      "text": ""
+    },
+    "1723": {
+      "x": 20,
+      "y": 308,
+      "width": 353,
+      "height": 150,
+      "text": ""
+    },
+    "1724": {
+      "x": 40,
+      "y": 321,
+      "width": 313,
+      "height": 121,
+      "text": "Zane, 22HKUSTEngineeringESTP"
+    },
+    "1725": {
+      "x": 40,
+      "y": 321,
+      "width": 313,
+      "height": 32,
+      "text": "Zane, 22"
+    },
+    "1726": {
+      "x": 40,
+      "y": 321,
+      "width": 103.765625,
+      "height": 32,
+      "text": "Zane, 22"
+    },
+    "1727": {
+      "x": 151.765625,
+      "y": 326,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1729": {
+      "x": 40,
+      "y": 363,
+      "width": 313,
+      "height": 79,
+      "text": "HKUSTEngineeringESTP"
+    },
+    "1730": {
+      "x": 40,
+      "y": 363,
+      "width": 99.765625,
+      "height": 36,
+      "text": "HKUST"
+    },
+    "1731": {
+      "x": 53,
+      "y": 373,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1732": {
+      "x": 75,
+      "y": 372,
+      "width": 51.765625,
+      "height": 18,
+      "text": "HKUST"
+    },
+    "1734": {
+      "x": 146.765625,
+      "y": 363,
+      "width": 133.40625,
+      "height": 36,
+      "text": "Engineering"
+    },
+    "1735": {
+      "x": 159.765625,
+      "y": 373,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1736": {
+      "x": 181.765625,
+      "y": 372,
+      "width": 85.40625,
+      "height": 18,
+      "text": "Engineering"
+    },
+    "1738": {
+      "x": 40,
+      "y": 406,
+      "width": 85.890625,
+      "height": 36,
+      "text": "ESTP"
+    },
+    "1739": {
+      "x": 53,
+      "y": 416,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1740": {
+      "x": 75,
+      "y": 415,
+      "width": 37.890625,
+      "height": 18,
+      "text": "ESTP"
+    },
+    "1746": {
+      "x": 20,
+      "y": 480,
+      "width": 353,
+      "height": 30,
+      "text": "Meet someone new"
+    },
+    "1747": {
+      "x": 20,
+      "y": 516,
+      "width": 353,
+      "height": 20,
+      "text": "Explore their profile to learn more."
+    },
+    "1753": {
+      "x": 20,
+      "y": 568,
+      "width": 353,
+      "height": 1,
+      "text": ""
+    },
+    "1754": {
+      "x": 20,
+      "y": 587,
+      "width": 353,
+      "height": 49.28125,
+      "text": "Basketball, running, weekend hikes, and the search for the best post-workout meal."
+    },
+    "1756": {
+      "x": 0,
+      "y": 730,
+      "width": 393,
+      "height": 122,
+      "text": "ConnectView profile"
+    },
+    "1757": {
+      "x": 20,
+      "y": 730,
+      "width": 353,
+      "height": 60,
+      "text": "Connect"
+    },
+    "1758": {
+      "x": 20,
+      "y": 730,
+      "width": 281,
+      "height": 60,
+      "text": "Connect"
+    },
+    "1759": {
+      "x": 313,
+      "y": 730,
+      "width": 60,
+      "height": 60,
+      "text": ""
+    },
+    "1761": {
+      "x": 151.65625,
+      "y": 804,
+      "width": 89.6875,
+      "height": 18,
+      "text": "View profile"
+    }
+  },
+  "actual": {
+    "1707": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 48,
+      "text": "Match found0:45"
+    },
+    "1708": {
+      "x": 20,
+      "y": 59,
+      "width": 46,
+      "height": 46,
+      "text": ""
+    },
+    "1709": {
+      "x": 32,
+      "y": 71,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1711": {
+      "x": 78,
+      "y": 60,
+      "width": 198.546875,
+      "height": 44,
+      "text": "Match found"
+    },
+    "1712": {
+      "x": 164.265625,
+      "y": 60,
+      "width": 26,
+      "height": 18,
+      "text": ""
+    },
+    "1713": {
+      "x": 118.390625,
+      "y": 80,
+      "width": 117.75,
+      "height": 24,
+      "text": "Match found"
+    },
+    "1715": {
+      "x": 288.546875,
+      "y": 63,
+      "width": 84.453125,
+      "height": 38,
+      "text": "0:45"
+    },
+    "1716": {
+      "x": 302.546875,
+      "y": 74.5,
+      "width": 14.984375,
+      "height": 14.984375,
+      "text": ""
+    },
+    "1717": {
+      "x": 324.53125,
+      "y": 73.5,
+      "width": 34.46875,
+      "height": 17,
+      "text": "0:45"
+    },
+    "1720": {
+      "x": 0,
+      "y": 118,
+      "width": 393,
+      "height": 542.265625,
+      "text": "Zane, 22HKUSTEngineeringESTPMeet someone newExplore their profile to learn more.Basketball, running, weekend hikes, and the search for the best post-workout meal."
+    },
+    "1721": {
+      "x": 20,
+      "y": 118,
+      "width": 353,
+      "height": 340,
+      "text": "Zane, 22HKUSTEngineeringESTP"
+    },
+    "1722": {
+      "x": 20,
+      "y": 118,
+      "width": 353,
+      "height": 340,
+      "text": ""
+    },
+    "1723": {
+      "x": 20,
+      "y": 308,
+      "width": 353,
+      "height": 150,
+      "text": ""
+    },
+    "1724": {
+      "x": 40,
+      "y": 321,
+      "width": 313,
+      "height": 121,
+      "text": "Zane, 22HKUSTEngineeringESTP"
+    },
+    "1725": {
+      "x": 40,
+      "y": 321,
+      "width": 313,
+      "height": 32,
+      "text": "Zane, 22"
+    },
+    "1726": {
+      "x": 40,
+      "y": 321,
+      "width": 103.734375,
+      "height": 32,
+      "text": "Zane, 22"
+    },
+    "1727": {
+      "x": 151.734375,
+      "y": 326,
+      "width": 22,
+      "height": 22,
+      "text": ""
+    },
+    "1729": {
+      "x": 40,
+      "y": 363,
+      "width": 313,
+      "height": 79,
+      "text": "HKUSTEngineeringESTP"
+    },
+    "1730": {
+      "x": 40,
+      "y": 363,
+      "width": 99.71875,
+      "height": 36,
+      "text": "HKUST"
+    },
+    "1731": {
+      "x": 53,
+      "y": 373,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1732": {
+      "x": 75,
+      "y": 372.5,
+      "width": 51.71875,
+      "height": 17,
+      "text": "HKUST"
+    },
+    "1734": {
+      "x": 146.71875,
+      "y": 363,
+      "width": 133.34375,
+      "height": 36,
+      "text": "Engineering"
+    },
+    "1735": {
+      "x": 159.71875,
+      "y": 373,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1736": {
+      "x": 181.71875,
+      "y": 372.5,
+      "width": 85.34375,
+      "height": 17,
+      "text": "Engineering"
+    },
+    "1738": {
+      "x": 40,
+      "y": 406,
+      "width": 85.859375,
+      "height": 36,
+      "text": "ESTP"
+    },
+    "1739": {
+      "x": 53,
+      "y": 416,
+      "width": 16,
+      "height": 16,
+      "text": ""
+    },
+    "1740": {
+      "x": 75,
+      "y": 415.5,
+      "width": 37.859375,
+      "height": 17,
+      "text": "ESTP"
+    },
+    "1746": {
+      "x": 20,
+      "y": 480,
+      "width": 353,
+      "height": 30,
+      "text": "Meet someone new"
+    },
+    "1747": {
+      "x": 20,
+      "y": 516,
+      "width": 353,
+      "height": 20,
+      "text": "Explore their profile to learn more."
+    },
+    "1753": {
+      "x": 20,
+      "y": 567.984375,
+      "width": 353,
+      "height": 1,
+      "text": ""
+    },
+    "1754": {
+      "x": 20,
+      "y": 586.984375,
+      "width": 353,
+      "height": 49.28125,
+      "text": "Basketball, running, weekend hikes, and the search for the best post-workout meal."
+    },
+    "1756": {
+      "x": 0,
+      "y": 730,
+      "width": 393,
+      "height": 122,
+      "text": "ConnectView profile"
+    },
+    "1757": {
+      "x": 20,
+      "y": 730,
+      "width": 353,
+      "height": 60,
+      "text": "Connect"
+    },
+    "1758": {
+      "x": 20,
+      "y": 730,
+      "width": 281,
+      "height": 60,
+      "text": "Connect"
+    },
+    "1759": {
+      "x": 313,
+      "y": 730,
+      "width": 60,
+      "height": 60,
+      "text": ""
+    },
+    "1761": {
+      "x": 151.6875,
+      "y": 804,
+      "width": 89.625,
+      "height": 18,
+      "text": "View profile"
+    }
+  },
+  "differences": [],
+  "pixels": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 163752,
+    "pixels_above_channel_delta_8": 39365,
+    "mean_absolute_channel_delta": 2.1642766906784217,
+    "max_channel_delta": 210
+  }
+}

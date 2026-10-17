@@ -1,0 +1,29 @@
+{
+  "errors" : [
+
+  ],
+  "footer" : {
+    "height" : 126.34375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 713.65625
+  },
+  "header" : {
+    "height" : 65.4375,
+    "width" : 402,
+    "x" : 0,
+    "y" : 62
+  },
+  "images" : true,
+  "origin" : "http:\/\/127.0.0.1:18765",
+  "overflow" : false,
+  "safe" : [
+    "62px",
+    "34px"
+  ],
+  "text" : "Match found\n0:45\n\n\nZane, 22\nHKUST\nEngineering\nESTP\nMeet someone new\nExplore their profile to learn more.\nBasketball, running, weekend hikes, and the search for the best post-workout meal.\nConnect\nView profile\n",
+  "viewport" : {
+    "height" : 874,
+    "width" : 402
+  }
+}
