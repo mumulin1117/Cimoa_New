@@ -47,7 +47,7 @@ try {
   const switch_account = async email => {
     await open('/pages/settings/index'); await click('settings.openLogoutConfirm.click.1')
     await page.getByRole('dialog').getByRole('button', { name: 'Log Out', exact: true }).click()
-    await page.locator('.welcome-page').waitFor(); await page.getByRole('button', { name: 'Log In', exact: true }).click()
+    await page.locator('.welcome-page').waitFor(); await page.getByRole('checkbox').click(); await page.getByRole('button', { name: 'Log In', exact: true }).click()
     await field('Email').fill(email); await field('Password').fill('campus123'); await click('login.loginNow.click.1'); await page.locator('.home-header').waitFor()
   }
   await seed()

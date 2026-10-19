@@ -35,7 +35,7 @@ try {
   fs.mkdirSync(output, { recursive: true })
   await page.goto(`${origin}/`); await page.locator('.welcome-page').waitFor()
   assert.equal(await snapshot(), undefined)
-  await click('welcome.goAge.click.1'); await page.locator('.age-page').waitFor(); await settle()
+  await click('welcome.toggleAgreement.click.1'); await click('welcome.goAge.click.1'); await page.locator('.age-page').waitFor(); await settle()
   await click('age.goAgree.click.1'); assert.match(await page.getByRole('alert').innerText(), /valid date/)
   await fill('Date of birth', '2020-01-01'); await click('age.goAgree.click.1')
   assert.match(await page.locator('.age-under').innerText(), /18 or older/); assert.equal(await snapshot(), undefined)

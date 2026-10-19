@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-19",
+  "page": "Welcome consent revision",
+  "route": "/pages/auth/welcome",
+  "source_lock": "locked",
+  "primary_increment_source": {
+    "path": "/Users/linqian/Downloads/大学生交友-文茜/Auth ／ Welcome ／ Default.png",
+    "repository_copy": "docs/ui-restoration/welcome/consent-2026-10-19/source.png",
+    "sha256": "1fceba19ff9219035b709e36f4ee011b10462bf89b9a0cbc3855449241d7ece7",
+    "scale": 2,
+    "app_frame_css_px": [
+      0,
+      0,
+      393,
+      852
+    ],
+    "non_app_caption_below_css_y": 852
+  },
+  "unchanged_source": "docs/ui-restoration/welcome/source-contract.json",
+  "scope": "Add the single consent row immediately below Log In; keep existing campus photo, copy, Cimoa brand, source buttons and lower legal paragraph",
+  "geometry_css_px": {
+    "reference_viewport": [
+      393,
+      852
+    ],
+    "footer_left": 20,
+    "footer_right": 20,
+    "footer_bottom": 30,
+    "footer_gap": 12,
+    "checkbox": [
+      24,
+      24
+    ],
+    "checkbox_radius": 2,
+    "checkbox_to_copy_gap": 12,
+    "consent_font": 12.25,
+    "consent_line_height": 1.4,
+    "consent_ink": "theme text.welcome_copy",
+    "consent_links": "theme text.title; normal weight; no underline in the new row",
+    "checked_fill": "theme surface.deep",
+    "checked_icon": "existing SourceIcon check; 20px; theme text.inverse",
+    "new_row_source_y_approx": 743.5,
+    "font_estimation": "PNG has no editable font metadata. Existing platform font adjusted to measured new-label ink bounds x=57..278.5, y=751..762.5 CSS px at 393x852; text and size are not guessed from the old HTML.",
+    "consent_letter_spacing": "-0.005em; tuned to measured PNG label ink extent with the existing platform font"
+  },
+  "copy": {
+    "consent": "I agree to the Terms and Privacy Policy.",
+    "validation": "Please agree to the Terms and Privacy Policy to continue."
+  },
+  "state": {
+    "default": "unchecked; never infer consent from having read an agreement",
+    "checked": "both auth entry buttons navigate once",
+    "unchecked": "both auth entry buttons retain route and show validation on attempted activation; aria-disabled=true; source button appearance retained",
+    "legal": "all four Terms/Privacy links open independent policy pages without checking or toggling the box",
+    "return": "cached Welcome instance retains the choice when returning from agreements, Age or Login",
+    "refresh": "new Welcome instance resets to unchecked",
+    "persistence": "none: transient entry confirmation, not a new legal acceptance record; final registration agreements remain separately validated by Store",
+    "loading": "none for transient checkbox and navigation",
+    "errors": "navigation/media failures keep normal retry paths"
+  },
+  "approved_deltas": [
+    "New PNG overrides the prior HTML only for the explicitly requested consent/footer increment.",
+    "Continue using approved Cimoa brand, not CIRCA. Do not draw source status bar, EUL debug chip, home indicator or caption.",
+    "Screenshot depicts checked state; fresh entry defaults unchecked to require an explicit choice.",
+    "Unchecked uses an empty outlined box and blocks both auth entries; only attempted invalid activation displays English validation.",
+    "Reuse the single middle scroll region on smaller/safe-area devices; do not shrink fonts or add another scroll container."
+  ],
+  "interactions": [
+    {
+      "interaction_id": "welcome.goAge.click.1",
+      "source_screen": "Auth / Welcome / Default; user PNG 2026-10-19",
+      "trigger": "click / Enter",
+      "preconditions": "Welcome consent is checked; navigation not already pending",
+      "visible_feedback": "Existing cRise navigation; invalid auth activation shows local error without navigation",
+      "success_result": "Push Age once",
+      "failure_result": "Stay on Welcome with data unchanged; unchecking locks both entries; policy links never toggle consent",
+      "persistence": "none",
+      "sync_scope": "The single checkbox gates both Welcome auth entry buttons; existing registration agreements unaffected",
+      "acceptance": "Browser and real WKWebView: unchecked rejection, keyboard toggle, checked auth entries, double-click guard, all policy links and return, refresh resets, zero business writes, safe-area/small-screen layout"
+    },
+    {
+      "interaction_id": "welcome.goLogin.click.1",
+      "source_screen": "Auth / Welcome / Default; user PNG 2026-10-19",
+      "trigger": "click / Enter",
+      "preconditions": "Welcome consent is checked; navigation not already pending",
+      "visible_feedback": "Existing cRise navigation; invalid auth activation shows local error without navigation",
+      "success_result": "Push Login once",
+      "failure_result": "Stay on Welcome with data unchanged; unchecking locks both entries; policy links never toggle consent",
+      "persistence": "none",
+      "sync_scope": "The single checkbox gates both Welcome auth entry buttons; existing registration agreements unaffected",
+      "acceptance": "Browser and real WKWebView: unchecked rejection, keyboard toggle, checked auth entries, double-click guard, all policy links and return, refresh resets, zero business writes, safe-area/small-screen layout"
+    },
+    {
+      "interaction_id": "welcome.openTerms.click.1",
+      "source_screen": "Auth / Welcome / Default; user PNG 2026-10-19",
+      "trigger": "click / Enter",
+      "preconditions": "Welcome is active; no auth or checkbox precondition for reading policies",
+      "visible_feedback": "Existing cRise navigation; invalid auth activation shows local error without navigation",
+      "success_result": "Push /pages/legal/terms; preserve choice",
+      "failure_result": "Stay on Welcome with data unchanged; unchecking locks both entries; policy links never toggle consent",
+      "persistence": "none",
+      "sync_scope": "The single checkbox gates both Welcome auth entry buttons; existing registration agreements unaffected",
+      "acceptance": "Browser and real WKWebView: unchecked rejection, keyboard toggle, checked auth entries, double-click guard, all policy links and return, refresh resets, zero business writes, safe-area/small-screen layout"
+    },
+    {
+      "interaction_id": "welcome.openPrivacy.click.1",
+      "source_screen": "Auth / Welcome / Default; user PNG 2026-10-19",
+      "trigger": "click / Enter",
+      "preconditions": "Welcome is active; no auth or checkbox precondition for reading policies",
+      "visible_feedback": "Existing cRise navigation; invalid auth activation shows local error without navigation",
+      "success_result": "Push /pages/legal/privacy; preserve choice",
+      "failure_result": "Stay on Welcome with data unchanged; unchecking locks both entries; policy links never toggle consent",
+      "persistence": "none",
+      "sync_scope": "The single checkbox gates both Welcome auth entry buttons; existing registration agreements unaffected",
+      "acceptance": "Browser and real WKWebView: unchecked rejection, keyboard toggle, checked auth entries, double-click guard, all policy links and return, refresh resets, zero business writes, safe-area/small-screen layout"
+    },
+    {
+      "interaction_id": "welcome.toggleAgreement.click.1",
+      "source_screen": "Auth / Welcome / Default; user PNG 2026-10-19",
+      "trigger": "click / Enter / Space",
+      "preconditions": "Welcome is active; no auth or checkbox precondition for reading policies",
+      "visible_feedback": "Instant checked state; no Loading or storage write",
+      "success_result": "Toggle only transient Welcome choice; clear validation",
+      "failure_result": "Stay on Welcome with data unchanged; unchecking locks both entries; policy links never toggle consent",
+      "persistence": "none",
+      "sync_scope": "The single checkbox gates both Welcome auth entry buttons; existing registration agreements unaffected",
+      "acceptance": "Browser and real WKWebView: unchecked rejection, keyboard toggle, checked auth entries, double-click guard, all policy links and return, refresh resets, zero business writes, safe-area/small-screen layout"
+    },
+    {
+      "interaction_id": "welcome.consent.openTerms.click.1",
+      "source_screen": "Auth / Welcome / Default; user PNG 2026-10-19",
+      "trigger": "click / Enter",
+      "preconditions": "Welcome is active; no auth or checkbox precondition for reading policies",
+      "visible_feedback": "Existing cRise navigation; invalid auth activation shows local error without navigation",
+      "success_result": "Push /pages/legal/terms; preserve choice",
+      "failure_result": "Stay on Welcome with data unchanged; unchecking locks both entries; policy links never toggle consent",
+      "persistence": "none",
+      "sync_scope": "The single checkbox gates both Welcome auth entry buttons; existing registration agreements unaffected",
+      "acceptance": "Browser and real WKWebView: unchecked rejection, keyboard toggle, checked auth entries, double-click guard, all policy links and return, refresh resets, zero business writes, safe-area/small-screen layout"
+    },
+    {
+      "interaction_id": "welcome.consent.openPrivacy.click.1",
+      "source_screen": "Auth / Welcome / Default; user PNG 2026-10-19",
+      "trigger": "click / Enter",
+      "preconditions": "Welcome is active; no auth or checkbox precondition for reading policies",
+      "visible_feedback": "Existing cRise navigation; invalid auth activation shows local error without navigation",
+      "success_result": "Push /pages/legal/privacy; preserve choice",
+      "failure_result": "Stay on Welcome with data unchanged; unchecking locks both entries; policy links never toggle consent",
+      "persistence": "none",
+      "sync_scope": "The single checkbox gates both Welcome auth entry buttons; existing registration agreements unaffected",
+      "acceptance": "Browser and real WKWebView: unchecked rejection, keyboard toggle, checked auth entries, double-click guard, all policy links and return, refresh resets, zero business writes, safe-area/small-screen layout"
+    }
+  ],
+  "visual_acceptance": "pending"
+}

@@ -1,0 +1,41 @@
+{
+  "manifest_sha256": "8bb496fb0700a06e588be0674fe3ebca892a124fc2bb1f4ef269adf8af5f0bd8",
+  "h5_files": 414,
+  "bundle_resources_archive_match": true,
+  "normal_host_serves_current_h5": true,
+  "normal_host_pid": 42065,
+  "archive": {
+    "path": "artifacts/cimoaNeapo-ios.zip",
+    "bytes": 26109186,
+    "sha256": "beadc87d24a42069c9803f1496e52d24ec465799fea2de26fd4f9acf8b272ba1"
+  },
+  "browser_reports": [
+    {
+      "file": "browser-acceptance.json",
+      "checks": 10,
+      "server_pid": 41316,
+      "result": "passed"
+    },
+    {
+      "file": "login-regression/login-browser.json",
+      "checks": 14,
+      "server_pid": 40589,
+      "result": "passed"
+    },
+    {
+      "file": "registration-regression/age-browser.json",
+      "checks": 2,
+      "server_pid": 40772,
+      "result": "passed"
+    }
+  ],
+  "unit": {
+    "tests": 173,
+    "failures": 0,
+    "errors": 0
+  },
+  "source_png_sha256": "1fceba19ff9219035b709e36f4ee011b10462bf89b9a0cbc3855449241d7ece7",
+  "source_html_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "preview_processes_closed": true,
+  "archive_check_directory_removed": true
+}

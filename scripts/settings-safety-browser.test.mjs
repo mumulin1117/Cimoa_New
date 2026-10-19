@@ -1206,6 +1206,7 @@ try {
     await page.locator('.welcome-page').waitFor()
     check('Deletion success restores after refresh, fits the safe-area frame and clears history to Welcome')
 
+    await click('welcome.toggleAgreement.click.1')
     await click('welcome.goLogin.click.1')
     await page.locator('.login-page').waitFor()
     await page.locator('.login-page input').first().fill('cimoa@gmail.com')

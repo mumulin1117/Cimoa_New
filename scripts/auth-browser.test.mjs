@@ -49,8 +49,9 @@ try {
     assert.ok(Math.abs((await page.locator('.welcome-login').boundingBox()).height - 56) < 1)
     await page.screenshot({ path: path.join(output, 'welcome.png') })
     check('Welcome uses extracted campus image, source copy and 360/60/56 geometry')
+    await page.getByRole('checkbox').click()
     for (const name of ['Create Account', 'Log In', 'Terms', 'Privacy Policy']) {
-      await page.getByRole('button', { name, exact: true }).click()
+      await page.getByRole('button', { name, exact: true }).first().click()
       if (name === 'Log In') { await page.locator('.login-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.welcome-page').waitFor() }
       else if (name === 'Create Account') { await page.locator('.age-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.welcome-page').waitFor() }
       else { await page.locator(name === 'Terms' ? '.legal-terms-page' : '.legal-privacy-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.welcome-page').waitFor() }
@@ -79,6 +80,7 @@ try {
   if (phase === 'login') {
     const loginButton = () => page.locator('[data-interaction="login.loginNow.click.1"]')
     const fill = async (password = '12341234') => { await page.locator('.login-page input').first().fill('cimoa@gmail.com'); await page.locator('.login-page input').last().fill(password) }
+    await page.getByRole('checkbox').click()
     await page.getByRole('button', { name: 'Log In', exact: true }).dblclick()
     await page.locator('.login-page').waitFor()
     assert.equal(await page.locator('.login-page').getAttribute('data-page-depth'), '2')
@@ -97,6 +99,7 @@ try {
     check('source TEST STATES controls use real local data and never create authentication state')
     await page.getByRole('button', { name: 'Back', exact: true }).click()
     await page.locator('.welcome-page').waitFor()
+    if (await page.getByRole('checkbox').getAttribute('aria-checked') !== 'true') await page.getByRole('checkbox').click()
     await page.getByRole('button', { name: 'Log In', exact: true }).click()
     await page.locator('.login-page').waitFor()
     check('Welcome pushes source Login once; 46px Back returns to the original Welcome')

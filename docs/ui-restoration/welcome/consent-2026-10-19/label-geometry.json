@@ -1,0 +1,18 @@
+{
+  "source_css_ink_bounds": {
+    "x": 57,
+    "y": 751,
+    "width": 221.5,
+    "height": 11.5
+  },
+  "actual_css_ink_bounds": {
+    "x": 57,
+    "y": 751,
+    "width": 221,
+    "height": 11
+  },
+  "tolerance_css_px": 1,
+  "result": "passed",
+  "scope": "New consent label only, measured on the original 2x PNG and current 393x852 browser screenshot; not whole-page font equality",
+  "measurement": "RGBA threshold R<170 G<170 B<205 within the independently cropped label region; x/y/width/height differences <=0.5 CSS px"
+}

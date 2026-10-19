@@ -78,7 +78,7 @@
     ],
     "return_owner": "authentication root; no fake back target",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; fixed Create Account/Log In/legal footer; BottomSafeArea",
+    "fixed_regions": "TopSafeArea; fixed Create Account/Log In/consent/legal footer; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -86,7 +86,10 @@
       "welcome.goAge.click.1",
       "welcome.goLogin.click.1",
       "welcome.openTerms.click.1",
-      "welcome.openPrivacy.click.1"
+      "welcome.openPrivacy.click.1",
+      "welcome.toggleAgreement.click.1",
+      "welcome.consent.openTerms.click.1",
+      "welcome.consent.openPrivacy.click.1"
     ],
     "entities": "user_accounts; session; verification; agreements",
     "assets": {
@@ -114,16 +117,18 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "source_lock": "locked",
-    "visual_acceptance": "passed",
+    "visual_acceptance": "pending",
     "source_lock_artifact": "docs/ui-restoration/welcome/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/welcome/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Welcome source locked; pixel restoration confirmed by user; deterministic browser and iPhone 17 Pro WKWebView acceptance passed; final checks and local specialty commit complete",
-    "acceptance_notes": "Browser 6/6 and WKWebView 1/1 passed, including source geometry, 62/34 safe-area scrolling, source entries and return ownership. User confirmed pixel screenshots on 2026-10-15; final gates and H5 packaging passed."
+    "mapping_status": "2026-10-19 Welcome consent increment implemented and verified functionally in browser/WKWebView; prior whole-page visual acceptance not automatically reused for new PNG",
+    "acceptance_notes": "Current increment: 10 Welcome browser checks, 14 auth checks, 2 registration-age checks, 173 domain tests and 2 native cases passed. Checkbox/new-label geometry measured against user PNG. Whole-screen raster/font equality is not claimed.",
+    "welcome_consent_contract": "docs/ui-restoration/welcome/consent-2026-10-19/source-contract.json",
+    "welcome_consent_evidence": "docs/ui-restoration/welcome/consent-2026-10-19/acceptance.json"
   },
   {
     "source_screen": "Legal / Terms of Service / Default",

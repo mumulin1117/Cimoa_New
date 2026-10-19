@@ -24,8 +24,8 @@ Welcome首次未还原时以deferred显示明确错误；现在已由下方Welco
 
 | interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| welcome.goAge.click.1 | Welcome2521 | Create Account | 目标页已还原 | push/cRise，无Loading | /pages/auth/age，保留Welcome实例 | 未还原明确错误，原数据不变 | none | auth_flow | 进入年龄确认→返回Welcome；本地阶段先记录deferred |
-| welcome.goLogin.click.1 | Welcome2522 | Log In | 同上 | 同上 | /pages/auth/login | 同上 | none | session | 进入登录→返回；连点栈只增1 |
+| welcome.goAge.click.1 | Welcome2521；2026-10-19用户新稿 | Create Account | 已明确勾选Welcome统一协议；目标页已还原 | push/cRise，无Loading；未勾选则留页提示 | /pages/auth/age，保留Welcome实例及选择 | 未勾选/导航失败不进入下一步，原数据不变 | none | 瞬时Welcome选择；注册最终协议仍由Store校验 | 未勾选拦截→勾选→进入年龄确认→返回；连点栈只增1 |
+| welcome.goLogin.click.1 | Welcome2522；2026-10-19用户新稿 | Log In | 同上 | 同上 | /pages/auth/login，保留Welcome实例及选择 | 同上 | none | 同一Welcome选择同时约束登录/注册 | 未勾选拦截→勾选进入登录→返回→取消勾选后再次拦截 |
 | welcome.openTerms.click.1 | Welcome2523 | Terms | 同上 | 同上 | /pages/legal/terms | 同上；不展示伪造上线条款 | none | legal | 正文可滚动关闭→原Welcome |
 | welcome.openPrivacy.click.1 | Welcome2523 | Privacy Policy | 同上 | 同上 | /pages/legal/privacy | 同上 | none | legal | 不跳成Terms，不自动勾选协议 |
 | welcome.media.retry（技术补齐） | Welcome image | Retry photo | 本地图片失败 | 内容区真实重载 | 显示相同校园图片 | 继续明确错误，不换图 | none | source resource | 注入404→重试、恢复资源→正确加载 |

@@ -108,7 +108,7 @@ final class HostTests: XCTestCase {
         func login(_ email:String) async throws {
             try await open("/pages/settings/index",".settings-page")
             try await click("settings.openLogoutConfirm.click.1");try await click("sheetLogout.logOut2.click.1");try await waitFor(host,".welcome-page")
-            _=try await script(host,"document.querySelector('.welcome-login').click();return true");try await waitFor(host,".login-page input")
+            _=try await script(host,"const check=document.querySelector('.welcome-consent-toggle');if(check.getAttribute('aria-checked')!=='true')check.click();document.querySelector('.welcome-login').click();return true");try await waitFor(host,".login-page input")
             _=try await host.webView.callAsyncJavaScript("await new Promise(r=>setTimeout(r,280));const inputs=document.querySelectorAll('.login-page input');for(const [i,v]of[email,'12341234'].entries()){inputs[i].value=v;inputs[i].dispatchEvent(new Event('input',{bubbles:true}))}await Promise.resolve();document.querySelector('[data-interaction=\"login.loginNow.click.1\"]').click();return true",arguments:["email":email],in:nil,contentWorld:.page)
             try await waitFor(host,".home-header");try await Task.sleep(nanoseconds:800_000_000)
         }
@@ -618,7 +618,7 @@ final class HostTests: XCTestCase {
         throw NSError(domain: "CimoaTests", code: 2, userInfo: [NSLocalizedDescriptionKey: "Missing \(selector)"])
     }
     private func signIn(_ host: WebViewController) async throws {
-        _ = try await script(host, "document.querySelector('.welcome-login').click(); return true")
+        _ = try await script(host, "const check=document.querySelector('.welcome-consent-toggle');if(check.getAttribute('aria-checked')!=='true')check.click();document.querySelector('.welcome-login').click(); return true")
         try await waitFor(host, ".login-page input")
         _ = try await script(host, "await new Promise(r=>setTimeout(r,300)); const fields=document.querySelectorAll('.login-page input'); for(const [i,value] of ['cimoa@gmail.com','12341234'].entries()){fields[i].value=value; fields[i].dispatchEvent(new Event('input',{bubbles:true}))} await Promise.resolve();document.querySelector('[data-interaction=\"login.loginNow.click.1\"]').click(); return true")
         try await waitFor(host, ".home-header")
@@ -694,6 +694,9 @@ final class HostTests: XCTestCase {
     func testWelcomePixelRestoration() async throws {
         let host = try await rawHost()
         let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let output = root.appendingPathComponent("docs/ui-restoration/welcome/consent-2026-10-19")
         func restore() async throws {
             _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
             host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?welcomePixel=restored#/pages/auth/splash")!))
@@ -706,6 +709,21 @@ final class HostTests: XCTestCase {
                 if (try? await script(host, "return !document.querySelector('.welcome-photo-status')")) as? Bool == true { break }
                 try await Task.sleep(nanoseconds: 100_000_000)
             }
+            let rejected = try await script(host, """
+            const before=localStorage.getItem('cimoa_app_state_v2'),check=document.querySelector('.welcome-consent-toggle');if(check.getAttribute('aria-checked')!=='false')throw Error('Welcome preselected consent');for(const s of ['.welcome-create','.welcome-login']){const e=document.querySelector(s);if(e.getAttribute('aria-disabled')!=='true')throw Error('Entry not disabled');e.click()}await new Promise(r=>setTimeout(r,350));return location.hash.endsWith('/pages/auth/welcome')&&!!document.querySelector('.welcome-error')&&localStorage.getItem('cimoa_app_state_v2')===before
+            """) as? Bool
+            XCTAssertEqual(rejected, true)
+            for (interaction, destination, backSelector) in [
+                ("welcome.consent.openTerms.click.1", ".legal-terms-page", ".legal-terms-page .event-page-round"),
+                ("welcome.consent.openPrivacy.click.1", ".legal-privacy-page", ".legal-privacy-page .event-page-round")
+            ] {
+                _ = try await script(host, "document.querySelector('[data-interaction=\"\(interaction)\"]').click();await new Promise(r=>setTimeout(r,350));return true")
+                try await waitFor(host, destination)
+                _ = try await script(host, "document.querySelector('\(backSelector)').click();await new Promise(r=>setTimeout(r,350));return true")
+                let unchanged = try await script(host, "return document.querySelector('.welcome-consent-toggle').getAttribute('aria-checked')==='false'&&localStorage.getItem('cimoa_app_state_v2')===null") as? Bool
+                XCTAssertEqual(unchanged, true)
+            }
+            _ = try await script(host, "document.querySelector('.welcome-consent-toggle').click();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return true")
             var metrics: [String: Any] = [:]
             for _ in 0..<50 {
                 metrics = try await script(host, """
@@ -741,6 +759,10 @@ final class HostTests: XCTestCase {
             XCTAssertEqual(text["legal"], "By continuing, you agree to our Terms and Privacy Policy.")
             let screenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
             screenshot.name = "WKWebView Welcome deterministic"; screenshot.lifetime = .keepAlways; add(screenshot)
+            try (try await host.webView.takeSnapshot(configuration: nil)).pngData()!.write(to: output.appendingPathComponent("actual-wkwebview.png"))
+            let consent = try await script(host, "const e=document.querySelector('.welcome-consent-toggle'),r=e.getBoundingClientRect();return {checked:e.getAttribute('aria-checked'),width:r.width,height:r.height,copy:document.querySelector('.welcome-consent-copy').textContent,overflow:document.documentElement.scrollWidth>innerWidth}") as! [String:Any]
+            XCTAssertEqual(consent["checked"] as? String, "true"); XCTAssertEqual(consent["copy"] as? String, "I agree to the Terms and Privacy Policy.")
+            XCTAssertEqual(consent["width"] as! Double, 24 * sourceScale, accuracy: 1); XCTAssertEqual(consent["height"] as! Double, 24 * sourceScale, accuracy: 1); XCTAssertEqual(consent["overflow"] as? Bool, false)
             let scrolled = try await script(host, """
             const scroller=[...document.querySelectorAll('.secondary-page-scroll .uni-scroll-view')].at(-1),footer=document.querySelector('.welcome-footer').getBoundingClientRect();
             const before={clientHeight:scroller.clientHeight,scrollHeight:scroller.scrollHeight,footerY:footer.y};scroller.scrollTop=scroller.scrollHeight;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
@@ -750,13 +772,14 @@ final class HostTests: XCTestCase {
             XCTAssertEqual(scrolled["afterFooterY"]!, scrolled["footerY"]!, accuracy: 1); XCTAssertLessThanOrEqual(scrolled["descriptionBottom"]!, scrolled["afterFooterY"]! + 1)
             let scrolledScreenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
             scrolledScreenshot.name = "WKWebView Welcome safe-area scrolled"; scrolledScreenshot.lifetime = .keepAlways; add(scrolledScreenshot)
+            try (try await host.webView.takeSnapshot(configuration: nil)).pngData()!.write(to: output.appendingPathComponent("actual-wkwebview-scrolled.png"))
             print("CIMOA_WELCOME_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
 
             _ = try await script(host, "const entry=document.querySelector('[data-interaction=\"welcome.goAge.click.1\"]');entry.click();entry.click();return true")
             try await waitFor(host, ".age-page")
             let ageDepth = try await script(host, "return document.querySelector('.age-page').dataset.pageDepth") as? String
             XCTAssertEqual(ageDepth, "2")
-            _ = try await script(host, "document.querySelector('.age-page .auth-back').click();return true"); try await waitFor(host, ".welcome-page")
+            _ = try await script(host, "document.querySelector('.age-page .auth-back').click();await new Promise(r=>setTimeout(r,350));return true"); try await waitFor(host, ".welcome-page")
             for (interaction, destination, backSelector) in [
                 ("welcome.goLogin.click.1", ".login-page", ".login-page .auth-back"),
                 ("welcome.openTerms.click.1", ".legal-terms-page", ".legal-terms-page .event-page-round"),
@@ -766,13 +789,20 @@ final class HostTests: XCTestCase {
                 try await waitFor(host, destination)
                 let depth = try await script(host, "return document.querySelector('\(destination)').dataset.pageDepth") as? String
                 XCTAssertEqual(depth, "2")
-                _ = try await script(host, "document.querySelector('\(backSelector)').click();return true"); try await waitFor(host, ".welcome-page")
+                _ = try await script(host, "document.querySelector('\(backSelector)').click();await new Promise(r=>setTimeout(r,350));return true"); try await waitFor(host, ".welcome-page")
+                let retained = try await script(host, "return document.querySelector('.welcome-consent-toggle').getAttribute('aria-checked')==='true'") as? Bool
+                XCTAssertEqual(retained, true)
             }
+            let blockedAgain = try await script(host, "document.querySelector('.welcome-consent-toggle').click();document.querySelector('.welcome-login').click();document.querySelector('.welcome-create').click();await new Promise(r=>setTimeout(r,350));return location.hash.endsWith('/pages/auth/welcome')&&document.querySelector('.welcome-consent-toggle').getAttribute('aria-checked')==='false'") as? Bool
+            XCTAssertEqual(blockedAgain, true)
             let guestStorageRemainsEmpty = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===null") as? Bool
             XCTAssertEqual(guestStorageRemainsEmpty, true)
             host.webView.reload(); try await waitFor(host, ".welcome-page")
             let refreshStorageRemainsEmpty = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')===null") as? Bool
             XCTAssertEqual(refreshStorageRemainsEmpty, true)
+            let reset = try await script(host, "return document.querySelector('.welcome-consent-toggle').getAttribute('aria-checked')==='false'&&document.querySelector('.welcome-login').getAttribute('aria-disabled')==='true'") as? Bool
+            XCTAssertEqual(reset, true)
+            try JSONSerialization.data(withJSONObject: ["result":"passed","initial_auth_rejected":rejected == true,"policy_reading_does_not_accept":true,"consent":consent,"unchecking_blocks_again":blockedAgain == true,"refresh_resets":reset == true,"zero_business_writes":refreshStorageRemainsEmpty == true,"metrics":metrics,"scrolled":scrolled,"scope":"Welcome consent increment only; no whole-app or whole-screen pixel acceptance claim"], options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("native-acceptance.json"))
             try await restore()
         } catch { try? await restore(); throw error }
     }
@@ -2394,7 +2424,7 @@ final class HostTests: XCTestCase {
             const fill=async(label,value)=>{const e=await wait(()=>visible('uni-input[aria-label="'+label+'"] input,uni-textarea[aria-label="'+label+'"] textarea'));const proto=e instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;Object.getOwnPropertyDescriptor(proto,'value').set.call(e,value);e.dispatchEvent(new Event('input',{bubbles:true}));await delay(80)};
             const choose=async label=>{await delay(320);const e=[...document.querySelectorAll('[role=button],[role=checkbox]')].find(e=>(e.getAttribute('aria-label')===label||e.textContent.trim()===label)&&e.getBoundingClientRect().height>0);if(!e)throw Error('Missing '+label);e.click();await delay(80)};
             window.__registrationHelpers={delay,visible,wait,click,choose};
-            await click('welcome.goAge.click.1');await fill('Date of birth','2000-01-01');await click('age.goAgree.click.1');await wait(()=>visible('.community-page'));
+            await click('welcome.toggleAgreement.click.1');await click('welcome.goAge.click.1');await fill('Date of birth','2000-01-01');await click('age.goAgree.click.1');await wait(()=>visible('.community-page'));
             for(const key of ['terms','privacy','community']){await delay(100);document.querySelector('[data-agreement="'+key+'"]').click()}
             await click('agree.goSignup.click.1');await fill('University email','native.registration@campus.edu');await fill('Password','localpass123');await fill('Confirm password','localpass123');await click('signup.createAccount.click.1');
             await wait(()=>visible('.verification-email-page'));await click('verEmail.goVerCode.click.1');await wait(()=>visible('.verification-input input'));const code=document.querySelector('.verification-input input');code.value='009789';code.dispatchEvent(new Event('input',{bubbles:true}));await delay(80);await click('verCode.goVerSuccess.click.1');
@@ -2466,7 +2496,7 @@ final class HostTests: XCTestCase {
         const snapshot=localStorage.getItem('cimoa_app_state_v2');await click('settings.openLogoutConfirm.click.1');await click('sheetLogout.closeSheet.click.2');await wait(()=>!visible('[role=dialog]'));assert(localStorage.getItem('cimoa_app_state_v2')===snapshot,'Logout cancellation wrote data');
         await click('settings.openLogoutConfirm.click.1');await click('sheetLogout.logOut2.click.1');assert(!!visible('.loading')&&localStorage.getItem('cimoa_app_state_v2')===snapshot,'Logout wrote before Loading');await wait(()=>visible('.welcome-page'));assert(state().session.account_id===null,'Session not cleared');
         for(const key of ['users','accounts','profile_photos','media_files','icebreakers','relationships','coin_transactions','settings'])assert(JSON.stringify(state()[key])===JSON.stringify(saved[key]),'Logout changed '+key);
-        await click('welcome.goLogin.click.1');await fill('Email','native.registration@campus.edu');await fill('Password','wrong-password');await click('login.loginNow.click.1');await wait(()=>visible('.login-page [role=alert]'));assert(state().session.account_id===null,'Wrong password logged in');
+        await click('welcome.toggleAgreement.click.1');await click('welcome.goLogin.click.1');await fill('Email','native.registration@campus.edu');await fill('Password','wrong-password');await click('login.loginNow.click.1');await wait(()=>visible('.login-page [role=alert]'));assert(state().session.account_id===null,'Wrong password logged in');
         await fill('Password','localpass123');await click('login.loginNow.click.1');await wait(()=>visible('.home-header'));assert(!!visible('.main-skeleton'),'Login skeleton missing');await wait(()=>!visible('.main-skeleton'));
         for(const tab of ['Discover','Events']){await choose(tab);await wait(()=>document.querySelector('.tab[aria-current=page]')?.getAttribute('aria-label')===tab);assert(!!visible('.main-skeleton'),'First Tab skeleton missing');await wait(()=>!visible('.main-skeleton'))}
         await choose('Home');await wait(()=>visible('.home-header'));assert(!visible('.main-skeleton'),'Home skeleton repeated');await click('home.openMe.click.1');await wait(()=>visible('.profile-name'));await click('profile.openProfilePreview.click.1');await wait(()=>visible('.preview-photo .profile-photo')?.dataset.mediaStatus==='ready');

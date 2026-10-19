@@ -1,0 +1,146 @@
+{
+  "date": "2026-10-19",
+  "result": "passed",
+  "scope": "Welcome agreement checkbox and shared login/registration entry gate only",
+  "source_contract": "docs/ui-restoration/welcome/consent-2026-10-19/source-contract.json",
+  "behavior": {
+    "new_copy": "I agree to the Terms and Privacy Policy.",
+    "default_checked": false,
+    "auth_entries": "Both Create Account and Log In are blocked until the same checkbox is checked; attempted activation retains Welcome and shows validation.",
+    "policies": "New row and existing footer Terms/Privacy links stay independent, usable while unchecked, and never imply consent.",
+    "return": "Choice survives return to the cached Welcome instance.",
+    "refresh": "A new Welcome document starts unchecked.",
+    "persistence": "none; transient UI choice only. Account/session/final registration agreements are not changed by reading policies or toggling.",
+    "loading": "none for transient checkbox or pure navigation",
+    "navigation": "Existing PageTransition/route helpers retained, with duplicate forward protection."
+  },
+  "files": {
+    "runtime": [
+      "src/pages/auth/welcome.vue"
+    ],
+    "tests": [
+      "scripts/welcome-visual.test.mjs",
+      "scripts/auth-browser.test.mjs",
+      "scripts/registration-browser.test.mjs",
+      "scripts/h5-browser.test.mjs",
+      "scripts/profile-edit-browser.test.mjs",
+      "scripts/settings-safety-browser.test.mjs",
+      "scripts/social-entities-browser.test.mjs",
+      "ios/cimoaNeapo/Tests/HostTests.swift"
+    ],
+    "records": [
+      "docs/cimoa-auth-interactions.md",
+      "docs/cimoa-page-inventory.json",
+      "docs/ui-restoration/welcome/source-contract.json",
+      "docs/ui-restoration/welcome/difference-audit.md",
+      "docs/ui-restoration/welcome/consent-2026-10-19"
+    ]
+  },
+  "conventions": {
+    "vue3_script_setup": true,
+    "uni_components": true,
+    "rpx_dimensions": true,
+    "theme_variables_only": true,
+    "source_check_svg_reused": true,
+    "only_welcome_in_progress_during_work": true,
+    "convention_documents_unchanged": true
+  },
+  "validation": {
+    "unit": {
+      "tests": 173,
+      "failures": 0,
+      "errors": 0
+    },
+    "browser": {
+      "welcome": 10,
+      "authentication_regression": 14,
+      "registration_age_entry": 2,
+      "reports": [
+        "browser-acceptance.json",
+        "login-regression/login-browser.json",
+        "registration-regression/age-browser.json"
+      ],
+      "errors": 0,
+      "note": "Auth/age regression was before the final consent-label-only letter-spacing adjustment; final Welcome and WKWebView captures/tests use the byte-verified final H5 bundle."
+    },
+    "native": {
+      "device": "iPhone 17 Pro",
+      "os": "iOS Simulator 26.5",
+      "passed_tests": 2,
+      "failures": 0,
+      "evidence": "native-summary.json",
+      "checks": "Unchecked blocks both auth buttons; policy reading does not select; checked Age/Login and legal return; duplicates only push one level; uncheck blocks again; refresh resets; zero business writes; measured safe area 62/34; fixed footer and content scrolling."
+    },
+    "visual": {
+      "increment_geometry": "passed",
+      "label_ink_bounds": "label-geometry.json",
+      "new_checkbox_css_px": [
+        24,
+        24
+      ],
+      "gap_to_login_css_px": 12,
+      "checkbox_copy_gap_css_px": 12,
+      "comparison_files": [
+        "reference.png",
+        "actual-browser.png",
+        "overlay.png",
+        "diff.png",
+        "provided-reference.png",
+        "provided-overlay.png",
+        "provided-diff.png",
+        "actual-wkwebview.png",
+        "actual-wkwebview-scrolled.png"
+      ],
+      "review": "New-row geometry and overlays inspected. Supplied PNG and source-derived HTML reference are separate and explicitly labeled.",
+      "whole_page_visual_acceptance": "pending",
+      "limitations": "Do not claim whole-screen raster/font equality. Approved Cimoa branding and measured safe areas replace source CIRCA/status bar/EUL/home indicator. Previous page acceptance is historical, not automatically current."
+    },
+    "required_gates": {
+      "commands": [
+        "corepack pnpm check:conventions",
+        "git diff --check",
+        "corepack pnpm build:h5"
+      ],
+      "exit_codes": {
+        "conventions": 0,
+        "diff": 0,
+        "build": 0
+      },
+      "convention_warnings": 0
+    },
+    "native_build": {
+      "result": "TEST BUILD SUCCEEDED",
+      "final_warnings": 0,
+      "initial_sdk_warning": "Metadata extraction skipped: no AppIntents.framework dependency. Not a source/convention warning."
+    },
+    "package": "package-verification.json"
+  },
+  "status": {
+    "inventory": "pending",
+    "local_acceptance": "passed",
+    "full_acceptance": "pending",
+    "visual_acceptance": "pending",
+    "next_page_started": false
+  },
+  "cleanup": {
+    "previews_stopped": true,
+    "preview_pids": [
+      41316,
+      40589,
+      40772
+    ],
+    "isolated_browsers_closed": true,
+    "normal_ios_app_left_running": true,
+    "normal_ios_pid": 42065,
+    "preexisting_registration_images_preserved": 10,
+    "other_projects_unmodified": true
+  },
+  "git": {
+    "policy": "Local scoped commit only; no push"
+  },
+  "delivery": {
+    "ios_archive": "artifacts/cimoaNeapo-ios.zip",
+    "bundle_matches_tested_final_h5": true,
+    "h5_files": 414
+  }
+}

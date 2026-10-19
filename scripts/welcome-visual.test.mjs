@@ -11,8 +11,9 @@ import { read_circa_source } from './lib/circa-source.mjs'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const root = path.resolve('dist/build/h5')
-const output = path.resolve('docs/ui-restoration/welcome')
-const contract = JSON.parse(fs.readFileSync(path.join(output, 'source-contract.json'), 'utf8'))
+const output = path.resolve('docs/ui-restoration/welcome/consent-2026-10-19')
+const contract = JSON.parse(fs.readFileSync('docs/ui-restoration/welcome/source-contract.json', 'utf8'))
+const revision = JSON.parse(fs.readFileSync(path.join(output, 'source-contract.json'), 'utf8'))
 const photo = fs.readFileSync(contract.photo.local_path)
 const photo_data = `data:image/png;base64,${photo.toString('base64')}`
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
@@ -22,7 +23,7 @@ const server = http.createServer((request, response) => {
   response.setHeader('Content-Type', types[path.extname(file)] || 'application/octet-stream')
   fs.createReadStream(file).pipe(response)
 })
-const report = { phase: 'welcome-pixel-restoration', result: 'failed', server_pid: process.pid, reference: {}, geometry: {}, comparison: {}, checks: [], errors: [] }
+const report = { phase: 'welcome-consent-revision', result: 'failed', server_pid: process.pid, reference: {}, geometry: {}, comparison: {}, checks: [], errors: [] }
 const check = name => { report.checks.push(name); console.log(`PASS ${name}`) }
 const hash = value => crypto.createHash('sha256').update(value).digest('hex')
 const close = (actual, expected, tolerance = 1) => Math.abs(actual - expected) <= tolerance
@@ -36,6 +37,7 @@ function verify_source_lock() {
   assert.equal(hash(visual), contract.source.visual_fragment_sha256)
   assert.equal(hash(behavior), contract.source.behavior_fragment_sha256)
   assert.equal(hash(photo), contract.photo.sha256)
+  assert.equal(hash(fs.readFileSync(path.join(output, 'source.png'))), revision.primary_increment_source.sha256)
   report.reference = {
     kind: 'source-derived locked reference with approved brand and safe-area deltas',
     source_file_sha256: source.source_hash,
@@ -47,12 +49,13 @@ function verify_source_lock() {
 
 function source_reference_markup() {
   const { copy, footer, structure } = contract
-  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+  const markup = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{-webkit-font-smoothing:antialiased;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Helvetica,sans-serif;background:${structure.background};color:#0b1b3a}
 .screen{position:absolute;inset:0}.photo{position:absolute;top:44px;left:4px;width:385px;height:360px;object-fit:cover;object-position:center top;border-radius:30px 30px 0 0;display:block;-webkit-mask-image:${contract.photo.mask};mask-image:${contract.photo.mask}}
 .copy{position:absolute;top:448px;left:24px;right:24px;display:flex;flex-direction:column;align-items:center;text-align:center}.brand{font-size:${copy.brand.font_size_css_px}px;font-weight:${copy.brand.font_weight};letter-spacing:${copy.brand.letter_spacing};padding-left:${copy.brand.padding_left};color:${copy.brand.color};line-height:${copy.brand.line_height}}.title{font-size:${copy.title.font_size_css_px}px;font-weight:${copy.title.font_weight};letter-spacing:${copy.title.letter_spacing};line-height:${copy.title.line_height};color:${copy.title.color};margin-top:${copy.title.margin_top_css_px}px}.description{font-size:${copy.description.font_size_css_px}px;color:${copy.description.color};margin-top:${copy.description.margin_top_css_px}px;line-height:${copy.description.line_height};max-width:${copy.description.max_width_css_px}px;text-wrap:${copy.description.text_wrap}}
 .footer{position:absolute;left:20px;right:20px;bottom:30px;display:flex;flex-direction:column;gap:12px;z-index:20}.create{height:${footer.create_account.height_css_px}px;border-radius:${footer.create_account.border_radius_css_px}px;background:${footer.create_account.gradient};display:flex;align-items:center;justify-content:center;gap:${footer.create_account.gap_css_px}px;box-shadow:${footer.create_account.shadow};font-size:${footer.create_account.font_size_css_px}px;font-weight:${footer.create_account.font_weight};color:#fff}.create svg{width:18px;height:18px}.login{height:${footer.login.height_css_px}px;border-radius:${footer.login.border_radius_css_px}px;background:${footer.login.background};box-shadow:${footer.login.shadow};display:flex;align-items:center;justify-content:center;font-size:${footer.login.font_size_css_px}px;font-weight:${footer.login.font_weight};color:${footer.login.color}}.legal{text-align:center;margin-top:${footer.legal.margin_top_css_px}px;font-size:${footer.legal.font_size_css_px}px;color:${footer.legal.color};line-height:${footer.legal.line_height}}.legal span{color:${footer.legal.link_color};font-weight:${footer.legal.link_weight};text-decoration:underline}
 </style></head><body><div class="screen"><img class="photo" src="${photo_data}" alt="${contract.photo.alt}"><div class="copy"><div class="brand">${copy.brand.approved_copy}</div><div class="title">${copy.title.copy}</div><div class="description">${copy.description.copy}</div></div><div class="footer"><div class="create">${footer.create_account.copy}<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></div><div class="login">${footer.login.copy}</div><div class="legal">By continuing, you agree to our <span>Terms</span> and <span>Privacy Policy</span>.</div></div></div></body></html>`
+  return markup.replace('</style>', '.consent{display:flex;align-items:center;gap:12px}.consent-check{display:flex;align-items:center;justify-content:center;flex:none;width:24px;height:24px;border:1px solid #0b1b3a;border-radius:2px;background:#0b1b3a;color:#fff}.consent-check svg{width:20px;height:20px}.consent-copy{min-width:0;font-size:12.25px;line-height:1.4;letter-spacing:-.005em;color:#7478a8}.consent-copy span{color:#0b1b3a}</style>').replace('<div class="legal">', '<div class="consent"><div class="consent-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6" /></svg></div><div class="consent-copy">I agree to the <span>Terms</span> and <span>Privacy Policy</span>.</div></div><div class="legal">')
 }
 
 async function set_safe_area(page, top, bottom) {
@@ -78,6 +81,9 @@ async function freeze_welcome(page) {
       root: box('.welcome-page'), photo: box('.welcome-photo-region'), copy: box('.welcome-copy'),
       brand: box('.welcome-brand'), title: box('.welcome-title'), description: box('.welcome-description'),
       create: box('.welcome-create'), login: box('.welcome-login'), legal: box('.welcome-legal'),
+      consent: box('.welcome-consent'), checkbox: box('.welcome-consent-toggle'), consent_copy: box('.welcome-consent-copy'),
+      consent_text: document.querySelector('.welcome-consent-copy').textContent,
+      consent_font: getComputedStyle(document.querySelector('.welcome-consent-copy')).fontSize,
       safe: [...document.querySelectorAll('.welcome-page > .safe-area')].map(element => element.getBoundingClientRect().height),
       image_object_position: image ? getComputedStyle(image).objectPosition : null,
       image_style_target: image ? `${image.tagName.toLowerCase()}.${image.className}` : null,
@@ -94,7 +100,7 @@ async function freeze_welcome(page) {
   })
 }
 
-async function write_comparison(browser, reference_path, actual_path) {
+async function write_comparison(browser, reference_path, actual_path, prefix = '') {
   const page = await browser.newPage({ viewport: { width: 393, height: 852 } })
   const encoded = file => `data:image/png;base64,${fs.readFileSync(file).toString('base64')}`
   const result = await page.evaluate(async ({ reference, actual }) => {
@@ -116,8 +122,8 @@ async function write_comparison(browser, reference_path, actual_path) {
     return { overlay, diff: canvas.toDataURL('image/png'), width: canvas.width, height: canvas.height, pixels_different: exact, pixels_above_channel_delta_8: above8, mean_absolute_channel_delta: sum / first.data.length, max_channel_delta: max }
   }, { reference: encoded(reference_path), actual: encoded(actual_path) })
   const decode = value => Buffer.from(value.slice(value.indexOf(',') + 1), 'base64')
-  fs.writeFileSync(path.join(output, 'overlay.png'), decode(result.overlay))
-  fs.writeFileSync(path.join(output, 'diff.png'), decode(result.diff))
+  fs.writeFileSync(path.join(output, prefix + 'overlay.png'), decode(result.overlay))
+  fs.writeFileSync(path.join(output, prefix + 'diff.png'), decode(result.diff))
   await page.close(); delete result.overlay; delete result.diff
   return result
 }
@@ -138,10 +144,13 @@ try {
   await visual.addInitScript(() => { localStorage.removeItem('cimoa_app_state_v2'); localStorage.removeItem('cimoa_app_state') })
   const page = await visual.newPage(); page.on('pageerror', error => report.errors.push(error.message))
   await page.goto(`${origin}/?welcomePixel=default#/pages/auth/welcome`); await page.locator('.welcome-photo-status').waitFor({ state: 'detached' }); await set_safe_area(page, 44, 0)
+  assert.equal(await page.getByRole('checkbox').getAttribute('aria-checked'), 'false')
+  await page.getByRole('checkbox').click()
   report.geometry = await freeze_welcome(page)
   assert.deepEqual(report.geometry.viewport, { width: 393, height: 852 }); assert.deepEqual(report.geometry.safe, [44, 0])
   assert.ok(close(report.geometry.photo.x, 4)); assert.ok(close(report.geometry.photo.y, 44)); assert.ok(close(report.geometry.photo.width, 385)); assert.ok(close(report.geometry.photo.height, 360))
   assert.ok(close(report.geometry.copy.y, 448)); assert.ok(close(report.geometry.create.x, 20)); assert.ok(close(report.geometry.create.height, 60)); assert.ok(close(report.geometry.login.height, 56)); assert.ok(close(report.geometry.legal.bottom, 822, 2))
+  assert.ok(close(report.geometry.checkbox.width, 24)); assert.ok(close(report.geometry.checkbox.height, 24)); assert.ok(close(report.geometry.consent.y - report.geometry.login.bottom, 12)); assert.ok(close(report.geometry.consent_copy.x - report.geometry.checkbox.right, 12)); assert.ok(close(parseFloat(report.geometry.consent_font), revision.geometry_css_px.consent_font, .1)); assert.equal(report.geometry.consent_text, revision.copy.consent)
   assert.ok(['50% 0%', 'center top'].includes(report.geometry.image_object_position)); assert.equal(report.geometry.image_status_visible, false)
   assert.deepEqual(report.geometry.copy_text, {
     brand: 'Cimoa', title: contract.copy.title.copy, description: contract.copy.description.copy,
@@ -153,6 +162,11 @@ try {
   report.comparison = await write_comparison(browser, path.join(output, 'reference.png'), path.join(output, 'actual-browser.png'))
   assert.equal(report.comparison.width, 393); assert.equal(report.comparison.height, 852)
   check('reference, actual, overlay and absolute diff were generated from one locked source state')
+  const provided_page = await browser.newPage()
+  const provided = await provided_page.evaluate(async data => { const image = new Image(); image.src = data; await image.decode(); const canvas = document.createElement('canvas'); canvas.width = 393; canvas.height = 852; canvas.getContext('2d').drawImage(image, 0, 0, 786, 1704, 0, 0, 393, 852); return { width: image.width, height: image.height, png: canvas.toDataURL('image/png') } }, `data:image/png;base64,${fs.readFileSync(path.join(output, 'source.png')).toString('base64')}`)
+  assert.equal(provided.width, 786); assert.ok(provided.height >= 1704); fs.writeFileSync(path.join(output, 'provided-reference.png'), Buffer.from(provided.png.split(',')[1], 'base64')); await provided_page.close()
+  report.provided_comparison = await write_comparison(browser, path.join(output, 'provided-reference.png'), path.join(output, 'actual-browser.png'), 'provided-')
+  report.provided_comparison.exclusions = 'Source CIRCA versus approved Cimoa brand; screenshot status bar/EUL/home indicator versus measured app safe areas; original PNG raster/font rendering. No claim of whole-screen pixel equality.'
 
   const safe_context = await browser.newContext({ viewport: { width: 393, height: 852 } })
   await safe_context.addInitScript(() => { localStorage.removeItem('cimoa_app_state_v2'); localStorage.removeItem('cimoa_app_state') })
@@ -174,6 +188,18 @@ try {
   const flow = await browser.newContext({ viewport: { width: 393, height: 852 } })
   await flow.addInitScript(() => { localStorage.removeItem('cimoa_app_state_v2'); localStorage.removeItem('cimoa_app_state') })
   const flow_page = await flow.newPage(); await flow_page.goto(`${origin}/?welcomePixel=flows#/pages/auth/welcome`); await flow_page.locator('.welcome-photo-status').waitFor({ state: 'detached' })
+  const checkbox = flow_page.getByRole('checkbox'), auth_entries = ['welcome.goAge.click.1', 'welcome.goLogin.click.1']
+  assert.equal(await checkbox.getAttribute('aria-checked'), 'false')
+  for (const id of auth_entries) { const entry = flow_page.locator(`[data-interaction="${id}"]`); assert.equal(await entry.getAttribute('aria-disabled'), 'true'); await entry.evaluate(e => e.click()); await flow_page.getByRole('alert').waitFor(); assert.match(flow_page.url(), /#\/pages\/auth\/welcome$/) }
+  assert.equal(await flow_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), null)
+  check('Unchecked Welcome blocks both auth entries with explicit validation and no business writes')
+  for (const [id, destination] of [['welcome.consent.openTerms.click.1', '.legal-terms-page'], ['welcome.consent.openPrivacy.click.1', '.legal-privacy-page'], ['welcome.openTerms.click.1', '.legal-terms-page'], ['welcome.openPrivacy.click.1', '.legal-privacy-page']]) {
+    await flow_page.locator(`[data-interaction="${id}"]`).click(); await flow_page.locator(destination).waitFor(); await flow_page.getByRole('button', { name: 'Back', exact: true }).click(); await flow_page.locator('.welcome-page').waitFor(); assert.equal(await checkbox.getAttribute('aria-checked'), 'false')
+  }
+  check('All four policy links work while unchecked and never infer or toggle consent')
+  await checkbox.focus(); await checkbox.press('Space'); assert.equal(await checkbox.getAttribute('aria-checked'), 'true'); assert.equal(await flow_page.getByRole('alert').count(), 0)
+  await checkbox.press('Enter'); assert.equal(await checkbox.getAttribute('aria-checked'), 'false'); await checkbox.press('Space')
+  check('Space and Enter toggle one shared consent choice immediately and clear validation without Loading')
   const routes = [
     ['welcome.goAge.click.1', '.age-page', true], ['welcome.goLogin.click.1', '.login-page', false],
     ['welcome.openTerms.click.1', '.legal-terms-page', false], ['welcome.openPrivacy.click.1', '.legal-privacy-page', false],
@@ -183,9 +209,12 @@ try {
     if (double) await entry.dblclick(); else await entry.click()
     await flow_page.locator(destination).waitFor(); assert.equal(await flow_page.locator(destination).getAttribute('data-page-depth'), '2')
     await flow_page.getByRole('button', { name: 'Back', exact: true }).click(); await flow_page.locator('.welcome-page').waitFor()
+    assert.equal(await checkbox.getAttribute('aria-checked'), 'true')
   }
   assert.equal(await flow_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), null)
   check('Create Account double click and the other three source entries navigate once, return to Welcome and write no account data')
+  await checkbox.click(); for (const id of auth_entries) { await flow_page.locator(`[data-interaction="${id}"]`).evaluate(e => e.click()); await flow_page.getByRole('alert').waitFor(); assert.match(flow_page.url(), /#\/pages\/auth\/welcome$/) }
+  check('Unchecking again closes both auth paths after returning from Login or Age')
 
   await flow_page.route('**/*welcome-campus*.png', route => route.fulfill({ status: 404 }))
   await flow_page.reload(); await flow_page.getByRole('button', { name: 'Retry photo' }).waitFor(); await flow_page.getByRole('button', { name: 'Retry photo' }).click(); await flow_page.getByRole('button', { name: 'Retry photo' }).waitFor()
@@ -199,6 +228,7 @@ try {
   const footer_after = await flow_page.locator('.welcome-footer').boundingBox(); assert.deepEqual(footer_after, footer_before); assert.ok(footer_after.y >= 0 && footer_after.y + footer_after.height <= 568)
   await flow_page.screenshot({ path: path.join(output, 'actual-browser-small.png') })
   await flow_page.reload(); await flow_page.locator('.welcome-photo-status').waitFor({ state: 'detached' }); assert.equal(await flow_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), null)
+  assert.equal(await checkbox.getAttribute('aria-checked'), 'false'); assert.equal(await flow_page.locator('[data-interaction="welcome.goLogin.click.1"]').getAttribute('aria-disabled'), 'true'); assert.equal(await flow_page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false)
   check('320x568 scroll, fixed footer, safe areas and refresh recovery preserve the guest state')
   await flow.close()
 
