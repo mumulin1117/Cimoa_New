@@ -2553,6 +2553,72 @@ final class HostTests: XCTestCase {
             try? await restore(); throw error
         }
     }
+    func testOrganizerRecommendationBlockAndSettingsRecovery() async throws {
+        let host = try await rawHost()
+        let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        let originalScripts = host.webView.configuration.userContentController.userScripts
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/evidence/organizer-block")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("native-fixture.json"))) as! [String:Any]
+        func resetScripts() {
+            host.webView.configuration.userContentController.removeAllUserScripts()
+            for item in originalScripts { host.webView.configuration.userContentController.addUserScript(item) }
+        }
+        func restore() async throws {
+            resetScripts()
+            let encoded = String(data: try JSONSerialization.data(withJSONObject: snapshot), encoding: .utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const saved=\(encoded);for(const[k,v]of[['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)};", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            try await loadFreshConnection(host, route: "/pages/auth/splash", selector: ".splash-page")
+            resetScripts()
+        }
+        let helpers = """
+        const delay=ms=>new Promise(r=>setTimeout(r,ms)),state=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+        const visible=s=>[...document.querySelectorAll(s)].find(e=>e.closest('uni-page')===[...document.querySelectorAll('uni-page')].at(-1)&&e.getBoundingClientRect().height>0&&getComputedStyle(e).visibility!=='hidden');
+        const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Organizer timeout '+location.hash+' '+document.body.innerText)};
+        const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));e.scrollIntoView({block:'center'});await delay(280);e.click();await delay(80)};
+        const idle=async()=>{await wait(()=>!visible('.event-loading,.loading'));await delay(350)};
+        const checks=[],record=(name,pass)=>{if(!pass)throw Error(name);checks.push(name)};
+        """
+        var checks = [String]()
+        do {
+            let encoded = String(data: try JSONSerialization.data(withJSONObject: fixture["data"]!), encoding: .utf8)!
+            host.webView.configuration.userContentController.addUserScript(WKUserScript(source: "const data=\(encoded);data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));", injectionTime: .atDocumentStart, forMainFrameOnly: true))
+            try await loadFreshConnection(host, route: "/pages/events/detail?event_id=event_picnic", selector: ".event-detail-host-name")
+            resetScripts(); host.publishSafeArea()
+            checks += try await script(host, helpers + """
+            const before=localStorage.getItem('cimoa_app_state_v2');await click('evDetail.openEventMore.click.1');await click('sheetEvMore.blockOrganizer.click.1');record('Institution-specific confirmation opens without writing',visible('[role=dialog]').getAttribute('aria-label')==='Block HKUST Student Union?'&&localStorage.getItem('cimoa_app_state_v2')===before);await click('sheetEvMore.closeSheet.click.2');await wait(()=>!visible('[role=dialog]'));record('Cancel keeps original event preferences',localStorage.getItem('cimoa_app_state_v2')===before);
+            await click('evDetail.openEventMore.click.1');await click('sheetEvMore.blockOrganizer.click.1');await click('eventDetail.organizer.confirmBlock.click.1');visible('[data-interaction="eventDetail.organizer.confirmBlock.click.1"]').click();record('Block shows Loading before a single persisted write',!!visible('.event-loading')&&localStorage.getItem('cimoa_app_state_v2')===before);await idle();const prior=JSON.parse(before).data,current=state();record('Block is recommendation-only, with no personal block or attendance/chat mutation',JSON.stringify(current.event_preferences[0].blocked_organizer_ids)==='["organizer_hkust"]'&&current.revision===prior.revision+1&&['memberships','messages','conversations','relationships','coin_transactions','blocked_users','reports'].every(k=>JSON.stringify(current[k])===JSON.stringify(prior[k])));
+            await click('evDetail.goBack.click.1');await wait(()=>visible('.events-header'));record('Return to Events filters only that organizer',!visible('.event-card[data-event-id="event_picnic"]')&&!!visible('.event-card[data-event-id="event_other"]'));await click('events.openMyEvents.click.1');await wait(()=>visible('.event-upcoming-featured'));record('My Events retains the joined event',visible('.event-upcoming-featured').dataset.eventId==='event_picnic');await click('evUpcoming.openGroupStop.click.1');await wait(()=>visible('.event-group-composer'));await idle();record('Existing joined group remains accessible with its original messages',visible('.event-group-messages').textContent.includes('I’ll bring fruit!'));return checks
+            """) as! [String]
+            let groupSnapshot = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
+            try await loadFreshConnection(host, route: "/pages/events/group?event_id=event_picnic&conversation_id=group_picnic", selector: ".event-group-composer")
+            _ = try await script(host, helpers + "await idle();return true")
+            let groupRestored = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String
+            XCTAssertEqual(groupRestored, groupSnapshot); checks.append("Fresh group document preserves membership and messages without recovery writes")
+            try await loadFreshConnection(host, route: "/pages/settings/blocked", selector: ".blocked-organizer-card")
+            _ = try await script(host, "await document.fonts.ready;for(const a of document.getAnimations())if(a.effect?.getComputedTiming().iterations!==Infinity)a.finish();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return true")
+            try await Task.sleep(nanoseconds: 250_000_000)
+            try (try await host.webView.takeSnapshot(configuration: nil)).pngData()!.write(to: folder.appendingPathComponent("blocked-organizers-wkwebview.png"))
+            checks += try await script(host, helpers + """
+            record('Settings separates institutions from the original personal block',visible('.blocked-organizer-card').textContent.includes('HKUST Student Union')&&!!visible('[data-interaction="blockedList.b.unblock.click.1"]'));const before=localStorage.getItem('cimoa_app_state_v2');await click('blockedList.organizer.unblock.click.1');await click('unblockOpen.closeUnblock.click.2');await wait(()=>!visible('[role=dialog]'));record('Unblock cancellation is read-only',localStorage.getItem('cimoa_app_state_v2')===before);await click('blockedList.organizer.unblock.click.1');await click('unblockOpen.confirmUnblock.click.1');record('Unblock waits for custom Loading',!!visible('.loading')&&localStorage.getItem('cimoa_app_state_v2')===before);await idle();const prior=JSON.parse(before).data,current=state();record('Unblock restores eligibility without changing personal blocks or joined entities',current.event_preferences[0].blocked_organizer_ids.length===0&&!visible('.blocked-organizer-card')&&['memberships','messages','conversations','relationships','coin_transactions','blocked_users','reports'].every(k=>JSON.stringify(current[k])===JSON.stringify(prior[k])));return checks
+            """) as! [String]
+            try await loadFreshConnection(host, route: "/pages/events/index", selector: ".events-header")
+            checks += try await script(host, helpers + """
+            record('Refresh restores both organizer recommendations',!!visible('.event-card[data-event-id="event_picnic"]')&&!!visible('.event-card[data-event-id="event_other"]'));return checks
+            """) as! [String]
+            XCTAssertEqual(checks.count, 13)
+            let metrics = try await script(host, "return {origin:location.origin,overflow:document.documentElement.scrollWidth>innerWidth,safe:[getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-top'),getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom')]}") as! [String:Any]
+            XCTAssertEqual(metrics["origin"] as? String, BundleHTTPServer.origin); XCTAssertEqual(metrics["overflow"] as? Bool, false)
+            try await restore()
+            let restored = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+            XCTAssertEqual(restored as NSDictionary, snapshot as NSDictionary)
+            try JSONSerialization.data(withJSONObject: ["result":"passed","checks":checks,"metrics":metrics,"original_storage_restored":true,"scope":"Organizer feature only, real WKWebView DOM and persisted state; not whole-app visual/production acceptance"], options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("native-acceptance.json"))
+        } catch {
+            if let debug = try? await script(host, "return {url:location.href,text:document.body.innerText}") { try? JSONSerialization.data(withJSONObject: debug, options: [.prettyPrinted]).write(to: folder.appendingPathComponent("native-failure.json")) }
+            try? await restore(); throw error
+        }
+    }
     func testCrossPageSyncRefreshAndBlockFiltering() async throws {
         let host = try await rawHost()
         let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]

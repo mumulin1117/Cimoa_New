@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-19",
+  "result": "passed",
+  "scope": "Approved organizer recommendation-blocking feature only; not complete stage 6 or full-project visual/production acceptance",
+  "decision": "屏蔽后不再推荐该机构活动；已报名活动和群聊保留；可在设置中解除屏蔽",
+  "contract": "docs/evidence/organizer-block/contract.json",
+  "source_html_unchanged": true,
+  "implementation": {
+    "canonical_entity": "event_preferences.blocked_organizer_ids, per owner_user_id; organizer_id is never a personal user_id",
+    "actions": [
+      "block_organizer",
+      "unblock_organizer"
+    ],
+    "recommendations": "All three Events feed tabs filter institutions; My Events, details, participants and joined groups remain accessible",
+    "settings": "Settings > Blocked accounts > Blocked organizers; separate institutional rows, preserving personal unblock behavior",
+    "writes": "500ms custom Loading precedes Store transactions; confirmation/cancel, duplicate prevention, full account scope and storage-failure rollback",
+    "recovery": "Old saves missing the field default to []; malformed explicit IDs fail without overwriting storage; fresh hydration retains blocks",
+    "changed_code_files": [
+      "ios/cimoaNeapo/Tests/HostTests.swift",
+      "scripts/lib/organizer-block-fixture.mjs",
+      "scripts/organizer-block-browser.test.mjs",
+      "scripts/organizer-block.test.mjs",
+      "src/pages/events/detail.vue",
+      "src/pages/settings/blocked.vue",
+      "src/stores/accountDefaults.js",
+      "src/stores/eventSelectors.js",
+      "src/stores/migration.js",
+      "src/stores/seed.js",
+      "src/stores/selectors.js",
+      "src/stores/store.js"
+    ],
+    "convention_documents_modified": false
+  },
+  "validation": {
+    "domain": {
+      "tests": 173,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "evidence": "docs/evidence/organizer-block/unit-junit.xml"
+    },
+    "browser": {
+      "checks": 7,
+      "errors": 0,
+      "reports": [
+        "docs/evidence/organizer-block/detail-browser.json",
+        "docs/evidence/organizer-block/settings-browser.json"
+      ],
+      "coverage": [
+        "institution-specific confirmation and cancellation",
+        "storage failures leave both block/unblock retryable",
+        "Loading before writes and duplicate block prevention",
+        "recommendation filtering preserves joined entities",
+        "refresh and unblock restoration",
+        "320x568 viewport with 62/34 safe-area injection has no horizontal overflow"
+      ],
+      "limitations": "Real Chromium browser with isolated fixtures. No claimed pixel-diff acceptance for the approved new UI."
+    },
+    "wkwebview": {
+      "device": "iPhone 17 Pro",
+      "os": "iOS Simulator 26.5",
+      "tests": 3,
+      "failures": 0,
+      "organizer_checks": 13,
+      "reports": [
+        "docs/evidence/organizer-block/native-summary.json",
+        "docs/evidence/organizer-block/native-acceptance.json"
+      ],
+      "original_storage_restored": true,
+      "safe_area": {
+        "top": 62,
+        "bottom": 34
+      },
+      "limitations": "Real WKWebView DOM interactions, not hardware-touch automation. No new microphone/camera authorization required for this feature."
+    },
+    "required_gates": {
+      "commands": [
+        "corepack pnpm check:conventions",
+        "git diff --check",
+        "corepack pnpm build:h5"
+      ],
+      "exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "convention_warnings": 0
+    },
+    "native_build": {
+      "result": "TEST BUILD SUCCEEDED",
+      "warning": "Xcode SDK: Metadata extraction skipped, no AppIntents.framework dependency; not a convention warning"
+    },
+    "package": "docs/evidence/organizer-block/package-verification.json"
+  },
+  "acceptance_boundaries": {
+    "feature_functional": "passed",
+    "page_visual_acceptance": "pending",
+    "full_project_acceptance": "pending",
+    "inventory_status": "Both changed page records remain pending, local_acceptance passed; no in_progress pages. Not promoted to verified."
+  },
+  "cleanup": {
+    "temporary_preview_pids": [
+      96828,
+      97299,
+      97496,
+      97778
+    ],
+    "preview_pids_still_running": [],
+    "temporary_browser_contexts_closed": true,
+    "archive_check_temporary_directory_removed": true,
+    "normal_ios_host_pid": 98947,
+    "normal_ios_host_left_open_for_user": true,
+    "unrelated_simulators_and_servers_untouched": true
+  },
+  "git": {
+    "scope": "Local commits only; no push",
+    "implementation_commits": [
+      "1d3788ac",
+      "d0f8de41",
+      "d451aeda"
+    ],
+    "preexisting_dirty_registration_images_preserved": 10
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "checks" : [
+    "Institution-specific confirmation opens without writing",
+    "Cancel keeps original event preferences",
+    "Block shows Loading before a single persisted write",
+    "Block is recommendation-only, with no personal block or attendance\/chat mutation",
+    "Return to Events filters only that organizer",
+    "My Events retains the joined event",
+    "Existing joined group remains accessible with its original messages",
+    "Fresh group document preserves membership and messages without recovery writes",
+    "Settings separates institutions from the original personal block",
+    "Unblock cancellation is read-only",
+    "Unblock waits for custom Loading",
+    "Unblock restores eligibility without changing personal blocks or joined entities",
+    "Refresh restores both organizer recommendations"
+  ],
+  "metrics" : {
+    "origin" : "http:\/\/127.0.0.1:18765",
+    "overflow" : false,
+    "safe" : [
+      "62px",
+      "34px"
+    ]
+  },
+  "original_storage_restored" : true,
+  "result" : "passed",
+  "scope" : "Organizer feature only, real WKWebView DOM and persisted state; not whole-app visual\/production acceptance"
+}
