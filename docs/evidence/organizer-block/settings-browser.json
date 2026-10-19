@@ -1,0 +1,13 @@
+{
+  "result": "passed",
+  "phase": "settings",
+  "checks": [
+    "Settings separates institutional and personal blocks; cancellation leaves both untouched",
+    "Failed organizer Unblock remains selected and retryable, with the persisted block and joined data unchanged",
+    "Confirmed Unblock persists after Loading and refresh, restores recommendations and does not alter membership, chat or personal blocks"
+  ],
+  "errors": [],
+  "visual_acceptance": "pending",
+  "server_pid": 97778,
+  "cleaned_up": true
+}

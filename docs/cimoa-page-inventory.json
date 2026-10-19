@@ -10637,7 +10637,9 @@
     "visual_acceptance": "pending",
     "source_lock_artifact": "docs/ui-restoration/account-blocked/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/account-blocked/difference-audit.md",
-    "acceptance_evidence": "docs/evidence/settings-safety/blocked-acceptance.json"
+    "acceptance_evidence": "docs/evidence/settings-safety/blocked-acceptance.json",
+    "organizer_block_contract": "docs/evidence/organizer-block/contract.json",
+    "organizer_block_evidence": "docs/evidence/organizer-block/settings-browser.json"
   },
   {
     "source_screen": "Settings / Blocked Accounts / Empty",

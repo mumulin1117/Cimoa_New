@@ -148,7 +148,8 @@
     "blockedList.b.unblock.click.1",
     "unblockOpen.closeUnblock.click.1",
     "unblockOpen.confirmUnblock.click.1",
-    "unblockOpen.closeUnblock.click.2"
+    "unblockOpen.closeUnblock.click.2",
+    "blockedList.organizer.unblock.click.1"
   ],
   "contracts": [
     {
@@ -192,16 +193,16 @@
     },
     {
       "interaction_id": "unblockOpen.confirmUnblock.click.1",
-      "source": "route=blockedList",
-      "trigger": "click",
-      "preconditions": "Hydrated current account; unchanged full auth context; valid entity IDs; no duplicate pending write",
-      "visible_feedback": "Source UI; custom 500ms Loading before writes; no write for reading/navigation/selection",
-      "store_action": "Existing canonical Store getter/action; mappings in cimoa-profile-account-loop.md and cimoa-safety-settings-coins-contract.md",
-      "success_result": "Only validated owned entities persist; return to exact source; unavailable services cannot succeed",
-      "failure_result": "Retain prior data/draft, show error; abort stale/hide scope",
-      "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
-      "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
-      "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+      "source_screen": "route=blockedList",
+      "trigger": "click / Enter",
+      "preconditions": "Hydrated unchanged authenticated account; exact selected user or organizer ID exists; one pending write at most",
+      "visible_feedback": "Custom 500ms Loading before canonical Store action; repeat/cancel locked during write",
+      "store_action": "unblock_user for personal targets; unblock_organizer for institutional targets",
+      "success_result": "Personal target: remove block without resurrecting old connections/chats; organizer target: restore recommendation eligibility only, without joining or changing membership",
+      "failure_result": "Cancel/hide/session change/write failure leaves original blocks, filters, memberships and messages intact",
+      "persistence": "blocked_users or event_preferences.blocked_organizer_ids for current owner, according to target kind",
+      "sync_scope": "All same-ID consumers and refresh; organizer changes affect all three Events filters, detail, My Events, group and blocked-organizer list",
+      "acceptance": "Domain failure/isolation/migration tests, scoped browser interactions and real WKWebView; overall visual/full project acceptance not promoted"
     },
     {
       "interaction_id": "unblockOpen.closeUnblock.click.2",
@@ -215,6 +216,22 @@
       "persistence": "settings; user_accounts; session; permissions; blocked_users; support_requests",
       "sync_scope": "All same-ID consumers and refresh; privacy/block/ledger applied consistently",
       "acceptance": "Browser/WK source geometry, default/empty/error/long/refresh/back, rollback, account change, Loading and duplicates"
+    },
+    {
+      "interaction_id": "blockedList.organizer.unblock.click.1",
+      "source_screen": "route=blockedList",
+      "trigger": "click / Enter",
+      "preconditions": "Hydrated unchanged authenticated account; exact organizer ID exists; one pending write at most",
+      "visible_feedback": "Controlled existing ConfirmDialog; no write",
+      "success_result": "Open confirmation for the actual target without mutating data",
+      "failure_result": "Cancel/hide/session change/write failure leaves original filters, memberships, messages and permissions intact",
+      "persistence": "none",
+      "sync_scope": "All three Events filters + detail + My Events + group + blocked-organizer list + fresh hydration",
+      "acceptance": "Domain failure/isolation/migration tests, scoped browser interactions and real WKWebView; overall visual/full project acceptance not promoted"
     }
-  ]
+  ],
+  "approved_deltas": [
+    "2026-10-19 user approval: separate blocked-organizer rows reuse original card/Unblock geometry, institution icon instead of fake person avatar, explicit recommendation-only restoration copy"
+  ],
+  "organizer_block_contract": "docs/evidence/organizer-block/contract.json"
 }
