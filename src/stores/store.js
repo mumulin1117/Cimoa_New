@@ -158,6 +158,7 @@ export const use_app_store = defineStore('app', {
     settings() { const row = this.current_settings; return { ...row, notifications_enabled: row.notifications?.master || false, show_online_status: row.privacy?.show_online || false, location_enabled: false } },
     blocked_accounts: (state) => ready(state) ? own(state.data, state.data.blocked_users).map((row) => clone_data(state.data.users.find((user) => user.user_id === row.user_id))).filter(Boolean) : [],
     blocked_user_ids() { return this.blocked_accounts.map((row) => row.user_id) },
+    blocked_organizers: state => ready(state) ? ev.blocked_organizer_ids(state.data).map(id => clone_data(state.data.organizers.find(row => row.organizer_id === id))).filter(Boolean) : [],
     can_chat: (state) => (id) => ready(state) && s.connected(state.data, id),
     messages_for_conversation: (state) => (id) => ready(state) ? clone_data(s.messages_for(state.data, id)) : [],
     direct_conversation: (state) => (id) => ready(state) ? direct_conversation(state.data, id, state.clock_ms) : null,
@@ -649,7 +650,7 @@ export const use_app_store = defineStore('app', {
       return transact(this, null, data => {
         s.ensure(ev.EVENT_TABS.some(tab => tab.label === label), 'Invalid event filter.')
         let row = data.event_preferences.find(entry => entry.owner_user_id === s.owner_id(data))
-        if (!row) { row = { owner_user_id: s.owner_id(data), filters: {}, saved_event_ids: [], reminder_by_event: {} }; data.event_preferences.push(row) }
+        if (!row) { row = { owner_user_id: s.owner_id(data), filters: {}, saved_event_ids: [], reminder_by_event: {}, blocked_organizer_ids: [] }; data.event_preferences.push(row) }
         row.active_tab = label
       })
     },
@@ -677,6 +678,22 @@ export const use_app_store = defineStore('app', {
     },
     block_user(id) { return transact(this, null, (data, now) => { require_target(data, id); data.blocked_users.push({ block_id: make_id('block'), owner_user_id: s.owner_id(data), user_id: id, created_at: now }); disconnect_for_block(data, id, now) }) },
     unblock_user(id) { return transact(this, null, (data) => { s.ensure(s.blocked(data, id), 'This account is not blocked.'); data.blocked_users = data.blocked_users.filter((row) => row.owner_user_id !== s.owner_id(data) || row.user_id !== id) }) },
+    block_organizer(id) {
+      return transact(this, null, data => {
+        s.ensure(data.organizers.some(row => row.organizer_id === id), 'This organizer is unavailable.')
+        const preferences = data.event_preferences.find(row => row.owner_user_id === s.owner_id(data))
+        s.ensure(preferences, 'Event preferences are unavailable. Please retry.')
+        s.ensure(!ev.organizer_blocked(data, id), 'This organizer is already blocked.')
+        preferences.blocked_organizer_ids = [...ev.blocked_organizer_ids(data), id]
+      })
+    },
+    unblock_organizer(id) {
+      return transact(this, null, data => {
+        s.ensure(data.organizers.some(row => row.organizer_id === id) && ev.organizer_blocked(data, id), 'This organizer is not blocked.')
+        const preferences = data.event_preferences.find(row => row.owner_user_id === s.owner_id(data))
+        preferences.blocked_organizer_ids = preferences.blocked_organizer_ids.filter(organizer_id => organizer_id !== id)
+      })
+    },
     submit_report({ target_type, target_id, reason, description = '', context_id = null, also_block = false }) {
       return transact(this, null, (data, now) => {
         s.ensure(['user', 'event'].includes(target_type) && typeof reason === 'string' && reason.trim(), 'Choose a report reason.')

@@ -135,6 +135,7 @@ export function validate_data(data) {
   ensure(unique(data.event_preferences, row => row.owner_user_id), 'Duplicate event preferences.')
   for (const row of data.event_preferences) ensure(row.active_tab === undefined || ['Today', 'This week', 'My campus'].includes(row.active_tab), 'Invalid event tab.')
   for (const row of data.event_preferences) if (row.group_muted_event_ids !== undefined) ensure(Array.isArray(row.group_muted_event_ids) && unique(row.group_muted_event_ids, id => id) && row.group_muted_event_ids.every(id => has('events', id)), 'Invalid group notification preference.')
+  for (const row of data.event_preferences) if (row.blocked_organizer_ids !== undefined) ensure(Array.isArray(row.blocked_organizer_ids) && unique(row.blocked_organizer_ids, id => id) && row.blocked_organizer_ids.every(id => typeof id === 'string' && has('organizers', id)), 'Invalid blocked organizer preference.')
   for (const row of data.memberships) ensure(has('users', row.user_id) && has('events', row.event_id) && ['joined', 'left'].includes(row.status), 'Invalid member.')
   for (const row of data.memberships) if (row.admission_id !== undefined) ensure(typeof row.admission_id === 'string' && row.admission_id.length > 0, 'Invalid event admission.')
   ensure(unique(data.memberships, (row) => `${row.event_id}:${row.user_id}`), 'Duplicate member.')

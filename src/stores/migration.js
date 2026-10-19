@@ -6,6 +6,7 @@ import { generated_match_distances } from './matchingCatalog.js'
 export function upgrade_additive_data(value) {
   const data = clone_data(value)
   if (data.call_sessions === undefined) data.call_sessions = []
+  for (const row of data.event_preferences || []) if (row.blocked_organizer_ids === undefined) row.blocked_organizer_ids = []
   if(data.match_distances===undefined)data.match_distances=generated_match_distances()
   for (const row of data.settings || []) if (row.privacy && row.privacy.auto_match_visible === undefined) row.privacy.auto_match_visible = true
   for (const row of data.match_preferences || []) if (row.interest_mode === undefined) row.interest_mode = 'Similar interests'

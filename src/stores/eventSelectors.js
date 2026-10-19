@@ -8,6 +8,8 @@ export const EVENT_TABS = Object.freeze([
 ])
 export const EVENT_REPORT_REASONS = Object.freeze(['Misleading event information', 'Unsafe activity', 'Harassment or discrimination', 'Inappropriate content', 'Spam or scam', 'Underage safety concern', 'Other'])
 export const active_event_tab = data => data.event_preferences.find(row => row.owner_user_id === owner_id(data))?.active_tab || 'Today'
+export const blocked_organizer_ids = data => data.event_preferences.find(row => row.owner_user_id === owner_id(data))?.blocked_organizer_ids || []
+export const organizer_blocked = (data, id) => blocked_organizer_ids(data).includes(id)
 const date_key = (time, zone) => {
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: zone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(time).map(part => [part.type, part.value]))
   return `${parts.year}-${parts.month}-${parts.day}`
@@ -28,7 +30,7 @@ export function event_card(data, event, now) {
 export function event_feed(data, now) {
   const tab = active_event_tab(data), campus = user_by_id(data, owner_id(data))?.university
   return data.events.filter(event => {
-    if (event.ends_at <= now) return false
+    if (event.ends_at <= now || organizer_blocked(data, event.organizer_id)) return false
     if (tab === 'My campus') return !!campus && event.university === campus
     const zone = event.time_zone || 'UTC', today = date_day(now, zone), day = date_day(event.starts_at, zone)
     if (tab === 'Today') return day === today
@@ -57,7 +59,7 @@ export function event_detail(data, id, now) {
   const organizer = data.organizers.find(row => row.organizer_id === event.organizer_id)
   const notes = [...new Set([event.price === 0 ? 'Free to join' : null, ...(event.notes || '').split(/\.\s*/).filter(Boolean), event.accessibility, event.weather_plan].filter(Boolean))]
   const note_icons = { 'Free to join': '🆓', 'Bring a picnic mat': '🧺', 'English & Cantonese': '🗣️', 'Step-free access': '♿', 'Moves indoors if it rains': '🌧️' }
-  return { ...event, organizer: organizer ? { ...clone_data(organizer), badge_label: organizer.badge_label || (organizer.name.endsWith('Student Union') ? 'SU' : organizer.name.split(/\s+/).map(word => word[0]).slice(0, 2).join('')) } : null, ended: event.ends_at <= now,
+  return { ...event, organizer: organizer ? { ...clone_data(organizer), badge_label: organizer.badge_label || (organizer.name.endsWith('Student Union') ? 'SU' : organizer.name.split(/\s+/).map(word => word[0]).slice(0, 2).join('')) } : null, organizer_blocked: organizer_blocked(data, event.organizer_id), ended: event.ends_at <= now,
     attendance_label: `${event.participant_count} of ${event.capacity} going`,
     schedule: (event.schedule || []).map(item => ({ ...item, time_label: clock(event.starts_at + item.offset_minutes * 60000) })),
     notes, note_chips: notes.map(label => ({ label, emoji: note_icons[label] || '' })),

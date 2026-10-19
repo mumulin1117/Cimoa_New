@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-19",
+  "scope": "Approved organizer recommendation blocking only; not a personal-account block or an event leave",
+  "user_decision": "屏蔽后不再推荐该机构活动；已报名活动和群聊保留；可在设置中解除屏蔽",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "menu_line": 4448,
+    "detail_contract": "docs/ui-restoration/event-detail/source-contract.json",
+    "settings_contract": "docs/ui-restoration/account-blocked/source-contract.json"
+  },
+  "data_fields": [
+    {
+      "entity": "event_preferences",
+      "field_name": "blocked_organizer_ids",
+      "type": "unique string[] of existing organizer_id",
+      "required": "[] for new and older saves missing the field; malformed explicit values fail hydration without overwriting",
+      "source_screen": "Event detail > More > Block Organizer; Settings > Blocked accounts > Blocked organizers",
+      "relation": "event_preferences.owner_user_id -> users.user_id; each blocked ID -> organizers.organizer_id",
+      "persistence": "local_storage_metadata",
+      "write_action": "block_organizer / unblock_organizer"
+    },
+    {
+      "entity": "event_detail",
+      "field_name": "organizer_blocked",
+      "type": "boolean",
+      "required": "derived false when no matching owner preference",
+      "source_screen": "Event detail menu",
+      "relation": "event.organizer_id + current owner",
+      "persistence": "derived",
+      "write_action": "derived"
+    }
+  ],
+  "approved_deltas": [
+    "Keep source Block Organizer menu label; add explicit custom confirmation describing recommendation-only behavior",
+    "Reuse existing blocked-card and Unblock dialog styles for a separate Blocked organizers section in Settings; keep personal-account actions unchanged",
+    "Existing joined events, participants, group messages/admissions, ledger, relationships, reports and personal blocks are not mutated"
+  ],
+  "interactions": [
+    {
+      "interaction_id": "sheetEvMore.blockOrganizer.click.1",
+      "source_screen": "route=evDetail&sheet=evMore",
+      "trigger": "click / Enter",
+      "preconditions": "Hydrated unchanged authenticated account; exact organizer ID exists; one pending write at most",
+      "visible_feedback": "Controlled existing ConfirmDialog; no write",
+      "success_result": "Open confirmation for the actual target without mutating data",
+      "failure_result": "Cancel/hide/session change/write failure leaves original filters, memberships, messages and permissions intact",
+      "persistence": "none",
+      "sync_scope": "All three Events filters + detail + My Events + group + blocked-organizer list + fresh hydration",
+      "acceptance": "Domain failure/isolation/migration tests, scoped browser interactions and real WKWebView; overall visual/full project acceptance not promoted"
+    },
+    {
+      "interaction_id": "eventDetail.organizer.confirmBlock.click.1",
+      "source_screen": "route=evDetail&sheet=evMore",
+      "trigger": "click / Enter",
+      "preconditions": "Hydrated unchanged authenticated account; exact organizer ID exists; one pending write at most",
+      "visible_feedback": "Custom 500ms Loading before canonical Store action; repeat/cancel locked during write",
+      "success_result": "Remove every same-organizer event from recommendations, retaining My Events/detail/group access",
+      "failure_result": "Cancel/hide/session change/write failure leaves original filters, memberships, messages and permissions intact",
+      "persistence": "event_preferences.blocked_organizer_ids for current owner",
+      "sync_scope": "All three Events filters + detail + My Events + group + blocked-organizer list + fresh hydration",
+      "acceptance": "Domain failure/isolation/migration tests, scoped browser interactions and real WKWebView; overall visual/full project acceptance not promoted"
+    },
+    {
+      "interaction_id": "blockedList.organizer.unblock.click.1",
+      "source_screen": "route=blockedList",
+      "trigger": "click / Enter",
+      "preconditions": "Hydrated unchanged authenticated account; exact organizer ID exists; one pending write at most",
+      "visible_feedback": "Controlled existing ConfirmDialog; no write",
+      "success_result": "Open confirmation for the actual target without mutating data",
+      "failure_result": "Cancel/hide/session change/write failure leaves original filters, memberships, messages and permissions intact",
+      "persistence": "none",
+      "sync_scope": "All three Events filters + detail + My Events + group + blocked-organizer list + fresh hydration",
+      "acceptance": "Domain failure/isolation/migration tests, scoped browser interactions and real WKWebView; overall visual/full project acceptance not promoted"
+    },
+    {
+      "interaction_id": "unblockOpen.confirmUnblock.click.1",
+      "source_screen": "route=blockedList",
+      "trigger": "click / Enter",
+      "preconditions": "Hydrated unchanged authenticated account; exact organizer ID exists; one pending write at most",
+      "visible_feedback": "Custom 500ms Loading before canonical Store action; repeat/cancel locked during write",
+      "success_result": "Restore only recommendation eligibility, without joining or changing membership",
+      "failure_result": "Cancel/hide/session change/write failure leaves original filters, memberships, messages and permissions intact",
+      "persistence": "event_preferences.blocked_organizer_ids for current owner",
+      "sync_scope": "All three Events filters + detail + My Events + group + blocked-organizer list + fresh hydration",
+      "acceptance": "Domain failure/isolation/migration tests, scoped browser interactions and real WKWebView; overall visual/full project acceptance not promoted"
+    }
+  ]
+}
