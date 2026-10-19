@@ -1139,18 +1139,21 @@
     "sheetEvJoin.closeSheet.click.2",
     "sheetEvCancel.closeSheet.click.1",
     "sheetEvCancel.keepSpot.click.1",
-    "sheetEvCancel.cancelAttendance.click.1"
+    "sheetEvCancel.cancelAttendance.click.1",
+    "eventDetail.organizer.confirmBlock.click.1"
   ],
   "approved_deltas": [
     "Real safe area, fixed shared page skeleton, rpx responsive conversion and source cRise",
     "Canonical user profiles, actual counts/relationships/event times instead of fake prototype totals",
     "Explicit error/empty/expired state; local-only reports do not claim delivery",
     "Media capture/preview/menu are user-authorized supplements; no fabricated peer messages",
-    "No source screenshot yet: visual_acceptance stays pending"
+    "No source screenshot yet: visual_acceptance stays pending",
+    "2026-10-19 user approval: Block Organizer hides institutional recommendations only, preserves joined events/groups, and is reversible from Settings; explicit confirmation reuses EventConfirmDialog"
   ],
   "acceptance": {
     "source_lock": "locked",
     "visual_acceptance": "pending",
     "full_acceptance": "pending"
-  }
+  },
+  "organizer_block_contract": "docs/evidence/organizer-block/contract.json"
 }

@@ -1,0 +1,14 @@
+{
+  "result": "passed",
+  "phase": "detail",
+  "checks": [
+    "Source Block Organizer opens the institution-specific controlled confirmation; opening/cancel is read-only",
+    "Real browser storage failure keeps preferences, attendance and the retryable confirmation unchanged",
+    "500ms Loading and duplicate protection precede one recommendation-only block, with joined entities and personal blocks unchanged",
+    "Fresh recommendation feed hides the institution while My Events, exact group navigation and refreshed group content remain available"
+  ],
+  "errors": [],
+  "visual_acceptance": "pending",
+  "server_pid": 96828,
+  "cleaned_up": true
+}

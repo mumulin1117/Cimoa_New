@@ -12,10 +12,22 @@ import EvJoinConfirmDialog from '@/components/EvJoinConfirmDialog.vue'
 import EvCancelConfirmDialog from '@/components/EvCancelConfirmDialog.vue'
 import EventActionLoading from '@/components/EventActionLoading.vue'
 const frame = ref(null)
-const { event_id, event, error, sheet, locked, is_loading, access_error, go, back, open, close, attendance } = use_event_page(frame)
+const { store, event_id, event, error, sheet, locked, is_loading, access_error, go, back, open, close, attendance, write } = use_event_page(frame)
 const copy = async () => { try { await copy_event_text(event.value.share_text); error.value = 'Event details copied.' } catch (cause) { error.value = cause.message } }
 const map = async () => { try { await open_event_location(event.value) } catch (cause) { error.value = cause.message } }
-const deferred = label => { error.value = `${label} is unavailable because this organizer is not linked to a user account. No changes were made.` }
+const open_organizer_block = () => {
+  if (is_loading.value || access_error.value || !event.value?.organizer || event.value.organizer_blocked) return
+  error.value = ''; sheet.value = 'block-organizer'
+}
+const confirm_organizer_block = async () => {
+  if (is_loading.value || access_error.value || sheet.value !== 'block-organizer' || !event.value?.organizer || event.value.organizer_blocked) return
+  const organizer_id = event.value.organizer_id
+  error.value = ''
+  const result = await write(() => store.block_organizer(organizer_id))
+  if (result.reason === 'cancelled') return
+  if (!result.success) { error.value = result.message; return }
+  close()
+}
 const report = async () => { close(); await go('report') }
 </script>
 <template>
@@ -50,14 +62,15 @@ const report = async () => { close(); await go('report') }
     <template #overlays>
       <EvJoinConfirmDialog :open="sheet === 'join'" :event-id="event_id" :busy="is_loading" :error="error" @confirm="attendance" @close="close" @released="!sheet && (locked = false)" />
       <EvCancelConfirmDialog :open="sheet === 'cancel'" :busy="is_loading" :error="error" @confirm="attendance" @close="close" @released="!sheet && (locked = false)" />
-      <EventConfirmDialog :open="['more', 'share', 'location'].includes(sheet)" :label="sheet === 'location' ? 'Event location' : sheet === 'share' ? 'Share Event' : event?.title || 'Event options'" close-interaction="sheetEvMore.closeSheet.click.1" @close="close" @released="!sheet && (locked = false)">
-        <text class="event-dialog-title">{{ sheet === 'location' ? 'Event location' : sheet === 'share' ? 'Share Event' : event?.title }}</text>
-        <template v-if="sheet === 'more'"><view class="event-page-menu" role="button" tabindex="0" data-interaction="sheetEvMore.shareEvent.click.1" @click="sheet = 'share'" @keydown.enter="sheet = 'share'">Share Event</view><view class="event-page-menu" role="button" tabindex="0" data-interaction="sheetEvMore.openEventReport.click.1" @click="report" @keydown.enter="report">Report Event</view><view class="event-page-menu event-dialog-danger" role="button" tabindex="0" data-interaction="sheetEvMore.blockOrganizer.click.1" @click="deferred('Block Organizer')" @keydown.enter="deferred('Block Organizer')">Block Organizer</view></template>
+      <EventConfirmDialog :open="['more', 'share', 'location', 'block-organizer'].includes(sheet)" :busy="is_loading" :label="sheet === 'block-organizer' ? `Block ${event?.organizer?.name}?` : sheet === 'location' ? 'Event location' : sheet === 'share' ? 'Share Event' : event?.title || 'Event options'" close-interaction="sheetEvMore.closeSheet.click.1" @close="close" @released="!sheet && (locked = false)">
+        <text class="event-dialog-title">{{ sheet === 'block-organizer' ? `Block ${event?.organizer?.name}?` : sheet === 'location' ? 'Event location' : sheet === 'share' ? 'Share Event' : event?.title }}</text>
+        <template v-if="sheet === 'more'"><view class="event-page-menu" role="button" tabindex="0" data-interaction="sheetEvMore.shareEvent.click.1" @click="sheet = 'share'" @keydown.enter="sheet = 'share'">Share Event</view><view class="event-page-menu" role="button" tabindex="0" data-interaction="sheetEvMore.openEventReport.click.1" @click="report" @keydown.enter="report">Report Event</view><view class="event-page-menu event-dialog-danger" role="button" tabindex="0" :aria-disabled="is_loading || event?.organizer_blocked || !event?.organizer" data-interaction="sheetEvMore.blockOrganizer.click.1" @click="open_organizer_block" @keydown.enter="open_organizer_block">Block Organizer</view><text v-if="event?.organizer_blocked" class="event-dialog-copy">This organizer is blocked. You can unblock them in Settings.</text></template>
+        <template v-else-if="sheet === 'block-organizer'"><text class="event-dialog-copy">Events from this organizer will no longer be recommended. Your joined events and group chats will stay available. You can unblock this organizer in Settings.</text><view class="event-dialog-secondary event-dialog-danger" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="eventDetail.organizer.confirmBlock.click.1" @click="confirm_organizer_block" @keydown.enter="confirm_organizer_block">Block Organizer</view></template>
         <template v-else-if="sheet === 'share'"><text selectable class="event-page-copy">{{ event?.share_text }}</text><view class="event-dialog-primary" role="button" tabindex="0" data-interaction="eventDetail.share.copy.click.1" @click="copy" @keydown.enter="copy">Copy event details</view></template>
         <template v-else-if="sheet === 'location'"><text selectable class="event-page-copy">{{ event?.address || event?.location }} · {{ event?.university }}</text><text class="event-page-copy">{{ event?.accessibility }}</text><view class="event-dialog-primary" role="button" tabindex="0" data-interaction="eventDetail.location.map.click.1" @click="map" @keydown.enter="map">Open map</view></template>
         <text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text><view class="event-dialog-secondary" role="button" tabindex="0" data-interaction="sheetEvMore.closeSheet.click.2" @click="close" @keydown.enter="close">Cancel</view>
       </EventConfirmDialog>
-      <EventActionLoading :visible="is_loading" :label="sheet === 'join' ? 'Joining event…' : 'Cancelling attendance…'" />
+      <EventActionLoading :visible="is_loading" :label="sheet === 'block-organizer' ? 'Blocking organizer…' : sheet === 'join' ? 'Joining event…' : 'Cancelling attendance…'" />
     </template>
   </SecondaryPageFrame>
 </template>

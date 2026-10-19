@@ -6895,7 +6895,8 @@
       "sheetEvJoin.closeSheet.click.2",
       "sheetEvCancel.closeSheet.click.1",
       "sheetEvCancel.keepSpot.click.1",
-      "sheetEvCancel.cancelAttendance.click.1"
+      "sheetEvCancel.cancelAttendance.click.1",
+      "eventDetail.organizer.confirmBlock.click.1"
     ],
     "entities": "events; event_memberships; organizers; group_list; group_messages; reports",
     "assets": {
@@ -6996,7 +6997,10 @@
     "mapping_status": "source-mapped; implemented; local acceptance passed; full dependencies pending; contract: docs/cimoa-event-pages.md",
     "visual_acceptance": "pending",
     "source_lock": "locked",
-    "source_contract": "docs/ui-restoration/event-detail/source-contract.json"
+    "source_contract": "docs/ui-restoration/event-detail/source-contract.json",
+    "organizer_block_contract": "docs/evidence/organizer-block/contract.json",
+    "organizer_acceptance_evidence": "docs/evidence/organizer-block/detail-browser.json",
+    "organizer_acceptance_scope": "Approved organizer feature passed scoped browser regression; full detail visual/WK acceptance not promoted"
   },
   {
     "source_screen": "Events / Detail / Joined",
