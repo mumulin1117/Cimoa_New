@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-19",
+  "page": "Community legal content unification",
+  "route": "/pages/auth/community",
+  "source_lock": "locked",
+  "unchanged_source": "docs/ui-restoration/community/source-contract.json",
+  "user_decision": "Community、欢迎、设置及 App 所有入口统一用户协议和隐私政策；按校园社交功能与 Apple 当前 UGC 规则完善 Community Guidelines",
+  "approved_deltas": [
+    "Replace duplicated registration summaries with the complete existing Welcome legal documents, including the same title, updated label, introduction, sections and footer.",
+    "Preserve Community's six source summary rules, checkbox labels/geometry, Read entries, controlled Sheet shape, fixed Continue and safe-area ownership.",
+    "Use one canonical structured content catalog and one read-only renderer in AgreementSheet and standalone documents; retain each original entry's navigation and return context.",
+    "Expand the Guidelines document for 18+ identity, consent, objectionable content, child safety, media/privacy rights, introductions/matching, chats, events, scams, report/block and safety-service limitations.",
+    "Do not invent an operator, contact address, moderation team, filtering implementation, response SLA or production approval. Document missing publication requirements explicitly."
+  ],
+  "audit_before_changes": [
+    {
+      "id": "LEGAL-01",
+      "current": "registrationCatalog owns separate shortened Terms/Privacy paragraphs",
+      "target": "same complete canonical documents as Welcome",
+      "files": [
+        "src/utils/registrationCatalog.js",
+        "src/utils/legalDocuments.js"
+      ]
+    },
+    {
+      "id": "LEGAL-02",
+      "current": "Terms page header says Terms of Service, catalog and agreement say Terms of Use",
+      "target": "canonical Terms of Use across document headings",
+      "files": [
+        "src/pages/legal/terms.vue"
+      ]
+    },
+    {
+      "id": "LEGAL-03",
+      "current": "full pages duplicate rendering/footer; AgreementSheet only supports paragraphs",
+      "target": "shared complete document renderer with sheet/page presentation",
+      "files": [
+        "src/components/AgreementSheet.vue",
+        "src/components/LegalDocumentContent.vue",
+        "src/pages/legal/terms.vue",
+        "src/pages/legal/privacy.vue"
+      ]
+    },
+    {
+      "id": "LEGAL-04",
+      "current": "Guidelines contain only six overview sentences",
+      "target": "detailed campus-social rules with truthful enforcement limitations",
+      "files": [
+        "src/utils/legalDocuments.js"
+      ]
+    },
+    {
+      "id": "LEGAL-05",
+      "current": "reports are local_saved; support unavailable; no production UGC filter/moderation/contact",
+      "target": "release blockers retained; no guarantee of approval",
+      "files": [
+        "src/stores/store.js",
+        "src/utils/legalDocuments.js"
+      ]
+    }
+  ],
+  "shared_consumers": [
+    "Community: all three Read sheets",
+    "Welcome: both Terms/Privacy link pairs",
+    "Settings Legal: Terms/Privacy pages and Guidelines sheet",
+    "Settings: direct Guidelines entry",
+    "Coin Help: Terms/Privacy with owned return context"
+  ],
+  "interactions": "Existing IDs and ten-field contracts are unchanged. Read/close/scroll are zero-write; reading does not accept; Continue retains explicit three consents and 500ms Store write. Back remains existing source stack with named fallback.",
+  "apple_sources": [
+    {
+      "url": "https://developer.apple.com/app-store/review/guidelines/#user-generated-content",
+      "sections": [
+        "1.1",
+        "1.2"
+      ],
+      "checked": "2026-10-19"
+    },
+    {
+      "url": "https://developer.apple.com/app-store/review/guidelines/#privacy",
+      "sections": [
+        "5.1.1",
+        "5.1.2"
+      ],
+      "checked": "2026-10-19"
+    },
+    {
+      "url": "https://developer.apple.com/support/offering-account-deletion-in-your-app/",
+      "checked": "2026-10-19"
+    }
+  ],
+  "local_acceptance": "pending",
+  "full_acceptance": "pending",
+  "visual_acceptance": "pending",
+  "public_release": "blocked: operator/contact, real moderation and content filtering, production data practices remain unconfigured"
+}

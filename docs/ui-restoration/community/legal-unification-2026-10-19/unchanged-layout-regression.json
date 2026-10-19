@@ -1,0 +1,16 @@
+{
+  "result": "passed",
+  "viewport": {
+    "width": 393,
+    "height": 852
+  },
+  "comparison": "Pixel-to-pixel comparison of current full-page actual screenshots against pre-task accepted screenshots",
+  "terms": {
+    "changed_body_pixels": 0,
+    "exclude": "Header's approved Terms of Service to canonical Terms of Use change only (y < 118)"
+  },
+  "privacy": {
+    "changed_full_screen_pixels": 0
+  },
+  "source_overlay_note": "Legacy source-reference bold-text rendering differences remain as in pre-task evidence; they were not introduced by this shared renderer. This comparison is an unchanged-layout regression, not renewed whole-project pixel acceptance."
+}

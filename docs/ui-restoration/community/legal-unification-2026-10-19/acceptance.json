@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-19",
+  "scope": "Community complete legal documents, canonical policy rendering at every existing app entry, expanded Guidelines, unchanged-layout and interaction regressions",
+  "result": "passed",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "visual_acceptance": "pending",
+  "status": "pending",
+  "not_claimed": [
+    "Public-release legal readiness",
+    "Implemented content moderation/filtering",
+    "App Store approval",
+    "Renewed whole-App/page pixel acceptance"
+  ],
+  "changed_runtime_files": [
+    "src/utils/legalDocuments.js",
+    "src/utils/registrationCatalog.js",
+    "src/components/LegalDocumentContent.vue",
+    "src/components/AgreementSheet.vue",
+    "src/pages/legal/terms.vue",
+    "src/pages/legal/privacy.vue",
+    "src/pages/legal/legal-pages.css"
+  ],
+  "changed_test_files": [
+    "scripts/legal-documents.test.mjs",
+    "scripts/legal-unification-browser.test.mjs",
+    "scripts/community-visual.test.mjs",
+    "scripts/legal-document-visual.test.mjs",
+    "ios/cimoaNeapo/Tests/HostTests.swift"
+  ],
+  "records": [
+    "docs/cimoa-page-inventory.json",
+    "docs/ui-restoration/community/difference-audit.md",
+    "docs/ui-restoration/community/legal-unification-2026-10-19/source-contract.json"
+  ],
+  "conventions": [
+    "Complete reading of both mandatory conventions and pixel protocol",
+    "Canonical utility content and shared read-only Vue renderer, no v-html",
+    "Existing interaction IDs, Sheet/route/return/safe-area patterns preserved",
+    "Read/close/scroll are zero-write and never consent; existing 500ms Loading precedes Store agreement save",
+    "Theme variables and rpx only; developer/interaction convention files unchanged",
+    "Scoped local commit only, no push; preserve ten pre-existing registration screenshots"
+  ],
+  "tests": {
+    "unit": {
+      "passed": 180,
+      "failed": 0,
+      "report": "/tmp/cimoa-legal-unification-unit-final.xml"
+    },
+    "browser": {
+      "passed": 27,
+      "failed": 0,
+      "reports": [
+        "docs/ui-restoration/community/legal-unification-2026-10-19/browser-acceptance.json",
+        "docs/ui-restoration/community/legal-unification-2026-10-19/community-regression/browser-acceptance.json",
+        "docs/ui-restoration/community/legal-unification-2026-10-19/legal-terms/browser-acceptance.json",
+        "docs/ui-restoration/community/legal-unification-2026-10-19/legal-privacy/browser-acceptance.json"
+      ]
+    },
+    "wkwebview": {
+      "passed": 2,
+      "failed": 0,
+      "xcresult": "/tmp/cimoa-legal-unification-native-final.xcresult",
+      "device": "iPhone 17 Pro",
+      "os": "iOS 26.5",
+      "device_id": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "safe_area_points": {
+        "top": 62,
+        "bottom": 34
+      },
+      "report": "docs/ui-restoration/community/legal-unification-2026-10-19/native-acceptance.json",
+      "test_state_restored": true
+    },
+    "unchanged_layout": {
+      "privacy_fullscreen_changed_pixels": 0,
+      "terms_body_changed_pixels": 0,
+      "terms_exclusion": "Approved canonical header title only",
+      "report": "docs/ui-restoration/community/legal-unification-2026-10-19/unchanged-layout-regression.json"
+    }
+  },
+  "artifact": {
+    "h5_files": 415,
+    "manifest_sha256": "d80a11f5e798723cfcad891cc9b17da627aa1ebb20565994dba5a6d76d60ac9f",
+    "bundle_id": "com.cimoa.neapo.dev",
+    "prototype_packaged": false,
+    "compiled_app_matches_h5": true,
+    "files": 415,
+    "matching": true,
+    "tested_manifest_unchanged": true,
+    "archive_bytes": 26121558,
+    "archive": "artifacts/cimoaNeapo-ios.zip",
+    "distribution": "dist/build/h5",
+    "xcode_project": "ios/cimoaNeapo/cimoaNeapo.xcodeproj"
+  },
+  "public_release_blockers": [
+    "Real operator/legal identity, jurisdiction and reachable privacy/support/moderation contacts are not supplied.",
+    "No production filtering of objectionable UGC before posting, report-delivery/moderation response or service-wide enforcement is configured. Saved reports are on-device personal records.",
+    "Production data practices, providers, retention/deletion obligations and public policy URL must be finalized against the actual released service; local draft is not a production privacy policy."
+  ],
+  "apple_review_sources": [
+    "https://developer.apple.com/app-store/review/guidelines/#user-generated-content",
+    "https://developer.apple.com/app-store/review/guidelines/#privacy",
+    "https://developer.apple.com/support/offering-account-deletion-in-your-app/"
+  ],
+  "pixel_scope": "Community default source overlay reviewed; existing Terms/Privacy body layout is pixel-identical to pre-task actual images. Legacy source-reference font raster differences remain documented, so no new full visual acceptance claim.",
+  "repaired_regressions": [
+    "docs/ui-restoration/community/legal-unification-2026-10-19/initial-style-regression.json"
+  ],
+  "harness_diagnostics": [
+    "docs/ui-restoration/community/legal-unification-2026-10-19/initial-harness-failure.json",
+    "docs/ui-restoration/community/legal-unification-2026-10-19/second-harness-failure.json",
+    "docs/ui-restoration/community/legal-unification-2026-10-19/third-harness-failure.json",
+    "docs/ui-restoration/community/legal-unification-2026-10-19/initial-native-harness-failure.json",
+    "docs/ui-restoration/community/legal-unification-2026-10-19/second-native-harness-failure.json"
+  ],
+  "final_gates": {
+    "order": [
+      "corepack pnpm check:conventions",
+      "git diff --check",
+      "corepack pnpm build:h5"
+    ],
+    "exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "convention_warnings": 0,
+    "build_notice": "uni-app prints an available framework update; no dependencies changed.",
+    "native_build_warning": "Existing AppIntents metadata extraction skipped because no AppIntents.framework dependency is present; both final native tests passed."
+  },
+  "background_processes": {
+    "temporary_server_pids": [
+      52792,
+      52782,
+      52738,
+      52755
+    ],
+    "remaining_test_servers": [],
+    "test_runner": "exited",
+    "original_native_storage": "restored",
+    "user_simulator_app_pid": 54671
+  },
+  "commit_policy": "Only task files and the rebuilt tracked H5 are staged for a local scoped commit. No push; commit ID is reported in the final handoff."
+}

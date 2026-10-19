@@ -1,0 +1,14 @@
+{
+  "checks" : [
+    "Community terms: identical complete text, measured safe areas, scroll, Close and zero consent writes",
+    "Community privacy: identical complete text, measured safe areas, scroll, Close and zero consent writes",
+    "Community community: identical complete text, measured safe areas, scroll, Close and zero consent writes",
+    "Both Welcome link pairs match Community; Back preserves unaccepted gate and empty storage",
+    "Settings Legal reuses all three complete documents without account mutation",
+    "Direct Settings Guidelines entry shares the same document",
+    "Coin Help shows identical policies and returns to its own origin with zero ledger writes"
+  ],
+  "result" : "passed",
+  "scope" : "Shared legal content and UI entry regression, not App Store approval or full-App acceptance",
+  "snapshot_restored" : true
+}

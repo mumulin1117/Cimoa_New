@@ -5,6 +5,78 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    func testUnifiedLegalDocumentsAndCommunityGuidelines() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/community/legal-unification-2026-10-19")
+        let browser = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("browser-acceptance.json"))) as! [String: Any]
+        let documents = browser["documents"] as! [String: Any]
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("native-fixture.json"))) as! [String: Any]
+        let driver = """
+        const delay=ms=>new Promise(r=>setTimeout(r,ms));
+        const visible=s=>[...document.querySelectorAll(s)].find(e=>{const r=e.getBoundingClientRect(),c=getComputedStyle(e);return r.width>0&&r.height>0&&c.display!=='none'&&c.visibility!=='hidden'});
+        const wait=async fn=>{for(let i=0;i<200;i++){const v=fn();if(v)return v;await delay(40)}throw Error('Legal document timeout '+location.hash)};
+        const assert=(v,m)=>{if(!v)throw Error(m)};
+        const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v;
+        const sheetScroll=()=>[...document.querySelectorAll('.agreement-sheet .uni-scroll-view')].filter(e=>e.getBoundingClientRect().height>0).at(-1);
+        const click=async id=>{const e=await wait(()=>visible('[data-interaction="'+id+'"]'));e.scrollIntoView({block:'nearest'});await delay(300);e.click();await delay(80)};
+        const read=kind=>{const e=visible('.legal-document-content'),actual={id:e.dataset.legalDocument,revision:e.dataset.legalRevision,updated:e.querySelector('.legal-document-updated').textContent,intro:e.querySelector('.legal-document-intro').textContent,sections:[...e.querySelectorAll('.legal-document-section')].map(s=>[s.querySelector('.legal-document-heading').textContent,s.querySelector('.legal-document-copy').textContent]),footer:e.querySelector('.legal-document-footer').textContent};assert(JSON.stringify(canonical(actual))===JSON.stringify(canonical(documents[kind])),'Canonical text differs for '+kind);return actual};
+        const openSheet=async(id,kind)=>{await click(id);await wait(()=>visible('.agreement-sheet.event-dialog--open'));await delay(300);read(kind);assert(visible('[role=dialog]').getAttribute('aria-label')==={terms:'Terms of Use',privacy:'Privacy Policy',community:'Community Guidelines'}[kind],'Document title differs');};
+        const closeSheet=async()=>{const e=sheetScroll();e.scrollTop=e.scrollHeight;await click('sheetAgreement.closeSheet.click.2');await wait(()=>!visible('.agreement-sheet'));};
+        """
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',saved.state],['cimoa_app_state',saved.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}return true", arguments: ["saved": saved], in: nil, contentWorld: .page)
+            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?legalRestored=\(UUID().uuidString)#/pages/auth/splash")!))
+        }
+        var checks: [String] = []
+        do {
+            XCTAssertEqual(browser["result"] as? String, "passed")
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');return true")
+            try await loadFreshConnection(host, route: "/pages/auth/community", selector: ".community-page")
+            host.publishSafeArea()
+            for (kind, name) in [("terms", "Terms"), ("privacy", "Privacy"), ("community", "Guides")] {
+                let result = try await host.webView.callAsyncJavaScript(driver + """
+                const before=localStorage.getItem('cimoa_app_state_v2');await openSheet('agree.read'+name+'.click.1',kind);
+                const panel=visible('[role=dialog]').getBoundingClientRect(),scroll=sheetScroll();assert(scroll.scrollTop===0,'Sheet did not reset to the top');assert(scroll.scrollHeight>scroll.clientHeight,'Document must scroll');
+                assert([...document.querySelectorAll('.community-check-area')].every(e=>e.getAttribute('aria-checked')==='false'),'Reading changed consent');assert(localStorage.getItem('cimoa_app_state_v2')===before,'Reading wrote storage');
+                return {kind,sections:read(kind).sections.length,panel:{y:panel.y,bottom:panel.bottom},viewport:{width:innerWidth,height:innerHeight},safe:[...document.querySelectorAll('.community-page > .safe-area')].map(e=>e.getBoundingClientRect().height)};
+                """, arguments: ["documents": documents, "kind": kind, "name": name], in: nil, contentWorld: .page) as! [String: Any]
+                let safe = result["safe"] as! [Double], panel = result["panel"] as! [String: Double]
+                guard safe.count == 2, safe.allSatisfy({ $0.isFinite }), abs(safe[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safe[1] - Double(host.view.safeAreaInsets.bottom)) <= 1, panel["y"]! >= safe[0] - 1 else {
+                    throw NSError(domain: "CimoaTests", code: 19, userInfo: [NSLocalizedDescriptionKey: "Legal Sheet failed measured safe-area bounds"])
+                }
+                try (try await host.webView.takeSnapshot(configuration: nil)).pngData()!.write(to: folder.appendingPathComponent("\(kind)-sheet-wkwebview.png"))
+                _ = try await host.webView.callAsyncJavaScript(driver + "await closeSheet();return true", arguments: ["documents": documents], in: nil, contentWorld: .page)
+                checks.append("Community \(kind): identical complete text, measured safe areas, scroll, Close and zero consent writes")
+            }
+            try await loadFreshConnection(host, route: "/pages/auth/welcome", selector: ".welcome-page")
+            let welcome = try await host.webView.callAsyncJavaScript(driver + """
+            const before=localStorage.getItem('cimoa_app_state_v2');
+            for(const [kind,name] of [['terms','Terms'],['privacy','Privacy']])for(const prefix of ['welcome.','welcome.consent.']){await click(prefix+'open'+name+'.click.1');await wait(()=>visible('.legal-'+kind+'-page'));read(kind);assert(visible('.event-page-header-title').textContent===({terms:'Terms of Use',privacy:'Privacy Policy'}[kind]),'Page title mismatch');await click('isLegalDoc.goBack.click.1');await wait(()=>visible('.welcome-page'));assert(visible('.welcome-consent-toggle').getAttribute('aria-checked')==='false','Policy accepted Welcome consent');}
+            assert(localStorage.getItem('cimoa_app_state_v2')===before,'Welcome policy wrote data');return true
+            """, arguments: ["documents": documents], in: nil, contentWorld: .page) as? Bool
+            XCTAssertEqual(welcome, true); checks.append("Both Welcome link pairs match Community; Back preserves unaccepted gate and empty storage")
+            _ = try await host.webView.callAsyncJavaScript("fixture.data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(fixture));return true", arguments: ["fixture": fixture], in: nil, contentWorld: .page)
+            try await loadFreshConnection(host, route: "/pages/settings/legal", selector: ".settings-legal-page")
+            let settings = try await host.webView.callAsyncJavaScript(driver + """
+            const before=localStorage.getItem('cimoa_app_state_v2');for(const [kind,name] of [['terms','Terms'],['privacy','Privacy']]){await click('setLegal.open'+name+'.click.1');await wait(()=>visible('.legal-'+kind+'-page'));read(kind);await click('isLegalDoc.goBack.click.1');await wait(()=>visible('.settings-legal-page'));}
+            await openSheet('setLegal.openAgreeInfo.click.1','community');await closeSheet();assert(localStorage.getItem('cimoa_app_state_v2')===before,'Settings policy wrote data');return true
+            """, arguments: ["documents": documents], in: nil, contentWorld: .page) as? Bool
+            XCTAssertEqual(settings, true); checks.append("Settings Legal reuses all three complete documents without account mutation")
+            try await loadFreshConnection(host, route: "/pages/settings/index", selector: ".settings-page")
+            _ = try await host.webView.callAsyncJavaScript(driver + "await openSheet('settings.openAgreeInfo.click.1','community');await closeSheet();return true", arguments: ["documents": documents], in: nil, contentWorld: .page)
+            checks.append("Direct Settings Guidelines entry shares the same document")
+            try await loadFreshConnection(host, route: "/pages/coins/help", selector: ".coin-help-page")
+            let coins = try await host.webView.callAsyncJavaScript(driver + """
+            const before=localStorage.getItem('cimoa_app_state_v2');for(const [kind,name] of [['terms','Terms'],['privacy','Privacy']]){await click('coinHelp.open'+name+'.click.1');await wait(()=>visible('.legal-'+kind+'-page'));read(kind);assert(location.hash.includes('origin=coins'),'Missing coin return origin');await click('isLegalDoc.goBack.click.1');await wait(()=>visible('.coin-help-page'));}assert(localStorage.getItem('cimoa_app_state_v2')===before,'Policy changed coin/account data');return true
+            """, arguments: ["documents": documents], in: nil, contentWorld: .page) as? Bool
+            XCTAssertEqual(coins, true); checks.append("Coin Help shows identical policies and returns to its own origin with zero ledger writes")
+            try await restore()
+            try JSONSerialization.data(withJSONObject: ["result":"passed","checks":checks,"snapshot_restored":true,"scope":"Shared legal content and UI entry regression, not App Store approval or full-App acceptance"], options: [.prettyPrinted,.sortedKeys]).write(to: folder.appendingPathComponent("native-acceptance.json"))
+        } catch { try? await restore(); throw error }
+    }
     private func autoMatchPixel(_ phase: String) async throws {
         let host = try await rawHost()
         let snapshot = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
@@ -1088,13 +1160,13 @@ final class HostTests: XCTestCase {
             _ = try await script(host, "document.querySelector('[data-interaction=\"agree.readPrivacy.click.1\"]').click();return true")
             try await waitFor(host, ".event-dialog--open [role=dialog]"); try await Task.sleep(nanoseconds: 300_000_000)
             let sheet = try await script(host, "return {text:document.querySelector('[role=dialog]').innerText,selected:[...document.querySelectorAll('.community-check-area')].map(element=>element.getAttribute('aria-checked')),storage:localStorage.getItem('cimoa_app_state_v2'),mask:document.querySelector('.event-dialog-mask').dataset.interaction,close:document.querySelector('.event-dialog-secondary').dataset.interaction,overflow:getComputedStyle(document.querySelector('.event-dialog-scroll .uni-scroll-view')).overflowY}") as! [String: Any]
-            XCTAssertTrue((sheet["text"] as? String)?.contains("Local prototype privacy information") == true); XCTAssertTrue((sheet["text"] as? String)?.contains("stored locally") == true); XCTAssertEqual(sheet["selected"] as? [String], ["false", "false", "false"]); XCTAssertTrue(sheet["storage"] is NSNull); XCTAssertEqual(sheet["mask"] as? String, "sheetAgreement.closeSheet.click.1"); XCTAssertEqual(sheet["close"] as? String, "sheetAgreement.closeSheet.click.2")
+            XCTAssertTrue((sheet["text"] as? String)?.contains("This notice describes information handled by this local Cimoa build.") == true); XCTAssertTrue((sheet["text"] as? String)?.contains("stored locally") == true); XCTAssertEqual(sheet["selected"] as? [String], ["false", "false", "false"]); XCTAssertTrue(sheet["storage"] is NSNull); XCTAssertEqual(sheet["mask"] as? String, "sheetAgreement.closeSheet.click.1"); XCTAssertEqual(sheet["close"] as? String, "sheetAgreement.closeSheet.click.2")
             let sheetShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); sheetShot.name = "WKWebView Community Agreement Sheet"; sheetShot.lifetime = .keepAlways; add(sheetShot)
             _ = try await script(host, "document.querySelector('[data-interaction=\"sheetAgreement.closeSheet.click.2\"]').click();return true"); try await Task.sleep(nanoseconds: 350_000_000)
             let firstClose = try await script(host, "return getComputedStyle(document.querySelector('.event-dialog')).display==='none'&&!document.querySelector('.community-check-area').getAttribute('aria-checked').includes('true')") as? Bool
             XCTAssertEqual(firstClose, true)
             _ = try await script(host, "document.querySelector('[data-interaction=\"agree.readPrivacy.click.1\"]').click();return true"); try await waitFor(host, ".event-dialog--open [role=dialog]")
-            let repeatedOpen = try await script(host, "return document.querySelector('[role=dialog]').innerText.includes('Production data processing')") as? Bool
+            let repeatedOpen = try await script(host, "return document.querySelector('[role=dialog]').innerText.includes('No production privacy or support contact is configured')") as? Bool
             XCTAssertEqual(repeatedOpen, true)
             _ = try await script(host, "document.querySelector('[data-interaction=\"sheetAgreement.closeSheet.click.1\"]').click();return true"); try await Task.sleep(nanoseconds: 350_000_000)
 
@@ -2221,7 +2293,7 @@ final class HostTests: XCTestCase {
             }
             let root=metrics["root"] as! [String:Double],header=metrics["header"] as! [String:Double],back=metrics["back"] as! [String:Double],scroll=metrics["scroll"] as! [String:Double],updated=metrics["updated"] as! [String:Double],intro=metrics["intro"] as! [String:Double],card=metrics["card"] as! [String:Double],heading=metrics["heading"] as! [String:Double],copy=metrics["copy"] as! [String:Double],safes=metrics["safes"] as! [Double],text=metrics["text"] as! [String:String],interactions=metrics["interactions"] as! [String],scale=root["width"]!/393
             XCTAssertEqual(safes[0],Double(host.view.safeAreaInsets.top),accuracy:1); XCTAssertEqual(safes[1],Double(host.view.safeAreaInsets.bottom),accuracy:1); XCTAssertEqual(back["y"]!,safes[0]+4*scale,accuracy:1); XCTAssertEqual(back["width"]!,46*scale,accuracy:1); XCTAssertEqual(header["height"]!,64*scale,accuracy:1); XCTAssertEqual(scroll["y"]!,safes[0]+64*scale,accuracy:1); XCTAssertEqual(updated["x"]!,20*scale,accuracy:1); XCTAssertEqual(intro["y"]!-updated["bottom"]!,12*scale,accuracy:1); XCTAssertEqual(card["y"]!-intro["bottom"]!,18*scale,accuracy:1); XCTAssertEqual(heading["x"]!,40*scale,accuracy:1); XCTAssertEqual(copy["y"]!-heading["bottom"]!,6*scale,accuracy:1)
-            XCTAssertEqual(text["title"],"Terms of Service"); XCTAssertEqual(text["updated"],"Local draft · 14 October 2026"); XCTAssertTrue(text["intro"]?.contains("not published production terms") == true); XCTAssertEqual(text["firstHeading"],"1. Local build and eligibility"); XCTAssertTrue(text["footer"]?.contains("No production legal or support contact") == true); XCTAssertEqual(metrics["sections"] as? Int,8); XCTAssertEqual(interactions,["isLegalDoc.goBack.click.1"]); XCTAssertEqual(metrics["scrollable"] as? Bool,true); XCTAssertEqual(metrics["overflow"] as? Bool,false)
+            XCTAssertEqual(text["title"],"Terms of Use"); XCTAssertEqual(text["updated"],"Local draft · 14 October 2026"); XCTAssertTrue(text["intro"]?.contains("not published production terms") == true); XCTAssertEqual(text["firstHeading"],"1. Local build and eligibility"); XCTAssertTrue(text["footer"]?.contains("No production legal or support contact") == true); XCTAssertEqual(metrics["sections"] as? Int,8); XCTAssertEqual(interactions,["isLegalDoc.goBack.click.1"]); XCTAssertEqual(metrics["scrollable"] as? Bool,true); XCTAssertEqual(metrics["overflow"] as? Bool,false)
             let shot=XCTAttachment(image:try await host.webView.takeSnapshot(configuration:nil)); shot.name="WKWebView Terms of Service default"; shot.lifetime = .keepAlways; add(shot); print("CIMOA_LEGAL_TERMS_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
             let before = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')")
             _ = try await script(host,"const rows=[...document.querySelectorAll('.legal-terms-page .secondary-page-scroll .uni-scroll-view')],scroll=rows.find(element=>element.scrollHeight>element.clientHeight);scroll.scrollTop=scroll.scrollHeight;return document.querySelector('.legal-document-footer').textContent"); let afterScroll = try await script(host,"return localStorage.getItem('cimoa_app_state_v2')"); XCTAssertEqual(String(describing: afterScroll),String(describing: before))

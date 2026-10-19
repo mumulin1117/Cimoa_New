@@ -1,5 +1,11 @@
 # Community Agreement 来源锁定与差异审计
 
+## 2026-10-19 协议统一专项（覆盖本轮验收状态）
+
+用户要求 Community、Welcome、设置及金币帮助的协议内容一致，并完善社区规则。编码前审计确认：注册目录另存了简版 Terms/Privacy；Terms 完整页标题与目录不一致；社区详细规则只有六句摘要。现以 Welcome 使用的完整文档为唯一来源，保留六句首页摘要和既有控件/几何，只更新 Read 内容及共享渲染。差异、所有消费者、Apple 官方参考和发布缺项见 [本轮来源契约](./legal-unification-2026-10-19/source-contract.json)。
+
+本轮专项通过 180 项单元、27 项浏览器检查及 2 项真实 WKWebView 测试。Privacy 全页与任务前截图零像素变化；Terms 正文零像素变化，仅标题统一为 Terms of Use。共享组件抽取导致的样式作用域回归已被截图测试捕获并修复，未放宽原有几何断言。旧来源叠图中的粗体栅格差异不是本轮引入，不能据此重认定全页像素验收。最新状态为 local_acceptance passed、status pending、visual/full acceptance pending；下方历史 verified 不覆盖本轮状态。真实内容过滤、举报响应服务、法律主体和公开联系方式缺失，不以新增文案冒充这些能力。详细证据与本轮文件清单见 [验收记录](./legal-unification-2026-10-19/acceptance.json)。
+
 ## 结论
 
 Community Agreement 的来源锁定、首轮差异修正、浏览器/WKWebView 取证与最终门禁均已完成。默认、partial、ready、Agreement Sheet、320×568 长内容与 iPhone 17 Pro 真实安全区均通过；未勾选零写入、500ms Loading 后原子持久化、失败回滚、刷新和返回归属形成真实闭环。按用户授权的自动确认规则，本页现为 `status: verified`、`visual_acceptance: passed`。

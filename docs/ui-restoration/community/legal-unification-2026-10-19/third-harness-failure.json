@@ -1,0 +1,6 @@
+{
+  "result": "harness_failure",
+  "diagnosis": "Escape was sent to a non-focusable role=dialog container. Focus the existing tabindex=0 Close control before sending Escape, allowing the existing root key handler to receive the event.",
+  "runtime_changed": false,
+  "cleaned_up": true
+}

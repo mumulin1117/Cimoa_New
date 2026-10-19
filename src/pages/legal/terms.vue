@@ -6,6 +6,7 @@ import { use_app_store } from '@/stores/store.js'
 import { terms_document } from '@/utils/legalDocuments.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import EventPageHeader from '@/components/EventPageHeader.vue'
+import LegalDocumentContent from '@/components/LegalDocumentContent.vue'
 
 const store = use_app_store()
 const frame = ref(null)
@@ -20,13 +21,8 @@ const back = async () => {
 
 <template>
   <SecondaryPageFrame ref="frame" class="event-page legal-terms-page">
-    <template #header><EventPageHeader title="Terms of Service" back-interaction="isLegalDoc.goBack.click.1" @back="back" /><text v-if="error" class="event-page-error" role="alert">{{ error }}</text></template>
-    <view class="legal-document-body">
-      <text class="legal-document-updated">{{ terms_document.updated }}</text>
-      <text class="legal-document-intro">{{ terms_document.intro }}</text>
-      <view class="legal-document-card"><view v-for="section in terms_document.sections" :key="section[0]" class="legal-document-section"><text class="legal-document-heading">{{ section[0] }}</text><text class="legal-document-copy">{{ section[1] }}</text></view></view>
-      <text class="legal-document-footer">No production legal or support contact is configured for this local build.</text>
-    </view>
+    <template #header><EventPageHeader :title="terms_document.title" back-interaction="isLegalDoc.goBack.click.1" @back="back" /><text v-if="error" class="event-page-error" role="alert">{{ error }}</text></template>
+    <LegalDocumentContent class="legal-document-body" :document="terms_document" />
   </SecondaryPageFrame>
 </template>
 

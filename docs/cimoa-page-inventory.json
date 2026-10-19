@@ -392,15 +392,15 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "source_lock": "locked",
-    "visual_acceptance": "passed",
+    "visual_acceptance": "pending",
     "source_lock_artifact": "docs/ui-restoration/community/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/community/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Community source locked; every first-audit difference resolved; deterministic browser and iPhone 17 Pro WKWebView acceptance automatically confirmed; final checks and local specialty commit complete",
+    "mapping_status": "2026-10-19: legal unification scoped acceptance passed: 180 unit, 27 browser and 2 real WKWebView tests. Full/page visual and publication gates remain pending; source draft and content-service blockers explicit. See docs/ui-restoration/community/legal-unification-2026-10-19/acceptance.json.",
     "acceptance_evidence": "docs/ui-restoration/community/acceptance.json",
     "acceptance_notes": "Browser 8/8 and WKWebView 1/1 passed, including exact default/partial/ready geometry, Agreement Sheet first and repeated use, 320x568 scrolling, validation zero-write, 500ms atomic persistence, injected failure rollback, refresh restoration and return ownership."
   },

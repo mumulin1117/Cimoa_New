@@ -1,7 +1,9 @@
-// Source Community 2574–2599. Local-mode disclosures are not release legal policies.
+import { terms_document, privacy_document, community_document } from './legalDocuments.js'
+
+// Keep the source Community overview separate from the complete shared documents.
 export const community_rules = ['Be respectful.', 'Use your real university identity.', 'Never harass or pressure anyone.', 'Respect boundaries and consent.', 'No illegal or unsafe content.', 'Report anything concerning.']
 export const registration_agreements = [
-  { key: 'terms', label: 'I agree to the Terms of Use', title: 'Terms of Use', paragraphs: ['Local prototype terms — not a published legal policy.', 'Cimoa is intended for university students aged 18 or older. Keep your login details private and respect the community guidelines.', 'Accounts and profile information are stored on this device. The fixed code is only a local flow check; it does not verify your email or student identity. Apple sign-in, payments and remote services are not configured.', 'The operator, legal contact and production terms have not been supplied. This preview must not be treated as approval for public release.'] },
-  { key: 'privacy', label: 'I have read the Privacy Policy', title: 'Privacy Policy', paragraphs: ['Local prototype privacy information — not a published legal policy.', 'Your email, salted password credential, date of birth and chosen profile details are stored locally. Selected photos are stored in this browser or app’s local media database.', 'This registration flow does not send email or upload your photos to a server. Clearing local app data can remove your account and media. Your date of birth and email are not displayed on public profile cards.', 'Production data processing, retention, operator and privacy contact are not configured. The source prototype’s service promises do not apply to this local build.'] },
-  { key: 'community', label: 'I agree to follow the Community Guidelines', title: 'Community Guidelines', paragraphs: community_rules },
+  { ...terms_document, key: 'terms', label: 'I agree to the Terms of Use' },
+  { ...privacy_document, key: 'privacy', label: 'I have read the Privacy Policy' },
+  { ...community_document, key: 'community', label: 'I agree to follow the Community Guidelines' },
 ]

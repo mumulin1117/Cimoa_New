@@ -1,0 +1,11 @@
+{
+  "result": "failed",
+  "tests": 2,
+  "passed": 1,
+  "failed": 1,
+  "xcresult": "/tmp/cimoa-legal-unification-native.xcresult",
+  "failure": "Document must scroll",
+  "cause": "Native test selected the outer uni-scroll-view wrapper instead of the inner scrolling element. Browser tests already selected the inner element and passed.",
+  "fix": "Use the last visible uni-scroll-view, matching the browser driver. No runtime source change.",
+  "next": "Rebuild the test runner and rerun both native checks."
+}

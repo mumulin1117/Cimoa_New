@@ -1,0 +1,6 @@
+{
+  "result": "harness_failure",
+  "diagnosis": "Test changed fixture storage then navigated only a URL hash. Existing Pinia instance remained guest as designed; fresh document query is required to hydrate the replacement test account.",
+  "failure": "Settings Terms entry missing after a fixture-only disk change; no production runtime change needed.",
+  "cleaned_up": true
+}

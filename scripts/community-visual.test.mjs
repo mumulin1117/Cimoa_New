@@ -7,12 +7,14 @@ import assert from 'node:assert/strict'
 import crypto from 'node:crypto'
 import { createRequire } from 'node:module'
 import { read_circa_source } from './lib/circa-source.mjs'
+import { choose_date_of_birth } from './lib/date-picker-driver.mjs'
+import { privacy_document } from '../src/utils/legalDocuments.js'
 
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const root = path.resolve('dist/build/h5')
-const output = path.resolve('docs/ui-restoration/community')
-const contract = JSON.parse(fs.readFileSync(path.join(output, 'source-contract.json'), 'utf8'))
+const output = path.resolve(process.env.CIMOA_COMMUNITY_EVIDENCE_DIR || 'docs/ui-restoration/community')
+const contract = JSON.parse(fs.readFileSync('docs/ui-restoration/community/source-contract.json', 'utf8'))
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
 const server = http.createServer((request, response) => {
   const file = path.resolve(root, '.' + new URL(request.url, 'http://localhost').pathname.replace(/^\/$/, '/index.html'))
@@ -159,9 +161,9 @@ try {
   await sheet_page.goto(`${origin}/?communityPixel=sheet#/pages/auth/community`); await sheet_page.locator('.community-page').waitFor(); await set_safe_area(sheet_page, 54, 0)
   const saved = () => sheet_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2'))
   await sheet_page.locator('[data-interaction="agree.readPrivacy.click.1"]').click(); const dialog = sheet_page.getByRole('dialog', { name: 'Privacy Policy' }); await dialog.waitFor(); await sheet_page.waitForTimeout(320)
-  assert.match(await dialog.innerText(), /Local prototype privacy information/); assert.match(await dialog.innerText(), /stored locally/); assert.deepEqual(await sheet_page.locator('.community-check-area').evaluateAll(rows => rows.map(row => row.getAttribute('aria-checked'))), ['false', 'false', 'false']); assert.equal(await saved(), null)
+  assert.ok((await dialog.innerText()).includes(privacy_document.intro)); assert.match(await dialog.innerText(), /stored locally/); assert.deepEqual(await sheet_page.locator('.community-check-area').evaluateAll(rows => rows.map(row => row.getAttribute('aria-checked'))), ['false', 'false', 'false']); assert.equal(await saved(), null)
   await sheet_page.screenshot({ path: path.join(output, 'actual-browser-sheet.png') }); await sheet_page.locator('[data-interaction="sheetAgreement.closeSheet.click.2"]').click(); await dialog.waitFor({ state: 'hidden' })
-  await sheet_page.locator('[data-interaction="agree.readPrivacy.click.1"]').click(); await dialog.waitFor(); await sheet_page.waitForTimeout(320); assert.match(await dialog.innerText(), /Production data processing/)
+  await sheet_page.locator('[data-interaction="agree.readPrivacy.click.1"]').click(); await dialog.waitFor(); await sheet_page.waitForTimeout(320); assert.ok((await dialog.innerText()).includes(privacy_document.footer))
   await sheet_page.locator('[data-interaction="sheetAgreement.closeSheet.click.1"]').click({ position: { x: 5, y: 5 } }); await dialog.waitFor({ state: 'hidden' }); assert.equal(await saved(), null)
   check('Read opens the correct controlled Sheet on first and repeated use; Close/mask do not accept or persist an agreement')
   await sheet_context.close()
@@ -177,7 +179,7 @@ try {
 
   const flow = await empty_context(browser)
   const flow_page = await flow.newPage(); flow_page.on('pageerror', error => report.errors.push(error.message))
-  await flow_page.goto(`${origin}/?communityPixel=flow#/pages/auth/age`); await flow_page.locator('.age-page').waitFor(); const dob = flow_page.locator('uni-input[aria-label="Date of birth"] input'); await dob.fill('2000-01-01'); await flow_page.locator('[data-interaction="age.goAgree.click.1"]').click(); await flow_page.locator('.loading').waitFor(); await flow_page.locator('.community-page').waitFor()
+  await flow_page.goto(`${origin}/?communityPixel=flow#/pages/auth/age`); await flow_page.locator('.age-page').waitFor(); await choose_date_of_birth(flow_page, '2000-01-01'); await flow_page.locator('[data-interaction="age.goAgree.click.1"]').click(); await flow_page.locator('.loading').waitFor(); await flow_page.locator('.community-page').waitFor()
   const flow_saved = () => flow_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2'))
   const before = await flow_saved(); await flow_page.locator('[data-interaction="agree.goSignup.click.1"]').dispatchEvent('click'); assert.match(await flow_page.getByRole('alert').innerText(), /three community/); assert.equal(await flow_saved(), before)
   await flow_page.locator('[data-interaction="agree.readTerms.click.1"]').click(); await flow_page.getByRole('dialog', { name: 'Terms of Use' }).waitFor(); assert.equal(await flow_saved(), before); await flow_page.locator('[data-interaction="sheetAgreement.closeSheet.click.2"]').click(); await flow_page.getByRole('dialog', { name: 'Terms of Use' }).waitFor({ state: 'hidden' })
@@ -190,7 +192,7 @@ try {
 
   const failure = await empty_context(browser)
   const failure_page = await failure.newPage(); failure_page.on('pageerror', error => report.errors.push(error.message))
-  await failure_page.goto(`${origin}/?communityPixel=failure#/pages/auth/age`); await failure_page.locator('.age-page').waitFor(); await failure_page.locator('uni-input[aria-label="Date of birth"] input').fill('2000-01-01'); await failure_page.locator('[data-interaction="age.goAgree.click.1"]').click(); await failure_page.locator('.community-page').waitFor()
+  await failure_page.goto(`${origin}/?communityPixel=failure#/pages/auth/age`); await failure_page.locator('.age-page').waitFor(); await choose_date_of_birth(failure_page, '2000-01-01'); await failure_page.locator('[data-interaction="age.goAgree.click.1"]').click(); await failure_page.locator('.community-page').waitFor()
   for (const key of ['terms', 'privacy', 'community']) await failure_page.locator(`[data-agreement="${key}"]`).click()
   const failure_before = await failure_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2'))
   await failure_page.evaluate(() => { const original = Storage.prototype.setItem; window.__restoreCommunitySetItem = () => { Storage.prototype.setItem = original }; Storage.prototype.setItem = function (key, value) { if (key === 'cimoa_app_state_v2') throw new DOMException('Injected agreement storage failure', 'QuotaExceededError'); return original.call(this, key, value) } })

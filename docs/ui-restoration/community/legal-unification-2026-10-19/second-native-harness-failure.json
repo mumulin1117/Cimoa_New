@@ -1,0 +1,11 @@
+{
+  "result": "failed",
+  "tests": 2,
+  "passed": 1,
+  "failed": 1,
+  "xcresult": "/tmp/cimoa-legal-unification-native-retry.xcresult",
+  "failure": "Safe-area comparison received NaN",
+  "cause": "The test used parseFloat on the unresolved CSS custom-property expression max(...). The actual Sheet panel was correctly below the 62-point top inset; the separate measured-safe-area test passed.",
+  "fix": "Measure the rendered TopSafeArea and BottomSafeArea boxes directly and fail by throwing before writing the acceptance artifact.",
+  "runtime_changed": false
+}

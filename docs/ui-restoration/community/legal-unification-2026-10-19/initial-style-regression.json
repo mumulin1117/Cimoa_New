@@ -1,0 +1,7 @@
+{
+  "result": "failed_then_fixed",
+  "failure": "Both standalone legal pixel regressions caught content styling lost when markup moved into the shared child component.",
+  "cause": "uni-app scopes page CSS to page nodes. Child document nodes did not receive the page's scope attribute.",
+  "fix": "Move existing exact document typography, spacing and card rules into LegalDocumentContent's own scoped styles; retain page header/body styles and Sheet-specific overrides.",
+  "acceptance": "Rerun same locked source geometry and screenshot comparisons; do not relax thresholds."
+}

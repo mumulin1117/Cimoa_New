@@ -11,10 +11,10 @@ import { terms_document, privacy_document } from '../src/utils/legalDocuments.js
 
 const phase = process.argv.find(value => value.startsWith('--phase='))?.slice(8) || 'terms', isTerms = phase === 'terms'
 assert.ok(isTerms || phase === 'privacy')
-const slug = `legal-${phase}`, route = `/pages/legal/${phase}`, pageClass = `.legal-${phase}-page`, document = isTerms ? terms_document : privacy_document, sourceTitle = isTerms ? 'Terms of Service' : 'Privacy Policy'
+const slug = `legal-${phase}`, route = `/pages/legal/${phase}`, pageClass = `.legal-${phase}-page`, document = isTerms ? terms_document : privacy_document, sourceTitle = document.title
 const require = createRequire(import.meta.url), { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
-const root = path.resolve('dist/build/h5'), output = path.resolve(`docs/ui-restoration/${slug}`), key = 'cimoa_app_state_v2'
-const contract = JSON.parse(fs.readFileSync(path.join(output, 'source-contract.json'), 'utf8'))
+const root = path.resolve('dist/build/h5'), output = path.resolve(process.env.CIMOA_LEGAL_EVIDENCE_DIR ? `${process.env.CIMOA_LEGAL_EVIDENCE_DIR}/${slug}` : `docs/ui-restoration/${slug}`), key = 'cimoa_app_state_v2'
+const contract = JSON.parse(fs.readFileSync(`docs/ui-restoration/${slug}/source-contract.json`, 'utf8'))
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' }
 const server = http.createServer((request, response) => { const file = path.resolve(root, '.' + new URL(request.url, 'http://localhost').pathname.replace(/^\/$/, '/index.html')); if (!file.startsWith(root + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { response.writeHead(404); response.end(); return } response.setHeader('Content-Type', types[path.extname(file)] || 'application/octet-stream'); fs.createReadStream(file).pipe(response) })
 const report = { phase: `${slug}-pixel-restoration`, result: 'failed', server_pid: process.pid, reference: {}, geometry: {}, comparison: {}, checks: [], errors: [] }
