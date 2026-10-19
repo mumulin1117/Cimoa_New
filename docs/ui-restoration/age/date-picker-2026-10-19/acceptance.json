@@ -1,0 +1,129 @@
+{
+  "date": "2026-10-19",
+  "result": "passed",
+  "scope": "Age Date of birth calendar-picker functional increment only; not full-project acceptance",
+  "contract": "source-contract.json",
+  "changes": {
+    "runtime": [
+      "src/pages/auth/age.vue",
+      "src/components/DateOfBirthPickerConfirmDialog.vue",
+      "src/utils/dateOfBirthPicker.js"
+    ],
+    "tests": [
+      "scripts/date-of-birth-picker.test.mjs",
+      "scripts/date-picker-browser.test.mjs",
+      "scripts/lib/date-picker-driver.mjs",
+      "scripts/age-visual.test.mjs",
+      "scripts/registration-browser.test.mjs",
+      "ios/cimoaNeapo/Tests/HostTests.swift"
+    ],
+    "behavior": "Click or Enter/Space opens Year/Month/Day wheels, no text keyboard. Done fills YYYY-MM-DD. Cancel/mask/Escape/hide discard selection changes. Existing value reopens unchanged.",
+    "calendar": "Real leap/century/month lengths, four-digit year domain, max UTC today from Store clock, no newly invented maximum-age constraint. Underage dates selectable but Continue still rejects.",
+    "persistence": "Wheel and Done are transient UI drafts. Existing save_registration_age is still the only DOB write, after existing 500ms custom Loading.",
+    "architecture": "Vue3 script setup, uni-app picker-view, existing *ConfirmDialog and theme CSS variables, rpx, one active page, no Store/schema changes or direct storage writes in runtime code.",
+    "convention_documents_modified": false
+  },
+  "validation": {
+    "unit": {
+      "tests": 176,
+      "failures": 0,
+      "errors": 0
+    },
+    "browser": [
+      {
+        "file": "browser-acceptance.json",
+        "result": "passed",
+        "checks": 5,
+        "preview_pid": 45430
+      },
+      {
+        "file": "page-regression/browser-acceptance.json",
+        "result": "passed",
+        "checks": 7,
+        "preview_pid": 46233
+      },
+      {
+        "file": "registration-regression/age-browser.json",
+        "result": "passed",
+        "checks": 2,
+        "preview_pid": 46472
+      }
+    ],
+    "wkwebview": {
+      "evidence": "native-summary.json",
+      "cases": 2,
+      "failures": 0,
+      "device": "iPhone 17 Pro",
+      "os": "iOS Simulator 26.5",
+      "safe_area": [
+        62,
+        34
+      ],
+      "no_text_keyboard": true,
+      "coverage": [
+        "source geometry and original underage card",
+        "adult DOB saved only after Loading",
+        "fresh-document recovery",
+        "three actual calendar columns",
+        "cancel preserves value",
+        "no viewport shrink/input keyboard",
+        "direct Back to Welcome"
+      ]
+    },
+    "required_gates": {
+      "commands": [
+        "corepack pnpm check:conventions",
+        "git diff --check",
+        "corepack pnpm build:h5"
+      ],
+      "exit_codes": {
+        "conventions": 0,
+        "diff": 0,
+        "build": 0
+      },
+      "convention_warnings": 0
+    },
+    "native_build": {
+      "result": "TEST BUILD SUCCEEDED",
+      "sdk_warning": "Metadata extraction skipped: no AppIntents.framework dependency; not a new source/convention warning"
+    },
+    "harness_repair": {
+      "initial_report": "initial-browser-harness-failure.json",
+      "cause": "Screenshot/bounds assertion ran before the controlled sheet's 32ms opening tick, measuring an intermediate transform frame",
+      "repair": "Wait for event-dialog--open and freeze the finished CSS frame; same layout then passed"
+    },
+    "visual": {
+      "closed_page_reference": "page-regression/reference.png",
+      "actual": "page-regression/actual-browser.png",
+      "overlay": "page-regression/overlay.png",
+      "diff": "page-regression/diff.png",
+      "picker_browser": "picker-browser.png",
+      "picker_native": "picker-wkwebview.png",
+      "review": "Closed-page overlay, small-screen picker and real WKWebView image inspected. Calendar popup is a user-authorized new interaction, not an existing HTML source screen.",
+      "whole_page_visual_acceptance": "pending"
+    },
+    "limits": "Other native flows had DOB helpers adapted but were not all executed this turn. No full-app acceptance claim."
+  },
+  "status": {
+    "inventory": "pending",
+    "local_acceptance": "passed",
+    "full_acceptance": "pending",
+    "visual_acceptance": "pending",
+    "next_page_started": false
+  },
+  "cleanup": {
+    "previews_stopped": true,
+    "browsers_closed": true,
+    "normal_ios_app_left_running": true,
+    "normal_ios_pid": 47752,
+    "preexisting_registration_images_preserved": 10
+  },
+  "delivery": {
+    "ios_archive": "artifacts/cimoaNeapo-ios.zip",
+    "packaged_files": 414,
+    "tested_and_exported_h5_match": true
+  },
+  "git": {
+    "policy": "Local scoped commit only; no push"
+  }
+}

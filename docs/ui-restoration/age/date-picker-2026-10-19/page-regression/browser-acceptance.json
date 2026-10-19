@@ -1,0 +1,199 @@
+{
+  "phase": "age-pixel-restoration",
+  "result": "passed",
+  "server_pid": 46233,
+  "reference": {
+    "kind": "source-derived locked reference with approved brand, safe-area, validation and local-persistence deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "df0d90c8ec58e1c43af63f15cf4da5c3f5f70949986c949689df72b7b34bd411",
+    "behavior_fragment_sha256": "1a5e3a036b38224e4241c526cae08404416c174f572cbf9dc159da6e9f904fac",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "right": 393,
+      "bottom": 852,
+      "center_x": 196.5
+    },
+    "header": {
+      "x": 20,
+      "y": 58,
+      "width": 353,
+      "height": 47.984375,
+      "right": 373,
+      "bottom": 105.984375,
+      "center_x": 196.5
+    },
+    "back": {
+      "x": 20,
+      "y": 59,
+      "width": 45.984375,
+      "height": 45.984375,
+      "right": 65.984375,
+      "bottom": 104.984375,
+      "center_x": 42.9921875
+    },
+    "title": {
+      "x": 78,
+      "y": 58,
+      "width": 237,
+      "height": 47.984375,
+      "right": 315,
+      "bottom": 105.984375,
+      "center_x": 196.5
+    },
+    "content": {
+      "x": 0,
+      "y": 121.96875,
+      "width": 393,
+      "height": 234.203125,
+      "right": 393,
+      "bottom": 356.171875,
+      "center_x": 196.5
+    },
+    "heading": {
+      "x": 20,
+      "y": 121.96875,
+      "width": 353,
+      "height": 36.296875,
+      "right": 373,
+      "bottom": 158.265625,
+      "center_x": 196.5
+    },
+    "description": {
+      "x": 20,
+      "y": 168.265625,
+      "width": 353,
+      "height": 73.921875,
+      "right": 373,
+      "bottom": 242.1875,
+      "center_x": 196.5
+    },
+    "field": {
+      "x": 20,
+      "y": 256.1875,
+      "width": 353,
+      "height": 79.984375,
+      "right": 373,
+      "bottom": 336.171875,
+      "center_x": 196.5
+    },
+    "input_box": {
+      "x": 20,
+      "y": 280.1875,
+      "width": 353,
+      "height": 55.984375,
+      "right": 373,
+      "bottom": 336.171875,
+      "center_x": 196.5
+    },
+    "footer": {
+      "x": 0,
+      "y": 710.03125,
+      "width": 393,
+      "height": 141.96875,
+      "right": 393,
+      "bottom": 852,
+      "center_x": 196.5
+    },
+    "continue": {
+      "x": 20,
+      "y": 710.03125,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 770.03125,
+      "center_x": 196.5
+    },
+    "under": {
+      "x": 20,
+      "y": 776.015625,
+      "width": 353,
+      "height": 45.984375,
+      "right": 373,
+      "bottom": 822,
+      "center_x": 196.5
+    },
+    "safe": [
+      54,
+      0
+    ],
+    "text": {
+      "header": "Age check",
+      "heading": "Are you 18 or older?",
+      "description": "Cimoa is available only to university students aged 18 or older. Your date of birth stays private — other students only see your age.",
+      "label": "Date of birth",
+      "continue": "Continue",
+      "under": "I’m under 18"
+    },
+    "back_interaction": "age.goBack.click.1",
+    "input_interaction": "age.openDatePicker.click.1",
+    "placeholder": "YYYY-MM-DD",
+    "value": "",
+    "alert_visible": false
+  },
+  "underage_geometry": {
+    "card": {
+      "x": 20,
+      "y": 354.15625,
+      "width": 353,
+      "height": 181.359375,
+      "bottom": 535.515625
+    },
+    "title": {
+      "x": 40,
+      "y": 374.15625,
+      "width": 313,
+      "height": 23,
+      "bottom": 397.15625
+    },
+    "copy": {
+      "x": 40,
+      "y": 405.140625,
+      "width": 313,
+      "height": 46.375,
+      "bottom": 451.515625
+    },
+    "close": {
+      "x": 40,
+      "y": 465.515625,
+      "width": 313,
+      "height": 50,
+      "bottom": 515.515625
+    },
+    "padding": "20px",
+    "radius": "24.0002px",
+    "title_size": "20px",
+    "title_spacing": "-0.500001px",
+    "copy_size": "15.9999px",
+    "copy_line_height": "23.1998px",
+    "text": "Cimoa isn’t available yet\nYou need to be 18 or older to create an account. Nothing has been saved.\nClose"
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 53050,
+    "pixels_above_channel_delta_8": 7760,
+    "mean_absolute_channel_delta": 0.4928211124251873,
+    "max_channel_delta": 142
+  },
+  "checks": [
+    "393x852 empty default restores locked source geometry, exact copy, interaction IDs and finished cRise frame",
+    "reference, actual, overlay and absolute diff were generated from one hash-locked default state",
+    "Underage source card has exact padding, typography, spacing and zero-write Close return ownership",
+    "empty and 17-year dates never write; exact 18th birthday waits for Loading, persists and restores (fixed UTC test clock)",
+    "storage failure follows custom Loading, preserves the retryable DOB and creates no partial draft",
+    "320x568 safe areas keep the fixed footer stable; DOB opens a controlled picker rather than a text keyboard",
+    "direct-entry Back falls back to Welcome with no guest-state write"
+  ],
+  "errors": [],
+  "cleaned_up": true
+}

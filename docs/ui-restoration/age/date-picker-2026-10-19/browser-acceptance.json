@@ -1,0 +1,13 @@
+{
+  "result": "passed",
+  "checks": [
+    "Click opens three real uni-app calendar wheels without a text keyboard; wheel works and Cancel preserves the empty draft/storage",
+    "Done fills YYYY-MM-DD only; leap-year/month changes clamp correctly; an under-18 date is rejected without saving",
+    "Mask cancellation preserves the prior date; failed Continue rolls back storage and retains the chosen date for retry",
+    "Adult Continue persists only after custom Loading, reaches Community, and restores the same date on Back and refresh",
+    "320x568 with 62/34 safe areas keeps the picker within the screen; Escape closes it and direct Back belongs to Welcome"
+  ],
+  "errors": [],
+  "server_pid": 45430,
+  "cleaned_up": true
+}

@@ -4,6 +4,7 @@ import path from 'node:path'
 import http from 'node:http'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
+import { choose_date_of_birth } from './lib/date-picker-driver.mjs'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const phase = process.argv.find(arg => arg.startsWith('--phase='))?.slice(8) || 'age'
@@ -28,7 +29,7 @@ try {
   const snapshot = () => page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2'))?.data)
   const click = id => page.locator(`[data-interaction="${id}"]`).click()
   const field = label => page.locator(`uni-input[aria-label="${label}"] input, uni-textarea[aria-label="${label}"] textarea`)
-  const fill = async (label, value) => { await field(label).fill(value); await page.waitForTimeout(60) }
+  const fill = async (label, value) => { if (label === 'Date of birth' && await page.locator('.age-page:visible').count()) return choose_date_of_birth(page, value); await field(label).fill(value); await page.waitForTimeout(60) }
   const settle = async () => { await page.locator('.page-transition').last().evaluate(el => Promise.all(el.getAnimations().map(a => a.finished))); await page.waitForTimeout(60) }
   const revisit = route => page.goto(`${origin}/?refresh=${phase}#${route}`)
   const shot = async name => { await settle(); await page.evaluate(() => Promise.all(document.getAnimations().filter(a => a.effect?.getComputedTiming().iterations !== Infinity).map(a => a.finished.catch(() => {})))); await page.screenshot({ path: path.join(output, `${name}.png`) }) }
@@ -46,7 +47,7 @@ try {
   check('Splash → Welcome → Age; invalid/underage zero writes; custom Loading before adult draft save')
   if (phase === 'age') {
     await revisit('/pages/auth/age'); await page.locator('.age-page').waitFor()
-    assert.equal(await field('Date of birth').inputValue(), '2000-01-01')
+    assert.equal(await page.locator('.age-date-value:visible').getAttribute('data-date-value'), '2000-01-01')
     await page.setViewportSize({ width: 320, height: 568 }); await page.waitForTimeout(150); await shot('age-small')
     const cta = await page.locator('.auth-primary').boundingBox(); assert.ok(cta.y + cta.height <= 568)
     await page.locator('.auth-back').click(); await page.locator('.welcome-page').waitFor()
@@ -102,7 +103,7 @@ try {
       check('Incomplete local account cannot bypass profile setup via Home or Complete URL; guards preserve all data')
     }
     assert.equal(await field('Display name').inputValue(), '')
-    assert.equal(await field('Date of birth').inputValue(), '2000-01-01')
+    assert.equal(await page.locator('.age-date-value:visible').getAttribute('data-date-value'), '2000-01-01')
     await click('obBasic.goObUni.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /display name/)
     await fill('Display name', 'Morgan'); await page.getByRole('button', { name: 'Non-binary', exact: true }).click(); await page.getByRole('button', { name: 'they / them', exact: true }).click()
     assert.ok(Math.abs((await page.locator('.auth-input-box').first().boundingBox()).height - 56) < 1)

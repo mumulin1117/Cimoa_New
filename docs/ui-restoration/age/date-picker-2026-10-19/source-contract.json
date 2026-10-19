@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-19",
+  "page": "Age check",
+  "route": "/pages/auth/age",
+  "source_lock": "locked",
+  "unchanged_source": "docs/ui-restoration/age/source-contract.json",
+  "user_decision": "Date of birth 点击显示年月日选择器，选择后自动回填",
+  "approved_deltas": [
+    "Replace manual text entry with a keyboard-accessible field of the same 56px height / 18px radius / 18px padding / YYYY-MM-DD placeholder. Do not change existing page wording or layout.",
+    "Use existing EventConfirmDialog through a dedicated DateOfBirthPickerConfirmDialog and uni-app picker-view with Year/Month/Day columns, Done and Cancel. Theme-only colors, rpx dimensions, existing controlled bottom-sheet transition and measured bottom safe area.",
+    "Selection only updates the unsaved DOB draft on Done; Cancel/escape/mask/hide does not change it or storage. Continue retains existing exact 18-year validation and 500ms custom Loading before Store persistence.",
+    "No text keyboard. Calendar clamps month lengths/leap days and prevents dates after the Store UTC day; under-18 dates remain selectable for the existing rejection flow.",
+    "Years 0000 through the current UTC year preserve the full existing four-digit Store date domain; no new maximum-age restriction. Preview an 18-year-old date for an empty/invalid draft, without silently filling it."
+  ],
+  "data": {
+    "entity": "auth_flow.profile_draft.date_of_birth",
+    "type": "YYYY-MM-DD string",
+    "persistence": "unchanged Store metadata, written only by save_registration_age after Continue",
+    "picker_indices": "transient UI calendar indices; not business data"
+  },
+  "interactions": [
+    {
+      "interaction_id": "age.openDatePicker.click.1",
+      "source_screen": "Auth / Age Confirmation; 2026-10-19 user picker approval",
+      "trigger": "click / Enter; Cancel also mask / Escape",
+      "preconditions": "Age active; not saving; valid calendar bounds from Store UTC clock",
+      "visible_feedback": "Existing controlled bottom sheet; immediate draft wheel feedback; no artificial Loading for selection",
+      "success_result": "Open three calendar columns using the current value or an uncommitted preview",
+      "failure_result": "Cancel/hide preserves original draft; invalid/future values cannot confirm; no partial write or keyboard",
+      "persistence": "none until existing Continue action",
+      "sync_scope": "One Age DOB draft, consumed by the existing registration Store action; no duplicate account/profile data",
+      "acceptance": "Domain leap/today/18-boundary tests; browser real wheel/keyboard/cancel/return/failure/Loading/refresh; real WKWebView picker and no-keyboard check"
+    },
+    {
+      "interaction_id": "age.onObDob.change.1",
+      "source_screen": "Auth / Age Confirmation; 2026-10-19 user picker approval",
+      "trigger": "Wheel drag / mouse wheel / Arrow / PageUp / PageDown / Home / End",
+      "preconditions": "Age active; not saving; valid calendar bounds from Store UTC clock",
+      "visible_feedback": "Existing controlled bottom sheet; immediate draft wheel feedback; no artificial Loading for selection",
+      "success_result": "Normalize current calendar choice, including leap/month/today constraints",
+      "failure_result": "Cancel/hide preserves original draft; invalid/future values cannot confirm; no partial write or keyboard",
+      "persistence": "none until existing Continue action",
+      "sync_scope": "One Age DOB draft, consumed by the existing registration Store action; no duplicate account/profile data",
+      "acceptance": "Domain leap/today/18-boundary tests; browser real wheel/keyboard/cancel/return/failure/Loading/refresh; real WKWebView picker and no-keyboard check"
+    },
+    {
+      "interaction_id": "age.datePicker.confirm.click.1",
+      "source_screen": "Auth / Age Confirmation; 2026-10-19 user picker approval",
+      "trigger": "click / Enter; Cancel also mask / Escape",
+      "preconditions": "Age active; not saving; valid calendar bounds from Store UTC clock",
+      "visible_feedback": "Existing controlled bottom sheet; immediate draft wheel feedback; no artificial Loading for selection",
+      "success_result": "Fill YYYY-MM-DD in Age and close; do not save",
+      "failure_result": "Cancel/hide preserves original draft; invalid/future values cannot confirm; no partial write or keyboard",
+      "persistence": "none until existing Continue action",
+      "sync_scope": "One Age DOB draft, consumed by the existing registration Store action; no duplicate account/profile data",
+      "acceptance": "Domain leap/today/18-boundary tests; browser real wheel/keyboard/cancel/return/failure/Loading/refresh; real WKWebView picker and no-keyboard check"
+    },
+    {
+      "interaction_id": "age.datePicker.cancel.click.1",
+      "source_screen": "Auth / Age Confirmation; 2026-10-19 user picker approval",
+      "trigger": "click / Enter; Cancel also mask / Escape",
+      "preconditions": "Age active; not saving; valid calendar bounds from Store UTC clock",
+      "visible_feedback": "Existing controlled bottom sheet; immediate draft wheel feedback; no artificial Loading for selection",
+      "success_result": "Close without changing the input or persisted data",
+      "failure_result": "Cancel/hide preserves original draft; invalid/future values cannot confirm; no partial write or keyboard",
+      "persistence": "none until existing Continue action",
+      "sync_scope": "One Age DOB draft, consumed by the existing registration Store action; no duplicate account/profile data",
+      "acceptance": "Domain leap/today/18-boundary tests; browser real wheel/keyboard/cancel/return/failure/Loading/refresh; real WKWebView picker and no-keyboard check"
+    },
+    {
+      "interaction_id": "age.datePicker.mask.click.1",
+      "source_screen": "Auth / Age Confirmation; 2026-10-19 user picker approval",
+      "trigger": "click / Enter; Cancel also mask / Escape",
+      "preconditions": "Age active; not saving; valid calendar bounds from Store UTC clock",
+      "visible_feedback": "Existing controlled bottom sheet; immediate draft wheel feedback; no artificial Loading for selection",
+      "success_result": "Close without changing the input or persisted data",
+      "failure_result": "Cancel/hide preserves original draft; invalid/future values cannot confirm; no partial write or keyboard",
+      "persistence": "none until existing Continue action",
+      "sync_scope": "One Age DOB draft, consumed by the existing registration Store action; no duplicate account/profile data",
+      "acceptance": "Domain leap/today/18-boundary tests; browser real wheel/keyboard/cancel/return/failure/Loading/refresh; real WKWebView picker and no-keyboard check"
+    }
+  ],
+  "visual_acceptance": "pending"
+}

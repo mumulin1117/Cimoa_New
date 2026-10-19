@@ -617,6 +617,23 @@ final class HostTests: XCTestCase {
         }
         throw NSError(domain: "CimoaTests", code: 2, userInfo: [NSLocalizedDescriptionKey: "Missing \(selector)"])
     }
+    private var birthDatePickerDriver: String {
+        """
+        const chooseBirthDate=async value=>{
+          const pause=ms=>new Promise(r=>setTimeout(r,ms)),visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),wait=async fn=>{for(let i=0;i<200;i++){if(fn())return;await pause(20)}throw Error('Birth date picker timeout')};
+          visible('[data-interaction="age.openDatePicker.click.1"]').click();await wait(()=>visible('.dob-picker.event-dialog--open'));await pause(280);
+          for(const[index,label]of ['Year','Month','Day'].entries()){
+            const column=visible('[role=spinbutton][aria-label="'+label+'"]'),target=Number(value.split('-')[index]);let steps=0;
+            while(Number(column.getAttribute('aria-valuenow'))!==target&&steps++<250){const delta=target-Number(column.getAttribute('aria-valuenow')),key=Math.abs(delta)>=10?(delta>0?'PageUp':'PageDown'):(delta>0?'ArrowUp':'ArrowDown');column.dispatchEvent(new KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));await pause(4)}
+            if(Number(column.getAttribute('aria-valuenow'))!==target)throw Error('Could not select '+label+' '+target)
+          }
+          visible('[data-interaction="age.datePicker.confirm.click.1"]').click();await wait(()=>!visible('.dob-picker [role=dialog]'));
+        };
+        """
+    }
+    private func chooseBirthDate(_ host: WebViewController, _ value: String) async throws {
+        _ = try await host.webView.callAsyncJavaScript(birthDatePickerDriver + "await chooseBirthDate(value);return true", arguments: ["value":value], in: nil, contentWorld: .page)
+    }
     private func signIn(_ host: WebViewController) async throws {
         _ = try await script(host, "const check=document.querySelector('.welcome-consent-toggle');if(check.getAttribute('aria-checked')!=='true')check.click();document.querySelector('.welcome-login').click(); return true")
         try await waitFor(host, ".login-page input")
@@ -908,6 +925,9 @@ final class HostTests: XCTestCase {
     func testAgePixelRestoration() async throws {
         let host = try await rawHost()
         let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        var projectRoot = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { projectRoot.deleteLastPathComponent() }
+        let output = projectRoot.appendingPathComponent("docs/ui-restoration/age/date-picker-2026-10-19")
         func restore() async throws {
             host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?agePixel=restore#/pages/auth/welcome")!))
             try await waitFor(host, ".welcome-page")
@@ -932,7 +952,7 @@ final class HostTests: XCTestCase {
                 metrics = try await script(host, """
                 await document.fonts.ready;for(const animation of document.getAnimations())animation.finish();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
                 const box=selector=>{const rect=document.querySelector(selector).getBoundingClientRect();return {x:rect.x,y:rect.y,width:rect.width,height:rect.height,right:rect.right,bottom:rect.bottom,cx:rect.x+rect.width/2}},input=document.querySelector('.age-page .auth-input');
-                return {root:box('.age-page'),header:box('.auth-header'),back:box('.auth-back'),heading:box('.auth-heading'),description:box('.auth-description'),field:box('.auth-field'),inputBox:box('.auth-input-box'),continueButton:box('.auth-primary'),underButton:box('.auth-secondary'),safes:[...document.querySelectorAll('.age-page > .safe-area')].map(element=>element.getBoundingClientRect().height),text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.auth-heading').textContent,description:document.querySelector('.auth-description').textContent,label:document.querySelector('.auth-label').textContent,continueButton:document.querySelector('.auth-primary').textContent.trim(),underButton:document.querySelector('.auth-secondary').textContent.trim()},backInteraction:document.querySelector('.auth-back').dataset.interaction,inputInteraction:input.dataset.interaction,placeholder:input.querySelector('.uni-input-placeholder')?.textContent||input.getAttribute('placeholder'),value:input.querySelector('input')?.value||'',alert:!!document.querySelector('.age-page [role=alert]')};
+                return {root:box('.age-page'),header:box('.auth-header'),back:box('.auth-back'),heading:box('.auth-heading'),description:box('.auth-description'),field:box('.auth-field'),inputBox:box('.auth-input-box'),continueButton:box('.auth-primary'),underButton:box('.auth-secondary'),safes:[...document.querySelectorAll('.age-page > .safe-area')].map(element=>element.getBoundingClientRect().height),text:{header:document.querySelector('.auth-header-title').textContent,heading:document.querySelector('.auth-heading').textContent,description:document.querySelector('.auth-description').textContent,label:document.querySelector('.auth-label').textContent,continueButton:document.querySelector('.auth-primary').textContent.trim(),underButton:document.querySelector('.auth-secondary').textContent.trim()},backInteraction:document.querySelector('.auth-back').dataset.interaction,inputInteraction:document.querySelector('.auth-input-box').dataset.interaction,placeholder:input.dataset.placeholder,value:input.dataset.dateValue,alert:!!document.querySelector('.age-page [role=alert]')};
                 """) as! [String: Any]
                 let safes = metrics["safes"] as! [Double]
                 if abs(safes[0] - Double(host.view.safeAreaInsets.top)) <= 1, abs(safes[1] - Double(host.view.safeAreaInsets.bottom)) <= 1 { break }
@@ -951,8 +971,9 @@ final class HostTests: XCTestCase {
             XCTAssertEqual(continueButton["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(continueButton["height"]!, 60 * sourceScale, accuracy: 1); XCTAssertEqual(underButton["height"]!, 46 * sourceScale, accuracy: 1); XCTAssertEqual(underButton["bottom"]!, root["height"]! - safes[1] - 30 * sourceScale, accuracy: 2)
             XCTAssertEqual(text["header"], "Age check"); XCTAssertEqual(text["heading"], "Are you 18 or older?"); XCTAssertEqual(text["description"], "Cimoa is available only to university students aged 18 or older. Your date of birth stays private — other students only see your age.")
             XCTAssertEqual(text["label"], "Date of birth"); XCTAssertEqual(text["continueButton"], "Continue"); XCTAssertEqual(text["underButton"], "I’m under 18")
-            XCTAssertEqual(metrics["backInteraction"] as? String, "age.goBack.click.1"); XCTAssertEqual(metrics["inputInteraction"] as? String, "age.onObDob.change.1"); XCTAssertEqual(metrics["placeholder"] as? String, "YYYY-MM-DD"); XCTAssertEqual(metrics["value"] as? String, ""); XCTAssertEqual(metrics["alert"] as? Bool, false)
+            XCTAssertEqual(metrics["backInteraction"] as? String, "age.goBack.click.1"); XCTAssertEqual(metrics["inputInteraction"] as? String, "age.openDatePicker.click.1"); XCTAssertEqual(metrics["placeholder"] as? String, "YYYY-MM-DD"); XCTAssertEqual(metrics["value"] as? String, ""); XCTAssertEqual(metrics["alert"] as? Bool, false)
             let defaultShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); defaultShot.name = "WKWebView Age deterministic"; defaultShot.lifetime = .keepAlways; add(defaultShot)
+            try (try await host.webView.takeSnapshot(configuration: nil)).pngData()!.write(to: output.appendingPathComponent("actual-wkwebview.png"))
             print("CIMOA_AGE_SAFE_AREA top=\(safes[0]) bottom=\(safes[1]) viewport=\(root["width"] ?? -1)x\(root["height"] ?? -1)")
 
             stage = "underage source card"
@@ -976,41 +997,39 @@ final class HostTests: XCTestCase {
             let invalidMessage = try await script(host, "return document.querySelector('.age-page [role=alert]').textContent") as! String
             let invalidStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
             XCTAssertTrue(invalidMessage.contains("valid date")); XCTAssertTrue(invalidStorage is NSNull)
-            _ = try await script(host, "const input=document.querySelector('.age-page input');input.value='2008-10-16';input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".age-under")
+            try await chooseBirthDate(host, "2020-01-01")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".age-under")
             let underageStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
             XCTAssertTrue(underageStorage is NSNull)
-            _ = try await script(host, "const input=document.querySelector('.age-page input');input.value='2008-10-15';input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".loading")
+            try await chooseBirthDate(host, "2000-01-01")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".loading")
             let loadingStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
             XCTAssertTrue(loadingStorage is NSNull); try await waitFor(host, ".community-page")
             let committed = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
             let envelope = try JSONSerialization.jsonObject(with: Data(committed.utf8)) as! [String: Any], data = envelope["data"] as! [String: Any], auth = data["auth_flow"] as! [String: Any], profile = auth["profile_draft"] as! [String: Any]
-            XCTAssertEqual(profile["date_of_birth"] as? String, "2008-10-15"); XCTAssertEqual(auth["step"] as? String, "community")
-            host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?agePixel=refresh#/pages/auth/age")!)); try await waitFor(host, ".age-page")
-            for _ in 0..<50 { if (try? await script(host, "return document.querySelector('.age-page input')?.value==='2008-10-15'")) as? Bool == true { break }; try await Task.sleep(nanoseconds: 100_000_000) }
-            let restoredDOB = try await script(host, "return document.querySelector('.age-page input').value") as? String
-            XCTAssertEqual(restoredDOB, "2008-10-15")
+            XCTAssertEqual(profile["date_of_birth"] as? String, "2000-01-01"); XCTAssertEqual(auth["step"] as? String, "community")
+            try await loadFreshConnection(host, route: "/pages/auth/age", selector: ".age-date-value")
+            let restoredDOB = try await script(host, "return document.querySelector('.age-date-value').dataset.dateValue") as? String
+            XCTAssertEqual(restoredDOB, "2000-01-01")
 
-            stage = "real keyboard viewport"
+            stage = "three-column picker without text keyboard"
             let viewportBefore = try await script(host, "return visualViewport.height") as! Double
-            _ = try await script(host, "const input=document.querySelector('.age-page input');input.click();input.focus();return true")
-            var keyboard: [String: Any] = [:]
-            for _ in 0..<50 {
-                keyboard = try await script(host, """
-                const input=document.querySelector('.age-page input').getBoundingClientRect(),footer=document.querySelector('.auth-footer');return {height:visualViewport.height,open:document.querySelector('.age-page').classList.contains('age-page--keyboard'),footer:getComputedStyle(footer).display,inputTop:input.top,inputBottom:input.bottom};
-                """) as! [String: Any]
-                if keyboard["open"] as? Bool == true { break }
-                try await Task.sleep(nanoseconds: 100_000_000)
-            }
-            XCTAssertLessThan(keyboard["height"] as! Double, viewportBefore - 120); XCTAssertEqual(keyboard["open"] as? Bool, true); XCTAssertEqual(keyboard["footer"] as? String, "none")
-            XCTAssertGreaterThanOrEqual(keyboard["inputTop"] as! Double, 0); XCTAssertLessThanOrEqual(keyboard["inputBottom"] as! Double, keyboard["height"] as! Double)
-            let keyboardShot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil)); keyboardShot.name = "WKWebView Age keyboard"; keyboardShot.lifetime = .keepAlways; add(keyboardShot)
-            _ = try await script(host, "document.querySelector('.age-page input').blur();return true")
+            let picker = try await script(host, """
+            document.querySelector('[data-interaction="age.openDatePicker.click.1"]').click();await new Promise(r=>setTimeout(r,380));await document.fonts.ready;for(const a of document.getAnimations())if(a.effect?.getComputedTiming().iterations!==Infinity)a.finish();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+            const panel=document.querySelector('.dob-picker [role=dialog]').getBoundingClientRect();return {height:visualViewport.height,columns:document.querySelectorAll('.dob-picker [role=spinbutton]').length,year:document.querySelector('[role=spinbutton][aria-label=Year]').getAttribute('aria-valuenow'),inputCount:document.querySelectorAll('.age-page input').length,top:panel.top,bottom:panel.bottom,overflow:document.documentElement.scrollWidth>innerWidth};
+            """) as! [String:Any]
+            XCTAssertEqual(picker["height"] as! Double, viewportBefore, accuracy: 1); XCTAssertEqual(picker["columns"] as? Int, 3); XCTAssertEqual(picker["year"] as? String, "2000"); XCTAssertEqual(picker["inputCount"] as? Int, 0); XCTAssertEqual(picker["overflow"] as? Bool, false)
+            XCTAssertGreaterThanOrEqual(picker["top"] as! Double, safes[0]); XCTAssertLessThanOrEqual(picker["bottom"] as! Double, root["height"]! - safes[1] + 1)
+            try (try await host.webView.takeSnapshot(configuration: nil)).pngData()!.write(to: output.appendingPathComponent("picker-wkwebview.png"))
+            let cancelled = try await script(host, "document.querySelector('[role=spinbutton][aria-label=Year]').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true}));await Promise.resolve();document.querySelector('[data-interaction=\"age.datePicker.cancel.click.1\"]').click();await new Promise(r=>setTimeout(r,300));return document.querySelector('.age-date-value').dataset.dateValue==='2000-01-01'") as? Bool
+            XCTAssertEqual(cancelled, true)
 
             stage = "direct Back fallback"
             try await openFreshAge("back")
             _ = try await script(host, "document.querySelector('[data-interaction=\"age.goBack.click.1\"]').click();return true"); try await waitFor(host, ".welcome-page")
             let backStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')")
             XCTAssertTrue(backStorage is NSNull)
+            try JSONSerialization.data(withJSONObject: ["result":"passed","metrics":metrics,"picker":picker,"cancel_preserves_date":cancelled == true,"adult_persisted":"2000-01-01","underage_zero_writes":true,"refresh_restored":restoredDOB == "2000-01-01","no_text_keyboard":true,"scope":"Age date-picker increment only"], options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("native-acceptance.json"))
             try await restore()
         } catch { XCTFail("Age WKWebView stage \(stage) failed: \(error)"); try? await restore(); throw error }
     }
@@ -1081,7 +1100,8 @@ final class HostTests: XCTestCase {
 
             stage = "validation and atomic agreement write"
             try await loadFresh("/pages/auth/age", "flow", ".age-page")
-            _ = try await script(host, "const input=document.querySelector('.age-page input');input.value='2000-01-01';input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".community-page")
+            try await chooseBirthDate(host, "2000-01-01")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".community-page")
             let before = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as! String
             _ = try await script(host, "document.querySelector('[data-interaction=\"agree.goSignup.click.1\"]').click();return true"); try await waitFor(host, ".community-page [role=alert]")
             let validationStorage = try await script(host, "return localStorage.getItem('cimoa_app_state_v2')") as? String
@@ -1097,7 +1117,8 @@ final class HostTests: XCTestCase {
 
             stage = "persistence failure rollback"
             try await loadFresh("/pages/auth/age", "failure", ".age-page")
-            _ = try await script(host, "const input=document.querySelector('.age-page input');input.value='2000-01-01';input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".community-page")
+            try await chooseBirthDate(host, "2000-01-01")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true"); try await waitFor(host, ".community-page")
             let failureBefore = try await script(host, "for(const key of ['terms','privacy','community'])document.querySelector('[data-agreement=\"'+key+'\"]').click();const original=Storage.prototype.setItem;window.__restoreCommunityStorage=()=>Storage.prototype.setItem=original;Storage.prototype.setItem=function(key,value){if(key==='cimoa_app_state_v2')throw new DOMException('Injected agreement storage failure','QuotaExceededError');return original.call(this,key,value)};return localStorage.getItem('cimoa_app_state_v2')") as! String
             _ = try await script(host, "document.querySelector('[data-interaction=\"agree.goSignup.click.1\"]').click();return true"); try await waitFor(host, ".loading"); try await waitFor(host, ".community-page [role=alert]")
             let failure = try await script(host, "const result={message:document.querySelector('.community-page [role=alert]').textContent,storage:localStorage.getItem('cimoa_app_state_v2'),selected:document.querySelectorAll('[aria-checked=true]').length,signup:!!document.querySelector('.signup-page')};window.__restoreCommunityStorage();return result") as! [String: Any]
@@ -1131,7 +1152,8 @@ final class HostTests: XCTestCase {
         }
         func reachSignup(_ suffix: String) async throws {
             try await loadFresh("/pages/auth/age", suffix, ".age-page")
-            _ = try await script(host, "const input=document.querySelector('.age-page input'),set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(input,'2000-01-01');input.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(resolve=>setTimeout(resolve,80));document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true")
+            try await chooseBirthDate(host, "2000-01-01")
+            _ = try await script(host, "document.querySelector('[data-interaction=\"age.goAgree.click.1\"]').click();return true")
             try await waitFor(host, ".community-page")
             _ = try await script(host, "for(const id of ['agree.tTerms.click.1','agree.tPrivacy.click.1','agree.tGuides.click.1'])document.querySelector('[data-interaction=\"'+id+'\"]').click();document.querySelector('[data-interaction=\"agree.goSignup.click.1\"]').click();return true")
             try await waitFor(host, ".signup-page")
@@ -2416,7 +2438,7 @@ final class HostTests: XCTestCase {
             _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');return true")
             host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?registration=fresh#/pages/auth/splash")!))
             try await waitFor(host, ".welcome-page")
-            let setup = try await script(host, """
+            let setup = try await script(host, birthDatePickerDriver + """
             const delay=ms=>new Promise(r=>setTimeout(r,ms));
             const visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0&&getComputedStyle(e).visibility!=='hidden');
             const wait=async fn=>{for(let i=0;i<200;i++){const value=fn();if(value)return value;await delay(50)}throw Error('Registration timeout: '+location.hash+' '+document.body.innerText)};
@@ -2424,7 +2446,7 @@ final class HostTests: XCTestCase {
             const fill=async(label,value)=>{const e=await wait(()=>visible('uni-input[aria-label="'+label+'"] input,uni-textarea[aria-label="'+label+'"] textarea'));const proto=e instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;Object.getOwnPropertyDescriptor(proto,'value').set.call(e,value);e.dispatchEvent(new Event('input',{bubbles:true}));await delay(80)};
             const choose=async label=>{await delay(320);const e=[...document.querySelectorAll('[role=button],[role=checkbox]')].find(e=>(e.getAttribute('aria-label')===label||e.textContent.trim()===label)&&e.getBoundingClientRect().height>0);if(!e)throw Error('Missing '+label);e.click();await delay(80)};
             window.__registrationHelpers={delay,visible,wait,click,choose};
-            await click('welcome.toggleAgreement.click.1');await click('welcome.goAge.click.1');await fill('Date of birth','2000-01-01');await click('age.goAgree.click.1');await wait(()=>visible('.community-page'));
+            await click('welcome.toggleAgreement.click.1');await click('welcome.goAge.click.1');await chooseBirthDate('2000-01-01');await click('age.goAgree.click.1');await wait(()=>visible('.community-page'));
             for(const key of ['terms','privacy','community']){await delay(100);document.querySelector('[data-agreement="'+key+'"]').click()}
             await click('agree.goSignup.click.1');await fill('University email','native.registration@campus.edu');await fill('Password','localpass123');await fill('Confirm password','localpass123');await click('signup.createAccount.click.1');
             await wait(()=>visible('.verification-email-page'));await click('verEmail.goVerCode.click.1');await wait(()=>visible('.verification-input input'));const code=document.querySelector('.verification-input input');code.value='009789';code.dispatchEvent(new Event('input',{bubbles:true}));await delay(80);await click('verCode.goVerSuccess.click.1');

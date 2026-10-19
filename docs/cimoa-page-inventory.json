@@ -278,7 +278,11 @@
       "age.onObDob.change.1",
       "age.closeUnder.click.1",
       "age.goAgree.click.1",
-      "age.underage.click.1"
+      "age.underage.click.1",
+      "age.openDatePicker.click.1",
+      "age.datePicker.confirm.click.1",
+      "age.datePicker.cancel.click.1",
+      "age.datePicker.mask.click.1"
     ],
     "entities": "user_accounts; session; verification; agreements",
     "assets": {
@@ -316,17 +320,19 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "source_lock": "locked",
-    "visual_acceptance": "passed",
+    "visual_acceptance": "pending",
     "source_lock_artifact": "docs/ui-restoration/age/source-contract.json",
     "visual_audit_artifact": "docs/ui-restoration/age/difference-audit.md",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "Age source locked; pixel restoration automatically confirmed after deterministic browser and iPhone 17 Pro WKWebView acceptance; final checks and local specialty commit complete",
+    "mapping_status": "2026-10-19 date picker functional increment passed in browser and WKWebView; historical text-keyboard behavior replaced; no whole-project or unsupported popup pixel-source claim",
     "acceptance_evidence": "docs/ui-restoration/age/acceptance.json",
-    "acceptance_notes": "Browser 7/7 and WKWebView 1/1 passed, including empty default, exact Underage card, zero-write failures, 18-year boundary, Loading, rollback, refresh, return ownership, 62/34 safe area and real iOS keyboard."
+    "acceptance_notes": "Browser 7/7 and WKWebView 1/1 passed, including empty default, exact Underage card, zero-write failures, 18-year boundary, Loading, rollback, refresh, return ownership, 62/34 safe area and real iOS keyboard.",
+    "date_picker_contract": "docs/ui-restoration/age/date-picker-2026-10-19/source-contract.json",
+    "date_picker_evidence": "docs/ui-restoration/age/date-picker-2026-10-19/acceptance.json"
   },
   {
     "source_screen": "Auth / Community Agreement / Default",

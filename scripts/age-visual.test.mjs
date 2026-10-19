@@ -7,12 +7,13 @@ import assert from 'node:assert/strict'
 import crypto from 'node:crypto'
 import { createRequire } from 'node:module'
 import { read_circa_source } from './lib/circa-source.mjs'
+import { choose_date_of_birth } from './lib/date-picker-driver.mjs'
 
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const root = path.resolve('dist/build/h5')
-const output = path.resolve('docs/ui-restoration/age')
-const contract = JSON.parse(fs.readFileSync(path.join(output, 'source-contract.json'), 'utf8'))
+const output = path.resolve('docs/ui-restoration/age/date-picker-2026-10-19/page-regression')
+const contract = JSON.parse(fs.readFileSync('docs/ui-restoration/age/source-contract.json', 'utf8'))
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
 const server = http.createServer((request, response) => {
   const file = path.resolve(root, '.' + new URL(request.url, 'http://localhost').pathname.replace(/^\/$/, '/index.html'))
@@ -68,8 +69,8 @@ async function freeze(page) {
       content: box('.auth-content'), heading: box('.auth-heading'), description: box('.auth-description'), field: box('.auth-field'), input_box: box('.auth-input-box'),
       footer: box('.auth-footer'), continue: box('.auth-primary'), under: box('.auth-secondary'), safe: [...document.querySelectorAll('.age-page > .safe-area')].map(element => element.getBoundingClientRect().height),
       text: { header: document.querySelector('.auth-header-title').textContent, heading: document.querySelector('.auth-heading').textContent, description: document.querySelector('.auth-description').textContent, label: document.querySelector('.auth-label').textContent, continue: document.querySelector('.auth-primary').textContent.trim(), under: document.querySelector('.auth-secondary').textContent.trim() },
-      back_interaction: document.querySelector('.auth-back').dataset.interaction, input_interaction: input.dataset.interaction,
-      placeholder: input.querySelector('.uni-input-placeholder')?.textContent || input.getAttribute('placeholder'), value: input.querySelector('input')?.value || '', alert_visible: !!document.querySelector('.age-page [role=alert]'),
+      back_interaction: document.querySelector('.auth-back').dataset.interaction, input_interaction: document.querySelector('.auth-input-box').dataset.interaction,
+      placeholder: input.dataset.placeholder, value: input.dataset.dateValue, alert_visible: !!document.querySelector('.age-page [role=alert]'),
     }
   })
 }
@@ -103,6 +104,7 @@ async function write_comparison(browser, reference_path, actual_path) {
 
 async function empty_context(browser, viewport = { width: 393, height: 852 }) {
   const context = await browser.newContext({ viewport })
+  await context.addInitScript(() => { Date.now = () => Date.UTC(2026, 9, 15, 12) })
   await context.addInitScript(() => { if (!new URL(location.href).searchParams.has('agePreserve')) { localStorage.removeItem('cimoa_app_state_v2'); localStorage.removeItem('cimoa_app_state') } })
   return context
 }
@@ -126,7 +128,7 @@ try {
   assert.ok(close(report.geometry.heading.y, 122)); assert.ok(close(report.geometry.description.y, report.geometry.heading.bottom + 10)); assert.ok(close(report.geometry.field.y, report.geometry.description.bottom + 14)); assert.ok(close(report.geometry.input_box.height, 56))
   assert.ok(close(report.geometry.continue.x, 20)); assert.ok(close(report.geometry.continue.height, 60)); assert.ok(close(report.geometry.under.height, 46)); assert.ok(close(report.geometry.under.bottom, 822, 2))
   assert.deepEqual(report.geometry.text, { header: 'Age check', heading: 'Are you 18 or older?', description: 'Cimoa is available only to university students aged 18 or older. Your date of birth stays private — other students only see your age.', label: 'Date of birth', continue: 'Continue', under: 'I’m under 18' })
-  assert.equal(report.geometry.back_interaction, 'age.goBack.click.1'); assert.equal(report.geometry.input_interaction, 'age.onObDob.change.1'); assert.equal(report.geometry.placeholder, 'YYYY-MM-DD'); assert.equal(report.geometry.value, ''); assert.equal(report.geometry.alert_visible, false)
+  assert.equal(report.geometry.back_interaction, 'age.goBack.click.1'); assert.equal(report.geometry.input_interaction, 'age.openDatePicker.click.1'); assert.equal(report.geometry.placeholder, 'YYYY-MM-DD'); assert.equal(report.geometry.value, ''); assert.equal(report.geometry.alert_visible, false)
   await page.screenshot({ path: path.join(output, 'actual-browser.png') }); await visual.close()
   check('393x852 empty default restores locked source geometry, exact copy, interaction IDs and finished cRise frame')
 
@@ -150,16 +152,14 @@ try {
   const flow = await empty_context(browser)
   const flow_page = await flow.newPage(); flow_page.on('pageerror', error => report.errors.push(error.message))
   await flow_page.goto(`${origin}/?agePixel=flow#/pages/auth/age`); await flow_page.locator('.age-page').waitFor(); await set_safe_area(flow_page, 54, 0)
-  const input = flow_page.locator('uni-input[aria-label="Date of birth"] input')
+  const input = { fill: value => choose_date_of_birth(flow_page, value) }
   const saved = () => flow_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2'))
-  for (const [value, message] of [['', /valid date/], ['2004-02-30', /valid date/], ['2099-01-01', /valid date/]]) {
-    await input.fill(value); await flow_page.waitForTimeout(60); await flow_page.locator('[data-interaction="age.goAgree.click.1"]').click(); assert.match(await flow_page.getByRole('alert').innerText(), message); assert.equal(await saved(), null)
-  }
+  await flow_page.locator('[data-interaction="age.goAgree.click.1"]').click(); assert.match(await flow_page.getByRole('alert').innerText(), /valid date/); assert.equal(await saved(), null)
   await input.fill('2008-10-16'); await flow_page.waitForTimeout(60); await flow_page.locator('[data-interaction="age.goAgree.click.1"]').click(); await flow_page.locator('.age-under').waitFor(); assert.match(await flow_page.locator('.age-under').innerText(), /18 or older/); assert.equal(await saved(), null)
   await input.fill('2008-10-15'); await flow_page.waitForTimeout(60); await flow_page.locator('[data-interaction="age.goAgree.click.1"]').click(); await flow_page.locator('.loading').waitFor(); assert.equal(await saved(), null); await flow_page.locator('.community-page').waitFor()
   const committed = JSON.parse(await saved()); assert.equal(committed.data.auth_flow.profile_draft.date_of_birth, '2008-10-15'); assert.equal(committed.data.auth_flow.step, 'community')
-  await flow_page.goto(`${origin}/?agePreserve=1#/pages/auth/age`); await flow_page.locator('.age-page').waitFor(); await flow_page.waitForFunction(() => document.querySelector('uni-input[aria-label="Date of birth"] input')?.value === '2008-10-15'); assert.equal(await flow_page.locator('uni-input[aria-label="Date of birth"] input').inputValue(), '2008-10-15')
-  await flow.close(); check('invalid, impossible, future and 17-year dates never write; exact 18th birthday waits for Loading, persists and restores')
+  await flow_page.goto(`${origin}/?agePreserve=1#/pages/auth/age`); await flow_page.locator('.age-page').waitFor(); assert.equal(await flow_page.locator('.age-date-value').getAttribute('data-date-value'), '2008-10-15')
+  await flow.close(); check('empty and 17-year dates never write; exact 18th birthday waits for Loading, persists and restores (fixed UTC test clock)')
 
   const failure_context = await browser.newContext({ viewport: { width: 393, height: 852 } })
   await failure_context.addInitScript(() => {
@@ -168,8 +168,8 @@ try {
     Storage.prototype.setItem = function (key, value) { if (key === 'cimoa_app_state_v2') throw new DOMException('Injected storage failure', 'QuotaExceededError'); return original.call(this, key, value) }
   })
   const failure_page = await failure_context.newPage(); failure_page.on('pageerror', error => report.errors.push(error.message))
-  await failure_page.goto(`${origin}/?agePixel=storageFailure#/pages/auth/age`); await failure_page.locator('.age-page').waitFor(); await failure_page.locator('uni-input[aria-label="Date of birth"] input').fill('2000-01-01'); await failure_page.waitForTimeout(60); await failure_page.locator('[data-interaction="age.goAgree.click.1"]').click(); await failure_page.locator('.loading').waitFor(); await failure_page.locator('.age-page [role=alert]').waitFor()
-  assert.match(await failure_page.locator('.age-page [role=alert]').innerText(), /Injected storage failure/); assert.equal(await failure_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), null); assert.equal(await failure_page.locator('uni-input[aria-label="Date of birth"] input').inputValue(), '2000-01-01')
+  await failure_page.goto(`${origin}/?agePixel=storageFailure#/pages/auth/age`); await failure_page.locator('.age-page').waitFor(); await choose_date_of_birth(failure_page, '2000-01-01'); await failure_page.locator('[data-interaction="age.goAgree.click.1"]').click(); await failure_page.locator('.loading').waitFor(); await failure_page.locator('.age-page [role=alert]').waitFor()
+  assert.match(await failure_page.locator('.age-page [role=alert]').innerText(), /Injected storage failure/); assert.equal(await failure_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), null); assert.equal(await failure_page.locator('.age-date-value').getAttribute('data-date-value'), '2000-01-01')
   await failure_context.close(); check('storage failure follows custom Loading, preserves the retryable DOB and creates no partial draft')
 
   const small = await empty_context(browser, { width: 320, height: 568 })
@@ -179,10 +179,9 @@ try {
   await small_page.screenshot({ path: path.join(output, 'actual-browser-small.png') }); await scroller.evaluate(element => { element.scrollTop = element.scrollHeight }); await freeze(small_page)
   const footer_after = await small_page.locator('.auth-footer').boundingBox(); assert.deepEqual(footer_after, footer_before); assert.ok(footer_after.y + footer_after.height <= 534); assert.ok(await small_page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
   await small_page.screenshot({ path: path.join(output, 'actual-browser-small-scrolled.png') })
-  await small_page.locator('uni-input[aria-label="Date of birth"] input').focus(); await small_page.setViewportSize({ width: 320, height: 360 }); await set_safe_area(small_page, 62, 0); await small_page.waitForFunction(() => document.querySelector('.age-page')?.classList.contains('age-page--keyboard'))
-  assert.equal(await small_page.locator('.auth-footer').evaluate(element => getComputedStyle(element).display), 'none'); const focused = await small_page.locator('uni-input[aria-label="Date of birth"] input').boundingBox(); assert.ok(focused.y >= 0 && focused.y + focused.height <= 360)
-  await small_page.screenshot({ path: path.join(output, 'actual-browser-keyboard.png') }); assert.equal(await small_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), null)
-  await small.close(); check('320x568 safe areas keep the fixed footer stable; keyboard reduction folds it and keeps DOB visible without overflow')
+  await small_page.locator('[data-interaction="age.openDatePicker.click.1"]').click(); await small_page.locator('.dob-picker.event-dialog--open').waitFor(); await small_page.evaluate(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))); await freeze(small_page)
+  assert.equal(await small_page.locator('.age-page input').count(), 0); await small_page.screenshot({ path: path.join(output, 'actual-browser-picker.png') }); assert.equal(await small_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), null)
+  await small.close(); check('320x568 safe areas keep the fixed footer stable; DOB opens a controlled picker rather than a text keyboard')
 
   const back_context = await empty_context(browser)
   const back_page = await back_context.newPage(); await back_page.goto(`${origin}/?agePixel=back#/pages/auth/age`); await back_page.locator('.age-page').waitFor(); await back_page.locator('[data-interaction="age.goBack.click.1"]').click(); await back_page.locator('.welcome-page').waitFor(); assert.equal(await back_page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), null); await back_context.close()

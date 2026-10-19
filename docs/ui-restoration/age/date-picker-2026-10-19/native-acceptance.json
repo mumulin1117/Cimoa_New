@@ -1,0 +1,118 @@
+{
+  "adult_persisted" : "2000-01-01",
+  "cancel_preserves_date" : true,
+  "metrics" : {
+    "alert" : false,
+    "back" : {
+      "bottom" : 114.140625,
+      "cx" : 43.9765625,
+      "height" : 47.046875,
+      "right" : 67.5,
+      "width" : 47.046875,
+      "x" : 20.453125,
+      "y" : 67.09375
+    },
+    "backInteraction" : "age.goBack.click.1",
+    "continueButton" : {
+      "bottom" : 756.15625,
+      "cx" : 201,
+      "height" : 61.359375,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 694.796875
+    },
+    "description" : {
+      "bottom" : 253.75,
+      "cx" : 201,
+      "height" : 75,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 178.75
+    },
+    "field" : {
+      "bottom" : 351.5,
+      "cx" : 201,
+      "height" : 83.4375,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 268.0625
+    },
+    "header" : {
+      "bottom" : 115.171875,
+      "cx" : 201,
+      "height" : 49.09375,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 66.078125
+    },
+    "heading" : {
+      "bottom" : 168.53125,
+      "cx" : 201,
+      "height" : 37,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 131.53125
+    },
+    "inputBox" : {
+      "bottom" : 351.5,
+      "cx" : 201,
+      "height" : 57.28125,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 294.21875
+    },
+    "inputInteraction" : "age.openDatePicker.click.1",
+    "placeholder" : "YYYY-MM-DD",
+    "root" : {
+      "bottom" : 874,
+      "cx" : 201,
+      "height" : 874,
+      "right" : 402,
+      "width" : 402,
+      "x" : 0,
+      "y" : 0
+    },
+    "safes" : [
+      62,
+      34
+    ],
+    "text" : {
+      "continueButton" : "Continue",
+      "description" : "Cimoa is available only to university students aged 18 or older. Your date of birth stays private — other students only see your age.",
+      "header" : "Age check",
+      "heading" : "Are you 18 or older?",
+      "label" : "Date of birth",
+      "underButton" : "I’m under 18"
+    },
+    "underButton" : {
+      "bottom" : 809.328125,
+      "cx" : 201,
+      "height" : 47.046875,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 762.28125
+    },
+    "value" : ""
+  },
+  "no_text_keyboard" : true,
+  "picker" : {
+    "bottom" : 840,
+    "columns" : 3,
+    "height" : 874,
+    "inputCount" : 0,
+    "overflow" : false,
+    "top" : 327.75,
+    "year" : "2000"
+  },
+  "refresh_restored" : true,
+  "result" : "passed",
+  "scope" : "Age date-picker increment only",
+  "underage_zero_writes" : true
+}

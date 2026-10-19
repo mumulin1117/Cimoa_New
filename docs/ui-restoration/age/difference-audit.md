@@ -1,5 +1,11 @@
 # Age Confirmation 第一轮来源锁定与差异审计
 
+## 2026-10-19 日期选择器增量（下方旧结论仅为历史）
+
+用户要求 DOB 点击显示年月日选择器并自动回填。修改前核对：当前控件为任意文本 input，会弹文字键盘；仓库无日期选择器可复用，但已有 EventConfirmDialog 与 uni-app picker-view。仅将输入交互改为受控三列日期弹层，保留原字段几何、placeholder、文案、页头/页脚、返回、18 岁校验和 Store 保存链路。选择/取消均不写业务状态；Done 回填草稿，Continue 才经过 500ms Loading 保存。年月日联动约束正确月长、闰年和今天上限，不加新的年龄上限。详见 [增量契约](./date-picker-2026-10-19/source-contract.json)。旧的文字键盘截图不作为新控件的验收依据；本轮先恢复 pending 状态，只有 Age 处于 in_progress。
+
+本轮新控件浏览器 5 项、页面来源/年龄边界回归 7 项、Welcome→Age 注册入口回归 2 项均通过；19 个数据测试套件共 176 项通过。iPhone 17 Pro WKWebView 两个测试通过：三列实际展开、未满18零写入、成人 Loading 后保存、刷新恢复、取消保留和无文字键盘。默认页叠图已逐区查看，原字段 56px 与其他来源几何保持；新弹层是用户授权的交互增量，使用既有受控 Sheet，不宣称有不存在的原型选择器截图。首轮小屏失败为测试在 32ms 入场启动前取图所致，保留失败报告，等待 open 状态并固定结束帧后同一布局通过。全页 visual/full 仍按 pending 记录，不扩大为整 App 验收。
+
 ## 结论
 
 Age Confirmation 的来源锁定、首轮差异修正、浏览器/WKWebView 取证与最终门禁均已完成。393×852 默认结构、Underage 卡片、320×568 滚动/安全区和 iPhone 17 Pro 真实软键盘均通过；无效日期、18 岁边界、Loading、存储失败、刷新和返回归属形成真实闭环。按用户授权的自动确认规则，本页现为 `status: verified`、`visual_acceptance: passed`。

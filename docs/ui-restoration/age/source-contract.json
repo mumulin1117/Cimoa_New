@@ -6,6 +6,8 @@
   "source_query": "route=age",
   "source_lock": "locked",
   "locked_at": "2026-10-15",
+  "active_revision": "docs/ui-restoration/age/date-picker-2026-10-19/source-contract.json",
+  "revision_note": "2026-10-19 user-authorized calendar picker replaces manual DOB text entry. Below keyboard captures are historical; current evidence is in the active revision.",
   "source": {
     "file": "CIRCA All Screens (interactive).html",
     "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
