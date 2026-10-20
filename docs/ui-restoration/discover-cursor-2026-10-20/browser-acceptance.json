@@ -1,0 +1,48 @@
+{
+  "result": "passed",
+  "checks": [
+    "default: Repeated Home / Events → Discover switches retain the third person by ID at root depth 1",
+    "default: Clock ticks and profile / Back retain the same person and correct route target",
+    "default: Cancellation and Tab interruption during drag / exit keep the last settled card and clean up interaction state",
+    "default: Browsing, Tab replacement and Back make zero storage writes and show no navigation Loading / repeated skeleton",
+    "default: Real text send / Done relaunch keeps the same card with live grey Waiting for reply and one 10-coin ledger entry",
+    "default: Blocking the current person filters it globally, chooses the next valid card and retains that fallback across Tabs",
+    "home_empty: Repeated Home / Events → Discover switches retain the third person by ID at root depth 1",
+    "home_empty: Clock ticks and profile / Back retain the same person and correct route target",
+    "home_empty: Cancellation and Tab interruption during drag / exit keep the last settled card and clean up interaction state",
+    "home_empty: Home empty-state Explore People restores the last browsed card without reseeding the pool",
+    "home_empty: Browsing, Tab replacement and Back make zero storage writes and show no navigation Loading / repeated skeleton"
+  ],
+  "errors": [],
+  "cases": [
+    {
+      "name": "default",
+      "checks": [
+        "Repeated Home / Events → Discover switches retain the third person by ID at root depth 1",
+        "Clock ticks and profile / Back retain the same person and correct route target",
+        "Cancellation and Tab interruption during drag / exit keep the last settled card and clean up interaction state",
+        "Browsing, Tab replacement and Back make zero storage writes and show no navigation Loading / repeated skeleton",
+        "Real text send / Done relaunch keeps the same card with live grey Waiting for reply and one 10-coin ledger entry",
+        "Blocking the current person filters it globally, chooses the next valid card and retains that fallback across Tabs"
+      ],
+      "current_user_id": "user_coco",
+      "browsing_storage_writes": 0,
+      "browsing_navigation_loading": false
+    },
+    {
+      "name": "home_empty",
+      "checks": [
+        "Repeated Home / Events → Discover switches retain the third person by ID at root depth 1",
+        "Clock ticks and profile / Back retain the same person and correct route target",
+        "Cancellation and Tab interruption during drag / exit keep the last settled card and clean up interaction state",
+        "Home empty-state Explore People restores the last browsed card without reseeding the pool",
+        "Browsing, Tab replacement and Back make zero storage writes and show no navigation Loading / repeated skeleton"
+      ],
+      "current_user_id": "user_evan",
+      "browsing_storage_writes": 0,
+      "browsing_navigation_loading": false
+    }
+  ],
+  "server_pid": 167,
+  "cleaned_up": true
+}

@@ -5,6 +5,36 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    func testDiscoverCursorAcrossHomeAndEvents() async throws {
+        let host = try await rawHost()
+        let snapshot = try await script(host,"return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        var root = URL(fileURLWithPath:#filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/discover-cursor-2026-10-20")
+        let fixture = try JSONSerialization.jsonObject(with:Data(contentsOf:folder.appendingPathComponent("native-fixtures.json"))) as! [String:Any]
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const[k,v]of[['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}return true",arguments:["snapshot":snapshot],in:nil,contentWorld:.page)
+            try await loadFreshConnection(host,route:"/pages/auth/splash",selector:".splash-page")
+        }
+        var cases = [[String:Any]]()
+        do {
+            for item in fixture["fixtures"] as! [[String:Any]] {
+                _ = try await host.webView.callAsyncJavaScript("data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true",arguments:["data":item["data"]!],in:nil,contentWorld:.page)
+                try await loadFreshConnection(host,route:"/pages/discover/index",selector:".discover-photo-card--front")
+                let checks = try await script(host,"return await (\(fixture["driver"] as! String))(\(String(data:try JSONSerialization.data(withJSONObject:["ids":fixture["ids"]!,"empty_home":item["empty_home"]!]),encoding:.utf8)!))") as! [String:Any]
+                cases.append(["name":item["name"]!,"result":checks])
+                try (try await host.webView.takeSnapshot(configuration:nil)).pngData()!.write(to:folder.appendingPathComponent("\(item["name"]!)-wkwebview.png"))
+            }
+            try await restore()
+            try JSONSerialization.data(withJSONObject:["result":"passed","cases":cases,"storage_restored":true,"gesture_method":"Timed touch Pointer Events in the bundled WKWebView; not a physical-device performance benchmark"],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+            XCTAssertEqual(cases.count,2)
+        } catch {
+            let detail = String(describing:try? await script(host,"return {url:location.href,text:document.body.innerText.slice(0,2200)}"))
+            try? await restore()
+            try? JSONSerialization.data(withJSONObject:["result":"failed","failure":String(describing:error),"detail":detail],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+            throw error
+        }
+    }
     func testIntroductionTransientComposerAndAcceptedChat() async throws {
         let host = try await rawHost()
         let snapshot = try await script(host,"return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]

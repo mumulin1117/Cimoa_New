@@ -1,0 +1,20 @@
+{
+  "task": "Retain Discover browsing position across Home and Events",
+  "date": "2026-10-20",
+  "source": "CIRCA All Screens (interactive).html",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "screens": ["34 Discover", "35 Discover / Profile / Expanded"],
+  "user_override": "Re-entering Discover from Home or Events must retain the last browsed card instead of resetting the deck.",
+  "interaction_ids": ["photo.browse.drag.1", "photo.expand.click.1", "home.exploreDiscover.click.1", "expanded.collapse.click.1", "reqSent.doneSent.click.1"],
+  "contract": {
+    "identity": "Stable user_id; never a cached profile or an index alone",
+    "scope": "Current authenticated app runtime, including Tab page replacement and internal relaunch",
+    "commit": "Only after the outgoing card finishes its exit; cancel/interruption retains the last settled card",
+    "filtering": "Keep a valid current ID; otherwise resolve a valid index, then reconcile to its stable ID; empty pool clears the cursor",
+    "business_data": "Read current discover_people and introduction_context; do not reseed, copy or freeze canonical entities",
+    "persistence": "UI-only Pinia field outside data; zero storage writes for browsing/navigation",
+    "authentication": "Successful auth-context change clears the cursor; failed logout preserves it",
+    "reload_boundary": "Full document reload / app restart creates a fresh UI cursor; business data still restores normally",
+    "visual_changes": "None: preserve existing card, copy, gestures, Tabbar, safe-area and transition layout"
+  }
+}

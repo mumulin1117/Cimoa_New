@@ -13,7 +13,7 @@ const store = use_app_store()
 const frame = ref(null)
 const navigation_error = ref('')
 const navigating = ref(false)
-const card_index = ref(0)
+const card_index = computed(() => store.discover_card_index)
 const drag_x = ref(0)
 const drag_y = ref(0)
 const card_width = ref(1)
@@ -42,15 +42,12 @@ onShow(() => { navigating.value = false; stop_interaction() })
 onHide(stop_interaction)
 onUnmounted(stop_interaction)
 
-watch(() => people.value.map((item) => item.user_id), (ids, previous = []) => {
-  if (ids.length === previous.length && ids.every((id, index) => id === previous[index])) return
-  const current_id = previous.length ? previous[card_index.value % previous.length] : null
-  const retained = ids.indexOf(current_id)
-  card_index.value = retained >= 0 ? retained : ids.length ? card_index.value % ids.length : 0
+watch([() => store.auth_context, () => people.value.map(item => item.user_id)], ([context, ids], [previous_context, previous = []] = []) => {
+  if (context === previous_context && ids.length === previous.length && ids.every((id, index) => id === previous[index])) return
+  store.reconcile_discover_cursor()
   navigation_error.value = ''
   stop_interaction()
-})
-watch(() => store.session.current_user_id, () => { card_index.value = 0; navigation_error.value = ''; stop_interaction() })
+}, { immediate: true })
 
 const navigate = async (kind, id) => {
   if (navigating.value || dragging.value || settling.value || resetting.value) return
@@ -100,7 +97,8 @@ const advance_card = (direction) => {
   drag_x.value = direction * card_width.value * DISCOVER_DECK.exit_ratio
   settle_timer = setTimeout(async () => {
     resetting.value = true
-    card_index.value = people.value.length ? (card_index.value + 1) % people.value.length : 0
+    const next = people.value.length ? people.value[(card_index.value + 1) % people.value.length] : null
+    if (next) store.remember_discover_card(next.user_id)
     drag_x.value = 0; drag_y.value = 0
     dragging.value = false
     settling.value = false

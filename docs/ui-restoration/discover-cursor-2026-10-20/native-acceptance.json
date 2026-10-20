@@ -1,0 +1,38 @@
+{
+  "cases" : [
+    {
+      "name" : "default",
+      "result" : {
+        "browsing_navigation_loading" : false,
+        "browsing_storage_writes" : 0,
+        "checks" : [
+          "Repeated Home \/ Events → Discover switches retain the third person by ID at root depth 1",
+          "Clock ticks and profile \/ Back retain the same person and correct route target",
+          "Cancellation and Tab interruption during drag \/ exit keep the last settled card and clean up interaction state",
+          "Browsing, Tab replacement and Back make zero storage writes and show no navigation Loading \/ repeated skeleton",
+          "Real text send \/ Done relaunch keeps the same card with live grey Waiting for reply and one 10-coin ledger entry",
+          "Blocking the current person filters it globally, chooses the next valid card and retains that fallback across Tabs"
+        ],
+        "current_user_id" : "user_coco"
+      }
+    },
+    {
+      "name" : "home_empty",
+      "result" : {
+        "browsing_navigation_loading" : false,
+        "browsing_storage_writes" : 0,
+        "checks" : [
+          "Repeated Home \/ Events → Discover switches retain the third person by ID at root depth 1",
+          "Clock ticks and profile \/ Back retain the same person and correct route target",
+          "Cancellation and Tab interruption during drag \/ exit keep the last settled card and clean up interaction state",
+          "Home empty-state Explore People restores the last browsed card without reseeding the pool",
+          "Browsing, Tab replacement and Back make zero storage writes and show no navigation Loading \/ repeated skeleton"
+        ],
+        "current_user_id" : "user_evan"
+      }
+    }
+  ],
+  "gesture_method" : "Timed touch Pointer Events in the bundled WKWebView; not a physical-device performance benchmark",
+  "result" : "passed",
+  "storage_restored" : true
+}

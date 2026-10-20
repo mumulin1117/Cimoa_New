@@ -1,0 +1,59 @@
+{
+  "task": "Discover current-card retention across main Tabs",
+  "date": "2026-10-20",
+  "result": "passed",
+  "scope": "This interaction change only; not a new whole-app or pixel-perfect acceptance",
+  "implementation_files": [
+    "src/pages/discover/index.vue",
+    "src/stores/discoverCursor.js",
+    "src/stores/store.js",
+    "src/stores/transactions.js"
+  ],
+  "test_files": [
+    "scripts/discover-cursor.test.mjs",
+    "scripts/discover-cursor-browser.test.mjs",
+    "scripts/lib/discover-cursor-regression.mjs",
+    "ios/cimoaNeapo/Tests/HostTests.swift"
+  ],
+  "key_conventions": [
+    "UI-only Pinia cursor outside persisted business data; canonical getters remain live",
+    "No browsing storage writes, navigation Loading, repeated skeleton or route-stack growth",
+    "Existing card UI, rpx, theme variables, safe areas, gestures and transition lifecycle unchanged",
+    "Auth-context isolation and existing global blocking filters retained",
+    "No modifications to DEVELOPMENT_CONVENTIONS.md, INTERACTION_CONVENTIONS.md or the HTML prototype"
+  ],
+  "gates_in_order": [
+    { "command": "corepack pnpm check:conventions", "result": "passed", "warnings": 0 },
+    { "command": "git diff --check", "result": "passed" },
+    { "command": "corepack pnpm build:h5", "result": "passed", "packaged_h5_files": 415 }
+  ],
+  "unit_tests": { "passed": 223, "failed": 0, "task_specific": 7, "junit": "/tmp/cimoa-discover-cursor-unit.xml" },
+  "browser": { "passed": 11, "failed": 0, "scenarios": 2, "report": "browser-acceptance.json", "preview_pids": [99785, 167], "cleanup": "Browser and temporary server closed; both PIDs and final listening port checked absent" },
+  "wkwebview": {
+    "device": "iPhone 17 Pro",
+    "os": "iOS 26.5 Simulator",
+    "xctest": "HostTests.testDiscoverCursorAcrossHomeAndEvents",
+    "tests_passed": 1,
+    "scenario_checks_passed": 11,
+    "failed": 0,
+    "report": "native-acceptance.json",
+    "xcresult": "/tmp/cimoa-discover-cursor-final-native.xcresult",
+    "storage_restored": true,
+    "gesture_boundary": "Timed touch Pointer Events within the real WKWebView, not a physical-device frame-rate claim"
+  },
+  "ios_build": {
+    "result": "passed",
+    "bundle_id": "com.cimoa.neapo.dev",
+    "manifest_sha256": "4048bcb67c71eeef008b5f4e068c9bdff08343fa16fbfff1325ad54515a51131",
+    "verification": "Packaged resources, compiled app and simulator-installed app manifests are identical",
+    "archive": "artifacts/cimoaNeapo-ios.zip",
+    "existing_warning": "Metadata extraction skipped. No AppIntents.framework dependency found.",
+    "new_warnings": 0
+  },
+  "git": { "mode": "Local commit only; no push", "preserved_unrelated_changes": "Ten pre-existing docs/evidence/registration PNG modifications" },
+  "boundaries": [
+    "Cursor retained in current authenticated app runtime across page replacement/relaunch, not across full document reload or app restart",
+    "Blocked/hidden/removed people cannot remain visible; a valid fallback is reconciled instead",
+    "Business/profile/request changes remain live instead of caching the old card entity"
+  ]
+}
