@@ -5,6 +5,93 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    func testIntroductionPaymentAndWaitingRecovery() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host,"return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        var root = URL(fileURLWithPath:#filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/introduction-payment-2026-10-20")
+        let fixture = try JSONSerialization.jsonObject(with:Data(contentsOf:folder.appendingPathComponent("native-fixtures.json"))) as! [String:Any]
+        let mediaID = "media_payment_native_" + UUID().uuidString
+        let driver = """
+        const delay=ms=>new Promise(r=>setTimeout(r,ms)),assert=(v,m)=>{if(!v)throw Error(m)},saved=()=>JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;
+        const visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),wait=async fn=>{for(let i=0;i<240;i++){if(fn())return;await delay(25)}throw Error('Introduction timeout '+location.hash+' '+document.body.innerText.slice(0,800))},click=id=>visible('[data-interaction="'+id+'"]').click();
+        """
+        var checks:[String] = []
+        func install(_ key:String) async throws {
+            _ = try await host.webView.callAsyncJavaScript("data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true",arguments:["data":fixture[key]!],in:nil,contentWorld:.page)
+        }
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onupgradeneeded=()=>r.result.createObjectStore('blobs');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');t.objectStore('blobs').delete(id);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();for(const[k,v]of[['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}return true",arguments:["snapshot":saved,"id":mediaID],in:nil,contentWorld:.page)
+            try await loadFreshConnection(host,route:"/pages/auth/splash",selector:".splash-page")
+        }
+        do {
+            try await install("text")
+            try await loadFreshConnection(host,route:fixture["text_route"] as! String,selector:".ice-text-page")
+            _ = try await script(host,driver + """
+            click('ibText.continueText.click.1');await wait(()=>visible('.intro-sheet--confirm.event-dialog--open'));await delay(280);
+            assert(visible('.intro-sheet-title').textContent==='Send text introduction?','Text fee confirmation missing');assert(visible('.intro-sheet-summary').innerText.includes('250 coins'),'Wrong after balance');
+            const before=JSON.stringify(saved());click('sheetTextCoin.editAnswer.click.1');await delay(280);assert(JSON.stringify(saved())===before,'Cancel changed state');return true;
+            """)
+            checks.append("Text confirmation cancellation is read-only with 10 coin fee and accurate balance")
+            _ = try await script(host,driver + """
+            const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='cimoa_app_state_v2'&&JSON.parse(v).data.requests.some(r=>r.sender_id==='user_cimoa'&&r.recipient_id==='user_zane'))throw Error('Storage full');return original.call(this,k,v)};
+            click('ibText.continueText.click.1');await wait(()=>visible('.intro-sheet--confirm.event-dialog--open'));click('sheetTextCoin.spendText.click.1');await wait(()=>visible('.coin-spend-failed-page'));
+            const data=saved();assert(!data.requests.some(r=>r.recipient_id==='user_zane'&&r.sender_id==='user_cimoa'),'Failed request saved');assert(data.coin_transactions.reduce((s,t)=>s+t.amount,0)===260,'Failed debit');return true;
+            """)
+            let failedRoute = try await script(host,"return location.hash.slice(1)") as! String
+            try await loadFreshConnection(host,route:failedRoute,selector:".coin-spend-failed-page")
+            _ = try await script(host,driver + """
+            click('coinSpendFailed.goBack.click.1');await wait(()=>visible('.ice-text-page'));assert(visible('textarea').value==='Coffee and a campus walk after class?','Draft lost');click('ibText.continueText.click.1');await wait(()=>visible('.intro-sheet--confirm.event-dialog--open'));await delay(280);return true;
+            """)
+            try (try await host.webView.takeSnapshot(configuration:nil)).pngData()!.write(to:folder.appendingPathComponent("text-confirmation-wkwebview.png"))
+            _ = try await script(host,driver + """
+            click('sheetTextCoin.spendText.click.1');click('sheetTextCoin.spendText.click.1');await wait(()=>visible('.connection-sent-page'));const d=saved(),r=d.requests.filter(r=>r.recipient_id==='user_zane'&&r.sender_id==='user_cimoa');assert(r.length===1&&r[0].kind==='text'&&r[0].status==='pending','Wrong text request');assert(d.coin_transactions.filter(t=>t.related_id===r[0].request_id&&t.amount===-10).length===1,'Wrong debit');return true;
+            """)
+            let processingRoute = try await script(host,"return '/pages/coins/processing?return_context_id='+encodeURIComponent(JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.drafts.find(d=>d.kind==='coin_spend').draft_id)") as! String
+            try await loadFreshConnection(host,route:processingRoute,selector:".coin-processing-page,.connection-sent-page")
+            _ = try await script(host,driver + """
+            await wait(()=>visible('.connection-sent-page'));assert(saved().coin_transactions.reduce((s,t)=>s+t.amount,0)===250,'Replayed charge');click('reqSent.doneSent.click.1');await wait(()=>visible('.discover-send'));await delay(280);
+            const e=visible('.discover-send'),before=JSON.stringify(saved()),route=location.hash;assert(e.textContent==='Waiting for reply'&&e.getAttribute('aria-disabled')==='true','Waiting CTA wrong');e.click();e.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));await delay(300);assert(location.hash===route&&JSON.stringify(saved())===before,'Waiting CTA active');assert(getComputedStyle(e).backgroundImage==='none','Waiting CTA not grey');return true;
+            """)
+            try (try await host.webView.takeSnapshot(configuration:nil)).pngData()!.write(to:folder.appendingPathComponent("waiting-card-wkwebview.png"))
+            try await loadFreshConnection(host,route:"/pages/discover/profile?user_id=user_zane",selector:".expanded-send")
+            _ = try await script(host,driver + "const e=visible('.expanded-send');assert(e.textContent==='Waiting for reply'&&e.getAttribute('aria-disabled')==='true','Profile waiting state lost');return true;")
+            checks.append("Atomic text failure/refresh/Return, successful retry, double-confirm, processing recovery and grey/inert deck/profile pending state")
+            try await install("low")
+            try await loadFreshConnection(host,route:fixture["text_route"] as! String,selector:".ice-text-page")
+            _ = try await script(host,driver + """
+            click('ibText.continueText.click.1');await wait(()=>visible('.intro-sheet--insufficient.event-dialog--open'));assert(visible('.intro-sheet-copy').innerText.includes('Text Introduction'),'Wrong insufficient feature');click('sheetInsufficient.getCoins2.click.1');await wait(()=>visible('.coin-center-page'));return true;
+            """)
+            let coinRoute = try await script(host,"return location.hash.slice(1)") as! String
+            try await loadFreshConnection(host,route:coinRoute,selector:".coin-center-page")
+            _ = try await script(host,driver + "click('coinStore.goBack.click.1');await wait(()=>visible('.ice-text-page'));assert(visible('textarea').value==='Coffee and a campus walk after class?','Recharge return lost text');assert(saved().coin_transactions.length===0,'Unexpected credit or debit');return true;")
+            checks.append("Zero balance blocks text and Coin Center refresh/Back recovers the exact answer")
+            try await install("voice")
+            _ = try await host.webView.callAsyncJavaScript("""
+            const data=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data,old=data.drafts.find(d=>d.draft_id===fixture.text_id).payload.audio_id;data.drafts.find(d=>d.draft_id===fixture.text_id).payload.audio_id=id;const media=data.media_files.find(m=>m.media_id===old);media.media_id=id;media.media_url='indexeddb://'+id;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));
+            const bytes=Uint8Array.from(atob(fixture.sample.base64),c=>c.charCodeAt(0)),db=await new Promise((resolve,reject)=>{const r=indexedDB.open('cimoa_media_v2',1);r.onupgradeneeded=()=>r.result.createObjectStore('blobs');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});await new Promise((resolve,reject)=>{const t=db.transaction('blobs','readwrite');t.objectStore('blobs').put(new Blob([bytes],{type:'audio/wav'}),id);t.oncomplete=resolve;t.onerror=()=>reject(t.error)});db.close();return true;
+            """,arguments:["fixture":fixture,"id":mediaID],in:nil,contentWorld:.page)
+            try await loadFreshConnection(host,route:fixture["voice_route"] as! String,selector:".ice-voice-page")
+            _ = try await script(host,driver + "click('ibVoice.sendVoiceRequest.click.1');await wait(()=>visible('.ice-preview-page'));assert(saved().coin_transactions.reduce((s,t)=>s+t.amount,0)===260,'Review charged coins');return true;")
+            let previewRoute = try await script(host,"return location.hash.slice(1)") as! String
+            try await loadFreshConnection(host,route:previewRoute,selector:".ice-preview-page")
+            try await waitForPreparedAudio(host,selector:"[data-interaction=\"ibPreview.togglePlay.click.1\"]")
+            _ = try await script(host,driver + "click('ibPreview.togglePlay.click.1');await wait(()=>visible('.ice-audio')?.dataset.playing==='true');return true;")
+            try (try await host.webView.takeSnapshot(configuration:nil)).pngData()!.write(to:folder.appendingPathComponent("voice-preview-wkwebview.png"))
+            _ = try await script(host,driver + """
+            click('ibPreview.continueVoice.click.1');await wait(()=>visible('.intro-sheet--confirm.event-dialog--open'));click('sheetVoiceCoin.editRecording.click.1');await delay(280);assert(saved().coin_transactions.reduce((s,t)=>s+t.amount,0)===260,'Voice cancel charged');click('ibPreview.continueVoice.click.1');await wait(()=>visible('.intro-sheet--confirm.event-dialog--open'));click('sheetVoiceCoin.spendVoice.click.1');await wait(()=>visible('.connection-sent-page'));const d=saved(),r=d.requests.filter(r=>r.recipient_id==='user_zane'&&r.sender_id==='user_cimoa');assert(r.length===1&&r[0].kind==='voice'&&r[0].status==='pending','Wrong voice request');assert(d.coin_transactions.filter(t=>t.related_id===r[0].request_id&&t.amount===-10).length===1,'Wrong voice debit');return true;
+            """)
+            checks.append("Saved playable audio → Voice preview; refresh/playback, cancel and explicit 10-coin voice send remain correct")
+            try await restore()
+            try JSONSerialization.data(withJSONObject:["result":"passed","checks":checks,"storage_restored":true,"test_blob_removed":true,"voice_capture":"Valid PCM test audio; actual MediaRecorder capture separately exercised in Chrome","scope":"Introduction fee/preview/pending-state regression, not whole-App acceptance"],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+        } catch {
+            let state = String(describing:try? await script(host,"return {url:location.href,text:document.body.innerText}"))
+            try? await restore()
+            try? JSONSerialization.data(withJSONObject:["result":"failed","checks":checks,"failure":String(describing:error),"state":state],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+            throw error
+        }
+    }
     func testFormalDisplayCopyAndReportLabels() async throws {
         let host = try await rawHost()
         let saved = try await script(host,"return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]

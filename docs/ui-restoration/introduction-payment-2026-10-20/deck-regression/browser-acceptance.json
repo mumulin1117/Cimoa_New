@@ -1,0 +1,52 @@
+{
+  "page": "deck",
+  "result": "passed",
+  "checks": [
+    "Source geometry and exact user entry/Back are read-only, with preserved deck order",
+    "Eight iPhone viewports keep the whole card, CTA and Tabbar in one non-scrolling view",
+    "Repeated Tab changes retain root depth, fixed bar and no repeated skeleton",
+    "An existing pending request disables the grey Waiting for reply CTA without another send or debit",
+    "Small iPhone width/real safe-area budget retains readable content and scroll access",
+    "Corrupt storage shows a readable error without overwriting data or leaking profile/draft content",
+    "Expired session cannot view or submit private introduction state"
+  ],
+  "errors": [],
+  "deferred": [],
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "server_pid": 92769,
+  "reference_geometry": {
+    "620": null,
+    "627": null,
+    "631": null,
+    "640": null,
+    "650": null,
+    "666": null,
+    "676": null,
+    "677": null,
+    "758": null,
+    "762": null
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 265549,
+    "pixels_above_channel_delta_8": 190985,
+    "mean_absolute_channel_delta": 17.3545967279504,
+    "max_channel_delta": 250
+  },
+  "geometry": {
+    "card": {
+      "x": 20,
+      "y": 129.953125,
+      "width": 353,
+      "height": 528.0625
+    },
+    "cta": {
+      "x": 20,
+      "y": 688,
+      "width": 353,
+      "height": 60
+    }
+  },
+  "cleaned_up": true
+}

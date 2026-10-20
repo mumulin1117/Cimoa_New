@@ -9,9 +9,10 @@ const store = use_app_store(), frame = ref(null), context_id = ref(''), error = 
 const account_scope = use_account_scope(store, () => { navigating.value = false })
 onLoad(options => { context_id.value = String(options?.return_context_id || '') })
 const context = computed(() => account_scope.is_current() ? store.current_drafts.find(row => row.draft_id === context_id.value && row.kind === 'coin_spend') : null)
-const access_error = computed(() => account_scope.access_error.value || (!context.value ? 'This failed operation is no longer available.' : !['voice_introduction', 'priority_match'].includes(context.value.payload?.kind) ? 'This coin operation is invalid.' : ''))
+const access_error = computed(() => account_scope.access_error.value || (!context.value ? 'This failed operation is no longer available.' : !['text_introduction', 'voice_introduction', 'priority_match'].includes(context.value.payload?.kind) ? 'This coin operation is invalid.' : ''))
 const destination = computed(() => {
   const p = context.value?.payload
+  if (p?.kind === 'text_introduction') return '/pages/discover/icebreaker/text?user_id=' + encodeURIComponent(p.user_id) + '&draft_id=' + encodeURIComponent(p.introduction_draft_id)
   if (p?.kind === 'voice_introduction') return '/pages/discover/icebreaker/preview?user_id=' + encodeURIComponent(p.user_id) + '&draft_id=' + encodeURIComponent(p.introduction_draft_id) + '&media_id=' + encodeURIComponent(p.audio_id)
   if (p?.kind === 'priority_match') return '/pages/auto-match/searching?match_id=' + encodeURIComponent(p.match_id)
   return '/pages/home/index'

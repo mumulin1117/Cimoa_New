@@ -1,0 +1,74 @@
+{
+  "page": "text",
+  "result": "passed",
+  "checks": [
+    "Source person/question/input geometry, 300-character counter and last-saved text survive refresh",
+    "Keyboard-height visual viewport keeps the input flow and fixed controls accessible without duplicated safe area",
+    "Failed send preserves text, exact metadata and balance with no partial request; retry remains enabled",
+    "Repeated fee confirmation creates one pending text request and one 10-coin debit; no relationship or fake acceptance; result refresh preserves ID",
+    "Done returns to root Discover and its CTA reflects the same pending request",
+    "Small iPhone width/real safe-area budget retains readable content and scroll access",
+    "Corrupt storage shows a readable error without overwriting data or leaking profile/draft content",
+    "Expired session cannot view or submit private introduction state"
+  ],
+  "errors": [],
+  "deferred": [],
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "server_pid": 92603,
+  "reference_geometry": {
+    "620": null,
+    "627": null,
+    "631": null,
+    "640": null,
+    "650": null,
+    "666": {
+      "x": 20,
+      "y": 120,
+      "width": 353,
+      "height": 115
+    },
+    "676": {
+      "x": 20,
+      "y": 259,
+      "width": 353,
+      "height": 38
+    },
+    "677": {
+      "x": 20,
+      "y": 311,
+      "width": 353,
+      "height": 235
+    },
+    "758": null,
+    "762": null
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 58753,
+    "pixels_above_channel_delta_8": 5979,
+    "mean_absolute_channel_delta": 0.6509589769319906,
+    "max_channel_delta": 250
+  },
+  "geometry": {
+    "666": {
+      "x": 20,
+      "y": 119.96875,
+      "width": 353,
+      "height": 114.953125
+    },
+    "676": {
+      "x": 20,
+      "y": 258.921875,
+      "width": 353,
+      "height": 38
+    },
+    "677": {
+      "x": 20,
+      "y": 310.921875,
+      "width": 353,
+      "height": 235.9375
+    }
+  },
+  "cleaned_up": true
+}

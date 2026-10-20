@@ -1,0 +1,4627 @@
+{
+  "data": {
+    "schema_version": 2,
+    "revision": 0,
+    "updated_at": 1792488135463,
+    "environment": "fixture",
+    "app_consent": {
+      "revision": null,
+      "accepted_at": null
+    },
+    "accounts": [
+      {
+        "account_id": "account_cimoa",
+        "user_id": "user_cimoa",
+        "email": "cimoa@gmail.com",
+        "status": "active",
+        "auth_provider": "fixture",
+        "credential_hash": "1048c6721624beee8dee35c9f99a8024b9d7fa1272b7d5d5246296f85032f9a2"
+      }
+    ],
+    "session": {
+      "account_id": "account_cimoa",
+      "current_user_id": "user_cimoa",
+      "expires_at": 1795080135463
+    },
+    "users": [
+      {
+        "user_id": "user_cimoa",
+        "user_name": "Ethan",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/head/me.png",
+        "age": 22,
+        "major": "Interaction Design",
+        "mbti": "INFP",
+        "height_cm": 178,
+        "country": [
+          "China"
+        ],
+        "degree": "",
+        "year": "Year 3",
+        "graduation_year": "2027",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Photo Society",
+        "religion": "Prefer not to say",
+        "drinking": "Occasionally",
+        "smoking": "Never",
+        "location": "",
+        "bio": "Always looking for good coffee, new photo spots, and people to explore campus with.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_cimoa_photo_0"
+        ],
+        "goal_ids": [
+          "friends",
+          "study",
+          "coffee",
+          "language",
+          "campus"
+        ],
+        "interest_ids": [
+          "photography",
+          "coffee",
+          "music"
+        ],
+        "icebreaker_ids": [
+          "user_cimoa_q_0",
+          "user_cimoa_q_1",
+          "user_cimoa_q_2"
+        ],
+        "song_id": "espresso",
+        "verification_status": "verified",
+        "discoverable": false,
+        "deleted": false
+      },
+      {
+        "user_id": "user_chloe",
+        "user_name": "Chloe Lin",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/head/maya-av.png",
+        "age": 21,
+        "major": "Business",
+        "mbti": "ENFP",
+        "height_cm": 168,
+        "country": [
+          "Singapore"
+        ],
+        "degree": "",
+        "year": "",
+        "graduation_year": "",
+        "gender": "",
+        "pronouns": "",
+        "languages": [],
+        "clubs": "Photography Club",
+        "religion": "Buddhist",
+        "drinking": "Socially",
+        "smoking": "Never",
+        "location": "Clear Water Bay",
+        "bio": "Design student who loves quiet cafés. Looking for genuine campus friendships.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_chloe_photo_0",
+          "user_chloe_photo_1",
+          "user_chloe_photo_2"
+        ],
+        "goal_ids": [
+          "friends",
+          "study",
+          "coffee",
+          "language",
+          "campus"
+        ],
+        "interest_ids": [
+          "photography",
+          "coffee",
+          "music"
+        ],
+        "icebreaker_ids": [
+          "user_chloe_q_0",
+          "user_chloe_q_1",
+          "user_chloe_q_2"
+        ],
+        "song_id": "birds",
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false
+      },
+      {
+        "user_id": "user_liam",
+        "user_name": "Liam Park",
+        "university": "Stanford",
+        "avatar_url": "/static/assets/head/liam-av.png",
+        "age": 22,
+        "major": "Comp Sci",
+        "mbti": "INTJ",
+        "height_cm": null,
+        "country": [],
+        "degree": "",
+        "year": "",
+        "graduation_year": "",
+        "gender": "",
+        "pronouns": "",
+        "languages": [],
+        "clubs": "",
+        "religion": "",
+        "drinking": "",
+        "smoking": "",
+        "location": "",
+        "bio": "Film photographer, weekend hiker, always down for a late-night noodle run.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_liam_photo_0"
+        ],
+        "goal_ids": [
+          "activity",
+          "music",
+          "food"
+        ],
+        "interest_ids": [
+          "photography",
+          "hiking",
+          "films"
+        ],
+        "icebreaker_ids": [
+          "user_liam_q_0",
+          "user_liam_q_1",
+          "user_liam_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false
+      },
+      {
+        "user_id": "user_lina",
+        "user_name": "Lina",
+        "university": "HKU",
+        "avatar_url": "/static/assets/head/maya-full.png",
+        "age": 21,
+        "major": "Psychology",
+        "mbti": "INFJ",
+        "height_cm": 165,
+        "country": [
+          "Malaysia"
+        ],
+        "degree": "",
+        "year": "",
+        "graduation_year": "",
+        "gender": "",
+        "pronouns": "",
+        "languages": [],
+        "clubs": "Psychology Society",
+        "religion": "Christian",
+        "drinking": "Never",
+        "smoking": "Never",
+        "location": "Pok Fu Lam",
+        "bio": "Psych student who loves long walks, podcasts, and trying every dessert place in Kennedy Town.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_lina_photo_0",
+          "user_lina_photo_1",
+          "user_lina_photo_2"
+        ],
+        "goal_ids": [
+          "friends",
+          "study",
+          "coffee",
+          "language",
+          "campus"
+        ],
+        "interest_ids": [
+          "photography",
+          "coffee",
+          "music"
+        ],
+        "icebreaker_ids": [
+          "user_lina_q_0",
+          "user_lina_q_1",
+          "user_lina_q_2"
+        ],
+        "song_id": "good-luck-babe",
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false
+      },
+      {
+        "user_id": "user_jordan",
+        "user_name": "Jordan Ellis",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/head/jordan-av.png",
+        "age": null,
+        "major": "",
+        "mbti": "",
+        "height_cm": null,
+        "country": [],
+        "degree": "",
+        "year": "",
+        "graduation_year": "",
+        "gender": "",
+        "pronouns": "",
+        "languages": [],
+        "clubs": "",
+        "religion": "",
+        "drinking": "",
+        "smoking": "",
+        "location": "",
+        "bio": "",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_jordan_photo_0"
+        ],
+        "goal_ids": [],
+        "interest_ids": [],
+        "icebreaker_ids": [
+          "user_jordan_q_0",
+          "user_jordan_q_1",
+          "user_jordan_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": false,
+        "deleted": false
+      },
+      {
+        "user_id": "user_alex",
+        "user_name": "Alex",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/head/participant-38b22b41.png",
+        "age": null,
+        "major": "",
+        "mbti": "",
+        "height_cm": null,
+        "country": [],
+        "degree": "",
+        "year": "",
+        "graduation_year": "",
+        "gender": "",
+        "pronouns": "",
+        "languages": [],
+        "clubs": "",
+        "religion": "",
+        "drinking": "",
+        "smoking": "",
+        "location": "",
+        "bio": "",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_alex_photo_0"
+        ],
+        "goal_ids": [],
+        "interest_ids": [],
+        "icebreaker_ids": [
+          "user_alex_q_0",
+          "user_alex_q_1",
+          "user_alex_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": false,
+        "deleted": false
+      },
+      {
+        "user_id": "user_zoe",
+        "user_name": "Zoe",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/head/participant-92ddcb8c.png",
+        "age": null,
+        "major": "",
+        "mbti": "",
+        "height_cm": null,
+        "country": [],
+        "degree": "",
+        "year": "",
+        "graduation_year": "",
+        "gender": "",
+        "pronouns": "",
+        "languages": [],
+        "clubs": "",
+        "religion": "",
+        "drinking": "",
+        "smoking": "",
+        "location": "",
+        "bio": "",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_zoe_photo_0"
+        ],
+        "goal_ids": [],
+        "interest_ids": [],
+        "icebreaker_ids": [
+          "user_zoe_q_0",
+          "user_zoe_q_1",
+          "user_zoe_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": false,
+        "deleted": false
+      },
+      {
+        "user_id": "user_zane",
+        "user_name": "Zane",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/discover/zane/photo-1.jpg",
+        "age": 22,
+        "major": "Engineering",
+        "mbti": "ESTP",
+        "height_cm": 184,
+        "country": [
+          "United States"
+        ],
+        "degree": "",
+        "year": "Year 3",
+        "graduation_year": "2027",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Sports Team",
+        "religion": "Prefer not to say",
+        "drinking": "Socially",
+        "smoking": "Never",
+        "location": "Clear Water Bay",
+        "bio": "Basketball, running, weekend hikes, and the search for the best post-workout meal.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_zane_photo_0",
+          "user_zane_photo_1",
+          "user_zane_photo_2"
+        ],
+        "goal_ids": [
+          "activity",
+          "food",
+          "friends"
+        ],
+        "interest_ids": [
+          "sports",
+          "fitness",
+          "hiking",
+          "food"
+        ],
+        "icebreaker_ids": [
+          "user_zane_q_0",
+          "user_zane_q_1",
+          "user_zane_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 0,
+        "voice_intro": {
+          "audio_url": "/static/assets/discover/zane/voice-intro.mp3",
+          "duration_ms": 16728,
+          "transcript": "Hey, I'm Zane. I'm usually on the basketball court or out for a run, and I love a good weekend hike. The best part after a workout? Finding a cozy little place for a great meal. Got any hidden gems? Come tell me about them."
+        }
+      },
+      {
+        "user_id": "user_linden",
+        "user_name": "Linden",
+        "university": "HKU",
+        "avatar_url": "/static/assets/discover/linden/photo-1.jpg",
+        "age": 21,
+        "major": "Design",
+        "mbti": "INFP",
+        "height_cm": 181,
+        "country": [
+          "United Kingdom"
+        ],
+        "degree": "",
+        "year": "Year 2",
+        "graduation_year": "2028",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Photo Society",
+        "religion": "Non-religious",
+        "drinking": "Occasionally",
+        "smoking": "Never",
+        "location": "Pok Fu Lam",
+        "bio": "Usually carrying a camera, a pair of headphones, and no reason to rush sunset.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_linden_photo_0",
+          "user_linden_photo_1",
+          "user_linden_photo_2"
+        ],
+        "goal_ids": [
+          "coffee",
+          "music",
+          "friends"
+        ],
+        "interest_ids": [
+          "photography",
+          "music",
+          "art",
+          "travel"
+        ],
+        "icebreaker_ids": [
+          "user_linden_q_0",
+          "user_linden_q_1",
+          "user_linden_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 1,
+        "voice_intro": {
+          "audio_url": "/static/assets/discover/linden/voice-intro.mp3",
+          "duration_ms": 14040,
+          "transcript": "Hi, I'm Linden. I'm into photography, music, and slow walks around sunset. I can be a little quiet at first, but once I warm up, I always have plenty to say. What song have you had on repeat lately? Send it my way."
+        }
+      },
+      {
+        "user_id": "user_evan",
+        "user_name": "Evan",
+        "university": "CUHK",
+        "avatar_url": "/static/assets/discover/evan/photo-1.jpg",
+        "age": 22,
+        "major": "Media",
+        "mbti": "ENTP",
+        "height_cm": 179,
+        "country": [
+          "United Kingdom"
+        ],
+        "degree": "",
+        "year": "Year 3",
+        "graduation_year": "2027",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Film Society",
+        "religion": "Prefer not to say",
+        "drinking": "Occasionally",
+        "smoking": "Never",
+        "location": "Sha Tin",
+        "bio": "Movie nights, improvised recipes, and spontaneous plans are my favorite combination.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_evan_photo_0",
+          "user_evan_photo_1",
+          "user_evan_photo_2"
+        ],
+        "goal_ids": [
+          "food",
+          "friends",
+          "activity"
+        ],
+        "interest_ids": [
+          "films",
+          "cooking",
+          "travel",
+          "food"
+        ],
+        "icebreaker_ids": [
+          "user_evan_q_0",
+          "user_evan_q_1",
+          "user_evan_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 2,
+        "voice_intro": {
+          "audio_url": "/static/assets/discover/evan/voice-intro.mp3",
+          "duration_ms": 18672,
+          "transcript": "Hey, I'm Evan. I love movies and experimenting in the kitchen. My signature dish is scrambled eggs with tomatoes—still a work in progress. Some days I stay in; other days I take off on a whim. I'm hoping to meet someone who enjoys the little fun moments in life."
+        }
+      },
+      {
+        "user_id": "user_coco",
+        "user_name": "Coco",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/discover/coco/photo-1.jpg",
+        "age": 20,
+        "major": "Design",
+        "mbti": "ESFP",
+        "height_cm": 166,
+        "country": [
+          "Singapore"
+        ],
+        "degree": "",
+        "year": "Year 2",
+        "graduation_year": "2028",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Photography Club",
+        "religion": "Prefer not to say",
+        "drinking": "Socially",
+        "smoking": "Never",
+        "location": "Clear Water Bay",
+        "bio": "Always ready for a new exhibition, a photo walk, or a place with something delicious.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_coco_photo_0",
+          "user_coco_photo_1",
+          "user_coco_photo_2"
+        ],
+        "goal_ids": [
+          "campus",
+          "food",
+          "friends"
+        ],
+        "interest_ids": [
+          "art",
+          "photography",
+          "food",
+          "travel"
+        ],
+        "icebreaker_ids": [
+          "user_coco_q_0",
+          "user_coco_q_1",
+          "user_coco_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 3,
+        "voice_intro": {
+          "audio_url": "/static/assets/discover/coco/voice-intro.mp3",
+          "duration_ms": 14376,
+          "transcript": "Hey! I'm Coco. I love checking out exhibitions, taking photos, and hunting down delicious food. My friends say I laugh at almost anything, so it doesn't take much to make my day. What's the funniest thing that's happened to you lately? Come share it with me!"
+        }
+      },
+      {
+        "user_id": "user_anna",
+        "user_name": "Anna",
+        "university": "HKU",
+        "avatar_url": "/static/assets/discover/anna/photo-1.jpg",
+        "age": 21,
+        "major": "Psychology",
+        "mbti": "ISFJ",
+        "height_cm": 165,
+        "country": [
+          "Canada"
+        ],
+        "degree": "",
+        "year": "Year 3",
+        "graduation_year": "2027",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Book Club",
+        "religion": "Christian",
+        "drinking": "Never",
+        "smoking": "Never",
+        "location": "Pok Fu Lam",
+        "bio": "A quiet-day person who is happiest with a book, a playlist, and a good cup of coffee.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_anna_photo_0",
+          "user_anna_photo_1",
+          "user_anna_photo_2"
+        ],
+        "goal_ids": [
+          "coffee",
+          "friends",
+          "study"
+        ],
+        "interest_ids": [
+          "books",
+          "music",
+          "coffee",
+          "study"
+        ],
+        "icebreaker_ids": [
+          "user_anna_q_0",
+          "user_anna_q_1",
+          "user_anna_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 4,
+        "voice_intro": {
+          "audio_url": "/static/assets/discover/anna/voice-intro.mp3",
+          "duration_ms": 18768,
+          "transcript": "Hi, I'm Anna. On a quiet day, you'll find me reading, listening to music, or making myself a cup of coffee. I may seem a little reserved when we first meet, but give me time and you'll see another side of me. I'm hoping to meet someone I can talk to with ease."
+        }
+      },
+      {
+        "user_id": "user_bella",
+        "user_name": "Bella",
+        "university": "CUHK",
+        "avatar_url": "/static/assets/discover/bella/photo-1.jpg",
+        "age": 22,
+        "major": "International Business",
+        "mbti": "ISTP",
+        "height_cm": 170,
+        "country": [
+          "United Kingdom"
+        ],
+        "degree": "",
+        "year": "Year 3",
+        "graduation_year": "2027",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Travel Club",
+        "religion": "Non-religious",
+        "drinking": "Occasionally",
+        "smoking": "Never",
+        "location": "Sha Tin",
+        "bio": "Equally happy planning the next trip or wandering through town with nowhere to be.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_bella_photo_0",
+          "user_bella_photo_1",
+          "user_bella_photo_2"
+        ],
+        "goal_ids": [
+          "activity",
+          "friends",
+          "language"
+        ],
+        "interest_ids": [
+          "travel",
+          "photography",
+          "food",
+          "hiking"
+        ],
+        "icebreaker_ids": [
+          "user_bella_q_0",
+          "user_bella_q_1",
+          "user_bella_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 5,
+        "voice_intro": {
+          "audio_url": "/static/assets/discover/bella/voice-intro.mp3",
+          "duration_ms": 16320,
+          "transcript": "Hey, I'm Bella. I love traveling, but I also enjoy wandering around town on my own. I'm pretty easygoing, but when something matters to me, I give it my full attention. If you're into trying new things too, I think we'll have plenty to talk about."
+        }
+      },
+      {
+        "user_id": "user_noah",
+        "user_name": "Noah Brooks",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/people/avatar-01.jpg",
+        "age": 22,
+        "major": "Computer Science",
+        "mbti": "INTP",
+        "height_cm": 180,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Photo Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Clear Water Bay",
+        "bio": "Usually debugging in the library, then taking the long way home with my camera. Looking for someone to trade playlists and late-night noodle recommendations with.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_noah_photo_0"
+        ],
+        "goal_ids": [
+          "friends",
+          "study",
+          "coffee"
+        ],
+        "interest_ids": [
+          "photography",
+          "gaming",
+          "coffee"
+        ],
+        "icebreaker_ids": [
+          "user_noah_q_0",
+          "user_noah_q_1",
+          "user_noah_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 6
+      },
+      {
+        "user_id": "user_sophie",
+        "user_name": "Sophie Bennett",
+        "university": "HKU",
+        "avatar_url": "/static/assets/people/avatar-02.jpg",
+        "age": 21,
+        "major": "Psychology",
+        "mbti": "ENFP",
+        "height_cm": 167,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Volunteer Group",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Pok Fu Lam",
+        "bio": "Psychology lectures, second-hand bookshops, and very long coffee chats. I am trying a different café every Sunday; happy to share the list.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_sophie_photo_0"
+        ],
+        "goal_ids": [
+          "coffee",
+          "friends",
+          "study"
+        ],
+        "interest_ids": [
+          "coffee",
+          "books",
+          "volunteering"
+        ],
+        "icebreaker_ids": [
+          "user_sophie_q_0",
+          "user_sophie_q_1",
+          "user_sophie_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 7
+      },
+      {
+        "user_id": "user_ella",
+        "user_name": "Ella Hayes",
+        "university": "CUHK",
+        "avatar_url": "/static/assets/people/avatar-03.jpg",
+        "age": 20,
+        "major": "Media",
+        "mbti": "ESFJ",
+        "height_cm": 169,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 2",
+        "graduation_year": "2029",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Music Club",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Sha Tin",
+        "bio": "I help with student radio and take film-night snacks a little too seriously. Always looking for a new album or an easy recipe to try with friends.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_ella_photo_0"
+        ],
+        "goal_ids": [
+          "music",
+          "friends",
+          "food"
+        ],
+        "interest_ids": [
+          "music",
+          "films",
+          "cooking"
+        ],
+        "icebreaker_ids": [
+          "user_ella_q_0",
+          "user_ella_q_1",
+          "user_ella_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 8
+      },
+      {
+        "user_id": "user_oliver",
+        "user_name": "Oliver Reed",
+        "university": "CityU",
+        "avatar_url": "/static/assets/people/avatar-04.jpg",
+        "age": 22,
+        "major": "Economics",
+        "mbti": "ISTJ",
+        "height_cm": 182,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Debate Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Kowloon Tong",
+        "bio": "Economics by day, five-a-side football when the assignments allow it. I like plans that start with a quick coffee and somehow turn into a whole afternoon.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_oliver_photo_0"
+        ],
+        "goal_ids": [
+          "study",
+          "activity",
+          "friends"
+        ],
+        "interest_ids": [
+          "sports",
+          "films",
+          "study"
+        ],
+        "icebreaker_ids": [
+          "user_oliver_q_0",
+          "user_oliver_q_1",
+          "user_oliver_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 9
+      },
+      {
+        "user_id": "user_grace",
+        "user_name": "Grace Miller",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/people/avatar-05.jpg",
+        "age": 21,
+        "major": "Design",
+        "mbti": "ISFP",
+        "height_cm": 165,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Art Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Clear Water Bay",
+        "bio": "My tote bag is mostly sketchbooks and forgotten receipts. I would love a museum buddy or someone happy to sit by the sea and draw badly together.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_grace_photo_0"
+        ],
+        "goal_ids": [
+          "coffee",
+          "campus",
+          "friends"
+        ],
+        "interest_ids": [
+          "art",
+          "photography",
+          "coffee"
+        ],
+        "icebreaker_ids": [
+          "user_grace_q_0",
+          "user_grace_q_1",
+          "user_grace_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 10
+      },
+      {
+        "user_id": "user_lucas",
+        "user_name": "Lucas Morgan",
+        "university": "PolyU",
+        "avatar_url": "/static/assets/people/avatar-06.jpg",
+        "age": 21,
+        "major": "Engineering",
+        "mbti": "ESTP",
+        "height_cm": 183,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 2",
+        "graduation_year": "2029",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Sports Team",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Hung Hom",
+        "bio": "Training for my first 10K without giving up weekend dim sum. Happy to find an easy running partner, especially one who knows a good breakfast stop.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_lucas_photo_0"
+        ],
+        "goal_ids": [
+          "activity",
+          "friends",
+          "food"
+        ],
+        "interest_ids": [
+          "sports",
+          "fitness",
+          "hiking"
+        ],
+        "icebreaker_ids": [
+          "user_lucas_q_0",
+          "user_lucas_q_1",
+          "user_lucas_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 11
+      },
+      {
+        "user_id": "user_jack",
+        "user_name": "Jack Wilson",
+        "university": "HKU",
+        "avatar_url": "/static/assets/people/avatar-07.jpg",
+        "age": 23,
+        "major": "Architecture",
+        "mbti": "ENTP",
+        "height_cm": 185,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 4",
+        "graduation_year": "2027",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Architecture Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Kennedy Town",
+        "bio": "Architecture studio has taught me to notice windows and survive on noodles. On free weekends I explore a new neighborhood and photograph its signs.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_jack_photo_0"
+        ],
+        "goal_ids": [
+          "activity",
+          "food",
+          "friends"
+        ],
+        "interest_ids": [
+          "photography",
+          "travel",
+          "food"
+        ],
+        "icebreaker_ids": [
+          "user_jack_q_0",
+          "user_jack_q_1",
+          "user_jack_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 12
+      },
+      {
+        "user_id": "user_amelia",
+        "user_name": "Amelia Clarke",
+        "university": "CUHK",
+        "avatar_url": "/static/assets/people/avatar-08.jpg",
+        "age": 22,
+        "major": "Business",
+        "mbti": "ENFJ",
+        "height_cm": 170,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Travel Club",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Sha Tin",
+        "bio": "The friend who makes the shared map before a trip. I am collecting favorite bakeries around Hong Kong and trying to get better at conversational Cantonese.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_amelia_photo_0"
+        ],
+        "goal_ids": [
+          "food",
+          "language",
+          "friends"
+        ],
+        "interest_ids": [
+          "travel",
+          "coffee",
+          "food"
+        ],
+        "icebreaker_ids": [
+          "user_amelia_q_0",
+          "user_amelia_q_1",
+          "user_amelia_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 13
+      },
+      {
+        "user_id": "user_lily",
+        "user_name": "Lily Chen",
+        "university": "CityU",
+        "avatar_url": "/static/assets/people/avatar-09.jpg",
+        "age": 20,
+        "major": "Design",
+        "mbti": "INFP",
+        "height_cm": 163,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 2",
+        "graduation_year": "2029",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Art Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Kowloon Tong",
+        "bio": "Illustration student, cozy-game enthusiast, and enthusiastic collector of stationery. I am quieter in big groups but always up for a small creative afternoon.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_lily_photo_0"
+        ],
+        "goal_ids": [
+          "friends",
+          "coffee",
+          "campus"
+        ],
+        "interest_ids": [
+          "art",
+          "books",
+          "gaming"
+        ],
+        "icebreaker_ids": [
+          "user_lily_q_0",
+          "user_lily_q_1",
+          "user_lily_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 14
+      },
+      {
+        "user_id": "user_mia",
+        "user_name": "Mia Wong",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/people/avatar-10.jpg",
+        "age": 21,
+        "major": "Data Science",
+        "mbti": "INTJ",
+        "height_cm": 164,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Dance Club",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Clear Water Bay",
+        "bio": "Data projects during the week, dance practice after class. Looking for a study partner who will also celebrate finishing an assignment with bubble tea.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_mia_photo_0"
+        ],
+        "goal_ids": [
+          "study",
+          "music",
+          "friends"
+        ],
+        "interest_ids": [
+          "dance",
+          "kpop",
+          "study"
+        ],
+        "icebreaker_ids": [
+          "user_mia_q_0",
+          "user_mia_q_1",
+          "user_mia_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 15
+      },
+      {
+        "user_id": "user_isla",
+        "user_name": "Isla Thompson",
+        "university": "HKU",
+        "avatar_url": "/static/assets/people/avatar-11.jpg",
+        "age": 20,
+        "major": "Education",
+        "mbti": "ESFP",
+        "height_cm": 168,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 2",
+        "graduation_year": "2029",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Volunteer Group",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Pok Fu Lam",
+        "bio": "I volunteer at weekend reading sessions and rarely say no to an outdoor plan. New to campus gigs and very open to recommendations.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_isla_photo_0"
+        ],
+        "goal_ids": [
+          "campus",
+          "friends",
+          "activity"
+        ],
+        "interest_ids": [
+          "volunteering",
+          "music",
+          "sports"
+        ],
+        "icebreaker_ids": [
+          "user_isla_q_0",
+          "user_isla_q_1",
+          "user_isla_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 16
+      },
+      {
+        "user_id": "user_henry",
+        "user_name": "Henry Scott",
+        "university": "CUHK",
+        "avatar_url": "/static/assets/people/avatar-12.jpg",
+        "age": 22,
+        "major": "Computer Science",
+        "mbti": "ISTP",
+        "height_cm": 181,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Film Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Sha Tin",
+        "bio": "I build small apps, overthink film endings, and make a surprisingly decent curry. Hoping to meet people for relaxed dinners and the occasional board-game night.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_henry_photo_0"
+        ],
+        "goal_ids": [
+          "friends",
+          "food",
+          "study"
+        ],
+        "interest_ids": [
+          "films",
+          "gaming",
+          "cooking"
+        ],
+        "icebreaker_ids": [
+          "user_henry_q_0",
+          "user_henry_q_1",
+          "user_henry_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 17
+      },
+      {
+        "user_id": "user_theo",
+        "user_name": "Theo Evans",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/people/avatar-13.jpg",
+        "age": 23,
+        "major": "Finance",
+        "mbti": "ENTJ",
+        "height_cm": 184,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 4",
+        "graduation_year": "2027",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Entrepreneurship Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Clear Water Bay",
+        "bio": "Finishing my final year and trying to spend less of it in spreadsheets. I like practical books, morning workouts, and hearing what people are building.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_theo_photo_0"
+        ],
+        "goal_ids": [
+          "coffee",
+          "study",
+          "friends"
+        ],
+        "interest_ids": [
+          "coffee",
+          "fitness",
+          "books"
+        ],
+        "icebreaker_ids": [
+          "user_theo_q_0",
+          "user_theo_q_1",
+          "user_theo_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 18
+      },
+      {
+        "user_id": "user_finn",
+        "user_name": "Finn Murphy",
+        "university": "PolyU",
+        "avatar_url": "/static/assets/people/avatar-14.jpg",
+        "age": 21,
+        "major": "Media",
+        "mbti": "ENFP",
+        "height_cm": 179,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 2",
+        "graduation_year": "2029",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Music Club",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Hung Hom",
+        "bio": "Usually recording sounds for a class project or taking a train somewhere new. Looking for gig buddies and people who enjoy getting a little lost.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_finn_photo_0"
+        ],
+        "goal_ids": [
+          "music",
+          "activity",
+          "friends"
+        ],
+        "interest_ids": [
+          "music",
+          "photography",
+          "travel"
+        ],
+        "icebreaker_ids": [
+          "user_finn_q_0",
+          "user_finn_q_1",
+          "user_finn_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 19
+      },
+      {
+        "user_id": "user_leo",
+        "user_name": "Leo Carter",
+        "university": "CityU",
+        "avatar_url": "/static/assets/people/avatar-15.jpg",
+        "age": 22,
+        "major": "Business",
+        "mbti": "ENFJ",
+        "height_cm": 180,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Food Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Kowloon Tong",
+        "bio": "I keep a very serious list of very inexpensive lunches. My ideal plan is a market walk, something new to eat, and a conversation that forgets the time.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_leo_photo_0"
+        ],
+        "goal_ids": [
+          "food",
+          "friends",
+          "campus"
+        ],
+        "interest_ids": [
+          "food",
+          "cooking",
+          "travel"
+        ],
+        "icebreaker_ids": [
+          "user_leo_q_0",
+          "user_leo_q_1",
+          "user_leo_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 20
+      },
+      {
+        "user_id": "user_ava",
+        "user_name": "Ava Martin",
+        "university": "HKU",
+        "avatar_url": "/static/assets/people/avatar-16.jpg",
+        "age": 22,
+        "major": "Law",
+        "mbti": "INFJ",
+        "height_cm": 166,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Debate Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Kennedy Town",
+        "bio": "Law student trying to read something that is not a case report. I love unhurried walks, good pastries, and people who ask thoughtful questions.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_ava_photo_0"
+        ],
+        "goal_ids": [
+          "coffee",
+          "friends",
+          "study"
+        ],
+        "interest_ids": [
+          "books",
+          "coffee",
+          "travel"
+        ],
+        "icebreaker_ids": [
+          "user_ava_q_0",
+          "user_ava_q_1",
+          "user_ava_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 21
+      },
+      {
+        "user_id": "user_archie",
+        "user_name": "Archie Green",
+        "university": "CUHK",
+        "avatar_url": "/static/assets/people/avatar-17.jpg",
+        "age": 21,
+        "major": "Sciences",
+        "mbti": "INTP",
+        "height_cm": 178,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 2",
+        "graduation_year": "2029",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Board Game Club",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Sha Tin",
+        "bio": "Science labs, sci-fi novels, and board games with overly long rulebooks. Patient enough to explain the rules and equally happy to learn something new.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_archie_photo_0"
+        ],
+        "goal_ids": [
+          "friends",
+          "study",
+          "activity"
+        ],
+        "interest_ids": [
+          "gaming",
+          "films",
+          "books"
+        ],
+        "icebreaker_ids": [
+          "user_archie_q_0",
+          "user_archie_q_1",
+          "user_archie_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 22
+      },
+      {
+        "user_id": "user_ruby",
+        "user_name": "Ruby Parker",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/people/avatar-18.jpg",
+        "age": 21,
+        "major": "Psychology",
+        "mbti": "ISFJ",
+        "height_cm": 164,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Hiking Club",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Clear Water Bay",
+        "bio": "I like gentle hikes with lots of photo stops and a proper lunch afterward. Looking for friends who enjoy the quieter side of campus life.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_ruby_photo_0"
+        ],
+        "goal_ids": [
+          "activity",
+          "friends",
+          "coffee"
+        ],
+        "interest_ids": [
+          "hiking",
+          "books",
+          "photography"
+        ],
+        "icebreaker_ids": [
+          "user_ruby_q_0",
+          "user_ruby_q_1",
+          "user_ruby_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 23
+      },
+      {
+        "user_id": "user_freya",
+        "user_name": "Freya Lewis",
+        "university": "CityU",
+        "avatar_url": "/static/assets/people/avatar-19.jpg",
+        "age": 20,
+        "major": "Media",
+        "mbti": "ENFP",
+        "height_cm": 169,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 2",
+        "graduation_year": "2029",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Music Club",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Kowloon Tong",
+        "bio": "Making short videos for the student arts club and playlists for every bus ride. Always up for an open mic, even if I am only cheering from the audience.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_freya_photo_0"
+        ],
+        "goal_ids": [
+          "music",
+          "friends",
+          "campus"
+        ],
+        "interest_ids": [
+          "music",
+          "dance",
+          "films"
+        ],
+        "icebreaker_ids": [
+          "user_freya_q_0",
+          "user_freya_q_1",
+          "user_freya_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 24
+      },
+      {
+        "user_id": "user_alice",
+        "user_name": "Alice Walker",
+        "university": "PolyU",
+        "avatar_url": "/static/assets/people/avatar-20.jpg",
+        "age": 22,
+        "major": "Design",
+        "mbti": "INFP",
+        "height_cm": 171,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Photo Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Hung Hom",
+        "bio": "A design student who notices shopfront colors before street names. I would love company for photo walks, gallery afternoons, and finding a new lunch spot.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_alice_photo_0"
+        ],
+        "goal_ids": [
+          "activity",
+          "coffee",
+          "friends"
+        ],
+        "interest_ids": [
+          "photography",
+          "art",
+          "travel"
+        ],
+        "icebreaker_ids": [
+          "user_alice_q_0",
+          "user_alice_q_1",
+          "user_alice_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 25
+      },
+      {
+        "user_id": "user_daisy",
+        "user_name": "Daisy Foster",
+        "university": "CUHK",
+        "avatar_url": "/static/assets/people/avatar-21.jpg",
+        "age": 21,
+        "major": "Education",
+        "mbti": "ESFJ",
+        "height_cm": 165,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Woman",
+        "pronouns": "she / her",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Book Club",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Sha Tin",
+        "bio": "I swap books with friends and try to make time for a walk every day. Looking for kind conversation, language practice, and someone to explore cafés with.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_daisy_photo_0"
+        ],
+        "goal_ids": [
+          "friends",
+          "coffee",
+          "language"
+        ],
+        "interest_ids": [
+          "books",
+          "coffee",
+          "volunteering"
+        ],
+        "icebreaker_ids": [
+          "user_daisy_q_0",
+          "user_daisy_q_1",
+          "user_daisy_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 26
+      },
+      {
+        "user_id": "user_oscar",
+        "user_name": "Oscar Hughes",
+        "university": "HKUST",
+        "avatar_url": "/static/assets/people/avatar-22.jpg",
+        "age": 22,
+        "major": "Engineering",
+        "mbti": "ISTP",
+        "height_cm": 182,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 3",
+        "graduation_year": "2028",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Hiking Club",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Clear Water Bay",
+        "bio": "I fix things in the workshop and take slow routes home. Keen to meet people for casual games, seaside walks, and a good meal after a long day.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_oscar_photo_0"
+        ],
+        "goal_ids": [
+          "activity",
+          "friends",
+          "food"
+        ],
+        "interest_ids": [
+          "hiking",
+          "sports",
+          "photography"
+        ],
+        "icebreaker_ids": [
+          "user_oscar_q_0",
+          "user_oscar_q_1",
+          "user_oscar_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 27
+      },
+      {
+        "user_id": "user_max",
+        "user_name": "Max Taylor",
+        "university": "HKU",
+        "avatar_url": "/static/assets/people/avatar-23.jpg",
+        "age": 21,
+        "major": "Architecture",
+        "mbti": "ISFP",
+        "height_cm": 180,
+        "country": [],
+        "degree": "Bachelor",
+        "year": "Year 2",
+        "graduation_year": "2029",
+        "gender": "Man",
+        "pronouns": "he / him",
+        "languages": [
+          "English"
+        ],
+        "clubs": "Art Society",
+        "religion": "Prefer not to say",
+        "drinking": "Prefer not to say",
+        "smoking": "Prefer not to say",
+        "location": "Pok Fu Lam",
+        "bio": "Architecture student with a soft spot for old courtyards and handwritten postcards. Looking for a walking buddy who does not mind a few sketching stops.",
+        "bio_font": "Caveat",
+        "bio_audio_id": null,
+        "photo_ids": [
+          "user_max_photo_0"
+        ],
+        "goal_ids": [
+          "coffee",
+          "activity",
+          "friends"
+        ],
+        "interest_ids": [
+          "art",
+          "photography",
+          "coffee"
+        ],
+        "icebreaker_ids": [
+          "user_max_q_0",
+          "user_max_q_1",
+          "user_max_q_2"
+        ],
+        "song_id": null,
+        "verification_status": "verified",
+        "discoverable": true,
+        "deleted": false,
+        "discover_order": 28
+      }
+    ],
+    "goals": [
+      {
+        "item_id": "friends",
+        "emoji": "🤝",
+        "label": "New friends"
+      },
+      {
+        "item_id": "study",
+        "emoji": "📚",
+        "label": "Study buddy"
+      },
+      {
+        "item_id": "coffee",
+        "emoji": "☕",
+        "label": "Coffee chats"
+      },
+      {
+        "item_id": "campus",
+        "emoji": "🎉",
+        "label": "Campus events"
+      },
+      {
+        "item_id": "language",
+        "emoji": "🗣️",
+        "label": "Language exchange"
+      },
+      {
+        "item_id": "activity",
+        "emoji": "🏃",
+        "label": "Activity Buddies"
+      },
+      {
+        "item_id": "music",
+        "emoji": "🎸",
+        "label": "Music & Gigs"
+      },
+      {
+        "item_id": "food",
+        "emoji": "🍜",
+        "label": "Food Explorers"
+      }
+    ],
+    "interests": [
+      {
+        "item_id": "kpop",
+        "emoji": "🇰🇷",
+        "label": "K-pop"
+      },
+      {
+        "item_id": "photography",
+        "emoji": "📷",
+        "label": "Photography"
+      },
+      {
+        "item_id": "coffee",
+        "emoji": "☕",
+        "label": "Coffee"
+      },
+      {
+        "item_id": "music",
+        "emoji": "🎵",
+        "label": "Live Music"
+      },
+      {
+        "item_id": "hiking",
+        "emoji": "🥾",
+        "label": "Hiking"
+      },
+      {
+        "item_id": "gaming",
+        "emoji": "🎮",
+        "label": "Gaming"
+      },
+      {
+        "item_id": "travel",
+        "emoji": "✈️",
+        "label": "Travel"
+      },
+      {
+        "item_id": "art",
+        "emoji": "🎨",
+        "label": "Art"
+      },
+      {
+        "item_id": "films",
+        "emoji": "🎬",
+        "label": "Films"
+      },
+      {
+        "item_id": "books",
+        "emoji": "📚",
+        "label": "Books"
+      },
+      {
+        "item_id": "fitness",
+        "emoji": "💪",
+        "label": "Fitness"
+      },
+      {
+        "item_id": "cooking",
+        "emoji": "🍳",
+        "label": "Cooking"
+      },
+      {
+        "item_id": "dance",
+        "emoji": "💃",
+        "label": "Dance"
+      },
+      {
+        "item_id": "sports",
+        "emoji": "🏀",
+        "label": "Sports"
+      },
+      {
+        "item_id": "volunteering",
+        "emoji": "🤝",
+        "label": "Volunteering"
+      },
+      {
+        "item_id": "study",
+        "emoji": "📝",
+        "label": "Study Groups"
+      },
+      {
+        "item_id": "food",
+        "emoji": "🍜",
+        "label": "Food"
+      }
+    ],
+    "songs": [
+      {
+        "song_id": "beautiful-things",
+        "title": "Beautiful Things",
+        "artist": "Benson Boone",
+        "cover_url": "/static/assets/songs/beautiful-things.jpg",
+        "audio_id": null
+      },
+      {
+        "song_id": "espresso",
+        "title": "Espresso",
+        "artist": "Sabrina Carpenter",
+        "cover_url": "/static/assets/songs/espresso.jpg",
+        "audio_id": null
+      },
+      {
+        "song_id": "birds",
+        "title": "BIRDS OF A FEATHER",
+        "artist": "Billie Eilish",
+        "cover_url": "/static/assets/songs/birds.jpg",
+        "audio_id": null
+      },
+      {
+        "song_id": "good-luck-babe",
+        "title": "Good Luck, Babe!",
+        "artist": "Chappell Roan",
+        "cover_url": "/static/assets/songs/good-luck-babe.jpg",
+        "audio_id": null
+      },
+      {
+        "song_id": "training-season",
+        "title": "Training Season",
+        "artist": "Dua Lipa",
+        "cover_url": "/static/assets/songs/training-season.jpg",
+        "audio_id": null
+      },
+      {
+        "song_id": "risk-it-all",
+        "title": "Risk It All",
+        "artist": "Bruno Mars",
+        "cover_url": "/static/assets/songs/risk-it-all.jpg",
+        "audio_id": null
+      },
+      {
+        "song_id": "love-me-not",
+        "title": "Love Me Not",
+        "artist": "Ravyn Lenae",
+        "cover_url": "/static/assets/songs/love-me-not.jpg",
+        "audio_id": null
+      },
+      {
+        "song_id": "stupid-song",
+        "title": "stupid song",
+        "artist": "Olivia Rodrigo",
+        "cover_url": "/static/assets/songs/stupid-song.jpg",
+        "audio_id": null
+      },
+      {
+        "song_id": "stateside",
+        "title": "Stateside",
+        "artist": "PinkPantheress",
+        "cover_url": "/static/assets/songs/stateside.jpg",
+        "audio_id": null
+      },
+      {
+        "song_id": "beauty-beat",
+        "title": "Beauty And A Beat",
+        "artist": "Justin Bieber",
+        "cover_url": "/static/assets/songs/beauty-beat.jpg",
+        "audio_id": null
+      }
+    ],
+    "picker_options": {
+      "majors": [
+        "Business",
+        "Computer Science",
+        "Engineering",
+        "Medicine",
+        "Finance",
+        "Sciences",
+        "Data Science",
+        "Economics",
+        "Information Technology",
+        "Design",
+        "Law",
+        "Architecture",
+        "Psychology",
+        "Media",
+        "Education"
+      ],
+      "countries": [
+        "China",
+        "Hong Kong",
+        "Singapore",
+        "Malaysia",
+        "Korea",
+        "Japan",
+        "Taiwan",
+        "India",
+        "Indonesia",
+        "Vietnam",
+        "Thailand",
+        "Philippines",
+        "United States",
+        "United Kingdom",
+        "Canada",
+        "Australia",
+        "France",
+        "Germany"
+      ],
+      "mbti": [
+        "INTJ",
+        "INTP",
+        "ENTJ",
+        "ENTP",
+        "INFJ",
+        "INFP",
+        "ENFJ",
+        "ENFP",
+        "ISTJ",
+        "ISFJ",
+        "ESTJ",
+        "ESFJ",
+        "ISTP",
+        "ISFP",
+        "ESTP",
+        "ESFP"
+      ],
+      "religion": [
+        "Prefer not to say",
+        "Non-religious",
+        "Atheist",
+        "Christian",
+        "Catholic",
+        "Buddhist",
+        "Islam",
+        "Hindu",
+        "Taoism"
+      ],
+      "drinking": [
+        "Never",
+        "Occasionally",
+        "Socially",
+        "Regularly"
+      ],
+      "smoking": [
+        "Never",
+        "Occasionally",
+        "Socially",
+        "Regularly",
+        "Trying to quit"
+      ],
+      "clubs": [
+        "Photo Society",
+        "Sports Team",
+        "Music Club",
+        "Debate Society",
+        "Volunteer Group",
+        "Hiking Club",
+        "None"
+      ],
+      "bio_fonts": [
+        "Poppins",
+        "Playfair Display",
+        "Caveat",
+        "Permanent Marker",
+        "Anton"
+      ]
+    },
+    "onboarding_steps": [
+      "basic",
+      "uni",
+      "major",
+      "photos",
+      "about",
+      "interests",
+      "goal",
+      "ice",
+      "notif",
+      "complete"
+    ],
+    "profile_photos": [
+      {
+        "photo_id": "user_cimoa_photo_0",
+        "user_id": "user_cimoa",
+        "media_url": "/static/assets/head/me.png",
+        "position": 0
+      },
+      {
+        "photo_id": "user_chloe_photo_0",
+        "user_id": "user_chloe",
+        "media_url": "/static/assets/head/maya-full.png",
+        "position": 0
+      },
+      {
+        "photo_id": "user_chloe_photo_1",
+        "user_id": "user_chloe",
+        "media_url": "/static/assets/head/maya-card.png",
+        "position": 1
+      },
+      {
+        "photo_id": "user_chloe_photo_2",
+        "user_id": "user_chloe",
+        "media_url": "/static/assets/head/maya-av.png",
+        "position": 2
+      },
+      {
+        "photo_id": "user_liam_photo_0",
+        "user_id": "user_liam",
+        "media_url": "/static/assets/head/liam-av.png",
+        "position": 0
+      },
+      {
+        "photo_id": "user_lina_photo_0",
+        "user_id": "user_lina",
+        "media_url": "/static/assets/head/maya-full.png",
+        "position": 0
+      },
+      {
+        "photo_id": "user_lina_photo_1",
+        "user_id": "user_lina",
+        "media_url": "/static/assets/head/maya-card.png",
+        "position": 1
+      },
+      {
+        "photo_id": "user_lina_photo_2",
+        "user_id": "user_lina",
+        "media_url": "/static/assets/head/maya-av.png",
+        "position": 2
+      },
+      {
+        "photo_id": "user_jordan_photo_0",
+        "user_id": "user_jordan",
+        "media_url": "/static/assets/head/jordan-av.png",
+        "position": 0
+      },
+      {
+        "photo_id": "user_alex_photo_0",
+        "user_id": "user_alex",
+        "media_url": "/static/assets/head/participant-38b22b41.png",
+        "position": 0
+      },
+      {
+        "photo_id": "user_zoe_photo_0",
+        "user_id": "user_zoe",
+        "media_url": "/static/assets/head/participant-92ddcb8c.png",
+        "position": 0
+      },
+      {
+        "photo_id": "user_zane_photo_0",
+        "user_id": "user_zane",
+        "media_url": "/static/assets/discover/zane/photo-1.jpg",
+        "position": 0,
+        "focal_point": "50% 30%"
+      },
+      {
+        "photo_id": "user_zane_photo_1",
+        "user_id": "user_zane",
+        "media_url": "/static/assets/discover/zane/photo-2.jpg",
+        "position": 1,
+        "focal_point": "50% 32%"
+      },
+      {
+        "photo_id": "user_zane_photo_2",
+        "user_id": "user_zane",
+        "media_url": "/static/assets/discover/zane/photo-3.jpg",
+        "position": 2,
+        "focal_point": "50% 26%"
+      },
+      {
+        "photo_id": "user_linden_photo_0",
+        "user_id": "user_linden",
+        "media_url": "/static/assets/discover/linden/photo-1.jpg",
+        "position": 0,
+        "focal_point": "50% 24%"
+      },
+      {
+        "photo_id": "user_linden_photo_1",
+        "user_id": "user_linden",
+        "media_url": "/static/assets/discover/linden/photo-2.jpg",
+        "position": 1,
+        "focal_point": "50% 44%"
+      },
+      {
+        "photo_id": "user_linden_photo_2",
+        "user_id": "user_linden",
+        "media_url": "/static/assets/discover/linden/photo-3.jpg",
+        "position": 2,
+        "focal_point": "58% 35%"
+      },
+      {
+        "photo_id": "user_evan_photo_0",
+        "user_id": "user_evan",
+        "media_url": "/static/assets/discover/evan/photo-1.jpg",
+        "position": 0,
+        "focal_point": "50% 32%"
+      },
+      {
+        "photo_id": "user_evan_photo_1",
+        "user_id": "user_evan",
+        "media_url": "/static/assets/discover/evan/photo-2.jpg",
+        "position": 1,
+        "focal_point": "50% 24%"
+      },
+      {
+        "photo_id": "user_evan_photo_2",
+        "user_id": "user_evan",
+        "media_url": "/static/assets/discover/evan/photo-3.jpg",
+        "position": 2,
+        "focal_point": "50% 32%"
+      },
+      {
+        "photo_id": "user_coco_photo_0",
+        "user_id": "user_coco",
+        "media_url": "/static/assets/discover/coco/photo-1.jpg",
+        "position": 0,
+        "focal_point": "50% 28%"
+      },
+      {
+        "photo_id": "user_coco_photo_1",
+        "user_id": "user_coco",
+        "media_url": "/static/assets/discover/coco/photo-2.jpg",
+        "position": 1,
+        "focal_point": "50% 30%"
+      },
+      {
+        "photo_id": "user_coco_photo_2",
+        "user_id": "user_coco",
+        "media_url": "/static/assets/discover/coco/photo-3.jpg",
+        "position": 2,
+        "focal_point": "50% 27%"
+      },
+      {
+        "photo_id": "user_anna_photo_0",
+        "user_id": "user_anna",
+        "media_url": "/static/assets/discover/anna/photo-1.jpg",
+        "position": 0,
+        "focal_point": "50% 30%"
+      },
+      {
+        "photo_id": "user_anna_photo_1",
+        "user_id": "user_anna",
+        "media_url": "/static/assets/discover/anna/photo-2.jpg",
+        "position": 1,
+        "focal_point": "50% 28%"
+      },
+      {
+        "photo_id": "user_anna_photo_2",
+        "user_id": "user_anna",
+        "media_url": "/static/assets/discover/anna/photo-3.jpg",
+        "position": 2,
+        "focal_point": "50% 35%"
+      },
+      {
+        "photo_id": "user_bella_photo_0",
+        "user_id": "user_bella",
+        "media_url": "/static/assets/discover/bella/photo-1.jpg",
+        "position": 0,
+        "focal_point": "50% 31%"
+      },
+      {
+        "photo_id": "user_bella_photo_1",
+        "user_id": "user_bella",
+        "media_url": "/static/assets/discover/bella/photo-2.jpg",
+        "position": 1,
+        "focal_point": "50% 28%"
+      },
+      {
+        "photo_id": "user_bella_photo_2",
+        "user_id": "user_bella",
+        "media_url": "/static/assets/discover/bella/photo-3.jpg",
+        "position": 2,
+        "focal_point": "50% 28%"
+      },
+      {
+        "photo_id": "user_noah_photo_0",
+        "user_id": "user_noah",
+        "media_url": "/static/assets/people/avatar-01.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_sophie_photo_0",
+        "user_id": "user_sophie",
+        "media_url": "/static/assets/people/avatar-02.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_ella_photo_0",
+        "user_id": "user_ella",
+        "media_url": "/static/assets/people/avatar-03.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_oliver_photo_0",
+        "user_id": "user_oliver",
+        "media_url": "/static/assets/people/avatar-04.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_grace_photo_0",
+        "user_id": "user_grace",
+        "media_url": "/static/assets/people/avatar-05.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_lucas_photo_0",
+        "user_id": "user_lucas",
+        "media_url": "/static/assets/people/avatar-06.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_jack_photo_0",
+        "user_id": "user_jack",
+        "media_url": "/static/assets/people/avatar-07.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_amelia_photo_0",
+        "user_id": "user_amelia",
+        "media_url": "/static/assets/people/avatar-08.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_lily_photo_0",
+        "user_id": "user_lily",
+        "media_url": "/static/assets/people/avatar-09.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_mia_photo_0",
+        "user_id": "user_mia",
+        "media_url": "/static/assets/people/avatar-10.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_isla_photo_0",
+        "user_id": "user_isla",
+        "media_url": "/static/assets/people/avatar-11.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_henry_photo_0",
+        "user_id": "user_henry",
+        "media_url": "/static/assets/people/avatar-12.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_theo_photo_0",
+        "user_id": "user_theo",
+        "media_url": "/static/assets/people/avatar-13.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_finn_photo_0",
+        "user_id": "user_finn",
+        "media_url": "/static/assets/people/avatar-14.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_leo_photo_0",
+        "user_id": "user_leo",
+        "media_url": "/static/assets/people/avatar-15.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_ava_photo_0",
+        "user_id": "user_ava",
+        "media_url": "/static/assets/people/avatar-16.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_archie_photo_0",
+        "user_id": "user_archie",
+        "media_url": "/static/assets/people/avatar-17.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_ruby_photo_0",
+        "user_id": "user_ruby",
+        "media_url": "/static/assets/people/avatar-18.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_freya_photo_0",
+        "user_id": "user_freya",
+        "media_url": "/static/assets/people/avatar-19.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_alice_photo_0",
+        "user_id": "user_alice",
+        "media_url": "/static/assets/people/avatar-20.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_daisy_photo_0",
+        "user_id": "user_daisy",
+        "media_url": "/static/assets/people/avatar-21.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_oscar_photo_0",
+        "user_id": "user_oscar",
+        "media_url": "/static/assets/people/avatar-22.jpg",
+        "position": 0
+      },
+      {
+        "photo_id": "user_max_photo_0",
+        "user_id": "user_max",
+        "media_url": "/static/assets/people/avatar-23.jpg",
+        "position": 0
+      }
+    ],
+    "icebreakers": [
+      {
+        "question_id": "user_cimoa_q_0",
+        "user_id": "user_cimoa",
+        "text": "How would you spend your ideal weekend?",
+        "position": 0
+      },
+      {
+        "question_id": "user_cimoa_q_1",
+        "user_id": "user_cimoa",
+        "text": "Which song is on repeat?",
+        "position": 1
+      },
+      {
+        "question_id": "user_cimoa_q_2",
+        "user_id": "user_cimoa",
+        "text": "Best hidden spot on campus?",
+        "position": 2
+      },
+      {
+        "question_id": "user_chloe_q_0",
+        "user_id": "user_chloe",
+        "text": "What’s your ideal Sunday?",
+        "position": 0
+      },
+      {
+        "question_id": "user_chloe_q_1",
+        "user_id": "user_chloe",
+        "text": "Which song is on repeat?",
+        "position": 1
+      },
+      {
+        "question_id": "user_chloe_q_2",
+        "user_id": "user_chloe",
+        "text": "Best hidden spot on campus?",
+        "position": 2
+      },
+      {
+        "question_id": "user_liam_q_0",
+        "user_id": "user_liam",
+        "text": "What’s your ideal Sunday?",
+        "position": 0
+      },
+      {
+        "question_id": "user_liam_q_1",
+        "user_id": "user_liam",
+        "text": "Which song is on repeat?",
+        "position": 1
+      },
+      {
+        "question_id": "user_liam_q_2",
+        "user_id": "user_liam",
+        "text": "Best hidden spot on campus?",
+        "position": 2
+      },
+      {
+        "question_id": "user_lina_q_0",
+        "user_id": "user_lina",
+        "text": "What’s your ideal Sunday?",
+        "position": 0
+      },
+      {
+        "question_id": "user_lina_q_1",
+        "user_id": "user_lina",
+        "text": "Which song is on repeat?",
+        "position": 1
+      },
+      {
+        "question_id": "user_lina_q_2",
+        "user_id": "user_lina",
+        "text": "Best hidden spot on campus?",
+        "position": 2
+      },
+      {
+        "question_id": "user_jordan_q_0",
+        "user_id": "user_jordan",
+        "text": "What’s your ideal Sunday?",
+        "position": 0
+      },
+      {
+        "question_id": "user_jordan_q_1",
+        "user_id": "user_jordan",
+        "text": "Which song is on repeat?",
+        "position": 1
+      },
+      {
+        "question_id": "user_jordan_q_2",
+        "user_id": "user_jordan",
+        "text": "Best hidden spot on campus?",
+        "position": 2
+      },
+      {
+        "question_id": "user_alex_q_0",
+        "user_id": "user_alex",
+        "text": "What’s your ideal Sunday?",
+        "position": 0
+      },
+      {
+        "question_id": "user_alex_q_1",
+        "user_id": "user_alex",
+        "text": "Which song is on repeat?",
+        "position": 1
+      },
+      {
+        "question_id": "user_alex_q_2",
+        "user_id": "user_alex",
+        "text": "Best hidden spot on campus?",
+        "position": 2
+      },
+      {
+        "question_id": "user_zoe_q_0",
+        "user_id": "user_zoe",
+        "text": "What’s your ideal Sunday?",
+        "position": 0
+      },
+      {
+        "question_id": "user_zoe_q_1",
+        "user_id": "user_zoe",
+        "text": "Which song is on repeat?",
+        "position": 1
+      },
+      {
+        "question_id": "user_zoe_q_2",
+        "user_id": "user_zoe",
+        "text": "Best hidden spot on campus?",
+        "position": 2
+      },
+      {
+        "question_id": "user_zane_q_0",
+        "user_id": "user_zane",
+        "text": "What hidden food spot should I try next?",
+        "position": 0
+      },
+      {
+        "question_id": "user_zane_q_1",
+        "user_id": "user_zane",
+        "text": "What is your ideal weekend hike?",
+        "position": 1
+      },
+      {
+        "question_id": "user_zane_q_2",
+        "user_id": "user_zane",
+        "text": "Which sport could you play all afternoon?",
+        "position": 2
+      },
+      {
+        "question_id": "user_linden_q_0",
+        "user_id": "user_linden",
+        "text": "What song have you had on repeat lately?",
+        "position": 0
+      },
+      {
+        "question_id": "user_linden_q_1",
+        "user_id": "user_linden",
+        "text": "Where is your favorite place to watch sunset?",
+        "position": 1
+      },
+      {
+        "question_id": "user_linden_q_2",
+        "user_id": "user_linden",
+        "text": "What would you photograph on a free afternoon?",
+        "position": 2
+      },
+      {
+        "question_id": "user_evan_q_0",
+        "user_id": "user_evan",
+        "text": "Which film never gets old for you?",
+        "position": 0
+      },
+      {
+        "question_id": "user_evan_q_1",
+        "user_id": "user_evan",
+        "text": "What dish should everyone know how to cook?",
+        "position": 1
+      },
+      {
+        "question_id": "user_evan_q_2",
+        "user_id": "user_evan",
+        "text": "Are you more stay-in or spontaneous-day-out?",
+        "position": 2
+      },
+      {
+        "question_id": "user_coco_q_0",
+        "user_id": "user_coco",
+        "text": "What is the funniest thing that happened to you lately?",
+        "position": 0
+      },
+      {
+        "question_id": "user_coco_q_1",
+        "user_id": "user_coco",
+        "text": "Which exhibition would you visit twice?",
+        "position": 1
+      },
+      {
+        "question_id": "user_coco_q_2",
+        "user_id": "user_coco",
+        "text": "Where should we go for a photo walk?",
+        "position": 2
+      },
+      {
+        "question_id": "user_anna_q_0",
+        "user_id": "user_anna",
+        "text": "Which book stayed with you after you finished it?",
+        "position": 0
+      },
+      {
+        "question_id": "user_anna_q_1",
+        "user_id": "user_anna",
+        "text": "What makes a conversation feel easy?",
+        "position": 1
+      },
+      {
+        "question_id": "user_anna_q_2",
+        "user_id": "user_anna",
+        "text": "How do you spend a perfect quiet afternoon?",
+        "position": 2
+      },
+      {
+        "question_id": "user_bella_q_0",
+        "user_id": "user_bella",
+        "text": "What new thing would you try this month?",
+        "position": 0
+      },
+      {
+        "question_id": "user_bella_q_1",
+        "user_id": "user_bella",
+        "text": "Which city would you happily get lost in?",
+        "position": 1
+      },
+      {
+        "question_id": "user_bella_q_2",
+        "user_id": "user_bella",
+        "text": "What deserves your full attention every time?",
+        "position": 2
+      },
+      {
+        "question_id": "user_noah_q_0",
+        "user_id": "user_noah",
+        "text": "Where do you go when you need a study break?",
+        "position": 0
+      },
+      {
+        "question_id": "user_noah_q_1",
+        "user_id": "user_noah",
+        "text": "What game could you teach me in ten minutes?",
+        "position": 1
+      },
+      {
+        "question_id": "user_noah_q_2",
+        "user_id": "user_noah",
+        "text": "Which campus view deserves a photo?",
+        "position": 2
+      },
+      {
+        "question_id": "user_sophie_q_0",
+        "user_id": "user_sophie",
+        "text": "Which café would you happily spend an afternoon in?",
+        "position": 0
+      },
+      {
+        "question_id": "user_sophie_q_1",
+        "user_id": "user_sophie",
+        "text": "What small thing made your week better?",
+        "position": 1
+      },
+      {
+        "question_id": "user_sophie_q_2",
+        "user_id": "user_sophie",
+        "text": "Which book would you lend a new friend?",
+        "position": 2
+      },
+      {
+        "question_id": "user_ella_q_0",
+        "user_id": "user_ella",
+        "text": "What album should I listen to on the train?",
+        "position": 0
+      },
+      {
+        "question_id": "user_ella_q_1",
+        "user_id": "user_ella",
+        "text": "What belongs in the perfect movie-night snack bowl?",
+        "position": 1
+      },
+      {
+        "question_id": "user_ella_q_2",
+        "user_id": "user_ella",
+        "text": "What would you cook for a flat dinner?",
+        "position": 2
+      },
+      {
+        "question_id": "user_oliver_q_0",
+        "user_id": "user_oliver",
+        "text": "Which sport should every beginner try?",
+        "position": 0
+      },
+      {
+        "question_id": "user_oliver_q_1",
+        "user_id": "user_oliver",
+        "text": "What film is worth watching twice?",
+        "position": 1
+      },
+      {
+        "question_id": "user_oliver_q_2",
+        "user_id": "user_oliver",
+        "text": "Where is your most productive study spot?",
+        "position": 2
+      },
+      {
+        "question_id": "user_grace_q_0",
+        "user_id": "user_grace",
+        "text": "Which exhibition would you take a friend to?",
+        "position": 0
+      },
+      {
+        "question_id": "user_grace_q_1",
+        "user_id": "user_grace",
+        "text": "What ordinary thing would you like to sketch?",
+        "position": 1
+      },
+      {
+        "question_id": "user_grace_q_2",
+        "user_id": "user_grace",
+        "text": "Coffee outside or a quiet corner indoors?",
+        "position": 2
+      },
+      {
+        "question_id": "user_lucas_q_0",
+        "user_id": "user_lucas",
+        "text": "What is your favorite post-run breakfast?",
+        "position": 0
+      },
+      {
+        "question_id": "user_lucas_q_1",
+        "user_id": "user_lucas",
+        "text": "Which easy trail should we try first?",
+        "position": 1
+      },
+      {
+        "question_id": "user_lucas_q_2",
+        "user_id": "user_lucas",
+        "text": "Early workout or evening game?",
+        "position": 2
+      },
+      {
+        "question_id": "user_jack_q_0",
+        "user_id": "user_jack",
+        "text": "Which street would you show a first-time visitor?",
+        "position": 0
+      },
+      {
+        "question_id": "user_jack_q_1",
+        "user_id": "user_jack",
+        "text": "What building always catches your eye?",
+        "position": 1
+      },
+      {
+        "question_id": "user_jack_q_2",
+        "user_id": "user_jack",
+        "text": "Where should we stop for noodles?",
+        "position": 2
+      },
+      {
+        "question_id": "user_amelia_q_0",
+        "user_id": "user_amelia",
+        "text": "Which bakery is worth crossing town for?",
+        "position": 0
+      },
+      {
+        "question_id": "user_amelia_q_1",
+        "user_id": "user_amelia",
+        "text": "What place is still on your weekend list?",
+        "position": 1
+      },
+      {
+        "question_id": "user_amelia_q_2",
+        "user_id": "user_amelia",
+        "text": "What local phrase should I learn first?",
+        "position": 2
+      },
+      {
+        "question_id": "user_lily_q_0",
+        "user_id": "user_lily",
+        "text": "Which game feels like a comfort place?",
+        "position": 0
+      },
+      {
+        "question_id": "user_lily_q_1",
+        "user_id": "user_lily",
+        "text": "What would you make with a free afternoon?",
+        "position": 1
+      },
+      {
+        "question_id": "user_lily_q_2",
+        "user_id": "user_lily",
+        "text": "Do you have a favorite little bookshop?",
+        "position": 2
+      },
+      {
+        "question_id": "user_mia_q_0",
+        "user_id": "user_mia",
+        "text": "Which song makes you want to learn the choreography?",
+        "position": 0
+      },
+      {
+        "question_id": "user_mia_q_1",
+        "user_id": "user_mia",
+        "text": "What helps you reset after a long study day?",
+        "position": 1
+      },
+      {
+        "question_id": "user_mia_q_2",
+        "user_id": "user_mia",
+        "text": "What is your dependable bubble tea order?",
+        "position": 2
+      },
+      {
+        "question_id": "user_isla_q_0",
+        "user_id": "user_isla",
+        "text": "Which campus event should nobody miss?",
+        "position": 0
+      },
+      {
+        "question_id": "user_isla_q_1",
+        "user_id": "user_isla",
+        "text": "What song would you put on a picnic playlist?",
+        "position": 1
+      },
+      {
+        "question_id": "user_isla_q_2",
+        "user_id": "user_isla",
+        "text": "What is a skill you would love to teach?",
+        "position": 2
+      },
+      {
+        "question_id": "user_henry_q_0",
+        "user_id": "user_henry",
+        "text": "Which film ending do you still think about?",
+        "position": 0
+      },
+      {
+        "question_id": "user_henry_q_1",
+        "user_id": "user_henry",
+        "text": "What should every shared kitchen have?",
+        "position": 1
+      },
+      {
+        "question_id": "user_henry_q_2",
+        "user_id": "user_henry",
+        "text": "What is your go-to game for new friends?",
+        "position": 2
+      },
+      {
+        "question_id": "user_theo_q_0",
+        "user_id": "user_theo",
+        "text": "What are you working on outside class?",
+        "position": 0
+      },
+      {
+        "question_id": "user_theo_q_1",
+        "user_id": "user_theo",
+        "text": "Which book actually changed a habit for you?",
+        "position": 1
+      },
+      {
+        "question_id": "user_theo_q_2",
+        "user_id": "user_theo",
+        "text": "What is your favorite way to start a Saturday?",
+        "position": 2
+      },
+      {
+        "question_id": "user_finn_q_0",
+        "user_id": "user_finn",
+        "text": "Which small gig would you recommend?",
+        "position": 0
+      },
+      {
+        "question_id": "user_finn_q_1",
+        "user_id": "user_finn",
+        "text": "Where would you go with one free train ticket?",
+        "position": 1
+      },
+      {
+        "question_id": "user_finn_q_2",
+        "user_id": "user_finn",
+        "text": "What sound reminds you of home?",
+        "position": 2
+      },
+      {
+        "question_id": "user_leo_q_0",
+        "user_id": "user_leo",
+        "text": "What is the best lunch near your campus?",
+        "position": 0
+      },
+      {
+        "question_id": "user_leo_q_1",
+        "user_id": "user_leo",
+        "text": "Which dish should I learn to make next?",
+        "position": 1
+      },
+      {
+        "question_id": "user_leo_q_2",
+        "user_id": "user_leo",
+        "text": "Busy street market or quiet neighborhood walk?",
+        "position": 2
+      },
+      {
+        "question_id": "user_ava_q_0",
+        "user_id": "user_ava",
+        "text": "What could you talk about for an hour?",
+        "position": 0
+      },
+      {
+        "question_id": "user_ava_q_1",
+        "user_id": "user_ava",
+        "text": "Which walk has the best stopping points?",
+        "position": 1
+      },
+      {
+        "question_id": "user_ava_q_2",
+        "user_id": "user_ava",
+        "text": "What was the last story you could not put down?",
+        "position": 2
+      },
+      {
+        "question_id": "user_archie_q_0",
+        "user_id": "user_archie",
+        "text": "Which board game is worth learning?",
+        "position": 0
+      },
+      {
+        "question_id": "user_archie_q_1",
+        "user_id": "user_archie",
+        "text": "What science-fiction idea would you like to be real?",
+        "position": 1
+      },
+      {
+        "question_id": "user_archie_q_2",
+        "user_id": "user_archie",
+        "text": "How do you unwind after lab?",
+        "position": 2
+      },
+      {
+        "question_id": "user_ruby_q_0",
+        "user_id": "user_ruby",
+        "text": "What is your favorite easy hike?",
+        "position": 0
+      },
+      {
+        "question_id": "user_ruby_q_1",
+        "user_id": "user_ruby",
+        "text": "What do you always bring on a day out?",
+        "position": 1
+      },
+      {
+        "question_id": "user_ruby_q_2",
+        "user_id": "user_ruby",
+        "text": "Which quiet place would you share with a friend?",
+        "position": 2
+      },
+      {
+        "question_id": "user_freya_q_0",
+        "user_id": "user_freya",
+        "text": "What song belongs on a night-bus playlist?",
+        "position": 0
+      },
+      {
+        "question_id": "user_freya_q_1",
+        "user_id": "user_freya",
+        "text": "Which student performance surprised you?",
+        "position": 1
+      },
+      {
+        "question_id": "user_freya_q_2",
+        "user_id": "user_freya",
+        "text": "What would your first short film be about?",
+        "position": 2
+      },
+      {
+        "question_id": "user_alice_q_0",
+        "user_id": "user_alice",
+        "text": "Which neighborhood has the best colors?",
+        "position": 0
+      },
+      {
+        "question_id": "user_alice_q_1",
+        "user_id": "user_alice",
+        "text": "What would you photograph with one frame left?",
+        "position": 1
+      },
+      {
+        "question_id": "user_alice_q_2",
+        "user_id": "user_alice",
+        "text": "Which small gallery should we visit?",
+        "position": 2
+      },
+      {
+        "question_id": "user_daisy_q_0",
+        "user_id": "user_daisy",
+        "text": "What book would you choose for a friendly swap?",
+        "position": 0
+      },
+      {
+        "question_id": "user_daisy_q_1",
+        "user_id": "user_daisy",
+        "text": "What is your favorite way to practice a language?",
+        "position": 1
+      },
+      {
+        "question_id": "user_daisy_q_2",
+        "user_id": "user_daisy",
+        "text": "What little ritual makes a day feel good?",
+        "position": 2
+      },
+      {
+        "question_id": "user_oscar_q_0",
+        "user_id": "user_oscar",
+        "text": "What would you like to learn to build?",
+        "position": 0
+      },
+      {
+        "question_id": "user_oscar_q_1",
+        "user_id": "user_oscar",
+        "text": "Which seaside route should I try?",
+        "position": 1
+      },
+      {
+        "question_id": "user_oscar_q_2",
+        "user_id": "user_oscar",
+        "text": "What is your favorite easy group activity?",
+        "position": 2
+      },
+      {
+        "question_id": "user_max_q_0",
+        "user_id": "user_max",
+        "text": "What place would you put on a postcard?",
+        "position": 0
+      },
+      {
+        "question_id": "user_max_q_1",
+        "user_id": "user_max",
+        "text": "Which old building should we explore?",
+        "position": 1
+      },
+      {
+        "question_id": "user_max_q_2",
+        "user_id": "user_max",
+        "text": "Where would you stop to sketch and have coffee?",
+        "position": 2
+      }
+    ],
+    "media_files": [],
+    "relationships": [
+      {
+        "relationship_id": "rel_seed_0",
+        "from_user_id": "user_cimoa",
+        "to_user_id": "user_chloe",
+        "created_at": 1792488135463
+      },
+      {
+        "relationship_id": "rel_seed_1",
+        "from_user_id": "user_chloe",
+        "to_user_id": "user_cimoa",
+        "created_at": 1792488135463
+      }
+    ],
+    "requests": [
+      {
+        "request_id": "request_lina",
+        "sender_id": "user_lina",
+        "recipient_id": "user_cimoa",
+        "question_id": "user_cimoa_q_0",
+        "question_text": "How would you spend your ideal weekend?",
+        "kind": "voice",
+        "text": "",
+        "audio_id": null,
+        "status": "pending",
+        "fixture_media_unavailable": true,
+        "created_at": 1792484535463,
+        "resolved_at": null
+      }
+    ],
+    "match_sessions": [
+      {
+        "match_id": "match_liam",
+        "owner_user_id": "user_cimoa",
+        "candidate_id": "user_liam",
+        "status": "found",
+        "created_at": 1792488135463,
+        "started_at": 1792488135463,
+        "expires_at": 1792488180463,
+        "priority_until": null,
+        "paused_at": null,
+        "self_accepted": false,
+        "peer_accepted": false,
+        "queue_position": null,
+        "estimated_wait_seconds": null,
+        "fixture": true
+      }
+    ],
+    "match_preferences": [
+      {
+        "owner_user_id": "user_cimoa",
+        "age_min": 18,
+        "age_max": 30,
+        "height_min": 150,
+        "height_max": 190,
+        "distance_max": 100,
+        "university": "All",
+        "major": "All",
+        "interest_ids": [
+          "kpop"
+        ],
+        "interest_mode": "Similar interests",
+        "mbti": "All",
+        "religion": "All",
+        "drinking": "All",
+        "gender": "Everyone",
+        "language": "English",
+        "goal_id": "friends"
+      }
+    ],
+    "quota_policy": {
+      "timezone": "UTC",
+      "free_daily_limit": 3,
+      "standard_cost": 10
+    },
+    "match_quota": [],
+    "match_distances": [
+      {
+        "area_pair_id": "HKUST:HKUST",
+        "university_a": "HKUST",
+        "university_b": "HKUST",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKUST:HKU",
+        "university_a": "HKUST",
+        "university_b": "HKU",
+        "distance_km": 20,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKUST:CUHK",
+        "university_a": "HKUST",
+        "university_b": "CUHK",
+        "distance_km": 22,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKUST:PolyU",
+        "university_a": "HKUST",
+        "university_b": "PolyU",
+        "distance_km": 13,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKUST:CityU",
+        "university_a": "HKUST",
+        "university_b": "CityU",
+        "distance_km": 16,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKUST:HKBU",
+        "university_a": "HKUST",
+        "university_b": "HKBU",
+        "distance_km": 16,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKUST:EdUHK",
+        "university_a": "HKUST",
+        "university_b": "EdUHK",
+        "distance_km": 29,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKUST:Stanford",
+        "university_a": "HKUST",
+        "university_b": "Stanford",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKUST:UC Berkeley",
+        "university_a": "HKUST",
+        "university_b": "UC Berkeley",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKUST:UCLA",
+        "university_a": "HKUST",
+        "university_b": "UCLA",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKU:HKU",
+        "university_a": "HKU",
+        "university_b": "HKU",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKU:CUHK",
+        "university_a": "HKU",
+        "university_b": "CUHK",
+        "distance_km": 22,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKU:PolyU",
+        "university_a": "HKU",
+        "university_b": "PolyU",
+        "distance_km": 9,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKU:CityU",
+        "university_a": "HKU",
+        "university_b": "CityU",
+        "distance_km": 13,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKU:HKBU",
+        "university_a": "HKU",
+        "university_b": "HKBU",
+        "distance_km": 14,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKU:EdUHK",
+        "university_a": "HKU",
+        "university_b": "EdUHK",
+        "distance_km": 31,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKU:Stanford",
+        "university_a": "HKU",
+        "university_b": "Stanford",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKU:UC Berkeley",
+        "university_a": "HKU",
+        "university_b": "UC Berkeley",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKU:UCLA",
+        "university_a": "HKU",
+        "university_b": "UCLA",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CUHK:CUHK",
+        "university_a": "CUHK",
+        "university_b": "CUHK",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CUHK:PolyU",
+        "university_a": "CUHK",
+        "university_b": "PolyU",
+        "distance_km": 16,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CUHK:CityU",
+        "university_a": "CUHK",
+        "university_b": "CityU",
+        "distance_km": 10,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CUHK:HKBU",
+        "university_a": "CUHK",
+        "university_b": "HKBU",
+        "distance_km": 9,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CUHK:EdUHK",
+        "university_a": "CUHK",
+        "university_b": "EdUHK",
+        "distance_km": 9,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CUHK:Stanford",
+        "university_a": "CUHK",
+        "university_b": "Stanford",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CUHK:UC Berkeley",
+        "university_a": "CUHK",
+        "university_b": "UC Berkeley",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CUHK:UCLA",
+        "university_a": "CUHK",
+        "university_b": "UCLA",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "PolyU:PolyU",
+        "university_a": "PolyU",
+        "university_b": "PolyU",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "PolyU:CityU",
+        "university_a": "PolyU",
+        "university_b": "CityU",
+        "distance_km": 6,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "PolyU:HKBU",
+        "university_a": "PolyU",
+        "university_b": "HKBU",
+        "distance_km": 7,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "PolyU:EdUHK",
+        "university_a": "PolyU",
+        "university_b": "EdUHK",
+        "distance_km": 25,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "PolyU:Stanford",
+        "university_a": "PolyU",
+        "university_b": "Stanford",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "PolyU:UC Berkeley",
+        "university_a": "PolyU",
+        "university_b": "UC Berkeley",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "PolyU:UCLA",
+        "university_a": "PolyU",
+        "university_b": "UCLA",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CityU:CityU",
+        "university_a": "CityU",
+        "university_b": "CityU",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CityU:HKBU",
+        "university_a": "CityU",
+        "university_b": "HKBU",
+        "distance_km": 1,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CityU:EdUHK",
+        "university_a": "CityU",
+        "university_b": "EdUHK",
+        "distance_km": 19,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CityU:Stanford",
+        "university_a": "CityU",
+        "university_b": "Stanford",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CityU:UC Berkeley",
+        "university_a": "CityU",
+        "university_b": "UC Berkeley",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "CityU:UCLA",
+        "university_a": "CityU",
+        "university_b": "UCLA",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKBU:HKBU",
+        "university_a": "HKBU",
+        "university_b": "HKBU",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKBU:EdUHK",
+        "university_a": "HKBU",
+        "university_b": "EdUHK",
+        "distance_km": 18,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKBU:Stanford",
+        "university_a": "HKBU",
+        "university_b": "Stanford",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKBU:UC Berkeley",
+        "university_a": "HKBU",
+        "university_b": "UC Berkeley",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "HKBU:UCLA",
+        "university_a": "HKBU",
+        "university_b": "UCLA",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "EdUHK:EdUHK",
+        "university_a": "EdUHK",
+        "university_b": "EdUHK",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "EdUHK:Stanford",
+        "university_a": "EdUHK",
+        "university_b": "Stanford",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "EdUHK:UC Berkeley",
+        "university_a": "EdUHK",
+        "university_b": "UC Berkeley",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "EdUHK:UCLA",
+        "university_a": "EdUHK",
+        "university_b": "UCLA",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "Stanford:Stanford",
+        "university_a": "Stanford",
+        "university_b": "Stanford",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "Stanford:UC Berkeley",
+        "university_a": "Stanford",
+        "university_b": "UC Berkeley",
+        "distance_km": 68,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "Stanford:UCLA",
+        "university_a": "Stanford",
+        "university_b": "UCLA",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "UC Berkeley:UC Berkeley",
+        "university_a": "UC Berkeley",
+        "university_b": "UC Berkeley",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "UC Berkeley:UCLA",
+        "university_a": "UC Berkeley",
+        "university_b": "UCLA",
+        "distance_km": 20000,
+        "source": "generated_campus_region"
+      },
+      {
+        "area_pair_id": "UCLA:UCLA",
+        "university_a": "UCLA",
+        "university_b": "UCLA",
+        "distance_km": 0,
+        "source": "generated_campus_region"
+      }
+    ],
+    "events": [
+      {
+        "event_id": "event_picnic",
+        "title": "Sunset Picnic",
+        "location": "Central Lawn",
+        "category": "Social",
+        "organizer_id": "organizer_hkust",
+        "description": "Bring a snack, meet someone new, and watch the sunset together.",
+        "image_url": "/static/assets/img/event-picnic.png",
+        "starts_at": 1792488600000,
+        "ends_at": 1792495800000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 3,
+        "featured_tab": "Today",
+        "capacity": 20,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Central Lawn",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [
+          {
+            "label": "Meet & mingle",
+            "offset_minutes": 0,
+            "description": "Grab a spot on the lawn and say hi"
+          },
+          {
+            "label": "Icebreaker games",
+            "offset_minutes": 30,
+            "description": "Small groups of 4–5, mixed faculties"
+          },
+          {
+            "label": "Sunset",
+            "offset_minutes": 65,
+            "description": "Golden hour over Clear Water Bay"
+          }
+        ],
+        "notes": "Free to join. Bring a picnic mat. English & Cantonese.",
+        "accessibility": "Step-free access",
+        "weather_plan": "Moves indoors if it rains"
+      },
+      {
+        "event_id": "event_sketch",
+        "title": "Coffee & Sketch",
+        "location": "Art Studio",
+        "category": "Arts",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-camp.jpg",
+        "starts_at": 1792562400000,
+        "ends_at": 1792569600000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 4,
+        "featured_tab": null,
+        "capacity": 20,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Art Studio",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_badminton",
+        "title": "Beginner Badminton",
+        "location": "Sports Hall",
+        "category": "Sports",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-bike.jpg",
+        "starts_at": 1792746000000,
+        "ends_at": 1792753200000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 5,
+        "featured_tab": null,
+        "capacity": 2,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Sports Hall",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_mic",
+        "title": "Open Mic Night",
+        "location": "Student Center",
+        "category": "Music",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-forest.jpg",
+        "starts_at": 1792497600000,
+        "ends_at": 1792504800000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 1,
+        "featured_tab": null,
+        "capacity": 34,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Student Center",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_yoga",
+        "title": "Sunset Yoga",
+        "location": "Seafront Deck",
+        "category": "Sports",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-boat.jpg",
+        "starts_at": 1792492200000,
+        "ends_at": 1792499400000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 2,
+        "featured_tab": null,
+        "capacity": 20,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Seafront Deck",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_language",
+        "title": "Language Exchange",
+        "location": "Library Café",
+        "category": "Social",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-hike.png",
+        "starts_at": 1792746000000,
+        "ends_at": 1792753200000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 8,
+        "featured_tab": null,
+        "capacity": 30,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Library Café",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_games",
+        "title": "Board Game Social",
+        "location": "Common Room",
+        "category": "Social",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-camp.jpg",
+        "starts_at": 1792832400000,
+        "ends_at": 1792839600000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 9,
+        "featured_tab": null,
+        "capacity": 37,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Common Room",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_hike",
+        "title": "Hiking: Clear Water Bay",
+        "location": "North Gate",
+        "category": "Outdoors",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-hike.png",
+        "starts_at": 1792918800000,
+        "ends_at": 1792926000000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 10,
+        "featured_tab": null,
+        "capacity": 44,
+        "university": "HKUST",
+        "price": 0,
+        "address": "North Gate",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_film",
+        "title": "Rooftop Film Night",
+        "location": "LG7 Rooftop",
+        "category": "Arts",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/event-picnic.png",
+        "starts_at": 1792670400000,
+        "ends_at": 1792677600000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 11,
+        "featured_tab": "This week",
+        "capacity": 46,
+        "university": "HKUST",
+        "price": 0,
+        "address": "LG7 Rooftop",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_dumpling",
+        "title": "Dumpling Workshop",
+        "location": "Hall 5 Kitchen",
+        "category": "Food",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-forest.jpg",
+        "starts_at": 1792580400000,
+        "ends_at": 1792587600000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 12,
+        "featured_tab": null,
+        "capacity": 26,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Hall 5 Kitchen",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_photowalk",
+        "title": "Campus Photo Walk",
+        "location": "Main Gate",
+        "category": "Arts",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-bike.jpg",
+        "starts_at": 1792744200000,
+        "ends_at": 1792751400000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 13,
+        "featured_tab": null,
+        "capacity": 29,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Main Gate",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_karaoke",
+        "title": "Karaoke Night",
+        "location": "Red Bird",
+        "category": "Music",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-hike.png",
+        "starts_at": 1792746000000,
+        "ends_at": 1792753200000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 14,
+        "featured_tab": null,
+        "capacity": 30,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Red Bird",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_startup",
+        "title": "Startup Coffee Chat",
+        "location": "Entrepreneurship Ctr",
+        "category": "Career",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-forest.jpg",
+        "starts_at": 1792659600000,
+        "ends_at": 1792666800000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 15,
+        "featured_tab": null,
+        "capacity": 37,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Entrepreneurship Ctr",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_football",
+        "title": "Pickup Football",
+        "location": "Main Field",
+        "category": "Sports",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-boat.jpg",
+        "starts_at": 1792832400000,
+        "ends_at": 1792839600000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 16,
+        "featured_tab": null,
+        "capacity": 44,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Main Field",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_market",
+        "title": "HKUST Night Market",
+        "location": "Atrium Piazza",
+        "category": "Social",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/event-picnic.png",
+        "starts_at": 1792836000000,
+        "ends_at": 1792843200000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 17,
+        "featured_tab": "My campus",
+        "capacity": 72,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Atrium Piazza",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_study",
+        "title": "Study Jam: Finals Prep",
+        "location": "Library L3",
+        "category": "Study",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-camp.jpg",
+        "starts_at": 1793005200000,
+        "ends_at": 1793012400000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 18,
+        "featured_tab": null,
+        "capacity": 20,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Library L3",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_run",
+        "title": "Campus Run Club",
+        "location": "Seafront Track",
+        "category": "Sports",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-camp.jpg",
+        "starts_at": 1792486800000,
+        "ends_at": 1792494000000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 19,
+        "featured_tab": null,
+        "capacity": 23,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Seafront Track",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_food-fair",
+        "title": "Cultural Food Fair",
+        "location": "Atrium",
+        "category": "Food",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-forest.jpg",
+        "starts_at": 1792900800000,
+        "ends_at": 1792908000000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 20,
+        "featured_tab": null,
+        "capacity": 120,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Atrium",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_robotics",
+        "title": "Robotics Demo Day",
+        "location": "Academic Bldg",
+        "category": "Tech",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-boat.jpg",
+        "starts_at": 1792566000000,
+        "ends_at": 1792573200000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 21,
+        "featured_tab": null,
+        "capacity": 55,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Academic Bldg",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_jazz",
+        "title": "Jazz on the Piazza",
+        "location": "Piazza",
+        "category": "Music",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-hike.png",
+        "starts_at": 1792573200000,
+        "ends_at": 1792580400000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 22,
+        "featured_tab": null,
+        "capacity": 30,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Piazza",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_volunteer",
+        "title": "Volunteer Beach Clean",
+        "location": "Clear Water Bay",
+        "category": "Volunteering",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-forest.jpg",
+        "starts_at": 1792832400000,
+        "ends_at": 1792839600000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 23,
+        "featured_tab": null,
+        "capacity": 37,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Clear Water Bay",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      },
+      {
+        "event_id": "event_chess",
+        "title": "Chess Club Meetup",
+        "location": "Room 2404",
+        "category": "Social",
+        "organizer_id": "organizer_hkust",
+        "description": "",
+        "image_url": "/static/assets/img/ev-boat.jpg",
+        "starts_at": 1792659600000,
+        "ends_at": 1792666800000,
+        "time_zone": "Asia/Hong_Kong",
+        "feed_order": 24,
+        "featured_tab": null,
+        "capacity": 44,
+        "university": "HKUST",
+        "price": 0,
+        "address": "Room 2404",
+        "latitude": null,
+        "longitude": null,
+        "schedule": [],
+        "notes": "",
+        "accessibility": "",
+        "weather_plan": ""
+      }
+    ],
+    "memberships": [
+      {
+        "membership_id": "member_picnic_user_chloe",
+        "event_id": "event_picnic",
+        "user_id": "user_chloe",
+        "status": "joined",
+        "joined_at": 1792401735463
+      },
+      {
+        "membership_id": "member_picnic_user_alex",
+        "event_id": "event_picnic",
+        "user_id": "user_alex",
+        "status": "joined",
+        "joined_at": 1792401735463
+      },
+      {
+        "membership_id": "member_picnic_user_zoe",
+        "event_id": "event_picnic",
+        "user_id": "user_zoe",
+        "status": "joined",
+        "joined_at": 1792401735463
+      },
+      {
+        "membership_id": "member_badminton_user_alex",
+        "event_id": "event_badminton",
+        "user_id": "user_alex",
+        "status": "joined",
+        "joined_at": 1792488135463
+      },
+      {
+        "membership_id": "member_badminton_user_zoe",
+        "event_id": "event_badminton",
+        "user_id": "user_zoe",
+        "status": "joined",
+        "joined_at": 1792488135463
+      },
+      {
+        "membership_id": "member_catalog_user_noah",
+        "event_id": "event_sketch",
+        "user_id": "user_noah",
+        "status": "joined",
+        "joined_at": 1792484535463
+      },
+      {
+        "membership_id": "member_catalog_user_sophie",
+        "event_id": "event_photowalk",
+        "user_id": "user_sophie",
+        "status": "joined",
+        "joined_at": 1792480935463
+      },
+      {
+        "membership_id": "member_catalog_user_ella",
+        "event_id": "event_language",
+        "user_id": "user_ella",
+        "status": "joined",
+        "joined_at": 1792477335463
+      },
+      {
+        "membership_id": "member_catalog_user_oliver",
+        "event_id": "event_mic",
+        "user_id": "user_oliver",
+        "status": "joined",
+        "joined_at": 1792473735463
+      },
+      {
+        "membership_id": "member_catalog_user_grace",
+        "event_id": "event_yoga",
+        "user_id": "user_grace",
+        "status": "joined",
+        "joined_at": 1792470135463
+      },
+      {
+        "membership_id": "member_catalog_user_lucas",
+        "event_id": "event_games",
+        "user_id": "user_lucas",
+        "status": "joined",
+        "joined_at": 1792466535463
+      },
+      {
+        "membership_id": "member_catalog_user_jack",
+        "event_id": "event_hike",
+        "user_id": "user_jack",
+        "status": "joined",
+        "joined_at": 1792462935463
+      },
+      {
+        "membership_id": "member_catalog_user_amelia",
+        "event_id": "event_film",
+        "user_id": "user_amelia",
+        "status": "joined",
+        "joined_at": 1792459335463
+      },
+      {
+        "membership_id": "member_catalog_user_lily",
+        "event_id": "event_dumpling",
+        "user_id": "user_lily",
+        "status": "joined",
+        "joined_at": 1792455735463
+      },
+      {
+        "membership_id": "member_catalog_user_mia",
+        "event_id": "event_run",
+        "user_id": "user_mia",
+        "status": "joined",
+        "joined_at": 1792452135463
+      },
+      {
+        "membership_id": "member_catalog_user_isla",
+        "event_id": "event_sketch",
+        "user_id": "user_isla",
+        "status": "joined",
+        "joined_at": 1792448535463
+      },
+      {
+        "membership_id": "member_catalog_user_henry",
+        "event_id": "event_photowalk",
+        "user_id": "user_henry",
+        "status": "joined",
+        "joined_at": 1792444935463
+      },
+      {
+        "membership_id": "member_catalog_user_theo",
+        "event_id": "event_language",
+        "user_id": "user_theo",
+        "status": "joined",
+        "joined_at": 1792441335463
+      },
+      {
+        "membership_id": "member_catalog_user_finn",
+        "event_id": "event_mic",
+        "user_id": "user_finn",
+        "status": "joined",
+        "joined_at": 1792437735463
+      },
+      {
+        "membership_id": "member_catalog_user_leo",
+        "event_id": "event_yoga",
+        "user_id": "user_leo",
+        "status": "joined",
+        "joined_at": 1792434135463
+      },
+      {
+        "membership_id": "member_catalog_user_ava",
+        "event_id": "event_games",
+        "user_id": "user_ava",
+        "status": "joined",
+        "joined_at": 1792430535463
+      },
+      {
+        "membership_id": "member_catalog_user_archie",
+        "event_id": "event_hike",
+        "user_id": "user_archie",
+        "status": "joined",
+        "joined_at": 1792426935463
+      },
+      {
+        "membership_id": "member_catalog_user_ruby",
+        "event_id": "event_film",
+        "user_id": "user_ruby",
+        "status": "joined",
+        "joined_at": 1792423335463
+      },
+      {
+        "membership_id": "member_catalog_user_freya",
+        "event_id": "event_dumpling",
+        "user_id": "user_freya",
+        "status": "joined",
+        "joined_at": 1792419735463
+      },
+      {
+        "membership_id": "member_catalog_user_alice",
+        "event_id": "event_run",
+        "user_id": "user_alice",
+        "status": "joined",
+        "joined_at": 1792416135463
+      },
+      {
+        "membership_id": "member_catalog_user_daisy",
+        "event_id": "event_sketch",
+        "user_id": "user_daisy",
+        "status": "joined",
+        "joined_at": 1792412535463
+      },
+      {
+        "membership_id": "member_catalog_user_oscar",
+        "event_id": "event_photowalk",
+        "user_id": "user_oscar",
+        "status": "joined",
+        "joined_at": 1792408935463
+      },
+      {
+        "membership_id": "member_catalog_user_max",
+        "event_id": "event_language",
+        "user_id": "user_max",
+        "status": "joined",
+        "joined_at": 1792405335463
+      }
+    ],
+    "organizers": [
+      {
+        "organizer_id": "organizer_hkust",
+        "name": "HKUST Student Union",
+        "avatar_url": "",
+        "description": "",
+        "update_text": ""
+      }
+    ],
+    "event_preferences": [
+      {
+        "owner_user_id": "user_cimoa",
+        "filters": {
+          "date": "Today",
+          "university": "All",
+          "category": "All",
+          "price": "Free",
+          "availability": "All",
+          "accessibility": "All"
+        },
+        "saved_event_ids": [],
+        "reminder_by_event": {},
+        "blocked_organizer_ids": []
+      }
+    ],
+    "call_sessions": [],
+    "conversations": [
+      {
+        "conversation_id": "conversation_chloe",
+        "kind": "direct",
+        "participant_ids": [
+          "user_cimoa",
+          "user_chloe"
+        ],
+        "event_id": null
+      },
+      {
+        "conversation_id": "group_picnic",
+        "kind": "group",
+        "participant_ids": [],
+        "event_id": "event_picnic"
+      }
+    ],
+    "messages": [
+      {
+        "message_id": "message_chloe_0",
+        "conversation_id": "conversation_chloe",
+        "sender_id": "user_chloe",
+        "kind": "text",
+        "body": "Hey! Your photowalk answer made me smile.",
+        "media_id": null,
+        "sent_at": 1792487835463,
+        "read_by": [
+          "user_cimoa",
+          "user_chloe"
+        ]
+      },
+      {
+        "message_id": "message_chloe_1",
+        "conversation_id": "conversation_chloe",
+        "sender_id": "user_cimoa",
+        "kind": "text",
+        "body": "We should find a new spot on campus.",
+        "media_id": null,
+        "sent_at": 1792487895463,
+        "read_by": [
+          "user_cimoa",
+          "user_chloe"
+        ]
+      },
+      {
+        "message_id": "message_chloe_2",
+        "conversation_id": "conversation_chloe",
+        "sender_id": "user_chloe",
+        "kind": "text",
+        "body": "The garden near the library is underrated.",
+        "media_id": null,
+        "sent_at": 1792487955463,
+        "read_by": [
+          "user_cimoa",
+          "user_chloe"
+        ]
+      },
+      {
+        "message_id": "message_chloe_3",
+        "conversation_id": "conversation_chloe",
+        "sender_id": "user_cimoa",
+        "kind": "text",
+        "body": "Tomorrow after class?",
+        "media_id": null,
+        "sent_at": 1792488015463,
+        "read_by": [
+          "user_cimoa",
+          "user_chloe"
+        ]
+      },
+      {
+        "message_id": "message_chloe_4",
+        "conversation_id": "conversation_chloe",
+        "sender_id": "user_chloe",
+        "kind": "text",
+        "body": "I’m in ✨",
+        "media_id": null,
+        "sent_at": 1792488075463,
+        "read_by": [
+          "user_chloe"
+        ]
+      }
+    ],
+    "coin_packages": [
+      {
+        "package_id": "pkg_60",
+        "coins": 60,
+        "price": "$0.99",
+        "product_id": null,
+        "badge": "",
+        "image_url": "/static/assets/coins/coins-60.png"
+      },
+      {
+        "package_id": "pkg_300",
+        "coins": 300,
+        "price": "$3.99",
+        "product_id": null,
+        "badge": "Most Popular",
+        "image_url": "/static/assets/coins/coins-300.png"
+      },
+      {
+        "package_id": "pkg_680",
+        "coins": 680,
+        "price": "$6.99",
+        "product_id": null,
+        "badge": "",
+        "image_url": "/static/assets/coins/coins-680.png"
+      },
+      {
+        "package_id": "pkg_1280",
+        "coins": 1280,
+        "price": "$12.99",
+        "product_id": null,
+        "badge": "",
+        "image_url": "/static/assets/coins/coins-680.png"
+      },
+      {
+        "package_id": "pkg_2800",
+        "coins": 2800,
+        "price": "$24.99",
+        "product_id": null,
+        "badge": "Best Value",
+        "image_url": "/static/assets/coins/coins-680.png"
+      },
+      {
+        "package_id": "pkg_6000",
+        "coins": 6000,
+        "price": "$49.99",
+        "product_id": null,
+        "badge": "",
+        "image_url": "/static/assets/coins/coins-680.png"
+      }
+    ],
+    "coin_transactions": [
+      {
+        "transaction_id": "txn_seed_0",
+        "owner_user_id": "user_cimoa",
+        "business_key": "seed_0",
+        "amount": 300,
+        "kind": "purchase",
+        "status": "completed",
+        "created_at": 1792142535463,
+        "related_id": null,
+        "fixture": true
+      },
+      {
+        "transaction_id": "txn_seed_1",
+        "owner_user_id": "user_cimoa",
+        "business_key": "seed_1",
+        "amount": -20,
+        "kind": "spend",
+        "status": "completed",
+        "created_at": 1792228935463,
+        "related_id": null,
+        "fixture": true
+      },
+      {
+        "transaction_id": "txn_seed_2",
+        "owner_user_id": "user_cimoa",
+        "business_key": "seed_2",
+        "amount": -10,
+        "kind": "spend",
+        "status": "completed",
+        "created_at": 1792315335463,
+        "related_id": null,
+        "fixture": true
+      },
+      {
+        "transaction_id": "txn_seed_3",
+        "owner_user_id": "user_cimoa",
+        "business_key": "seed_3",
+        "amount": -10,
+        "kind": "spend",
+        "status": "completed",
+        "created_at": 1792401735463,
+        "related_id": null,
+        "fixture": true
+      }
+    ],
+    "purchase_requests": [],
+    "blocked_users": [
+      {
+        "block_id": "block_jordan",
+        "owner_user_id": "user_cimoa",
+        "user_id": "user_jordan",
+        "created_at": 1792488135463
+      }
+    ],
+    "reports": [],
+    "drafts": [],
+    "support_requests": [],
+    "operation_receipts": [],
+    "settings": [
+      {
+        "owner_user_id": "user_cimoa",
+        "language": "en-US",
+        "muted_direct_user_ids": [],
+        "notifications": {
+          "master": true,
+          "requests": true,
+          "accepted": true,
+          "messages": true,
+          "auto_match": true,
+          "events": true,
+          "organizer": true,
+          "calls": true,
+          "product": false
+        },
+        "privacy": {
+          "discover_visible": true,
+          "auto_match_visible": true,
+          "show_online": true,
+          "show_year": true,
+          "show_field": true,
+          "show_mutual": true,
+          "allow_voice": true,
+          "allow_video": true,
+          "event_visible": true
+        }
+      }
+    ],
+    "auth_flow": {
+      "flow_id": "auth_flow_fixture",
+      "step": "welcome",
+      "email": "",
+      "verification_request_id": null,
+      "pending_registration_account_id": null,
+      "password_reset": null,
+      "agreements": {
+        "age": false,
+        "student": false,
+        "terms": false,
+        "privacy": false,
+        "community": false
+      },
+      "profile_draft": {}
+    },
+    "legacy_archive": null
+  },
+  "route": "/pages/discover/index"
+}

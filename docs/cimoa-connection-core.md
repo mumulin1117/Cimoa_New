@@ -2,7 +2,7 @@
 
 ## 数据边界
 
-ConnectionRequest 持久化在 `requests`：双方 ID、问题 ID、发送时的 `question_text` 快照、文字或原音频 ID、创建/处理时间、pending / accepted / declined / cancelled。问题修改不改写历史邀请；旧记录 hydration 时仅补缺少的快照，不写磁盘、不覆盖用户内容。发送文字免费，语音仍为 10 coins。
+ConnectionRequest 持久化在 `requests`：双方 ID、问题 ID、发送时的 `question_text` 快照、文字或原音频 ID、创建/处理时间、pending / accepted / declined / cancelled。问题修改不改写历史邀请；旧记录 hydration 时仅补缺少的快照，不写磁盘、不覆盖用户内容。2026-10-20 用户授权后，新文字与语音介绍均为 10 coins；历史免费请求不补扣。当前规则见[介绍专项契约](./ui-restoration/introduction-payment-2026-10-20/source-contract.json)，以下旧轮次视觉/验收记载不自动升级为本次证据。
 
 Connection 是 `relationships` 两条方向同意记录的只读聚合，不增设第二份可漂移的好友表。稳定 `connection_id` 来自本轮双方同意记录 ID；包含双方、建立时间、来源请求/匹配、唯一会话、真实共同兴趣。拉黑删除同意后旧 ID 永久失效；再次连接获得新一代 ID，旧接受结果不能打开新会话。
 

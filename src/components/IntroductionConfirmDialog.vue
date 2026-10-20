@@ -2,34 +2,80 @@
 import EventConfirmDialog from './EventConfirmDialog.vue'
 import IcebreakerIcon from './IcebreakerIcon.vue'
 import SourceIcon from './SourceIcon.vue'
-defineProps({ open: Boolean, mode: String, busy: Boolean, balance: Number, userName: String })
+defineProps({ open: Boolean, mode: String, busy: Boolean, balance: Number, userName: String, kind: { type: String, default: 'voice' } })
 defineEmits(['close', 'confirm', 'coins', 'text', 'rerecord', 'delete'])
 </script>
-<template><EventConfirmDialog class="intro-sheet" :class="`intro-sheet--${mode}`" :open="open" :busy="busy" :label="mode === 'microphone' ? 'Allow microphone access' : mode === 'insufficient' ? 'Not enough coins' : mode === 'options' ? 'Voice options' : mode === 'discard' ? 'Discard this recording?' : 'Send voice introduction?'" close-interaction="introduction.sheet.close.click.1" style="--event-dialog-bottom: 0;" @close="$emit('close')">
+<template><EventConfirmDialog class="intro-sheet" :class="`intro-sheet--${mode}`" :open="open" :busy="busy" :label="mode === 'microphone' ? 'Allow microphone access' : mode === 'insufficient' ? 'Not enough coins' : mode === 'options' ? 'Voice options' : mode === 'discard' ? 'Discard this recording?' : `Send ${kind} introduction?`" close-interaction="introduction.sheet.close.click.1" style="--event-dialog-bottom: 0;" @close="$emit('close')">
   <template #corner><view v-if="mode === 'confirm'" class="intro-sheet-close" role="button" tabindex="0" aria-label="Close" data-interaction="sheetVoiceCoin.closeSheet.click.2" @click="!busy && $emit('close')" @keydown.enter="!busy && $emit('close')"><view><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18" /></svg></view></view></template>
   <template v-if="mode === 'microphone'"><view class="intro-sheet-mic"><IcebreakerIcon name="mic" /></view><text class="intro-sheet-title intro-sheet-center">Allow microphone access</text><text class="intro-sheet-copy intro-sheet-center">Cimoa uses your microphone only to record voice introductions you choose to send.</text><view class="intro-sheet-primary" role="button" tabindex="0" :aria-disabled="busy" data-interaction="sheetMic.allowMic.click.1" @click="!busy && $emit('confirm')" @keydown.enter="!busy && $emit('confirm')">Allow</view><view class="intro-sheet-cancel" role="button" tabindex="0" data-interaction="sheetMic.denyMic.click.1" @click="!busy && $emit('close')" @keydown.enter="!busy && $emit('close')">Don’t Allow</view></template>
   <template v-else-if="mode === 'discard'"><text class="intro-sheet-title">Discard this recording?</text><text class="intro-sheet-copy">You’ll lose what you’ve recorded so far.</text><view class="intro-sheet-discard" role="button" tabindex="0" :aria-disabled="busy" data-interaction="sheetVoiceDiscard.cancelRec.click.1" @click="!busy && $emit('confirm')" @keydown.enter="!busy && $emit('confirm')">Discard</view><view class="intro-sheet-cancel" role="button" tabindex="0" :aria-disabled="busy" data-interaction="sheetVoiceDiscard.closeSheet.click.2" @click="!busy && $emit('close')" @keydown.enter="!busy && $emit('close')">Keep Recording</view></template>
   <template v-else-if="mode === 'options'"><text class="intro-sheet-title">Voice answer</text><view class="intro-sheet-secondary" role="button" tabindex="0" data-interaction="introduction.rerecord.click.1" @click="!busy && $emit('rerecord')" @keydown.enter="!busy && $emit('rerecord')">Re-record</view><view class="intro-sheet-secondary" role="button" tabindex="0" data-interaction="introduction.delete.click.1" @click="!busy && $emit('delete')" @keydown.enter="!busy && $emit('delete')">Delete voice</view><view class="intro-sheet-cancel" role="button" tabindex="0" @click="!busy && $emit('close')" @keydown.enter="!busy && $emit('close')">Cancel</view></template>
-  <template v-else-if="mode === 'insufficient'"><text class="intro-sheet-title">Not enough coins</text><text class="intro-sheet-copy">Voice Introduction · {{ Math.max(0, 10 - (balance || 0)) }} coins missing</text><view class="intro-sheet-insufficient-rows"><view class="intro-sheet-row"><text>Required</text><text>10 coins</text></view><view class="intro-sheet-row"><text>Current balance</text><text>{{ balance }} coins</text></view></view><view class="intro-sheet-primary" role="button" tabindex="0" data-interaction="sheetInsufficient.getCoins2.click.1" @click="$emit('coins')" @keydown.enter="$emit('coins')">Get Coins</view><view class="intro-sheet-secondary" role="button" tabindex="0" data-interaction="sheetInsufficient.freeAlt.click.1" @click="$emit('close')" @keydown.enter="$emit('close')">Not Now</view><view class="intro-sheet-cancel" role="button" tabindex="0" data-interaction="sheetInsufficient.closeSheet.click.2" @click="$emit('close')" @keydown.enter="$emit('close')">Cancel</view></template>
-  <template v-else><image class="intro-sheet-coin" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><text class="intro-sheet-title intro-sheet-center">Send voice introduction?</text><text class="intro-sheet-copy intro-sheet-center">Your voice answer will be sent to {{ userName }}.</text><view class="intro-sheet-summary"><view class="intro-sheet-row"><text>Voice Introduction</text><text>10 coins</text></view><view class="intro-sheet-row"><text>Current balance</text><text>{{ balance }} coins</text></view><view class="intro-sheet-row intro-sheet-after"><text>Balance after sending</text><text>{{ Math.max(0, (balance || 0) - 10) }} coins</text></view></view><view class="intro-sheet-primary" role="button" tabindex="0" :aria-disabled="busy" data-interaction="sheetVoiceCoin.spendVoice.click.1" @click="!busy && $emit('confirm')" @keydown.enter="!busy && $emit('confirm')"><text>Use 10 Coins and Send</text><view class="intro-sheet-arrow"><SourceIcon name="arrow-right" :stroke-width="2.4" /></view></view><view class="intro-sheet-secondary intro-sheet-edit" role="button" tabindex="0" :aria-disabled="busy" data-interaction="sheetVoiceCoin.editRecording.click.1" @click="!busy && $emit('close')" @keydown.enter="!busy && $emit('close')">Edit Recording</view></template>
+  <template v-else-if="mode === 'insufficient'"><text class="intro-sheet-title">Not enough coins</text><text class="intro-sheet-copy">{{ kind === 'text' ? 'Text' : 'Voice' }} Introduction · {{ Math.max(0, 10 - (balance || 0)) }} coins missing</text><view class="intro-sheet-insufficient-rows"><view class="intro-sheet-row"><text>Required</text><text>10 coins</text></view><view class="intro-sheet-row"><text>Current balance</text><text>{{ balance }} coins</text></view></view><view class="intro-sheet-primary" role="button" tabindex="0" :aria-disabled="busy" data-interaction="sheetInsufficient.getCoins2.click.1" @click="!busy && $emit('coins')" @keydown.enter="!busy && $emit('coins')">Get Coins</view><view class="intro-sheet-secondary" role="button" tabindex="0" :aria-disabled="busy" data-interaction="sheetInsufficient.freeAlt.click.1" @click="!busy && $emit('close')" @keydown.enter="!busy && $emit('close')">Not Now</view><view class="intro-sheet-cancel" role="button" tabindex="0" :aria-disabled="busy" data-interaction="sheetInsufficient.closeSheet.click.2" @click="!busy && $emit('close')" @keydown.enter="!busy && $emit('close')">Cancel</view></template>
+  <template v-else>
+    <image class="intro-sheet-coin" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" />
+    <text class="intro-sheet-title intro-sheet-center">Send {{ kind }} introduction?</text>
+    <text class="intro-sheet-copy intro-sheet-center">Your {{ kind }} answer will be sent to {{ userName }}.</text>
+    <view class="intro-sheet-summary"><view class="intro-sheet-row"><text>{{ kind === 'text' ? 'Text' : 'Voice' }} Introduction</text><text>10 coins</text></view><view class="intro-sheet-row"><text>Current balance</text><text>{{ balance }} coins</text></view><view class="intro-sheet-row intro-sheet-after"><text>Balance after sending</text><text>{{ Math.max(0, (balance || 0) - 10) }} coins</text></view></view>
+    <view class="intro-sheet-primary" role="button" tabindex="0" :aria-disabled="busy" :data-interaction="kind === 'text' ? 'sheetTextCoin.spendText.click.1' : 'sheetVoiceCoin.spendVoice.click.1'" @click="!busy && $emit('confirm')" @keydown.enter="!busy && $emit('confirm')"><text>Use 10 Coins and Send</text><view class="intro-sheet-arrow"><SourceIcon name="arrow-right" :stroke-width="2.4" /></view></view>
+    <view class="intro-sheet-secondary intro-sheet-edit" role="button" tabindex="0" :aria-disabled="busy" :data-interaction="kind === 'text' ? 'sheetTextCoin.editAnswer.click.1' : 'sheetVoiceCoin.editRecording.click.1'" @click="!busy && $emit('close')" @keydown.enter="!busy && $emit('close')">{{ kind === 'text' ? 'Edit Answer' : 'Edit Recording' }}</view>
+  </template>
 </EventConfirmDialog></template>
 <style scoped>
 .intro-sheet :deep(.event-dialog-panel) { padding-bottom: calc(64.885rpx + var(--app-safe-bottom)); }
 .intro-sheet-title { display: block; font-size: 47.71rpx; font-weight: 800; letter-spacing: -0.03em; }
 .intro-sheet-center { text-align: center; }
 .intro-sheet-copy { display: block; margin-top: 11.45rpx; font-size: 30.534rpx; color: var(--cimoa-text-secondary); text-wrap: pretty; }
-.intro-sheet-primary, .intro-sheet-secondary, .intro-sheet-cancel { display: flex; align-items: center; justify-content: center; min-height: 114.504rpx; border-radius: 57.252rpx; margin-top: 38.168rpx; font-size: 36.26rpx; font-weight: 700; cursor: pointer; text-align: center; }
+.intro-sheet-primary, .intro-sheet-secondary, .intro-sheet-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 114.504rpx;
+  border-radius: 57.252rpx;
+  margin-top: 38.168rpx;
+  font-size: 36.26rpx;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
 .intro-sheet-primary { color: var(--cimoa-text-inverse); background: var(--cimoa-gradient-primary); box-shadow: var(--cimoa-shadow-auth-action); }
 .intro-sheet-secondary { min-height: 106.87rpx; margin-top: 19.084rpx; background: var(--cimoa-surface-tinted); font-size: 34.351rpx; font-weight: 600; }
 .intro-sheet-cancel { min-height: 99.237rpx; margin-top: 0; color: var(--cimoa-text-auth-muted); font-size: 34.351rpx; font-weight: 600; }
-.intro-sheet-mic { width: 122.137rpx; height: 122.137rpx; padding: 32.443rpx; margin: 0 auto 22.901rpx; border-radius: 50%; color: var(--cimoa-text-inverse); background: var(--cimoa-gradient-primary); }
+.intro-sheet-mic {
+  width: 122.137rpx;
+  height: 122.137rpx;
+  padding: 32.443rpx;
+  margin: 0 auto 22.901rpx;
+  border-radius: 50%;
+  color: var(--cimoa-text-inverse);
+  background: var(--cimoa-gradient-primary);
+}
 .intro-sheet-coin { display: block; width: 129.771rpx; height: 129.771rpx; margin: 0 auto 26.718rpx; }
 .intro-sheet-summary { margin-top: 34.351rpx; padding: 34.351rpx; border-radius: 41.985rpx; background: var(--cimoa-surface-tinted); }
-.intro-sheet-row { display: flex; align-items: center; justify-content: space-between; min-height: 68.702rpx; gap: 15.267rpx; font-size: 30.534rpx; }
+.intro-sheet-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 68.702rpx;
+  gap: 15.267rpx;
+  font-size: 30.534rpx;
+}
 .intro-sheet-row > text:last-child { font-weight: 700; }
 .intro-sheet-after { margin-top: 15.267rpx; padding-top: 15.267rpx; border-top: 1px solid var(--cimoa-surface-verification-shield-border); font-weight: 700; }
 .intro-sheet-after > text:last-child { color: var(--cimoa-text-event-link); font-weight: 800; }
-.intro-sheet-close { position: absolute; top: 41.985rpx; right: 41.985rpx; display: flex; align-items: center; justify-content: center; width: 76.336rpx; height: 76.336rpx; border-radius: 50%; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-header); cursor: pointer; }
+.intro-sheet-close {
+  position: absolute;
+  top: 41.985rpx;
+  right: 41.985rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76.336rpx;
+  height: 76.336rpx;
+  border-radius: 50%;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-header);
+  cursor: pointer;
+}
 .intro-sheet-close > view { display: flex; width: 34.351rpx; height: 34.351rpx; }
 .intro-sheet-arrow { width: 34.351rpx; height: 34.351rpx; margin-left: 15.267rpx; }
 .intro-sheet-edit { background: var(--cimoa-surface-card); border: 1.5px solid var(--cimoa-surface-verification-shield-border); font-weight: 700; }
@@ -43,5 +89,18 @@ defineEmits(['close', 'confirm', 'coins', 'text', 'rerecord', 'delete'])
 .intro-sheet-insufficient-rows .intro-sheet-row > text:first-child { color: var(--cimoa-text-secondary); }
 .intro-sheet--discard .intro-sheet-title { font-size: 45.802rpx; }
 .intro-sheet--discard .intro-sheet-copy { margin-top: 15.267rpx; }
-.intro-sheet-discard { display: flex; align-items: center; justify-content: center; min-height: 110.687rpx; margin-top: 38.168rpx; border: 1.5px solid var(--cimoa-surface-verification-shield-border); border-radius: 55.344rpx; background: var(--cimoa-surface-card); color: var(--cimoa-text-settings-danger); font-size: 34.351rpx; font-weight: 700; cursor: pointer; }
+.intro-sheet-discard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 110.687rpx;
+  margin-top: 38.168rpx;
+  border: 1.5px solid var(--cimoa-surface-verification-shield-border);
+  border-radius: 55.344rpx;
+  background: var(--cimoa-surface-card);
+  color: var(--cimoa-text-settings-danger);
+  font-size: 34.351rpx;
+  font-weight: 700;
+  cursor: pointer;
+}
 </style>

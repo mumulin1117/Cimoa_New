@@ -54,6 +54,7 @@ watch(() => store.session.current_user_id, () => { card_index.value = 0; navigat
 
 const navigate = async (kind, id) => {
   if (navigating.value || dragging.value || settling.value || resetting.value) return
+  if (kind === 'primary' && store.introduction_context(id).primary?.disabled) return
   navigating.value = true
   navigation_error.value = ''
   store.tick()
@@ -161,7 +162,7 @@ const styles = computed(() => [0, 1, 2].map(depth => deck_card_style({ depth, x:
     <template #footer="{ ready }">
       <view class="discover-footer">
         <text v-if="navigation_error" class="discover-error" role="alert">{{ navigation_error }}</text>
-        <view class="discover-send" role="button" tabindex="0" :aria-disabled="!ready || !person || navigating || dragging || settling || resetting" data-interaction="photo.sayHi.click.1" :data-target="person ? target('primary', person.user_id) : ''" @click="ready && person && navigate('primary', person.user_id)" @keydown.enter="ready && person && navigate('primary', person.user_id)" @keydown.space.prevent="ready && person && navigate('primary', person.user_id)">{{ primary?.label || 'Send shot' }}</view>
+        <view class="discover-send" :class="{ 'discover-send--waiting': primary?.disabled }" role="button" :tabindex="primary?.disabled ? -1 : 0" :aria-disabled="!ready || !person || navigating || dragging || settling || resetting || primary?.disabled" data-interaction="photo.sayHi.click.1" :data-target="person ? target('primary', person.user_id) : ''" @click="ready && person && navigate('primary', person.user_id)" @keydown.enter="ready && person && navigate('primary', person.user_id)" @keydown.space.prevent="ready && person && navigate('primary', person.user_id)">{{ primary?.label || 'Send shot' }}</view>
       </view>
     </template>
   </MainTabFrame>
@@ -172,9 +173,39 @@ const styles = computed(() => [0, 1, 2].map(depth => deck_card_style({ depth, x:
 .discover-content { height: 100%; min-height: 0; overflow: hidden; padding: 0 38.168rpx 26.718rpx; }
 .discover-deck { position: relative; width: 100%; height: min(100%, 1034.351rpx); min-height: 0; overflow: visible; }
 .discover-footer { flex: none; padding: 30.534rpx 38.168rpx 3.817rpx; }
-.discover-send { display: flex; align-items: center; justify-content: center; height: 114.504rpx; border-radius: 57.252rpx; color: var(--cimoa-text-inverse); background: var(--cimoa-gradient-primary); box-shadow: var(--cimoa-shadow-primary); font-size: 40.076rpx; font-weight: 700; cursor: pointer; }
+.discover-send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 114.504rpx;
+  border-radius: 57.252rpx;
+  color: var(--cimoa-text-inverse);
+  background: var(--cimoa-gradient-primary);
+  box-shadow: var(--cimoa-shadow-primary);
+  font-size: 40.076rpx;
+  font-weight: 700;
+  cursor: pointer;
+}
 .discover-send[aria-disabled="true"] { opacity: 0.5; cursor: default; }
-.discover-error { display: block; margin-bottom: 19.084rpx; color: var(--cimoa-status-danger); font-size: 26.718rpx; line-height: 1.4; overflow-wrap: anywhere; }
-.discover-state { display: flex; flex-direction: column; gap: 22.901rpx; padding: 45.802rpx; border-radius: 45.802rpx; color: var(--cimoa-text-secondary); background: var(--cimoa-surface-empty); font-size: 30.534rpx; line-height: 1.5; }
+.discover-send--waiting[aria-disabled="true"] { color: var(--cimoa-text-connection-muted); background: var(--cimoa-surface-tinted); box-shadow: none; opacity: 1; }
+.discover-error {
+  display: block;
+  margin-bottom: 19.084rpx;
+  color: var(--cimoa-status-danger);
+  font-size: 26.718rpx;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.discover-state {
+  display: flex;
+  flex-direction: column;
+  gap: 22.901rpx;
+  padding: 45.802rpx;
+  border-radius: 45.802rpx;
+  color: var(--cimoa-text-secondary);
+  background: var(--cimoa-surface-empty);
+  font-size: 30.534rpx;
+  line-height: 1.5;
+}
 .discover-retry { color: var(--cimoa-text-link); font-weight: 700; cursor: pointer; }
 </style>

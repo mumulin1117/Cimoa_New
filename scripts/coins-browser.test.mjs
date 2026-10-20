@@ -351,11 +351,11 @@ try {
     assert.equal(await page.locator('.help-faq').count(), 7)
     assert.match(await page.locator('.help-notice').innerText(), /Apple purchases cannot complete/)
     await page.locator('[data-faq-index="2"]').click()
-    assert.match(await page.locator('.help-answer').innerText(), /text introduction is free.*voice introduction costs 10 coins.*Priority Match costs 20 coins/s)
+    assert.match(await page.locator('.help-answer').innerText(), /Text and voice introductions each cost 10 coins.*Priority Match costs 20 coins/s)
     await page.waitForTimeout(400)
     await page.screenshot({ path: path.join(output, 'help-pricing.png') })
     assert.deepEqual(await state(), before)
-    check('Coin Help renders seven source FAQs with approved free text and 10/20 coin pricing without writes')
+    check('Coin Help renders seven source FAQs with approved 10-coin introductions and 20-coin Priority Match pricing without writes')
 
     await page.locator('[data-interaction="coinHelp.openTerms.click.1"]').click()
     await page.locator('.legal-terms-page').waitFor()

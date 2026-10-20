@@ -82,8 +82,11 @@ test('two real local registrations share requests, friendship, introduction and 
   const bob = await register(store, 'bob@campus.edu', 'Bob Student')
   assert.equal(store.my_events.some(row => row.event_id === 'event_picnic'), false)
   assert.equal(store.current_drafts.length, 0); assert.equal(store.discover_people.some(row => row.user_id === alice.user_id), true)
+  // Explicit test-only funding; newly registered production accounts still start at zero.
+  assert.equal((await store.send_introduction({ user_id: alice.user_id, question_id: store.questions_for_user(alice.user_id)[0].question_id, text: 'Not funded yet', operation_id: 'bob-unfunded' })).success, false)
+  store.data.coin_transactions.push({ transaction_id: 'txn_bob_test_credit', owner_user_id: bob.user_id, business_key: 'fixture:bob-credit', kind: 'purchase', related_id: null, amount: 10, status: 'completed', created_at: epoch, fixture: true })
   const intro = await store.send_introduction({ user_id: alice.user_id, question_id: store.questions_for_user(alice.user_id)[0].question_id, text: 'The seafront walk after class. Want to join?', operation_id: 'bob-intro' })
-  assert.equal(intro.success, true); assert.equal(store.coin_balance, 0); assert.equal(store.coin_transactions.length, 0)
+  assert.equal(intro.success, true); assert.equal(store.coin_balance, 0); assert.equal(store.coin_transactions.length, 2)
   assert.equal(store.relationship_state(alice.user_id).status, 'outgoing_request')
   assert.equal(home_destination(store, 'card', alice.user_id), `/pages/connections/sent?request_id=${intro.data}`)
   store.logout(); await store.login('alice@campus.edu', 'campus123')

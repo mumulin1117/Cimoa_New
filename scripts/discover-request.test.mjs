@@ -15,7 +15,7 @@ test('deck/profile next action is one canonical read-only decision for unconnect
   assert.equal(discover_destination(store,'primary','user_zane'), '/pages/discover/icebreaker/select?user_id=user_zane')
   assert.equal(JSON.stringify(store.data),original)
   const sent = await store.send_introduction({ user_id:'user_zane', question_id:context.questions[0].question_id, text:'What is your favourite campus court?', operation_id:'deck-request' })
-  assert.ok(sent.success); assert.equal(store.introduction_context('user_zane').primary.label,'Request sent')
+  assert.ok(sent.success); assert.equal(store.introduction_context('user_zane').primary.label,'Waiting for reply'); assert.equal(store.introduction_context('user_zane').primary.disabled,true)
   assert.equal(discover_destination(store,'primary','user_zane'),`/pages/connections/sent?request_id=${sent.data}`)
   assert.equal(store.introduction_context('user_chloe').primary.label,'Chat'); assert.match(discover_destination(store,'primary','user_chloe'),/conversation_chloe/)
 })

@@ -58,5 +58,89 @@
     "persistence": "Store metadata for saved draft/request; IndexedDB for recorded Blob; browsing/selection/navigation none.",
     "sync_scope": "Discover, profile, Home, sent/received, Connection and authorized Conversation; current account only.",
     "acceptance": "scripts/discover-request-browser.test.mjs --page=text; corresponding HostTests native pixel/flow test; source/actual/overlay/diff in this folder."
+  },
+  {
+    "interaction_id": "sheetTextCoin.spendText.click.1",
+    "source_screen": "Authorized text variant of Voice Coin Confirmation",
+    "trigger": "click / Enter",
+    "preconditions": "Explicit confirmation; balance >=10; revalidate owned unchanged mode/question/answer, eligibility, visibility and relationship",
+    "visible_feedback": "Custom 500ms Loading before context save, shared processing screen and duplicate lock",
+    "success_result": "One canonical pending text request and one 10-coin debit; sent result",
+    "failure_result": "No partial request/debit; spend-failed supports retry/Return; answer retained",
+    "persistence": "coin_spend draft, operation receipt, completed_request_id, request and transaction via Store",
+    "sync_scope": "Balance/history, Discover/profile pending CTA, Home request, sent page",
+    "acceptance": "Injected atomic persistence failure, refresh, retry, double confirmation and processing replay in browser/WKWebView; Store stale text/mode/session/block/duplicate tests"
+  },
+  {
+    "interaction_id": "sheetTextCoin.editAnswer.click.1",
+    "source_screen": "Introduction confirmation",
+    "trigger": "click / Enter / mask / Escape",
+    "preconditions": "Open sheet and not submitting",
+    "visible_feedback": "Sheet closes; underlying answer remains editable",
+    "success_result": "Return to answer/preview without send or debit",
+    "failure_result": "Busy operation rejects closure/repeat",
+    "persistence": "none",
+    "sync_scope": "No business mutation",
+    "acceptance": "Cancel confirmation and compare exact metadata before/after in browser and WKWebView"
+  },
+  {
+    "interaction_id": "sheetVoiceCoin.closeSheet.click.2",
+    "source_screen": "Introduction confirmation",
+    "trigger": "click / Enter / mask / Escape",
+    "preconditions": "Open sheet and not submitting",
+    "visible_feedback": "Sheet closes; underlying answer remains editable",
+    "success_result": "Return to answer/preview without send or debit",
+    "failure_result": "Busy operation rejects closure/repeat",
+    "persistence": "none",
+    "sync_scope": "No business mutation",
+    "acceptance": "Cancel confirmation and compare exact metadata before/after in browser and WKWebView"
+  },
+  {
+    "interaction_id": "introduction.sheet.close.click.1",
+    "source_screen": "Introduction confirmation",
+    "trigger": "click / Enter / mask / Escape",
+    "preconditions": "Open sheet and not submitting",
+    "visible_feedback": "Sheet closes; underlying answer remains editable",
+    "success_result": "Return to answer/preview without send or debit",
+    "failure_result": "Busy operation rejects closure/repeat",
+    "persistence": "none",
+    "sync_scope": "No business mutation",
+    "acceptance": "Cancel confirmation and compare exact metadata before/after in browser and WKWebView"
+  },
+  {
+    "interaction_id": "sheetInsufficient.getCoins2.click.1",
+    "source_screen": "Insufficient coins sheet",
+    "trigger": "click / Enter",
+    "preconditions": "Open insufficient sheet; owned valid introduction draft",
+    "visible_feedback": "Correct Text/Voice feature, 10 coins required and current balance; Get Coins or read-only dismissal",
+    "success_result": "Coin Center retains return_context_id; Back after refresh restores exact text answer or Voice preview",
+    "failure_result": "Missing/failed purchase never credits or sends; draft intact",
+    "persistence": "Existing owned draft/context only; purchase action unchanged",
+    "sync_scope": "Introduction, Coin Center and purchase descendants",
+    "acceptance": "Zero-balance browser/native return regression and Store owned context checks"
+  },
+  {
+    "interaction_id": "sheetInsufficient.freeAlt.click.1",
+    "source_screen": "Insufficient coins sheet",
+    "trigger": "click / Enter",
+    "preconditions": "Open insufficient sheet; owned valid introduction draft",
+    "visible_feedback": "Correct Text/Voice feature, 10 coins required and current balance; Get Coins or read-only dismissal",
+    "success_result": "Coin Center retains return_context_id; Back after refresh restores exact text answer or Voice preview",
+    "failure_result": "Missing/failed purchase never credits or sends; draft intact",
+    "persistence": "Existing owned draft/context only; purchase action unchanged",
+    "sync_scope": "Introduction, Coin Center and purchase descendants",
+    "acceptance": "Zero-balance browser/native return regression and Store owned context checks"
+  },
+  {
+    "interaction_id": "sheetInsufficient.closeSheet.click.2",
+    "source_screen": "Insufficient coins sheet",
+    "trigger": "click / Enter",
+    "preconditions": "Open insufficient sheet; owned valid introduction draft",
+    "visible_feedback": "Correct Text/Voice feature, 10 coins required and current balance; Get Coins or read-only dismissal",
+    "success_result": "Coin Center retains return_context_id; Back after refresh restores exact text answer or Voice preview",
+    "failure_result": "Missing/failed purchase never credits or sends; draft intact",
+    "persistence": "Existing owned draft/context only; purchase action unchanged",
+    "sync_scope": "Introduction, Coin Center and purchase descendants",
+    "acceptance": "Zero-balance browser/native return regression and Store owned context checks"
   }
 ]

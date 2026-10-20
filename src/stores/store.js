@@ -555,7 +555,7 @@ export const use_app_store = defineStore('app', {
         s.ensure(kind === 'text' ? typeof text === 'string' && text.trim() && text.length <= 300 : kind === 'voice', 'Write an introduction up to 300 characters or record a voice note.')
         if (kind === 'voice') s.ensure(s.privacy_for(data, user_id).allow_voice !== false, 'This person is not accepting voice introductions.')
         const request_id = make_id('request')
-        if (kind === 'voice') add_transaction(data, -10, `voice:${request_id}`, 'spend', request_id, now)
+        add_transaction(data, -10, `${kind}:${request_id}`, 'spend', request_id, now)
         data.requests.push({ request_id, sender_id: owner, recipient_id: user_id, question_id, question_text: data.icebreakers.find(row => row.question_id === question_id).text, kind, text: text.trim(), audio_id: kind === 'voice' ? audio_id : null, status: 'pending', created_at: now, resolved_at: null })
         if (draft_id) {
           const draft = require_owned(data, data.drafts, 'draft_id', draft_id)
@@ -565,17 +565,22 @@ export const use_app_store = defineStore('app', {
         return request_id
       }, { expected_owner: owner, expected_context })
     },
-    prepare_voice_introduction_spend(draft_id) {
+    prepare_voice_introduction_spend(draft_id) { return this.prepare_introduction_spend(draft_id, 'voice') },
+    prepare_introduction_spend(draft_id, kind) {
       return transact(this, null, (data, now) => {
         const intro = require_owned(data, data.drafts, 'draft_id', draft_id), payload = intro.payload
         s.ensure(intro.kind === 'introduction' && !payload.completed_request_id, 'This introduction draft is unavailable.')
+        s.ensure(['text', 'voice'].includes(kind) && payload.mode === kind, 'The introduction changed. Review it again before sending.')
         const blocker = s.introduction_blocker(data, intro.target_id, now); s.ensure(!blocker, blocker)
         s.ensure(data.users.find(row => row.user_id === intro.target_id)?.icebreaker_ids.includes(payload.question_id), 'Choose one of this person’s current questions.')
-        s.ensure(s.balance(data) >= 10, 'You need 10 coins for a voice introduction. No coins were deducted.')
-        s.ensure(data.media_files.some(row => row.media_id === payload.audio_id && row.owner_user_id === s.owner_id(data) && row.kind === 'audio'), 'Record a playable voice introduction first.')
+        s.ensure(s.balance(data) >= 10, `You need 10 coins for a ${kind} introduction. No coins were deducted.`)
+        if (kind === 'voice') {
+          s.ensure(s.privacy_for(data, intro.target_id).allow_voice !== false, 'This person is not accepting voice introductions.')
+          s.ensure(data.media_files.some(row => row.media_id === payload.audio_id && row.owner_user_id === s.owner_id(data) && row.kind === 'audio'), 'Record a playable voice introduction first.')
+        } else s.ensure(typeof payload.text === 'string' && payload.text.trim() && payload.text.length <= 300, 'Write an introduction up to 300 characters.')
         let context = own(data, data.drafts).find(row => row.kind === 'coin_spend' && row.target_id === draft_id)
         if (!context) { context = { draft_id: make_id('draft'), owner_user_id: s.owner_id(data), kind: 'coin_spend', target_id: draft_id }; data.drafts.push(context) }
-        context.payload = { kind: 'voice_introduction', introduction_draft_id: draft_id, user_id: intro.target_id, question_id: payload.question_id, audio_id: payload.audio_id, draft_audio_id: payload.audio_id, operation_id: `voice:${payload.operation_id}` }; context.updated_at = now
+        context.payload = { kind: `${kind}_introduction`, introduction_draft_id: draft_id, user_id: intro.target_id, question_id: payload.question_id, ...(kind === 'voice' ? { audio_id: payload.audio_id, draft_audio_id: payload.audio_id } : { text: payload.text.trim() }), operation_id: `${kind}:${payload.operation_id}` }; context.updated_at = now
         return context.draft_id
       })
     },
@@ -586,26 +591,30 @@ export const use_app_store = defineStore('app', {
       const context = this.data.drafts.find((row) => row.draft_id === context_id && row.owner_user_id === owner && row.kind === 'coin_spend')
       if (!context) return failure('operation_unavailable', 'This coin operation is unavailable. No coins were deducted.')
       const payload = clone_data(context.payload || {})
-      if (!['voice_introduction', 'priority_match'].includes(payload.kind)) return failure('operation_invalid', 'This coin operation is invalid. No coins were deducted.')
+      if (!['text_introduction', 'voice_introduction', 'priority_match'].includes(payload.kind)) return failure('operation_invalid', 'This coin operation is invalid. No coins were deducted.')
       if (!scope_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
       try { if (payload.kind === 'voice_introduction') await check_media(this, payload.audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
       if (!scope_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
       return transact(this, operation(payload.operation_id, 'coin-spend', [context_id, payload]), (data, now) => {
         const current = require_owned(data, data.drafts, 'draft_id', context_id)
         s.ensure(current.kind === 'coin_spend', 'This coin operation is unavailable.')
-        if (payload.kind === 'voice_introduction') {
+        if (['text_introduction', 'voice_introduction'].includes(payload.kind)) {
+          const kind = payload.kind === 'voice_introduction' ? 'voice' : 'text'
           const intro = require_owned(data, data.drafts, 'draft_id', payload.introduction_draft_id)
           s.ensure(intro.kind === 'introduction' && intro.target_id === payload.user_id && intro.payload.question_id === payload.question_id && !intro.payload.completed_request_id, 'This introduction draft is unavailable. No coins were deducted.')
+          s.ensure(intro.payload.mode === kind, 'The introduction changed. Review it again before sending.')
           if (payload.draft_audio_id) s.ensure(intro.payload.audio_id === payload.audio_id && payload.draft_audio_id === payload.audio_id, 'The recording changed. Review it again before sending.')
           const blocker = s.introduction_blocker(data, payload.user_id, now)
           s.ensure(!blocker, blocker)
           s.ensure(data.users.find(row => row.user_id === payload.user_id)?.icebreaker_ids.includes(payload.question_id), 'Choose one of this person’s current questions.')
-          s.ensure(s.privacy_for(data, payload.user_id).allow_voice !== false, 'This person is not accepting voice introductions.')
-          s.ensure(data.media_files.some((row) => row.media_id === payload.audio_id && row.owner_user_id === owner && row.kind === 'audio'), 'Saved media is unavailable. Please record it again.')
+          if (kind === 'voice') {
+            s.ensure(s.privacy_for(data, payload.user_id).allow_voice !== false, 'This person is not accepting voice introductions.')
+            s.ensure(data.media_files.some((row) => row.media_id === payload.audio_id && row.owner_user_id === owner && row.kind === 'audio'), 'Saved media is unavailable. Please record it again.')
+          } else s.ensure(typeof payload.text === 'string' && payload.text.trim() && payload.text.length <= 300 && intro.payload.text?.trim() === payload.text, 'The answer changed. Review it again before sending.')
           const request_id = make_id('request')
-          add_transaction(data, -10, `voice:${request_id}`, 'spend', request_id, now)
-          data.requests.push({ request_id, sender_id: owner, recipient_id: payload.user_id, question_id: payload.question_id, question_text: data.icebreakers.find(row => row.question_id === payload.question_id).text, kind: 'voice', text: '', audio_id: payload.audio_id, status: 'pending', created_at: now, resolved_at: null })
-          data.drafts = data.drafts.filter((row) => row.draft_id !== payload.introduction_draft_id)
+          add_transaction(data, -10, `${kind}:${request_id}`, 'spend', request_id, now)
+          data.requests.push({ request_id, sender_id: owner, recipient_id: payload.user_id, question_id: payload.question_id, question_text: data.icebreakers.find(row => row.question_id === payload.question_id).text, kind, text: kind === 'text' ? payload.text : '', audio_id: kind === 'voice' ? payload.audio_id : null, status: 'pending', created_at: now, resolved_at: null })
+          intro.payload.completed_request_id = request_id
           return { kind: payload.kind, destination_id: request_id }
         }
         const match = require_owned(data, data.match_sessions, 'match_id', payload.match_id)
@@ -725,7 +734,8 @@ export const use_app_store = defineStore('app', {
         s.ensure(data.coin_packages.some(row => row.package_id === package_id) && !own(data, data.purchase_requests).some(row => row.status === 'pending'), 'A purchase is already pending or this package is unavailable.')
         if (return_context_id) {
           const draft = require_owned(data, data.drafts, 'draft_id', return_context_id)
-          const intro=draft.kind === 'introduction' && !draft.payload.completed_request_id && !!introduction_context(data, draft.target_id, return_context_id, now).audio
+          const context = draft.kind === 'introduction' ? introduction_context(data, draft.target_id, return_context_id, now) : null
+          const intro = context && !context.error && !context.blocker && !draft.payload.completed_request_id && (draft.payload.mode === 'text' ? typeof draft.payload.text === 'string' && !!draft.payload.text.trim() : draft.payload.mode === 'voice' && !!context.audio)
           const match=draft.kind === 'match_return' && (draft.payload.kind==='match_entry'||draft.payload.kind==='match_priority'&&data.match_sessions.some(m=>m.match_id===draft.payload.match_id&&m.owner_user_id===s.owner_id(data)))
           s.ensure(intro||match, 'This purchase return context is unavailable.')
         }
@@ -765,7 +775,7 @@ export const use_app_store = defineStore('app', {
       if (!valid) return unavailable('Verified refunds')
       return transact(this, operation(event.event_id, 'refund', id), (data, now) => { const row = require_owned(data, data.coin_transactions, 'transaction_id', id); s.ensure(row.amount < 0 && row.status === 'completed', 'This transaction cannot be refunded.'); add_transaction(data, -row.amount, `refund:${id}`, 'refund', id, now) }, { expected_owner: owner })
     },
-    spend_coins() { return failure('unsupported_action', 'Use a valid voice or matching request to spend coins.') },
+    spend_coins() { return failure('unsupported_action', 'Use a valid introduction or matching request to spend coins.') },
     complete_purchase() { return failure('unverified_purchase', 'A verified purchase callback is required.') },
     set_match_status() { return unavailable('Verified matching events') },
     toggle_relationship() { return failure('question_required', 'Choose a question and send a real introduction first.') },

@@ -175,9 +175,9 @@
   "approved_deltas": [
     "Cimoa brand; canonical six user identities/photos/questions/audio replace conflicting source names",
     "Actual safe areas, fixed header/footer and one scroll region; deck remains non-scrolling/responsive per user",
-    "Text is free, 300 characters; no payment branch",
+    "2026-10-20 user approval: text/voice each cost 10 coins with confirmation, atomic debit and retry recovery; no retroactive charge",
     "Actual recording/decoded duration replaces hardcoded playing 00:12; missing capability fails",
-    "Existing connection/pending request/match routes to canonical entity; never creates on navigation",
+    "Connected Chat/incoming View request remain active; outgoing pending CTA is grey, disabled Waiting for reply; Home retains canonical request access",
     "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply"
   ],
   "states": [

@@ -15,7 +15,7 @@ const leave = () => { active = false; generation++; started = false; cancel_load
 const account_scope = use_account_scope(store, leave)
 onLoad(options => { context_id.value = String(options?.return_context_id || '') })
 const context = computed(() => account_scope.is_current() ? store.current_drafts.find(row => row.draft_id === context_id.value && row.kind === 'coin_spend') : null)
-const access_error = computed(() => account_scope.access_error.value || (!context.value ? 'This coin operation is unavailable. No coins were deducted.' : !['voice_introduction', 'priority_match'].includes(context.value.payload?.kind) ? 'This coin operation is invalid. No coins were deducted.' : ''))
+const access_error = computed(() => account_scope.access_error.value || (!context.value ? 'This coin operation is unavailable. No coins were deducted.' : !['text_introduction', 'voice_introduction', 'priority_match'].includes(context.value.payload?.kind) ? 'This coin operation is invalid. No coins were deducted.' : ''))
 const run = async () => {
   if (!ready || !active || started || access_error.value) return
   started = true; error.value = ''
@@ -26,7 +26,7 @@ const run = async () => {
   if (!result.success) {
     error.value = result.message
     route = '/pages/coins/spend-failed?return_context_id=' + encodeURIComponent(context_id.value)
-  } else if (payload.kind === 'voice_introduction') {
+  } else if (['text_introduction', 'voice_introduction'].includes(payload.kind)) {
     route = '/pages/connections/sent?request_id=' + encodeURIComponent(result.data.destination_id)
   } else {
     route = '/pages/auto-match/searching?match_id=' + encodeURIComponent(result.data.destination_id)

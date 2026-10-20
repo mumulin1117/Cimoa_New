@@ -10,9 +10,9 @@ import { coin_center_route } from '@/utils/coinReturnContext.js'
 import { legal_document_route } from '@/utils/legalNavigation.js'
 
 const faqs = Object.freeze([
-  ['What are coins?', 'Coins are a virtual currency inside Cimoa. They have no cash value. Text introductions are free; coins are used for voice introductions and Priority Match.'],
+  ['What are coins?', 'Coins are a virtual currency inside Cimoa. They have no cash value. Coins are used for text introductions, voice introductions and Priority Match.'],
   ['How do I get coins?', 'Coin packages use Apple In-App Purchase when available. A purchase must be confirmed before coins are added. Purchases are currently unavailable.'],
-  ['What can coins be used for?', 'A text introduction is free. A voice introduction costs 10 coins. Priority Match costs 20 coins for 15 minutes.'],
+  ['What can coins be used for?', 'Text and voice introductions each cost 10 coins. Priority Match costs 20 coins for 15 minutes.'],
   ['Can coins be transferred?', 'No. Coins stay on your account and cannot be sent to another student, withdrawn, or exchanged for money.'],
   ['Can coins be refunded?', 'Failed coin actions do not keep a debit. App Store refund processing is currently unavailable in Cimoa; manage eligible purchase requests through Apple.'],
   ['What happens if a purchase fails?', 'No coins are added and your balance is unchanged. You can retry from the coin store or save a support draft.'],

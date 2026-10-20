@@ -76,28 +76,110 @@ onHide(hide); onUnmounted(() => { hide(); clear() })
         <view class="ice-text-switch" role="button" tabindex="0" :aria-disabled="is_loading || media_busy || navigating" data-interaction="ibVoice.switchToTextReply.click.1" @click="switch_text" @keydown.enter="switch_text"><view><IcebreakerIcon name="keyboard" /></view><text>Switch to text</text></view>
       </view><view class="ice-voice-note"><view><IcebreakerIcon name="info" /></view><text>Your answer will be sent with the connection request</text></view>
     </template><view v-else class="ice-unavailable" role="alert">{{ access_error }}</view></view>
-    <template #footer><view v-if="!access_error" class="ice-footer"><view class="ice-primary" role="button" tabindex="0" :aria-disabled="is_loading || media_busy || navigating || recording || !audio_source" data-interaction="ibVoice.sendVoiceRequest.click.1" @click="review" @keydown.enter="review">Send Request · 10 Coins</view></view></template>
+    <template #footer><view v-if="!access_error" class="ice-footer"><view class="ice-primary" role="button" tabindex="0" :aria-disabled="is_loading || media_busy || navigating || recording || !audio_source" data-interaction="ibVoice.sendVoiceRequest.click.1" @click="review" @keydown.enter="review">Review voice introduction</view></view></template>
     <template #overlays><IntroductionConfirmDialog :open="!!sheet" :mode="sheet" :busy="is_loading || media_busy" @close="sheet = ''" @confirm="allow" @rerecord="rerecord" @delete="remove_audio" /><IntroductionConfirmDialog :open="discard" mode="discard" :busy="is_loading || media_busy" @close="discard = false" @confirm="back_now" /><EventActionLoading :visible="is_loading" label="Saving your voice introduction…" /></template>
   </SecondaryPageFrame>
 </template>
 <style scoped src="./icebreaker.css"></style>
 <style scoped>
 .ice-question { margin-top: 34.351rpx; padding: 34.351rpx; border-radius: 45.802rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); }
-.ice-question-top { display: flex; align-items: center; justify-content: space-between; color: var(--cimoa-text-secondary); font-size: 30.534rpx; font-weight: 600; }
+.ice-question-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--cimoa-text-secondary);
+  font-size: 30.534rpx;
+  font-weight: 600;
+}
 .ice-question-top > view { display: flex; align-items: center; gap: 15.267rpx; }
 .ice-question-top > text { color: var(--cimoa-text-connection-muted); font-size: 28.626rpx; }
-.ice-question-icon { width: 53.435rpx; height: 53.435rpx; padding: 13.359rpx; border-radius: 50%; background: var(--cimoa-surface-profile-interest-icon); color: var(--cimoa-text-profile-interest-icon); }
-.ice-question-text { display: block; margin-top: 22.901rpx; font-size: 43.893rpx; font-weight: 800; letter-spacing: -0.02em; text-wrap: pretty; }
-.ice-record-card { display: flex; flex-direction: column; align-items: center; gap: 30.534rpx; margin-top: 26.718rpx; padding: 49.618rpx 34.351rpx; border-radius: 45.802rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); }
+.ice-question-icon {
+  width: 53.435rpx;
+  height: 53.435rpx;
+  padding: 13.359rpx;
+  border-radius: 50%;
+  background: var(--cimoa-surface-profile-interest-icon);
+  color: var(--cimoa-text-profile-interest-icon);
+}
+.ice-question-text {
+  display: block;
+  margin-top: 22.901rpx;
+  font-size: 43.893rpx;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+.ice-record-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30.534rpx;
+  margin-top: 26.718rpx;
+  padding: 49.618rpx 34.351rpx;
+  border-radius: 45.802rpx;
+  background: var(--cimoa-surface-card);
+  box-shadow: var(--cimoa-shadow-card);
+}
 .ice-record-empty { display: flex; flex-direction: column; align-items: center; gap: 30.534rpx; width: 100%; }
 .ice-wave-space { height: 83.969rpx; width: 100%; }
 .ice-record-time { font-size: 38.168rpx; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
-.ice-record-button { position: relative; isolation: isolate; display: flex; align-items: center; justify-content: center; width: 160.305rpx; height: 160.305rpx; border: 3.5px solid var(--cimoa-surface-transparent); border-radius: 50%; background: var(--cimoa-gradient-card-fill) padding-box, var(--cimoa-gradient-primary) border-box; color: var(--cimoa-text-link); cursor: pointer; }
-.ice-record-button::before { content: ''; position: absolute; inset: -15.267rpx; border-radius: 50%; background: var(--cimoa-gradient-ice-record-glow); filter: blur(7.634rpx); z-index: -1; pointer-events: none; }
-.ice-record-button::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--cimoa-surface-card); pointer-events: none; }
+.ice-record-button {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160.305rpx;
+  height: 160.305rpx;
+  border: 3.5px solid var(--cimoa-surface-transparent);
+  border-radius: 50%;
+  background: var(--cimoa-gradient-card-fill) padding-box, var(--cimoa-gradient-primary) border-box;
+  color: var(--cimoa-text-link);
+  cursor: pointer;
+}
+.ice-record-button::before {
+  content: '';
+  position: absolute;
+  inset: -15.267rpx;
+  border-radius: 50%;
+  background: var(--cimoa-gradient-ice-record-glow);
+  filter: blur(7.634rpx);
+  z-index: -1;
+  pointer-events: none;
+}
+.ice-record-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--cimoa-surface-card);
+  pointer-events: none;
+}
 .ice-record-button > view { position: relative; z-index: 1; width: 68.702rpx; height: 68.702rpx; }
-.ice-text-switch { display: flex; align-items: center; gap: 15.267rpx; height: 83.969rpx; padding: 0 38.168rpx; border-radius: 41.985rpx; background: var(--cimoa-surface-profile-icon); font-size: 30.534rpx; font-weight: 600; cursor: pointer; }
+.ice-text-switch {
+  display: flex;
+  align-items: center;
+  gap: 15.267rpx;
+  height: 83.969rpx;
+  padding: 0 38.168rpx;
+  border-radius: 41.985rpx;
+  background: var(--cimoa-surface-profile-icon);
+  font-size: 30.534rpx;
+  font-weight: 600;
+  cursor: pointer;
+}
 .ice-text-switch > view { width: 34.351rpx; height: 34.351rpx; }
-.ice-voice-note { display: flex; align-items: center; gap: 19.084rpx; margin-top: 26.718rpx; padding: 26.718rpx 34.351rpx; border-radius: 38.168rpx; background: var(--cimoa-surface-profile-icon); color: var(--cimoa-text-secondary); font-size: 27.672rpx; text-wrap: pretty; }
+.ice-voice-note {
+  display: flex;
+  align-items: center;
+  gap: 19.084rpx;
+  margin-top: 26.718rpx;
+  padding: 26.718rpx 34.351rpx;
+  border-radius: 38.168rpx;
+  background: var(--cimoa-surface-profile-icon);
+  color: var(--cimoa-text-secondary);
+  font-size: 27.672rpx;
+  text-wrap: pretty;
+}
 .ice-voice-note > view { flex: none; width: 34.351rpx; height: 34.351rpx; }
 </style>

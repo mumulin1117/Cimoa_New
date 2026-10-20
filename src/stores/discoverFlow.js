@@ -22,7 +22,7 @@ export function introduction_context(data, target, draft_id = null, now = Date.n
   if (connection) {
     const conversation = connection.conversation_id ? direct_conversation(data, connection.conversation_id, now) : null
     primary = { kind: 'chat', label: 'Chat', destination: conversation ? `/pages/messages/chat?conversation_id=${encodeURIComponent(conversation.conversation_id)}` : '', error: conversation ? '' : 'This conversation is unavailable. Your connection has not changed.' }
-  } else if (relation.request_id) primary = { kind: 'request', label: relation.status === 'outgoing_request' ? 'Request sent' : 'View request', destination: `/pages/connections/${relation.status === 'outgoing_request' ? 'sent' : 'received'}?request_id=${encodeURIComponent(relation.request_id)}`, error: '' }
+  } else if (relation.request_id) primary = { kind: 'request', label: relation.status === 'outgoing_request' ? 'Waiting for reply' : 'View request', disabled: relation.status === 'outgoing_request', destination: `/pages/connections/${relation.status === 'outgoing_request' ? 'sent' : 'received'}?request_id=${encodeURIComponent(relation.request_id)}`, error: '' }
   else if (relation.match_id) {
     const match = data.match_sessions.find(row => row.match_id === relation.match_id), incoming = match.owner_user_id !== owner
     primary = { kind: 'match', label: 'View match', destination: incoming ? `/pages/connections/received?match_id=${encodeURIComponent(match.match_id)}` : `/pages/auto-match/${relation.match_status}?match_id=${encodeURIComponent(match.match_id)}`, error: '' }

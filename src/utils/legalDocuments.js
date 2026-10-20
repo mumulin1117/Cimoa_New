@@ -4,7 +4,7 @@ const document = value => Object.freeze({ ...value, sections: Object.freeze(valu
 
 export const eula_document = document({
   id: 'eula',
-  revision: '2026-10-20',
+  revision: '2026-10-20-introductions',
   title: 'End User License Agreement',
   updated: 'Effective 20 October 2026',
   intro: 'Welcome to Cimoa. Start with a better question, find your people and make thoughtful campus connections. Please read this agreement before continuing. By choosing Agree and Continue, you accept this agreement and the Terms of Use, acknowledge the Privacy Policy and agree to follow the Community Guidelines.',
@@ -15,7 +15,7 @@ export const eula_document = document({
     ['4. Zero tolerance for abuse', 'Objectionable content and abusive behavior are not permitted. Do not share pornography, non-consensual intimate imagery, child sexual abuse material, threats, hate speech or content promoting violence or illegal activity. Harassment, bullying, stalking, grooming, exploitation, scams and spam are prohibited across profiles, introductions, messages and event groups. Never use another account to evade a block or rejection.'],
     ['5. Connections and consent', 'A card view, match suggestion, event membership or coin spend does not mean someone has agreed to contact. Respect mutual connection choices, boundaries and refusals. Do not pressure anyone to reply, share media, join a call or meet in person. Use the Report and Block controls for concerning content or unwanted contact; the result shown after an action describes what was completed. Do not rely on a report for emergency assistance.'],
     ['6. Campus events and personal safety', 'Check event details, organizers, locations and costs before making plans. Meet in public, tell someone you trust and leave if you feel unsafe. Participation is your choice, and joining a group does not authorize private contact. Cimoa is not an emergency service; contact campus security or local emergency services if someone is in immediate danger.'],
-    ['7. Optional purchases and availability', 'Core campus social features are free. Where offered, optional coin features show their cost before confirmation. Coins have no cash value and do not guarantee a connection, response or compatibility. A failed, cancelled or unavailable purchase does not add coins. Only a confirmed transaction changes the balance. Features that need a permission, resource or service may be unavailable; do not treat a waiting screen as an established call.'],
+    ['7. Optional purchases and availability', 'Browsing profiles and campus events is free. Text and voice introductions each cost 10 coins, shown before confirmation. Other coin features show their cost before confirmation. Coins have no cash value and do not guarantee a connection, response or compatibility. A failed, cancelled or unavailable purchase does not add coins. Only a confirmed transaction changes the balance. Features that need a permission, resource or service may be unavailable; do not treat a waiting screen as an established call.'],
     ['8. Privacy and your choices', 'Read the Privacy Policy for the information handled by Cimoa and how it is stored. You can manage visibility and permissions, block unwanted contacts and delete your account in Settings. Accepting this agreement does not grant camera, microphone, photo or notification permission; each is requested separately when needed.'],
     ['9. Ending use and applicable terms', 'You may stop using Cimoa at any time. Do not continue using features in a way that violates these rules. Account deletion and blocking have the effects described in the Terms of Use and Privacy Policy. This agreement does not waive mandatory consumer rights, promise uninterrupted availability or replace applicable App Store licensing terms. The linked documents explain current service availability and contact information.'],
   ],
@@ -24,7 +24,7 @@ export const eula_document = document({
 
 export const terms_document = document({
   id: 'terms',
-  revision: '2026-10-20',
+  revision: '2026-10-20-introductions',
   title: 'Terms of Use',
   updated: 'Updated 20 October 2026',
   intro: 'These terms explain how to use Cimoa for thoughtful campus connections, conversations and events. Read them together with the Privacy Policy, End User License Agreement and Community Guidelines.',
@@ -33,7 +33,7 @@ export const terms_document = document({
     ['2. Your account', 'Keep your password and account access private. Use registration, login and password reset to manage access to your account records. Do not impersonate anyone, share credentials or attempt to access another person’s account.'],
     ['3. Community conduct', 'Be respectful. Do not harass, threaten, impersonate, pressure or exploit another person, or share illegal or unsafe content. Use Report and Block for concerns. A saved report records the information provided; it is not a moderation decision or an emergency response.'],
     ['4. Content and feature availability', 'You are responsible for the content you add. Share only material you own or have permission to use. The Privacy Policy explains how account records, media and activity are handled. Features requiring a permission, media resource or service may be unavailable; follow the actual result shown after each action.'],
-    ['5. Coins and purchases', 'Coins have no cash value and cannot guarantee a connection or response. Costs are shown before confirmation. A purchase adds coins only after a confirmed transaction; failed, cancelled or unavailable purchases do not add coins.'],
+    ['5. Coins and purchases', 'Text and voice introductions each cost 10 coins. Coins have no cash value and cannot guarantee a connection or response. Costs and the resulting balance are shown before confirmation. A purchase adds coins only after a confirmed transaction; failed, cancelled or unavailable purchases do not add coins.'],
     ['6. Events and personal safety', 'Check the organizer, location, time, accessibility and any costs before making plans. Event information and participation records are not a guarantee of real-world attendance or safety. Cimoa is not an emergency service; use campus security or emergency services for urgent help.'],
     ['7. Blocking and account deletion', 'Blocking removes the current private connection, requests, match and conversation records; unblocking does not restore them. Account deletion removes the account’s saved private records. Read the deletion confirmation carefully because this action cannot be undone.'],
     ['8. Availability and your rights', 'Service availability may vary. A waiting screen does not establish a call, a saved draft does not create a support ticket, and a saved report does not guarantee human review. These terms do not waive mandatory consumer rights or replace applicable App Store licensing rules.'],

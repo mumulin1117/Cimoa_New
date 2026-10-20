@@ -1,0 +1,13 @@
+{
+  "checks" : [
+    "Text confirmation cancellation is read-only with 10 coin fee and accurate balance",
+    "Atomic text failure\/refresh\/Return, successful retry, double-confirm, processing recovery and grey\/inert deck\/profile pending state",
+    "Zero balance blocks text and Coin Center refresh\/Back recovers the exact answer",
+    "Saved playable audio → Voice preview; refresh\/playback, cancel and explicit 10-coin voice send remain correct"
+  ],
+  "result" : "passed",
+  "scope" : "Introduction fee\/preview\/pending-state regression, not whole-App acceptance",
+  "storage_restored" : true,
+  "test_blob_removed" : true,
+  "voice_capture" : "Valid PCM test audio; actual MediaRecorder capture separately exercised in Chrome"
+}

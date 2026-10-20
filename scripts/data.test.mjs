@@ -59,12 +59,14 @@ test('fixture login validates identity; logout/deletion and expired sessions hid
   assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, false)
   assert.equal(fixture('session_expired').store.home_connections.length, 0)
 })
-test('free text at zero coins changes no ledger; retries and duplicate pending requests are safe', async () => {
-  const { store } = fixture('zero_coins')
+test('text costs 10 coins; zero balance fails and retries never double charge', async () => {
+  const empty = fixture('zero_coins').store, { store } = fixture()
   const args = { user_id: 'user_liam', question_id: 'user_liam_q_0', text: 'A long walk and good coffee.', operation_id: 'intro-1' }
+  const before = clone_data(empty.data)
+  assert.equal((await empty.send_introduction(args)).success, false); assert.deepEqual(clone_data(empty.data), before)
   assert.equal((await store.send_introduction({ ...args, text: ' ' })).success, false)
   const result = await store.send_introduction(args)
-  assert.equal(result.success, true); assert.equal(store.coin_balance, 0); assert.equal(store.coin_transactions.length, 0)
+  assert.equal(result.success, true); assert.equal(store.coin_balance, 250); assert.equal(store.coin_transactions.filter(t => t.business_key === `text:${result.data}`).length, 1)
   assert.equal((await store.send_introduction(args)).data, result.data)
   assert.equal((await store.send_introduction({ ...args, operation_id: 'intro-2' })).success, false)
   assert.equal(store.data.requests.filter((row) => row.sender_id === TEST_USER_ID).length, 1)
@@ -123,7 +125,7 @@ test('coin processing commits voice or priority atomically and remains retry-saf
   const result = await voice.store.complete_coin_spend(spend.data)
   assert.equal(result.success, true); assert.equal(voice.store.coin_balance, 250)
   assert.equal(voice.store.request_by_id(result.data.destination_id).kind, 'voice')
-  assert.equal(voice.store.current_drafts.some(row => row.draft_id === introduction.data), false)
+  assert.equal(voice.store.current_drafts.find(row => row.draft_id === introduction.data).payload.completed_request_id, result.data.destination_id)
   assert.equal((await voice.store.complete_coin_spend(spend.data)).repeated, true)
   assert.equal(voice.store.coin_balance, 250)
 

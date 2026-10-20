@@ -10,6 +10,6 @@ export function coin_ledger_detail(data, id, now) {
   const mode = transaction.kind === 'refund' && transaction.amount > 0 ? 'refund' : transaction.amount > 0 ? transaction.fixture ? 'credit' : 'purchase' : 'spend'
   const original = mode === 'refund' ? data.coin_transactions.find(t => t.transaction_id === transaction.related_id && t.owner_user_id === owner) : transaction
   const key = original?.fixture ? '' : original?.business_key || ''
-  const feature_label = key.startsWith('voice:') ? 'Voice Introduction' : key.startsWith('priority:') ? 'Priority Match' : key.startsWith('match:') ? 'Auto Match' : 'Not recorded'
+  const feature_label = key.startsWith('text:') ? 'Text Introduction' : key.startsWith('voice:') ? 'Voice Introduction' : key.startsWith('priority:') ? 'Priority Match' : key.startsWith('match:') ? 'Auto Match' : 'Not recorded'
   return clone_data({ transaction, request: request || null, pack: pack || null, verified_purchase, mode, feature_label, original_transaction_id: mode === 'refund' ? original?.transaction_id || null : null })
 }
