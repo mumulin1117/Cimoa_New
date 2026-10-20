@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-20",
+  "page": "Welcome copy visibility fix",
+  "route": "/pages/auth/welcome",
+  "source_lock": "locked",
+  "source_image": "/Users/linqian/Downloads/Auth ／ Welcome ／ Default.png",
+  "source_image_sha256": "1fceba19ff9219035b709e36f4ee011b10462bf89b9a0cbc3855449241d7ece7",
+  "identical_repository_reference": "docs/ui-restoration/welcome/consent-2026-10-19/source.png",
+  "base_contract": "docs/ui-restoration/welcome/source-contract.json",
+  "consent_and_interaction_contract": "docs/ui-restoration/welcome/consent-2026-10-19/source-contract.json",
+  "user_decision": "Restore the design's copy above Create Account. App language entry exists only at Profile > Settings > Language; do not reproduce the PNG's EUL chip.",
+  "copy": {
+    "brand": "Cimoa",
+    "title": "Meet your campus",
+    "description": "Discover people, conversations, and events around university life."
+  },
+  "audit_before_changes": [
+    {
+      "id": "WELCOME-COPY-01",
+      "source": "All three copy lines are completely visible above Create Account on first entry.",
+      "current": "Copy exists inside the middle scroll view, after a fixed 360px source image and 44px gap. Real 62/34 safe areas and the fixed consent footer reduce the scroll viewport, clipping the description until the user scrolls.",
+      "evidence": "docs/ui-restoration/welcome/consent-2026-10-19/actual-wkwebview.png",
+      "fix": "Place the unchanged copy immediately before the fixed action footer; let the image occupy the remaining middle height. No new business state, timer or page-frame variant.",
+      "files": ["src/pages/auth/welcome.vue"]
+    },
+    {
+      "id": "WELCOME-COPY-02",
+      "source": "Visible text must not be clipped by scroll ancestors, other controls or safe areas.",
+      "current": "Earlier tests check textContent and un-clipped DOM coordinates but only assert full description after scrolling.",
+      "fix": "Assert initial visible bounds and overlap with the actual clipping region, with no scrolling, at source viewport and several iPhone sizes/safe areas; include visible error/retry and real WKWebView.",
+      "files": ["scripts/welcome-visual.test.mjs", "ios/cimoaNeapo/Tests/HostTests.swift"]
+    }
+  ],
+  "approved_deltas": [
+    "Keep all existing copy, theme colors, font sizes/weights, assets, button geometry, checkbox defaults and interaction IDs.",
+    "Keep TopSafeArea/BottomSafeArea as the only safe-area owners. Copy and actions remain outside the image scroll viewport and never cover each other.",
+    "Use the source 44px photo-to-copy gap and approximately 4px description-to-Create gap at 393x852; adjust the image height through available flex space instead of shrinking text or requiring a swipe to read.",
+    "Keep the existing independent Terms/Privacy pages and mandatory explicit consent before Age/Login. Reading policies does not consent; returning preserves the current instance; refresh resets it.",
+    "No EUL, language toggle, system status bar, home indicator or source caption added to Welcome. Existing app-language entry stays in Settings; communication-language matching preferences are not app-language controls."
+  ],
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "visual_acceptance": "pending"
+}

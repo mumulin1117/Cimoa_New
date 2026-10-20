@@ -25,8 +25,8 @@ const retry_photo = () => { photo_status.value = 'loading'; photo_key.value++ }
         <view v-if="photo_status === 'error'" role="button" tabindex="0" @click="retry_photo" @keydown.enter="retry_photo">Retry photo</view>
       </view>
     </view>
-    <view class="welcome-copy"><text class="welcome-brand">Cimoa</text><text class="welcome-title">Meet your campus</text><text class="welcome-description">Discover people, conversations, and events around university life.</text></view>
     <template #footer>
+      <view class="welcome-copy"><text class="welcome-brand">Cimoa</text><text class="welcome-title">Meet your campus</text><text class="welcome-description">Discover people, conversations, and events around university life.</text></view>
       <view class="welcome-footer">
         <text v-if="error" class="welcome-error" role="alert">{{ error }}</text>
         <view class="welcome-create" role="button" tabindex="0" :aria-disabled="!agreed" data-interaction="welcome.goAge.click.1" @click="continue_to('/pages/auth/age')" @keydown.enter="continue_to('/pages/auth/age')"><text>Create Account</text><SourceIcon name="arrow-right" :stroke-width="2.4" /></view>
@@ -41,8 +41,17 @@ const retry_photo = () => { photo_status.value = 'loading'; photo_key.value++ }
   </SecondaryPageFrame>
 </template>
 <style scoped>
-.welcome-photo-region { position: relative; margin: 0 7.634rpx; height: 687.023rpx; }
-.welcome-photo { width: 100%; height: 100%; border-radius: 57.252rpx 57.252rpx 0 0; object-position: center top; mask-image: var(--cimoa-gradient-welcome-mask); -webkit-mask-image: var(--cimoa-gradient-welcome-mask); }
+.welcome-page :deep(.secondary-page-scroll .uni-scroll-view-content) { height: 100%; }
+.welcome-photo-region { position: relative; margin: 0 7.634rpx; height: 100%; }
+.welcome-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 57.252rpx 57.252rpx 0 0;
+  object-position: center top;
+  mask-image: var(--cimoa-gradient-welcome-mask);
+  -webkit-mask-image: var(--cimoa-gradient-welcome-mask);
+}
 .welcome-photo :deep(.uni-image-element),
 .welcome-photo :deep(img) { object-position: center top; }
 .welcome-photo-status {
@@ -57,7 +66,14 @@ const retry_photo = () => { photo_status.value = 'loading'; photo_key.value++ }
   font-size: 28.626rpx;
 }
 .welcome-photo-status [role=button] { color: var(--cimoa-text-link); }
-.welcome-copy { display: flex; flex-direction: column; align-items: center; margin: 83.969rpx 45.802rpx 38.168rpx; text-align: center; }
+.welcome-copy {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  margin: 83.969rpx 45.802rpx 7.634rpx;
+  text-align: center;
+}
 .welcome-brand {
   font-size: 72.519rpx;
   font-weight: 500;

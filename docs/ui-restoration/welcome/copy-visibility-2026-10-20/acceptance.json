@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-20",
+  "scope": "Welcome first-entry copy visibility, existing consent and auth navigation",
+  "result": "passed",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "visual_acceptance": "pending",
+  "status": "pending",
+  "cause": "Fixed photo height and copy in the middle scroll viewport clipped the description above the fixed footer under real iPhone safe areas.",
+  "fix": "Keep the original brand/title/description immediately above actions outside the image's scroll region. Photo consumes remaining flex space; original text, font sizes, colors, controls and business logic are unchanged.",
+  "runtime_files": ["src/pages/auth/welcome.vue"],
+  "test_files": ["scripts/welcome-visual.test.mjs", "ios/cimoaNeapo/Tests/HostTests.swift"],
+  "record_files": ["docs/cimoa-page-inventory.json", "docs/ui-restoration/welcome/source-contract.json", "docs/ui-restoration/welcome/difference-audit.md", "docs/ui-restoration/welcome/copy-visibility-2026-10-20/"],
+  "tests": {
+    "browser": {
+      "passed": 11,
+      "failed": 0,
+      "viewport_combinations": 9,
+      "checks": ["All three text blocks initially visible with real ancestor clipping and hit-test checks", "Reference source geometry within 1 CSS px", "No font shrink or text change", "Consent gates both auth entries", "All four Terms/Privacy links preserve choice", "Back and refresh", "Double-click navigation once", "Image error and Retry", "No guest business writes"],
+      "report": "browser-acceptance.json"
+    },
+    "unit": {"passed": 180, "failed": 0, "report": "/tmp/cimoa-welcome-copy-unit.xml"},
+    "wkwebview": {
+      "passed": 2,
+      "failed": 0,
+      "device": "iPhone 17 Pro",
+      "device_id": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "os": "iOS 26.5",
+      "safe_area_points": [62, 34],
+      "initial_scroll_top": 0,
+      "description_bottom": 583.234375,
+      "create_top": 587.3125,
+      "xcresult": "/tmp/cimoa-welcome-copy-native.xcresult",
+      "report": "native-acceptance.json",
+      "snapshot": "actual-wkwebview-first-entry.png",
+      "original_storage_restored": true
+    }
+  },
+  "conventions": ["Vue 3/uni-app and rpx", "Existing theme variables", "Existing safe-area owners and controlled navigation", "No Store/schema/storage/Loading changes", "No developer or interaction convention edits", "No added language/EUL control", "Only one page in_progress while implementing; full-page/full-App verification not inferred"],
+  "native_build_warning": "Existing AppIntents metadata extraction skipped because no AppIntents.framework dependency is present; both native tests passed.",
+  "final_gates": {
+    "commands_in_order": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"],
+    "exit_codes": [0, 0, 0],
+    "convention_warnings": 0
+  },
+  "packaging": {
+    "h5_files": 415,
+    "manifest_sha256": "f8cf875378b55ad3d3d232e928cf42cac53ee44e5f985e2c6ad0b7a247199369",
+    "dist_resources_compiled_app_and_archive_identical": true,
+    "archive": "artifacts/cimoaNeapo-ios.zip",
+    "archive_bytes": 26121827,
+    "prototype_packaged": false
+  },
+  "cleanup": {
+    "temporary_preview_pid": 13590,
+    "remaining_test_or_build_processes": [],
+    "user_simulator_app_pid": 15503,
+    "original_account_storage_restored": true
+  },
+  "commit_policy": "Scoped local commit only; no push; pre-existing registration screenshots excluded.",
+  "whole_page_visual_note": "The provided PNG's CIRCA branding, status bar, EUL chip, home indicator and caption are not reproduced. Existing Cimoa branding and real safe areas retained; whole-PNG font/raster equality is not claimed. The copy-clipping fix is fully regression-tested."
+}

@@ -6,8 +6,8 @@
   "source_query": "route=welcome",
   "source_lock": "locked",
   "locked_at": "2026-10-15",
-  "active_revision": "docs/ui-restoration/welcome/consent-2026-10-19/source-contract.json",
-  "revision_note": "2026-10-19 user PNG supersedes this historical HTML contract for the new consent/footer increment. Original captures below are historical, not current acceptance evidence.",
+  "active_revision": "docs/ui-restoration/welcome/copy-visibility-2026-10-20/source-contract.json",
+  "revision_note": "2026-10-20 user confirms the same PNG and requires complete copy visible above Create Account on first entry. Current fix preserves the 2026-10-19 consent increment; original captures below are historical, not current acceptance evidence.",
   "source": {
     "file": "CIRCA All Screens (interactive).html",
     "file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",

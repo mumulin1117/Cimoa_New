@@ -78,7 +78,7 @@
     ],
     "return_owner": "authentication root; no fake back target",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; fixed Create Account/Log In/consent/legal footer; BottomSafeArea",
+    "fixed_regions": "TopSafeArea; fixed welcome copy immediately above Create Account/Log In/consent/legal footer; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
     "bottom_safe_area_owner": "BottomSafeArea",
@@ -125,10 +125,11 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "2026-10-19 Welcome consent increment implemented and verified functionally in browser/WKWebView; prior whole-page visual acceptance not automatically reused for new PNG",
-    "acceptance_notes": "Current increment: 10 Welcome browser checks, 14 auth checks, 2 registration-age checks, 173 domain tests and 2 native cases passed. Checkbox/new-label geometry measured against user PNG. Whole-screen raster/font equality is not claimed.",
+    "mapping_status": "2026-10-20 Welcome first-screen copy clipping fixed; 11 browser checks including 9 iPhone viewport/safe-area combinations, 180 unit tests and 2 real WKWebView cases passed. Current scoped evidence in welcome/copy-visibility-2026-10-20; full-page pixel/full-App acceptance not inferred.",
+    "acceptance_notes": "Brand, heading and full description are initially visible, not merely present in the DOM or readable after scrolling. Existing copy, fonts, consent, policy links and auth return paths unchanged. Native safe areas 62/34; screenshot and source overlay retained. Whole-screen PNG font/raster equality remains pending.",
     "welcome_consent_contract": "docs/ui-restoration/welcome/consent-2026-10-19/source-contract.json",
-    "welcome_consent_evidence": "docs/ui-restoration/welcome/consent-2026-10-19/acceptance.json"
+    "welcome_consent_evidence": "docs/ui-restoration/welcome/consent-2026-10-19/acceptance.json",
+    "welcome_copy_visibility_evidence": "docs/ui-restoration/welcome/copy-visibility-2026-10-20/acceptance.json"
   },
   {
     "source_screen": "Legal / Terms of Service / Default",

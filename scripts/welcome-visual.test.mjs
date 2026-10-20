@@ -11,9 +11,10 @@ import { read_circa_source } from './lib/circa-source.mjs'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const root = path.resolve('dist/build/h5')
-const output = path.resolve('docs/ui-restoration/welcome/consent-2026-10-19')
+const output = path.resolve('docs/ui-restoration/welcome/copy-visibility-2026-10-20')
+const source_folder = path.resolve('docs/ui-restoration/welcome/consent-2026-10-19')
 const contract = JSON.parse(fs.readFileSync('docs/ui-restoration/welcome/source-contract.json', 'utf8'))
-const revision = JSON.parse(fs.readFileSync(path.join(output, 'source-contract.json'), 'utf8'))
+const revision = JSON.parse(fs.readFileSync(path.join(source_folder, 'source-contract.json'), 'utf8'))
 const photo = fs.readFileSync(contract.photo.local_path)
 const photo_data = `data:image/png;base64,${photo.toString('base64')}`
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' }
@@ -23,7 +24,7 @@ const server = http.createServer((request, response) => {
   response.setHeader('Content-Type', types[path.extname(file)] || 'application/octet-stream')
   fs.createReadStream(file).pipe(response)
 })
-const report = { phase: 'welcome-consent-revision', result: 'failed', server_pid: process.pid, reference: {}, geometry: {}, comparison: {}, checks: [], errors: [] }
+const report = { phase: 'welcome-copy-visibility', result: 'failed', server_pid: process.pid, reference: {}, geometry: {}, comparison: {}, checks: [], errors: [], viewport_matrix: [] }
 const check = name => { report.checks.push(name); console.log(`PASS ${name}`) }
 const hash = value => crypto.createHash('sha256').update(value).digest('hex')
 const close = (actual, expected, tolerance = 1) => Math.abs(actual - expected) <= tolerance
@@ -37,7 +38,7 @@ function verify_source_lock() {
   assert.equal(hash(visual), contract.source.visual_fragment_sha256)
   assert.equal(hash(behavior), contract.source.behavior_fragment_sha256)
   assert.equal(hash(photo), contract.photo.sha256)
-  assert.equal(hash(fs.readFileSync(path.join(output, 'source.png'))), revision.primary_increment_source.sha256)
+  assert.equal(hash(fs.readFileSync(path.join(source_folder, 'source.png'))), revision.primary_increment_source.sha256)
   report.reference = {
     kind: 'source-derived locked reference with approved brand and safe-area deltas',
     source_file_sha256: source.source_hash,
@@ -76,6 +77,15 @@ async function freeze_welcome(page) {
       return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, right: rect.right, bottom: rect.bottom, center_x: rect.x + rect.width / 2 }
     }
     const image = document.querySelector('.welcome-photo .uni-image-element, .welcome-photo img') || document.querySelector('.welcome-photo')
+    const copy_visibility = ['.welcome-brand', '.welcome-title', '.welcome-description'].map(selector => {
+      const element = document.querySelector(selector), rect = element.getBoundingClientRect(), clips = []
+      for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+        const style = getComputedStyle(parent), bounds = parent.getBoundingClientRect()
+        if (/(hidden|auto|scroll|clip)/.test(style.overflowY) && (rect.top < bounds.top - 1 || rect.bottom > bounds.bottom + 1)) clips.push(parent.className)
+      }
+      const hit = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2)
+      return { selector, clips, above_create: rect.bottom <= document.querySelector('.welcome-create').getBoundingClientRect().top, inside_viewport: rect.top >= 0 && rect.bottom <= innerHeight, hit_visible: hit === element || element.contains(hit), font_size: getComputedStyle(element).fontSize }
+    })
     return {
       viewport: { width: innerWidth, height: innerHeight },
       root: box('.welcome-page'), photo: box('.welcome-photo-region'), copy: box('.welcome-copy'),
@@ -88,6 +98,7 @@ async function freeze_welcome(page) {
       image_object_position: image ? getComputedStyle(image).objectPosition : null,
       image_style_target: image ? `${image.tagName.toLowerCase()}.${image.className}` : null,
       image_status_visible: !!document.querySelector('.welcome-photo-status'),
+      copy_visibility,
       copy_text: {
         brand: document.querySelector('.welcome-brand').textContent,
         title: document.querySelector('.welcome-title').textContent,
@@ -152,6 +163,7 @@ try {
   assert.ok(close(report.geometry.copy.y, 448)); assert.ok(close(report.geometry.create.x, 20)); assert.ok(close(report.geometry.create.height, 60)); assert.ok(close(report.geometry.login.height, 56)); assert.ok(close(report.geometry.legal.bottom, 822, 2))
   assert.ok(close(report.geometry.checkbox.width, 24)); assert.ok(close(report.geometry.checkbox.height, 24)); assert.ok(close(report.geometry.consent.y - report.geometry.login.bottom, 12)); assert.ok(close(report.geometry.consent_copy.x - report.geometry.checkbox.right, 12)); assert.ok(close(parseFloat(report.geometry.consent_font), revision.geometry_css_px.consent_font, .1)); assert.equal(report.geometry.consent_text, revision.copy.consent)
   assert.ok(['50% 0%', 'center top'].includes(report.geometry.image_object_position)); assert.equal(report.geometry.image_status_visible, false)
+  for (const row of report.geometry.copy_visibility) { assert.deepEqual(row.clips, []); assert.equal(row.above_create && row.inside_viewport && row.hit_visible, true) }
   assert.deepEqual(report.geometry.copy_text, {
     brand: 'Cimoa', title: contract.copy.title.copy, description: contract.copy.description.copy,
     create: contract.footer.create_account.copy, login: contract.footer.login.copy, legal: contract.footer.legal.copy,
@@ -163,27 +175,39 @@ try {
   assert.equal(report.comparison.width, 393); assert.equal(report.comparison.height, 852)
   check('reference, actual, overlay and absolute diff were generated from one locked source state')
   const provided_page = await browser.newPage()
-  const provided = await provided_page.evaluate(async data => { const image = new Image(); image.src = data; await image.decode(); const canvas = document.createElement('canvas'); canvas.width = 393; canvas.height = 852; canvas.getContext('2d').drawImage(image, 0, 0, 786, 1704, 0, 0, 393, 852); return { width: image.width, height: image.height, png: canvas.toDataURL('image/png') } }, `data:image/png;base64,${fs.readFileSync(path.join(output, 'source.png')).toString('base64')}`)
+  const provided = await provided_page.evaluate(async data => { const image = new Image(); image.src = data; await image.decode(); const canvas = document.createElement('canvas'); canvas.width = 393; canvas.height = 852; canvas.getContext('2d').drawImage(image, 0, 0, 786, 1704, 0, 0, 393, 852); return { width: image.width, height: image.height, png: canvas.toDataURL('image/png') } }, `data:image/png;base64,${fs.readFileSync(path.join(source_folder, 'source.png')).toString('base64')}`)
   assert.equal(provided.width, 786); assert.ok(provided.height >= 1704); fs.writeFileSync(path.join(output, 'provided-reference.png'), Buffer.from(provided.png.split(',')[1], 'base64')); await provided_page.close()
   report.provided_comparison = await write_comparison(browser, path.join(output, 'provided-reference.png'), path.join(output, 'actual-browser.png'), 'provided-')
   report.provided_comparison.exclusions = 'Source CIRCA versus approved Cimoa brand; screenshot status bar/EUL/home indicator versus measured app safe areas; original PNG raster/font rendering. No claim of whole-screen pixel equality.'
 
   const safe_context = await browser.newContext({ viewport: { width: 393, height: 852 } })
   await safe_context.addInitScript(() => { localStorage.removeItem('cimoa_app_state_v2'); localStorage.removeItem('cimoa_app_state') })
-  const safe_page = await safe_context.newPage(); await safe_page.goto(`${origin}/?welcomePixel=safe#/pages/auth/welcome`); await safe_page.locator('.welcome-photo-status').waitFor({ state: 'detached' }); await set_safe_area(safe_page, 62, 34); await freeze_welcome(safe_page)
+  const safe_page = await safe_context.newPage(); await safe_page.goto(`${origin}/?welcomePixel=safe#/pages/auth/welcome`); await safe_page.locator('.welcome-photo-status').waitFor({ state: 'detached' }); await set_safe_area(safe_page, 62, 34); const initial_safe = await freeze_welcome(safe_page)
   const safe_scroller = safe_page.locator('.secondary-page-scroll .uni-scroll-view').last()
   const safe_scroll_before = await safe_scroller.evaluate(element => ({ client_height: element.clientHeight, scroll_height: element.scrollHeight, scroll_top: element.scrollTop }))
   const safe_footer_before = await safe_page.locator('.welcome-footer').boundingBox()
-  assert.ok(safe_scroll_before.scroll_height > safe_scroll_before.client_height)
+  for (const row of initial_safe.copy_visibility) { assert.deepEqual(row.clips, []); assert.equal(row.above_create && row.inside_viewport && row.hit_visible, true) }
+  assert.equal(safe_scroll_before.scroll_top, 0); assert.ok(initial_safe.photo.height > 0 && initial_safe.photo.height < 360)
   await safe_page.screenshot({ path: path.join(output, 'actual-browser-safe-area.png') })
   await safe_scroller.evaluate(element => { element.scrollTop = element.scrollHeight })
   const safe_scrolled = await freeze_welcome(safe_page)
   const safe_scroll_after = await safe_scroller.evaluate(element => ({ scroll_top: element.scrollTop }))
   const safe_footer_after = await safe_page.locator('.welcome-footer').boundingBox()
-  assert.ok(safe_scroll_after.scroll_top > 0); assert.deepEqual(safe_footer_after, safe_footer_before)
+  assert.ok(safe_scroll_after.scroll_top <= 1); assert.deepEqual(safe_footer_after, safe_footer_before)
   assert.ok(safe_scrolled.description.bottom <= safe_footer_after.y + 1)
   await safe_page.screenshot({ path: path.join(output, 'actual-browser-safe-area-scrolled.png') }); await safe_context.close()
-  check('62/34 browser safe areas preserve the fixed footer and allow the complete source copy to scroll above it')
+  check('62/34 safe areas show all original copy above Create Account on first entry without scrolling or changing font sizes')
+
+  const matrix_context = await browser.newContext(), matrix_page = await matrix_context.newPage()
+  for (const [width, height, top, bottom] of [[320,568,20,0],[320,568,62,34],[375,667,20,0],[375,812,44,34],[390,844,47,34],[402,874,62,34],[414,896,48,34],[430,932,59,34],[440,956,62,34]]) {
+    await matrix_page.setViewportSize({ width, height }); await matrix_page.goto(`${origin}/?welcomeViewport=${width}-${height}-${top}#/pages/auth/welcome`); await matrix_page.locator('.welcome-photo-status').waitFor({ state: 'detached' }); await set_safe_area(matrix_page, top, bottom)
+    const geometry = await freeze_welcome(matrix_page)
+    for (const row of geometry.copy_visibility) { assert.deepEqual(row.clips, [], `${width}x${height} ${row.selector}`); assert.equal(row.above_create && row.inside_viewport && row.hit_visible, true) }
+    assert.ok(geometry.photo.height > 0); assert.ok(geometry.legal.bottom <= height - bottom); assert.equal(await matrix_page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false)
+    report.viewport_matrix.push({ width, height, safe: [top, bottom], photo_height: geometry.photo.height, visibility: geometry.copy_visibility })
+    await matrix_page.screenshot({ path: path.join(output, `actual-${width}x${height}-${top}-${bottom}.png`) })
+  }
+  await matrix_context.close(); check('Nine iPhone viewport/safe-area combinations keep brand, heading and full description initially visible with no clipping or overlap')
 
   const flow = await browser.newContext({ viewport: { width: 393, height: 852 } })
   await flow.addInitScript(() => { localStorage.removeItem('cimoa_app_state_v2'); localStorage.removeItem('cimoa_app_state') })

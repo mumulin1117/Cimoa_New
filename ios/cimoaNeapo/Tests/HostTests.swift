@@ -785,7 +785,7 @@ final class HostTests: XCTestCase {
         let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
         var root = URL(fileURLWithPath: #filePath)
         for _ in 0..<4 { root.deleteLastPathComponent() }
-        let output = root.appendingPathComponent("docs/ui-restoration/welcome/consent-2026-10-19")
+        let output = root.appendingPathComponent("docs/ui-restoration/welcome/copy-visibility-2026-10-20")
         func restore() async throws {
             _ = try await host.webView.callAsyncJavaScript("for(const [key,value] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)};return true", arguments: ["snapshot": saved], in: nil, contentWorld: .page)
             host.webView.load(URLRequest(url: URL(string: BundleHTTPServer.origin + "/index.html?welcomePixel=restored#/pages/auth/splash")!))
@@ -798,6 +798,13 @@ final class HostTests: XCTestCase {
                 if (try? await script(host, "return !document.querySelector('.welcome-photo-status')")) as? Bool == true { break }
                 try await Task.sleep(nanoseconds: 100_000_000)
             }
+            let initiallyVisible = try await script(host, """
+            await document.fonts.ready;for(const a of document.getAnimations())a.finish();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+            const create=document.querySelector('.welcome-create').getBoundingClientRect(),rows=[];
+            for(const selector of ['.welcome-brand','.welcome-title','.welcome-description']){const e=document.querySelector(selector),r=e.getBoundingClientRect();if(r.height<=0||r.top<0||r.bottom>create.top)throw Error('Welcome copy not initially visible: '+selector);for(let p=e.parentElement;p;p=p.parentElement){const c=getComputedStyle(p),b=p.getBoundingClientRect();if(/hidden|auto|scroll|clip/.test(c.overflowY)&&(r.top<b.top-1||r.bottom>b.bottom+1))throw Error('Welcome copy clipped by '+p.className)}const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);if(hit!==e&&!e.contains(hit))throw Error('Welcome copy covered: '+selector);rows.push({selector,y:r.y,bottom:r.bottom})}return {rows,createTop:create.top,scrollTop:[...document.querySelectorAll('.secondary-page-scroll .uni-scroll-view')].at(-1).scrollTop};
+            """) as! [String: Any]
+            XCTAssertEqual(initiallyVisible["scrollTop"] as? Double, 0)
+            try (try await host.webView.takeSnapshot(configuration: nil)).pngData()!.write(to: output.appendingPathComponent("actual-wkwebview-first-entry.png"))
             let rejected = try await script(host, """
             const before=localStorage.getItem('cimoa_app_state_v2'),check=document.querySelector('.welcome-consent-toggle');if(check.getAttribute('aria-checked')!=='false')throw Error('Welcome preselected consent');for(const s of ['.welcome-create','.welcome-login']){const e=document.querySelector(s);if(e.getAttribute('aria-disabled')!=='true')throw Error('Entry not disabled');e.click()}await new Promise(r=>setTimeout(r,350));return location.hash.endsWith('/pages/auth/welcome')&&!!document.querySelector('.welcome-error')&&localStorage.getItem('cimoa_app_state_v2')===before
             """) as? Bool
@@ -837,8 +844,8 @@ final class HostTests: XCTestCase {
             XCTAssertEqual(root["x"]!, 0, accuracy: 1); XCTAssertEqual(root["y"]!, 0, accuracy: 1)
             XCTAssertEqual(root["width"]!, Double(host.webView.bounds.width), accuracy: 1); XCTAssertEqual(root["height"]!, Double(host.webView.bounds.height), accuracy: 1)
             XCTAssertEqual(safes[0], Double(host.view.safeAreaInsets.top), accuracy: 1); XCTAssertEqual(safes[1], Double(host.view.safeAreaInsets.bottom), accuracy: 1)
-            XCTAssertEqual(photo["x"]!, 4 * sourceScale, accuracy: 1); XCTAssertEqual(photo["y"]!, safes[0], accuracy: 1); XCTAssertEqual(photo["width"]!, root["width"]! - 8 * sourceScale, accuracy: 1); XCTAssertEqual(photo["height"]!, 360 * sourceScale, accuracy: 1)
-            XCTAssertEqual(copy["y"]!, safes[0] + 404 * sourceScale, accuracy: 1); XCTAssertEqual(brand["cx"]!, root["width"]! / 2, accuracy: 1)
+            XCTAssertEqual(photo["x"]!, 4 * sourceScale, accuracy: 1); XCTAssertEqual(photo["y"]!, safes[0], accuracy: 1); XCTAssertEqual(photo["width"]!, root["width"]! - 8 * sourceScale, accuracy: 1); XCTAssertGreaterThan(photo["height"]!, 0)
+            XCTAssertEqual(copy["y"]!, photo["bottom"]! + 44 * sourceScale, accuracy: 1); XCTAssertLessThanOrEqual(copy["bottom"]!, create["y"]!); XCTAssertEqual(brand["cx"]!, root["width"]! / 2, accuracy: 1)
             XCTAssertEqual(create["x"]!, 20 * sourceScale, accuracy: 1); XCTAssertEqual(create["width"]!, root["width"]! - 40 * sourceScale, accuracy: 1); XCTAssertEqual(create["height"]!, 60 * sourceScale, accuracy: 1); XCTAssertEqual(login["height"]!, 56 * sourceScale, accuracy: 1)
             XCTAssertEqual(legal["bottom"]!, root["height"]! - safes[1] - 30 * sourceScale, accuracy: 2)
             XCTAssertTrue(["50% 0%", "center top"].contains(metrics["imagePosition"] as? String ?? "")); XCTAssertEqual(metrics["status"] as? Bool, false)
@@ -857,7 +864,7 @@ final class HostTests: XCTestCase {
             const before={clientHeight:scroller.clientHeight,scrollHeight:scroller.scrollHeight,footerY:footer.y};scroller.scrollTop=scroller.scrollHeight;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
             const description=document.querySelector('.welcome-description').getBoundingClientRect(),afterFooter=document.querySelector('.welcome-footer').getBoundingClientRect();return {clientHeight:before.clientHeight,scrollHeight:before.scrollHeight,scrollTop:scroller.scrollTop,footerY:before.footerY,afterFooterY:afterFooter.y,descriptionBottom:description.bottom};
             """) as! [String: Double]
-            XCTAssertGreaterThan(scrolled["scrollHeight"]!, scrolled["clientHeight"]!); XCTAssertGreaterThan(scrolled["scrollTop"]!, 0)
+            XCTAssertLessThanOrEqual(scrolled["scrollHeight"]!, scrolled["clientHeight"]! + 1); XCTAssertLessThanOrEqual(scrolled["scrollTop"]!, 1)
             XCTAssertEqual(scrolled["afterFooterY"]!, scrolled["footerY"]!, accuracy: 1); XCTAssertLessThanOrEqual(scrolled["descriptionBottom"]!, scrolled["afterFooterY"]! + 1)
             let scrolledScreenshot = XCTAttachment(image: try await host.webView.takeSnapshot(configuration: nil))
             scrolledScreenshot.name = "WKWebView Welcome safe-area scrolled"; scrolledScreenshot.lifetime = .keepAlways; add(scrolledScreenshot)
@@ -891,7 +898,7 @@ final class HostTests: XCTestCase {
             XCTAssertEqual(refreshStorageRemainsEmpty, true)
             let reset = try await script(host, "return document.querySelector('.welcome-consent-toggle').getAttribute('aria-checked')==='false'&&document.querySelector('.welcome-login').getAttribute('aria-disabled')==='true'") as? Bool
             XCTAssertEqual(reset, true)
-            try JSONSerialization.data(withJSONObject: ["result":"passed","initial_auth_rejected":rejected == true,"policy_reading_does_not_accept":true,"consent":consent,"unchecking_blocks_again":blockedAgain == true,"refresh_resets":reset == true,"zero_business_writes":refreshStorageRemainsEmpty == true,"metrics":metrics,"scrolled":scrolled,"scope":"Welcome consent increment only; no whole-app or whole-screen pixel acceptance claim"], options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("native-acceptance.json"))
+            try JSONSerialization.data(withJSONObject: ["result":"passed","initial_copy_visibility":initiallyVisible,"initial_auth_rejected":rejected == true,"policy_reading_does_not_accept":true,"consent":consent,"unchecking_blocks_again":blockedAgain == true,"refresh_resets":reset == true,"zero_business_writes":refreshStorageRemainsEmpty == true,"metrics":metrics,"scrolled":scrolled,"scope":"Welcome first-entry copy visibility and unchanged consent/navigation; no whole-app or whole-screen pixel acceptance claim"], options: [.prettyPrinted,.sortedKeys]).write(to: output.appendingPathComponent("native-acceptance.json"))
             try await restore()
         } catch { try? await restore(); throw error }
     }

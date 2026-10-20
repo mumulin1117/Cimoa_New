@@ -1,0 +1,518 @@
+{
+  "phase": "welcome-copy-visibility",
+  "result": "passed",
+  "server_pid": 13590,
+  "reference": {
+    "kind": "source-derived locked reference with approved brand and safe-area deltas",
+    "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "visual_fragment_sha256": "95083f7905d32b356e84d42c87224bbcbe37389fe38be1598e87cb4bb685e66b",
+    "photo_sha256": "c4350a2be9d94721c915b93b2c4d09754194a3a3a6357665692d226ad3bf0896",
+    "entry_animation": "finished"
+  },
+  "geometry": {
+    "viewport": {
+      "width": 393,
+      "height": 852
+    },
+    "root": {
+      "x": 0,
+      "y": 0,
+      "width": 393,
+      "height": 852,
+      "right": 393,
+      "bottom": 852,
+      "center_x": 196.5
+    },
+    "photo": {
+      "x": 4,
+      "y": 44,
+      "width": 385,
+      "height": 359.5625,
+      "right": 389,
+      "bottom": 403.5625,
+      "center_x": 196.5
+    },
+    "copy": {
+      "x": 24,
+      "y": 447.546875,
+      "width": 345,
+      "height": 151.875,
+      "right": 369,
+      "bottom": 599.421875,
+      "center_x": 196.5
+    },
+    "brand": {
+      "x": 133.296875,
+      "y": 447.546875,
+      "width": 126.390625,
+      "height": 38,
+      "right": 259.6875,
+      "bottom": 485.546875,
+      "center_x": 196.4921875
+    },
+    "title": {
+      "x": 57.9375,
+      "y": 507.546875,
+      "width": 277.109375,
+      "height": 35.6875,
+      "right": 335.046875,
+      "bottom": 543.234375,
+      "center_x": 196.4921875
+    },
+    "description": {
+      "x": 51.5,
+      "y": 553.234375,
+      "width": 289.984375,
+      "height": 46.1875,
+      "right": 341.484375,
+      "bottom": 599.421875,
+      "center_x": 196.4921875
+    },
+    "create": {
+      "x": 20,
+      "y": 603.421875,
+      "width": 353,
+      "height": 60,
+      "right": 373,
+      "bottom": 663.421875,
+      "center_x": 196.5
+    },
+    "login": {
+      "x": 20,
+      "y": 675.421875,
+      "width": 353,
+      "height": 55.984375,
+      "right": 373,
+      "bottom": 731.40625,
+      "center_x": 196.5
+    },
+    "legal": {
+      "x": 20,
+      "y": 781.40625,
+      "width": 353,
+      "height": 40.59375,
+      "right": 373,
+      "bottom": 822,
+      "center_x": 196.5
+    },
+    "consent": {
+      "x": 20,
+      "y": 743.40625,
+      "width": 353,
+      "height": 24,
+      "right": 373,
+      "bottom": 767.40625,
+      "center_x": 196.5
+    },
+    "checkbox": {
+      "x": 20,
+      "y": 743.40625,
+      "width": 24,
+      "height": 24,
+      "right": 44,
+      "bottom": 767.40625,
+      "center_x": 32
+    },
+    "consent_copy": {
+      "x": 56,
+      "y": 746.828125,
+      "width": 223.4375,
+      "height": 17.140625,
+      "right": 279.4375,
+      "bottom": 763.96875,
+      "center_x": 167.71875
+    },
+    "consent_text": "I agree to the Terms and Privacy Policy.",
+    "consent_font": "12.25px",
+    "safe": [
+      44,
+      0
+    ],
+    "image_object_position": "50% 0%",
+    "image_style_target": "img.",
+    "image_status_visible": false,
+    "copy_visibility": [
+      {
+        "selector": ".welcome-brand",
+        "clips": [],
+        "above_create": true,
+        "inside_viewport": true,
+        "hit_visible": true,
+        "font_size": "38px"
+      },
+      {
+        "selector": ".welcome-title",
+        "clips": [],
+        "above_create": true,
+        "inside_viewport": true,
+        "hit_visible": true,
+        "font_size": "33.9998px"
+      },
+      {
+        "selector": ".welcome-description",
+        "clips": [],
+        "above_create": true,
+        "inside_viewport": true,
+        "hit_visible": true,
+        "font_size": "16.5002px"
+      }
+    ],
+    "copy_text": {
+      "brand": "Cimoa",
+      "title": "Meet your campus",
+      "description": "Discover people, conversations, and events around university life.",
+      "create": "Create Account",
+      "login": "Log In",
+      "legal": "By continuing, you agree to our Terms and Privacy Policy."
+    }
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 135732,
+    "pixels_above_channel_delta_8": 14296,
+    "mean_absolute_channel_delta": 1.1828447359304257,
+    "max_channel_delta": 157
+  },
+  "checks": [
+    "393x852 actual restores source geometry, copy, local media, center-top crop and finished cRise frame",
+    "reference, actual, overlay and absolute diff were generated from one locked source state",
+    "62/34 safe areas show all original copy above Create Account on first entry without scrolling or changing font sizes",
+    "Nine iPhone viewport/safe-area combinations keep brand, heading and full description initially visible with no clipping or overlap",
+    "Unchecked Welcome blocks both auth entries with explicit validation and no business writes",
+    "All four policy links work while unchecked and never infer or toggle consent",
+    "Space and Enter toggle one shared consent choice immediately and clear validation without Loading",
+    "Create Account double click and the other three source entries navigate once, return to Welcome and write no account data",
+    "Unchecking again closes both auth paths after returning from Login or Age",
+    "local campus-image failure is explicit and Retry reloads the original extracted asset without fake success",
+    "320x568 scroll, fixed footer, safe areas and refresh recovery preserve the guest state"
+  ],
+  "errors": [],
+  "viewport_matrix": [
+    {
+      "width": 320,
+      "height": 568,
+      "safe": [
+        20,
+        0
+      ],
+      "photo_height": 182.890625,
+      "visibility": [
+        {
+          "selector": ".welcome-brand",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "30.9415px"
+        },
+        {
+          "selector": ".welcome-title",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "27.6843px"
+        },
+        {
+          "selector": ".welcome-description",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "13.4353px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "safe": [
+        62,
+        34
+      ],
+      "photo_height": 106.890625,
+      "visibility": [
+        {
+          "selector": ".welcome-brand",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "30.9415px"
+        },
+        {
+          "selector": ".welcome-title",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "27.6843px"
+        },
+        {
+          "selector": ".welcome-description",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "13.4353px"
+        }
+      ]
+    },
+    {
+      "width": 375,
+      "height": 667,
+      "safe": [
+        20,
+        0
+      ],
+      "photo_height": 219.125,
+      "visibility": [
+        {
+          "selector": ".welcome-brand",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "36.2595px"
+        },
+        {
+          "selector": ".welcome-title",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "32.4426px"
+        },
+        {
+          "selector": ".welcome-description",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "15.7445px"
+        }
+      ]
+    },
+    {
+      "width": 375,
+      "height": 812,
+      "safe": [
+        44,
+        34
+      ],
+      "photo_height": 306.125,
+      "visibility": [
+        {
+          "selector": ".welcome-brand",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "36.2595px"
+        },
+        {
+          "selector": ".welcome-title",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "32.4426px"
+        },
+        {
+          "selector": ".welcome-description",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "15.7445px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "safe": [
+        47,
+        34
+      ],
+      "photo_height": 318.015625,
+      "visibility": [
+        {
+          "selector": ".welcome-brand",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "37.7099px"
+        },
+        {
+          "selector": ".welcome-title",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "33.7403px"
+        },
+        {
+          "selector": ".welcome-description",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "16.3743px"
+        }
+      ]
+    },
+    {
+      "width": 402,
+      "height": 874,
+      "safe": [
+        62,
+        34
+      ],
+      "photo_height": 319.375,
+      "visibility": [
+        {
+          "selector": ".welcome-brand",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "38.8702px"
+        },
+        {
+          "selector": ".welcome-title",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "34.7784px"
+        },
+        {
+          "selector": ".welcome-description",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "16.8781px"
+        }
+      ]
+    },
+    {
+      "width": 414,
+      "height": 896,
+      "safe": [
+        48,
+        34
+      ],
+      "photo_height": 341.640625,
+      "visibility": [
+        {
+          "selector": ".welcome-brand",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "40.0305px"
+        },
+        {
+          "selector": ".welcome-title",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "35.8166px"
+        },
+        {
+          "selector": ".welcome-description",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "17.3819px"
+        }
+      ]
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "safe": [
+        59,
+        34
+      ],
+      "photo_height": 348.375,
+      "visibility": [
+        {
+          "selector": ".welcome-brand",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "41.5776px"
+        },
+        {
+          "selector": ".welcome-title",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "37.2008px"
+        },
+        {
+          "selector": ".welcome-description",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "18.0537px"
+        }
+      ]
+    },
+    {
+      "width": 440,
+      "height": 956,
+      "safe": [
+        62,
+        34
+      ],
+      "photo_height": 358.046875,
+      "visibility": [
+        {
+          "selector": ".welcome-brand",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "42.5445px"
+        },
+        {
+          "selector": ".welcome-title",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "38.0659px"
+        },
+        {
+          "selector": ".welcome-description",
+          "clips": [],
+          "above_create": true,
+          "inside_viewport": true,
+          "hit_visible": true,
+          "font_size": "18.4735px"
+        }
+      ]
+    }
+  ],
+  "provided_comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 259177,
+    "pixels_above_channel_delta_8": 39539,
+    "mean_absolute_channel_delta": 4.026457728559653,
+    "max_channel_delta": 244,
+    "exclusions": "Source CIRCA versus approved Cimoa brand; screenshot status bar/EUL/home indicator versus measured app safe areas; original PNG raster/font rendering. No claim of whole-screen pixel equality."
+  },
+  "cleaned_up": true
+}

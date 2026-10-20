@@ -1,0 +1,124 @@
+{
+  "consent" : {
+    "checked" : "true",
+    "copy" : "I agree to the Terms and Privacy Policy.",
+    "height" : 24.546875,
+    "overflow" : false,
+    "width" : 24.546875
+  },
+  "initial_auth_rejected" : true,
+  "initial_copy_visibility" : {
+    "createTop" : 587.3125,
+    "rows" : [
+      {
+        "bottom" : 468.515625,
+        "selector" : ".welcome-brand",
+        "y" : 430.515625
+      },
+      {
+        "bottom" : 527.015625,
+        "selector" : ".welcome-title",
+        "y" : 491.015625
+      },
+      {
+        "bottom" : 583.234375,
+        "selector" : ".welcome-description",
+        "y" : 537.234375
+      }
+    ],
+    "scrollTop" : 0
+  },
+  "metrics" : {
+    "brand" : {
+      "bottom" : 468.515625,
+      "cx" : 200.9921875,
+      "height" : 38,
+      "right" : 265.59375,
+      "width" : 129.203125,
+      "x" : 136.390625,
+      "y" : 430.515625
+    },
+    "copy" : {
+      "bottom" : 583.234375,
+      "cx" : 201,
+      "height" : 152.71875,
+      "right" : 377.453125,
+      "width" : 352.90625,
+      "x" : 24.546875,
+      "y" : 430.515625
+    },
+    "create" : {
+      "bottom" : 648.671875,
+      "cx" : 201,
+      "height" : 61.359375,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 587.3125
+    },
+    "imagePosition" : "50% 0%",
+    "legal" : {
+      "bottom" : 809.328125,
+      "cx" : 201,
+      "height" : 40,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 769.328125
+    },
+    "login" : {
+      "bottom" : 718.21875,
+      "cx" : 201,
+      "height" : 57.28125,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 660.9375
+    },
+    "photo" : {
+      "bottom" : 385.515625,
+      "cx" : 201,
+      "height" : 323.515625,
+      "right" : 397.921875,
+      "width" : 393.84375,
+      "x" : 4.078125,
+      "y" : 62
+    },
+    "root" : {
+      "bottom" : 874,
+      "cx" : 201,
+      "height" : 874,
+      "right" : 402,
+      "width" : 402,
+      "x" : 0,
+      "y" : 0
+    },
+    "safes" : [
+      62,
+      34
+    ],
+    "status" : false,
+    "text" : {
+      "brand" : "Cimoa",
+      "create" : "Create Account",
+      "description" : "Discover people, conversations, and events around university life.",
+      "legal" : "By continuing, you agree to our Terms and Privacy Policy.",
+      "login" : "Log In",
+      "title" : "Meet your campus"
+    }
+  },
+  "policy_reading_does_not_accept" : true,
+  "refresh_resets" : true,
+  "result" : "passed",
+  "scope" : "Welcome first-entry copy visibility and unchanged consent\/navigation; no whole-app or whole-screen pixel acceptance claim",
+  "scrolled" : {
+    "afterFooterY" : 587.3125,
+    "clientHeight" : 324,
+    "descriptionBottom" : 583.234375,
+    "footerY" : 587.3125,
+    "scrollHeight" : 324,
+    "scrollTop" : 0
+  },
+  "unchecking_blocks_again" : true,
+  "zero_business_writes" : true
+}
