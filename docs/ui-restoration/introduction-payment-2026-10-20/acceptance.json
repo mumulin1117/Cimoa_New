@@ -150,5 +150,11 @@
     "cleanup": "All temporary test servers/browser contexts closed; isolated native test Blob removed and both account state keys restored; unrelated Eluva preview untouched",
     "preserved_user_changes": "10 pre-existing docs/evidence/registration PNG changes excluded from commit"
   },
-  "commit_policy": "Local task commit only; no push"
+  "commit_policy": "Local task commit only; no push",
+  "delivery": {
+    "archive": "artifacts/cimoaNeapo-ios.zip",
+    "native_manifest_matches_final_h5": true,
+    "simulator_reinstallation": "Optional duplicate simctl install waited unusually long after successful latest-build XCTest. Task-owned install and parent command terminated; no subsequent launch claimed. Prior WKWebView test result remains passed.",
+    "process_cleanup": "No task preview, browser test, build or duplicate install process remains. Normal simulator runtime and unrelated Eluva preview were not stopped."
+  }
 }
