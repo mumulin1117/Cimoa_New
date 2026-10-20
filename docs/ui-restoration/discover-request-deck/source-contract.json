@@ -1,5 +1,6 @@
 {
   "page": "deck",
+  "current_functional_increment": "docs/ui-restoration/discover-request-deck/swipe-2026-10-20/source-contract.json",
   "component": "src/pages/discover/index.vue",
   "route": "/pages/discover/index",
   "source": {

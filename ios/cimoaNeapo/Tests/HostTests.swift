@@ -5,6 +5,53 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    func testDiscoverStaggeredSwipeThresholdAndRecovery() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        var root = URL(fileURLWithPath:#filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/discover-request-deck/swipe-2026-10-20")
+        let fixture = try JSONSerialization.jsonObject(with:Data(contentsOf:folder.appendingPathComponent("native-fixture.json"))) as! [String:Any]
+        let driver = """
+        const delay=ms=>new Promise(r=>setTimeout(r,ms)),assert=(v,m)=>{if(!v)throw Error(m)};
+        const visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),front=()=>visible('.discover-photo-card--front'),id=()=>front().dataset.userId;
+        const wait=async fn=>{for(let i=0;i<180;i++){if(fn())return;await delay(30)}throw Error('Swipe timeout '+location.hash)};
+        const settled=()=>wait(()=>{const e=visible('.discover-deck');return e&&e.dataset.settling==='false'&&e.dataset.resetting==='false'});
+        const dispatch=(e,type,x,y,pointer=61)=>e.dispatchEvent(new PointerEvent(type,{bubbles:true,cancelable:true,pointerId:pointer,pointerType:'touch',isPrimary:true,button:0,clientX:x,clientY:y}));
+        const gesture=async(ratio,{cancel=false,vertical=false,hold=0}={})=>{const e=front(),r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;dispatch(e,'pointerdown',x,y);for(let i=1;i<=8;i++){dispatch(e,'pointermove',x+r.width*ratio*i/8,y+(vertical?100*i/8:0));await delay(12)}if(hold)await delay(hold);dispatch(e,cancel?'pointercancel':'pointerup',x+r.width*ratio,y+(vertical?100:0));await delay(20);await settled();};
+        """
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const[k,v]of[['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}return true",arguments:["snapshot":saved],in:nil,contentWorld:.page)
+            try await loadFreshConnection(host,route:"/pages/auth/splash",selector:".splash-page")
+        }
+        do {
+            _ = try await host.webView.callAsyncJavaScript("fixture.data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(fixture));return true",arguments:["fixture":fixture],in:nil,contentWorld:.page)
+            try await loadFreshConnection(host,route:"/pages/discover/index",selector:".discover-photo-card--front")
+            let geometry = try await script(host,driver + """
+            await document.fonts.ready;await Promise.all([...document.querySelectorAll('.discover-photo-card img')].map(e=>e.decode()));await delay(300);assert(document.querySelectorAll('.discover-photo-card').length===3,'Not three layers');const box=e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,right:r.right,bottom:r.bottom,width:r.width,height:r.height}},a=box(front()),content=box(visible('.discover-content')),cta=box(visible('.discover-send')),bar=box(visible('.tabbar')),layers=[...document.querySelectorAll('.discover-photo-card')].map(box),info=box(front().querySelector('.discover-info'));
+            for(const r of layers)assert(r.x>=content.x-1&&r.right<=content.right+1&&r.bottom<=content.bottom+1,'Rear corners clipped');assert(a.bottom<cta.y&&cta.bottom<=bar.y&&info.y>=a.y-1&&info.bottom<=a.bottom+1,'Card information/CTA clipped');return{card:a,layers,content,cta,bar,safeTop:parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-top')),safeBottom:parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom'))};
+            """) as! [String:Any]
+            XCTAssertEqual(geometry["safeTop"] as! Double,Double(host.view.safeAreaInsets.top),accuracy:1)
+            XCTAssertEqual(geometry["safeBottom"] as! Double,Double(host.view.safeAreaInsets.bottom),accuracy:1)
+            try (try await host.webView.takeSnapshot(configuration:nil)).pngData()!.write(to:folder.appendingPathComponent("actual-wkwebview.png"))
+            let checks = try await script(host,driver + """
+            const before=localStorage.getItem('cimoa_app_state_v2'),checks=[];
+            for(const ratio of [-.1,.24,-.32,1/3,-.34]){const old=id();await gesture(ratio);assert((id()!==old)===(Math.abs(ratio)>=1/3),'Wrong threshold '+ratio)}checks.push('Both directions spring back below 1/3 and commit once at/above 1/3');
+            const incoming=visible('.discover-photo-card--back'),image=incoming.querySelector('img'),current=id();await gesture(-.4,{hold:1200});assert(id()!==current&&front()===incoming&&front().querySelector('img')===image,'Clock tick interrupted drag or incoming card remounted');checks.push('Clock tick does not interrupt long drag; incoming card and decoded photo are reused');
+            const keep=id();await gesture(-.5,{cancel:true});assert(id()===keep,'Cancel skipped');await gesture(.01,{vertical:true});assert(id()===keep,'Vertical gesture skipped');checks.push('Pointer cancellation and vertical gestures retain the current person');
+            const active=front(),r=active.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;dispatch(active,'pointerdown',x,y);dispatch(active,'pointermove',x-r.width*.1,y);dispatch(active,'pointerup',x-r.width*.34,y);active.click();await delay(20);await settled();assert(id()!==keep,'Final release coordinate ignored');assert(!visible('.expanded-profile-page'),'Swipe opened profile');checks.push('Final release sample commits and immediate swipe-generated click is suppressed');
+            await delay(350);const selected=id();front().click();await wait(()=>visible('.expanded-profile-page'));assert(location.hash.includes(selected),'Wrong profile ID');visible('[data-interaction="expanded.collapse.click.1"]').click();await wait(()=>front());await delay(300);assert(id()===selected,'Back lost current card');checks.push('Tap opens the same canonical user and Back preserves current deck position');
+            const e=front(),b=e.getBoundingClientRect();dispatch(e,'pointerdown',b.x+b.width/2,b.y+b.height/2);dispatch(e,'pointermove',b.x+b.width*.05,b.y+b.height/2);visible('.tab[aria-label="Home"]').click();await wait(()=>visible('.home-header'));await delay(300);visible('.tab[aria-label="Discover"]').click();await wait(()=>front());await delay(400);assert(visible('.discover-deck').dataset.dragging==='false'&&visible('.discover-deck').dataset.settling==='false','Hidden gesture leaked');assert(!visible('.main-skeleton'),'Repeated skeleton');assert(localStorage.getItem('cimoa_app_state_v2')===before,'Browsing mutated business data');checks.push('Tab interruption clears gesture state; no repeated skeleton, request, relationship or ledger write');return checks;
+            """) as! [String]
+            try await restore()
+            try JSONSerialization.data(withJSONObject:["result":"passed","checks":checks,"geometry":geometry,"storage_restored":true,"gesture_method":"Timed touch Pointer Events in bundled WKWebView; not a physical-device frame-rate benchmark"],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+        } catch {
+            let detail = String(describing:try? await script(host,"return {url:location.href,deck:{...document.querySelector('.discover-deck')?.dataset},text:document.body.innerText.slice(0,1000)}"))
+            try? await restore()
+            try? JSONSerialization.data(withJSONObject:["result":"failed","failure":String(describing:error),"detail":detail],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+            throw error
+        }
+    }
     func testFirstLaunchEulaAndAgreementClose() async throws {
         let host = try await rawHost()
         let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
@@ -3244,7 +3291,7 @@ final class HostTests: XCTestCase {
             const before=localStorage.getItem('cimoa_app_state_v2');
             const card=visible('.discover-photo-card--front'),viewport=visible('.main-tab-scroll'),info=card.querySelector('.discover-info');
             const cardRect=card.getBoundingClientRect(),viewportRect=viewport.getBoundingClientRect(),infoRect=info.getBoundingClientRect(),scale=innerWidth/393;
-            const swipeCurrent=async()=>{const active=visible('.discover-photo-card--front'),rect=active.getBoundingClientRect(),startX=rect.x+rect.width/2,startY=rect.y+rect.height/2,endX=startX-rect.width*.42,dispatch=(type,x)=>active.dispatchEvent(new MouseEvent(type,{bubbles:true,cancelable:true,clientX:x,clientY:startY,button:0}));dispatch('mousedown',startX);for(let step=1;step<=8;step++)dispatch('mousemove',startX+(endX-startX)*step/8);dispatch('mouseup',endX);await delay(420)};
+            const swipeCurrent=async()=>{const active=visible('.discover-photo-card--front'),rect=active.getBoundingClientRect(),startX=rect.x+rect.width/2,startY=rect.y+rect.height/2,endX=startX-rect.width*.42,dispatch=(type,x)=>active.dispatchEvent(new PointerEvent(type,{bubbles:true,cancelable:true,pointerId:51,pointerType:'touch',isPrimary:true,clientX:x,clientY:startY,button:0}));dispatch('pointerdown',startX);for(let step=1;step<=8;step++)dispatch('pointermove',startX+(endX-startX)*step/8);dispatch('pointerup',endX);await delay(420)};
             const total=JSON.parse(before).data.users.filter(row=>Number.isInteger(row.discover_order)).length,sourceIds=[];for(let index=0;index<6;index++){sourceIds.push(visible('.discover-photo-card--front')?.dataset.userId);await swipeCurrent()}for(let index=0;index<64&&visible('.discover-photo-card--front')?.dataset.userId!=='user_zane';index++)await swipeCurrent();await swipeCurrent();
             const swiped=visible('.discover-photo-card--front')?.dataset.userId,next=visible('.discover-photo-card--back')?.dataset.userId;
             visible('.discover-photo-card--front').click();await wait(()=>visible('.expanded-profile-page'));await delay(300);

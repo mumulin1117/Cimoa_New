@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-20",
+  "result": "passed",
+  "scope": "Discover user-requested staggered swipe increment; not whole-App/pixel/FPS acceptance",
+  "page_status": "pending",
+  "source_lock": "locked",
+  "local_acceptance": "passed",
+  "visual_acceptance": "pending",
+  "full_acceptance": "pending",
+  "source_contract": "source-contract.json",
+  "implementation": [
+    "Three actual Store users in a staggered deck, opposite rear rotations and 14px responsive corner reserve. Tag values wrap rather than clip.",
+    "Release at approximately one-third of measured width advances once; 1px native coordinate tolerance, no short fast-flick bypass. Smaller/cancelled/vertical/singleton gestures return to the same card.",
+    "Pointer capture works outside the front card; secondary/right-button input is ignored. View's native H5 event listeners are explicitly installed and removed.",
+    "RAF coalesces motion; final release sample is flushed. Incoming card/photo nodes keep their user-ID keys across promotion, avoiding remount flashes.",
+    "Unchanged Store ID lists on clock ticks do not reset a live drag. Hide/unmount clears capture, timers and animation-frame work. Real data filtering/account changes still reset safely.",
+    "Swipe is UI-only: no likes, skipped-user records, connection requests, conversations, coins, quota or storage mutations. Primary CTA and profile/Back still resolve current entities."
+  ],
+  "tests": {
+    "unit": {"passed":197,"failed":0,"report":"/tmp/cimoa-discover-swipe-unit.xml","new_cases":5},
+    "browser_swipe": {"passed_checks":10,"report":"browser-acceptance.json","viewports":7,"safe_areas":[62,34],"input":"Captured real mouse, browser touchscreen input and explicit cancellation/multiple-pointer boundary cases"},
+    "browser_entry_regression": {"passed_checks":7,"report":"entry-regression/browser-acceptance.json","scope":"Profile/Back, Send shot, pending request, fixed Tabs, eight sizes, corrupt storage and expired-session behavior"},
+    "wkwebview": {"passed":2,"failed":0,"device":"iPhone 17 Pro","ios":"26.5","report":"native-acceptance.json","xcresult":"/tmp/cimoa-discover-swipe-native-confirmed.xcresult","authority":"xcresulttool: Passed, 2 passed, 0 failed","cases":["testDiscoverStaggeredSwipeThresholdAndRecovery","testDiscoverDeckProfilesAndBundledAudioInRealWebKit"],"scope":"Real bundled WebKit rendering, timed touch Pointer Events, existing six profiles/three photos/audio range and duration checks; not physical-device FPS measurement"}
+  },
+  "repairs_during_verification": [
+    "uni-app View did not forward template pointer handlers to DOM, so the H5 adapter explicitly binds the card's native pointer listeners with teardown.",
+    "The old per-tick identity-array watcher cancelled long drags even when IDs were unchanged; equal ID sequences now retain the gesture.",
+    "Native harness initially sampled before Vue flushed settling state and later dispatched a synthetic click after the exit rather than at pointer release. It now waits for the state flush and injects the immediate click at actual release timing. The authoritative final native run is the confirmed xcresult above, not historical reports."
+  ],
+  "mandatory_gates": [
+    {"command":"corepack pnpm check:conventions","result":"passed","warnings":0},
+    {"command":"git diff --check","result":"passed"},
+    {"command":"corepack pnpm build:h5","result":"passed","packaged_files":415}
+  ],
+  "native_warning":"Existing AppIntents metadata-extraction warning only; no AppIntents.framework dependency. No new convention warning.",
+  "artifact":{"archive":"artifacts/cimoaNeapo-ios.zip","manifest_sha256":"c612fb2aaf8f94b3d503da96f46b22d14b36cb83acedf687cb438abc310a6b11","compiled_bundle_matches_h5":true,"prototype_in_runtime":false},
+  "changed_source_files":[
+    "src/pages/discover/index.vue","src/components/DiscoverProfileCard.vue","src/config/discoverDeck.js","src/utils/discoverSwipe.js",
+    "scripts/discover-swipe.test.mjs","scripts/discover-swipe-browser.test.mjs","scripts/discover-request-browser.test.mjs","scripts/lib/discover-browser.mjs","ios/cimoaNeapo/Tests/HostTests.swift",
+    "docs/cimoa-page-inventory.json","docs/ui-restoration/discover-request-deck/source-contract.json","docs/ui-restoration/discover-request-deck/difference-audit.md",
+    "docs/ui-restoration/discover-request-deck/swipe-2026-10-20/","dist/build/h5/"
+  ],
+  "notes":["Original copy, images, theme variables, user entities, top toolbar, primary action and Tabbar remain in use. No development/interaction convention file changed.","Before/after overlay and diff show intentional stack, 14px card-reserve and tag-layout deltas against the historical actual. They are not claimed as zero-diff or exact Tantan replication.","Only task-scoped local commit; no push. The ten pre-existing registration screenshots were not changed or staged by this task."]
+}

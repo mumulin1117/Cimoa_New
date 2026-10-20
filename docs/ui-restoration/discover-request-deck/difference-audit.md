@@ -1,5 +1,9 @@
 # Discover 来源差异审计
 
+## 2026-10-20 current staggered swipe increment
+
+The [user-authorized increment](swipe-2026-10-20/source-contract.json) supersedes historical two-layer and fixed-542px-front geometry below. Current behavior uses three stable-ID layers, staggered corners, frame-coalesced captured gestures and approximately one-third-width release (1px coordinate tolerance). A 14px corner reserve and actual-width tag wrapping keep complete information inside the single-screen card region. Original copy, photos, theme, header, CTA, Tabbar and entities remain unchanged. [Scoped evidence](swipe-2026-10-20/acceptance.json) is not a third-party pixel-match or physical-device FPS claim; whole-page visual/full status remains pending.
+
 - 结构/几何/文案：保留来源 54 圆入口、353×542 照片卡、31 姓名、36 三标签、60 Send shot 与三 Tab；六人资源、真实安全区和短屏卡片收缩是已批准适配。既有牌堆动画复用，不增加喜欢/跳过业务。
 - DATA-01：底部旧入口遇到已 pending/connected 仅报错；改为 introduction_context 同源判定，打开准确原请求/聊天，不制造第二请求。
 - DATA-02：其他人物过滤改变数组时 index 取模可能换人；保留当前 user_id 位置，仅当前不可见时落到下一有效卡；账号变化回首张。

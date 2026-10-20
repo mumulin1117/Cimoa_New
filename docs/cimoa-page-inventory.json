@@ -2823,18 +2823,19 @@
         "back"
       ]
     },
-    "status": "verified",
+    "status": "pending",
     "source_lock": "locked",
-    "visual_acceptance": "passed",
+    "visual_acceptance": "pending",
     "source_lock_artifact": "docs/ui-restoration/discover-request-deck/source-contract.json",
+    "current_functional_increment": "docs/ui-restoration/discover-request-deck/swipe-2026-10-20/source-contract.json",
     "local_acceptance": "passed",
-    "full_acceptance": "passed",
+    "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "2026-10-17 source pixels, browser request/receiver sync, native bundled WKWebView and real short microphone/cleanup passed; mandatory gates and local implementation commit f8924a99 confirmed. No push; evidence scope is Discover request flow only.",
-    "acceptance_evidence": "docs/ui-restoration/discover-request-deck/acceptance.json",
+    "mapping_status": "2026-10-20 user-authorized staggered three-layer swipe increment passed: 197 unit tests, 17 browser checks, 2 bundled WKWebView tests. Threshold approximately 1/3 with coordinate tolerance, stable incoming photo node, cancelled/vertical/rapid gestures and single/empty pool covered. New geometry does not inherit historical pixel/full acceptance.",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-deck/swipe-2026-10-20/acceptance.json",
     "visual_audit_artifact": "docs/ui-restoration/discover-request-deck/difference-audit.md",
-    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
-    "implementation_commit": "f8924a99"
+    "acceptance_notes": "Current increment retains original content, entities, navigation and fixed single-screen layout. Whole-page pixel/full status remains pending; this is not an exact third-party UI or physical-device FPS claim. Previous request-flow evidence remains historical.",
+    "previous_implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Discover / Profile / Expanded",

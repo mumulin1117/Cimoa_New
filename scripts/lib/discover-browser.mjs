@@ -24,7 +24,7 @@ export async function test_discover({ page, origin, evidence, check }) {
     const box = (selector) => { const value = document.querySelector(selector).getBoundingClientRect(); return { top: value.top, bottom: value.bottom, height: value.height } }
     const scroll = document.querySelector('.main-tab-scroll .uni-scroll-view-scrollbar-hidden')
     if (scroll) scroll.scrollTop = 500
-    return { card: box('.discover-photo-card--front'), info: box('.discover-info'), viewport: box('.main-tab-scroll'), send: box('.discover-send'), tabbar: box('.tabbar'), scroll_top: scroll?.scrollTop || 0 }
+    return { card: box('.discover-photo-card--front'), info: box('.discover-photo-card--front .discover-info'), viewport: box('.main-tab-scroll'), send: box('.discover-send'), tabbar: box('.tabbar'), scroll_top: scroll?.scrollTop || 0 }
   })
   const swipe = async (direction, ratio = 0.42, hold = false) => {
     const box = await front().boundingBox()
@@ -46,18 +46,18 @@ export async function test_discover({ page, origin, evidence, check }) {
   assert.equal(await front().getAttribute('data-user-id'), 'user_zane')
   assert.equal(await page.locator('.discover-name').last().textContent(), 'Zane, 22')
   assert.deepEqual(await front().locator('.discover-tag').allTextContents(), ['HKUST', 'Engineering', 'ESTP'])
-  assert.equal(await page.locator('.discover-photo-card').count(), 2)
+  assert.equal(await page.locator('.discover-photo-card').count(), 3)
   assert.equal(await page.locator('body').textContent().then((text) => /本地数据|模拟数据/.test(text)), false)
   const stored_ids = await page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data.users.filter((row) => Number.isInteger(row.discover_order)).sort((a, b) => a.discover_order - b.discover_order).map((row) => row.user_id))
   assert.deepEqual(stored_ids.slice(0, 6), DISCOVER_PROFILE_IDS)
   assert.equal(stored_ids.length, 29)
   const source = await fit()
-  assert.ok(Math.abs(source.card.height - 542) < 1, `393x852 source geometry: ${JSON.stringify(source)}`)
+  assert.ok(Math.abs(source.card.height - Math.min(542, source.viewport.bottom - source.viewport.top - 14)) < 1, `393x852 adaptive front geometry after approved 14px stack reserve: ${JSON.stringify(source)}`)
   assert.ok(source.card.bottom <= source.viewport.bottom + 1)
   assert.ok(source.info.bottom <= source.card.bottom + 1)
   assert.equal(source.scroll_top, 0)
   await shot('default')
-  check('Discover renders the six Store profiles as a two-layer card deck with the source card geometry', source)
+  check('Discover renders Store profiles as a three-layer card deck with the approved corner reserve', source)
 
   const iphone_sizes = [[320, 568], [375, 667], [375, 812], [390, 844], [393, 852], [402, 874], [414, 896], [430, 932]]
   for (const [width, height] of iphone_sizes) {

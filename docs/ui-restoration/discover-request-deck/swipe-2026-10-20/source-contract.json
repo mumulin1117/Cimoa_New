@@ -1,0 +1,33 @@
+{
+  "source_lock": "locked",
+  "base_contract": "docs/ui-restoration/discover-request-deck/source-contract.json",
+  "source": "2026-10-20 user-authorized Discover staggered card deck and approximately one-third-width skip gesture; not an exact third-party app clone",
+  "prototype_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "component": "src/pages/discover/index.vue",
+  "route": "/pages/discover/index",
+  "reference_viewport": [393,852],
+  "approved_deltas": [
+    "Three stable-ID card nodes, rear cards slightly rotated in opposite directions with visible side/bottom corners; existing user photos, typography, copy, CTA and Tabbar unchanged.",
+    "Reserve 14 source CSS pixels (26.718rpx) inside the card region for rear corners; front card remains at most 542 source CSS pixels and shrinks with available height. No vertical browsing.",
+    "Tags wrap naturally at the actual card width rather than using a combined-character-count heuristic. All three complete values stay within the front card; no smaller type, shortened copy or clipped last pill.",
+    "Release at approximately one third of measured card width advances exactly once in either direction. A 1 CSS-coordinate-pixel tolerance handles WebKit integer client coordinates; no velocity-only shortcut. Smaller gestures spring back.",
+    "Pointer capture retains the drag outside the card. Only the primary pointer starts a drag; cancellation, vertical gestures, multitouch and right mouse input do not navigate or advance.",
+    "Coalesce movement into animation frames; flush the final release sample. Reuse the incoming card DOM/photo node across promotion. Horizontal/limited vertical translation and rotation stay compositor-friendly.",
+    "Browsing is transient UI state only. No Store writes, skipped-user ledger, like, request, relation, balance or quota changes. Detail and primary CTA still reference the current canonical user ID."
+  ],
+  "motion": {"exit_ms":260,"rebound_ms":300,"threshold_ratio":0.3333333333333333,"threshold_coordinate_tolerance_css_px":1,"next_angle_deg":-2.4,"rear_angle_deg":2.2,"next_scale":0.96,"rear_scale":0.92,"progress":"abs(dx) / (width / 3), clamped 0..1"},
+  "consumers": ["DiscoverProfileCard only used by Discover index"],
+  "visual_acceptance": "pending",
+  "interaction": {
+    "interaction_id": "photo.browse.drag.1",
+    "source_screen": "HTML Photo plus user-authorized swipe increment",
+    "trigger": "Primary pointer down, move, up, cancel/lost capture",
+    "preconditions": "Visible person and ready account, no navigation/settling, valid positive measured card width",
+    "visible_feedback": "Follow finger; next card lifts and straightens continuously; release advances at 1/3 or springs back",
+    "success_result": "One next canonical entity per completed swipe, both directions browse forward; no accidental profile click",
+    "failure_result": "Cancel/below-threshold/vertical/multiple-pointer gesture retains current entity; hide/unmount clears captures, RAF and timers",
+    "persistence": "none; card index is UI state in the current page instance",
+    "sync_scope": "Card, detail and CTA read the same current Store entity; user filtering retains current visible ID or resets safely",
+    "acceptance": "Threshold boundary on multiple widths, mouse/touch capture, interrupted gestures, rapid repeats, incoming-node reuse, small safe-area screens, detail return, unchanged saved business state; browser and bundled WKWebView"
+  }
+}
