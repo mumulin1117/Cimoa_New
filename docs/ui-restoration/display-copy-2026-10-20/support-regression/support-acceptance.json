@@ -1,0 +1,16 @@
+{
+  "phase": "support",
+  "result": "passed",
+  "server_pid": 76491,
+  "checks": [
+    "Help & Support opens from Settings with seven truthful source-style accordion rows",
+    "Contact Support exposes topic and long description fields while explicitly disabling unavailable screenshot delivery",
+    "Support draft persistence failure creates neither draft nor support request and preserves the form",
+    "Support delivery failure keeps one account-scoped local draft, restores it after refresh, and updates it without a fake ticket",
+    "Support form scrolls within the fixed safe-area frame and Back restores Settings",
+    "Basic profile support entry opens the same page and returns to its exact editor owner",
+    "Report detail creates an isolated report-context draft and Back returns to the exact report",
+    "Expired sessions expose no support form or drafts and offer account-entry recovery"
+  ],
+  "errors": []
+}

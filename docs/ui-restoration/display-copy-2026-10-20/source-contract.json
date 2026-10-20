@@ -1,0 +1,19 @@
+{
+  "scope": "Formal display copy across authentication, profiles, reports, settings, safety, support, coins and canonical agreements",
+  "source_lock": "locked",
+  "source": "2026-10-20 direct user request plus explicit approval to update both conventions with factual privacy/capability boundaries",
+  "approved_deltas": [
+    "Both report actions say Submit report; confirmation/status say Report saved/Saved, never Under Review/Resolved or delivered to staff.",
+    "Remove development-mode disclaimers from user-facing text, error messages, Loading labels, FAQ and accessibility labels; retain internal IDs, auth_provider, local_saved, storage and fixtures.",
+    "Canonical Terms/Privacy/Community documents use formal wording and updated revision. App storage, no upload/delivery/cloud recovery and non-mailbox account-code behavior remain accurately explained in Privacy Policy.",
+    "Login TEST STATES controls are development-only via import.meta.env.DEV; production H5/WKWebView does not expose them. Store testing interfaces remain internal.",
+    "Missing service/configuration messages become currently unavailable without changing failure, rollback, payment callback, report persistence or student qualification logic.",
+    "Normal source content Robotics Demo Day, local emergency services and local phrase are not environment labels and stay intact."
+  ],
+  "unchanged": ["Page/component layout, rpx, theme and SVG resources", "Pinia entity/action/persistence ownership", "009789 exact code; no fake email or student verification", "Write Loading and duplicate locks", "Blocked account and report ownership", "Unavailable payments never add coins", "Drafts are not delivered support tickets", "No cloud sync or moderator decision is introduced"],
+  "consent": "Agreement revision changes use the existing APP_CONSENT_REVISION mechanism; old consent is not silently accepted. User must explicitly accept revised documents.",
+  "release_limits": "No new production operator, jurisdiction, legal/privacy contact, moderation delivery/screening or StoreKit product configuration. These remain release blockers; copy cleanup is not public-release or App Store approval.",
+  "review_reference": "https://developer.apple.com/app-store/review/guidelines/#user-generated-content",
+  "visual_acceptance": "pending",
+  "visual_limit": "Text change approved directly; no new design screenshot provided. Current screenshots show the changed output, not a whole-page pixel-equivalence claim."
+}

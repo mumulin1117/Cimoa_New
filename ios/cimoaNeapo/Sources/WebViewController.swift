@@ -63,7 +63,7 @@ final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDeleg
             case .success: self?.loadContent()
             case .failure:
                 self?.server?.stop(); self?.server = nil
-                self?.showError("The local app content could not start. Please retry. Your saved data has not been changed.")
+                self?.showError("Cimoa could not start. Please retry. Your saved data has not been changed.")
             }
         }
     }
@@ -92,7 +92,7 @@ final class WebViewController: UIViewController, WKNavigationDelegate, WKUIDeleg
               let id = payload["request_id"] as? String, !id.isEmpty, id.count <= 128,
               payload["package_id"] is String, payload["owner_user_id"] is String else { return }
         // No product IDs or StoreKit receipt-verification service were supplied. Never mint coins.
-        let result: [String: Any] = ["request_id": id, "package_id": payload["package_id"]!, "owner_user_id": payload["owner_user_id"]!, "product_id": payload["product_id"] ?? NSNull(), "status": "failure", "message": "App Store purchases are not configured for this local build. Your balance has not changed."]
+        let result: [String: Any] = ["request_id": id, "package_id": payload["package_id"]!, "owner_user_id": payload["owner_user_id"]!, "product_id": payload["product_id"] ?? NSNull(), "status": "failure", "message": "App Store purchases are currently unavailable. Your balance has not changed."]
         webView.callAsyncJavaScript("window.CimoaPurchaseBridge?.resolve(requestID, result)", arguments: ["requestID": id, "result": result], in: nil, in: .page, completionHandler: nil)
     }
     func handle(_ message: WKScriptMessage, reply: @escaping (Any?, String?) -> Void) {

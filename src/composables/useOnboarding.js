@@ -8,7 +8,7 @@ import { use_write_loading } from './useWriteLoading.js'
 export function use_onboarding(step, frame) {
   const store = use_app_store(), error = ref(''), context = computed(() => store.onboarding), catalog = computed(() => store.onboarding_catalog)
   const allowed = computed(() => context.value && !context.value.completed && catalog.value.steps.indexOf(step) <= catalog.value.steps.indexOf(context.value.step))
-  const access_error = computed(() => !context.value ? 'Log in and complete local verification before profile setup.' : context.value.completed ? 'Your profile is already complete.' : !allowed.value ? 'Complete the previous profile steps first.' : '')
+  const access_error = computed(() => !context.value ? 'Log in and complete account verification before profile setup.' : context.value.completed ? 'Your profile is already complete.' : !allowed.value ? 'Complete the previous profile steps first.' : '')
   const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
   let active = true
   onShow(() => { active = true; store.tick() })

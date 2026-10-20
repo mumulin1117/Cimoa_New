@@ -69,22 +69,22 @@ const submit = async () => {
     <template #header><EventPageHeader title="Report event" back-interaction="evReport.goBack.click.1" :busy="is_loading" @back="back" /></template>
     <view v-if="access_error" class="event-page-state" role="alert"><text>{{ access_error }}</text><view class="event-page-secondary event-report-recover" role="button" tabindex="0" @click="recover" @keydown.enter="recover">Return to account entry</view></view>
     <view v-else-if="!submitted_id" class="event-page-body event-report-body">
-      <text class="event-page-copy event-report-intro">Reports are private. Your attendance stays as it is. In this local build, the report is saved only on this device and is not sent to a safety team.</text>
+      <text class="event-page-copy event-report-intro">Reports are private. Reporting an event does not change your attendance.</text>
       <view class="event-report-reasons" role="radiogroup" aria-label="Event report reason">
         <view v-for="item in reasons" :key="item" class="event-report-reason" :class="{ selected: reason === item }" role="radio" tabindex="0" :aria-checked="reason === item" data-interaction="evReport.r.pick.click.1" @click="reason = item; error = ''" @keydown.enter="reason = item; error = ''"><view class="event-report-dot" /><text>{{ item }}</text></view>
       </view>
     </view>
     <view v-else class="event-report-saved" role="status">
-      <text class="event-report-saved-title">Report saved locally</text>
-      <text>Your attendance is unchanged. This report was not sent to a moderation service.</text>
+      <text class="event-report-saved-title">Report saved</text>
+      <text>Your report has been saved. Your attendance is unchanged.</text>
       <text class="event-report-id">Reference: {{ submitted_id }}</text>
       <view class="event-page-secondary" role="button" tabindex="0" data-interaction="evReport.goBack.click.2" @click="back" @keydown.enter="back">Return to event</view>
     </view>
     <template #footer>
       <text v-if="error" class="event-page-error" role="alert">{{ error }}</text>
-      <view v-if="!access_error && !submitted_id" class="event-page-footer"><view class="event-page-primary" role="button" tabindex="0" :aria-disabled="!ready || is_loading" data-interaction="evReport.submitEvReport.click.1" @click="submit" @keydown.enter="submit">Save report locally</view></view>
+      <view v-if="!access_error && !submitted_id" class="event-page-footer"><view class="event-page-primary" role="button" tabindex="0" :aria-disabled="!ready || is_loading" data-interaction="evReport.submitEvReport.click.1" @click="submit" @keydown.enter="submit">Submit report</view></view>
     </template>
-    <template #overlays><EventActionLoading :visible="is_loading" label="Saving report locally…" /></template>
+    <template #overlays><EventActionLoading :visible="is_loading" label="Saving report…" /></template>
   </SecondaryPageFrame>
 </template>
 

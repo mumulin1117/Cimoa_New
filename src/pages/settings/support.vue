@@ -26,13 +26,13 @@ let active = true
 
 const topics = ['Safety concern', 'Account or profile', 'Technical issue', 'Purchase question', 'Other']
 const faqs = [
-  ['Is this a live support service?', 'No. This build has no configured support-delivery service. You can keep a local draft, but it is not sent to Cimoa staff.'],
-  ['Where are my reports saved?', 'Reports are saved only on this device and remain visible under Submitted Reports. They are not sent to a moderation team.'],
-  ['How does local password reset work?', 'Password reset works only for an active account already stored on this device. It uses the fixed local code shown in the reset flow and sends no email.'],
+  ['How can I contact support?', 'Open the support form to describe your concern. Support delivery is currently unavailable; you can save a draft and keep your details for later.'],
+  ['Where are my reports saved?', 'Open Submitted Reports in Settings to review your report history. A saved record is not a moderation decision.'],
+  ['How do I reset my password?', 'Choose Forgot password on the login screen, enter your account email and use the reset code shown in the next step.'],
   ['Can Cimoa change iOS permissions?', 'No. Cimoa can read the current status and open iOS Settings through its host, but only you can grant or deny system permissions.'],
   ['What happens when I block someone?', 'Blocking removes the current connection, requests, Auto Match candidate, private chat and its messages. Unblocking does not restore them.'],
-  ['Can I buy coins in this build?', 'Not yet. StoreKit products and receipt verification are not configured, so purchase attempts must fail or time out without adding coins.'],
-  ['How can I keep a support note?', 'Open the form below. After the required loading step, the topic and description can be saved as a private draft on this device.'],
+  ['How do coin purchases work?', 'Coin purchases require a confirmed App Store transaction. Purchases are currently unavailable, and failed or cancelled attempts do not change your balance.'],
+  ['How can I keep a support note?', 'Open the form below, choose a topic and describe your concern. Save your draft to keep these details.'],
 ]
 const draft_target = computed(() => context_type.value === 'report' && context_id.value ? `report:${context_id.value}` : 'general')
 const account_scope = use_account_scope(store, () => { cancel_loading(); topic.value = ''; description.value = ''; form_open.value = false; draft_id.value = '' })
@@ -51,7 +51,7 @@ const restore_draft = () => {
   topic.value = topics.includes(row.payload?.topic) ? row.payload.topic : ''
   description.value = String(row.payload?.description || '')
   form_open.value = true
-  delivery_notice.value = 'This support draft is saved only on this device and has not been delivered.'
+  delivery_notice.value = 'Your draft is saved. It has not been sent.'
 }
 onLoad(options => {
   context_type.value = options?.context_type === 'report' ? 'report' : 'general'
@@ -81,7 +81,7 @@ const save_draft = async () => {
   if (!active || result.reason === 'cancelled') return
   if (saved_id) {
     draft_id.value = saved_id
-    delivery_notice.value = 'Draft saved locally. Support delivery is unavailable, so no support request or ticket was created.'
+    delivery_notice.value = 'Draft saved. Support delivery is currently unavailable. Please try again later.'
     return
   }
   error.value = result.message || 'This support draft could not be saved.'
@@ -100,14 +100,14 @@ const save_draft = async () => {
       <view class="support-primary" role="button" tabindex="0" data-interaction="setSupport.openSupportForm.click.1" @click="open_form" @keydown.enter="open_form">Contact Support</view>
     </template>
     <template v-else>
-      <text class="support-form-note">No support-delivery or screenshot-attachment service is configured. You can save this note locally, but it will not be sent.</text>
+      <text class="support-form-note">Describe your concern below. You can save a draft while support delivery is unavailable.</text>
       <text class="editor-label">Topic</text>
       <view class="support-topics" role="radiogroup" aria-label="Support topic"><view v-for="item in topics" :key="item" class="support-topic" :class="{ selected: topic === item }" role="radio" tabindex="0" :aria-checked="topic === item" @click="topic = item; error = ''; delivery_notice = ''" @keydown.enter="topic = item; error = ''; delivery_notice = ''">{{ item }}</view></view>
       <text class="editor-label">Description</text>
       <textarea v-model="description" class="support-description" aria-label="Support description" placeholder="Describe what happened and what you expected" :maxlength="2000" :disabled="is_loading" @input="delivery_notice = ''" />
-      <text class="support-attachment-note">Optional screenshots are unavailable in this local-only support flow.</text>
+      <text class="support-attachment-note">Screenshot attachments are currently unavailable.</text>
       <text v-if="delivery_notice" class="support-delivery" role="status">{{ delivery_notice }}<text v-if="draft_id" class="support-draft-id">Draft: {{ draft_id }}</text></text>
-      <view class="support-primary" role="button" tabindex="0" :aria-disabled="!ready || is_loading" data-interaction="setSupport.submitDraft.click.1" @click="save_draft" @keydown.enter="save_draft">Save local draft</view>
+      <view class="support-primary" role="button" tabindex="0" :aria-disabled="!ready || is_loading" data-interaction="setSupport.submitDraft.click.1" @click="save_draft" @keydown.enter="save_draft">Save draft</view>
       <view class="support-secondary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="setSupport.closeSupportForm.click.1" @click="!is_loading && (form_open = false)" @keydown.enter="!is_loading && (form_open = false)">Back to help topics</view>
     </template>
   </ProfileEditorFrame>

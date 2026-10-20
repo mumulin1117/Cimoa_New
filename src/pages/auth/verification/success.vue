@@ -31,10 +31,10 @@ const continue_setup = async () => {
     <view class="verification-success-content">
       <template v-if="context?.verified">
         <view class="verification-success-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg></view>
-        <text class="verification-success-heading" role="status">Local verification complete</text>
-        <view class="verification-success-pill"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" class="verification-badge-fill" /><path d="m7.5 12.4 3 3 6-6.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg><text>Local account · This device</text></view>
+        <text class="verification-success-heading" role="status">Account code confirmed</text>
+        <view class="verification-success-pill"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" class="verification-badge-fill" /><path d="m7.5 12.4 3 3 6-6.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg><text>Account confirmation complete</text></view>
       </template>
-      <text v-else class="auth-error-box" role="alert">{{ store.hydration_error || 'Local verification has not been completed for this account.' }}</text>
+      <text v-else class="auth-error-box" role="alert">{{ store.hydration_error || 'Account verification has not been completed for this account.' }}</text>
       <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
     </view>
     <template #footer><view class="verification-success-footer"><view v-if="context?.verified" class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verSuccess.goObBasic.click.1" @click="continue_setup" @keydown.enter="continue_setup">Continue Profile Setup</view><view v-else class="auth-primary" role="button" tabindex="0" @click="go(context ? '/pages/auth/verification/code' : '/pages/auth/login')" @keydown.enter="go(context ? '/pages/auth/verification/code' : '/pages/auth/login')">{{ context ? 'Enter Code' : 'Log In' }}</view></view></template>

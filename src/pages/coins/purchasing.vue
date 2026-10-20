@@ -90,7 +90,7 @@ onUnmounted(leave)
           <view v-else class="purchase-status-icon"><SourceIcon :name="request.status === 'success' ? 'check' : 'blocked'" /></view>
           <text>{{ pending ? 'Connecting to the App Store…' : 'Purchase request finished' }}</text>
           <text>{{ pending ? 'Nothing has been charged yet and no coins have been added.' : status_message }}</text>
-          <text v-if="pending && !pack.product_id" class="purchase-note">This build has no StoreKit product ID. The native host will return failure; a browser will wait for the full timeout.</text>
+          <text v-if="pending && !pack.product_id" class="purchase-note">This purchase is currently unavailable. Your balance will not change if it fails or times out.</text>
         </view>
       </template>
     </view>

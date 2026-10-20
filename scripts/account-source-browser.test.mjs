@@ -75,7 +75,7 @@ try {
   }
   if (key === 'reverify') {
     await page.locator('[data-interaction="reverify.goVerEmail.click.1"]').click(); await page.locator('.loading:visible').waitFor(); assert.equal(await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), saved)
-    await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /not configured/); assert.equal(await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), saved)
+    await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /currently unavailable/); assert.equal(await page.evaluate(() => localStorage.getItem('cimoa_app_state_v2')), saved)
     check('Unavailable university service shows explicit failure after custom Loading; never changes status, sends email or navigates to a fake code success')
   }
   assert.deepEqual(report.errors, []); report.result = 'passed'; await context.close()

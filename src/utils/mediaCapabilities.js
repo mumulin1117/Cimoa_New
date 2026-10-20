@@ -30,7 +30,7 @@ export function inspect_media(blob, kind) {
   return inspect_element()
 }
 export async function create_recorder({ devices = globalThis.navigator?.mediaDevices, Recorder = globalThis.MediaRecorder, clock = Date.now, signal, timers = globalThis, request_timeout = 15000 } = {}) {
-  if (!devices?.getUserMedia || !Recorder) throw new Error('Voice recording is unavailable on this device.')
+  if (!devices?.getUserMedia || !Recorder) throw new Error('Voice recording is currently unavailable.')
   let stream
   try {
     stream = await new Promise((resolve, reject) => {

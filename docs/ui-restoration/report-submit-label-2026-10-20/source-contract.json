@@ -1,0 +1,19 @@
+{
+  "scope": "User-requested Report primary button copy, coordinated with authorized formal display wording",
+  "source": "Direct user request 2026-10-20: Report button must say Submit report",
+  "source_lock": "locked",
+  "approved_delta": {"before":"Save report locally","after":"Submit report"},
+  "pages": [
+    {"route":"/pages/safety/report-user?target_user_id=user_lina","component":"src/pages/safety/report-user.vue","interaction_id":"safetyReport.submitReport.click.1"},
+    {"route":"/pages/events/report?event_id=event_picnic","component":"src/pages/events/report.vue","interaction_id":"evReport.submitEvReport.click.1"}
+  ],
+  "unchanged": ["Existing fixed page skeleton, theme and rpx styles", "Reason required and account/target validation", "500ms custom Loading before Store write", "Canonical report ID, refresh restoration and failure atomicity", "Internal local_saved status remains; display Saved/Report saved; delivery boundary is described in canonical Privacy Policy"],
+  "global_copy_cleanup": {
+    "status": "authorized_and_implemented",
+    "conflicts": ["DEVELOPMENT_CONVENTIONS.md §9.1 requires a saved-only report to be identified accurately", "INTERACTION_CONVENTIONS.md §9.2 explicitly requires on-this-device account wording", "INTERACTION_CONVENTIONS.md §11 requires local report status and prohibits invented review/delivery"],
+    "question": "Authorize adjusting both conventions to formal neutral UI wording while retaining factual privacy and capability boundaries?",
+    "decision": "User authorized formal neutral UI and convention updates while privacy remains factual and real-service success is not invented.",
+    "global_evidence": "../display-copy-2026-10-20/acceptance.json"
+  },
+  "acceptance": "Scoped browser label, disabled/ready, Loading-before-write, canonical saved report, duplicate lock and refresh checks; no full-page verified claim"
+}

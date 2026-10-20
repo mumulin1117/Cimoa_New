@@ -1,0 +1,13 @@
+{
+  "phase": "report-user",
+  "result": "passed",
+  "server_pid": 75922,
+  "checks": [
+    "Chat Safety opens the source report reasons with explicit local-only scope and optional block",
+    "Report persistence failure creates neither report nor block and keeps the form retryable",
+    "Successful local report and block are atomic, filter the chat, and restore the same report result after refresh",
+    "Back falls to the conversation list after block and Discover filters the blocked account",
+    "Standalone block confirmation waits for Loading, removes the chat, and never creates a report"
+  ],
+  "errors": []
+}

@@ -33,7 +33,7 @@ export function validate_profile_patch(section, patch) {
     if (['clubs', 'religion', 'drinking', 'smoking'].includes(key)) ensure(value === '' || PICKER_OPTIONS[key].includes(value), 'Choose an available profile option.')
     if (key === 'mbti') ensure(['', 'Prefer not to say', ...PICKER_OPTIONS.mbti].includes(value), 'Choose an available MBTI type.')
     if (key === 'major') ensure(typeof value === 'string' && value.trim() && value.length <= 100, 'Enter a field of study of 1–100 characters.')
-    if (key === 'song_id') ensure(value === null, 'Playable profile songs are not configured. No song was added.')
+    if (key === 'song_id') ensure(value === null, 'Profile song playback is currently unavailable. No song was added.')
   }
 }
 const write_patch = (data, section, patch) => {

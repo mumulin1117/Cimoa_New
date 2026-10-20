@@ -141,7 +141,7 @@ test('new preferences persist while student re-verification remains an honest un
   assert.equal(store.update_match_preferences({ interest_mode: 'A mix', distance_max: 25 }).success, true)
   assert.equal(store.match_preferences.interest_mode, 'A mix'); assert.equal(store.match_preferences.distance_max, 25)
   const result = store.start_student_reverification()
-  assert.equal(result.reason, 'service_unavailable'); assert.match(result.message, /not configured/)
+  assert.equal(result.reason, 'service_unavailable'); assert.match(result.message, /currently unavailable/)
   assert.equal(store.current_user.verification_status, beforeVerification)
 })
 test('events enforce capacity, unique memberships, ended dates and group access', async () => {

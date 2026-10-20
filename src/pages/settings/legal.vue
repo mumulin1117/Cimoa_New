@@ -52,13 +52,13 @@ const open_row = async row => {
     try { await frame.value.navigate_forward('/pages/coins/help') } catch (cause) { error.value = cause.message } finally { navigating.value = false }
     return
   }
-  error.value = `${row.label} is the next independent legal page in this restoration flow.`
+  error.value = 'This document is currently unavailable. Please try again.'
 }
 </script>
 
 <template>
   <ProfileEditorFrame ref="frame" class="settings-legal-page" title="Legal" source="setLegal" :error="error" :access-error="access_error" @back="back" @recover="recover">
-    <text class="legal-local-note">These documents describe this local build only. They are not published production terms and do not identify a configured operator or legal contact.</text>
+    <text class="legal-local-note">Read the Terms of Use, Privacy Policy and Community Guidelines to understand your rights and choices.</text>
     <view class="legal-list">
       <view v-for="row in rows" :key="row.kind" class="legal-row" role="button" tabindex="0" :data-interaction="row.interaction" @click="open_row(row)" @keydown.enter="open_row(row)"><text>{{ row.label }}</text><view class="legal-chevron"><SourceIcon name="chevron" /></view></view>
     </view>

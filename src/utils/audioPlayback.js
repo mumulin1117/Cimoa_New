@@ -3,10 +3,10 @@ import { acquire_audio_media } from './mediaRepository.js'
 // H5/WKWebView adapter. Prepare the source before the user's tap and preserve
 // HTMLMediaElement.play()'s Promise: uni-h5's audio wrapper discards its rejection.
 export async function create_audio_playback(source, handlers = {}, { acquire = acquire_audio_media, AudioConstructor = globalThis.Audio } = {}) {
-  if (typeof AudioConstructor !== 'function') throw new Error('Audio playback is unavailable on this device.')
+  if (typeof AudioConstructor !== 'function') throw new Error('Audio playback is currently unavailable.')
   const lease = await acquire(source)
   let audio
-  try { audio = new AudioConstructor() } catch { lease.release(); throw new Error('Audio playback is unavailable on this device.') }
+  try { audio = new AudioConstructor() } catch { lease.release(); throw new Error('Audio playback is currently unavailable.') }
   let disposed = false
   const listeners = { play: handlers.play, pause: handlers.pause, ended: handlers.ended, timeupdate: () => handlers.time?.(audio.currentTime || 0), error: () => handlers.error?.('This audio could not be played. Please retry.') }
   for (const [name, handler] of Object.entries(listeners)) if (handler) audio.addEventListener(name, handler)

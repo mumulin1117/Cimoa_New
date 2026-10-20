@@ -32,11 +32,11 @@ const next = async () => {
 <template>
   <AuthPageFrame ref="frame" class="reset-email-page" title="Reset password" back-interaction="fpEmail.goBack.click.1" :busy="is_loading" @back="back">
     <text class="auth-heading">Reset your password</text>
-    <text class="auth-description">Enter the email for an active account saved on this device. No email will be sent.</text>
+    <text class="auth-description">Enter the email address associated with your account.</text>
     <view class="auth-field"><text class="auth-label">Email</text><view class="auth-input-box"><input v-model="email" class="auth-input" aria-label="Reset email" placeholder="you@university.edu" :maxlength="254" :disabled="is_loading" autocomplete="username" data-interaction="fpEmail.onEmail.change.1" /></view></view>
     <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
     <template #footer><view class="auth-primary" role="button" :aria-disabled="is_loading" data-interaction="fpEmail.goFpCode.click.1" @click="next">Continue</view></template>
-    <template #overlays><AuthActionLoading :visible="is_loading" label="Checking local account…" /></template>
+    <template #overlays><AuthActionLoading :visible="is_loading" label="Checking account…" /></template>
   </AuthPageFrame>
 </template>
 

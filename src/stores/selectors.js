@@ -76,7 +76,7 @@ export function validate_data(data) {
   ensure(unique(data.accounts, (row) => row.email.toLowerCase()), 'Duplicate account email.')
   ensure(unique(data.accounts, row => row.user_id), 'Duplicate account identity.')
   for (const row of data.accounts) ensure(has('users', row.user_id) && typeof row.email === 'string' && row.email === row.email.trim().toLowerCase() && ['active', 'deleted'].includes(row.status), 'Invalid account.')
-  for (const row of data.accounts) if (row.local_verification != null) ensure(row.local_verification.method === 'fixed_code' && row.local_verification.status === 'verified' && Number.isFinite(row.local_verification.verified_at), 'Invalid local verification.')
+  for (const row of data.accounts) if (row.local_verification != null) ensure(row.local_verification.method === 'fixed_code' && row.local_verification.status === 'verified' && Number.isFinite(row.local_verification.verified_at), 'Invalid account verification.')
   for (const row of data.accounts) if (row.onboarding != null) {
     const progress = row.onboarding
     ensure(ONBOARDING_FLOW.includes(progress.step) && Array.isArray(progress.completed_steps) && unique(progress.completed_steps, step => step) && progress.completed_steps.every(step => ONBOARDING_FLOW.includes(step)), 'Invalid profile setup progress.')

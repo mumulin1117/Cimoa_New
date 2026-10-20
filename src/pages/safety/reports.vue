@@ -36,14 +36,14 @@ const open_report = async row => {
 
 <template>
   <ProfileEditorFrame ref="frame" class="safety-reports-page" title="Your reports" source="reportsSubmitted" :error="error" :access-error="access_error" @back="back" @recover="recover">
-    <text class="reports-local-note">These reports are records saved on this device. They have not been sent to or reviewed by a moderation service.</text>
+    <text class="reports-local-note">View your report history and the details you provided.</text>
     <view v-if="rows.length" class="reports-list">
       <view v-for="row in rows" :key="row.report_id" class="report-row" role="button" tabindex="0" :aria-label="`${row.subject?.name || 'Unavailable subject'}, ${row.reason}, ${row.status_label}`" data-interaction="reportsSubmitted.r.open.click.1" @click="open_report(row)" @keydown.enter="open_report(row)">
         <view class="report-row-top"><text class="report-target">{{ row.subject?.name || 'Unavailable subject' }}</text><text class="report-status">{{ row.status_label }}</text></view>
         <view class="report-row-bottom"><text>{{ row.reason }} · {{ row.when }}</text><view class="report-chevron"><SourceIcon name="chevron" /></view></view>
       </view>
     </view>
-    <view v-else class="settings-page-empty" role="status"><text class="settings-page-empty-title">No reports submitted</text><text class="settings-page-empty-copy">Reports you save locally will appear here.</text></view>
+    <view v-else class="settings-page-empty" role="status"><text class="settings-page-empty-title">No reports submitted</text><text class="settings-page-empty-copy">Your saved reports will appear here.</text></view>
   </ProfileEditorFrame>
 </template>
 

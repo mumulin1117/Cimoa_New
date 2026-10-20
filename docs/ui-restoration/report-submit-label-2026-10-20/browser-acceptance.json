@@ -1,0 +1,10 @@
+{
+  "result": "passed",
+  "checks": [
+    "user: exact Submit report label/interaction; reason required; duplicate lock; Loading before Store write; same target/local_saved record and refresh recovery",
+    "event: exact Submit report label/interaction; reason required; duplicate lock; Loading before Store write; same target/local_saved record and refresh recovery"
+  ],
+  "errors": [],
+  "server_pid": 73963,
+  "cleaned": true
+}

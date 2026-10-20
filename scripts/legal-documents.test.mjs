@@ -31,12 +31,17 @@ test('registration Store returns the same canonical content but no mutable refer
 })
 test('Guidelines cover campus social UGC safety without inventing moderation or contact services', () => {
   const text = JSON.stringify(community_document)
-  for (const phrase of ['at least 18', 'university student', 'consent', 'Child sexual abuse', 'non-consensual intimate', 'AI-generated', 'Privacy', 'Auto Match', 'mutual connection', 'anonymous chat roulette', 'Events', 'scams', 'Reporting', 'Blocking', 'timely responses', 'filtering before', 'removal of violating content', 'abusive accounts', 'accessible contact']) assert.ok(text.includes(phrase), phrase)
-  assert.match(text, /saved only on this device/)
-  assert.match(text, /cannot promise human review or a response time/)
-  assert.match(text, /release blockers, not capabilities/)
+  for (const phrase of ['at least 18', 'university student', 'consent', 'Child sexual abuse', 'non-consensual intimate', 'AI-generated', 'Privacy', 'Auto Match', 'mutual connection', 'anonymous chat roulette', 'Events', 'scams', 'Reporting', 'Blocking']) assert.ok(text.includes(phrase), phrase)
+  assert.match(text, /saved report does not indicate human review/)
+  assert.match(text, /do not guarantee human review or a response time/)
+  assert.match(text, /not a service-wide moderation decision/)
   assert.doesNotMatch(text, /@|within 24 hours|Apple.approved|end-to-end encrypted/i)
   assert.equal(community_rules.length, 6, 'Keep source overview geometry unchanged')
+})
+test('formal legal copy removes environment labels without inventing server processing', () => {
+  for (const doc of documents) assert.doesNotMatch(JSON.stringify(doc), /local (?:draft|data|account|build|demo)|this build|development and testing/i)
+  const privacy = JSON.stringify(privacy_document)
+  for (const phrase of ['app storage', 'rather than uploaded to a Cimoa server', 'not delivered to a remote person', 'does not transmit it to a moderation or support team', 'no verification email is sent', 'no cloud recovery']) assert.ok(privacy.includes(phrase), phrase)
 })
 test('standalone documents and Sheet share the read-only renderer; no inline content copies remain', () => {
   for (const file of ['src/pages/legal/terms.vue', 'src/pages/legal/privacy.vue', 'src/components/AgreementSheet.vue']) {

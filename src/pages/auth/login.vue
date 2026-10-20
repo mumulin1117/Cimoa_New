@@ -13,6 +13,7 @@ import AuthActionLoading from '@/components/AuthActionLoading.vue'
 const store = use_app_store(), frame = ref(null), email = ref(store.auth_draft.email || ''), password = ref(''), shown = ref(false), error = ref('')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 const { height: viewport_height, keyboard_open } = use_visual_viewport()
+const show_test_states = import.meta.env.DEV
 let active = true
 const hide = () => { active = false; cancel_loading(); password.value = ''; shown.value = false }
 onShow(() => { active = true })
@@ -50,14 +51,14 @@ const login = async () => {
     <view class="auth-field"><text class="auth-label">Password</text><view class="auth-input-box"><input v-model="password" class="auth-input" aria-label="Password" placeholder="Your password" data-interaction="login.onPw.change.1" :password="!shown" :maxlength="128" :disabled="is_loading" autocomplete="current-password" @confirm="login" /><view class="auth-show" role="button" tabindex="0" :aria-label="shown ? 'Hide password' : 'Show password'" data-interaction="login.togglePw.click.1" @click="shown = !shown" @keydown.enter="shown = !shown">{{ shown ? 'Hide' : 'Show' }}</view></view></view>
     <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
     <view class="auth-link auth-forgot" role="button" tabindex="0" data-interaction="login.goFpEmail.click.1" @click="go('/pages/auth/reset/email')" @keydown.enter="go('/pages/auth/reset/email')">Forgot password?</view>
-    <view class="auth-test-states">
+    <view v-if="show_test_states" class="auth-test-states">
       <text class="auth-test-title">TEST STATES</text>
       <view class="auth-test-chips">
         <view class="auth-test-chip" role="button" tabindex="0" data-interaction="login.loginWrong.click.1" @click="apply_test_state('wrong_password')" @keydown.enter="apply_test_state('wrong_password')">Wrong password</view>
         <view class="auth-test-chip" role="button" tabindex="0" data-interaction="login.loginUnverified.click.1" @click="apply_test_state('unverified_account')" @keydown.enter="apply_test_state('unverified_account')">Unverified account</view>
       </view>
     </view>
-    <text class="auth-local-note">Local accounts are stored on this device. Signing in does not verify your student status.</text>
+    <text class="auth-local-note">Keep your account details private. Manage your profile and privacy in Settings.</text>
     <template #footer><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="login.loginNow.click.1" @click="login" @keydown.enter="login">Log In</view><view class="auth-secondary" role="button" tabindex="0" data-interaction="login.goAge.click.1" @click="go('/pages/auth/age')" @keydown.enter="go('/pages/auth/age')">New here? Create an account</view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" /></template>
   </AuthPageFrame>

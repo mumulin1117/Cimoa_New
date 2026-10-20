@@ -109,7 +109,7 @@ onHide(() => { error.value = ''; cancel_loading() })
     <template #footer>
       <view v-if="!access_error" class="coin-footer">
         <view class="coin-buy" role="button" tabindex="0" :aria-disabled="navigating || is_loading || !selected" data-interaction="coinStore.continuePurchase.click.1" @click="continue_purchase" @keydown.enter="continue_purchase">Get Coins</view>
-        <text>{{ storekit_ready ? 'Payment is processed through the App Store' : 'StoreKit products are not configured; purchases cannot complete yet.' }}</text>
+        <text>{{ storekit_ready ? 'Payment is processed through the App Store' : 'Purchases are currently unavailable. Your balance will not change.' }}</text>
       </view>
     </template>
     <template #overlays><CoinActionLoading :visible="is_loading" label="Creating purchase request…" /></template>

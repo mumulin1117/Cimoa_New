@@ -25,7 +25,7 @@ const settings = async () => { try { await open_app_settings() } catch (cause) {
 const choose = async () => {
   if (is_loading.value || selecting.value) return
   error.value = ''; declined.value = false
-  if (!context.value || context.value.completed) { error.value = 'Complete local verification and return to profile setup before taking a photo.'; return }
+  if (!context.value || context.value.completed) { error.value = 'Complete account verification and return to profile setup before taking a photo.'; return }
   if (store.current_photos.length >= 3) { error.value = 'Your three photo slots are full. Return to Photos and choose a photo to replace.'; return }
   selecting.value = true
   const token = generation, account_id = context.value.account_id

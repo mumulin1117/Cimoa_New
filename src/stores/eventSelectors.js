@@ -48,7 +48,7 @@ export function event_join_blocker(data, id, now) {
   if (joined(data, id)) return 'You have already joined this event.'
   if (members(data, id).length >= event.capacity) return 'This event is full.'
   // Paid-event checkout is not part of the source join flow. Never silently charge or waive it.
-  if (event.price !== 0) return 'Paid event booking is not configured. No changes were made.'
+  if (event.price !== 0) return 'Paid event booking is currently unavailable. No changes were made.'
   return ''
 }
 export function event_detail(data, id, now) {

@@ -10,7 +10,7 @@ export const get_runtime = (store) => runtimes.get(store) || { persistence: defa
 export const configure_store_runtime = (store, options) => runtimes.set(store, { ...get_runtime(store), ...options })
 export const make_id = (prefix = 'op') => `${prefix}_${globalThis.crypto?.randomUUID?.() || `${Date.now()}_${Math.random().toString(36).slice(2)}`}`
 export const failure = (reason, message) => ({ success: false, reason, message })
-export const unavailable = (label) => failure('service_unavailable', `${label} is not configured. No changes were made.`)
+export const unavailable = (label) => failure('service_unavailable', `${label} is currently unavailable. No changes were made.`)
 export const require_auth = (data, now) => select.ensure(select.authenticated(data, now), 'Your session has expired. Please log in again.')
 export const require_target = (data, target) => select.ensure(target !== select.owner_id(data) && select.visible(data, target), 'This profile is unavailable.')
 export const require_student = (data) => select.ensure(select.social_eligible(data), 'Complete account verification and profile setup first.')

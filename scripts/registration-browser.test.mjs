@@ -57,7 +57,7 @@ try {
     await page.locator('.community-page').waitFor(); await settle()
     await page.locator('[data-interaction="agree.goSignup.click.1"]').dispatchEvent('click'); assert.match(await page.getByRole('alert').innerText(), /three community/)
     await page.getByRole('button', { name: 'Read Privacy Policy', exact: true }).click()
-    await page.getByRole('dialog').waitFor(); assert.match(await page.getByRole('dialog').innerText(), /stored locally/)
+    await page.getByRole('dialog').waitFor(); assert.match(await page.getByRole('dialog').innerText(), /app storage/)
     await page.getByRole('button', { name: 'Close', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' })
     for (const key of ['terms', 'privacy', 'community']) await page.locator(`[data-agreement="${key}"]`).click()
     await shot('community'); const before = await snapshot()
@@ -100,7 +100,7 @@ try {
       await page.goto(`${origin}/?guard=complete#/pages/onboarding/complete`); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /previous profile steps/)
       assert.equal(await page.getByRole('button', { name: 'Explore Cimoa', exact: true }).count(), 0)
       await page.getByRole('button', { name: 'Continue account setup', exact: true }).click(); await page.locator('.onboarding-basic-page').waitFor()
-      check('Incomplete local account cannot bypass profile setup via Home or Complete URL; guards preserve all data')
+      check('Incomplete account cannot bypass profile setup via Home or Complete URL; guards preserve all data')
     }
     assert.equal(await field('Display name').inputValue(), '')
     assert.equal(await page.locator('.age-date-value:visible').getAttribute('data-date-value'), '2000-01-01')

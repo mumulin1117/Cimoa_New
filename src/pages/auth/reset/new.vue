@@ -18,7 +18,7 @@ const access_error = computed(() => store.hydration_status !== 'ready'
   : store.session.is_authenticated
     ? 'Log out before resetting a password.'
     : !reset_id.value || reset.value?.reset_id !== reset_id.value || !reset.value?.verified_at
-      ? 'Verify the local reset code before choosing a new password.'
+      ? 'Verify the reset code before choosing a new password.'
       : '')
 const hint = computed(() => !password.value
   ? 'At least 8 characters with a number'
@@ -67,7 +67,7 @@ const finish = async () => {
       <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
     </template>
     <template #footer><view v-if="!access_error" class="auth-primary" role="button" :aria-disabled="is_loading" data-interaction="fpNew.finishReset.click.1" @click="finish">Update password</view></template>
-    <template #overlays><AuthActionLoading :visible="is_loading" label="Securing your local password…" /></template>
+    <template #overlays><AuthActionLoading :visible="is_loading" label="Updating your password…" /></template>
   </AuthPageFrame>
 </template>
 

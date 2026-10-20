@@ -18,7 +18,7 @@ const rows = computed(() => verification.value ? [
       <view class="verification-summary"><view class="verification-badge"><view><SourceIcon :name="verification.verified ? 'check' : 'shield'" :stroke-width="2.6" /></view></view><text>{{ verification.verified ? 'Verified student' : 'Student verification pending' }}</text></view>
       <view class="verification-details"><view v-for="[label, value] in rows" :key="label" class="verification-row"><text>{{ label }}</text><text>{{ value }}</text></view></view>
       <text class="verification-note">Your university email is never shown to other students.</text>
-      <text class="verification-note">Code 009789 checks your account on this device only. It does not verify student status. University verification is not configured.</text>
+      <text class="verification-note">Account code confirmation does not verify university enrollment. Check your student verification status above.</text>
     </template>
     <template #footer><view v-if="!access_error" class="verification-footer"><view class="verification-cta" role="button" tabindex="0" data-interaction="verified.openReverify.click.1" @click="go('/pages/profile/reverify')" @keydown.enter="go('/pages/profile/reverify')">Re-verify</view></view></template>
   </ProfileEditorFrame>

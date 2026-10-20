@@ -94,7 +94,7 @@ const change_photo = delta => {
   error.value = ''
 }
 const open_gallery = () => { if (photo.value && !is_loading.value) { sheet.value = 'gallery'; error.value = '' } }
-const play_song = () => { error.value = song.value?.audio_id ? 'This song audio is not available in local storage.' : 'This profile includes song artwork only. No playable audio was provided.' }
+const play_song = () => { error.value = song.value?.audio_id ? 'Audio is currently unavailable for this song.' : 'This profile includes song artwork only. No playable audio was provided.' }
 const say_hi = async () => {
   if (is_loading.value || navigating.value || sheet.value || access_error.value || is_self.value) return
   navigating.value = true

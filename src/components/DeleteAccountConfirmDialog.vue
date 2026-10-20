@@ -5,12 +5,12 @@ const emit = defineEmits(['close', 'confirm'])
 </script>
 
 <template>
-  <OnboardingSheet class="delete-account-dialog" :open="open" :busy="busy" label="Delete this local account?" close-interaction="delFinal.closeDeleteConfirm.click.1" @close="emit('close')">
-    <text class="event-dialog-title">Delete this local account?</text>
-    <text class="event-dialog-copy">Your local profile, private activity, messages, remaining coins and media will be removed from this device. This cannot be undone.</text>
+  <OnboardingSheet class="delete-account-dialog" :open="open" :busy="busy" label="Delete this account?" close-interaction="delFinal.closeDeleteConfirm.click.1" @close="emit('close')">
+    <text class="event-dialog-title">Delete this account?</text>
+    <text class="event-dialog-copy">Your saved profile, private activity, messages, remaining coins and media will be removed. This cannot be undone.</text>
     <text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text>
     <view class="event-dialog-primary" role="button" :aria-disabled="busy" data-interaction="delFinal.keepAccount.click.2" @click="!busy && emit('close')">Keep My Account</view>
-    <view class="event-dialog-secondary event-dialog-danger" role="button" :aria-disabled="busy" data-interaction="delFinal.confirmDelete.click.1" @click="!busy && emit('confirm')">Delete Local Account</view>
+    <view class="event-dialog-secondary event-dialog-danger" role="button" :aria-disabled="busy" data-interaction="delFinal.confirmDelete.click.1" @click="!busy && emit('confirm')">Delete Account</view>
   </OnboardingSheet>
 </template>
 

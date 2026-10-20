@@ -15,7 +15,7 @@ const start = async () => {
     <view class="reverify-body">
       <text class="reverify-introduction">Needed if your university email changed, your last verification expired, or your account needs a status review.</text>
       <view class="reverify-pending"><text>While this is pending</text><text>Your existing conversations stay visible. Discover, Auto Match, and new connection requests are temporarily restricted until verification finishes.</text></view>
-      <text class="reverify-note">University verification service is not configured. Starting this check will not change your saved student status or send an email. The account code does not verify student status.</text>
+      <text class="reverify-note">University verification is currently unavailable. Your saved student status will not change. Account code confirmation does not verify university enrollment.</text>
     </view>
     <template #footer><view v-if="!access_error" class="reverify-footer"><view class="editor-save" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="reverify.goVerEmail.click.1" @click="start" @keydown.enter="start">Start Re-verification</view></view></template>
   </ProfileEditorFrame>

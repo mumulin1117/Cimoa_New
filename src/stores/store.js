@@ -239,7 +239,7 @@ export const use_app_store = defineStore('app', {
       if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Saved data is unavailable. Please retry loading it.')
       if (kind === 'wrong_password') {
         const account = this.data.accounts.find(row => row.status === 'active' && row.auth_provider === 'fixture')
-        if (!account) return failure('test_state_unavailable', 'No bundled test account is available on this device. No changes were made.')
+        if (!account) return failure('test_state_unavailable', 'The requested account is unavailable. No changes were made.')
         try {
           const deliberately_wrong = await password_hash('\0cimoa-source-wrong-password')
           if (deliberately_wrong === account.credential_hash) return failure('test_state_unavailable', 'The wrong-password test state is unavailable. No changes were made.')
@@ -248,7 +248,7 @@ export const use_app_store = defineStore('app', {
       }
       if (kind === 'unverified_account') {
         const context = local_verification_context(this.data, get_runtime(this).clock())
-        if (!context || context.verified) return failure('test_state_unavailable', 'No unverified local account is available on this device. No changes were made.')
+        if (!context || context.verified) return failure('test_state_unavailable', 'No account awaiting confirmation is available. No changes were made.')
         return { success: true, data: { email: context.email, message: 'This account still needs university verification.' } }
       }
       return failure('invalid_test_state', 'This login test state is unavailable. No changes were made.')
@@ -304,7 +304,7 @@ export const use_app_store = defineStore('app', {
       }, { expected_owner: owner })
       if (!result.success) return result
       const cleanup = await Promise.allSettled(media_ids.map((id) => get_runtime(this).media.delete(id)))
-      return { ...result, data: { ...result.data, cleanup_warning: cleanup.some((row) => row.status === 'rejected') ? 'Some local media could not be removed. Clear app data before sharing this device.' : '' } }
+      return { ...result, data: { ...result.data, cleanup_warning: cleanup.some((row) => row.status === 'rejected') ? 'Some media could not be removed. Clear app data before sharing this device.' : '' } }
     },
     async register_local_account(input, { is_current = () => true } = {}) {
       const expected_context = auth_context_key(this.data)
@@ -327,26 +327,26 @@ export const use_app_store = defineStore('app', {
           data.auth_flow = { flow_id: make_id('auth_flow'), step: 'registered', email, verification_request_id: null, pending_registration_account_id: account_id, password_reset: null, profile_draft: {}, agreements: { ...clone_data(input.agreements), age: true, student: false } }
           return { account_id, user_id, next_step: 'local_verification' }
         }, { public: true })
-      } catch { return unavailable('Secure local authentication') }
+      } catch { return unavailable('Secure authentication') }
     },
-    create_account({ email } = {}) { return this.data.accounts.some(row => row.email === normalize_email(email)) ? failure('email_exists', 'This email is already registered.') : failure('registration_form_required', 'Complete the local registration form first.') },
+    create_account({ email } = {}) { return this.data.accounts.some(row => row.email === normalize_email(email)) ? failure('email_exists', 'This email is already registered.') : failure('registration_form_required', 'Complete the registration form first.') },
     begin_password_reset(email) {
       const normalized = normalize_email(email)
       if (!valid_email(normalized)) return failure('invalid_form', 'Enter a valid email address.')
       return transact(this, null, (data, now) => {
         s.ensure(!s.authenticated(data, now), 'Log out before resetting a password.')
         const account = data.accounts.find((row) => row.email === normalized && row.status === 'active' && ['fixture', 'local'].includes(row.auth_provider))
-        s.ensure(account, 'No active local account was found for this email on this device.')
+        s.ensure(account, 'No active account was found for this email.')
         const reset_id = make_id('password_reset')
         data.auth_flow.password_reset = { reset_id, account_id: account.account_id, email: account.email, created_at: now, verified_at: null }
         return { reset_id, email: account.email }
       }, { public: true })
     },
     verify_password_reset_code(code, expected_reset_id) {
-      if (!valid_local_code(code)) return failure('invalid_code', 'That code is incorrect. Enter the six-digit local reset code.')
+      if (!valid_local_code(code)) return failure('invalid_code', 'That code is incorrect. Enter the six-digit reset code.')
       return transact(this, null, (data, now) => {
         const reset = data.auth_flow.password_reset
-        s.ensure(reset?.reset_id === expected_reset_id && data.accounts.some((row) => row.account_id === reset.account_id && row.status === 'active'), 'This local reset is no longer available. Start again.')
+        s.ensure(reset?.reset_id === expected_reset_id && data.accounts.some((row) => row.account_id === reset.account_id && row.status === 'active'), 'This password reset is no longer available. Start again.')
         reset.verified_at = reset.verified_at || now
         return { reset_id: reset.reset_id, email: reset.email }
       }, { public: true })
@@ -359,7 +359,7 @@ export const use_app_store = defineStore('app', {
         if (!is_current()) return failure('cancelled', 'Password reset was cancelled.')
         return transact(this, null, (data, now) => {
           const reset = data.auth_flow.password_reset
-          s.ensure(reset?.reset_id === expected_reset_id && reset.verified_at && data.accounts.some((row) => row.account_id === reset.account_id && row.status === 'active'), 'Verify the local reset code first.')
+          s.ensure(reset?.reset_id === expected_reset_id && reset.verified_at && data.accounts.some((row) => row.account_id === reset.account_id && row.status === 'active'), 'Verify the reset code first.')
           const account = data.accounts.find((row) => row.account_id === reset.account_id)
           const migrating_fixture = account.auth_provider === 'fixture'
           Object.assign(account, credential)
@@ -370,24 +370,24 @@ export const use_app_store = defineStore('app', {
           data.auth_flow = { flow_id: make_id('auth_flow'), step: 'welcome', email: account.email, verification_request_id: null, pending_registration_account_id: null, password_reset: null, agreements: { age: false, student: false, terms: false, privacy: false, community: false }, profile_draft: {} }
           return { email: account.email, changed_at: now }
         }, { public: true })
-      } catch { return unavailable('Secure local password reset') }
+      } catch { return unavailable('Secure password reset') }
     },
-    reset_password() { return failure('reset_flow_required', 'Start the local password reset flow with this account email.') },
+    reset_password() { return failure('reset_flow_required', 'Start the password reset flow with this account email.') },
     change_registration_email(email, expected_account_id) {
       return transact(this, null, (data, now) => {
         const context = local_verification_context(data, now), normalized = normalize_email(email)
         s.ensure(context?.account_id === expected_account_id && !context.verified, 'This registration can no longer change its email here.')
         s.ensure(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized), 'Enter a valid email address.')
-        s.ensure(!data.accounts.some(row => row.email === normalized && row.account_id !== context.account_id), 'This email already has a local account. Please log in instead.')
+        s.ensure(!data.accounts.some(row => row.email === normalized && row.account_id !== context.account_id), 'This email is already registered. Please log in instead.')
         data.accounts.find(row => row.account_id === context.account_id).email = normalized
         if (data.auth_flow.pending_registration_account_id === context.account_id) data.auth_flow.email = normalized
       }, { public: true })
     },
     apply_verification(code, expected_account_id) {
-      if (!valid_local_code(code)) return failure('invalid_code', 'That code is incorrect. Enter the six-digit local verification code.')
+      if (!valid_local_code(code)) return failure('invalid_code', 'That code is incorrect. Enter the six-digit account verification code.')
       if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Saved data is unavailable. Please retry loading it.')
       const context = local_verification_context(this.data, get_runtime(this).clock())
-      if (!context || context.account_id !== expected_account_id) return failure('account_changed', 'Log in to the same local account and try again.')
+      if (!context || context.account_id !== expected_account_id) return failure('account_changed', 'Log in to the same account and try again.')
       if (context.verified) return { success: true, repeated: true, data: context }
       return transact(this, null, (data, now) => {
         const current = local_verification_context(data, now)
@@ -718,7 +718,7 @@ export const use_app_store = defineStore('app', {
     report_user(id, reason) { return this.submit_report({ target_type: 'user', target_id: id, reason }) },
     update_settings(group, patch) { return transact(this, null, (data) => { const row = data.settings.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(['notifications', 'privacy'].includes(group) && Object.keys(patch).every((key) => key in row[group] && typeof patch[key] === 'boolean'), 'Invalid setting.'); Object.assign(row[group], patch) }) },
     set_privacy_visibility(value) { return transact(this, null, (data) => { const row = data.settings.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(['discover', 'auto_match', 'hidden'].includes(value), 'Choose a valid profile visibility.'); row.privacy.discover_visible = value === 'discover'; row.privacy.auto_match_visible = value !== 'hidden' }) },
-    set_language(value) { return value === 'en-US' ? { success: true, repeated: true, data: 'en-US' } : failure('language_unavailable', 'Traditional Chinese is not available in this build. English remains selected.') },
+    set_language(value) { return value === 'en-US' ? { success: true, repeated: true, data: 'en-US' } : failure('language_unavailable', 'Traditional Chinese is currently unavailable. English remains selected.') },
     toggle_setting(key) { const map = { notifications_enabled: ['notifications', 'master'], show_online_status: ['privacy', 'show_online'] }; const path = map[key]; return path ? this.update_settings(path[0], { [path[1]]: !this.current_settings[path[0]][path[1]] }) : unavailable('Location permission settings') },
     begin_purchase(package_id, operation_id, return_context_id = null) {
       return transact(this, operation(operation_id, 'purchase', return_context_id ? [package_id, return_context_id] : package_id), (data, now) => {

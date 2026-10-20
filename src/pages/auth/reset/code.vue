@@ -18,17 +18,17 @@ const access_error = computed(() => store.hydration_status !== 'ready'
   : store.session.is_authenticated
     ? 'Log out before resetting a password.'
     : !reset_id.value || reset.value?.reset_id !== reset_id.value
-      ? 'This local password reset is unavailable. Start again from the login page.'
+      ? 'This password reset is unavailable. Start again from the login page.'
       : '')
 const leave = () => { active = false; cancel_loading(); code.value = '' }
 onShow(() => { active = true })
 onHide(leave); onUnmounted(leave)
 const back = async () => { if (is_loading.value) return; try { await frame.value.navigate_back('/pages/auth/reset/email') } catch (cause) { error.value = cause.message } }
-const resend = () => { if (!is_loading.value && !access_error.value) { error.value = ''; notice.value = `No email was sent. The fixed local code remains ${store.local_verification_code}.` } }
+const resend = () => { if (!is_loading.value && !access_error.value) { error.value = ''; notice.value = `Your reset code is ${store.local_verification_code}.` } }
 const next = async () => {
   if (is_loading.value || access_error.value) return
   error.value = ''; notice.value = ''
-  if (!valid_local_code(code.value)) { error.value = 'That code is incorrect. Enter the six-digit local reset code.'; return }
+  if (!valid_local_code(code.value)) { error.value = 'That code is incorrect. Enter the six-digit reset code.'; return }
   try { auth_destination('/pages/auth/reset/new') } catch (cause) { error.value = cause.message; return }
   const result = await run_with_loading(() => store.verify_password_reset_code(code.value, reset_id.value))
   if (!active || result.reason === 'cancelled') return
@@ -42,14 +42,14 @@ const next = async () => {
     <view v-if="access_error" class="auth-error-box" role="alert">{{ access_error }}</view>
     <template v-else>
       <text class="auth-heading">Enter reset code</text>
-      <text class="auth-description">Enter the fixed code {{ store.local_verification_code }}. No email was sent and the code does not expire.</text>
+      <text class="auth-description">Reset code: {{ store.local_verification_code }}. Enter this code to continue.</text>
       <view class="auth-input-box reset-code-box"><input v-model="code" class="auth-input reset-code-input" aria-label="Reset code" inputmode="numeric" placeholder="000000" :maxlength="6" :disabled="is_loading" data-interaction="fpCode.onCode.change.1" /></view>
       <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
       <text v-if="notice" class="reset-code-notice" role="status">{{ notice }}</text>
       <view class="auth-link reset-resend" role="button" :aria-disabled="is_loading" data-interaction="fpCode.resend.click.1" @click="resend">Show code again</view>
     </template>
     <template #footer><view v-if="!access_error" class="auth-primary" role="button" :aria-disabled="is_loading || code.length !== 6" data-interaction="fpCode.goFpNew.click.1" @click="next">Continue</view></template>
-    <template #overlays><AuthActionLoading :visible="is_loading" label="Verifying local code…" /></template>
+    <template #overlays><AuthActionLoading :visible="is_loading" label="Checking code…" /></template>
   </AuthPageFrame>
 </template>
 

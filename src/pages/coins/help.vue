@@ -11,12 +11,12 @@ import { legal_document_route } from '@/utils/legalNavigation.js'
 
 const faqs = Object.freeze([
   ['What are coins?', 'Coins are a virtual currency inside Cimoa. They have no cash value. Text introductions are free; coins are used for voice introductions and Priority Match.'],
-  ['How do I get coins?', 'Coin packages are intended to use Apple In-App Purchase. This build has no StoreKit product IDs or receipt-verification service, so purchase attempts fail or time out without adding coins.'],
+  ['How do I get coins?', 'Coin packages use Apple In-App Purchase when available. A purchase must be confirmed before coins are added. Purchases are currently unavailable.'],
   ['What can coins be used for?', 'A text introduction is free. A voice introduction costs 10 coins. Priority Match costs 20 coins for 15 minutes.'],
   ['Can coins be transferred?', 'No. Coins stay on your account and cannot be sent to another student, withdrawn, or exchanged for money.'],
-  ['Can coins be refunded?', 'A coin action writes its deduction only when the action completes, so a failed action must not keep a debit. Verified App Store refund handling is not configured in this build.'],
-  ['What happens if a purchase fails?', 'No coins are added and your balance is unchanged. You can retry from the coin store or keep a local support draft.'],
-  ['How do I contact support?', 'Purchase support opens the local Help and Support flow. It can save a private draft on this device, but no delivery service or support ticket is configured.'],
+  ['Can coins be refunded?', 'Failed coin actions do not keep a debit. App Store refund processing is currently unavailable in Cimoa; manage eligible purchase requests through Apple.'],
+  ['What happens if a purchase fails?', 'No coins are added and your balance is unchanged. You can retry from the coin store or save a support draft.'],
+  ['How do I contact support?', 'Open Help and Support to describe your purchase concern and save a draft. Delivery availability is shown in the form.'],
 ])
 const links = Object.freeze([
   { label: 'Terms of Use', icon: 'legal', route: '/pages/legal/terms', interaction: 'coinHelp.openTerms.click.1' },
@@ -59,7 +59,7 @@ onHide(() => { navigating.value = false; error.value = '' })
     <view class="help-content">
       <view v-if="access_error" class="help-access" role="alert">{{ access_error }}</view>
       <template v-else>
-        <view class="help-notice"><image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><view><text>Local coin mode</text><text>Balance and history work locally. Apple purchases cannot complete until StoreKit products and verification are configured.</text></view></view>
+        <view class="help-notice"><image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><view><text>Coins and purchases</text><text>Your balance and history reflect completed transactions. Purchases are currently unavailable.</text></view></view>
         <view class="help-faqs">
           <view v-for="(item, index) in faqs" :key="item[0]" class="help-faq">
             <view class="help-question" role="button" :aria-expanded="open_faq === index" data-interaction="coinHelp.h.toggle.click.1" :data-faq-index="index" @click="toggle_faq(index)"><text>{{ item[0] }}</text><view class="help-chevron" :class="{ open: open_faq === index }"><SourceIcon name="chevron" /></view></view>

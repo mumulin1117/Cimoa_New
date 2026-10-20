@@ -1,0 +1,169 @@
+{
+  "scope": "Authorized formal display-copy cleanup, not new online services or whole-page pixel acceptance",
+  "source_lock": "locked",
+  "local_acceptance": "passed",
+  "visual_acceptance": "pending",
+  "full_app_acceptance": "pending",
+  "changes": [
+    "User/event Report primary label is Submit report; result uses Report saved and Saved.",
+    "Formal neutral wording replaces development-environment UI, errors, loading, FAQ and protocol notices.",
+    "Login test controls are development-only; internal schemas, auth provider, account code and report status are unchanged.",
+    "Terms, Privacy and Community use one canonical document source, including Community sheets and standalone pages.",
+    "Both conventions were updated only after explicit user approval; rule maintenance separates presentation from actual capability."
+  ],
+  "privacy_boundary": "Canonical policy describes app storage, no server upload/delivery, no cloud recovery, and no real email/student verification. No review, payment or support-ticket success was invented.",
+  "consent": "Changed document revisions trigger existing explicit re-acceptance. No consent is auto-granted.",
+  "tests": {
+    "unit": {
+      "passed": 204,
+      "failed": 0,
+      "report": "/tmp/cimoa-display-copy-unit.xml"
+    },
+    "browser_copy": {
+      "result": "passed",
+      "checks": 31,
+      "evidence": "browser-acceptance.json"
+    },
+    "report_labels": {
+      "result": "passed",
+      "checks": 2,
+      "evidence": "../report-submit-label-2026-10-20/browser-acceptance.json"
+    },
+    "report_regression": {
+      "result": "passed",
+      "checks": 5,
+      "evidence": "report-regression/report-user-acceptance.json"
+    },
+    "event_report_regression": {
+      "result": "passed",
+      "checks": 5,
+      "evidence": "event-report-regression/event-report-acceptance.json"
+    },
+    "support_regression": {
+      "result": "passed",
+      "checks": 8,
+      "evidence": "support-regression/support-acceptance.json"
+    },
+    "WKWebView": {
+      "result": "passed",
+      "passed_tests": 1,
+      "failed_tests": 0,
+      "page_checks": 29,
+      "device": "iPhone 17 Pro",
+      "runtime": "iOS 26.5",
+      "evidence": "native-acceptance.json",
+      "authoritative_result": "/tmp/cimoa-display-copy-native.xcresult",
+      "storage_restored": true
+    }
+  },
+  "gates": [
+    "corepack pnpm check:conventions: passed, no warnings",
+    "git diff --check: passed",
+    "corepack pnpm build:h5: passed, 415 files packaged"
+  ],
+  "warnings": [
+    "Existing Xcode warning: Metadata extraction skipped. No AppIntents.framework dependency found. No new convention warnings."
+  ],
+  "limits": [
+    "This is a display/copy increment. No complete pixel acceptance, App Store approval, real moderation or cloud service claim.",
+    "Production operator/contact, moderation delivery/screening and StoreKit products remain release blockers.",
+    "Source audit/prototype/history, internal local_* identifiers and legitimate campus event names are retained."
+  ],
+  "changed_tracked_files": [
+    "DEVELOPMENT_CONVENTIONS.md",
+    "INTERACTION_CONVENTIONS.md",
+    "ios/cimoaNeapo/Sources/WebViewController.swift",
+    "ios/cimoaNeapo/Tests/HostTests.swift",
+    "scripts/account-source-browser.test.mjs",
+    "scripts/auth-browser.test.mjs",
+    "scripts/auth-reset-browser.test.mjs",
+    "scripts/auth.test.mjs",
+    "scripts/community-visual.test.mjs",
+    "scripts/data.test.mjs",
+    "scripts/legal-document-visual.test.mjs",
+    "scripts/legal-documents.test.mjs",
+    "scripts/login-visual.test.mjs",
+    "scripts/onboarding-complete-visual.test.mjs",
+    "scripts/registration-browser.test.mjs",
+    "scripts/registration.test.mjs",
+    "scripts/reset-code-visual.test.mjs",
+    "scripts/reset-email-visual.test.mjs",
+    "scripts/settings-safety-browser.test.mjs",
+    "scripts/signup-visual.test.mjs",
+    "scripts/social-entities-browser.test.mjs",
+    "scripts/verification-browser.test.mjs",
+    "scripts/verification-code-visual.test.mjs",
+    "scripts/verification-email-visual.test.mjs",
+    "scripts/verification-success-visual.test.mjs",
+    "scripts/verification-unsupported-visual.test.mjs",
+    "src/components/AuthActionLoading.vue",
+    "src/components/DeleteAccountConfirmDialog.vue",
+    "src/composables/useOnboarding.js",
+    "src/config/local-auth.js",
+    "src/pages/auth/login.vue",
+    "src/pages/auth/reset/code.vue",
+    "src/pages/auth/reset/email.vue",
+    "src/pages/auth/reset/new.vue",
+    "src/pages/auth/signup.vue",
+    "src/pages/auth/verification/code.vue",
+    "src/pages/auth/verification/email.vue",
+    "src/pages/auth/verification/success.vue",
+    "src/pages/auth/verification/unsupported.vue",
+    "src/pages/coins/help.vue",
+    "src/pages/coins/index.vue",
+    "src/pages/coins/purchasing.vue",
+    "src/pages/connections/received.vue",
+    "src/pages/connections/sent.vue",
+    "src/pages/discover/profile.vue",
+    "src/pages/events/group.vue",
+    "src/pages/events/report.vue",
+    "src/pages/messages/index.vue",
+    "src/pages/permissions/camera.vue",
+    "src/pages/profile/edit.vue",
+    "src/pages/profile/reverify.vue",
+    "src/pages/profile/verification.vue",
+    "src/pages/safety/report-detail.vue",
+    "src/pages/safety/report-user.vue",
+    "src/pages/safety/reports.vue",
+    "src/pages/settings/delete/final.vue",
+    "src/pages/settings/delete/info.vue",
+    "src/pages/settings/delete/success.vue",
+    "src/pages/settings/index.vue",
+    "src/pages/settings/lang.vue",
+    "src/pages/settings/legal.vue",
+    "src/pages/settings/privacy.vue",
+    "src/pages/settings/support.vue",
+    "src/stores/eventSelectors.js",
+    "src/stores/onboarding.js",
+    "src/stores/profileEditing.js",
+    "src/stores/selectors.js",
+    "src/stores/store.js",
+    "src/stores/transactions.js",
+    "src/utils/audioPlayback.js",
+    "src/utils/eventCapabilities.js",
+    "src/utils/legalDocuments.js",
+    "src/utils/localAuth.js",
+    "src/utils/mediaCapabilities.js",
+    "src/utils/reportPresentation.js"
+  ],
+  "added_files": [
+    "scripts/display-copy.test.mjs",
+    "scripts/display-copy-browser.test.mjs",
+    "scripts/report-submit-label-browser.test.mjs",
+    "scripts/lib/display-copy-cases.mjs",
+    "this evidence directory",
+    "../report-submit-label-2026-10-20"
+  ],
+  "bundle": {
+    "manifest_sha256": "cecd0f4214d6bb49d91b0e5262e2487ea50b6f65c8205e8c64dd8da36b0c59ea",
+    "resource_and_compiled_app_match": true,
+    "h5_files": 415,
+    "archive": "artifacts/cimoaNeapo-ios.zip"
+  },
+  "generated": [
+    "dist/build/h5",
+    "ignored ios/cimoaNeapo/Resources/H5 and artifacts/cimoaNeapo-ios.zip"
+  ],
+  "git": "Scoped local commit only; preserve pre-existing ten registration screenshots; no push",
+  "source_reference": "https://developer.apple.com/app-store/review/guidelines/#user-generated-content"
+}

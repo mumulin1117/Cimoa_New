@@ -27,7 +27,7 @@ const select = value => {
   error.value = ''; notice.value = ''
   const result = store.set_language(value)
   if (!result.success) { error.value = result.message; return }
-  notice.value = 'English is already selected for this build.'
+  notice.value = 'English is already selected.'
 }
 </script>
 
@@ -40,7 +40,7 @@ const select = value => {
         <view v-if="language === option.value" class="language-check"><SourceIcon name="check" :stroke-width="2.8" /></view>
       </view>
     </view>
-    <text class="settings-page-note">Only English is included in the current local build. Choosing an unavailable language never changes saved data.</text>
+    <text class="settings-page-note">English is currently available. More language options are not available yet.</text>
   </ProfileEditorFrame>
 </template>
 

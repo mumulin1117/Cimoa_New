@@ -94,7 +94,7 @@ const navigate_menu = kind => { close(); go(kind) }
     </template>
     <template #overlays>
       <EventConfirmDialog :open="sheet === 'menu'" :busy="is_loading" label="Event group options" close-interaction="eventGroup.menu.close.click.1" @close="close" @released="!sheet && (locked = false)">
-        <text class="event-dialog-title">{{ event?.title }}</text><text class="event-dialog-copy">Notification preference is stored on this device. Remote push delivery is not configured.</text>
+        <text class="event-dialog-title">{{ event?.title }}</text><text class="event-dialog-copy">Manage notifications for this event group. Push delivery is currently unavailable.</text>
         <view class="event-page-menu" role="button" tabindex="0" data-interaction="eventGroup.menu.mute.click.1" @click="toggle_mute" @keydown.enter="toggle_mute">{{ group?.muted ? 'Unmute group' : 'Mute group' }}</view>
         <view class="event-page-menu" role="button" tabindex="0" data-interaction="eventGroup.menu.participants.click.1" @click="navigate_menu('participants')" @keydown.enter="navigate_menu('participants')">View participants</view>
         <view class="event-page-menu" role="button" tabindex="0" data-interaction="eventGroup.menu.detail.click.1" @click="navigate_menu('detail')" @keydown.enter="navigate_menu('detail')">View event</view>

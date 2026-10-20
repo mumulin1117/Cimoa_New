@@ -89,7 +89,7 @@ test('fixed local code is exact, preserves leading zeroes, never promotes studen
   assert.equal((await restored.login('student@campus.edu', 'localpass123')).success, true)
   assert.equal(restored.requires_local_verification, false); assert.equal(restored.current_user.verified, false)
 })
-test('local verification cannot change another, deleted, expired or logged-out account', async () => {
+test('account verification cannot change another, deleted, expired or logged-out account', async () => {
   const { store } = fixture()
   const first = (await store.register_local_account(form('first@campus.edu'))).data.account_id
   const second = (await store.register_local_account(form('second@campus.edu'))).data.account_id
@@ -105,7 +105,7 @@ test('local verification cannot change another, deleted, expired or logged-out a
   assert.equal(expired.local_verification, null); assert.equal(expired.apply_verification('009789', first).success, false)
   await store.delete_account('localpass123'); assert.equal(store.apply_verification('009789', first).success, false)
 })
-test('failed verification persistence rolls back completely; old snapshots have no invented local verification', async () => {
+test('failed verification persistence rolls back completely; old snapshots have no invented account verification', async () => {
   const { store, persistence } = fixture(create_seed(now))
   assert.equal(store.local_verification.verified, false)
   const before = clone_data(store.data), id = store.local_verification.account_id
@@ -125,7 +125,7 @@ test('source login test states inspect real local data without writes or fabrica
   assert.equal(wrong.data.message, 'Incorrect password. Try again or reset it.')
   assert.equal(fixtureState.writes(), 0); assert.deepEqual(clone_data(fixtureState.store.data), fixtureBefore)
   const missing = await fixtureState.store.inspect_login_test_state('unverified_account')
-  assert.equal(missing.success, false); assert.match(missing.message, /No unverified local account/)
+  assert.equal(missing.success, false); assert.match(missing.message, /No account awaiting confirmation/)
   assert.equal(fixtureState.writes(), 0); assert.deepEqual(clone_data(fixtureState.store.data), fixtureBefore)
 
   const local = fixture(), registration = await local.store.register_local_account(form('pending@campus.edu'))

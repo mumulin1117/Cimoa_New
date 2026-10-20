@@ -94,7 +94,7 @@ try {
   assert.ok(page.url().includes(matching.match_id))
   await switch_account('sophie@campus.edu'); await click('home.openMatchInvitation.click.1')
   assert.equal(await page.getByText('You both found a match. Choose whether you would like to connect.').count(), 1)
-  assert.equal(await page.getByText('This voice recording is unavailable on this device.').count(), 0)
+  assert.equal(await page.getByText('This voice recording is unavailable. Please try again.').count(), 0)
   await click('reqReceived.accept.click.1'); await page.getByRole('dialog').getByRole('button', { name: 'Accept', exact: true }).click()
   await click('reqAccepted.startChat.click.1'); await page.locator('.chat-composer').waitFor()
   assert.equal((await snapshot()).match_sessions.find(row => row.match_id === matching.match_id).status, 'connected')

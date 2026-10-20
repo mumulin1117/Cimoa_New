@@ -31,7 +31,7 @@ const back = async () => {
 const contact_support = () => {
   if (is_loading.value) return
   const result = store.submit_support()
-  error.value = result.message || 'Support delivery is not configured. No changes were made.'
+  error.value = result.message || 'Support delivery is currently unavailable. Please try again later.'
 }
 const request_logout = () => {
   if (is_loading.value) return
@@ -66,7 +66,7 @@ const confirm_logout = async () => {
     </template>
     <template #overlays>
       <LogoutConfirmDialog :open="confirm_open" :busy="is_loading" :error="dialog_error" @close="!is_loading && (confirm_open = false)" @confirm="confirm_logout" />
-      <AuthActionLoading :visible="is_loading" label="Logging out on this device…" />
+      <AuthActionLoading :visible="is_loading" label="Logging out…" />
     </template>
   </AuthPageFrame>
 </template>

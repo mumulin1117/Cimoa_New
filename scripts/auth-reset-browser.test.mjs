@@ -38,9 +38,9 @@ try {
     await page.goto(`${origin}/?phase=reset-email#/pages/auth/login`)
     const before = await state()
     await page.locator('[data-interaction="login.appleAuth.click.1"]').click()
-    assert.match(await page.getByRole('alert').innerText(), /Apple sign-in is not configured/)
+    assert.match(await page.getByRole('alert').innerText(), /Apple sign-in is currently unavailable/)
     assert.deepEqual(await state(), before)
-    check('Apple login is explicitly unavailable and performs no local account write')
+    check('Apple login is explicitly unavailable and performs no account write')
 
     await page.locator('[data-interaction="login.goFpEmail.click.1"]').click()
     await page.locator('.reset-email-page').waitFor()
@@ -56,7 +56,7 @@ try {
     const created = await state()
     assert.equal(created.auth_flow.password_reset.email, 'cimoa@gmail.com')
     assert.equal(created.auth_flow.password_reset.verified_at, null)
-    check('Reset Email creates an owned local reset only after custom Loading and opens Code')
+    check('Reset Email creates an owned password reset only after custom Loading and opens Code')
 
     await page.waitForTimeout(400)
     await page.locator('.auth-back').click(); await page.locator('.reset-email-page').waitFor()
@@ -92,7 +92,7 @@ try {
 
     const before_resend = await state()
     await page.locator('[data-interaction="fpCode.resend.click.1"]').click()
-    assert.match(await page.getByRole('status').innerText(), /No email was sent.*009789/)
+    assert.match(await page.getByRole('status').innerText(), /Your reset code is 009789/)
     assert.deepEqual(await state(), before_resend)
     check('Resend explicitly reports no email delivery and performs no write')
 
@@ -122,7 +122,7 @@ try {
   if (phase === 'new') {
     await page.goto(`${origin}/?phase=reset-new#/pages/auth/reset/new?reset_id=missing`)
     const initial = await state()
-    assert.match(await page.getByRole('alert').innerText(), /Verify the local reset code/)
+    assert.match(await page.getByRole('alert').innerText(), /Confirm your reset code/)
     assert.deepEqual(await state(), initial)
     check('New Password rejects direct access without a verified owned reset')
 
@@ -136,7 +136,7 @@ try {
     await page.locator('.reset-new-page').waitFor()
     const verified = await state(), account_before = verified.accounts.find(row => row.email === 'cimoa@gmail.com')
     assert.equal(typeof verified.auth_flow.password_reset.verified_at, 'number')
-    check('Fixed code reaches New Password with the verified reset owned by the local account')
+    check('Fixed code reaches New Password with the verified reset owned by the account')
 
     await field('New password').fill('short1')
     await field('Confirm new password').fill('short1')

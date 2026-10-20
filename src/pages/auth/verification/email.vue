@@ -39,16 +39,16 @@ const next = async () => {
 }
 </script>
 <template>
-  <AuthPageFrame ref="frame" class="verification-email-page" :class="{ 'verification-email-page--keyboard': keyboard_open }" title="Local verification" back-interaction="verEmail.goBack.click.1" :busy="is_loading" :style="{ height: viewport_height }" @back="back">
+  <AuthPageFrame ref="frame" class="verification-email-page" :class="{ 'verification-email-page--keyboard': keyboard_open }" title="Account verification" back-interaction="verEmail.goBack.click.1" :busy="is_loading" :style="{ height: viewport_height }" @back="back">
     <text class="auth-heading">Confirm your email</text>
-    <text class="auth-description">This local account uses the fixed code {{ store.local_verification_code }}. No email is sent. This does not verify your university or student identity.</text>
+    <text class="auth-description">Confirm your account using the code shown on the next screen.</text>
     <view v-if="context" class="auth-field"><text class="auth-label">University email</text><view class="auth-input-box"><input v-model="email" class="auth-input" aria-label="University email" placeholder="name@university.edu" data-interaction="verEmail.onEmail.change.1" :maxlength="254" :disabled="is_loading || context.verified" autocomplete="username" @input="clear_error" @confirm="next" /></view></view>
-    <text v-else class="auth-error-box" role="alert">Log in or create a local account first. No account has been changed.</text>
-    <view class="email-info"><text>Your address identifies your account on this device. It stays private and is never shown on your profile.</text></view>
+    <text v-else class="auth-error-box" role="alert">Log in or create an account first. No account has been changed.</text>
+    <view class="email-info"><text>Your email identifies your account and is never shown on your profile.</text></view>
     <text class="email-example">Example · a.chan@connect.hkust.edu</text>
     <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
-    <template #footer><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verEmail.goVerCode.click.1" @click="next" @keydown.enter="next">{{ context ? 'Continue to Local Code' : 'Log In' }}</view></template>
-    <template #overlays><AuthActionLoading :visible="is_loading" label="Updating local email…" /></template>
+    <template #footer><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verEmail.goVerCode.click.1" @click="next" @keydown.enter="next">{{ context ? 'Continue to Code' : 'Log In' }}</view></template>
+    <template #overlays><AuthActionLoading :visible="is_loading" label="Updating email…" /></template>
   </AuthPageFrame>
 </template>
 <style>

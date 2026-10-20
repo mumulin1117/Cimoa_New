@@ -29,7 +29,7 @@ const back = async () => { try { await frame.value.navigate_back('/pages/discove
         <view class="sent-recipient"><view><UserAvatar :src="request.other.avatar_url" :name="request.other.user_name" /></view><text>to {{ request.other.user_name }}{{ request.other.university ? ` · ${request.other.university}` : '' }}</text></view>
       </view>
       <view class="connection-card sent-question"><text class="connection-eyebrow">ICEBREAKER</text><text class="connection-question">{{ request.question }}</text></view>
-      <view class="connection-card sent-answer"><text class="connection-eyebrow">YOUR ANSWER</text><text v-if="request.kind === 'text'" class="connection-answer">{{ request.text }}</text><EventAudio v-else-if="request.audio" :src="request.audio.media_url" :duration="request.audio.duration_ms" interaction="reqSent.togglePlay.click.1" /><text v-else class="connection-answer" role="alert">This voice recording is unavailable on this device.</text></view>
+      <view class="connection-card sent-answer"><text class="connection-eyebrow">YOUR ANSWER</text><text v-if="request.kind === 'text'" class="connection-answer">{{ request.text }}</text><EventAudio v-else-if="request.audio" :src="request.audio.media_url" :duration="request.audio.duration_ms" interaction="reqSent.togglePlay.click.1" /><text v-else class="connection-answer" role="alert">This voice recording is unavailable. Please try again.</text></view>
       <view class="sent-status"><view><ConnectionIcon name="clock" /></view><text>{{ status_label }}</text></view>
       <text v-if="request.status === 'pending'" class="sent-note">Chat and video calls unlock once {{ first_name }} accepts.</text>
     </view>

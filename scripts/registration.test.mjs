@@ -33,7 +33,7 @@ test('cancelled registration hashing cannot create an account', async () => {
   const result = await store.register_local_account({ email: 'new@campus.edu', password: 'localpass123', confirmation: 'localpass123', date_of_birth: '2000-01-01', agreements: { terms: true, privacy: true, community: true } }, { is_current: () => false })
   assert.equal(result.reason, 'cancelled'); assert.deepEqual(clone_data(store.data), before)
 })
-test('email corrections are scoped, unique and forbidden after local verification', async () => {
+test('email corrections are scoped, unique and forbidden after account verification', async () => {
   const { store } = fixture()
   const { data } = await store.register_local_account({ email: 'new@campus.edu', password: 'localpass123', confirmation: 'localpass123', date_of_birth: '2000-01-01', agreements: { terms: true, privacy: true, community: true } })
   const before = clone_data(store.data)
@@ -44,7 +44,7 @@ test('email corrections are scoped, unique and forbidden after local verificatio
   store.apply_verification('009789', data.account_id)
   assert.equal(store.change_registration_email('next@campus.edu', data.account_id).success, false)
 })
-test('onboarding is scoped to a verified local account and cannot skip steps; saved progress resumes', async () => {
+test('onboarding is scoped to a verified account and cannot skip steps; saved progress resumes', async () => {
   const { store, disk } = fixture()
   const { data } = await store.register_local_account({ email: 'setup@campus.edu', password: 'localpass123', confirmation: 'localpass123', date_of_birth: '2000-01-01', agreements: { terms: true, privacy: true, community: true } })
   assert.equal(store.begin_onboarding(data.account_id).success, false)

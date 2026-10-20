@@ -16,7 +16,7 @@ export function onboarding_context(data, now) {
 }
 const require_context = (data, now, step) => {
   const context = onboarding_context(data, now)
-  ensure(context && !context.completed, 'Log in and complete local verification before profile setup.')
+  ensure(context && !context.completed, 'Log in and complete account verification before profile setup.')
   ensure(ONBOARDING_FLOW.includes(step) && ONBOARDING_FLOW.indexOf(step) <= ONBOARDING_FLOW.indexOf(context.step), 'Complete the previous profile steps first.')
   return context
 }
@@ -72,7 +72,7 @@ export const onboarding_actions = {
     if (existing?.account.account_id === expected_account_id && existing.account.onboarding) return { success: true, data: existing.completed ? 'home' : existing.step, repeated: true }
     return transact(this, null, (data, now) => {
       const context = local_verification_context(data, now)
-      ensure(context?.verified && context.account_id === expected_account_id, 'Complete local verification for this account first.')
+      ensure(context?.verified && context.account_id === expected_account_id, 'Complete account verification for this account first.')
       const account = data.accounts.find(row => row.account_id === context.account_id)
       ensure(account.auth_provider === 'local' && (data.auth_flow.pending_registration_account_id === account.account_id || data.session.account_id === account.account_id && authenticated(data, now)), 'Please log in again to continue setup.')
       const user = data.users.find(row => row.user_id === account.user_id)

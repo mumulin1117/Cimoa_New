@@ -1,4 +1,4 @@
-// One-shot local verification regression; only the independent built H5 is served.
+// One-shot account verification regression; only the independent built H5 is served.
 import fs from 'node:fs'
 import path from 'node:path'
 import http from 'node:http'
@@ -101,7 +101,7 @@ try {
   check('refresh restores the same account result without another write or skeleton')
   {
     await page.locator('.page-transition').evaluate(el => Promise.all(el.getAnimations().map(a => a.finished)))
-    assert.match(await page.locator('.verification-success-heading').innerText(), /Local verification complete/)
+    assert.match(await page.locator('.verification-success-heading').innerText(), /Account code confirmed/)
     assert.ok(Math.abs((await page.locator('.verification-success-icon').boundingBox()).width - 96) < 1)
     await page.screenshot({ path: path.join(output, 'verification-success.png') })
     check('Success uses persisted local result and 96px source circle')
@@ -120,7 +120,7 @@ try {
     const started = JSON.parse(await saved()).data
     assert.equal(started.session.account_id, account_id); assert.equal(started.accounts.find(a => a.account_id === account_id).onboarding.step, 'basic')
     assert.equal(started.users.find(u => u.user_id === started.session.current_user_id).verification_status, 'pending')
-    check('Success starts only the verified local account Basic flow without promoting student identity')
+    check('Success starts only the verified account Basic flow without promoting student identity')
     await visit(registered, 'success')
     assert.equal(await page.locator('.verification-success-icon').count(), 0)
     assert.match(await page.getByRole('alert').innerText(), /not been completed/)

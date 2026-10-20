@@ -67,21 +67,21 @@ const submit = async () => {
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="safety-report-user-page" :title="`Report ${target_name}`" source="safetyReport" :busy="is_loading" loading-label="Saving report locally…" :error="error" :access-error="access_error" :action-label="submitted_id ? '' : 'Save report locally'" action-interaction="safetyReport.submitReport.click.1" :disabled="!ready" @back="back" @recover="recover" @save="submit">
+  <ProfileEditorFrame ref="frame" class="safety-report-user-page" :title="`Report ${target_name}`" source="safetyReport" :busy="is_loading" loading-label="Saving report…" :error="error" :access-error="access_error" :action-label="submitted_id ? '' : 'Submit report'" action-interaction="safetyReport.submitReport.click.1" :disabled="!ready" @back="back" @recover="recover" @save="submit">
     <template v-if="!submitted_id">
-      <text class="report-intro">Choose the reason that fits best. This local build saves reports only on this device; it does not send them to a safety team.</text>
+      <text class="report-intro">Choose the reason that best describes your concern. You can also block this account.</text>
       <view class="report-reasons" role="radiogroup" aria-label="Report reason">
         <view v-for="item in reasons" :key="item" class="report-reason" :class="{ selected: reason === item }" role="radio" tabindex="0" :aria-checked="reason === item" data-interaction="safetyReport.r.pick.click.1" @click="reason = item; error = ''" @keydown.enter="reason = item; error = ''">
           <view class="report-dot" /><text>{{ item }}</text>
         </view>
       </view>
       <text class="editor-label">Optional details</text>
-      <textarea v-model="description" class="report-description" aria-label="Report details" placeholder="Add context that will help you remember this report" :maxlength="500" :disabled="is_loading" />
+      <textarea v-model="description" class="report-description" aria-label="Report details" placeholder="Add details about your concern" :maxlength="500" :disabled="is_loading" />
       <view class="settings-page-row report-block-row"><view class="report-block-copy"><text>Also block {{ target_name }}</text><text>Removes your connection, pending requests, match and private chat.</text></view><SettingsSwitch :checked="also_block" :disabled="is_loading" :label="`Also block ${target_name}`" interaction="safetyReport.alsoBlock.click.1" @toggle="also_block = !also_block" /></view>
     </template>
     <view v-else class="report-saved" role="status">
-      <text class="report-saved-title">Report saved locally</text>
-      <text>This report was not sent to a moderation service. You can review it under Settings → Submitted Reports.</text>
+      <text class="report-saved-title">Report saved</text>
+      <text>You can review your report under Settings → Submitted Reports.</text>
       <text class="report-id">Reference: {{ submitted_id }}</text>
       <view class="editor-outline" role="button" tabindex="0" data-interaction="safetyReport.goBack.click.2" @click="back" @keydown.enter="back">Return</view>
     </view>

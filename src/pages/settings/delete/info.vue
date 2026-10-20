@@ -41,7 +41,7 @@ const continue_deletion = async () => {
       <text class="delete-page-title">This removes your account</text>
       <text class="delete-page-copy">Logging out keeps your account. Deleting it is different — it permanently affects:</text>
       <view class="delete-impact-card"><text v-for="impact in impacts" :key="impact">{{ impact }}</text></view>
-      <text class="delete-page-disclosure">This local build deletes the account and its private data from this device. It does not send a deletion request to a remote service.</text>
+      <text class="delete-page-disclosure">Deleting your account removes its saved private records and cannot be undone.</text>
     </view>
     <template #footer><view v-if="!access_error" class="delete-page-footer"><view class="delete-page-action" role="button" data-interaction="delInfo.openDelReason.click.1" @click="continue_deletion">Continue Account Deletion</view><view class="delete-page-action delete-page-action--secondary" role="button" data-interaction="delInfo.keepAccount.click.1" @click="back">Keep My Account</view></view></template>
   </SecondaryPageFrame>

@@ -33,7 +33,7 @@ const visibility_note = computed(() => visibility.value === 'hidden'
   ? 'Your profile won’t appear in Discover or Auto Match. Existing chats and joined events stay open.'
   : visibility.value === 'auto_match'
     ? 'You won’t appear in Discover browsing, but Auto Match can still suggest you.'
-    : 'Visible to students in Discover and Auto Match. Local accounts are not student verified.')
+    : 'Visible in Discover and Auto Match. Student verification status is shown on your profile.')
 const toggles = [
   ['show_online', 'Show online status'],
   ['show_year', 'Show academic year'],

@@ -51,7 +51,7 @@ const support = async () => {
       </view>
       <text class="report-detail-heading">Your description</text>
       <text class="report-detail-description">{{ report.description || 'No additional description was saved.' }}</text>
-      <text class="report-detail-note">This report is stored only on this device and was not sent to a moderation service. No moderation decision or other user’s private information is available.</text>
+      <text class="report-detail-note">This record contains the details you provided. A saved report does not indicate a moderation decision.</text>
     </template>
   </ProfileEditorFrame>
 </template>
