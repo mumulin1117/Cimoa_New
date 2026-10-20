@@ -7,7 +7,7 @@ import { create_scenario } from '../src/stores/scenarios.js'
 import { terms_document, privacy_document, community_document } from '../src/utils/legalDocuments.js'
 
 const require = createRequire(import.meta.url), { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
-const folder = path.resolve('docs/ui-restoration/community/legal-unification-2026-10-19'), key = 'cimoa_app_state_v2'
+const folder = path.resolve(process.env.CIMOA_LEGAL_EVIDENCE_DIR || 'docs/ui-restoration/community/legal-unification-2026-10-19'), key = 'cimoa_app_state_v2'
 const documents = { terms: terms_document, privacy: privacy_document, community: community_document }
 const report = { result: 'failed', checks: [], errors: [], documents: {}, routes: [] }
 const check = message => { report.checks.push(message); console.log('PASS ' + message) }
@@ -57,13 +57,14 @@ try {
     await close_sheet(page)
     assert.deepEqual(await page.locator('.community-check-area').evaluateAll(rows => rows.map(row => row.getAttribute('aria-checked'))), ['true', 'false', 'false'])
     assert.equal(await stored(), before)
-    check(`Community ${documents[kind].title}: complete canonical text, scroll to Close, no consent/storage side effects`)
+    check(`Community ${documents[kind].title}: complete canonical text, fixed X, no consent/storage side effects`)
   }
   await click(page, 'agree.readGuides.click.1'); await sheet_ready(page, 'community'); assert.deepEqual(await read_document(page), expected('community')); assert.equal(await page.locator('.agreement-sheet .uni-scroll-view').last().evaluate(element => element.scrollTop), 0); await close_sheet(page, true)
   await page.reload(); await page.locator('.community-page').waitFor(); assert.equal(await page.locator('[aria-checked="true"]').count(), 0); assert.equal(await stored(), before)
   check('Repeated Guidelines open starts at the top; mask close and refresh do not silently accept')
 
   await goto('/pages/auth/welcome'); await page.locator('.welcome-page').waitFor()
+  await page.locator('.eula-dialog.event-dialog--open').waitFor(); await click(page, 'welcome.eula.decline.click.1'); await page.locator('.eula-dialog:visible').waitFor({ state: 'hidden' })
   for (const [kind, label] of [['terms', 'Terms'], ['privacy', 'Privacy']]) for (const prefix of ['welcome.', 'welcome.consent.']) {
     await click(page, `${prefix}open${label}.click.1`); await page.locator(`.legal-${kind}-page`).waitFor()
     assert.deepEqual(await read_document(page), report.documents[kind]); assert.equal(await page.locator('.event-page-header-title:visible').innerText(), documents[kind].title)

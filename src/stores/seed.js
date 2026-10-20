@@ -209,6 +209,7 @@ export function create_seed(now = Date.now()) {
   memberships.push(...AVATAR_PROFILES.map((person, index) => ({ membership_id: `member_catalog_${person.user_id}`, event_id: campus_event_ids[index % campus_event_ids.length], user_id: person.user_id, status: 'joined', joined_at: now - (index + 1) * 3600000 })))
   return clone_data({
     schema_version: SCHEMA_VERSION, revision: 0, updated_at: now, environment: 'fixture',
+    app_consent: { revision: null, accepted_at: null },
     accounts: [{ account_id: 'account_cimoa', user_id: me, email: TEST_EMAIL, status: 'active', auth_provider: 'fixture', credential_hash: '1048c6721624beee8dee35c9f99a8024b9d7fa1272b7d5d5246296f85032f9a2' }],
     session: { account_id: 'account_cimoa', current_user_id: me, expires_at: now + 30 * 86400000 }, users,
     goals: GOALS, interests: INTERESTS, songs, picker_options: PICKER_OPTIONS, onboarding_steps: ONBOARDING_STEPS,

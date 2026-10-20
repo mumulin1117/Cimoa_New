@@ -1,5 +1,9 @@
 # Community Agreement 来源锁定与差异审计
 
+## 2026-10-20 shared legal Sheet close increment (current)
+
+User approved a fixed top-right X in place of the bottom Close text. The title and X stay outside the document scroll. Canonical document text and separate registration choices are unchanged. [Current contract](../welcome/eula-2026-10-20/source-contract.json) and [scoped evidence](../welcome/eula-2026-10-20/acceptance.json) supersede historical Close geometry below; no whole-page pixel or publication approval is inferred.
+
 ## 2026-10-19 协议统一专项（覆盖本轮验收状态）
 
 用户要求 Community、Welcome、设置及金币帮助的协议内容一致，并完善社区规则。编码前审计确认：注册目录另存了简版 Terms/Privacy；Terms 完整页标题与目录不一致；社区详细规则只有六句摘要。现以 Welcome 使用的完整文档为唯一来源，保留六句首页摘要和既有控件/几何，只更新 Read 内容及共享渲染。差异、所有消费者、Apple 官方参考和发布缺项见 [本轮来源契约](./legal-unification-2026-10-19/source-contract.json)。

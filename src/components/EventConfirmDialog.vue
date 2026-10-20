@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, nextTick, onUnmounted } from 'vue'
 import { MOTION } from '@/config/navigation.js'
-const props = defineProps({ open: Boolean, busy: Boolean, label: { type: String, required: true }, closeInteraction: String })
+const props = defineProps({ open: Boolean, busy: Boolean, label: { type: String, required: true }, closeInteraction: String, dismissible: { type: Boolean, default: true } })
 const emit = defineEmits(['close', 'released'])
 const rendered = ref(false), showing = ref(false)
 let timer, token = 0
@@ -15,8 +15,8 @@ watch(() => props.open, async open => {
     showing.value = false
     timer = setTimeout(() => { rendered.value = false; emit('released') }, MOTION.sheet)
   }
-})
-const close = () => { if (!props.busy) emit('close') }
+}, { immediate: true })
+const close = () => { if (!props.busy && props.dismissible) emit('close') }
 onUnmounted(() => { token++; clearTimeout(timer) })
 </script>
 <template>
@@ -27,6 +27,7 @@ onUnmounted(() => { token++; clearTimeout(timer) })
       <view class="event-dialog-handle" />
       <slot name="header" />
       <scroll-view class="event-dialog-scroll" scroll-y :show-scrollbar="false"><slot /></scroll-view>
+      <slot name="footer" />
     </view>
   </view>
 </template>

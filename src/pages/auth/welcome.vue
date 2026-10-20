@@ -1,19 +1,52 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { onShow, onHide } from '@dcloudio/uni-app'
+import { use_app_store } from '@/stores/store.js'
+import { use_write_loading } from '@/composables/useWriteLoading.js'
+import { startup_destination } from '@/utils/authNavigation.js'
+import { terms_document, privacy_document, community_document } from '@/utils/legalDocuments.js'
 import { auth_destination } from '@/utils/authNavigation.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
+import AgreementSheet from '@/components/AgreementSheet.vue'
+import EulaConfirmDialog from '@/components/EulaConfirmDialog.vue'
+import AuthActionLoading from '@/components/AuthActionLoading.vue'
 const frame = ref(null), error = ref(''), photo_status = ref('loading'), photo_key = ref(0)
-const agreed = ref(false)
+const store = use_app_store(), agreed = computed(() => store.has_app_consent), eula_open = ref(false), document = ref(null)
+const documents = { terms: terms_document, privacy: privacy_document, community: community_document }
+const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
+let prompted = false
+onShow(() => { if (!prompted) { prompted = true; eula_open.value = !agreed.value } })
+onHide(() => { cancel_loading(); eula_open.value = false; document.value = null })
 const go = async target => {
+  if (is_loading.value || eula_open.value || document.value) return
   error.value = ''
   try { await frame.value.navigate_forward(auth_destination(target)) } catch (cause) { error.value = cause.message }
 }
 const continue_to = target => {
+  if (is_loading.value || eula_open.value) return
   if (!agreed.value) { error.value = 'Please agree to the Terms and Privacy Policy to continue.'; return }
   return go(target)
 }
-const toggle_agreement = () => { agreed.value = !agreed.value; error.value = '' }
+const toggle_agreement = () => {
+  if (is_loading.value || eula_open.value) return
+  error.value = ''
+  if (!agreed.value) { eula_open.value = true; return }
+  const result = store.set_app_consent(false)
+  if (!result.success) error.value = result.message
+}
+const accept_eula = async () => {
+  if (is_loading.value || !eula_open.value || document.value) return
+  error.value = ''
+  const result = await run_with_loading(() => store.set_app_consent(true))
+  if (result.reason === 'cancelled') return
+  if (!result.success) { error.value = result.message; return }
+  eula_open.value = false
+  if (store.session.is_authenticated || store.local_verification) {
+    try { await frame.value.navigate_replace(startup_destination(store)) } catch (cause) { error.value = cause.message }
+  }
+}
+const decline_eula = () => { if (!is_loading.value) { eula_open.value = false; error.value = '' } }
 const retry_photo = () => { photo_status.value = 'loading'; photo_key.value++ }
 </script>
 <template>
@@ -27,7 +60,7 @@ const retry_photo = () => { photo_status.value = 'loading'; photo_key.value++ }
     </view>
     <template #footer>
       <view class="welcome-copy"><text class="welcome-brand">Cimoa</text><text class="welcome-title">Meet your campus</text><text class="welcome-description">Discover people, conversations, and events around university life.</text></view>
-      <view class="welcome-footer">
+      <view class="welcome-footer" :inert="eula_open || is_loading ? true : null">
         <text v-if="error" class="welcome-error" role="alert">{{ error }}</text>
         <view class="welcome-create" role="button" tabindex="0" :aria-disabled="!agreed" data-interaction="welcome.goAge.click.1" @click="continue_to('/pages/auth/age')" @keydown.enter="continue_to('/pages/auth/age')"><text>Create Account</text><SourceIcon name="arrow-right" :stroke-width="2.4" /></view>
         <view class="welcome-login" role="button" tabindex="0" :aria-disabled="!agreed" data-interaction="welcome.goLogin.click.1" @click="continue_to('/pages/auth/login')" @keydown.enter="continue_to('/pages/auth/login')">Log In</view>
@@ -38,9 +71,15 @@ const retry_photo = () => { photo_status.value = 'loading'; photo_key.value++ }
         <view class="welcome-legal"><text>By continuing, you agree to our </text><text class="welcome-link" role="button" tabindex="0" data-interaction="welcome.openTerms.click.1" @click="go('/pages/legal/terms')" @keydown.enter="go('/pages/legal/terms')">Terms</text><text> and </text><text class="welcome-link" role="button" tabindex="0" data-interaction="welcome.openPrivacy.click.1" @click="go('/pages/legal/privacy')" @keydown.enter="go('/pages/legal/privacy')">Privacy Policy</text><text>.</text></view>
       </view>
     </template>
+    <template #overlays>
+      <EulaConfirmDialog :open="eula_open" :busy="is_loading" :suspended="!!document" :error="error" @confirm="accept_eula" @decline="decline_eula" @read="document = documents[$event]" />
+      <AgreementSheet :open="!!document" :document="document" @close="document = null" />
+      <AuthActionLoading class="eula-loading" :visible="is_loading" label="Saving your agreement…" />
+    </template>
   </SecondaryPageFrame>
 </template>
 <style scoped>
+.eula-loading { z-index: 1500; }
 .welcome-page :deep(.secondary-page-scroll .uni-scroll-view-content) { height: 100%; }
 .welcome-photo-region { position: relative; margin: 0 7.634rpx; height: 100%; }
 .welcome-photo {

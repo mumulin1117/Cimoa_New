@@ -1,0 +1,86 @@
+[
+  {
+    "interaction_id": "welcome.eula.accept.click.1",
+    "source_screen": "User-authorized first-launch EULA, 2026-10-20",
+    "trigger": "Click, Enter or Space",
+    "preconditions": "Visible EULA, no reader above it, not busy; hydrated Store and current linked document revisions",
+    "visible_feedback": "Saving your agreement… custom Loading for 500ms, controls locked; errors stay in EULA",
+    "success_result": "Close EULA and check Welcome; existing authenticated/pending-registration context resumes its original destination",
+    "failure_result": "Do not check or navigate; retain original state and show retryable save error; unload cancels pending write",
+    "persistence": "app_consent.revision and accepted_at via Store; idempotent exact-revision acceptance",
+    "sync_scope": "Startup routing and Welcome checkbox; no implicit registration, session, student status, balance or relationship changes",
+    "acceptance": "Fresh launch, failure/retry, double click, delay-before-write, refresh, existing session and cancelled write"
+  },
+  {
+    "interaction_id": "welcome.eula.decline.click.1",
+    "source_screen": "User-authorized first-launch EULA, 2026-10-20",
+    "trigger": "Click, Enter or Space",
+    "preconditions": "Visible EULA and not busy",
+    "visible_feedback": "Close controlled dialog; Welcome remains unchecked with both auth entries gated",
+    "success_result": "Remain at Welcome; checkbox can reopen EULA",
+    "failure_result": "Busy input ignored; outside click and Escape do not grant agreement",
+    "persistence": "none",
+    "sync_scope": "Welcome; next refresh/launch prompts again",
+    "acceptance": "Not Now writes nothing; auth actions cannot advance; refresh shows EULA"
+  },
+  {
+    "interaction_id": "welcome.eula.read.terms",
+    "source_screen": "User-authorized EULA linked documents, 2026-10-20",
+    "trigger": "Click, Enter or Space",
+    "preconditions": "Visible EULA and not busy",
+    "visible_feedback": "Controlled higher-layer AgreementSheet; EULA suspended underneath",
+    "success_result": "Read complete canonical Terms of Use; X returns to same EULA",
+    "failure_result": "No automatic acceptance, no account change or navigation",
+    "persistence": "none",
+    "sync_scope": "Same terms_document as Community, Welcome standalone page, Settings and Coin Help",
+    "acceptance": "Exact section equality, long scroll, X, repeated open, no consent write"
+  },
+  {
+    "interaction_id": "welcome.eula.read.privacy",
+    "source_screen": "User-authorized EULA linked documents, 2026-10-20",
+    "trigger": "Click, Enter or Space",
+    "preconditions": "Visible EULA and not busy",
+    "visible_feedback": "Controlled higher-layer AgreementSheet; EULA suspended underneath",
+    "success_result": "Read complete canonical Privacy Policy; X returns to same EULA",
+    "failure_result": "No automatic acceptance, no account change or navigation",
+    "persistence": "none",
+    "sync_scope": "Same privacy_document across every existing legal entry",
+    "acceptance": "Exact section equality, long scroll, X, repeated open, no consent write"
+  },
+  {
+    "interaction_id": "welcome.eula.read.community",
+    "source_screen": "User-authorized EULA linked documents, 2026-10-20",
+    "trigger": "Click, Enter or Space",
+    "preconditions": "Visible EULA and not busy",
+    "visible_feedback": "Controlled higher-layer AgreementSheet; EULA suspended underneath",
+    "success_result": "Read complete canonical Community Guidelines; X returns to same EULA",
+    "failure_result": "No automatic acceptance or registration checkbox change",
+    "persistence": "none",
+    "sync_scope": "Same community_document as registration and Settings",
+    "acceptance": "All sections available and scrollable; close does not agree to Community registration item"
+  },
+  {
+    "interaction_id": "welcome.toggleAgreement.click.1",
+    "source_screen": "Welcome existing checkbox; user-authorized persistent linkage, 2026-10-20",
+    "trigger": "Click, Enter or Space",
+    "preconditions": "Welcome active, EULA closed and not saving",
+    "visible_feedback": "Unchecked opens EULA; checked revokes through Store immediately as a lightweight checkbox action",
+    "success_result": "Only successful revoke unchecks; explicit EULA confirmation is required to check again",
+    "failure_result": "Failed revoke stays checked with readable error; no false state change",
+    "persistence": "Store app_consent; no direct page storage API",
+    "sync_scope": "Welcome and next startup; registration items remain independent",
+    "acceptance": "Accept-refresh-checked, revoke-refresh-prompt, keyboard review, storage rollback"
+  },
+  {
+    "interaction_id": "sheetAgreement.closeSheet.click.2",
+    "source_screen": "Existing shared legal Sheet; user-authorized fixed top-right X replacing bottom Close, 2026-10-20",
+    "trigger": "Click, Enter or Space; existing mask/Escape close retained",
+    "preconditions": "Visible document reader",
+    "visible_feedback": "Controlled Sheet exit animation, restore underlying Community/Settings/EULA",
+    "success_result": "Close only the reader, preserve underlying route, scroll and choices",
+    "failure_result": "No inferred consent, no business state write or wrong return",
+    "persistence": "none",
+    "sync_scope": "Community, Settings Guidelines, Settings Legal and EULA reader",
+    "acceptance": "X remains fixed/hittable after long scroll, first/repeated open, all three documents and small safe-area viewport"
+  }
+]

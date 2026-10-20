@@ -62,6 +62,7 @@ export const messages_for = (data, conversation_id) => can_open_conversation(dat
 export { home_cards, home_match_card } from './homeFeed.js'
 export const ensure = (condition, message) => { if (!condition) throw new Error(message) }
 export function validate_data(data) {
+  ensure(data.app_consent && (data.app_consent.revision === null && data.app_consent.accepted_at === null || typeof data.app_consent.revision === 'string' && data.app_consent.revision.length > 0 && Number.isFinite(data.app_consent.accepted_at)), 'Invalid agreement acceptance.')
   ensure(Array.isArray(data.call_sessions) && new Set(data.call_sessions.map(row => row.call_id)).size === data.call_sessions.length, 'Invalid call identifiers.')
   for (const row of data.call_sessions) {
     const conversation = data.conversations.find(item => item.conversation_id === row.conversation_id && item.kind === 'direct')

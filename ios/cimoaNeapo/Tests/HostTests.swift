@@ -5,6 +5,69 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    func testFirstLaunchEulaAndAgreementClose() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/welcome/eula-2026-10-20")
+        let fixture = try JSONSerialization.jsonObject(with: Data(contentsOf: folder.appendingPathComponent("native-fixture.json"))) as! [String: Any]
+        let driver = """
+        const delay=ms=>new Promise(r=>setTimeout(r,ms)),assert=(v,m)=>{if(!v)throw Error(m)};
+        const visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0&&getComputedStyle(e).visibility!=='hidden');
+        const wait=async fn=>{for(let i=0;i<160;i++){if(fn())return;await delay(40)}throw Error('EULA timeout '+location.hash)};
+        const click=async id=>{await wait(()=>visible('[data-interaction="'+id+'"]'));visible('[data-interaction="'+id+'"]').click();await delay(60)};
+        const state=()=>{const s=localStorage.getItem('cimoa_app_state_v2');return s?JSON.parse(s).data:null};
+        """
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const [k,v] of [['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}return true", arguments: ["snapshot":saved], in: nil, contentWorld: .page)
+            try await loadFreshConnection(host, route: "/pages/auth/splash", selector: ".splash-page")
+        }
+        var checks: [String] = []
+        do {
+            _ = try await script(host, "localStorage.removeItem('cimoa_app_state_v2');localStorage.removeItem('cimoa_app_state');return true")
+            try await loadFreshConnection(host, route: "/pages/auth/splash", selector: ".eula-dialog.event-dialog--open")
+            let first = try await script(host, driver + """
+            await delay(350);assert(state()===null,'Launch wrote data');assert(visible('.welcome-consent-toggle').getAttribute('aria-checked')==='false','Preselected agreement');
+            const e=visible('.eula-dialog .event-dialog-panel'),r=e.getBoundingClientRect(),top=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-top')),bottom=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom'));
+            assert(r.y>=top-1&&r.bottom<=innerHeight-bottom+1,'EULA outside safe area');const s=[...document.querySelectorAll('.eula-dialog .uni-scroll-view')].at(-1);assert(s.scrollHeight>s.clientHeight,'EULA not scrollable');s.scrollTop=s.scrollHeight;await delay(50);assert(s.scrollTop>0,'EULA scroll failed');
+            const a=visible('[data-interaction="welcome.eula.accept.click.1"]'),b=a.getBoundingClientRect(),hit=document.elementFromPoint(b.x+b.width/2,b.y+b.height/2);assert(a===hit||a.contains(hit),'Agree covered by document');return {top,bottom,width:innerWidth,height:innerHeight,card:{y:r.y,bottom:r.bottom},scroll:true};
+            """) as! [String: Any]
+            try (try await host.webView.takeSnapshot(configuration:nil)).pngData()!.write(to:folder.appendingPathComponent("eula-wkwebview.png"))
+            checks.append("Fresh launch opens unaccepted EULA with measured safe areas, scroll and hittable fixed actions")
+            let decline = try await script(host, driver + """
+            for(const kind of ['terms','privacy','community']){await click('welcome.eula.read.'+kind);await wait(()=>visible('.agreement-sheet.event-dialog--open'));await delay(300);assert(visible('.agreement-sheet .legal-document-content').dataset.legalDocument===kind,'Wrong policy');assert(!visible('.agreement-sheet .event-dialog-secondary'),'Bottom Close retained');await click('sheetAgreement.closeSheet.click.2');await wait(()=>!visible('.agreement-sheet'));assert(state()===null,'Reading accepted');}
+            await click('welcome.eula.decline.click.1');await wait(()=>!visible('.eula-dialog'));await click('welcome.goLogin.click.1');await click('welcome.goAge.click.1');assert(location.hash.endsWith('/pages/auth/welcome')&&state()===null,'Decline did not gate');return true;
+            """) as? Bool
+            XCTAssertEqual(decline,true);checks.append("Three canonical readers close with X without accepting; Not Now gates both auth entries")
+            try await loadFreshConnection(host, route:"/pages/auth/welcome",selector:".eula-dialog.event-dialog--open")
+            let savedOnce = try await script(host, driver + """
+            const original=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='cimoa_app_state_v2')throw Error('Unavailable');return original.call(this,k,v)};
+            try{await click('welcome.eula.accept.click.1');await wait(()=>visible('.eula-dialog [role=alert]'));assert(state()===null&&visible('.welcome-consent-toggle').getAttribute('aria-checked')==='false','Failure accepted');}finally{Storage.prototype.setItem=original;}
+            await click('welcome.eula.accept.click.1');await wait(()=>visible('.eula-loading'));assert(state()===null,'Saved before Loading');const loading=visible('.eula-loading'),r=loading.getBoundingClientRect(),hit=document.elementFromPoint(r.width/2,r.height/2);assert(loading===hit||loading.contains(hit),'Loading behind dialog');
+            await click('welcome.eula.accept.click.1');await click('welcome.eula.decline.click.1');await wait(()=>!visible('.eula-dialog'));assert(state().revision===1,'Duplicate acceptance writes');assert(visible('.welcome-consent-toggle').getAttribute('aria-checked')==='true','Checkbox not linked');assert(Object.values(state().auth_flow.agreements).every(v=>v===false),'Community autoaccepted');return true;
+            """) as? Bool
+            XCTAssertEqual(savedOnce,true);checks.append("Storage failure rolls back; Loading precedes a single save and links checkbox without accepting registration choices")
+            try await loadFreshConnection(host, route:"/pages/auth/welcome",selector:".welcome-page")
+            let restored = try await script(host,driver + """
+            await delay(350);assert(!visible('.eula-dialog')&&visible('.welcome-consent-toggle').getAttribute('aria-checked')==='true','Consent not restored');const before=localStorage.getItem('cimoa_app_state_v2');await click('welcome.goLogin.click.1');await wait(()=>visible('.login-page'));await click('login.goBack.click.1');await wait(()=>visible('.welcome-page'));assert(localStorage.getItem('cimoa_app_state_v2')===before,'Navigation changed data');await click('welcome.toggleAgreement.click.1');assert(state().app_consent.revision===null,'Revoke not saved');return true;
+            """) as? Bool
+            XCTAssertEqual(restored,true);checks.append("Refresh and Login return preserve agreement; unchecking revokes it")
+            try await loadFreshConnection(host, route:"/pages/auth/community",selector:".community-page")
+            let close = try await script(host,driver + """
+            const before=localStorage.getItem('cimoa_app_state_v2');for(const kind of ['Terms','Privacy','Guides']){await click('agree.read'+kind+'.click.1');await wait(()=>visible('.agreement-sheet.event-dialog--open'));await delay(300);const x=visible('.agreement-close'),a=x.getBoundingClientRect(),s=[...document.querySelectorAll('.agreement-sheet .uni-scroll-view')].at(-1);s.scrollTop=s.scrollHeight;await delay(60);const b=x.getBoundingClientRect(),hit=document.elementFromPoint(b.x+b.width/2,b.y+b.height/2);assert(Math.abs(a.y-b.y)<1&&(x===hit||x.contains(hit)),'X not fixed/hittable');await click('sheetAgreement.closeSheet.click.2');await wait(()=>!visible('.agreement-sheet'));assert([...document.querySelectorAll('.community-check-area')].every(e=>e.getAttribute('aria-checked')==='false'),'Reading checked registration');}assert(localStorage.getItem('cimoa_app_state_v2')===before,'Reading wrote data');return true;
+            """) as? Bool
+            XCTAssertEqual(close,true);checks.append("Community long documents retain fixed right X and zero-write, independent registration choices")
+            _ = try await host.webView.callAsyncJavaScript("fixture.data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(fixture));return true",arguments:["fixture":fixture],in:nil,contentWorld:.page)
+            try await loadFreshConnection(host,route:"/pages/auth/splash",selector:".eula-dialog.event-dialog--open")
+            let session = try await script(host,driver + """
+            const before=JSON.stringify(state().session);await click('welcome.eula.accept.click.1');await wait(()=>visible('.home-header'));assert(JSON.stringify(state().session)===before,'Existing session changed');assert(!visible('.main-skeleton'),'Consent prepared auth skeleton');return true;
+            """) as? Bool
+            XCTAssertEqual(session,true);checks.append("Existing session resumes Home after explicit agreement without a new login/skeleton")
+            try await restore()
+            try JSONSerialization.data(withJSONObject:["result":"passed","checks":checks,"first_launch":first,"storage_restored":true,"scope":"EULA and shared agreement X increment; no App Store approval claim"],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+        } catch { try? await restore();throw error }
+    }
     func testUnifiedLegalDocumentsAndCommunityGuidelines() async throws {
         let host = try await rawHost()
         let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String: Any]
@@ -707,7 +770,8 @@ final class HostTests: XCTestCase {
         _ = try await host.webView.callAsyncJavaScript(birthDatePickerDriver + "await chooseBirthDate(value);return true", arguments: ["value":value], in: nil, contentWorld: .page)
     }
     private func signIn(_ host: WebViewController) async throws {
-        _ = try await script(host, "const check=document.querySelector('.welcome-consent-toggle');if(check.getAttribute('aria-checked')!=='true')check.click();document.querySelector('.welcome-login').click(); return true")
+        _ = try await script(host, "const pause=ms=>new Promise(r=>setTimeout(r,ms)),check=document.querySelector('.welcome-consent-toggle');if(check.getAttribute('aria-checked')!=='true'){if(!document.querySelector('.eula-dialog.event-dialog--open'))check.click();await pause(300);document.querySelector('[data-interaction=\"welcome.eula.accept.click.1\"]').click();for(let i=0;i<80&&check.getAttribute('aria-checked')!=='true';i++)await pause(40);await pause(300)}if(document.querySelector('.welcome-login'))document.querySelector('.welcome-login').click();return true")
+        if (try? await script(host, "return !!document.querySelector('.home-header')")) as? Bool == true { return }
         try await waitFor(host, ".login-page input")
         _ = try await script(host, "await new Promise(r=>setTimeout(r,300)); const fields=document.querySelectorAll('.login-page input'); for(const [i,value] of ['cimoa@gmail.com','12341234'].entries()){fields[i].value=value; fields[i].dispatchEvent(new Event('input',{bubbles:true}))} await Promise.resolve();document.querySelector('[data-interaction=\"login.loginNow.click.1\"]').click(); return true")
         try await waitFor(host, ".home-header")

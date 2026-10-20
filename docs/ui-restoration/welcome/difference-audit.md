@@ -1,5 +1,9 @@
 # Welcome 来源锁定、差异审计与待确认结果
 
+## 2026-10-20 first-launch EULA increment (current interaction contract)
+
+The [user-authorized increment](eula-2026-10-20/source-contract.json) supersedes the historical transient/refresh-reset consent expectations below. Explicit EULA acceptance and Welcome use one versioned, persisted Store state; unchecking revokes it. Reading never accepts registration choices. Existing Welcome copy, photo and geometry remain unchanged. [Current scoped evidence](eula-2026-10-20/acceptance.json) does not imply whole-App or production legal approval.
+
 ## 2026-10-20 首屏文案裁切修复（最新轮次）
 
 用户再次提供与上轮 SHA 相同的 PNG，指出 Create Account 上方说明未显示。检查确认文案节点存在，但 360px 固定图高加 44px 间距使说明超出中部滚动区；真实 62/34 安全区下被裁切。上轮“滚到底后可见”不能满足本轮“首屏完整可见”。本轮不改文案、字号或主题，只将文案放在按钮区前的固定布局中，图片消费剩余空间；来源、允许差异及回归范围见 [本轮来源契约](./copy-visibility-2026-10-20/source-contract.json)。

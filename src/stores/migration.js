@@ -5,6 +5,7 @@ import { ensure_account_defaults, registration_profile } from './accountDefaults
 import { generated_match_distances } from './matchingCatalog.js'
 export function upgrade_additive_data(value) {
   const data = clone_data(value)
+  if (data.app_consent === undefined) data.app_consent = { revision: null, accepted_at: null }
   if (data.call_sessions === undefined) data.call_sessions = []
   for (const row of data.event_preferences || []) if (row.blocked_organizer_ids === undefined) row.blocked_organizer_ids = []
   if(data.match_distances===undefined)data.match_distances=generated_match_distances()

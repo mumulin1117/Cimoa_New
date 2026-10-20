@@ -8,6 +8,7 @@ import { match_presentation } from './matchPresentation.js'
 import { migrate_legacy, upgrade_additive_data } from './migration.js'
 import { normalize_email, valid_email, password_error, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
 import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
+import { APP_CONSENT_REVISION, empty_app_consent, has_app_consent } from '../utils/appConsent.js'
 import { community_rules, registration_agreements } from '../utils/registrationCatalog.js'
 import { onboarding_context, onboarding_actions } from './onboarding.js'
 import { profile_context, profile_edit_actions } from './profileEditing.js'
@@ -49,6 +50,7 @@ const check_media = async (store, id, kind) => {
 export const use_app_store = defineStore('app', {
   state: () => ({ data: create_seed(), hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
   getters: {
+    has_app_consent: state => state.hydration_status === 'ready' && has_app_consent(state.data),
     waiting_call: state => id => state.hydration_status === 'ready' ? waiting_call(state.data, id, state.clock_ms) : null,
     match_presentation: state => (id='',draft=null,query='') => match_presentation(state.data,id,state.clock_ms,state.hydration_status,draft,query),
     profile_editor: state => state.hydration_status === 'ready' ? profile_context(state.data, state.clock_ms) : null,
@@ -191,6 +193,15 @@ export const use_app_store = defineStore('app', {
     ...profile_edit_actions,
     ...onboarding_actions,
     tick() { this.clock_ms = get_runtime(this).clock() },
+    set_app_consent(accepted, revision = APP_CONSENT_REVISION) {
+      if (typeof accepted !== 'boolean' || revision !== APP_CONSENT_REVISION) return failure('invalid_consent', 'This agreement has changed. Please reopen it and try again.')
+      if (this.hydration_status === 'ready' && (accepted ? this.has_app_consent : this.data.app_consent?.revision === null)) return { success: true, repeated: true }
+      const result = transact(this, null, (data, now) => {
+        data.app_consent = accepted ? { revision, accepted_at: now } : empty_app_consent()
+      }, { public: true })
+      if (!result.success) return failure('consent_save_failed', 'Your agreement could not be saved. Please try again.')
+      return result
+    },
     hydrate() {
       if (this.hydration_status === 'ready') return { success: true }
       this.hydration_status = 'loading'

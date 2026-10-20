@@ -2,6 +2,26 @@
 // Presentation must not supply a different summary, notice or publication claim.
 const document = value => Object.freeze({ ...value, sections: Object.freeze(value.sections.map(section => Object.freeze(section))) })
 
+export const eula_document = document({
+  id: 'eula',
+  revision: '2026-10-20',
+  title: 'End User License Agreement',
+  updated: 'Effective 20 October 2026',
+  intro: 'Welcome to Cimoa. Start with a better question, find your people and make thoughtful campus connections. Please read this agreement before continuing. By choosing Agree and Continue, you accept this agreement and the Terms of Use, acknowledge the Privacy Policy and agree to follow the Community Guidelines.',
+  sections: [
+    ['1. Who Cimoa is for', 'Cimoa is for university students aged 18 or older. Provide accurate age, university and profile information. Do not impersonate another person, share an account or misrepresent your eligibility. A profile, suggestion or connection is not a guarantee of someone’s identity.'],
+    ['2. Your permission to use Cimoa', 'You may use Cimoa for your own personal, lawful campus social activity on devices you own or control, subject to this agreement and any applicable App Store usage rules. Do not resell access, copy protected app materials, interfere with security or use automated tools to harvest profiles or contact people in bulk. Your statutory rights and applicable open-source licenses remain unaffected.'],
+    ['3. Your profile and content', 'You remain responsible for the photos, text, voice introductions, messages and event content you choose to share. Share only material you own or have permission to use. Permit Cimoa to display and handle that content only as needed for the features you choose, your visibility settings and the practices described in the Privacy Policy. Do not expose someone else’s private information or copy their voice or identity without permission.'],
+    ['4. Zero tolerance for abuse', 'Objectionable content and abusive behavior are not permitted. Do not share pornography, non-consensual intimate imagery, child sexual abuse material, threats, hate speech or content promoting violence or illegal activity. Harassment, bullying, stalking, grooming, exploitation, scams and spam are prohibited across profiles, introductions, messages and event groups. Never use another account to evade a block or rejection.'],
+    ['5. Connections and consent', 'A card view, match suggestion, event membership or coin spend does not mean someone has agreed to contact. Respect mutual connection choices, boundaries and refusals. Do not pressure anyone to reply, share media, join a call or meet in person. Use the Report and Block controls for concerning content or unwanted contact; the result shown after an action describes what was completed. Do not rely on a report for emergency assistance.'],
+    ['6. Campus events and personal safety', 'Check event details, organizers, locations and costs before making plans. Meet in public, tell someone you trust and leave if you feel unsafe. Participation is your choice, and joining a group does not authorize private contact. Cimoa is not an emergency service; contact campus security or local emergency services if someone is in immediate danger.'],
+    ['7. Optional purchases and availability', 'Core campus social features are free. Where offered, optional coin features show their cost before confirmation. Coins have no cash value and do not guarantee a connection, response or compatibility. A failed, cancelled or unavailable purchase does not add coins. Only a confirmed transaction changes the balance. Features that need a permission, resource or service may be unavailable; do not treat a waiting screen as an established call.'],
+    ['8. Privacy and your choices', 'Read the Privacy Policy for the information handled by Cimoa and how it is stored. You can manage visibility and permissions, block unwanted contacts and delete your account in Settings. Accepting this agreement does not grant camera, microphone, photo or notification permission; each is requested separately when needed.'],
+    ['9. Ending use and applicable terms', 'You may stop using Cimoa at any time. Do not continue using features in a way that violates these rules. Account deletion and blocking have the effects described in the Terms of Use and Privacy Policy. This agreement does not waive mandatory consumer rights, promise uninterrupted availability or replace applicable App Store licensing terms. The linked documents explain current service availability and contact information.'],
+  ],
+  footer: 'Read the Terms of Use, Privacy Policy and Community Guidelines below. If you do not agree, choose Not Now; you can review this agreement again before continuing.',
+})
+
 export const terms_document = document({
   id: 'terms',
   revision: '2026-10-14',

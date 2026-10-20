@@ -1,0 +1,1 @@
+import{e,c as i}from"./index-CEM4yS1n.js";import{A as l}from"./AppLoading.B4vmE6ct.js";const o={__name:"ProfileActionLoading",props:{visible:Boolean,label:{type:String,default:"Saving your profile…"}},setup:o=>(a,s)=>(e(),i(l,{visible:o.visible,label:o.label},null,8,["visible","label"]))};export{o as _};

@@ -16,7 +16,7 @@
       "splash.goWelcome.click.1"
     ],
     "return_owner": "root; no fake parent or back navigation",
-    "completion_navigation": "guest/expired → replace Welcome; valid session → replace Home; no writes or skeleton preparation",
+    "completion_navigation": "missing/current-revision consent → Welcome/EULA without changing session; accepted guest/expired → Welcome; accepted valid session → existing auth destination; no startup writes or skeleton preparation",
     "fixed_regions": "TopSafeArea; centered source brand/progress; BottomSafeArea",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
     "top_safe_area_owner": "TopSafeArea",
@@ -129,7 +129,10 @@
     "acceptance_notes": "Brand, heading and full description are initially visible, not merely present in the DOM or readable after scrolling. Existing copy, fonts, consent, policy links and auth return paths unchanged. Native safe areas 62/34; screenshot and source overlay retained. Whole-screen PNG font/raster equality remains pending.",
     "welcome_consent_contract": "docs/ui-restoration/welcome/consent-2026-10-19/source-contract.json",
     "welcome_consent_evidence": "docs/ui-restoration/welcome/consent-2026-10-19/acceptance.json",
-    "welcome_copy_visibility_evidence": "docs/ui-restoration/welcome/copy-visibility-2026-10-20/acceptance.json"
+    "welcome_copy_visibility_evidence": "docs/ui-restoration/welcome/copy-visibility-2026-10-20/acceptance.json",
+    "current_functional_increment": "docs/ui-restoration/welcome/eula-2026-10-20/source-contract.json",
+    "eula_acceptance_evidence": "docs/ui-restoration/welcome/eula-2026-10-20/acceptance.json",
+    "current_consent_behavior": "Explicit first-launch EULA acceptance is versioned and persisted; Welcome reads it, unchecking revokes it; historical refresh-reset/zero-consent-write expectations are superseded. Community registration choices remain independent."
   },
   {
     "source_screen": "Legal / Terms of Service / Default",
@@ -401,7 +404,7 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "2026-10-19: legal unification scoped acceptance passed: 180 unit, 27 browser and 2 real WKWebView tests. Full/page visual and publication gates remain pending; source draft and content-service blockers explicit. See docs/ui-restoration/community/legal-unification-2026-10-19/acceptance.json.",
+    "mapping_status": "2026-10-20: user-authorized fixed top-right X replaces bottom Close in shared legal Sheet; canonical policies and registration choices unchanged. Current scoped evidence: welcome/eula-2026-10-20/acceptance.json. Historical source Close geometry is superseded; full/page visual and publication gates remain pending.",
     "acceptance_evidence": "docs/ui-restoration/community/acceptance.json",
     "acceptance_notes": "Browser 8/8 and WKWebView 1/1 passed, including exact default/partial/ready geometry, Agreement Sheet first and repeated use, 320x568 scrolling, validation zero-write, 500ms atomic persistence, injected failure rollback, refresh restoration and return ownership."
   },

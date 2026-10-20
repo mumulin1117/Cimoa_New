@@ -5,6 +5,7 @@
   "source_screen": "Auth / Community Agreement / Default",
   "source_query": "route=agree",
   "source_lock": "locked",
+  "current_functional_increment": "docs/ui-restoration/welcome/eula-2026-10-20/source-contract.json",
   "locked_at": "2026-10-15",
   "source": {
     "file": "CIRCA All Screens (interactive).html",

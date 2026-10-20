@@ -1,0 +1,18 @@
+{
+  "source_lock": "locked",
+  "source": "2026-10-20 explicit user request; supplements HTML Welcome and Community, not an original prototype screen",
+  "prototype_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "routes": ["/pages/auth/welcome", "/pages/auth/community"],
+  "approved_deltas": [
+    "Shared AgreementSheet: remove bottom Close; use existing source X SVG in a fixed top-right 44px hit area, title and X outside document scroll.",
+    "First launch without current consent opens a themed, scrollable EULA confirmation over Welcome. No default agreement, outside dismissal or automatic acceptance.",
+    "Agree and Continue saves document revisions and timestamp through Store after custom 500ms Loading; Welcome checkbox reads the same persisted state. Not Now leaves both auth entries gated.",
+    "Unchecking revokes consent via Store. Checking again opens EULA. Reading and closing documents does not accept. Refresh/relaunch restores only successfully saved consent.",
+    "Existing accounts need one explicit agreement when no acceptance exists; their session and entities are preserved. A valid session resumes its existing destination after agreement.",
+    "New EULA uses formal English, campus eligibility, content ownership, mutual consent, zero tolerance for abusive/objectionable content, reporting/blocking, event safety, purchases and data rights. It does not invent remote delivery, moderation response times, a legal operator or contact. Existing Terms/Privacy/Guidelines remain canonical and unchanged."
+  ],
+  "design": {"viewport": [393,852], "geometry_basis": "existing theme card, typography, source close SVG and confirmation motion; rpx = CSS px * 750/393", "close_hit_css_px": 44, "close_icon_css_px": 20, "eula_card_inset_css_px": 16, "safe_areas": "measured top and bottom; inner content scroll only"},
+  "shared_consumers": ["Community", "Settings Guidelines", "Settings Legal Guidelines", "Welcome EULA document reader"],
+  "state": {"field": "app_consent", "scope": "installation, independent of signed-in account", "default": {"revision": null, "accepted_at": null}, "migration": "add missing field without accepting or overwriting existing entities", "action": "set_app_consent", "failure": "retain previous state and show retryable error"},
+  "visual_acceptance": "pending"
+}

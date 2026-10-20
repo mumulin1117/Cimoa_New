@@ -1,0 +1,24 @@
+{
+  "checks" : [
+    "Fresh launch opens unaccepted EULA with measured safe areas, scroll and hittable fixed actions",
+    "Three canonical readers close with X without accepting; Not Now gates both auth entries",
+    "Storage failure rolls back; Loading precedes a single save and links checkbox without accepting registration choices",
+    "Refresh and Login return preserve agreement; unchecking revokes it",
+    "Community long documents retain fixed right X and zero-write, independent registration choices",
+    "Existing session resumes Home after explicit agreement without a new login\/skeleton"
+  ],
+  "first_launch" : {
+    "bottom" : 34,
+    "card" : {
+      "bottom" : 827.7708740234375,
+      "y" : 74.3333740234375
+    },
+    "height" : 874,
+    "scroll" : true,
+    "top" : 62,
+    "width" : 402
+  },
+  "result" : "passed",
+  "scope" : "EULA and shared agreement X increment; no App Store approval claim",
+  "storage_restored" : true
+}

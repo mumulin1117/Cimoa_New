@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-20",
+  "result": "passed",
+  "scope": "User-requested first-launch EULA and shared legal Sheet fixed-X increment, not full-App pixel or App Store release approval",
+  "page_status": "pending",
+  "visual_acceptance": "pending",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "source_contract": "source-contract.json",
+  "interaction_contracts": "interaction-contracts.json",
+  "behavior": {
+    "first_launch": "Missing current-revision acceptance shows EULA over Welcome. Not Now grants nothing. Outside and Escape do not dismiss the mandatory choice.",
+    "same_state": "EULA saves app_consent through one Store action after 500ms custom Loading; Welcome checkbox reads the same getter. Unchecking revokes, checking reopens EULA. Current revision survives refresh/relaunch; updated linked document revisions require acceptance again.",
+    "independence": "Reading does not write. EULA does not confirm separate Community registration items, create a session, verify student identity, change relationships or coins, or prepare skeletons.",
+    "existing_session": "A saved session without acceptance is preserved behind EULA and resumes the existing authentication/onboarding destination after acceptance.",
+    "policies": "Terms, Privacy and Community bodies remain canonical and unchanged. Shared title/X stay outside content scroll. Bottom Close removed.",
+    "truthfulness": "New formal English EULA has no demo/local labels or invented moderator, contact, payment or remote-delivery promises. Existing policies retain accurate current-capability disclosures. No convention files were modified."
+  },
+  "tests": {
+    "unit": {"passed": 185, "failed": 0, "report": "/tmp/cimoa-eula-unit.xml", "new_file": "scripts/app-consent.test.mjs"},
+    "browser": {"passed_checks": 10, "report": "browser-acceptance.json", "viewports": ["320x568", "375x667", "393x852", "402x874", "440x956"], "safe_areas": [62,34]},
+    "shared_legal_browser": {"passed_checks": 9, "report": "shared-legal/browser-acceptance.json", "consumers": ["Community", "Welcome standalone policy links", "EULA reader", "Settings Legal", "Settings direct Guidelines", "Coin Help"]},
+    "wkwebview": {"passed": 2, "failed": 0, "device": "iPhone 17 Pro", "ios": "26.5", "report": "native-acceptance.json", "xcresult": "/tmp/cimoa-eula-native-recheck.xcresult", "authoritative_summary": "xcresulttool: Passed, 2 passed, 0 failed", "safe_areas": [62,34], "cases": ["testFirstLaunchEulaAndAgreementClose", "testBundledH5AndMeasuredSafeAreas"], "repair": "Initial auxiliary test assumed EULA always leads to Login. Helper updated to support an already-authenticated session resuming Home; final two-case rerun passed."}
+  },
+  "mandatory_gates": [
+    {"command": "corepack pnpm check:conventions", "result": "passed", "warnings": 0},
+    {"command": "git diff --check", "result": "passed"},
+    {"command": "corepack pnpm build:h5", "result": "passed", "packaged_files": 415}
+  ],
+  "native_warning": "Existing Xcode AppIntents metadata-extraction warning only; no AppIntents.framework dependency. No new convention warnings.",
+  "packaging": {"archive": "artifacts/cimoaNeapo-ios.zip", "manifest_sha256": "ffe2cd8e3d5ef32017adfc6af5e5e00523576c13ce00198abfa0b6c2fcc5710b", "compiled_bundle_matches_final_h5": true, "original_prototype_packaged": false},
+  "implementation_files": [
+    "src/components/AgreementSheet.vue", "src/components/EventConfirmDialog.vue", "src/components/SourceIcon.vue", "src/components/EulaConfirmDialog.vue",
+    "src/pages/auth/splash.vue", "src/pages/auth/welcome.vue",
+    "src/stores/seed.js", "src/stores/migration.js", "src/stores/selectors.js", "src/stores/store.js",
+    "src/utils/appConsent.js", "src/utils/legalDocuments.js",
+    "scripts/app-consent.test.mjs", "scripts/eula-browser.test.mjs", "scripts/legal-unification-browser.test.mjs", "ios/cimoaNeapo/Tests/HostTests.swift",
+    "docs/cimoa-page-inventory.json", "docs/ui-restoration/welcome/source-contract.json", "docs/ui-restoration/welcome/difference-audit.md", "docs/ui-restoration/community/source-contract.json", "docs/ui-restoration/community/difference-audit.md",
+    "docs/ui-restoration/welcome/eula-2026-10-20/", "dist/build/h5/"
+  ],
+  "sources": ["https://developer.apple.com/app-store/review/guidelines/#user-generated-content", "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/"],
+  "release_limits": ["No dedicated EULA design PNG was provided; geometry reuses the existing theme and ConfirmDialog conventions under explicit user authorization, not an original HTML pixel-match claim.", "Real content screening, moderation/report response, production legal operator and contact remain release requirements. Agreement text alone does not implement them.", "Historical Welcome tests tied to transient consent are superseded by the current EULA contracts and dedicated tests; no historical screenshot is presented as new EULA evidence."]
+}

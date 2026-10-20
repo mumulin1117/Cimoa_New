@@ -17,7 +17,8 @@ const proceed = async () => {
   try {
     store.tick()
     if (store.hydration_status !== 'ready') store.hydrate()
-    await transition.value.navigate_replace(startup_destination(store))
+    const destination = startup_destination(store)
+    await transition.value.navigate_replace(store.has_app_consent ? destination : '/pages/auth/welcome')
   } catch (cause) { error.value = cause.message } finally { pending = false }
 }
 onShow(() => { active = true; stop(); timer = setTimeout(proceed, MOTION.splash) })
