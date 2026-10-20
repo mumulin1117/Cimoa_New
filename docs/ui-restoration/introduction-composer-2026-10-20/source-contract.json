@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-20",
+  "scope": "No Saving on question entry or text editing; sent-page wording and waiting-to-Chat regression",
+  "source": {
+    "file": "CIRCA All Screens (interactive).html",
+    "sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "locked_pages": ["../discover-request-select/source-contract.json", "../discover-request-text/source-contract.json", "../discover-request-voice/source-contract.json"],
+    "prior_fee_contract": "../introduction-payment-2026-10-20/source-contract.json"
+  },
+  "user_decisions": [
+    "Answer This Question → Your answer must not show Saving",
+    "Write something real has no autosave, debounce or idle Loading",
+    "Introduction sent remains the result title; Done remains the bottom return button, explicitly confirmed by user",
+    "Deck/profile outgoing pending CTA is grey/inert Waiting for reply; after actual recipient acceptance it is Chat and opens the canonical conversation"
+  ],
+  "data_contract": {
+    "introduction_forms": "UI-only Pinia state outside persisted data. draft_id, owner_user_id, auth_context, target_id, updated_at and form payload (question_id/mode/text/operation_id). No media body, relationship or balance lives here.",
+    "stage_introduction_form": "Pure UI choice; validate account, target and question, stage one form for this target and session. No transact, revision increment, storage or Loading.",
+    "edit_introduction_form": "Pure UI input/mode edit; no timer and no persistence. Back/mode switch keep this session's form. Unrelated business transactions cannot serialize it.",
+    "persist_introduction_form": "Explicit confirm/Get Coins/voice Review only, after custom write Loading. Publish owned form metadata through the normal atomic transaction adapter; spending remains the existing request+ledger transaction.",
+    "introduction_context": "Same read model with a transient form projection for editing. Persistent request/connection primary remains canonical and overrides completed forms. Fees and purchase recovery read published drafts only.",
+    "refresh_and_account_scope": "Refresh discards unpublished text. A validated question_id route can reconstruct an empty editor. Explicitly published drafts/media recover normally. Successful auth-context changes clear UI-only forms; failed writes preserve them.",
+    "migration": "No schema or seed migration, no automatic draft writes, and no retroactive debit. Previously saved drafts remain readable."
+  },
+  "interactions": [
+    {
+      "interaction_id": "ibSelect.answerGo.click.1",
+      "source_screen": "Discover / Icebreaker / Select Question",
+      "trigger": "click / Enter",
+      "preconditions": "Authenticated eligible account, visible target, target-owned selected question and no pending request",
+      "visible_feedback": "Immediate normal page transition; no Saving overlay or persistence delay",
+      "success_result": "Stage UI-only form and open text/voice editor with stable user/form/question IDs",
+      "failure_result": "Inline error; no request, coin or disk mutation",
+      "persistence": "none; transient form only",
+      "sync_scope": "Same-session question/editor/mode navigation",
+      "acceptance": "Compare exact storage bytes and observe absence of visible Loading during entry, idle typing, Back and mode switch in Chrome and WKWebView"
+    },
+    {
+      "interaction_id": "ibText.onReply.change.1",
+      "source_screen": "Discover / Icebreaker / Text Reply",
+      "trigger": "input",
+      "preconditions": "Valid current form; editor not submitting or covered by confirmation",
+      "visible_feedback": "Immediate input/counter update only",
+      "success_result": "Keep <=300-character text in the UI form; no idle autosave timer",
+      "failure_result": "Invalid/expired form cannot publish; no disk/fee mutation",
+      "persistence": "none until explicit fee confirmation or Get Coins",
+      "sync_scope": "Back/mode switch keep temporary text; refresh discards unpublished input",
+      "acceptance": "Type, wait beyond the old 800ms+500ms autosave window, compare storage bytes and Loading observation; refresh and verify empty unpublished input"
+    },
+    {
+      "interaction_id": "ibText.continueText.click.1",
+      "source_screen": "Text Reply → fee confirmation",
+      "trigger": "click / Enter",
+      "preconditions": "Valid nonblank text and current eligible target",
+      "visible_feedback": "Show fee confirmation/insufficiency immediately; no Saving merely to open the sheet",
+      "success_result": "Explicit fee confirm publishes form then prepares shared spending under 500ms Loading; Get Coins publishes recovery context under Loading",
+      "failure_result": "Cancel is read-only; storage failure preserves temporary answer and all request/balance state",
+      "persistence": "Only at explicit confirmation/Get Coins; existing fee/atomicity contract unchanged",
+      "sync_scope": "Published draft, Coin Center return, request/ledger and pending primary",
+      "acceptance": "Main composer and payment-regression browser/native reports"
+    },
+    {
+      "interaction_id": "reqSent.doneSent.click.1",
+      "source_screen": "Introduction sent",
+      "trigger": "click / Enter",
+      "preconditions": "Valid sent request result",
+      "visible_feedback": "Header Introduction sent; bottom Done; normal return transition",
+      "success_result": "Return to Discover with grey Waiting for reply, not another introduction flow",
+      "failure_result": "No accidental acceptance, extra spend or duplicate request",
+      "persistence": "none",
+      "sync_scope": "Same request and relationship-derived deck/profile primary",
+      "acceptance": "Exact header/footer text plus pending deck/profile mouse/keyboard disable and refresh checks"
+    }
+  ],
+  "acceptance_scope": "Focused change; no whole-App or previously deferred page acceptance promoted to verified. Main browser test explicitly accepts as recipient; native accepted-state entry test uses that generated accepted snapshot."
+}

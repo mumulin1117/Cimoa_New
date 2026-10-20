@@ -1,0 +1,16 @@
+{
+  "result": "passed",
+  "checks": [
+    "Deck → question → text → 10-coin confirmation; Edit Answer cancels without request or debit",
+    "Atomic storage failure opens spend-failed; refresh/Return preserves answer, user, question and unchanged balance",
+    "Retry, double confirm and processing-page refresh produce exactly one pending text request and one 10-coin debit",
+    "Deck and profile show grey/inert Waiting for reply after Back and refresh; mouse and keyboard cannot repeat send",
+    "Zero balance blocks text, and Coin Center refresh/Back restores the exact text draft without adding or spending coins",
+    "Five iPhone viewports preserve readable text/fee CTA, fixed footer and single safe-area budget",
+    "Actual browser MediaRecorder → explicit Voice preview → decoded playback after refresh → fee confirmation; no charge before confirmation",
+    "Voice confirmation sends one actual audio request/debit; revisiting completed preview cannot resend; deck waits for reply"
+  ],
+  "errors": [],
+  "server_pid": 97635,
+  "cleaned_up": true
+}

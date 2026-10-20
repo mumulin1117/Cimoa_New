@@ -1,0 +1,133 @@
+{
+  "date": "2026-10-20",
+  "scope": "Question entry/typing without Saving or autosave, canonical sent wording, pending-to-Chat flow",
+  "scope_acceptance": "passed",
+  "full_app_acceptance": "not reassessed",
+  "changed_files": [
+    "docs/cimoa-discover-request-flow.md",
+    "docs/cimoa-stage2-data-fields.md",
+    "docs/ui-restoration/discover-request-select/interactions.json",
+    "docs/ui-restoration/discover-request-select/source-contract.json",
+    "docs/ui-restoration/discover-request-text/interactions.json",
+    "docs/ui-restoration/discover-request-text/source-contract.json",
+    "docs/ui-restoration/discover-request-voice/source-contract.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/browser-acceptance.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/chat-profile-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/difference-audit.md",
+    "docs/ui-restoration/introduction-composer-2026-10-20/introduction-sent-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/introduction-sent-wkwebview.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/native-acceptance.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/native-fixtures.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/browser-acceptance.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/native-acceptance.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/native-fixtures.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/text-confirmation-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/text-confirmation-wkwebview.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/text-insufficient-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/text-small-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/voice-preview-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/voice-preview-wkwebview.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/waiting-card-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/waiting-card-wkwebview.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/payment-regression/waiting-profile-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/select-regression/actual-browser-small.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/select-regression/actual-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/select-regression/browser-acceptance.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/select-regression/diff.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/select-regression/native-fixture.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/select-regression/overlay.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/select-regression/reference.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/source-contract.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/text-regression/actual-browser-keyboard.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/text-regression/actual-browser-small.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/text-regression/actual-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/text-regression/browser-acceptance.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/text-regression/diff.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/text-regression/native-fixture.json",
+    "docs/ui-restoration/introduction-composer-2026-10-20/text-regression/overlay.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/text-regression/reference.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/waiting-profile-browser.png",
+    "docs/ui-restoration/introduction-composer-2026-10-20/your-answer-browser.png",
+    "ios/cimoaNeapo/Tests/HostTests.swift",
+    "scripts/discover-request-browser.test.mjs",
+    "scripts/discover-request-contracts.mjs",
+    "scripts/introduction-composer-browser.test.mjs",
+    "scripts/introduction-forms.test.mjs",
+    "scripts/introduction-payment-browser.test.mjs",
+    "src/pages/discover/icebreaker/select.vue",
+    "src/pages/discover/icebreaker/text.vue",
+    "src/pages/discover/icebreaker/voice.vue",
+    "src/stores/introductionForms.js",
+    "src/stores/store.js",
+    "src/stores/transactions.js"
+  ],
+  "key_conventions": [
+    "UI form state outside persisted data, no storage writes/timers for typing or pure navigation",
+    "Actual writes still use 500ms custom Loading and Store actions; no hidden background autosave",
+    "Fee confirmation, draft/media recovery, atomic request+ledger and duplicate protection retained",
+    "No browser storage calls in pages, no new colors/layout/fonts, no original HTML runtime use",
+    "Introduction sent/Done confirmed by user; existing relationship getter drives waiting/Chat",
+    "No changes to DEVELOPMENT_CONVENTIONS.md or INTERACTION_CONVENTIONS.md required"
+  ],
+  "validation": {
+    "unit": {
+      "passed": 216,
+      "failed": 0,
+      "report": "/tmp/cimoa-introduction-composer-unit.xml"
+    },
+    "browser": {
+      "checks": 28,
+      "failed": 0,
+      "reports": [
+        "browser-acceptance.json",
+        "payment-regression/browser-acceptance.json",
+        "select-regression/browser-acceptance.json",
+        "text-regression/browser-acceptance.json"
+      ],
+      "peer_acceptance": "Recipient explicitly accepted through received-page UI after test-account handoff"
+    },
+    "wkwebview": {
+      "passed_tests": 2,
+      "failed_tests": 0,
+      "scenario_groups": 8,
+      "device": "iPhone 17 Pro",
+      "ios": "26.5",
+      "xcresult": "/tmp/cimoa-introduction-composer-native.xcresult",
+      "reports": [
+        "native-acceptance.json",
+        "payment-regression/native-acceptance.json"
+      ],
+      "accepted_state": "Restored the browser-accepted snapshot and exercised both Chat entries; not an automatic peer acceptance",
+      "voice": "Valid PCM preview/playback in WKWebView; actual MediaRecorder capture in Chrome"
+    },
+    "gates": [
+      {
+        "command": "corepack pnpm check:conventions",
+        "result": "passed",
+        "warnings": 0
+      },
+      {
+        "command": "git diff --check",
+        "result": "passed"
+      },
+      {
+        "command": "corepack pnpm build:h5",
+        "result": "passed",
+        "h5_files": 415
+      }
+    ],
+    "native_build": "build-for-testing and two test-without-building cases passed",
+    "build_warning": "Existing AppIntents metadata-skipped warning; uni-app available-version notice, no dependency upgrade",
+    "manifest_sha256": "bc1e0649c8f13ac3857cadce3f454e31562f3d3fd736edfeaa0866651e7e852d",
+    "cleanup": "Browser contexts and temporary test servers closed; native storage restored and test audio removed; unrelated preview untouched",
+    "preserved_user_changes": "10 existing docs/evidence/registration PNG changes excluded"
+  },
+  "delivery": {
+    "h5": "dist/build/h5",
+    "ios_archive": "artifacts/cimoaNeapo-ios.zip",
+    "installed_bundle_matches_final_h5": true,
+    "simulator_launch": "com.cimoa.neapo.dev launched successfully on iPhone 17 Pro; PID 98875 at verification time",
+    "commit_policy": "Local task commit only, no push"
+  },
+  "important_behavior": "Unpublished input survives same-session Back/mode switch, but refresh/logout does not save it; previously explicitly published drafts retain recovery"
+}

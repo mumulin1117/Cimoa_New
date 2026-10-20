@@ -1,0 +1,11 @@
+{
+  "checks" : [
+    "Question entry, idle input, Back and mode switch show no Saving and do not persist the temporary answer",
+    "Refresh discards unpublished input; explicit send saves once and keeps Introduction sent title \/ Done footer",
+    "After Done, Discover and expanded profile are grey\/inert Waiting for reply",
+    "Browser-accepted request snapshot restores Chat on both native entries and opens the same conversation; no automatic peer acceptance"
+  ],
+  "result" : "passed",
+  "scope" : "Transient input, sent-page wording and accepted Chat entry regression; recipient acceptance separately exercised through browser UI",
+  "storage_restored" : true
+}

@@ -10,7 +10,7 @@ import { serve_h5, context_for, set_safe_area } from './lib/pixel-acceptance.mjs
 import { discover_test_audio } from './lib/discover-test-audio.mjs'
 
 const require = createRequire(import.meta.url), { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
-const folder = path.resolve('docs/ui-restoration/introduction-payment-2026-10-20')
+const folder = path.resolve(process.env.CIMOA_INTRODUCTION_EVIDENCE_DIR || 'docs/ui-restoration/introduction-payment-2026-10-20')
 fs.mkdirSync(folder, { recursive: true })
 const store = use_app_store(createPinia())
 configure_store_runtime(store, { persistence: { read: () => create_seed(), write() {} } }); store.hydrate()

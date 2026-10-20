@@ -1,5 +1,7 @@
 # Cimoa 阶段二数据字段与状态契约
 
+2026-10-20 输入体验增量：introduction_forms 为 data 之外、不落盘的 UI 表单（draft_id/owner_user_id/auth_context/target_id/updated_at/payload.question_id/mode/text/operation_id）；stage_introduction_form/edit_introduction_form 只更新 UI，persist_introduction_form 仅在明确确认/Get Coins/录音 Review 的 Loading 后发布到既有 drafts。会话变更清空临时表单，刷新不恢复未发布输入。见[当前契约](./ui-restoration/introduction-composer-2026-10-20/source-contract.json)。
+
 2026-10-20 计费增量覆盖以下旧“文本免费”描述：新文字与语音介绍各 10 coins，coin_spend.payload.kind 新增 text_introduction 并绑定已确认文字快照；请求与账本原子提交，历史免费记录不追溯扣费。只读 primary.disabled 派生 outgoing pending 的 Waiting for reply。字段、交互及回归见 [介绍专项契约](./ui-restoration/introduction-payment-2026-10-20/source-contract.json)。
 
 2026-10-17 Profile/设置/安全/金币增量：users.bio_audio_id 为可空、本人所有的可解码音频ID，duration_ms必须大于0且不超过30000，save_profile_edit在最终Save时与Blob一起发布；取消/失败清理本次新Blob，历史引用保留。auth_flow.deleted_account_id仅由本次成功注销写入，last_deleted_account据此只读投影完成页。新增profile_verification（脱敏邮箱、实际状态/可选日期）、profile_preference_groups（12组到共用match_preferences字段）、coin_ledger_detail（本人记录及购买证明/实际功能）均为derived，不持久化副本。购买沿用created_at+8000ms窗口；回调received_at只由桥接器本机接收时间产生，不信任载荷时间。字段、实现及证据见[本轮记录](./cimoa-profile-settings-coins-acceptance.md)。

@@ -1,16 +1,14 @@
 <script setup>
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
-import { use_write_loading } from '@/composables/useWriteLoading.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import IcebreakerHeader from '@/components/IcebreakerHeader.vue'
 import IcebreakerPerson from '@/components/IcebreakerPerson.vue'
 import IcebreakerIcon from '@/components/IcebreakerIcon.vue'
-import EventActionLoading from '@/components/EventActionLoading.vue'
 
 const store = use_app_store(), frame = ref(null), user_id = ref(''), question_id = ref(''), mode = ref('text'), error = ref(''), navigating = ref(false)
-const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
+const is_loading = false
 onLoad(options => { user_id.value = String(options?.user_id || '') })
 const context = computed(() => store.introduction_context(user_id.value))
 const user = computed(() => context.value.user), questions = computed(() => context.value.questions)
@@ -20,13 +18,13 @@ const back = async () => { if (is_loading.value || navigating.value) return; try
 const answer = async () => {
   if (is_loading.value || navigating.value || access_error.value) return
   if (!question_id.value) { error.value = 'Pick one question first.'; return }
-  const result = await run_with_loading(() => store.prepare_introduction(user_id.value, question_id.value, mode.value))
+  const result = store.stage_introduction_form(user_id.value, question_id.value, mode.value)
   if (!result.success || result.reason === 'cancelled') { if (result.reason !== 'cancelled') error.value = result.message; return }
   navigating.value = true
-  try { await frame.value.navigate_forward(`/pages/discover/icebreaker/${mode.value}?user_id=${encodeURIComponent(user_id.value)}&draft_id=${encodeURIComponent(result.data)}`) } catch (cause) { error.value = cause.message }
+  try { await frame.value.navigate_forward(`/pages/discover/icebreaker/${mode.value}?user_id=${encodeURIComponent(user_id.value)}&draft_id=${encodeURIComponent(result.data)}&question_id=${encodeURIComponent(question_id.value)}`) } catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }
-onHide(() => { navigating.value = false; cancel_loading() }); onUnmounted(cancel_loading)
+onHide(() => { navigating.value = false })
 </script>
 
 <template>
@@ -40,7 +38,6 @@ onHide(() => { navigating.value = false; cancel_loading() }); onUnmounted(cancel
         <view class="ice-select-answer"><view class="ice-primary" role="button" tabindex="0" :aria-disabled="is_loading || navigating || !question_id" data-interaction="ibSelect.answerGo.click.1" @click="answer" @keydown.enter="answer">Answer This Question</view></view><text class="ice-note">Introduction costs 10 coins · balance {{ context.balance }} coins</text>
       </template><view v-else class="ice-unavailable" role="alert">{{ access_error }}</view>
     </view>
-    <template #overlays><EventActionLoading :visible="is_loading" label="Saving your question…" /></template>
   </SecondaryPageFrame>
 </template>
 <style scoped src="./icebreaker.css"></style>

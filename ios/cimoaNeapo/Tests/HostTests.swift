@@ -5,12 +5,80 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    func testIntroductionTransientComposerAndAcceptedChat() async throws {
+        let host = try await rawHost()
+        let snapshot = try await script(host,"return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        var root = URL(fileURLWithPath:#filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/introduction-composer-2026-10-20")
+        let fixtures = try JSONSerialization.jsonObject(with:Data(contentsOf:folder.appendingPathComponent("native-fixtures.json"))) as! [String:Any]
+        let driver = """
+        const delay=ms=>new Promise(r=>setTimeout(r,ms)),assert=(v,m)=>{if(!v)throw Error(m)},bytes=()=>localStorage.getItem('cimoa_app_state_v2'),saved=()=>JSON.parse(bytes()).data;
+        const visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),wait=async fn=>{for(let i=0;i<240;i++){if(fn())return;await delay(25)}throw Error('Composer timeout '+location.hash+' '+document.body.innerText.slice(0,800))},click=id=>visible('[data-interaction="'+id+'"]').click(),type=text=>{const e=visible('textarea');e.value=text;e.dispatchEvent(new Event('input',{bubbles:true}))};
+        """
+        var checks:[String] = []
+        func install(_ key:String) async throws {
+            _ = try await host.webView.callAsyncJavaScript("data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data}));return true",arguments:["data":fixtures[key]!],in:nil,contentWorld:.page)
+        }
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const[k,v]of[['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}return true",arguments:["snapshot":snapshot],in:nil,contentWorld:.page)
+            try await loadFreshConnection(host,route:"/pages/auth/splash",selector:".splash-page")
+        }
+        do {
+            try await install("baseline")
+            try await loadFreshConnection(host,route:"/pages/discover/icebreaker/select?user_id=user_zane",selector:".ice-select-page")
+            _ = try await script(host,driver + """
+            window.__composerInitial=bytes();window.__composerLoading=false;new MutationObserver(()=>{if(visible('.event-loading'))window.__composerLoading=true}).observe(document.body,{subtree:true,attributes:true,childList:true});
+            click('ibSelect.q.pick.click.1');click('ibSelect.answerGo.click.1');await wait(()=>visible('.ice-text-page'));type('Keep this answer while editing.');await delay(1700);
+            assert(bytes()===window.__composerInitial&&!window.__composerLoading,'Selection/typing persisted or showed Saving');assert(visible('.ice-counter').textContent.includes('31'),'Input was not received');
+            click('ibText.switchToVoice.click.1');await wait(()=>visible('.ice-voice-page'));click('ibVoice.switchToTextReply.click.1');await wait(()=>visible('.ice-text-page'));assert(visible('textarea').value==='Keep this answer while editing.','Mode switch lost temporary answer');
+            click('ibText.goBack.click.1');await wait(()=>visible('.ice-select-page'));click('ibSelect.answerGo.click.1');await wait(()=>visible('.ice-text-page'));assert(visible('textarea').value==='Keep this answer while editing.','Back lost answer');assert(bytes()===window.__composerInitial&&!window.__composerLoading,'Navigation saved form');return true;
+            """)
+            checks.append("Question entry, idle input, Back and mode switch show no Saving and do not persist the temporary answer")
+            let textRoute = try await script(host,"return location.hash.slice(1)") as! String
+            try await loadFreshConnection(host,route:textRoute,selector:".ice-text-page")
+            _ = try await script(host,driver + """
+            assert(visible('textarea').value==='','Unpublished input restored');const before=bytes();type('Coffee after class?');click('ibText.continueText.click.1');await wait(()=>visible('.intro-sheet--confirm.event-dialog--open'));assert(bytes()===before,'Opening confirmation saved text');click('sheetTextCoin.spendText.click.1');await wait(()=>visible('.connection-sent-page'));
+            assert(visible('.connection-heading').textContent==='Introduction sent','Sent title changed');assert(visible('[data-interaction="reqSent.doneSent.click.1"]').textContent==='Done','Done footer changed');assert(saved().coin_transactions.reduce((sum,t)=>sum+t.amount,0)===250,'Wrong fee');return true;
+            """)
+            checks.append("Refresh discards unpublished input; explicit send saves once and keeps Introduction sent title / Done footer")
+            try (try await host.webView.takeSnapshot(configuration:nil)).pngData()!.write(to:folder.appendingPathComponent("introduction-sent-wkwebview.png"))
+            _ = try await script(host,driver + """
+            click('reqSent.doneSent.click.1');await wait(()=>visible('.discover-send'));const e=visible('.discover-send'),before=bytes(),route=location.hash;assert(e.textContent==='Waiting for reply'&&e.getAttribute('aria-disabled')==='true'&&getComputedStyle(e).backgroundImage==='none','Pending deck not grey/inert');e.click();await delay(280);assert(location.hash===route&&bytes()===before,'Pending deck active');click('photo.expand.click.1');await wait(()=>visible('.expanded-send'));assert(visible('.expanded-send').textContent==='Waiting for reply'&&visible('.expanded-send').getAttribute('aria-disabled')==='true','Pending profile active');return true;
+            """)
+            checks.append("After Done, Discover and expanded profile are grey/inert Waiting for reply")
+            try await install("sender")
+            try await loadFreshConnection(host,route:"/pages/discover/index",selector:".discover-send")
+            _ = try await script(host,driver + "assert(visible('.discover-send').textContent==='Chat'&&visible('.discover-send').getAttribute('aria-disabled')!=='true','Accepted deck not Chat');click('photo.sayHi.click.1');await wait(()=>visible('.direct-chat-page'));return true;")
+            let expectedID = fixtures["conversation_id"] as! String
+            let deckChatRoute = try await script(host,"return location.hash") as! String
+            XCTAssertTrue(deckChatRoute.contains(expectedID))
+            try await loadFreshConnection(host,route:"/pages/discover/profile?user_id=user_zane",selector:".expanded-send")
+            _ = try await script(host,driver + "assert(visible('.expanded-send').textContent==='Chat'&&visible('.expanded-send').getAttribute('aria-disabled')!=='true','Accepted profile not Chat');click('expanded.sayHi.click.1');await wait(()=>visible('.direct-chat-page'));return true;")
+            let profileChatRoute = try await script(host,"return location.hash") as! String
+            XCTAssertTrue(profileChatRoute.contains(expectedID))
+            checks.append("Browser-accepted request snapshot restores Chat on both native entries and opens the same conversation; no automatic peer acceptance")
+            try await restore()
+            try JSONSerialization.data(withJSONObject:["result":"passed","checks":checks,"storage_restored":true,"scope":"Transient input, sent-page wording and accepted Chat entry regression; recipient acceptance separately exercised through browser UI"],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+        } catch {
+            let state = String(describing:try? await script(host,"return {url:location.href,text:document.body.innerText}"))
+            try? await restore()
+            try? JSONSerialization.data(withJSONObject:["result":"failed","checks":checks,"failure":String(describing:error),"state":state],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+            throw error
+        }
+    }
     func testIntroductionPaymentAndWaitingRecovery() async throws {
+        try await introductionPaymentRegression("docs/ui-restoration/introduction-payment-2026-10-20")
+    }
+    func testIntroductionComposerPaymentRegression() async throws {
+        try await introductionPaymentRegression("docs/ui-restoration/introduction-composer-2026-10-20/payment-regression")
+    }
+    private func introductionPaymentRegression(_ artifactDirectory:String) async throws {
         let host = try await rawHost()
         let saved = try await script(host,"return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
         var root = URL(fileURLWithPath:#filePath)
         for _ in 0..<4 { root.deleteLastPathComponent() }
-        let folder = root.appendingPathComponent("docs/ui-restoration/introduction-payment-2026-10-20")
+        let folder = root.appendingPathComponent(artifactDirectory)
         let fixture = try JSONSerialization.jsonObject(with:Data(contentsOf:folder.appendingPathComponent("native-fixtures.json"))) as! [String:Any]
         let mediaID = "media_payment_native_" + UUID().uuidString
         let driver = """

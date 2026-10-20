@@ -24,6 +24,7 @@ import { waiting_call, waiting_call_actions } from './waitingCalls.js'
 import { connection_for, connection_request } from './connectionEntities.js'
 import { home_feed } from './homeFeed.js'
 import { introduction_context } from './discoverFlow.js'
+import { introduction_form_actions, introduction_form_data } from './introductionForms.js'
 import { STATE_KEY, LEGACY_KEY } from '../utils/statePersistence.js'
 import { get_runtime, transact, operation, make_id, failure, unavailable, require_target, require_student, password_hash, add_transaction, connect_users, disconnect_for_block } from './transactions.js'
 export { configure_store_runtime, make_id as make_operation_id } from './transactions.js'
@@ -48,7 +49,7 @@ const check_media = async (store, id, kind) => {
   return row
 }
 export const use_app_store = defineStore('app', {
-  state: () => ({ data: create_seed(), hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
+  state: () => ({ data: create_seed(), introduction_forms: [], hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
   getters: {
     has_app_consent: state => state.hydration_status === 'ready' && has_app_consent(state.data),
     waiting_call: state => id => state.hydration_status === 'ready' ? waiting_call(state.data, id, state.clock_ms) : null,
@@ -101,7 +102,7 @@ export const use_app_store = defineStore('app', {
       return this.discover_people[0] || null
     },
     introduction_blocker: (state) => (id) => state.hydration_status === 'ready' ? s.introduction_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
-    introduction_context: state => (id, draft_id = null) => introduction_context(state.data, id, draft_id, state.clock_ms, state.hydration_status),
+    introduction_context: state => (id, draft_id = null) => introduction_context(introduction_form_data(state), id, draft_id, state.clock_ms, state.hydration_status),
     social_eligible: state => ready(state) && s.social_eligible(state.data),
     relationship_state: state => id => ready(state) ? clone_data(s.relationship_state(state.data, id, state.clock_ms)) : null,
     connection_by_user: state => id => ready(state) ? connection_for(state.data, id, state.clock_ms) : null,
@@ -187,6 +188,7 @@ export const use_app_store = defineStore('app', {
     posts: () => [], comments_for_post: () => () => [],
   },
   actions: {
+    ...introduction_form_actions,
     ...event_message_actions,
     ...direct_message_actions,
     ...waiting_call_actions,

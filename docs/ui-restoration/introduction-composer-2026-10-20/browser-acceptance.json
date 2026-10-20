@@ -1,0 +1,14 @@
+{
+  "result": "passed",
+  "checks": [
+    "Answer This Question → Your answer and idle typing produce zero storage writes, no Saving/Loading and no autosave timer",
+    "Back and text/voice mode switches preserve the temporary answer without Saving or persistence",
+    "Refresh restores the selected question from its ID but does not restore unpublished input or silently save it",
+    "Only explicit fee confirmation persists/sends; result title stays Introduction sent with a Done return button",
+    "Pending outgoing introduction is grey/inert on both deck and profile, including refresh",
+    "Recipient explicitly accepts through UI; sender deck/profile both become Chat and open the same real conversation"
+  ],
+  "errors": [],
+  "server_pid": 97616,
+  "cleaned_up": true
+}

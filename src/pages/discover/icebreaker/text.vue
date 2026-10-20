@@ -15,31 +15,34 @@ const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 const { height: viewport_height, keyboard_open } = use_visual_viewport()
 const context = computed(() => store.introduction_context(user_id.value, draft_id.value))
 const access_error = computed(() => context.value.error || context.value.blocker)
-let save_timer
-const cancel_save = () => { clearTimeout(save_timer); save_timer = null }
-onLoad(options => { user_id.value = String(options?.user_id || ''); draft_id.value = String(options?.draft_id || ''); reply.value = context.value.draft?.payload.text || '' })
-const persist = async (mode = 'text') => {
-  cancel_save()
+onLoad(options => {
+  user_id.value = String(options?.user_id || ''); draft_id.value = String(options?.draft_id || '')
+  if (context.value.error && options?.question_id) {
+    const opened = store.stage_introduction_form(user_id.value, String(options.question_id), 'text')
+    if (opened.success) draft_id.value = opened.data
+  }
+  if (context.value.draft && !context.value.completed_request_id) store.edit_introduction_form(draft_id.value, { mode: 'text' })
+  reply.value = context.value.draft?.payload.text || ''
+})
+const stage = (mode = 'text') => {
   if (access_error.value) return false
-  if (context.value.draft.payload.text === reply.value && context.value.draft.payload.mode === mode) return true
-  const result = await run_with_loading(() => store.update_introduction_draft(draft_id.value, { text: reply.value, mode }))
-  if (!result.success && result.reason !== 'cancelled') error.value = result.message
+  const result = store.edit_introduction_form(draft_id.value, { text: reply.value, mode })
+  if (!result.success) error.value = result.message
   return result.success
 }
 const edit = event => {
-  reply.value = String(event.detail.value).slice(0, 300); error.value = ''; cancel_save()
-  save_timer = setTimeout(() => { if (!is_loading.value && !navigating.value) persist() }, 800)
+  if (is_loading.value || navigating.value || sheet.value) return
+  reply.value = String(event.detail.value).slice(0, 300); error.value = ''; stage()
 }
 const back = async () => {
   if (is_loading.value || navigating.value || sheet.value) return
-  if (!access_error.value && !await persist()) return
   navigating.value = true
   try { await frame.value.navigate_back(`/pages/discover/icebreaker/select?user_id=${encodeURIComponent(user_id.value)}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
 const switch_voice = async () => {
-  if (is_loading.value || navigating.value || sheet.value || access_error.value || !await persist('voice')) return
+  if (is_loading.value || navigating.value || sheet.value || access_error.value || !stage('voice')) return
   navigating.value = true
-  try { await frame.value.navigate_replace(`/pages/discover/icebreaker/voice?user_id=${encodeURIComponent(user_id.value)}&draft_id=${encodeURIComponent(draft_id.value)}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
+  try { await frame.value.navigate_replace(`/pages/discover/icebreaker/voice?user_id=${encodeURIComponent(user_id.value)}&draft_id=${encodeURIComponent(draft_id.value)}&question_id=${encodeURIComponent(context.value.question.question_id)}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
 const open_result = async request_id => {
   navigating.value = true
@@ -47,15 +50,17 @@ const open_result = async request_id => {
 }
 const send = async () => {
   if (is_loading.value || navigating.value || sheet.value || access_error.value) return
-  cancel_save()
   if (!reply.value.trim() || reply.value.length > 300) { error.value = 'Write an introduction up to 300 characters.'; return }
-  if (!await persist()) return
+  if (!stage()) return
   error.value = ''; sheet.value = context.value.balance < 10 ? 'insufficient' : 'confirm'
 }
 const confirm_text = async () => {
   if (is_loading.value || navigating.value || access_error.value || sheet.value !== 'confirm') return
   if (context.value.balance < 10) { sheet.value = 'insufficient'; return }
-  const result = await run_with_loading(() => store.prepare_introduction_spend(draft_id.value, 'text'))
+  const result = await run_with_loading(() => {
+    const saved = store.persist_introduction_form(draft_id.value)
+    return saved.success ? store.prepare_introduction_spend(draft_id.value, 'text') : saved
+  })
   if (result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
   sheet.value = ''; navigating.value = true
@@ -63,11 +68,17 @@ const confirm_text = async () => {
 }
 const coins = async () => {
   if (is_loading.value || navigating.value || access_error.value) return
+  const result = await run_with_loading(() => store.persist_introduction_form(draft_id.value))
+  if (result.reason === 'cancelled') return
+  if (!result.success) { error.value = result.message; return }
   sheet.value = ''; navigating.value = true
   try { await frame.value.navigate_forward(`/pages/coins/index?return_context_id=${encodeURIComponent(draft_id.value)}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
-onReady(() => { if (context.value.completed_request_id) open_result(context.value.completed_request_id) })
-const leave = () => { cancel_save(); sheet.value = ''; navigating.value = false; cancel_loading() }
+onReady(() => {
+  if (context.value.completed_request_id) open_result(context.value.completed_request_id)
+  else if (context.value.primary?.disabled) frame.value.navigate_replace(context.value.primary.destination).catch(cause => { error.value = cause.message })
+})
+const leave = () => { sheet.value = ''; navigating.value = false; cancel_loading() }
 onHide(leave); onUnmounted(leave)
 </script>
 

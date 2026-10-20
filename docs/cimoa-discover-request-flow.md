@@ -4,6 +4,8 @@
 
 2026-10-20 用户授权覆盖本文件旧免费/可点击 pending 规则：[专项契约与证据](./ui-restoration/introduction-payment-2026-10-20/source-contract.json)。文字与语音均明确确认 10 coins，复用 complete_coin_spend；pending 发送 CTA 为灰色禁用 Waiting for reply，Home 仍可查看请求；录音页明确 Review voice introduction 后进入独立 Voice preview。下文旧轮次证据按生成时规则保留，不作为本次计费证明。
 
+2026-10-20 后续输入体验调整：选题/输入/返回/模式切换使用 data 之外的临时 Pinia introduction_forms，不自动保存、不加 Saving；明确发送确认/Get Coins/真实录音 Review 才经 Loading 发布草稿。未发布文字刷新后不保留。此决定覆盖下文旧“停顿 800ms 保存”记载；[当前契约与回归](./ui-restoration/introduction-composer-2026-10-20/source-contract.json)。标题仍 Introduction sent，底部仍 Done；真实接受后两处 Chat 入口使用同一 conversation_id。
+
 ## 数据设计补充（阶段 2/3）
 
 - `introduction_context(user_id, draft_id?)` 为只读派生，组合公开人物、本人草稿、目标当前问题、本人音频、余额与请求/连接/匹配；无独立存储。主卡和详情使用同一 primary 决策：连接→Chat，pending→对应 sent/received，匹配邀请→同一 match_id，否则 Send shot。

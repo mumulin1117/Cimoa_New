@@ -175,7 +175,8 @@
     "2026-10-20 user approval: text/voice each cost 10 coins with confirmation, atomic debit and retry recovery; no retroactive charge",
     "Actual recording/decoded duration replaces hardcoded playing 00:12; missing capability fails",
     "Connected Chat/incoming View request remain active; outgoing pending CTA is grey, disabled Waiting for reply; Home retains canonical request access",
-    "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply"
+    "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply",
+    "2026-10-20: question entry and text/mode editing are UI-only; no Saving/autosave; explicit confirm/Get Coins/recording Review publishes the draft"
   ],
   "states": [
     "default",
@@ -193,7 +194,6 @@
     "ibText.onReply.change.1",
     "ibText.continueText.click.1",
     "ibText.switchToVoice.click.1",
-    "ibText.draft.save",
     "sheetTextCoin.spendText.click.1",
     "sheetTextCoin.editAnswer.click.1",
     "sheetVoiceCoin.closeSheet.click.2",
@@ -208,5 +208,6 @@
     "implementation": "Scoped to these six route roots; no unrelated page typography changes"
   },
   "supplementary_source": [],
-  "incremental_contract": "../introduction-payment-2026-10-20/source-contract.json"
+  "incremental_contract": "../introduction-payment-2026-10-20/source-contract.json",
+  "current_input_contract": "../introduction-composer-2026-10-20/source-contract.json"
 }

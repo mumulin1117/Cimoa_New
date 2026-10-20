@@ -38,6 +38,7 @@ export function transact(store, operation, mutation, options = {}) {
     data.updated_at = now
     select.validate_data(data)
     get_runtime(store).persistence.write(STATE_KEY, clone_data(data))
+    if (auth_context_key(store.data) !== auth_context_key(data)) store.introduction_forms = []
     store.data = data
     store.clock_ms = now
     store.last_error = ''

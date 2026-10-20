@@ -23,14 +23,26 @@ const audio_duration = computed(() => recording_draft.value?.duration_ms || cont
 const question_number = computed(() => context.value.questions.findIndex(q => q.question_id === context.value.question?.question_id) + 1)
 const same_university = computed(() => context.value.user?.university === store.current_user.university ? 'Same university' : context.value.user?.university)
 const recording_time = computed(() => `${String(Math.floor(seconds.value / 60)).padStart(2, '0')}:${String(seconds.value % 60).padStart(2, '0')}`)
-onLoad(options => { user_id.value = String(options?.user_id || ''); draft_id.value = String(options?.draft_id || '') })
+onLoad(options => {
+  user_id.value = String(options?.user_id || ''); draft_id.value = String(options?.draft_id || '')
+  if (context.value.error && options?.question_id) {
+    const opened = store.stage_introduction_form(user_id.value, String(options.question_id), 'voice')
+    if (opened.success) draft_id.value = opened.data
+  }
+  if (context.value.draft && !context.value.completed_request_id) store.edit_introduction_form(draft_id.value, { mode: 'voice' })
+})
 onShow(() => { active.value = true })
 const back_now = async () => { clear(); discard.value = false; try { await frame.value.navigate_back(`/pages/discover/icebreaker/select?user_id=${encodeURIComponent(user_id.value)}`) } catch (cause) { error.value = cause.message } }
 const back = () => { if (is_loading.value || navigating.value || media_busy.value || sheet.value) return; recording.value || recording_draft.value ? discard.value = true : back_now() }
 const persist_recording = async () => {
-  if (!recording_draft.value) return context.value.audio?.media_id || null
+  if (!recording_draft.value && store.current_drafts.some(row => row.draft_id === draft_id.value && row.payload.mode === 'voice' && row.payload.question_id === context.value.question?.question_id)) return context.value.audio?.media_id || null
+  if (!recording_draft.value && !context.value.audio) return null
   const old = context.value.audio?.media_id
-  const result = await run_with_loading(scope => store.save_media(recording_draft.value.blob, 'audio', recording_draft.value.duration_ms, { ...scope, introduction_draft_id: draft_id.value }))
+  const result = await run_with_loading(scope => {
+    const saved = store.persist_introduction_form(draft_id.value)
+    if (!saved.success) return saved
+    return recording_draft.value ? store.save_media(recording_draft.value.blob, 'audio', recording_draft.value.duration_ms, { ...scope, introduction_draft_id: draft_id.value }) : { success: true, data: { media_id: context.value.audio.media_id } }
+  })
   if (!active.value || result.reason === 'cancelled') return null
   if (!result.success) { error.value = result.message; return null }
   clear()
@@ -41,11 +53,11 @@ const switch_text = async () => {
   if (is_loading.value || navigating.value || media_busy.value || access_error.value) return
   if (recording.value) { error.value = 'Stop recording before switching to text.'; return }
   if (recording_draft.value && !await persist_recording()) return
-  const result = await run_with_loading(() => store.update_introduction_draft(draft_id.value, { mode: 'text' }))
+  const result = store.edit_introduction_form(draft_id.value, { mode: 'text' })
   if (result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
   navigating.value = true
-  try { await frame.value.navigate_replace(`/pages/discover/icebreaker/text?user_id=${encodeURIComponent(user_id.value)}&draft_id=${encodeURIComponent(draft_id.value)}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
+  try { await frame.value.navigate_replace(`/pages/discover/icebreaker/text?user_id=${encodeURIComponent(user_id.value)}&draft_id=${encodeURIComponent(draft_id.value)}&question_id=${encodeURIComponent(context.value.question.question_id)}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
 const record = () => { if (is_loading.value || media_busy.value || access_error.value) return; recording.value ? stop() : sheet.value = 'microphone' }
 const allow = async () => { sheet.value = ''; if (!access_error.value) await start() }
