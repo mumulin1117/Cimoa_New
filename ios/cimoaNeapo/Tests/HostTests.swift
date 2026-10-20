@@ -5,6 +5,58 @@ import AVFoundation
 
 @MainActor
 final class HostTests: XCTestCase {
+    func testExpandedVoiceOverlayAndThreeSecondCarousel() async throws {
+        let host = try await rawHost()
+        let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]
+        var root = URL(fileURLWithPath:#filePath)
+        for _ in 0..<4 { root.deleteLastPathComponent() }
+        let folder = root.appendingPathComponent("docs/ui-restoration/discover-request-profile/voice-overlay-2026-10-20")
+        let fixture = try JSONSerialization.jsonObject(with:Data(contentsOf:folder.appendingPathComponent("native-fixture.json"))) as! [String:Any]
+        let driver = """
+        const delay=ms=>new Promise(r=>setTimeout(r,ms)),assert=(v,m)=>{if(!v)throw Error(m)};
+        const visible=s=>[...document.querySelectorAll(s)].find(e=>e.getBoundingClientRect().height>0),index=()=>[...(document.querySelector('.expanded-dots')?.children||[])].findIndex(e=>e.classList.contains('active'));
+        const wait=async fn=>{for(let i=0;i<180;i++){if(fn())return;await delay(30)}throw Error('Expanded timeout '+location.hash+' '+JSON.stringify({checks:window.expandedChecks,voice:visible('.profile-voice-intro')?.outerHTML}))};
+        const click=id=>visible('[data-interaction="'+id+'"]').click();
+        """
+        func restore() async throws {
+            _ = try await host.webView.callAsyncJavaScript("for(const[k,v]of[['cimoa_app_state_v2',snapshot.state],['cimoa_app_state',snapshot.legacy]]){if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}return true",arguments:["snapshot":saved],in:nil,contentWorld:.page)
+            try await loadFreshConnection(host,route:"/pages/auth/splash",selector:".splash-page")
+        }
+        do {
+            _ = try await host.webView.callAsyncJavaScript("fixture.data.session.expires_at=Date.now()+86400000;localStorage.setItem('cimoa_app_state_v2',JSON.stringify(fixture));return true",arguments:["fixture":fixture],in:nil,contentWorld:.page)
+            try await loadFreshConnection(host,route:"/pages/discover/profile?user_id=user_zane",selector:".expanded-heading")
+            let geometry = try await script(host,driver + """
+            await document.fonts.ready;await wait(()=>visible('.expanded-photo .profile-photo')?.dataset.mediaStatus==='ready');await delay(300);
+            const box=s=>{const r=visible(s).getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom}},photo=box('.expanded-photo-card'),voice=box('.profile-voice-intro'),play=box('.profile-voice-play'),scale=innerWidth/393;
+            assert(visible('.expanded-photo-card > .profile-voice-intro')&&document.querySelectorAll('.profile-voice-intro').length===1,'Voice not uniquely inside photo');assert(!visible('.expanded-song'),'Duplicate song/voice');
+            assert(Math.abs((voice.x-photo.x)/scale-14)<1&&Math.abs((photo.bottom-voice.bottom)/scale-12)<1&&Math.abs(voice.height/scale-60)<1&&Math.abs(play.width/scale-44)<1,'Wrong source geometry');
+            return{photo,voice,play,viewport:[innerWidth,innerHeight],safeTop:parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-top')),safeBottom:parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--native-safe-area-bottom'))};
+            """) as! [String:Any]
+            XCTAssertEqual(geometry["safeTop"] as! Double,Double(host.view.safeAreaInsets.top),accuracy:1)
+            XCTAssertEqual(geometry["safeBottom"] as! Double,Double(host.view.safeAreaInsets.bottom),accuracy:1)
+            try (try await host.webView.takeSnapshot(configuration:nil)).pngData()!.write(to:folder.appendingPathComponent("actual-wkwebview.png"))
+            try await waitForPreparedAudio(host,selector:".profile-voice-play")
+            // Playback must begin in a fresh user-gesture evaluation, not after
+            // the asynchronous 3s timer test has consumed its activation.
+            _ = try await script(host,driver + """
+            click('expanded.voiceIntroPlay.click.1');await wait(()=>visible('.profile-voice-play')?.getAttribute('aria-label')==='Pause voice message'&&visible('.profile-voice-play')?.getAttribute('aria-disabled')!=='true');assert(!visible('[role=dialog]'),'Audio opened gallery');click('expanded.voiceIntroPlay.click.1');await wait(()=>visible('.profile-voice-play')?.getAttribute('aria-label')==='Play voice message');return true;
+            """)
+            let checks = try await script(host,driver + """
+            const checks=window.expandedChecks=['Bundled voice real play/pause uses overlay without opening gallery'],before=localStorage.getItem('cimoa_app_state_v2');
+            click('expanded.nextPhoto.click.1');await delay(30);const a=index();await delay(2700);assert(index()===a,'Rotated before 3s');await delay(450);assert(index()===(a+1)%3,'Did not rotate at 3s');checks.push('Actual native timer advances after 3s; manual switch resets deadline');
+            click('expanded.openSafetyMini.click.1');await delay(50);const b=index();await delay(3100);assert(index()===b,'Sheet did not pause');click('sheetSafetyMini.closeSheet.click.1');await delay(50);checks.push('Safety sheet pauses automatic photo switching');
+            Object.defineProperty(document,'visibilityState',{configurable:true,value:'hidden'});document.dispatchEvent(new Event('visibilitychange'));await delay(30);const c=index();assert(!visible('.profile-voice-intro'),'Hidden voice not released');await delay(3100);assert(index()===c,'Hidden timer leaked');Object.defineProperty(document,'visibilityState',{configurable:true,value:'visible'});document.dispatchEvent(new Event('visibilitychange'));await delay(3150);assert(index()===(c+1)%3,'Resume cadence failed');checks.push('Synthetic document visibility lifecycle pauses/releases and resumes without catch-up');
+            click('expanded.sayHi.click.1');await wait(()=>visible('.ice-select-page'));await delay(350);assert(!visible('.profile-voice-intro'),'Hidden page retained voice');history.back();await wait(()=>visible('.expanded-profile-page'));await delay(350);assert(location.hash.includes('user_zane')&&localStorage.getItem('cimoa_app_state_v2')===before,'Back/entity/storage mismatch');checks.push('Send shot and Back retain same entity and business state; hidden detail releases player');return checks;
+            """) as! [String]
+            try await restore()
+            try JSONSerialization.data(withJSONObject:["result":"passed","checks":checks,"geometry":geometry,"storage_restored":true,"limits":"Visibility event is synthetic; this is not an OS-background or physical-device benchmark"],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+        } catch {
+            let detail = String(describing:try? await script(host,"return {checks:window.expandedChecks,url:location.href,dots:document.querySelector('.expanded-dots')?.outerHTML,voice:document.querySelector('.profile-voice-play')?.outerHTML}"))
+            try? await restore()
+            try? JSONSerialization.data(withJSONObject:["result":"failed","failure":String(describing:error),"detail":detail],options:[.prettyPrinted,.sortedKeys]).write(to:folder.appendingPathComponent("native-acceptance.json"))
+            throw error
+        }
+    }
     func testDiscoverStaggeredSwipeThresholdAndRecovery() async throws {
         let host = try await rawHost()
         let saved = try await script(host, "return {state:localStorage.getItem('cimoa_app_state_v2'),legacy:localStorage.getItem('cimoa_app_state')}") as! [String:Any]

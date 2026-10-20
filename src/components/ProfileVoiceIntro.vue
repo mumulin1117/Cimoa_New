@@ -1,30 +1,45 @@
 <script setup>
 import EventAudio from './EventAudio.vue'
 import SourceIcon from './SourceIcon.vue'
+import ProfilePhoto from './ProfilePhoto.vue'
 
 defineProps({
   intro: { type: Object, required: true },
+  cover: { type: String, default: '' },
+  name: { type: String, required: true },
 })
 </script>
 
 <template>
   <view class="profile-voice-intro" :data-audio-url="intro.audio_url">
-    <view class="profile-voice-heading">
-      <view class="profile-voice-icon"><SourceIcon name="mic" /></view>
-      <view class="profile-voice-copy"><text>Voice introduction</text><text>Tap to listen</text></view>
-    </view>
-    <EventAudio :src="intro.audio_url" :duration="intro.duration_ms" interaction="expanded.voiceIntroPlay.click.1" />
-    <text class="profile-voice-transcript">{{ intro.transcript }}</text>
+    <EventAudio :src="intro.audio_url" :duration="intro.duration_ms" interaction="expanded.voiceIntroPlay.click.1">
+      <template #default="{ playing, pending, error, toggle }">
+        <view class="profile-voice-bar" @click.stop>
+          <view class="profile-voice-cover"><ProfilePhoto v-if="cover" :src="cover" :name="name" portrait /><view v-else class="profile-voice-icon"><SourceIcon name="mic" /></view></view>
+          <view class="profile-voice-copy">
+            <text class="profile-voice-title">Voice introduction</text>
+            <text v-if="error" class="profile-voice-status" role="alert">{{ error }}</text>
+            <text v-else-if="pending" class="profile-voice-status" aria-live="polite">Loading audio…</text>
+            <text v-else class="profile-voice-transcript" :title="intro.transcript">{{ intro.transcript || `${Math.ceil((intro.duration_ms || 0) / 1000)}s` }}</text>
+          </view>
+          <view class="profile-voice-play event-audio-button" role="button" tabindex="0" :aria-label="playing ? 'Pause voice message' : 'Play voice message'" :aria-description="`${Math.ceil((intro.duration_ms || 0) / 1000)}s voice introduction`" :aria-disabled="pending" data-interaction="expanded.voiceIntroPlay.click.1" @click.stop="toggle" @keydown.enter.stop="toggle" @keydown.space.stop.prevent="toggle"><view class="profile-voice-play-icon"><SourceIcon :name="playing ? 'pause' : 'play'" /></view></view>
+        </view>
+      </template>
+    </EventAudio>
   </view>
 </template>
 
 <style scoped>
-.profile-voice-intro { margin-top: 30.534rpx; padding: 34.351rpx; border-radius: 45.802rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); }
-.profile-voice-heading { display: flex; align-items: center; gap: 19.084rpx; }
-.profile-voice-icon { display: flex; align-items: center; justify-content: center; width: 68.702rpx; height: 68.702rpx; padding: 17.176rpx; border-radius: 50%; color: var(--cimoa-text-profile-interest-icon); background: var(--cimoa-surface-profile-interest-icon); }
-.profile-voice-copy { display: flex; flex-direction: column; gap: 3.817rpx; }
-.profile-voice-copy text:first-child { color: var(--cimoa-text-title); font-size: 34.351rpx; font-weight: 800; }
-.profile-voice-copy text:last-child { color: var(--cimoa-text-secondary); font-size: 24.809rpx; }
-.profile-voice-intro :deep(.event-audio) { margin-top: 22.901rpx; padding: 15.267rpx 22.901rpx; border-radius: 34.351rpx; color: var(--cimoa-text-title); background: var(--cimoa-surface-tinted); }
-.profile-voice-transcript { display: block; margin-top: 22.901rpx; color: var(--cimoa-text-profile-bio); font-size: 28.626rpx; line-height: 1.5; }
+.profile-voice-intro { position: absolute; right: 26.718rpx; bottom: 22.901rpx; left: 26.718rpx; z-index: 4; border-radius: 41.985rpx; color: var(--cimoa-text-inverse); background: var(--cimoa-surface-profile-song); backdrop-filter: blur(26.718rpx); }
+.profile-voice-bar { display: flex; align-items: center; gap: 22.901rpx; height: 114.504rpx; padding: 15.267rpx; }
+.profile-voice-cover { position: relative; flex: none; width: 83.969rpx; height: 83.969rpx; overflow: hidden; border-radius: 22.901rpx; }
+.profile-voice-icon { display: flex; align-items: center; justify-content: center; height: 100%; padding: 22.901rpx; }
+.profile-voice-copy { flex: 1; min-width: 0; }
+.profile-voice-copy text { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-voice-title { font-size: 29.58rpx; font-weight: 700; }
+.profile-voice-transcript, .profile-voice-status { margin-top: 3.817rpx; color: var(--cimoa-text-profile-song-artist); font-size: 24.809rpx; }
+.profile-voice-copy .profile-voice-status { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; white-space: normal; line-height: 1.15; font-size: 20.992rpx; }
+.profile-voice-play { flex: none; display: flex; align-items: center; justify-content: center; width: 83.969rpx; height: 83.969rpx; padding: 0; border-radius: 50%; color: var(--cimoa-text-settings-purple); background: var(--cimoa-surface-card); cursor: pointer; }
+.profile-voice-play[aria-disabled="true"] { opacity: 0.6; }
+.profile-voice-play-icon { width: 38.168rpx; height: 38.168rpx; }
 </style>

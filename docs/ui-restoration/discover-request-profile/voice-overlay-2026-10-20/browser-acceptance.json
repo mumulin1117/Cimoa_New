@@ -1,0 +1,60 @@
+{
+  "result": "passed",
+  "checks": [
+    "One voice strip overlays the photo with source 14/12px insets, 60px height and 44px thumbnail/play; no duplicate lower voice card",
+    "Exactly 3s advances/wraps; manual previous/next cancels the old deadline and grants a full 3s",
+    "Actual bundled voice continues across automatic photo changes and pauses from the overlay without opening gallery or changing entity",
+    "Safety sheet and gallery pause automatic switching; explicit photo controls remain usable",
+    "Document visibility lifecycle cancels photo timer and destroys audio; resume starts a fresh cadence (synthetic lifecycle event, not OS background measurement)",
+    "Send shot/Back and refresh preserve canonical identity/requests/storage; hidden detail releases audio and refresh resets only transient photo position",
+    "Narrow and large iPhone layouts keep voice controls within the photo with real safe-area budgets",
+    "Zero/one photo does not rotate; missing audio shows a retryable real error; a profile without voice retains the original song fallback",
+    "Shared EventAudio default slot retains the original voice-message text/button and actual play/pause in Profile preview"
+  ],
+  "errors": [],
+  "server_pid": 66536,
+  "geometry": {
+    "photo": {
+      "x": 20,
+      "y": 125.96875,
+      "width": 353,
+      "height": 470.65625,
+      "bottom": 596.625,
+      "right": 373
+    },
+    "voice": {
+      "x": 34,
+      "y": 524.625,
+      "width": 325,
+      "height": 60,
+      "bottom": 584.625,
+      "right": 359
+    },
+    "cover": {
+      "x": 41.984375,
+      "y": 532.625,
+      "width": 43.984375,
+      "height": 43.984375,
+      "bottom": 576.609375,
+      "right": 85.96875
+    },
+    "play": {
+      "x": 307.03125,
+      "y": 532.625,
+      "width": 43.984375,
+      "height": 43.984375,
+      "bottom": 576.609375,
+      "right": 351.015625
+    }
+  },
+  "comparison": {
+    "width": 393,
+    "height": 852,
+    "pixels_different": 293201,
+    "pixels_above_channel_delta_8": 217995,
+    "mean_absolute_channel_delta": 29.792381942204543,
+    "max_channel_delta": 255
+  },
+  "comparison_note": "Supplied Chloe/song design versus approved actual-person voice variant; image/text/safe-area differences are intentional, not a whole-page zero-diff claim.",
+  "cleaned": true
+}

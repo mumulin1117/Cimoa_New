@@ -1,0 +1,40 @@
+{
+  "page": "Discover / Profile / Expanded",
+  "route": "/pages/discover/profile?user_id=user_zane",
+  "source_lock": "locked",
+  "base_contract": "../source-contract.json",
+  "source": {
+    "file": "/Users/linqian/Downloads/Discover ／ Profile ／ Expanded.png",
+    "sha256": "819526acf3e66e8a1bbb2e4e6d3265353b476578879d2de0a14dd67deee7ba54",
+    "pixels": [786, 1794],
+    "app_crop": [0, 0, 786, 1704],
+    "scale": 2,
+    "html_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+    "html_decoded_lines": [415, 427]
+  },
+  "geometry_393": {
+    "photo": {"x": 20, "y": 126, "width": 353, "height": 470.667, "radius": 24},
+    "voice": {"left": 14, "right": 14, "bottom": 12, "height": 60, "padding": 8, "gap": 12, "radius": 22},
+    "thumbnail": {"width": 44, "height": 44, "radius": 12},
+    "play": {"width": 44, "height": 44, "icon": 20},
+    "title": {"font_size": 15.5, "weight": 700},
+    "subtitle": {"font_size": 13, "single_line_ellipsis": true}
+  },
+  "tokens": ["--cimoa-surface-profile-song", "--cimoa-text-inverse", "--cimoa-text-profile-song-artist", "--cimoa-surface-card", "--cimoa-text-settings-purple"],
+  "approved_deltas": [
+    "User requests the voice introduction in the source song pill position; actual person's voice, transcript and first profile photo replace song metadata/artwork when voice exists.",
+    "No duplicate lower voice card. Profiles without voice retain the source song card and truthful unavailable playback.",
+    "User requests automatic photo rotation every 3000ms. Manual previous/next restarts a full interval; one/zero photo has no timer.",
+    "Pause while hidden, document backgrounded, navigating or a sheet is open; resume with a fresh interval and same selected photo. Clear timer/listener on unmount.",
+    "Canonical supplied people and real safe areas remain as approved; this increment does not claim a whole-page zero-diff against Chloe's screenshot."
+  ],
+  "fixed_regions": "Existing header/footer/safe areas unchanged",
+  "scroll_region": "Existing single scroll-view; voice is a child of the photo card, not a separate data card",
+  "copy": ["Voice introduction", "existing canonical transcript", "existing audio loading/error labels"],
+  "playback": "Reuse EventAudio's real audio adapter; no autoplay audio, no fake progress; stop/release when page hides",
+  "states": ["three photos", "one photo", "zero photos", "missing audio", "long transcript", "gallery", "safety sheet", "background", "back", "refresh"],
+  "interaction_contracts": [
+    {"interaction_id":"expanded.voiceIntroPlay.click.1","source_screen":"Expanded photo bottom pill","trigger":"click / Enter","preconditions":"Current visible profile with a voice resource","visible_feedback":"Real preparing/play/pause/error state","success_result":"Plays current person's audio, without opening gallery","failure_result":"Readable error inside pill; retry available; no fake playing","persistence":"none","sync_scope":"Current media lease only; business data unchanged","acceptance":"Browser and WKWebView real play/pause, source failure and hide cleanup"},
+    {"interaction_id":"expanded.photo.auto.timer.1","source_screen":"Expanded photo carousel","trigger":"3000ms while visible","preconditions":"More than one actual photo; visible account-valid page without sheet/navigation","visible_feedback":"Next actual photo and selected track","success_result":"Wraps last to first; manual change resets cadence","failure_result":"No timer for unavailable profile; photo retains existing loading/retry UI","persistence":"none","sync_scope":"UI photo index only","acceptance":"2999ms unchanged, 3000ms advance, wrap, manual reset, sheet/background/leave cleanup"}
+  ]
+}

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onUnmounted, watch } from 'vue'
+import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
 import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
@@ -12,6 +12,7 @@ import EventConfirmDialog from '@/components/EventConfirmDialog.vue'
 import EventActionLoading from '@/components/EventActionLoading.vue'
 import SafetyActionsMiniSheet from '@/components/SafetyActionsMiniSheet.vue'
 import ProfileVoiceIntro from '@/components/ProfileVoiceIntro.vue'
+import { create_profile_photo_carousel } from '@/utils/profilePhotoCarousel.js'
 
 const store = use_app_store()
 const frame = ref(null)
@@ -21,6 +22,7 @@ const photo_index = ref(0)
 const sheet = ref('')
 const error = ref('')
 const active = ref(true)
+const document_visible = ref(typeof document === 'undefined' || document.visibilityState !== 'hidden')
 const navigating = ref(false)
 const was_available = ref(false)
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
@@ -61,12 +63,21 @@ onLoad(options => {
   origin_conversation_id.value = String(options?.origin_conversation_id || '')
   was_available.value = !!store.user_by_id(user_id.value)
 })
-const leave = () => { active.value = false; navigating.value = false; cancel_loading(); sheet.value = '' }
-watch(() => photos.value.length, length => { photo_index.value = length ? photo_index.value % length : 0 })
+const carousel = create_profile_photo_carousel({
+  can_advance: () => active.value && document_visible.value && !access_error.value && !sheet.value && !is_loading.value && !navigating.value && photos.value.length > 1,
+  advance: () => { photo_index.value = (photo_index.value + 1) % photos.value.length },
+})
+const leave = () => { active.value = false; carousel.stop(); navigating.value = false; cancel_loading(); sheet.value = '' }
+watch(() => photos.value.map(row => row.photo_id || row.media_url).join('|'), () => { photo_index.value = photos.value.length ? photo_index.value % photos.value.length : 0; carousel.restart() })
+watch([active, document_visible, access_error, sheet, is_loading, navigating], () => carousel.restart())
+const visibility_changed = () => { document_visible.value = document.visibilityState !== 'hidden' }
+onMounted(() => { if (typeof document !== 'undefined') document.addEventListener('visibilitychange', visibility_changed); carousel.restart() })
 onHide(leave)
-onUnmounted(leave)
+onUnmounted(() => { leave(); if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', visibility_changed) })
 onShow(async () => {
   active.value = true
+  if (typeof document !== 'undefined') visibility_changed()
+  carousel.restart()
   error.value = ''
   if (account_scope.is_current() && was_available.value && store.hydration_status === 'ready' && !person.value) {
     try { await frame.value.navigate_relaunch('/pages/discover/index') } catch (cause) { error.value = cause.message }
@@ -79,6 +90,7 @@ const back = async () => { if (is_loading.value || sheet.value) return; try { aw
 const change_photo = delta => {
   if (photos.value.length < 2) return
   photo_index.value = (photo_index.value + delta + photos.value.length) % photos.value.length
+  carousel.restart()
   error.value = ''
 }
 const open_gallery = () => { if (photo.value && !is_loading.value) { sheet.value = 'gallery'; error.value = '' } }
@@ -130,7 +142,8 @@ const confirm_block = async () => {
     <view v-else class="expanded-content">
       <view class="expanded-photo-card">
         <view class="expanded-photo" role="button" tabindex="0" :aria-label="`Open photo ${photo_index + 1} of ${photos.length}`" :data-interaction="`expanded.openGallery.click.${Math.min(photo_index + 1, 3)}`" @click="open_gallery" @keydown.enter="open_gallery"><ProfilePhoto :src="photo?.media_url || ''" :name="person.user_name" :position="photo?.focal_point || '50% 22%'" /></view>
-        <view v-if="song" class="expanded-song"><image :src="song.cover_url" mode="aspectFill" /><view><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view class="expanded-song-play" role="button" tabindex="0" aria-label="Play profile song" data-interaction="expanded.otherSongPlay.click.1" @click.stop="play_song" @keydown.enter.stop="play_song"><SourceIcon name="play" /></view></view>
+        <ProfileVoiceIntro v-if="person.voice_intro && active && document_visible" :intro="person.voice_intro" :cover="photos[0]?.media_url || ''" :name="person.user_name" />
+        <view v-else-if="!person.voice_intro && song" class="expanded-song"><image :src="song.cover_url" mode="aspectFill" /><view><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view class="expanded-song-play" role="button" tabindex="0" aria-label="Play profile song" data-interaction="expanded.otherSongPlay.click.1" @click.stop="play_song" @keydown.enter.stop="play_song"><SourceIcon name="play" /></view></view>
         <view v-if="photos.length > 1" class="expanded-photo-hit expanded-photo-hit--prev" role="button" tabindex="0" aria-label="Previous photo" data-interaction="expanded.prevPhoto.click.1" @click.stop="change_photo(-1)" @keydown.enter.stop="change_photo(-1)" />
         <view v-if="photos.length > 1" class="expanded-photo-hit expanded-photo-hit--next" role="button" tabindex="0" aria-label="Next photo" data-interaction="expanded.nextPhoto.click.1" @click.stop="change_photo(1)" @keydown.enter.stop="change_photo(1)" />
         <view v-if="photos.length > 1" class="expanded-dots"><view v-for="(_, index) in photos" :key="index" :class="{ active: index === photo_index }" /></view>
@@ -138,7 +151,6 @@ const confirm_block = async () => {
 
       <view v-if="details.length" class="expanded-card expanded-tags"><view v-for="item in details" :key="item.label" class="expanded-tag"><view v-if="item.icon" class="expanded-tag-icon"><SourceIcon :name="item.icon" /></view><text v-else class="expanded-tag-emoji">{{ item.emoji }}</text><text>{{ item.label }}</text></view></view>
       <view v-if="person.bio" class="expanded-card expanded-bio"><text>{{ person.bio }}</text></view>
-      <ProfileVoiceIntro v-if="person.voice_intro" :intro="person.voice_intro" />
       <view v-if="goals.length" class="expanded-card"><view class="expanded-section-title"><view><SourceIcon name="people" /></view><text>Looking for</text></view><view class="expanded-chip-list"><view v-for="goal in goals" :key="goal.item_id" class="expanded-chip"><text>{{ goal.emoji }}</text><text>{{ goal.label }}</text></view></view></view>
       <view v-if="interests.length" class="expanded-card"><view class="expanded-section-title expanded-section-title--blue"><view><SourceIcon name="sparkle" /></view><text>Interests</text></view><view class="expanded-chip-list"><view v-for="interest in interests" :key="interest.item_id" class="expanded-chip"><text>{{ interest.emoji }}</text><text>{{ interest.label }}</text></view></view></view>
       <view v-if="questions.length" class="expanded-card"><view class="expanded-section-title expanded-section-title--blue"><view><SourceIcon name="sparkle" /></view><text>Ask me</text></view><view class="expanded-question-list"><text v-for="question in questions" :key="question.question_id">{{ question.text }}</text></view></view>

@@ -1,0 +1,44 @@
+{
+  "checks" : [
+    "Bundled voice real play\/pause uses overlay without opening gallery",
+    "Actual native timer advances after 3s; manual switch resets deadline",
+    "Safety sheet pauses automatic photo switching",
+    "Synthetic document visibility lifecycle pauses\/releases and resumes without catch-up",
+    "Send shot and Back retain same entity and business state; hidden detail releases player"
+  ],
+  "geometry" : {
+    "photo" : {
+      "bottom" : 617.078125,
+      "height" : 481.453125,
+      "right" : 381.546875,
+      "width" : 361.09375,
+      "x" : 20.453125,
+      "y" : 135.625
+    },
+    "play" : {
+      "bottom" : 596.625,
+      "height" : 45,
+      "right" : 359.0625,
+      "width" : 45,
+      "x" : 314.0625,
+      "y" : 551.625
+    },
+    "safeBottom" : 34,
+    "safeTop" : 62,
+    "viewport" : [
+      402,
+      874
+    ],
+    "voice" : {
+      "bottom" : 604.8125,
+      "height" : 61.359375,
+      "right" : 367.234375,
+      "width" : 332.46875,
+      "x" : 34.765625,
+      "y" : 543.453125
+    }
+  },
+  "limits" : "Visibility event is synthetic; this is not an OS-background or physical-device benchmark",
+  "result" : "passed",
+  "storage_restored" : true
+}

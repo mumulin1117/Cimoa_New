@@ -27,7 +27,7 @@ const toggle = async () => {
   finally { if (current === token) pending.value = false }
 }
 </script>
-<template><view class="event-audio"><view class="event-audio-button" role="button" tabindex="0" :aria-label="playing ? 'Pause voice message' : 'Play voice message'" :aria-disabled="pending" :data-interaction="interaction" @click="toggle" @keydown.enter="toggle"><view class="event-page-icon"><SourceIcon :name="playing ? 'pause' : 'play'" /></view><text>{{ pending ? 'Loading audio…' : `${Math.ceil((duration || 0) / 1000)}s voice message` }}</text></view><text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text></view></template>
+<template><view class="event-audio"><slot :playing="playing" :pending="pending" :error="error" :toggle="toggle"><view class="event-audio-button" role="button" tabindex="0" :aria-label="playing ? 'Pause voice message' : 'Play voice message'" :aria-disabled="pending" :data-interaction="interaction" @click="toggle" @keydown.enter="toggle"><view class="event-page-icon"><SourceIcon :name="playing ? 'pause' : 'play'" /></view><text>{{ pending ? 'Loading audio…' : `${Math.ceil((duration || 0) / 1000)}s voice message` }}</text></view><text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text></slot></view></template>
 
 <style scoped>
 .event-audio-button {

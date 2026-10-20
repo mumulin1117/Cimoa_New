@@ -2975,14 +2975,14 @@
     "local_acceptance": "passed",
     "full_acceptance": "pending",
     "acceptance_policy": "用户授权各页分段验收；待依赖时回 pending；完整闭环与本地提交完成后才 verified",
-    "mapping_status": "source-locked; canonical same-ID sync, refresh/block/account-generation cancellation and browser/WKWebView regressions passed; full visual and physical-device acceptance pending",
-    "acceptance_evidence": "docs/evidence/sync-recovery/acceptance.json",
+    "mapping_status": "source-locked; 2026-10-20 voice overlay geometry, 3s carousel and real audio increment passed browser/WKWebView; whole-page visual/full remain pending",
+    "acceptance_evidence": "docs/ui-restoration/discover-request-profile/voice-overlay-2026-10-20/acceptance.json",
     "source_lock": "locked",
     "visual_acceptance": "pending",
-    "source_lock_artifact": "docs/ui-restoration/sync-expanded/source-contract.json",
-    "visual_audit_artifact": "docs/ui-restoration/discover-request-profile/difference-audit.md",
-    "acceptance_notes": "2026-10-17 Discover request chain; supersedes 2026-10-14 batch claims. Acceptance is evidence-scoped to this module, not the full app.",
-    "implementation_commit": "f8924a99"
+    "source_lock_artifact": "docs/ui-restoration/discover-request-profile/voice-overlay-2026-10-20/source-contract.json",
+    "visual_audit_artifact": "docs/ui-restoration/discover-request-profile/voice-overlay-2026-10-20/difference-audit.md",
+    "acceptance_notes": "2026-10-20 scoped increment: source song-pill geometry now contains the actual voice when present; automatic photo changes never write business state. Prior request/sync acceptance remains historical; not a whole-page pixel/full completion claim.",
+    "previous_implementation_commit": "f8924a99"
   },
   {
     "source_screen": "Events / Explore / Default",

@@ -1,0 +1,29 @@
+{
+  "scope": "2026-10-20 Expanded voice-over-photo layout and 3000ms photo carousel increment",
+  "source_lock": "locked",
+  "local_acceptance": "passed",
+  "full_acceptance": "pending",
+  "visual_acceptance": "pending",
+  "status": "pending",
+  "increment_layout_review": "passed: source insets/height/control sizes within 1 design CSS px, browser/WKWebView actual and overlay/diff inspected",
+  "browser": {"result":"passed","checks":9,"errors":[],"evidence":"browser-acceptance.json","cleaned":true},
+  "entry_regression": {"result":"passed","checks":6,"errors":[],"evidence":"entry-regression/browser-acceptance.json","scope":"Original gallery/entity/request/Back/scroll/corrupt-storage/expired-session checks; historical source reference is not the new voice visual target"},
+  "unit": {"passed":201,"failed":0,"report":"/tmp/cimoa-expanded-overlay-unit.xml","new_carousel_cases":4},
+  "WKWebView": {"result":"passed","passed_tests":2,"failed_tests":0,"device":"iPhone 17 Pro","runtime":"iOS 26.5","viewport":[402,874],"safe_area":[62,34],"evidence":"native-acceptance.json","authoritative_result":"/tmp/cimoa-expanded-overlay-release.xcresult","scope":"Real bundled WKWebView geometry, 3s timer, real audio play/pause, sheet/lifecycle, canonical Back and restored storage; existing Discover deck/three-photo/real bundled audio regression"},
+  "bundle": {"h5_files":415,"manifest_sha256":"0f0643abb32a0249815a4316f8d7ea5eefd2f54fed9cac86e5fc8c3188df23c2","host":"ios/cimoaNeapo","archive":"artifacts/cimoaNeapo-ios.zip","mode":"Compiled independent Vue H5; no original HTML iframe or runtime load"},
+  "gates": ["corepack pnpm check:conventions: passed, 0 warnings", "git diff --check: passed", "corepack pnpm build:h5: passed"],
+  "warnings": ["Existing Xcode warning: Metadata extraction skipped. No AppIntents.framework dependency found. No new convention warnings."],
+  "limits": [
+    "The supplied Chloe/song screenshot is a layout source. Canonical people/photos/transcript replace its content by explicit user direction; do not infer whole-page zero-diff acceptance.",
+    "Synthetic document visibility events verify cleanup/resume in both engines, not physical-device OS background or frame-rate acceptance.",
+    "Whole-page visual/full acceptance remains pending as before; no next page started and no new verified claim.",
+    "No audio autoplay, fake progress, new business state, ledger/request write, or altered native playback permission."
+  ],
+  "files": {
+    "runtime": ["src/pages/discover/profile.vue","src/components/ProfileVoiceIntro.vue","src/components/EventAudio.vue","src/utils/profilePhotoCarousel.js"],
+    "tests": ["scripts/profile-photo-carousel.test.mjs","scripts/profile-voice-overlay-browser.test.mjs","ios/cimoaNeapo/Tests/HostTests.swift"],
+    "tracking": ["docs/cimoa-page-inventory.json","this scoped evidence directory"],
+    "generated": ["dist/build/h5","ignored ios/cimoaNeapo/Resources/H5 and archive"]
+  },
+  "git": "Scoped local commit only; preserve pre-existing ten registration screenshots; no push"
+}
