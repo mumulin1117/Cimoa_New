@@ -1,33 +1,39 @@
 <script setup>
-import { computed, onUnmounted, ref } from 'vue'
+import { get_locale } from '@/i18n/index.js'
+
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { onHide, onLoad, onReady, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
-import { use_write_loading } from '@/composables/useWriteLoading.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import CoinActionLoading from '@/components/CoinActionLoading.vue'
-import { watch_purchase, cancel_purchase_request, suspend_purchase_request, forget_purchase_request } from '@/utils/iapBridge.js'
+import { watch_purchase, suspend_purchase_request } from '@/utils/iapBridge.js'
+import { reconcile_purchase_result, refresh_purchase_recovery, abandon_interrupted_purchase } from '@/utils/nativePurchases.js'
+import PurchaseRecoveryConfirmDialog from '@/components/PurchaseRecoveryConfirmDialog.vue'
 import { use_account_scope } from '@/composables/useAccountScope.js'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { coin_center_route } from '@/utils/coinReturnContext.js'
 import { MOTION } from '@/config/navigation.js'
 
-const store = use_app_store(), frame = ref(null), request_id = ref(''), navigating = ref(false), error = ref(''), resolving = ref(false), account_id = store.session.account_id
-const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
+const store = use_app_store(), frame = ref(null), request_id = ref(''), navigating = ref(false), error = ref(''), resolving = ref(false), release_open = ref(false), account_id = store.session.account_id
+const is_loading = computed(() => resolving.value)
 let active = true, started = false, ready = false, generation = 0
-const leave = () => { active = false; generation++; started = false; resolving.value = false; cancel_loading(); suspend_purchase_request(request_id.value) }
+const leave = () => { active = false; generation++; started = false; resolving.value = false; release_open.value = false; suspend_purchase_request(request_id.value) }
 const account_scope = use_account_scope(store, leave)
 onLoad(options => { request_id.value = String(options?.purchase_request_id || '') })
 const request = computed(() => store.purchase_by_id(request_id.value))
 const pack = computed(() => store.coin_package_by_id(request.value?.package_id))
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved purchase data is unavailable. Please return and retry.'
+  ? 'Your purchase details are unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !request_id.value || !request.value
       ? 'This purchase request is unavailable. No coins were added.'
       : '')
 const pending = computed(() => request.value?.status === 'pending')
+const interrupted = computed(() => pending.value && request.value?.phase === 'interrupted')
+const purchase_title = computed(() => interrupted.value ? 'Purchase needs your attention' : request.value?.accepted_at ? 'Waiting for the App Store…' : 'Connecting to the App Store…')
+const purchase_copy = computed(() => interrupted.value ? 'The App Store was interrupted before a final result. Check your Apple purchase history before starting another purchase. The original may still complete.' : request.value?.accepted_at ? 'Your purchase is being handled by Apple. You can leave this page and return later. Verified coins will be added once.' : 'Waiting for the App Store to accept this request. No coins have been added.')
 const status_message = computed(() => {
   if (pending.value) return ''
   if (request.value?.status === 'cancelled') return 'This purchase was cancelled. Your balance is unchanged.'
@@ -38,34 +44,50 @@ const status_message = computed(() => {
 })
 const result_route = status => status === 'success' ? '/pages/coins/success' : status === 'cancelled' ? '/pages/coins/cancelled' : '/pages/coins/failed'
 const navigate_result = async status => {
+  if (!active || navigating.value || access_error.value || !['success', 'failure', 'cancelled', 'timeout'].includes(status)) return
+  navigating.value = true
   try { await frame.value.navigate_replace(require_coin_route_ready(`${result_route(status)}?purchase_request_id=${encodeURIComponent(request_id.value)}`)) }
   catch (cause) { error.value = `${status_message.value} ${cause.message}` }
+  finally { navigating.value = false }
 }
 const finish = async result => {
-  if (!active || resolving.value || !pending.value || access_error.value || result.status === 'interrupted') return
+  if (!active || access_error.value || result.status === 'interrupted') return
   const token = generation
-  resolving.value = true
-  const settled = await run_with_loading(scope => store.settle_purchase(request_id.value, result, { ...scope, expected_context: account_scope.auth_context, received_at: result.received_at }))
+  const settled = await reconcile_purchase_result(store, result)
   if (token !== generation) return
-  resolving.value = false
   if (!active || settled.reason === 'cancelled') return
   if (!settled.success) { error.value = settled.message; return }
-  forget_purchase_request(request_id.value)
-  await navigate_result(settled.data.status)
+  if (!pending.value) await navigate_result(request.value.status)
 }
 const start = async () => {
   if (!ready || !active || started || access_error.value || !pack.value) return
   if (!pending.value) { await navigate_result(request.value.status); return }
   started = true; error.value = ''
-  const token = generation, result = await watch_purchase(request.value, pack.value)
+  const token = generation
+  // Resolve the durable native state before installing an old acknowledgement
+  // deadline. A payment sheet may have hidden the app before H5 wrote accepted.
+  await refresh_purchase_recovery(store)
+  if (token !== generation || !active || access_error.value) return
+  if (!pending.value) { await navigate_result(request.value.status); return }
+  const result = await watch_purchase(request.value, pack.value)
   if (token !== generation) return
   await finish(result)
 }
 const cancel = () => {
   if (navigating.value || is_loading.value) return
   if (access_error.value) return
-  if (pending.value) { if (!cancel_purchase_request(request_id.value)) finish({ status: 'cancelled' }); return }
+  // Leaving the page never claims to cancel an accepted Apple payment.
   navigate_store()
+}
+const release = async () => {
+  if (resolving.value || !interrupted.value || !request.value.can_abandon_interrupted) return
+  resolving.value = true; error.value = ''
+  const token = generation, result = await abandon_interrupted_purchase(store, request.value)
+  if (token !== generation || !active) return
+  resolving.value = false
+  if (!result.success) { error.value = result.message || 'This purchase is still being checked. Please try again later.'; return }
+  release_open.value = false
+  await navigate_store()
 }
 const navigate_store = async () => {
   if (navigating.value || is_loading.value) return
@@ -76,26 +98,28 @@ onReady(() => { ready = true; start() })
 onShow(() => { active = true; start() })
 onHide(() => { navigating.value = false; leave() })
 onUnmounted(leave)
+watch(() => request.value?.status, status => { if (ready && active && status && status !== 'pending' && request.value?.phase !== 'abandoned') navigate_result(status) })
 </script>
 
 <template>
   <SecondaryPageFrame ref="frame" class="coin-purchasing-page" :style="{ '--coin-pulse-duration': `${MOTION.coin_pulse}ms` }">
-    <template #header><view class="purchase-header"><view class="purchase-back" role="button" tabindex="0" aria-label="Back" :aria-disabled="is_loading || navigating" data-interaction="coinPurchasing.goBack.click.1" @click="cancel" @keydown.enter="cancel"><SourceIcon name="back" /></view><text>Coins</text></view><text v-if="error" class="purchase-error" role="alert">{{ error }}</text></template>
+    <template #header><view class="purchase-header"><view class="purchase-back" role="button" tabindex="0" aria-label="Back" :aria-disabled="is_loading || navigating" data-interaction="coinPurchasing.goBack.click.1" @click="cancel" @keydown.enter="cancel"><SourceIcon name="back" /></view><text>Coins</text></view><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /></template>
     <view class="purchase-content">
       <view v-if="access_error" class="purchase-access" role="alert">{{ access_error }}</view>
       <template v-else-if="pack">
-        <view class="purchase-package"><image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><view><text>{{ pack.coins.toLocaleString('en-US') }} Coins</text><text>Selected package</text></view><text>{{ pack.price }}</text></view>
+        <view class="purchase-package"><image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><view><text>{{ (request.coins || pack.coins).toLocaleString(get_locale()) }} Coins</text><text>Selected package</text></view><text>{{ request.display_price || 'Price unavailable' }}</text></view>
         <view class="purchase-status">
           <view v-if="pending" class="purchase-pulse" aria-hidden="true" />
           <view v-else class="purchase-status-icon"><SourceIcon :name="request.status === 'success' ? 'check' : 'blocked'" /></view>
-          <text>{{ pending ? 'Connecting to the App Store…' : 'Purchase request finished' }}</text>
-          <text>{{ pending ? 'Nothing has been charged yet and no coins have been added.' : status_message }}</text>
+          <text>{{ pending ? purchase_title : 'Purchase request finished' }}</text>
+          <text>{{ pending ? purchase_copy : status_message }}</text>
+          <view v-if="interrupted && request.can_abandon_interrupted" class="purchase-cancel" role="button" tabindex="0" :aria-disabled="resolving" data-interaction="coinPurchasing.reviewInterrupted.click.1" @click="!resolving && (release_open = true)" @keydown.enter="!resolving && (release_open = true)">Review interrupted request</view>
           <text v-if="pending && !pack.product_id" class="purchase-note">This purchase is currently unavailable. Your balance will not change if it fails or times out.</text>
         </view>
       </template>
     </view>
-    <template #footer><view v-if="!access_error" class="purchase-footer"><view class="purchase-cancel" role="button" tabindex="0" :aria-disabled="is_loading || navigating" data-interaction="coinPurchasing.backToStore.click.1" @click="cancel" @keydown.enter="cancel">{{ pending ? 'Cancel' : 'Back to Coin Store' }}</view></view></template>
-    <template #overlays><CoinActionLoading :visible="is_loading" label="Finalizing purchase result…" /></template>
+    <template #footer><view v-if="!access_error" class="purchase-footer"><view class="purchase-cancel" role="button" tabindex="0" :aria-disabled="is_loading || navigating" data-interaction="coinPurchasing.backToStore.click.1" @click="cancel" @keydown.enter="cancel">Back to Coin Store</view></view></template>
+    <template #overlays><PurchaseRecoveryConfirmDialog :open="release_open" :busy="resolving" :error="error" @close="!resolving && (release_open = false)" @confirm="release" /><CoinActionLoading :visible="is_loading" label="Checking purchase…" /></template>
   </SecondaryPageFrame>
 </template>
 

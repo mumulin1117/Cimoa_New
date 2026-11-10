@@ -75,7 +75,7 @@ try {
   await page.reload({ waitUntil: 'networkidle' }); assert.equal((await read()).skeleton, false)
   await page.evaluate(() => { const snapshot = JSON.parse(localStorage.getItem('cimoa_app_state_v2')); snapshot.data.session = { account_id: null, current_user_id: null, expires_at: null }; localStorage.setItem('cimoa_app_state_v2', JSON.stringify(snapshot)) })
   await page.goto(origin + '/#/pages/auth/login', { waitUntil: 'networkidle' }); await page.reload({ waitUntil: 'networkidle' })
-  await page.locator('input').nth(0).fill('cimoa@gmail.com')
+  await page.locator('input').nth(0).fill('cimoa@connect.edu')
   await page.locator('input').nth(1).fill('12341234')
   await page.getByRole('checkbox').click(); await page.getByRole('button', { name: 'Log In', exact: true }).click()
   page.on('console', (message) => { if (message.type() === 'error') console.log('Browser:', message.text()) })

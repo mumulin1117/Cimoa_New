@@ -8,11 +8,11 @@
     "Document visibility lifecycle cancels photo timer and destroys audio; resume starts a fresh cadence (synthetic lifecycle event, not OS background measurement)",
     "Send shot/Back and refresh preserve canonical identity/requests/storage; hidden detail releases audio and refresh resets only transient photo position",
     "Narrow and large iPhone layouts keep voice controls within the photo with real safe-area budgets",
-    "Zero/one photo does not rotate; missing audio shows a retryable real error; a profile without voice retains the original song fallback",
+    "Zero/one photo does not rotate; missing real audio shows a retryable error; profiles without voice audio render no media strip",
     "Shared EventAudio default slot retains the original voice-message text/button and actual play/pause in Profile preview"
   ],
   "errors": [],
-  "server_pid": 66536,
+  "server_pid": 12825,
   "geometry": {
     "photo": {
       "x": 20,
@@ -39,22 +39,14 @@
       "right": 85.96875
     },
     "play": {
-      "x": 307.03125,
-      "y": 532.625,
-      "width": 43.984375,
-      "height": 43.984375,
-      "bottom": 576.609375,
+      "x": 307,
+      "y": 532.609375,
+      "width": 44.015625,
+      "height": 44.015625,
+      "bottom": 576.625,
       "right": 351.015625
     }
   },
-  "comparison": {
-    "width": 393,
-    "height": 852,
-    "pixels_different": 293201,
-    "pixels_above_channel_delta_8": 217995,
-    "mean_absolute_channel_delta": 29.792381942204543,
-    "max_channel_delta": 255
-  },
-  "comparison_note": "Supplied Chloe/song design versus approved actual-person voice variant; image/text/safe-area differences are intentional, not a whole-page zero-diff claim.",
+  "comparison_note": "Visual comparison skipped because the optional reference is unavailable: /Users/linqian/Downloads/Discover ／ Profile ／ Expanded.png",
   "cleaned": true
 }

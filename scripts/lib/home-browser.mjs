@@ -20,8 +20,8 @@ export async function test_home({ page, origin, evidence, check, context }) {
   const close = async () => { await page.locator('.goals-mask').click({ position: { x: 2, y: 2 } }); await panel.waitFor({ state: 'hidden' }) }
   await load('default')
   assert.equal(await page.locator('.connection').count(), 3)
-  assert.deepEqual(await page.locator('.connection-name').allTextContents(), ['Chloe Lin, 21', 'Liam Park, 22', 'Lina, 21'])
-  assert.deepEqual(await page.locator('.university-tag').allTextContents(), ['HKUST', 'Stanford', 'HKU'])
+  assert.deepEqual(await page.locator('.connection-name').allTextContents(), ['Chloe Lin, 21', 'Liam Park, 22', 'Grace Miller, 21'])
+  assert.deepEqual(await page.locator('.university-tag').allTextContents(), ['HKUST', 'Stanford', 'HKUST'])
   const avatar = await rect('.connection-avatar'), card = await rect('.connection'), header = await rect('.home-header'), bar = await rect('.tabbar')
   assert.ok(Math.abs(avatar.width - 78) < 1); assert.ok(Math.abs(card.width - 353) < 1)
   assert.ok(Math.abs(Number.parseFloat(await page.locator('.home-title').evaluate(el => getComputedStyle(el).fontSize)) - 38) < 1)
@@ -30,8 +30,8 @@ export async function test_home({ page, origin, evidence, check, context }) {
   await page.screenshot({ path: path.join(evidence, 'home-default.png') })
   check('Home canonical cards, original structure, 78 avatar, 353 card, 38 title and quota badge', { header, card, avatar, bar })
   const before = await storage()
-  for (const [user, expected] of [['user_chloe','New friends'], ['user_liam','Activity Buddies'], ['user_lina','New friends']]) {
-    await open(user); assert.ok((await panel.textContent()).includes(expected)); assert.equal(await page.locator('.home-error').count(), 0)
+  for (const [user, expected] of [['user_chloe','New friends'], ['user_liam','Activity Buddies'], ['user_grace','Coffee chats']]) {
+    await open(user); assert.ok((await panel.textContent()).includes(expected)); assert.equal(await page.locator('.brand-toast--error').count(), 0)
     await panel.locator('.goal-label').first().click(); assert.equal(await panel.isVisible(), true)
     if (user === 'user_chloe') { assert.equal(await panel.locator('.goal-row').count(), 5); await page.screenshot({ path: path.join(evidence, 'home-goals.png') }) }
     const p = await rect('.goals-panel'); assert.ok(p.x >= 0 && p.x + p.width <= 393 && p.bottom <= bar.y)
@@ -50,7 +50,7 @@ export async function test_home({ page, origin, evidence, check, context }) {
     if (id === 'home.openMe.click.1') {
       await page.locator('.profile-name').waitFor(); assert.equal(await page.locator('.secondary-page-frame:visible').getAttribute('data-page-depth'), '2')
       await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.home-header:visible').waitFor()
-    } else assert.match(await page.locator('.home-error').textContent(), /not been restored/)
+    } else assert.match(await page.locator('.brand-toast--error').textContent(), /not been restored/)
     assert.equal(await page.locator('.main-tab-frame').getAttribute('data-page-depth'), '1')
     assert.equal(await storage(), before)
   }
@@ -97,7 +97,7 @@ export async function test_home({ page, origin, evidence, check, context }) {
     assert.equal(JSON.parse(await storage()).data.match_sessions[0].expires_at, data.match_sessions[0].expires_at)
   }
   check('four real matching states use the same match ID and preserve persisted deadlines on refresh')
-  await load('request_accepted'); assert.match(await page.locator('#connection-user_lina .connection-status').textContent(), /Connected/)
+  await load('request_accepted'); assert.match(await page.locator('#connection-user_grace .connection-status').textContent(), /Connected/)
   await load('blocked'); assert.equal(await page.locator('#connection-user_chloe').count(), 0)
   check('accepted request and blocked-user fixtures synchronize Home through shared selectors')
   await page.evaluate(() => localStorage.setItem('cimoa_app_state_v2', '{corrupt'))

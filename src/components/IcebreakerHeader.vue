@@ -18,7 +18,12 @@ defineEmits(['back', 'menu'])
 .ice-header--voice { height: 87.786rpx; }
 .ice-header--voice .ice-header-title { font-weight: 800; letter-spacing: -0.02em; }
 .ice-header--text { height: 87.786rpx; margin-bottom: 30.534rpx; }
-.ice-header--text .ice-header-title { top: 20.992rpx; bottom: auto; display: block; line-height: normal; font-size: 41.984rpx; }
+.ice-header--text .ice-header-title {
+  font-size: 38.168rpx;
+  font-weight: 600;
+  line-height: 49.618rpx;
+  letter-spacing: -0.015em;
+}
 .ice-menu { margin-left: auto; }
 .ice-menu > view { width: 38.168rpx; height: 38.168rpx; }
 </style>

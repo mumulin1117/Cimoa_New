@@ -18,9 +18,44 @@
 .ice-primary { display: flex; align-items: center; justify-content: center; gap: 15.267rpx; width: 100%; height: 114.504rpx; border-radius: 57.252rpx; background: var(--cimoa-gradient-primary); color: var(--cimoa-text-inverse); box-shadow: var(--cimoa-shadow-auth-action); font-size: 36.26rpx; font-weight: 700; cursor: pointer; }
 .ice-primary > view { width: 34.351rpx; height: 34.351rpx; }
 .ice-primary[aria-disabled="true"] { background: var(--cimoa-surface-event-handle); color: var(--cimoa-text-onboarding-muted); cursor: default; }
+.ice-primary[data-navigation-busy="true"] { background: var(--cimoa-gradient-primary); color: var(--cimoa-text-inverse); }
 .ice-select-answer { margin-top: 49.618rpx; }
 .ice-note { display: block; margin-top: 22.901rpx; font-size: 27.672rpx; color: var(--cimoa-text-auth-muted); text-align: center; }
 .ice-error { display: block; margin: 0 38.168rpx 19.084rpx; font-size: 28.626rpx; color: var(--cimoa-status-danger); line-height: 1.4; overflow-wrap: anywhere; }
 .ice-unavailable { padding: 34.351rpx; background: var(--cimoa-surface-card); border-radius: 45.802rpx; font-size: 30.534rpx; line-height: 1.5; }
 .ice-footer { display: flex; flex: none; flex-direction: column; align-items: center; gap: 26.718rpx; padding: 15.267rpx 38.168rpx 64.885rpx; }
 .ice-switch { font-size: 30.534rpx; font-weight: 600; color: var(--cimoa-text-auth-muted); cursor: pointer; }
+.ice-continuity-cue { position: relative; }
+.ice-continuity-cue::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--cimoa-gradient-primary);
+  -webkit-mask: linear-gradient(var(--cimoa-surface-card) 0 0) content-box, linear-gradient(var(--cimoa-surface-card) 0 0);
+  mask: linear-gradient(var(--cimoa-surface-card) 0 0) content-box, linear-gradient(var(--cimoa-surface-card) 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  animation: icebreaker-continuity var(--ice-continuity-duration) ease both;
+}
+.ice-primary, .ice-switch, .ice-choice, .ice-mode, .ice-text-switch, .ice-record-button { transition: transform var(--ice-press-out) ease; }
+.ice-primary[data-touch-state='pressed']:not([aria-disabled='true']),
+.ice-primary[data-touch-state='held']:not([aria-disabled='true']),
+.ice-switch[data-touch-state='pressed']:not([aria-disabled='true']),
+.ice-switch[data-touch-state='held']:not([aria-disabled='true']),
+.ice-choice[data-touch-state='pressed']:not([aria-disabled='true']),
+.ice-choice[data-touch-state='held']:not([aria-disabled='true']),
+.ice-mode[data-touch-state='pressed']:not([aria-disabled='true']),
+.ice-mode[data-touch-state='held']:not([aria-disabled='true']),
+.ice-text-switch[data-touch-state='pressed']:not([aria-disabled='true']),
+.ice-text-switch[data-touch-state='held']:not([aria-disabled='true']),
+.ice-record-button[data-touch-state='pressed']:not([aria-disabled='true']),
+.ice-record-button[data-touch-state='held']:not([aria-disabled='true']) { transform: scale(.985); transition-duration: var(--ice-press-in); }
+@keyframes icebreaker-continuity { from { opacity: 0; } 45% { opacity: .32; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .ice-primary, .ice-switch, .ice-choice, .ice-mode, .ice-text-switch, .ice-record-button { transform: none !important; transition: none; }
+  .ice-continuity-cue::after { animation: none; opacity: 0; }
+}

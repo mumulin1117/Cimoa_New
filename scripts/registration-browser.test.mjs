@@ -5,6 +5,7 @@ import http from 'node:http'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { choose_date_of_birth } from './lib/date-picker-driver.mjs'
+import { privacy_document } from '../src/utils/legalDocuments.js'
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
 const phase = process.argv.find(arg => arg.startsWith('--phase='))?.slice(8) || 'age'
@@ -57,8 +58,8 @@ try {
     await page.locator('.community-page').waitFor(); await settle()
     await page.locator('[data-interaction="agree.goSignup.click.1"]').dispatchEvent('click'); assert.match(await page.getByRole('alert').innerText(), /three community/)
     await page.getByRole('button', { name: 'Read Privacy Policy', exact: true }).click()
-    await page.getByRole('dialog').waitFor(); assert.match(await page.getByRole('dialog').innerText(), /app storage/)
-    await page.getByRole('button', { name: 'Close', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' })
+    await page.getByRole('dialog').waitFor(); const policy = await page.getByRole('dialog').innerText(); assert.ok(policy.includes(privacy_document.intro)); assert.ok(policy.includes(privacy_document.sections[4][1])); assert.doesNotMatch(policy, /app storage|local (?:account|data|demo|mode)|on this device/i)
+    await page.getByRole('button', { name: 'Close Privacy Policy', exact: true }).click(); await page.getByRole('dialog').waitFor({ state: 'hidden' })
     for (const key of ['terms', 'privacy', 'community']) await page.locator(`[data-agreement="${key}"]`).click()
     await shot('community'); const before = await snapshot()
     await click('agree.goSignup.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
@@ -81,7 +82,7 @@ try {
   }
   if (!['age', 'community', 'signup'].includes(phase)) {
     await page.locator('.verification-email-page').waitFor(); await settle()
-    await fill('University email', 'cimoa@gmail.com'); await click('verEmail.goVerCode.click.1')
+    await fill('University email', 'cimoa@connect.edu'); await click('verEmail.goVerCode.click.1')
     await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /already has/)
     await fill('University email', 'corrected.member@campus.edu'); await click('verEmail.goVerCode.click.1')
     await page.locator('.verification-page').waitFor(); await settle()
@@ -160,8 +161,10 @@ try {
       await page.waitForFunction(() => [...document.querySelectorAll('.profile-photo')].every(el => el.dataset.mediaStatus === 'ready'))
     }
     await page.locator('.photo-slot-1').click(); await page.locator('.permission-photos-page').waitFor(); await shot('photo-access')
-    const before = await snapshot(); await click('permPhotos.denyPhotos.click.1'); assert.deepEqual(await snapshot(), before)
-    await click('permPhotos.openSettings.click.1'); await page.waitForFunction(() => document.querySelector('[role="alert"]')?.textContent.includes('unavailable in this browser'))
+    const before = await snapshot(); await click('permPhotos.denyPhotos.click.1'); await page.locator('.onboarding-photos-page').waitFor(); assert.deepEqual(await snapshot(), before)
+    await page.locator('.photo-slot-1').click(); await page.locator('.permission-photos-page').waitFor()
+    const invalid_picker = page.waitForEvent('filechooser'); await click('permPhotos.allowPhotos.click.1'); await (await invalid_picker).setFiles({ name: 'broken.png', mimeType: 'image/png', buffer: Buffer.from('not an image') }); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /decode|display/i); assert.deepEqual(await snapshot(), before)
+    await click('permPhotos.openSettings.click.1'); await page.waitForFunction(() => /cannot be opened here|unavailable in this browser/.test(document.querySelector('[role="alert"]')?.textContent || ''))
     await page.getByRole('button', { name: 'Back to Photos', exact: true }).click(); await page.locator('.onboarding-photos-page').waitFor()
     await page.locator('.photo-slot-1').click(); await open_picker(['me.png', 'maya-card.png'])
     let data = await snapshot(), owner = data.session.current_user_id
@@ -181,7 +184,7 @@ try {
     await page.reload(); await page.locator('.onboarding-photos-page').waitFor(); await page.waitForFunction(() => document.querySelectorAll('.profile-photo[data-media-status="ready"]').length === 2)
     await shot('photos-restored'); await click('obPhotos.goObAbout.click.1')
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.step==='about' })
-    check('Real file chooser → decoded IndexedDB photos; Not Now/no-host Settings honest; primary/order/remove confirmation/replacement/refresh and two-photo gate')
+    check('Continue opens the real chooser; Cancel returns without denial; actual decode/no-host Settings errors preserve data; photo edit/refresh and two-photo gate remain intact')
   }
   if (!['age', 'community', 'signup', 'email', 'basic', 'uni', 'major', 'photos', 'photo-access'].includes(phase)) {
     await page.locator('.onboarding-about-page').waitFor(); await settle()
@@ -246,23 +249,23 @@ try {
       await page.locator('.loading').waitFor({ state: 'detached' }); const d = await snapshot(), account = d.accounts.find(a => a.account_id === d.session.account_id)
       assert.equal(account.onboarding.notification_permission, 'skipped'); assert.equal(account.onboarding.step, 'complete')
       assert.equal(d.settings.find(s => s.owner_user_id === account.user_id).notifications.master, false)
-      check('Notification pre-prompt follows source; Not Now saves skipped after Loading without granting permission')
+      check('Notification Cancel saves only the skipped setup choice after Loading without granting permission')
     }
   }
   if (['notification-access', 'complete'].includes(phase)) {
-    await click('obNotif.enableNotifs.click.1'); await page.locator('.permission-notif-page').waitFor(); await shot('notification-access')
     const before = await snapshot()
     await page.evaluate(() => { window.__notificationAPI = window.Notification; window.Notification = undefined })
-    await click('permNotif.allowNotifs.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /unavailable/); assert.deepEqual(await snapshot(), before)
-    await click('permNotif.openSettings.click.1'); assert.match(await page.getByRole('alert').innerText(), /unavailable in this browser/)
-    await page.goBack(); await page.locator('.onboarding-notif-page').waitFor()
+    await click('obNotif.enableNotifs.click.1'); await page.getByRole('alert').waitFor(); assert.match(await page.getByRole('alert').innerText(), /unavailable/); assert.deepEqual(await snapshot(), before); assert.equal(await page.locator('.permission-notif-page').count(), 0); await shot('notification-access')
     await page.evaluate(() => { window.Notification = window.__notificationAPI; delete window.__notificationAPI })
+    await page.evaluate(() => { window.__notificationRequest = Notification.requestPermission; Notification.requestPermission = () => Promise.resolve('denied') })
+    await click('obNotif.enableNotifs.click.1'); await page.locator('[data-interaction="obNotif.openSettings.click.1"]').waitFor(); assert.deepEqual(await snapshot(), before)
+    await click('obNotif.openSettings.click.1'); assert.match(await page.getByRole('alert').innerText(), /cannot be opened here|unavailable in this browser/)
+    await page.evaluate(() => { Notification.requestPermission = window.__notificationRequest; delete window.__notificationRequest })
     await page.context().grantPermissions(['notifications'])
-    await click('obNotif.enableNotifs.click.1'); await page.locator('.permission-notif-page').waitFor()
-    await click('permNotif.allowNotifs.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
+    await click('obNotif.enableNotifs.click.1'); await page.locator('.loading').waitFor(); assert.deepEqual(await snapshot(), before)
     await page.waitForFunction(() => { const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return d.accounts.find(a=>a.account_id===d.session.account_id).onboarding.notification_permission==='granted' })
     const d = await snapshot(); assert.equal(d.settings.find(s => s.owner_user_id === d.session.current_user_id).notifications.master, true)
-    check('Notification capability unavailable and no-host Settings fail without writes; Back returns pre-prompt; actual Chrome granted permission persists after Loading')
+    check('Continue directly requests notifications without a second pre-prompt; unavailable/injected denied/no-host Settings paths do not write; actual Chrome granted status persists after Loading')
   }
   if (phase === 'complete') {
     await page.locator('.onboarding-complete-page').waitFor(); await shot('complete')

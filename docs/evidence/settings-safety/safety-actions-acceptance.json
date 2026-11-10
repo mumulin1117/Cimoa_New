@@ -1,29 +1,15 @@
 {
   "phase": "safety-actions",
-  "result": "passed",
-  "server_pid": 61413,
+  "result": "failed",
+  "server_pid": 4763,
   "checks": [
-    "Direct text send waits for custom Loading, persists once, clears the draft and restores after refresh",
-    "Direct-message persistence failure rolls back completely and keeps the text draft retryable",
-    "Direct photo uses the real chooser, remains a draft until confirmation, then restores its Blob after refresh",
-    "Sent photo opens its full aspect-fit image, closes without navigation and releases its viewer",
-    "Denied direct-chat microphone access reports the real failure and cannot send an empty voice message",
-    "Pending microphone can be cancelled immediately; a late stream is stopped without a message or write",
-    "Controlled real audio records, decodes, saves once, and plays from IndexedDB after direct-chat refresh",
-    "Long direct history scrolls only inside the fixed header/composer frame and remains safe on a small viewport",
-    "Call entry saves only its scoped deadline; manual end returns once without altering messages or coins",
-    "Waiting call remains safe at small size and auto-ends once within the approved 8–12 second window",
-    "Chat opens the source safety Sheet over the same conversation and Store-backed user entity",
-    "Mute waits for custom Loading, persists, and restores after refresh without changing the conversation",
-    "Block confirmation explains destructive effects and Cancel performs no write",
-    "Connected Profile shows Chat, returns to the exact conversation without writes, and Report preserves that owner",
-    "Profile safety write failure stays retryable and leaves profile, chat, relationship and block state unchanged",
-    "Confirmed profile block waits for Loading, atomically filters cross-page entities, and returns to Discover",
-    "A valid conversation with no messages renders the real empty state without inventing history",
-    "A forged conversation ID shows a recoverable error and exposes no private composer",
-    "A forged call conversation shows an explicit error and never starts a timer or fake call",
-    "An unconnected profile keeps Send shot and prepares the existing introduction draft without creating consent or a conversation",
-    "Home opens the canonical Chloe conversation and chat Back restores the original Home instance"
+    "Direct text send waits for custom Loading, persists once, clears the draft and restores after refresh"
   ],
-  "errors": []
+  "errors": [],
+  "failure": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Storage full/. Input:\n\n'Your device doesn’t have enough space. Free up some space and try again.'\n\n    at file:///Users/linqian/Documents/Cimoa_New/scripts/settings-safety-browser.test.mjs:277:12",
+  "visible_failure": {
+    "route": "#/pages/messages/chat?conversation_id=conversation_chloe",
+    "text": "Chloe\nConnected\nToday, 10:36 AM\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\nThe garden near the library is underrated.\nTomorrow after class?\nI’m in ✨\nSaved from the restored chat page.\nYour device doesn’t have enough space. Free up some space and try again.",
+    "loading": false
+  }
 }

@@ -1,0 +1,1 @@
+import{b7 as a}from"./index-JJyv0oIi.js";const e=e=>Number.isFinite(e)?new Intl.DateTimeFormat(a(),{month:"short",day:"numeric",year:"numeric"}).format(new Date(e)):"Date unavailable",t=a=>"local_saved"===a?"Not delivered":"Unavailable";export{e as a,t as r};

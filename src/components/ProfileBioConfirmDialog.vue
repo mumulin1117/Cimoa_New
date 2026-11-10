@@ -18,7 +18,7 @@ const record = () => { if (!busy.value) permission_open.value = true }
 const allow = async () => { permission_open.value = false; if (props.open) await start() }
 const remove = () => { clear(); removed.value = true; error.value = '' }
 const done = () => {
-  if (busy.value || recording.value) { error.value = 'Stop recording before saving your introduction.'; return }
+  if (busy.value || recording.value) { error.value = 'Stop recording before updating your introduction.'; return }
   if (mode.value === 'voice' && !source.value && !removed.value) { error.value = 'Record a playable voice bio first, or switch to Text.'; return }
   emit('done', { bio: text.value, bio_font: font.value, audio: draft.value ? { blob: draft.value.blob, duration_ms: draft.value.duration_ms } : removed.value ? null : undefined })
   clear()

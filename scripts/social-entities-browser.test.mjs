@@ -120,18 +120,18 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('.request-audio-wave > .played').length > 0)
   await page.getByRole('button', { name: 'Pause voice introduction', exact: true }).click(); assert.notEqual(await page.locator('.request-audio-duration').innerText(), '0:18')
   await page.reload(); await page.locator('.request-audio-play').waitFor(); await page.getByRole('button', { name: 'Play voice introduction', exact: true }).click(); await page.getByRole('button', { name: 'Pause voice introduction', exact: true }).waitFor()
-  await shot('voice-request-restored.png'); await click('reqReceived.accept.click.1'); await page.locator('.dialog__confirm').click(); await click('reqAccepted.startChat.click.1'); await page.locator('.chat-composer').waitFor(); await page.locator('.event-loading:visible').waitFor({ state: 'hidden' })
+  await shot('voice-request-restored.png'); await click('reqReceived.accept.click.1'); await page.locator('.dialog__confirm').click(); await click('reqAccepted.startChat.click.1'); await page.locator('.chat-composer').waitFor(); await page.locator('.chat-read-progress').waitFor({ state: 'hidden' })
   const voice_connected = await snapshot(), original_message = voice_connected.messages.find(row => row.message_id === `introduction_${voice_request.request_id}`)
   assert.equal(original_message.kind, 'audio'); assert.equal(original_message.media_id, voice_request.audio_id); assert.equal(original_message.sender_id, 'user_noah')
   await page.reload(); await page.getByRole('button', { name: 'Play voice message', exact: true }).click(); await page.getByRole('button', { name: 'Pause voice message', exact: true }).waitFor(); await shot('voice-conversation-restored.png')
   check('Real voice recording → one 10-coin debit/request → peer audio playback/seek/refresh → explicit acceptance → same original audio in the unique conversation after refresh')
-  // Close through the real request menu, never through Not Now.
+  // Decline through the visible invitation action and remove the Home row.
   await seed(); await open('/pages/discover/profile?user_id=user_sophie'); await click('expanded.sayHi.click.1'); await page.locator('[data-interaction="ibSelect.q.pick.click.1"]').first().click(); await click('ibSelect.answerGo.click.1'); await field('Your introduction').fill('Would you like a coffee walk?'); await click('ibText.continueText.click.1'); await page.locator('.connection-sent-page').waitFor()
   const to_decline = (await snapshot()).requests.find(row => row.sender_id === 'user_noah')
-  await switch_account('sophie@campus.edu'); await click('home.openJordan.click.1'); await click('reqReceived.notNow.click.1'); await page.locator('.home-header').waitFor(); assert.equal((await snapshot()).requests.find(row => row.request_id === to_decline.request_id).status, 'pending')
-  await click('home.openJordan.click.1'); await click('reqReceived.openReqMenu.click.1'); await click('reqReceived.openDecline.click.1'); await page.locator('.dialog__confirm').click(); await page.locator('.connection-declined-page').waitFor()
+  await switch_account('sophie@campus.edu'); await click('home.openJordan.click.1'); await click('reqReceived.notNow.click.1'); await page.locator('.dialog__confirm').click(); await page.locator('.home-header').waitFor()
   assert.equal((await snapshot()).requests.find(row => row.request_id === to_decline.request_id).status, 'declined'); assert.equal((await snapshot()).conversations.some(row => row.kind === 'direct' && row.participant_ids.includes('user_noah')), false)
-  check('Peer Not Now keeps the invitation; explicit menu decline closes the same request without consent or a conversation')
+  assert.equal(await page.locator('[data-interaction="home.openJordan.click.1"]').count(), 0)
+  check('Peer Decline closes the invitation and removes its Home row without consent or a conversation')
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.errors.push(error.stack || error.message); if(page)report.failure={url:page.url(),text:await page.locator('body').innerText().catch(()=>''),state:await page.evaluate(()=>{const d=JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data;return{session:d.session,requests:d.requests,media:d.media_files.map(r=>({id:r.media_id,owner:r.owner_user_id,kind:r.kind}))}}).catch(()=>null)}; throw error }
 finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); report.cleaned_up = true; fs.writeFileSync(path.join(output, 'browser-acceptance.json'), JSON.stringify(report, null, 2) + '\n') }

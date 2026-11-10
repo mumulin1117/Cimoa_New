@@ -1,0 +1,58 @@
+{
+  "task": "Auto Match paused Back and Leave Pool failure",
+  "date": "2026-10-26",
+  "scope": "Targeted defect regression, not whole-App page verification or App Store acceptance",
+  "root_cause": "Preference changes reselect a candidate and clear expires_at while paused. The previous global validator required an expiry again after transitioning that paused attempt to left, so the atomic transaction rejected and rolled back the exit.",
+  "pre_fix_reproduction": {
+    "engine": "device",
+    "actions": ["start_match", "transition_match paused", "update_match_preferences interest_ids []", "transition_match left"],
+    "paused_candidate": "user_anna",
+    "paused_expires_at": null,
+    "leave_result": "Invalid device matching deadline.",
+    "persisted_status": "paused"
+  },
+  "fix": {
+    "file": "src/stores/selectors.js",
+    "invariant": "A finite search_ready_at is always required. Any non-null expires_at must be finite. A candidate in searching/found/waiting still requires a finite expiry; paused and terminal states do not require a running candidate countdown.",
+    "preserved": ["Existing atomic Store transactions", "400-600ms write Loading and busy protection", "Leave confirmation and Home return ownership", "Remaining search time on resume", "Admission quota and coin ledger", "No fabricated expiry or new charge", "Both convention files unchanged"]
+  },
+  "files": [
+    "src/stores/selectors.js",
+    "scripts/auto-match-paused-exit.test.mjs",
+    "scripts/auto-match-paused-exit-browser.test.mjs",
+    "docs/auto-match-paused-exit-acceptance-2026-10-26.json"
+  ],
+  "unit_regression": {
+    "command": "node --test scripts/auto-match-paused-exit.test.mjs scripts/auto-match-state.test.mjs scripts/auto-match-retry.test.mjs scripts/sync-recovery.test.mjs",
+    "passed": 32,
+    "failed": 0,
+    "new_tests": 8,
+    "covers": ["Candidate and no-candidate paused exit", "Free and paid admission", "Hydration before and after exit", "Duplicate exit and stale resume", "Persistence failure rollback and retry", "Resume retains remaining time", "Malformed active deadline rejection", "No duplicate quota or coin mutation"]
+  },
+  "browser": {
+    "report": "artifacts/auto-match-paused-exit-2026-10-26/browser-report.json",
+    "checks_passed": 5,
+    "page_errors": 0,
+    "touch_viewport": "393x852",
+    "preview_server_started": false,
+    "storage": "Isolated browser contexts; no existing app storage accessed",
+    "warnings": "10 existing uni statistics retry warnings because this regression intentionally blocks external requests; no business page errors",
+    "checks": ["Back confirmation and Stay cancellation do not write", "Double leave confirmation writes once and clears the stack to Home", "Home refresh never revives the left attempt", "Direct Leave Pool after refresh succeeds", "Double Resume restores 5790ms and refresh retains its deadline without new charges"],
+    "cleanup": "All test Chrome contexts and browser closed; no preview service was started"
+  },
+  "wkwebview": {
+    "device": "iPhone 17 Pro",
+    "runtime": "iOS 26.5",
+    "simulator_id": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "bundle_id": "com.cimoa.neapo.dev",
+    "build": "xcodebuild -project ios/cimoaNeapo/cimoaNeapo.xcodeproj -scheme cimoaNeapo -configuration Debug -sdk iphonesimulator -destination id=D9B138D2-1B08-4646-B8D0-8A2242AECD7D -derivedDataPath /private/tmp/cimoa-paused-exit-20261026 CODE_SIGNING_ALLOWED=NO -quiet build",
+    "build_exit_code": 0,
+    "installed_and_launched": true,
+    "method": "Touch controls in Simulator UI, with visual inspection of the resulting WKWebView state",
+    "checks": ["Existing paused match opens from Home", "Back opens leave confirmation without the deadline error", "Stay in Pool returns to the unchanged paused page", "Direct Leave Pool opens the same confirmation", "Confirm Leave shows branded busy feedback and returns to Home without the deadline error", "Paused match card disappears; remaining daily quota still displays 2", "Terminate and relaunch retains Home without reviving the paused card; existing contact cards remain"],
+    "data_boundary": "No uninstall or app-data reset. The existing paused test-account attempt was explicitly left through its UI as part of this requested fix; no new admission, purchase, or message was created.",
+    "screenshot": "artifacts/auto-match-paused-exit-2026-10-26/wkwebview-home-after-relaunch.png",
+    "not_claimed": ["Whole-App verification", "New native permissions or StoreKit purchase acceptance", "Native internal write-count instrumentation"]
+  },
+  "workspace": "Only the validator, two new regression scripts, this evidence and generated outputs belong to this task. Pre-existing source changes, staged deletions and signing files were preserved. No git stage, commit, push, standalone archive overwrite, or convention edit was performed."
+}

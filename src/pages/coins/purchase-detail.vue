@@ -1,4 +1,6 @@
 <script setup>
+import { get_locale } from '@/i18n/index.js'
+
 import { computed, ref } from 'vue'
 import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -20,20 +22,20 @@ const pack = computed(() => detail.value?.pack)
 const is_verified_purchase = computed(() => detail.value?.verified_purchase)
 const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved coin data is unavailable. Please return and retry.'
+  ? 'Your coin history is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !transaction_id.value || !transaction.value
-      ? 'This purchase record is unavailable.'
+      ? 'This purchase is unavailable.'
       : transaction.value.kind !== 'purchase' || transaction.value.amount <= 0
-        ? 'This record is not a coin purchase.'
+        ? 'This transaction is not a coin purchase.'
         : '')
 const detail_rows = computed(() => access_error.value ? [] : [
-  ['Package', pack.value ? `${pack.value.coins.toLocaleString('en-US')} Coins` : `${transaction.value.amount.toLocaleString('en-US')} Coins`],
-  ['Amount paid', is_verified_purchase.value ? pack.value.price : 'No Apple payment recorded'],
+  ['Package', pack.value ? `${pack.value.coins.toLocaleString(get_locale())} Coins` : `${transaction.value.amount.toLocaleString(get_locale())} Coins`],
+  ['Amount paid', is_verified_purchase.value ? transaction.value.display_price || request.value?.display_price || 'Amount unavailable' : 'No confirmed App Store payment'],
   ['Date', format_coin_date(transaction.value.created_at)],
   ['Transaction ID', transaction.value.transaction_id],
-  ['Status', is_verified_purchase.value ? 'Verified purchase' : 'Recorded credit'],
+  ['Status', is_verified_purchase.value ? 'Verified purchase' : 'Coin credit'],
 ])
 const navigate = async route => {
   if (navigating.value || route && access_error.value) return
@@ -55,7 +57,7 @@ onHide(() => { navigating.value = false; error.value = '' })
         <view class="detail-back" role="button" aria-label="Back" :aria-disabled="navigating" data-interaction="coinPurchaseDetail.goBack.click.1" @click="navigate()"><SourceIcon name="back" /></view>
         <text>{{ detail?.mode === 'credit' ? 'Coin credit' : 'Purchase' }}</text>
       </view>
-      <text v-if="error" class="detail-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error" :message="error" @dismiss="error = String()" />
     </template>
 
     <view class="detail-content">
@@ -63,13 +65,13 @@ onHide(() => { navigating.value = false; error.value = '' })
       <template v-else>
         <view class="detail-hero">
           <image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" />
-          <text>{{ transaction.amount.toLocaleString('en-US') }} Coins</text>
+          <text>{{ transaction.amount.toLocaleString(get_locale()) }} Coins</text>
           <text>{{ is_verified_purchase ? 'Verified App Store purchase' : 'Starting coin balance' }}</text>
         </view>
         <view class="detail-card">
           <view v-for="row in detail_rows" :key="row[0]" class="detail-row"><text>{{ row[0] }}</text><text>{{ row[1] }}</text></view>
         </view>
-        <view class="detail-note"><SourceIcon name="shield" /><text>{{ is_verified_purchase ? 'Payment is handled by Apple. Cimoa does not store card or Apple account details.' : 'This balance entry does not represent an Apple charge and has no StoreKit receipt.' }}</text></view>
+        <view class="detail-note"><SourceIcon name="shield" /><text>{{ is_verified_purchase ? 'Payment is handled by Apple. Cimoa does not store card or Apple account details.' : 'This balance entry does not represent an App Store payment.' }}</text></view>
         <view class="detail-support" role="button" :aria-disabled="navigating" data-interaction="coinPurchaseDetail.openSupport.click.1" @click="navigate(COIN_ROUTES.help)"><SourceIcon name="support" /><text>Purchase support</text><SourceIcon name="chevron" /></view>
       </template>
     </view>

@@ -1,0 +1,10 @@
+/* Packaging/progressive-enhancement additions; original design declarations stay intact. */
+[hidden] { display: none !important; }
+.support-actions { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 24px; }
+.support-actions a { text-decoration: underline; text-underline-offset: 4px; }
+@media print {
+  .header, footer, .info-back, .meet-motion, dialog { display: none !important; }
+  .legal-layout { display: block; }
+  .legal-contents { display: none; }
+  .info-page { max-width: none; padding: 0; }
+}

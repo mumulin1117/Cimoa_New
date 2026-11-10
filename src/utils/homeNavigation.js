@@ -1,7 +1,7 @@
 // Entity validation lives next to the Store, never in a card-local business copy.
 export function home_destination(store, kind, id) {
   const feed = store.home_feed
-  if (['loading', 'error'].includes(feed.status)) throw new Error('Saved data is unavailable. Please retry loading your connections.')
+  if (['loading', 'error'].includes(feed.status)) throw new Error('Your connections are unavailable. Please try again.')
   if (feed.status === 'session_expired') throw new Error('Your session has expired. Please sign in again.')
   if (['profile', 'match', 'discover'].includes(kind)) return feed.destinations[kind]
   if (kind === 'card') {
@@ -21,6 +21,6 @@ export function home_destination(store, kind, id) {
 export const HOME_DEFERRED_ROUTES = Object.freeze([
 ])
 export function require_home_destination_ready(url) {
-  if (HOME_DEFERRED_ROUTES.includes(url.split('?')[0])) throw new Error('This destination has not been restored yet. Your connections and coins have not changed.')
+  if (HOME_DEFERRED_ROUTES.includes(url.split('?')[0])) throw new Error('This page is currently unavailable. Your connections and coins have not changed.')
   return url
 }

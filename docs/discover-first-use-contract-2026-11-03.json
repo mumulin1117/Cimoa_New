@@ -1,0 +1,17 @@
+{
+  "scope": "Discover first-use walkthrough only; global Push/Pop deferred by user",
+  "status": "in_progress",
+  "visual_acceptance": "pending",
+  "steps": [
+    { "step": 0, "route": "pages/discover/index", "action": "Open the current person's real profile" },
+    { "step": 1, "route": "pages/discover/profile", "action": "Return to the same Discover card" },
+    { "step": 2, "route": "pages/discover/index", "action": "Open Say Hi through the existing Send surface" },
+    { "step": 3, "route": "pages/discover/icebreaker/select", "action": "Require a user-selected real question" },
+    { "step": 4, "route": "pages/discover/icebreaker/select", "action": "Use real Text or Voice controls, then open the actual answer route" },
+    { "step": 5, "route": "pages/discover/icebreaker/text or voice", "action": "Explain the answer area without editing or recording" },
+    { "step": 6, "route": "pages/discover/icebreaker/text or voice", "action": "Explain preview, 10 Coins, Waiting for reply and mutual connection; Got it only finishes teaching" }
+  ],
+  "persistent_data": "Optional account settings.discover_guide receipt, only after successful completion or Skip transaction",
+  "installation": "Existing application storage only; no Keychain receipt; uninstall or data reset permits teaching again",
+  "unchanged": ["240ms/180ms transitions", "400-600ms writes", "600ms skeleton", "3-second carousel", "real routes", "relationship rules", "10 Coins confirmation", "no automatic permissions or sends"]
+}

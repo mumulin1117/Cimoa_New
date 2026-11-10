@@ -1,13 +1,16 @@
 <script setup>
-defineProps({ document: { type: Object, required: true }, sheet: Boolean })
+import { computed } from 'vue'
+import { locale, localize_legal_document } from '@/i18n/index.js'
+const props = defineProps({ document: { type: Object, required: true }, sheet: Boolean })
+const content = computed(() => { locale.value; return localize_legal_document(props.document) })
 </script>
 
 <template>
-  <view class="legal-document-content" :class="{ 'legal-document-content--sheet': sheet }" :data-legal-document="document.id" :data-legal-revision="document.revision">
-    <text class="legal-document-updated">{{ document.updated }}</text>
-    <text class="legal-document-intro">{{ document.intro }}</text>
-    <view class="legal-document-card"><view v-for="section in document.sections" :key="section[0]" class="legal-document-section"><text class="legal-document-heading">{{ section[0] }}</text><text class="legal-document-copy">{{ section[1] }}</text></view></view>
-    <text class="legal-document-footer">{{ document.footer }}</text>
+  <view class="legal-document-content" :class="{ 'legal-document-content--sheet': sheet }" :data-legal-document="content.id" :data-legal-revision="content.revision">
+    <text class="legal-document-updated">{{ content.updated }}</text>
+    <text class="legal-document-intro">{{ content.intro }}</text>
+    <view class="legal-document-card"><view v-for="section in content.sections" :key="section[0]" class="legal-document-section"><text class="legal-document-heading">{{ section[0] }}</text><text class="legal-document-copy">{{ section[1] }}</text></view></view>
+    <text class="legal-document-footer">{{ content.footer }}</text>
   </view>
 </template>
 

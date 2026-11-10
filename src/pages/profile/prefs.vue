@@ -9,11 +9,11 @@ const select = option => { if (!is_loading.value && !access_error.value) Object.
 const save = () => {
   if (!draft.value || access_error.value || is_loading.value) return
   const { owner_user_id, ...patch } = draft.value
-  submit(() => store.update_match_preferences(patch))
+  submit(() => store.update_match_preferences(patch), 'Preferences updated')
 }
 </script>
 <template>
-  <ProfileEditorFrame ref="frame" class="profile-preferences-page" title="Preferences" source="editPrefs" save action-interaction="editPrefs.savePrefs.click.1" :busy="is_loading" :error="error" :access-error="access_error" loading-label="Saving preferences…" @back="back" @recover="recover" @save="save">
+  <ProfileEditorFrame ref="frame" class="profile-preferences-page" title="Preferences" source="editPrefs" save action-interaction="editPrefs.savePrefs.click.1" :busy="is_loading" :error="error" @dismiss-error="error = String()" :access-error="access_error" loading-label="Updating your preferences…" @back="back" @recover="recover" @save="save">
     <text class="preferences-copy">These shape recommendations. They never guarantee a result and are never shown publicly.</text>
     <view class="preferences-groups"><view v-for="group in groups" :key="group.title"><text class="preferences-title">{{ group.title }}</text><view class="preferences-options" role="radiogroup" :aria-label="group.title"><view v-for="option in group.options" :key="option.label" class="preferences-chip" :class="{ selected: option.selected }" role="radio" tabindex="0" :aria-checked="option.selected" :aria-disabled="is_loading" data-interaction="editPrefs.o.pick.click.1" @click="select(option)" @keydown.enter="select(option)">{{ option.label }}</view></view></view></view>
   </ProfileEditorFrame>

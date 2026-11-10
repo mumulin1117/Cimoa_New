@@ -1,20 +1,54 @@
 <script setup>
+import {Teleport,ref,computed} from 'vue'
+import {onLoad,onReady,onHide} from '@dcloudio/uni-app'
+import {land_match_ignition_for_entry} from '@/utils/matchIgnition.js'
 import {use_auto_match_page} from '@/composables/useAutoMatchPage.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import EventActionLoading from '@/components/EventActionLoading.vue'
 import AutoMatchConfirmDialog from '@/components/AutoMatchConfirmDialog.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import ProfilePhoto from '@/components/ProfilePhoto.vue'
-const {frame,c,error,modal,query,busy,is_loading,guard,action}=use_auto_match_page('index')
+import AutoMatchGuide from '@/components/AutoMatchGuide.vue'
+import ActionLoading from '@/components/ActionLoading.vue'
+import {use_auto_match_guide} from '@/composables/useAutoMatchGuide.js'
+import {auto_match_surface} from '@/utils/sendSurface.js'
+import {use_send_surface_target} from '@/composables/useSendSurface.js'
+const {store,frame,c,error,modal,query,busy:page_busy,is_loading,loading_label,guard,action:page_action,prefs_source}=use_auto_match_page('index')
+const surface=use_send_surface_target({controller:auto_match_surface,identity:()=>({auth_context:store.auth_context,user_id:store.session.current_user_id}),element:()=>frame.value?.$el||frame.value})
+const returning=ref(false)
+const busy=computed(()=>page_busy.value||returning.value||surface.busy.value)
+onLoad(()=>surface.enter())
+const action=async(name,event,row)=>{
+  if(busy.value)return false
+  if(surface.surface_mode.value&&['goBack','returnHome'].includes(name)){
+    returning.value=true;error.value=''
+    try{return await frame.value.navigate_back_with(dispatch=>surface.back(dispatch),'/pages/home/index')}
+    catch(cause){error.value=cause.message;return false}
+    finally{returning.value=false}
+  }
+  return page_action(name,event,row)
+}
+const guide_ready=ref(false)
+onHide(()=>{guide_ready.value=false})
+const {open:guide_open,step:guide_step,busy:guide_busy,error:guide_error,is_loading:guide_loading,next:guide_next,back:guide_back,skip:guide_skip}=use_auto_match_guide('entry',{
+  ready:computed(()=>guide_ready.value&&!guard.value&&!surface.busy.value),
+  available:()=>!modal.value&&!busy.value,
+  return_home:()=>action('goBack'),
+})
+onReady(()=>{if(!surface.surface_mode.value)land_match_ignition_for_entry(store.auth_context)})
 </script>
 <template>
-<SecondaryPageFrame ref="frame" class="auto-match-page auto-match-index" :scroll-locked="!!modal">
-<template #header><view data-source-line="1462" class="am-1462-1"><view data-source-line="1463" class="am-1463-2" data-interaction="amEntry.goBack.click.1" @click="action('goBack',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('goBack',$event)" aria-label="Back"><svg data-source-line="1464" class="am-1464-3" viewBox="0 0 24 24" fill="none" stroke="var(--cimoa-icon-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path data-source-line="1464" d="M15 5l-7 7 7 7"></path></svg></view><view data-source-line="1466" class="am-1466-5"></view><view class="am-history-entry" data-interaction="amEntry.openHistory.click.1" role="button" tabindex="0" :aria-disabled="busy" @click="action('openHistory')" @keydown.enter="action('openHistory')">History</view><view data-source-line="1466" class="am-1466-6">Auto Match</view></view><text v-if="error" class="am-error" role="alert">{{ error }}</text></template>
+<Teleport to="#cimoa-auto-match-surface-target" :disabled="!surface.borrowed.value">
+<Teleport to="#cimoa-match-preferences-surface-source" :disabled="!prefs_source.borrowed.value">
+<SecondaryPageFrame ref="frame" class="auto-match-page auto-match-index" :surface-motion="surface.surface_mode.value" :style="surface.style.value" :aria-busy="busy" :inert="surface.busy.value || returning ? '' : undefined" :scroll-locked="!!modal || guide_open" @presented="guide_ready=true">
+<template #header><view data-source-line="1462" class="am-1462-1"><view data-source-line="1463" class="am-1463-2" data-interaction="amEntry.goBack.click.1" @click="action('goBack',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('goBack',$event)" aria-label="Back"><svg data-source-line="1464" class="am-1464-3" viewBox="0 0 24 24" fill="none" stroke="var(--cimoa-icon-primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path data-source-line="1464" d="M15 5l-7 7 7 7"></path></svg></view><view data-source-line="1466" class="am-1466-5"></view><view class="am-history-entry" data-interaction="amEntry.openHistory.click.1" role="button" tabindex="0" :aria-disabled="busy" @click="action('openHistory')" @keydown.enter="action('openHistory')">History</view><view data-source-line="1466" class="am-1466-6">Auto Match</view></view><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /></template>
 <view v-if="guard" class="am-error" role="alert">{{ guard }}<view role="button" tabindex="0" data-interaction="amEntry.returnHome.error.click.1" @click="action('returnHome')" @keydown.enter="action('returnHome')">Return Home</view></view>
 <template v-else><view data-source-line="1468" class="am-1468-7"><view data-source-line="1469" class="am-1469-8">Meet someone new</view><view data-source-line="1470" class="am-1470-9">Join the pool and we’ll introduce you to a compatible student who’s also available.</view><view data-source-line="1471" class="am-1471-10"><svg data-source-line="1472" class="am-1472-11" viewBox="0 0 24 24" fill="none"><circle data-source-line="1472" cx="12" cy="12" r="11" fill="var(--cimoa-status-verified)"></circle><path data-source-line="1472" d="m7.5 12.4 3 3 6-6.4" stroke="var(--cimoa-surface-card)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg><view data-source-line="1473" class="am-1473-14">Verified students only</view></view><view data-source-line="1475" class="am-1475-15"><view data-source-line="1476" class="am-1476-16"><view data-source-line="1477" class="am-1477-17">1</view><view data-source-line="1478" class="am-1478-18">Join the pool</view></view><view data-source-line="1480" class="am-1480-19"><view data-source-line="1481" class="am-1481-20">2</view><view data-source-line="1482" class="am-1482-21">Get matched</view></view><view data-source-line="1484" class="am-1484-22"><view data-source-line="1485" class="am-1485-23">3</view><view data-source-line="1486" class="am-1486-24">Both choose to connect</view></view></view><view data-source-line="1489" class="am-1489-25"><view data-source-line="1490" class="am-1490-26"><view data-source-line="1491" class="am-1491-27"><svg data-source-line="1491" class="am-1491-28" viewBox="0 0 24 24" fill="none" stroke="var(--cimoa-text-link)" stroke-width="2" stroke-linecap="round"><circle data-source-line="1491" cx="12" cy="12" r="9"></circle><path data-source-line="1491" d="M12 7.5V12l3 2"></path></svg></view><view data-source-line="1492" class="am-1492-31"><view data-source-line="1492" class="am-1492-32">Estimated wait</view><view data-source-line="1492" class="am-1492-33">{{ c.entry_wait }}</view></view></view><view data-source-line="1494" class="am-1494-34"><view data-source-line="1495" class="am-1495-35"><svg data-source-line="1495" class="am-1495-36" viewBox="0 0 24 24" fill="none" stroke="var(--cimoa-brand-purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle data-source-line="1495" cx="9" cy="8" r="3.4"></circle><path data-source-line="1495" d="M3.5 20a5.5 5.5 0 0 1 11 0M16 5.2a3.4 3.4 0 0 1 0 5.6M17.5 20a5.6 5.6 0 0 0-2.2-4.4"></path></svg></view><view data-source-line="1496" class="am-1496-39"><view data-source-line="1496" class="am-1496-40">Available now</view><view data-source-line="1496" class="am-1496-41">{{ c.available_now }}</view></view></view></view><view data-source-line="1499" class="am-1499-42"><view data-source-line="1500" class="am-1500-43">{{ c.am_cost_note }} You can pause or leave at any time. A match doesn’t unlock chat — you both have to accept first.</view></view></view></template>
 <template #footer><template v-if="!guard"><view data-source-line="1503" class="am-footer am-1503-44"><view data-source-line="1504" class="am-1504-45" data-interaction="amEntry.joinPool.click.1" @click="action('joinPool',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('joinPool',$event)"><view data-source-line="1504" class="am-1504-46"><view data-source-line="1504" class="am-1504-47">{{ c.join_pool_label }}</view><view data-source-line="1504" class="am-1504-48">{{ c.join_pool_tag }}</view></view></view><view data-source-line="1505" class="am-1505-49" data-interaction="amEntry.openPrefs.click.1" @click="action('openPrefs',$event)" role="button" tabindex="0" :aria-disabled="busy" @keydown.enter="action('openPrefs',$event)">Match Preferences</view></view></template></template>
-<template #overlays><AutoMatchConfirmDialog :modal="modal" :context="c" :busy="busy" @action="action" /><EventActionLoading :visible="is_loading" label="Updating your match…" /></template>
+<template #overlays><AutoMatchConfirmDialog :modal="modal" :context="c" :busy="busy" @action="action" /><EventActionLoading :visible="is_loading" :label="loading_label" /><AutoMatchGuide :open="guide_open" :step="guide_step" :busy="guide_busy" :error="guide_error" @next="guide_next" @back="guide_back" @skip="guide_skip" /><ActionLoading :visible="guide_loading" label="Finishing your guide…" scope="auto-match-guide" /></template>
 </SecondaryPageFrame>
+</Teleport>
+</Teleport>
 </template>
 <style scoped>
 .auto-match-page { -webkit-font-smoothing: antialiased; line-height: normal; }

@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-24",
+  "scope": "Event group voice entry synchronizes with the existing private-chat voice studio; this is not complete-page or complete-app acceptance.",
+  "status": "implemented_and_scoped_regression_passed",
+  "authorization": "User requested that Event group chat reuse the just-redesigned two-person chat voice functionality and UI.",
+  "implementation": {
+    "component": "Both contexts render ChatVoiceConfirmDialog, rather than maintaining two independent recording interfaces.",
+    "identity": "Group recipient cover and title come from the current Store event entity. Private chat keeps its participant avatar/name and default chat.media interaction IDs.",
+    "flow": ["user-initiated microphone access", "real recording with elapsed time and 120-second limit", "explicit stop and media decoding", "real play/pause and playback-time-driven progress", "optional re-record", "inline branded send progress", "membership-scoped Store publication", "dismiss and cleanup"],
+    "preserved": ["theme variables and rpx sizing", "240ms controlled Sheet transition", "500ms write wait", "existing Pinia/IndexedDB transaction and failure compensation", "single-send protection", "media refresh recovery", "group membership/session checks", "no conversation coin charge", "existing group text/photo behavior"],
+    "safety": "Opening the recorder pauses existing message audio. Cancel, page hide and revoked group access release pending capture and temporary media. Shared release notification unlocks the group page after the exit transition.",
+    "fixes": ["Position the event recipient avatar so its absolutely positioned cover cannot obscure the entire dialog.", "Stop voice-control click propagation and keep decorative icon targets pointer-transparent, preventing uni-H5 from re-normalizing an SVG target removed during a state update."],
+    "conventions": "Neither convention document nor the source HTML was changed by this task. Existing unrelated workspace changes are preserved."
+  },
+  "changed_files": [
+    "src/components/ChatVoiceConfirmDialog.vue",
+    "src/pages/events/group.vue",
+    "scripts/group-voice.test.mjs",
+    "scripts/group-voice-browser.test.mjs",
+    "scripts/lib/group-voice-regression.mjs",
+    "scripts/lib/voice-message-regression.mjs",
+    "scripts/voice-message.test.mjs",
+    "scripts/brand-loading.test.mjs",
+    "scripts/brand-loading-browser.test.mjs",
+    "scripts/lib/brand-loading-regression.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift",
+    "docs/ui-restoration/event-group/source-contract.json",
+    "docs/ui-restoration/event-group/interactions.json",
+    "docs/ui-restoration/group-voice-2026-10-24/acceptance.json"
+  ],
+  "generated_outputs": ["dist/build/h5/", "ios/cimoaNeapo/Resources/H5/", "ios/cimoaNeapo/Resources/theme.json", "ios/cimoaNeapo/Resources/build-manifest.json"],
+  "verification": {
+    "unit": {"passed": 439, "failed": 0, "log": "artifacts/group-voice/unit-tests.log"},
+    "group_browser": {"passed": true, "cases": 14, "checks": 486, "errors": 0, "warnings": 0, "viewports": ["320x568", "393x852", "440x956"], "report": "artifacts/group-voice/browser-report.json"},
+    "group_coverage": ["the exact shared studio and event identity", "avatar containment and real hit testing", "short-screen recording/review layout", "reduced motion", "keyboard loop/Escape/focus restoration", "denied/missing microphone", "late permission cancellation", "actual production recorder/decoder/player with a generated audio stream", "real touchscreen record/stop/play/pause/repeated send", "re-record and cancellation cleanup", "revoked event access during recording", "failed publication compensation", "idempotent retry", "unchanged cross-conversation entities and coin balance", "refresh restores the attachment and message", "opening the recorder pauses restored audio"],
+    "private_browser": {"passed": true, "cases": 3, "checks": 68, "errors": 0, "warnings": 0, "report": "artifacts/voice-message/group-sync-private.json"},
+    "group_media_loading": {"passed": true, "cases": 2, "checks": 36, "errors": 0, "warnings": 0, "report": "artifacts/brand-loading/browser-report.json"},
+    "group_wkwebview": {"passed": true, "cases": 3, "checks": 55, "actual_host_business_storage_unchanged": true, "device": "iPhone 17 Pro simulator, iOS 26.5", "report": "artifacts/group-voice/wkwebview-report.json", "log": "artifacts/group-voice/xcodebuild-bounded.log", "result_bundle": "artifacts/group-voice/GroupVoiceBounded.xcresult"},
+    "private_wkwebview": {"passed": true, "cases": 3, "checks": 34, "actual_host_business_storage_unchanged": true, "report": "artifacts/voice-message/wkwebview-report.json", "log": "artifacts/group-voice/xcodebuild-private-compatibility.log", "result_bundle": "artifacts/group-voice/PrivateVoiceCompatibility.xcresult"},
+    "required_commands": {"passed": true, "sequence": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"], "convention_warnings": 0, "h5_files_packaged": 441, "log": "artifacts/group-voice/build-h5.log"},
+    "diagnostic_history": "An intermediate real-touch regression exposed a detached SVG event target and failed; the production control fix is covered by real taps without filtering exceptions. An intermediate combined native run exceeded its test timeout; its exact trigger was not established. The subsequent serial group run, bounded-diagnostic group run and separate private compatibility run all passed. QA render settlement now fails explicitly with phase/visibility/animation diagnostics instead of waiting indefinitely; it never treats a timeout as success. All 14 group and 3 private browser cases were rerun successfully after the QA diagnostic change.",
+    "limits": "Browser success uses a generated AudioContext stream through the unchanged production MediaRecorder/decoder/player/Store, not a physical microphone. WKWebView scope is real layout/safe areas plus deliberately denied/missing-device handling, not system microphone recording/playback acceptance. No production test hooks, fake delivery or autoplay relaxation were added.",
+    "warnings": "No convention or browser warnings. Native logs contain existing simulator WebKit/Accessibility and AppIntents metadata diagnostics.",
+    "preview_server_started": false,
+    "physical_microphone_requested": false,
+    "actual_user_data_replaced": false,
+    "test_processes_cleaned_up": true,
+    "installed_app": {"bundle_id": "com.cimoa.neapo.dev", "launched_on": "iPhone 17 Pro simulator", "current_manifest_and_all_441_h5_file_hashes_match_built_and_installed_app": true}
+  },
+  "screenshots": {
+    "group_browser_idle": "artifacts/group-voice/idle-standard-browser.png",
+    "group_browser_preview": "artifacts/group-voice/preview-browser.png",
+    "group_wkwebview_idle": "artifacts/group-voice/idle-standard-wkwebview.png"
+  },
+  "git": "No staging, commit, push or reset was performed."
+}

@@ -21,7 +21,7 @@ export async function discover_cursor_regression({ ids, empty_home = false }) {
     await wait(() => location.hash.includes(`/pages/${name.toLowerCase()}/index`) && visible(selector)); await delay(310)
     assert(visible('.main-tab-frame').dataset.pageDepth === '1', 'Tab stack grew')
   }
-  await wait(() => front()); await delay(350)
+  await wait(() => front() && !visible('[data-skeleton="discover"]')); await delay(350)
   const key = 'cimoa_app_state_v2', before = localStorage.getItem(key)
   let writes = 0, navigation_loading = false
   const original = Storage.prototype.setItem

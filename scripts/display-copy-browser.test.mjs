@@ -20,7 +20,7 @@ try {
   }
   for (const item of fixture.cases) {
     await visit(item); const text = await page.locator(item.selector).innerText(); assert.ok(text.includes(item.text), `${item.name}: missing ${item.text}`)
-    assert.doesNotMatch(text, /local (?:account|data|demo|social|build|mode|code|verification|draft|profile|session)|saved locally|local-only|this build|TEST STATES/i)
+    assert.doesNotMatch(text, /\bdemo\b|local (?:account|data|demo|social|build|mode|code|verification|draft|profile|session)|saved locally|local-only|this build|TEST STATES|app storage|on this device/i)
     if (['login', 'verification-code', 'report-user', 'support', 'privacy', 'delete-success'].includes(item.name)) await page.screenshot({ path: path.join(folder, `${item.name}-browser.png`) })
     if (item.name === 'login') { assert.equal(await page.locator('.auth-test-states').count(), 0); assert.equal(await page.locator('[data-interaction="login.appleAuth.click.1"]').count(), 0) }
     report.checks.push(item.name); console.log('PASS ' + item.name)
@@ -33,8 +33,8 @@ try {
   }
   assert.equal(await page.evaluate(key => localStorage.getItem(key), key), agreements_before); report.checks.push('Community sheets use the same full canonical documents and X close without changing consent')
   await visit(fixture.cases.find(c => c.name === 'support')); await page.locator('[data-interaction="setSupport.openSupportForm.click.1"]').click(); await page.getByRole('radio', { name: 'Technical issue', exact: true }).click(); await page.locator('textarea').fill('Please keep these details for my purchase concern.'); const before = await page.evaluate(key => JSON.parse(localStorage.getItem(key)).data.support_requests.length, key)
-  await page.getByRole('button', { name: 'Save draft', exact: true }).click(); await page.waitForFunction(() => document.querySelector('.support-delivery')?.textContent.includes('Support delivery is currently unavailable'))
-  assert.equal(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).data.support_requests.length, key), before); assert.doesNotMatch(await page.locator('.support-delivery').innerText(), /ticket created|sent successfully/i); report.checks.push('support saves draft without pretending delivery')
+  await page.getByRole('button', { name: 'Send message', exact: true }).click(); await page.waitForFunction(() => document.querySelector('.support-delivery')?.textContent.includes('Your message has not been sent'))
+  assert.equal(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).data.support_requests.length, key), before); assert.doesNotMatch(await page.locator('.support-delivery').innerText(), /ticket created|sent successfully|local|saved|draft/i); report.checks.push('support preserves an unsent message without pretending delivery')
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; console.error(error); process.exitCode = 1 }
 finally { if (browser) await browser.close(); if (server) await server.close(); report.cleaned = true; fs.writeFileSync(path.join(folder, 'browser-acceptance.json'), JSON.stringify(report, null, 2) + '\n') }

@@ -1,0 +1,1 @@
+import{_ as a,h as s,d as e,i as r}from"./index-JJyv0oIi.js";const d=a({},[["render",function(a,d){const n=r;return s(),e(n,{class:"safe-area","aria-hidden":"true"})}],["__scopeId","data-v-dc104e27"]]);export{d as B};

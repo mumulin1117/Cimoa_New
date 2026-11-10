@@ -1,5 +1,5 @@
 // Test fixture factory, never selected from production URL parameters.
-import { create_seed, clone_data, TEST_USER_ID } from './seed.js'
+import { create_seed, clone_data, TEST_USER_ID, HOME_REQUEST_USER_ID } from './seed.js'
 import { validate_data } from './selectors.js'
 export const SCENARIOS = ['default', 'home_empty', 'home_single', 'home_long', 'missing_avatar', 'discover_empty', 'discover_long', 'discover_no_photo', 'discover_unconnected', 'discover_unverified', 'discover_private', 'zero_coins', 'quota_used', 'one_way', 'request_declined', 'request_accepted', 'blocked', 'session_expired', 'account_deleted', 'event_joined', 'event_past', 'three_chats', ...['searching', 'paused', 'found', 'waiting', 'connected', 'passed', 'expired', 'no_match', 'left'].map((status) => `match_${status}`)]
 const connect = (data, other, index = 0, source = {}) => {
@@ -31,7 +31,7 @@ export function create_scenario(name = 'default', now = Date.now()) {
   if (name === 'quota_used') data.match_quota = [{ owner_user_id: TEST_USER_ID, date_key: new Date(now).toISOString().slice(0, 10), used_count: 3 }]
   if (name === 'one_way') data.relationships.pop()
   if (name === 'request_declined') { data.requests[0].status = 'declined'; data.requests[0].resolved_at = now }
-  if (name === 'request_accepted') { data.requests[0].status = 'accepted'; data.requests[0].resolved_at = now; connect(data, 'user_lina', 0, { source_request_id: data.requests[0].request_id, source_match_id: null }) }
+  if (name === 'request_accepted') { data.requests[0].status = 'accepted'; data.requests[0].resolved_at = now; connect(data, HOME_REQUEST_USER_ID, 0, { source_request_id: data.requests[0].request_id, source_match_id: null }) }
   if (name === 'blocked') data.blocked_users.push({ block_id: 'fixture_block', owner_user_id: TEST_USER_ID, user_id: 'user_chloe', created_at: now })
   if (name === 'session_expired') data.session.expires_at = now - 1
   if (name === 'account_deleted') { data.accounts[0].status = 'deleted'; data.users[0].deleted = true; data.session = { account_id: null, current_user_id: null, expires_at: null } }

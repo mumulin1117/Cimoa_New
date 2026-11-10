@@ -1,6 +1,8 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { onHide, onLoad } from '@dcloudio/uni-app'
+import { get_locale } from '@/i18n/index.js'
+
+import { computed, onUnmounted, ref } from 'vue'
+import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { use_account_scope } from '@/composables/useAccountScope.js'
 import { make_operation_id } from '@/stores/store.js'
@@ -12,6 +14,7 @@ import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js
 import { COIN_FEATURES, package_image } from '@/utils/coinPresentation.js'
 import { coin_source_route, coin_child_route } from '@/utils/coinReturnContext.js'
 import { watch_purchase } from '@/utils/iapBridge.js'
+import { create_purchase_page_scope, refresh_purchase_recovery } from '@/utils/nativePurchases.js'
 
 const store = use_app_store(), frame = ref(null), navigating = ref(false), error = ref('')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
@@ -19,15 +22,16 @@ const account_id = store.session.account_id
 const return_context_id = ref('')
 onLoad(options => { return_context_id.value = String(options?.return_context_id || '') })
 const packages = computed(() => store.coin_packages)
-const selected_id = ref(packages.value.find(item => item.coins === 300)?.package_id || packages.value[0]?.package_id || '')
+const selected_id = ref('')
 const selected = computed(() => packages.value.find(item => item.package_id === selected_id.value) || null)
 const account_scope = use_account_scope(store, cancel_loading)
+const entry_scope = create_purchase_page_scope(account_scope.is_current)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved coin data is unavailable. Please return and retry.'
+  ? 'Your coin history is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
-const storekit_ready = computed(() => packages.value.some(item => !!item.product_id))
+const storekit_ready = computed(() => packages.value.some(item => item.available))
 
 const navigate = async route => {
   if (navigating.value) return
@@ -42,17 +46,19 @@ const navigate = async route => {
 }
 const select_package = package_id => {
   if (is_loading.value || navigating.value || access_error.value) return
+  if (!packages.value.find(item => item.package_id === package_id)?.available) { error.value = 'This coin package is currently unavailable.'; return }
   selected_id.value = package_id
   error.value = ''
 }
 const continue_purchase = () => {
-  if (is_loading.value || navigating.value || access_error.value) return
-  if (!selected.value) { error.value = 'Choose an available coin package first.'; return }
+  if (!entry_scope.is_current() || is_loading.value || navigating.value || access_error.value) return
   const existing = store.current_purchase_requests.find(item => item.status === 'pending')
   if (existing) { navigate(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(existing.request_id)}`); return }
+  if (!selected.value?.available) { error.value = 'Choose an available coin package first.'; return }
   error.value = ''
-  const package_id = selected.value.package_id, return_id = return_context_id.value || null
-  run_with_loading(() => store.begin_purchase(package_id, make_operation_id('purchase'), return_id)).then(result => {
+  const token = entry_scope.capture(), package_id = selected.value.package_id, return_id = return_context_id.value || null
+  run_with_loading(() => entry_scope.guard(token, () => store.begin_purchase(package_id, make_operation_id('purchase'), return_id))).then(result => {
+    if (!entry_scope.is_current(token)) return
     if (result.reason === 'cancelled') return
     if (!result.success) { error.value = result.message; return }
     const request = store.purchase_by_id(result.data)
@@ -60,7 +66,18 @@ const continue_purchase = () => {
     navigate(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(result.data)}`)
   })
 }
-onHide(() => { error.value = ''; cancel_loading() })
+onShow(async () => {
+  entry_scope.show()
+  const token = entry_scope.capture()
+  if (!entry_scope.is_current(token) || access_error.value) return
+  refresh_purchase_recovery(store)
+  await store.load_purchase_catalog()
+  if (!entry_scope.is_current(token) || access_error.value) return
+  if (!packages.value.some(item => item.package_id === selected_id.value && item.available)) selected_id.value = packages.value.find(item => item.coins === 300 && item.available)?.package_id || packages.value.find(item => item.available)?.package_id || ''
+})
+const leave = () => { entry_scope.hide(); error.value = ''; cancel_loading() }
+onHide(leave)
+onUnmounted(leave)
 </script>
 
 <template>
@@ -71,7 +88,7 @@ onHide(() => { error.value = ''; cancel_loading() })
         <text class="coin-title">Coin Center</text>
         <view class="coin-history" role="button" tabindex="0" :aria-disabled="navigating || is_loading" data-interaction="coinStore.openHistory2.click.1" @click="!is_loading && navigate(COIN_ROUTES.history)" @keydown.enter="!is_loading && navigate(COIN_ROUTES.history)">History</view>
       </view>
-      <text v-if="error" class="coin-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error" :message="error" @dismiss="error = String()" />
     </template>
 
     <view class="coin-content">
@@ -80,17 +97,17 @@ onHide(() => { error.value = ''; cancel_loading() })
         <view class="coin-hero">
           <view class="coin-orb primary" aria-hidden="true" /><view class="coin-orb secondary" aria-hidden="true" />
           <image class="coin-hero-image" src="/static/assets/coins/store-coin-hero.png" mode="aspectFit" />
-          <view class="coin-hero-copy"><text>My Coins</text><text class="coin-balance">{{ store.coin_balance.toLocaleString('en-US') }}</text><text>Use coins for connection requests and extra features</text></view>
+          <view class="coin-hero-copy"><text>My Coins</text><text class="coin-balance">{{ store.coin_balance.toLocaleString(get_locale()) }}</text><text>Use coins for connection requests and extra features</text></view>
         </view>
 
         <scroll-view class="coin-packages" scroll-x :show-scrollbar="false">
           <view class="coin-package-row">
-            <view v-for="item in packages" :key="item.package_id" class="coin-package" :class="{ selected: selected_id === item.package_id }" role="radio" tabindex="0" :aria-disabled="is_loading || navigating" :aria-checked="selected_id === item.package_id" data-interaction="coinStore.p.pick.click.1" :data-package-id="item.package_id" @click="select_package(item.package_id)" @keydown.enter="select_package(item.package_id)">
+            <view v-for="item in packages" :key="item.package_id" class="coin-package" :class="{ selected: selected_id === item.package_id }" role="radio" tabindex="0" :aria-disabled="is_loading || navigating || !item.available" :aria-checked="selected_id === item.package_id" data-interaction="coinStore.p.pick.click.1" :data-package-id="item.package_id" @click="select_package(item.package_id)" @keydown.enter="select_package(item.package_id)">
               <view v-if="item.badge" class="coin-badge">{{ item.badge }}</view>
               <image :src="package_image(item.coins)" mode="aspectFit" />
-              <text class="coin-package-amount">{{ item.coins.toLocaleString('en-US') }} Coins</text>
+              <text class="coin-package-amount">{{ item.coins.toLocaleString(get_locale()) }} Coins</text>
               <view class="coin-package-divider" />
-              <view class="coin-price">{{ item.price }}</view>
+              <view class="coin-price">{{ item.display_price_usd }}</view>
             </view>
           </view>
         </scroll-view>
@@ -108,11 +125,11 @@ onHide(() => { error.value = ''; cancel_loading() })
 
     <template #footer>
       <view v-if="!access_error" class="coin-footer">
-        <view class="coin-buy" role="button" tabindex="0" :aria-disabled="navigating || is_loading || !selected" data-interaction="coinStore.continuePurchase.click.1" @click="continue_purchase" @keydown.enter="continue_purchase">Get Coins</view>
-        <text>{{ storekit_ready ? 'Payment is processed through the App Store' : 'Purchases are currently unavailable. Your balance will not change.' }}</text>
+        <view class="coin-buy" role="button" tabindex="0" :aria-disabled="navigating || is_loading || !selected?.available && !store.current_purchase_requests.some(item => item.status === 'pending')" data-interaction="coinStore.continuePurchase.click.1" @click="continue_purchase" @keydown.enter="continue_purchase">{{ store.current_purchase_requests.some(item => item.status === 'pending') ? 'View pending purchase' : 'Get Coins' }}</view>
+        <text>{{ store.purchase_catalog_status === 'loading' ? 'Loading coin packages…' : storekit_ready ? 'Payment is processed through the App Store' : 'Purchases are currently unavailable. Your balance will not change.' }}</text>
       </view>
     </template>
-    <template #overlays><CoinActionLoading :visible="is_loading" label="Creating purchase request…" /></template>
+    <template #overlays><CoinActionLoading :visible="is_loading" label="Preparing purchase…" /></template>
   </SecondaryPageFrame>
 </template>
 
@@ -252,18 +269,22 @@ onHide(() => { error.value = ''; cancel_loading() })
   font-weight: 700;
   white-space: nowrap;
 }
-.coin-package-amount { max-width: 100%; font-size: 32.443rpx; font-weight: 700; white-space: nowrap; }
+.coin-package-amount { max-width: 100%; font-size: 28.626rpx; font-weight: 700; white-space: nowrap; }
 .coin-package-divider { width: 100%; height: 1px; background: var(--cimoa-surface-event-divider); }
 .coin-price {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   width: 100%;
   height: 76.336rpx;
+  padding: 0 11.45rpx;
   border-radius: 38.168rpx;
   background: var(--cimoa-surface-tinted);
   font-size: 34.351rpx;
   font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
 }
 .coin-feature-card { margin-top: 41.985rpx; padding: 38.168rpx; border-radius: 45.802rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-card); }
 .coin-section-title { display: block; font-size: 38.168rpx; font-weight: 800; letter-spacing: -0.02em; }

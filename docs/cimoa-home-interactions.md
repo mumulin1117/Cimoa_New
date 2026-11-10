@@ -15,13 +15,14 @@
 
 ## 入口与验收契约
 
-同一行为的重复入口分别保留源码审计 ID；表中合并说明不合并实际 ID。所有导航失败均留在来源页并显示英文错误，业务实体不改变。表中的 Push 指真实页面栈入栈，动效统一为开发约定第 11 节的原型 cRise，不是 iOS 双页面联动。
+同一行为的重复入口分别保留源码审计 ID；表中合并说明不合并实际 ID。所有导航失败均留在来源页并显示英文错误，业务实体不改变。表中的 Push 指真实页面栈入栈，默认动效为开发约定第 11 节的原型 cRise；2026-11-02 用户指定 Home 闪电及两处 Start Auto Match 改为第 11.8 节的点面往返，不是 iOS 双页面联动。
 
 | interaction_id | source_screen | trigger | preconditions | visible_feedback | success_result | failure_result | persistence | sync_scope | acceptance |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | home.openMe.click.1 | Home / People Met | 点击左上个人图标 | 当前会话有效 | 立即 Push，原型式入场，无导航 Loading | `/pages/profile/index` 展示当前用户 | 会话失效走统一守卫；失败恢复 Home | none | 当前用户、个人中心 | 点击→核对用户→返回→Home 仍可见且滚动不丢失 |
-| home.startAutoMatch.click.1 | Home / Header | 点击右上闪电 | 会话有效；配额来自 Store | 立即 Push，不扣次数 | `/pages/auto-match/index` | 失败保留配额、余额和状态 | none | Home 配额、Auto Match | 点击→返回→配额和金币未变化 |
+| home.startAutoMatch.click.1 | Home / Header | 点击右上闪电 | 会话有效；配额来自 Store | 真实 Push，240ms 从闪电中心展开，不扣次数 | `/pages/auto-match/index` | 失败保留配额、余额和状态；无有效原点时普通导航 | none | Home 配额、Auto Match | 点击→180ms 收拢至原闪电→配额和金币未变化；连点仅一次入栈 |
 | home.startAutoMatch.click.2 | Home / Empty | 点击 Start Auto Match | 联系人列表为空 | 同上一入口 | 同一 Auto Match 入口 | 同上 | none | 同上 | 空列表下点击，不能额外创建假联系人 |
+| home.startAutoMatch.click.3 | Home / List tail | 点击列表底部 Start Auto Match | 联系人列表非空；当前会话有效 | 真实 Push，240ms 从本次按钮中心展开 | 同一 Auto Match 入口 | 失败不改匹配/余额；来源按钮失效不指向闪电 | none | Home 配额、Auto Match | 滚至底部→点击→偏好/历史往返→180ms 收拢回原按钮；原列表与滚动保持 |
 | home.exploreDiscover.click.1 | Home / Empty | 点击 Explore People | 会话有效 | replace_route | `/pages/discover/index`，选中 Discover | Home 保持可见 | none | 三个主 Tab | 空页切 Discover→Home，栈深不增加，无重复骨架 |
 | home.openMaya.click.1 | Home / Connected Chloe | 点击 Chloe 卡片 | 两条有效方向关系、未拉黑、真实会话存在 | 立即 Push，无 Loading | `/pages/messages/chat?conversation_id=...`，参与者为 Chloe | 不允许私聊时不创建假会话，不改变关系 | none（已读由聊天页 action 管理） | Home、关系、DM | 进入→核对参与者→发送并刷新→返回；拉黑后入口消失 |
 | home.openLiam.click.1 | Home / Auto Match Liam | 点击 Liam 卡片 | 有该候选对应 match_id，未拉黑 | 立即 Push | `/pages/auto-match/found?match_id=...`，候选为 Liam | 候选失效明确报错，不替换为 Chloe | none | Home、匹配、候选用户 | 进入 Liam→返回；不能把全局候选偷偷改为另一个人 |

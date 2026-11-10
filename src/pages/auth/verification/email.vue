@@ -1,4 +1,5 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { computed, onUnmounted, ref } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -41,12 +42,12 @@ const next = async () => {
 <template>
   <AuthPageFrame ref="frame" class="verification-email-page" :class="{ 'verification-email-page--keyboard': keyboard_open }" title="Account verification" back-interaction="verEmail.goBack.click.1" :busy="is_loading" :style="{ height: viewport_height }" @back="back">
     <text class="auth-heading">Confirm your email</text>
-    <text class="auth-description">Confirm your account using the code shown on the next screen.</text>
+    <text class="auth-description">Use your university email to continue.</text>
     <view v-if="context" class="auth-field"><text class="auth-label">University email</text><view class="auth-input-box"><input v-model="email" class="auth-input" aria-label="University email" placeholder="name@university.edu" data-interaction="verEmail.onEmail.change.1" :maxlength="254" :disabled="is_loading || context.verified" autocomplete="username" @input="clear_error" @confirm="next" /></view></view>
     <text v-else class="auth-error-box" role="alert">Log in or create an account first. No account has been changed.</text>
     <view class="email-info"><text>Your email identifies your account and is never shown on your profile.</text></view>
     <text class="email-example">Example · a.chan@connect.hkust.edu</text>
-    <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
+    <text v-if="error" class="auth-error-box" role="alert">{{ auth_message(error) }}</text>
     <template #footer><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verEmail.goVerCode.click.1" @click="next" @keydown.enter="next">{{ context ? 'Continue to Code' : 'Log In' }}</view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Updating email…" /></template>
   </AuthPageFrame>

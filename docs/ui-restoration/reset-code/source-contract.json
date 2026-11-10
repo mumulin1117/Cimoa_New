@@ -40,6 +40,7 @@
     { "id": "reset-code-source-hierarchy", "source": "User pixel-source rule", "delta": "Remove the unsourced gradient disclosure card and field label; restore the single 72px source input, left-aligned secondary action and source CTA." },
     { "id": "reset-code-owned-write", "source": "Existing Store password-reset contract", "delta": "Only exact 009789 for the owned reset writes verified_at after 500ms Loading; wrong, stale, repeated-resend and persistence failure paths remain zero-write." }
   ],
+  "current_presentation_contract": "../auth-code-privacy-2026-10-23/source-contract.json",
   "planned_capture": {
     "reference_png": "docs/ui-restoration/reset-code/reference.png",
     "actual_browser_png": "docs/ui-restoration/reset-code/actual-browser.png",

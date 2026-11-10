@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-24",
+  "scope": "iPhone-first touch, cancellation, real target sizes, and noneditable content protection",
+  "status": "implemented_and_targeted_regression_passed",
+  "not_full_app_visual_or_physical_device_acceptance": true,
+  "rules": {
+    "development_contract": "DEVELOPMENT_CONVENTIONS.md",
+    "development_sections": ["15.3.1", "15.3.2"],
+    "interaction_contract": "INTERACTION_CONVENTIONS.md",
+    "interaction_section": "1.4",
+    "hover_dependent_entries_found": 0,
+    "important_target_minimum_logical_points": 44,
+    "target_implementation": "84rpx times the measured 393/viewport-width scale, rounded upward to avoid falling below 44 after rendering; actual targets, not overlapping pseudo-elements",
+    "existing_write_loading_ms": "400-600, default 500, unchanged",
+    "long_press": "Recognized as a transient held presentation state; no new long-press business menu or automatic submission is invented.",
+    "accepted_apple_purchases": "Continue original account-bound recovery; page/gesture cancellation does not claim Apple payment cancellation."
+  },
+  "implementation": [
+    "One App-installed presentation policy blocks noneditable contextmenu, dragstart and selectstart, suppresses cancelled compatibility clicks, and clears press/hold state on pointer cancellation, capture loss, second touch, background and route changes.",
+    "No global touchmove/pointerdown prevention or touch-action:none was added. Native scroll ownership remains available; only the existing fixed Discover card owns its horizontal drag surface.",
+    "Actual DOM input and textarea nodes receive a presentation marker because uni-app rewrites raw input CSS selectors to component wrappers. Editable controls retain cursor, selection and unblocked copy/paste/beforeinput/composition events.",
+    "Dynamically mounted noneditable images are marked draggable=false. CSS disables normal callouts and system image dragging; WKWebView disables link previews without disabling its text-interaction preference or all long-press recognizers.",
+    "Discover uses separate start and continuation locks: its own dragging state blocks duplicate clicks but does not cancel the already owned swipe. External navigation, skeleton, settling and reset locks still cancel.",
+    "A fresh Discover touch clears only the prior swipe's time guard; the swipe's own compatibility click remains suppressed. Swipe, profile entry and return preserve the current person.",
+    "Home refresher, Profile question browsing and the voice progress slider share a single-pointer cancellation controller. Vertical intent wins in scrolling regions. Audio dragging previews locally and seeks once only on release, never on cancellation.",
+    "Shared writes reserve busy synchronously before watchers can reenter, recheck cancellation before an already queued timer can execute, settle cancelled Promises, and remove lifecycle listeners on unmount.",
+    "Important back/close/more/send/record/play controls and switches have real minimum touch targets. Settings switches keep their original painted track in a separate larger hit region. Dense visual indicators are not enlarged using overlapping invisible layers.",
+    "Group chat and the registered legacy messages entry receive missing busy/disabled semantics without a business-model or UI redesign."
+  ],
+  "verification": {
+    "mandatory_commands": [
+      { "command": "corepack pnpm check:conventions", "result": "passed", "warnings": 0 },
+      { "command": "git diff --check", "result": "passed" },
+      { "command": "corepack pnpm build:h5", "result": "passed", "packaged_h5_files": 440 }
+    ],
+    "unit_tests": {
+      "script_files": 71,
+      "passed": 541,
+      "failed": 0,
+      "skipped": 0,
+      "new_touch_specific_tests": 45,
+      "excluded_external_drivers": ["browser/visual suites", "auto-match-background.test.mjs", "connection-pages.test.mjs"],
+      "log": "artifacts/touch-policy-2026-10-24/unit-tests.log"
+    },
+    "browser": {
+      "passed": true,
+      "mobile_touch_viewport_widths": [320, 375, 393, 440],
+      "dom_assertions": 152,
+      "actual_browser_touch_events": [
+        "Hold does not click; touchCancel releases the state; a fresh touchscreen tap activates once.",
+        "Cancelled Discover swipe keeps the person, completed horizontal swipe advances once.",
+        "The next deliberate tap enters that profile immediately; returning retains that card.",
+        "Home scrolls with an actual vertical touch gesture after its first skeleton, in a short viewport with real overflowing content."
+      ],
+      "important_target_measurements": "At least 44 logical CSS points across tested widths, including Back and switch hit regions; icons/tracks keep their own visual dimensions.",
+      "errors": 0,
+      "expected_blocked_statistics_warnings": 8,
+      "warning_boundary": "The isolated browser intentionally aborts external traffic. The existing uni statistics SDK reports failed telemetry/retry warnings; these are retained in the report, not replaced with a fake server success. No unrelated application warnings were accepted.",
+      "report": "artifacts/touch-policy-2026-10-24/browser-report.json",
+      "preview_server_started": false,
+      "actual_user_browser_storage_accessed": false
+    },
+    "wkwebview": {
+      "passed": true,
+      "device": "iPhone 17 Pro",
+      "device_id": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "runtime": "iOS 26.5",
+      "native_tests_passed": 2,
+      "dom_assertions": 38,
+      "measured_target_width": 44.015625,
+      "measured_target_height": 44.015625,
+      "native_link_preview_disabled": true,
+      "native_text_interaction_enabled": true,
+      "test_names": ["HostTests.testTouchPolicyAndEditableControlsInRealWebKit", "HostTests.testNativeRequestReplyAndFailureBoundaries"],
+      "report": "artifacts/touch-policy-2026-10-24/wkwebview-report.json",
+      "result_bundle": "artifacts/touch-policy-2026-10-24/native-delivery.xcresult",
+      "log": "artifacts/touch-policy-2026-10-24/native-tests.log",
+      "microphone_payment_or_permission_changes_requested": false,
+      "warnings": "Existing Xcode AppIntents metadata extraction and simulator WebKit/accessibility advisory logs do not prevent the passing targeted tests. No private entitlement was added."
+    },
+    "independent_ios": {
+      "directory": "artifacts/cimoaNeapo-touch-delivery",
+      "project": "artifacts/cimoaNeapo-touch-delivery/cimoaNeapo.xcodeproj",
+      "zip": "artifacts/cimoaNeapo-ios.zip",
+      "project_references_validated": 14,
+      "h5_manifest_hashes_validated": 440,
+      "application_targets": 1,
+      "test_targets_exported": false,
+      "external_source_paths_or_symlinks": false,
+      "signed_ipa_or_store_upload": false
+    }
+  },
+  "limits": [
+    "This suppresses App-owned default browser interactions, not screenshots, external access to resources, DRM or every possible OS-level image recognition feature.",
+    "Native automated tests verify real WKWebView styles, editable selection/ranges, event boundaries and retained native text interaction. They do not claim a manually operated system clipboard/menu matrix or physical-device keyboard/IME certification.",
+    "The existing whole-App visual/page acceptance and formal signing, real StoreKit purchase and push-service release dependencies remain separate."
+  ],
+  "changed_files": [
+    "DEVELOPMENT_CONVENTIONS.md",
+    "INTERACTION_CONVENTIONS.md",
+    "src/App.vue",
+    "src/styles/touch.css",
+    "src/utils/touchPolicy.js",
+    "src/utils/discoverSwipe.js",
+    "src/utils/writeOperation.js",
+    "src/composables/useWriteLoading.js",
+    "src/components/DiscoverProfileCard.vue",
+    "src/components/MainTabFrame.vue",
+    "src/components/RequestAudioPlayer.vue",
+    "src/components/SettingsSwitch.vue",
+    "src/pages/discover/index.vue",
+    "src/pages/profile/edit.vue",
+    "src/pages/events/group.vue",
+    "src/pages/messages/index.vue",
+    "ios/cimoaNeapo/Sources/WebViewController.swift",
+    "ios/cimoaNeapo/Tests/HostTests.swift",
+    "ios/cimoaNeapo/README.md",
+    "scripts/touch-policy.test.mjs",
+    "scripts/touch-targets.test.mjs",
+    "scripts/touch-gestures.test.mjs",
+    "scripts/touch-write-lifecycle.test.mjs",
+    "scripts/touch-policy-browser.test.mjs",
+    "scripts/lib/touch-policy-regression.mjs",
+    "scripts/event-filter-loading.test.mjs",
+    "scripts/auth-feedback.test.mjs",
+    "scripts/feedback-global.test.mjs",
+    "docs/iphone-touch-acceptance-2026-10-24.json"
+  ],
+  "generated_outputs": ["dist/build/h5", "ios/cimoaNeapo/Resources/H5", "ios/cimoaNeapo/Resources/build-manifest.json", "artifacts/touch-policy-2026-10-24", "artifacts/cimoaNeapo-touch-delivery", "artifacts/cimoaNeapo-ios.zip"],
+  "worktree": "Preexisting and staged user changes remain intact. No git add, commit, push or reset was performed; the existing dirty workspace is not represented as a clean project.",
+  "processes": "Bounded build/test commands only. Temporary browser contexts close in finally; no preview service or watcher was started, and unrelated simulators/services were not stopped."
+}

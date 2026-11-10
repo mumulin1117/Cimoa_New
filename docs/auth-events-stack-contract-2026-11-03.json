@@ -1,0 +1,17 @@
+{
+  "status": "in_progress",
+  "visual_acceptance": "pending",
+  "source": "2026-11-03 user-authorized scoped motion exception; not an existing HTML animation",
+  "scope": {
+    "sources": ["Welcome and login/registration flow", "Events main list and secondary pages"],
+    "targets": ["Login, age, community, signup", "Password reset and account verification", "Profile setup steps", "Event detail, participants, join success, My Events, group chat and report"],
+    "excluded": ["Splash/startup handoff and EULA timing", "Tab switching", "Discover Send point-surface", "Home Auto Match point-surface", "Match preferences bottom transition", "Cross-module Profile, Discover, legal and permission destinations", "System swipe-back gestures"]
+  },
+  "push": { "duration_ms": 240, "target": "100 percent right to final position", "source": "final position to 30 percent left parallax", "ownership": "Original Vue frames, temporarily presented through existing host infrastructure" },
+  "pop": { "duration_ms": 180, "target": "final position to 100 percent right", "source": "30 percent left to original position", "dispatch": "Once, after visual exit; retain underlying real frame until exact route activation" },
+  "reduced_motion": "Opacity only, with existing durations and real routes",
+  "safety": ["Nested page identities and complete route queries", "Session and guest flow isolation", "No business writes from navigation", "No clones, screenshots or duplicate business instances", "Shared keyboard layout coordination", "Busy/inert and duplicate operation guards", "Background, resize, authentication, removal and timeout cancellation", "Scroll restoration without replay after user resumes scrolling", "Parent scoped CSS inheritance on actual Teleport frame"],
+  "preserved_business_rules": ["400-600ms business writes", "600ms content skeleton", "Original join/report/media/permission/coins actions", "replace and relaunch semantics", "Home after completed authentication", "Passwords cleared on page hide as before"],
+  "draft_repair": "Group-to-report-and-back retains unsent text in the existing page instance; media and pending writes are cancelled on hide, invalid access or destruction clears text. No new persistence.",
+  "authentication_boundaries": "A real session or newly generated guest flow invalidates previous visual links; never rebind an old flow merely to preserve an animation"
+}

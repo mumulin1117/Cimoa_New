@@ -19,7 +19,7 @@ try {
   let document_id = 0
   const go = route => page.goto(server.origin + '/?sync=' + phase + '&document=' + ++document_id + '#'+ route), click = id => page.locator(`[data-interaction="${id}"]:visible`).first().click()
   const state = () => page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data)
-  const idle = () => page.locator('.event-loading:visible,.loading:visible').waitFor({ state: 'hidden' })
+  const idle = () => page.waitForFunction(() => ![...document.querySelectorAll('.event-loading,.loading,.chat-action-loading')].some(element => element.getBoundingClientRect().height > 0))
   const shot = async name => { await page.evaluate(async () => { await document.fonts.ready; for (const a of document.getAnimations()) if (a.effect?.getComputedTiming().iterations !== Infinity) a.finish(); await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))) }); await page.screenshot({ path: path.join(output, name + '.png') }) }
   const block = async id => { await go('/pages/discover/profile?user_id=' + id); await click('expanded.openSafetyMini.click.1'); await click('sheetSafetyMini.openBlock.click.1'); await click('sheetBlock.confirmBlock.click.1'); await page.locator('.discover-header:visible').waitFor() }
   await go('/pages/profile/index'); await page.locator('.profile-name').waitFor()
@@ -53,7 +53,7 @@ try {
     const before = await state(); await page.reload(); await page.locator('.chat-composer').waitFor(); await idle(); assert.deepEqual(await state(), before)
     await page.getByRole('button', { name: 'Play voice message', exact: true }).click(); await page.getByRole('button', { name: 'Pause voice message', exact: true }).waitFor(); await page.getByRole('button', { name: 'Pause voice message', exact: true }).click()
     check('Persisted direct image and real encoded audio resolve after a fresh document; reads do not duplicate messages or read receipts')
-    await page.locator('uni-input[aria-label="Message"] input').fill('One message, shared everywhere.'); await click('chat.send.click.1'); await page.locator('.event-loading:visible').waitFor(); assert.equal((await state()).messages.some(m => m.body === 'One message, shared everywhere.'), false); await idle()
+    await page.locator('uni-input[aria-label="Message"] input').fill('One message, shared everywhere.'); await click('chat.send.click.1'); await page.locator('.chat-send .chat-action-loading:visible').waitFor(); assert.equal((await state()).messages.some(m => m.body === 'One message, shared everywhere.'), false); await idle()
     const sent = await state(); assert.equal(sent.messages.filter(m => m.body === 'One message, shared everywhere.').length, 1)
     await click('chat.viewProfile.click.1'); await page.locator('.expanded-heading').waitFor(); assert.equal(await page.locator('[data-interaction="expanded.sayHi.click.1"]').innerText(), 'Chat'); await click('expanded.sayHi.click.1'); await page.locator('.chat-composer').waitFor(); assert.match(page.url(), /conversation_chloe/)
     await go('/pages/home/index'); await page.locator('.home-header').waitFor(); const home_card = page.locator('#connection-user_chloe'); assert.equal(await home_card.getAttribute('data-target'), '/pages/messages/chat?conversation_id=conversation_chloe'); await home_card.click(); await page.locator('.chat-composer:visible').waitFor(); await idle(); assert.equal(await page.getByText('One message, shared everywhere.', { exact: true }).count(), 1)

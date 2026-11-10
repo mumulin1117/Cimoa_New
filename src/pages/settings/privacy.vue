@@ -8,6 +8,7 @@ import { relaunch_route } from '@/utils/routeTransition.js'
 import { startup_destination } from '@/utils/authNavigation.js'
 import ProfileEditorFrame from '@/components/ProfileEditorFrame.vue'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
+import { show_toast } from '@/utils/toast.js'
 
 const store = use_app_store()
 const frame = ref(null)
@@ -18,7 +19,7 @@ let active = true
 
 const account_scope = use_account_scope(store, cancel_loading)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -56,7 +57,8 @@ const persist = async action => {
   error.value = ''
   const result = await run_with_loading(action)
   if (!active || result.reason === 'cancelled') return
-  if (!result.success) error.value = result.message || 'Privacy settings could not be saved.'
+  if (!result.success) error.value = result.message || 'Privacy settings couldn’t be updated. Please try again.'
+  else show_toast('Privacy settings updated', { tone: 'success' })
 }
 const select_visibility = value => {
   if (value === visibility.value) return
@@ -66,7 +68,7 @@ const toggle = key => persist(() => store.update_settings('privacy', { [key]: !p
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="settings-privacy-page" title="Privacy" source="setPrivacy" :busy="is_loading" loading-label="Saving privacy…" :error="error" :access-error="access_error" @back="back" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="settings-privacy-page" title="Privacy" source="setPrivacy" :busy="is_loading" loading-label="Updating privacy settings…" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover">
     <text class="settings-page-section-title">Discover profile visibility</text>
     <view class="settings-page-stack">
       <view v-for="option in visibility_options" :key="option.value" class="settings-page-choice" :class="{ selected: visibility === option.value }" role="radio" tabindex="0" :aria-checked="visibility === option.value" :aria-disabled="is_loading" data-interaction="setPrivacy.o.pick.click.1" @click="select_visibility(option.value)" @keydown.enter="select_visibility(option.value)">

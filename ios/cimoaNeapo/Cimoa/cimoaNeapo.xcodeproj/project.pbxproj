@@ -1,0 +1,300 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		000000000000000000000014 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000000A /* AppDelegate.swift */; };
+		000000000000000000000015 /* CimofacultyTraditionMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000000B /* CimofacultyTraditionMetric.swift */; };
+		000000000000000000000016 /* CimoelectiveOrientationCompass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000000C /* CimoelectiveOrientationCompass.swift */; };
+		000000000000000000000018 /* campusHeritagePathway.cimoa in Resources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000000E /* campusHeritagePathway.cimoa */; };
+		C1A000000000000000000002 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C1A000000000000000000001 /* Assets.xcassets */; };
+		C1C000000000000000000101 /* CimocampusPathwayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C000000000000000000001 /* CimocampusPathwayEngine.swift */; };
+		C1C000000000000000000102 /* CimoscholarWellnessPathfinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C000000000000000000002 /* CimoscholarWellnessPathfinder.swift */; };
+		C1C000000000000000000103 /* CimosyllabusActivityGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C000000000000000000003 /* CimosyllabusActivityGraph.swift */; };
+		C1D000000000000000000003 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C1D000000000000000000002 /* InfoPlist.strings */; };
+		C1E000000000000000000101 /* CimomusicOrientationPathfinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1E000000000000000000001 /* CimomusicOrientationPathfinder.swift */; };
+		F5A3973A308853D2009C49ED /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5A39739308853D2009C49ED /* Launch Screen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00000000000000000000000A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		00000000000000000000000B /* CimofacultyTraditionMetric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CimofacultyTraditionMetric.swift; sourceTree = "<group>"; };
+		00000000000000000000000C /* CimoelectiveOrientationCompass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CimoelectiveOrientationCompass.swift; sourceTree = "<group>"; };
+		00000000000000000000000E /* campusHeritagePathway.cimoa */ = {isa = PBXFileReference; lastKnownFileType = file; path = campusHeritagePathway.cimoa; sourceTree = "<group>"; };
+		000000000000000000000011 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		000000000000000000000012 /* Local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig; sourceTree = "<group>"; };
+		00000000000000000000001E /* cimoaNeapo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = cimoaNeapo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1A000000000000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C1C000000000000000000001 /* CimocampusPathwayEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CimocampusPathwayEngine.swift; sourceTree = "<group>"; };
+		C1C000000000000000000002 /* CimoscholarWellnessPathfinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CimoscholarWellnessPathfinder.swift; sourceTree = "<group>"; };
+		C1C000000000000000000003 /* CimosyllabusActivityGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CimosyllabusActivityGraph.swift; sourceTree = "<group>"; };
+		C1D000000000000000000000 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C1D000000000000000000001 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C1E000000000000000000001 /* CimomusicOrientationPathfinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CimomusicOrientationPathfinder.swift; sourceTree = "<group>"; };
+		F5A39739308853D2009C49ED /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00000000000000000000002A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		000000000000000000000002 = {
+			isa = PBXGroup;
+			children = (
+				F5A39739308853D2009C49ED /* Launch Screen.storyboard */,
+				C1A000000000000000000001 /* Assets.xcassets */,
+				C1B000000000000000000010 /* ScholarWellnessPathfinder */,
+				C1B000000000000000000011 /* CimomusicOrientationPathfinder */,
+				C1B000000000000000000012 /* Config */,
+				000000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		000000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000001E /* cimoaNeapo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C1B000000000000000000010 /* ScholarWellnessPathfinder */ = {
+			isa = PBXGroup;
+			children = (
+				C1E000000000000000000001 /* CimomusicOrientationPathfinder.swift */,
+				C1C000000000000000000001 /* CimocampusPathwayEngine.swift */,
+				C1C000000000000000000002 /* CimoscholarWellnessPathfinder.swift */,
+				C1C000000000000000000003 /* CimosyllabusActivityGraph.swift */,
+				00000000000000000000000A /* AppDelegate.swift */,
+				00000000000000000000000B /* CimofacultyTraditionMetric.swift */,
+				00000000000000000000000C /* CimoelectiveOrientationCompass.swift */,
+			);
+			path = ScholarWellnessPathfinder;
+			sourceTree = "<group>";
+		};
+		C1B000000000000000000011 /* CimomusicOrientationPathfinder */ = {
+			isa = PBXGroup;
+			children = (
+				C1D000000000000000000002 /* InfoPlist.strings */,
+				00000000000000000000000E /* campusHeritagePathway.cimoa */,
+			);
+			path = CimomusicOrientationPathfinder;
+			sourceTree = "<group>";
+		};
+		C1B000000000000000000012 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000011 /* Info.plist */,
+				000000000000000000000012 /* Local.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		000000000000000000000032 /* cimoaNeapo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 000000000000000000000047 /* Build configuration list for PBXNativeTarget "cimoaNeapo" */;
+			buildPhases = (
+				000000000000000000000028 /* Sources */,
+				00000000000000000000002A /* Frameworks */,
+				000000000000000000000029 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = cimoaNeapo;
+			productName = cimoaNeapo;
+			productReference = 00000000000000000000001E /* cimoaNeapo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					000000000000000000000032 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+				};
+			};
+			buildConfigurationList = 000000000000000000000046 /* Build configuration list for PBXProject "cimoaNeapo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				fr,
+				Base,
+			);
+			mainGroup = 000000000000000000000002;
+			productRefGroup = 000000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				000000000000000000000032 /* cimoaNeapo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		000000000000000000000029 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1D000000000000000000003 /* InfoPlist.strings in Resources */,
+				000000000000000000000018 /* campusHeritagePathway.cimoa in Resources */,
+				F5A3973A308853D2009C49ED /* Launch Screen.storyboard in Resources */,
+				C1A000000000000000000002 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		000000000000000000000028 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1E000000000000000000101 /* CimomusicOrientationPathfinder.swift in Sources */,
+				C1C000000000000000000101 /* CimocampusPathwayEngine.swift in Sources */,
+				C1C000000000000000000102 /* CimoscholarWellnessPathfinder.swift in Sources */,
+				C1C000000000000000000103 /* CimosyllabusActivityGraph.swift in Sources */,
+				000000000000000000000014 /* AppDelegate.swift in Sources */,
+				000000000000000000000015 /* CimofacultyTraditionMetric.swift in Sources */,
+				000000000000000000000016 /* CimoelectiveOrientationCompass.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C1D000000000000000000002 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C1D000000000000000000000 /* en */,
+				C1D000000000000000000001 /* fr */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		00000000000000000000003C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		00000000000000000000003D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		00000000000000000000003E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 000000000000000000000012 /* Local.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_KEY_CFBundleDisplayName = Cimoa;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cimoa.neapo;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		00000000000000000000003F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 000000000000000000000012 /* Local.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_KEY_CFBundleDisplayName = Cimoa;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cimoa.neapo;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		000000000000000000000046 /* Build configuration list for PBXProject "cimoaNeapo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000000000000000000003C /* Debug */,
+				00000000000000000000003D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		000000000000000000000047 /* Build configuration list for PBXNativeTarget "cimoaNeapo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000000000000000000003E /* Debug */,
+				00000000000000000000003F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 000000000000000000000001 /* Project object */;
+}

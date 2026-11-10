@@ -16,7 +16,7 @@ const navigating = ref(false)
 const account_id = store.session.account_id
 const account_scope = use_account_scope(store, () => { document.value = null })
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -57,7 +57,7 @@ const open_row = async row => {
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="settings-legal-page" title="Legal" source="setLegal" :error="error" :access-error="access_error" @back="back" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="settings-legal-page" title="Legal" source="setLegal" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover">
     <text class="legal-local-note">Read the Terms of Use, Privacy Policy and Community Guidelines to understand your rights and choices.</text>
     <view class="legal-list">
       <view v-for="row in rows" :key="row.kind" class="legal-row" role="button" tabindex="0" :data-interaction="row.interaction" @click="open_row(row)" @keydown.enter="open_row(row)"><text>{{ row.label }}</text><view class="legal-chevron"><SourceIcon name="chevron" /></view></view>

@@ -65,7 +65,7 @@ export const auto_match_actions = {
       if(row.engine==='device'&&status==='paused'){row.search_remaining_ms=Math.max(0,row.search_ready_at-now);if(row.standard_search_ready_at!=null)row.standard_search_remaining_ms=Math.max(0,row.standard_search_ready_at-now)}
       if(row.engine==='device'&&current==='paused'&&status==='searching'){
         const remaining=(row.priority_until<=now?row.standard_search_remaining_ms:null)??row.search_remaining_ms??Math.max(0,row.search_ready_at-row.paused_at)
-        s.ensure(Number.isFinite(remaining),'The saved search time is unavailable. Leave this session and start again.')
+        s.ensure(Number.isFinite(remaining),'The search time is unavailable. Leave this session and start again.')
         row.search_ready_at=now+remaining;set_candidate(data,row,now)
         if(row.standard_search_remaining_ms!=null)row.standard_search_ready_at=now+row.standard_search_remaining_ms
       }
@@ -138,7 +138,7 @@ export function validate_match_preferences(data,p) {
 }
 export function matching_context(data,id,now,hydration='ready') {
   const empty=error=>({error,match:null,route:null,active:null,preferences:null,candidate:null,pool:[],history:[]})
-  if(hydration!=='ready')return empty('Saved data could not be loaded. Please retry.')
+  if(hydration!=='ready')return empty('Your matching information couldn’t be loaded. Please try again.')
   if(!s.authenticated(data,now))return empty('Your session has expired. Please sign in again.')
   const active=s.active_match(data,now),match=id?s.owned_matches(data,now).find(m=>m.match_id===id):null
   if(id&&!match)return empty('This match session is unavailable.')

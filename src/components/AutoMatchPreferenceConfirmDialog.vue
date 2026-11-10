@@ -1,5 +1,6 @@
 <script setup>
 import EventConfirmDialog from './EventConfirmDialog.vue'
+import SourceIcon from './SourceIcon.vue'
 defineProps({modal:String,context:Object,query:String,busy:Boolean})
 defineEmits(['action'])
 </script>
@@ -7,7 +8,11 @@ defineEmits(['action'])
   <view class="match-picker">
     <EventConfirmDialog :open="modal === 'university' || modal === 'interests'" :busy="busy" :label="modal === 'university' ? 'University' : 'Interests'" :close-interaction="modal === 'university' ? 'sheetUniPicker.closeSheet.click.1' : 'sheetInterestsPicker.closeSheet.click.1'" @close="$emit('action','closeSheet')">
       <template #header>
-        <view class="match-picker-heading"><view>{{ modal === 'university' ? 'University' : 'Interests' }}</view><view v-if="modal === 'interests'">{{ context.interest_count2 }}/5</view></view>
+        <view class="match-picker-heading">
+          <view>{{ modal === 'university' ? 'University' : 'Interests' }}</view>
+          <view v-if="modal === 'interests'" class="match-picker-count">{{ context.interest_count2 }}/5</view>
+          <view v-else-if="modal === 'university'" class="match-picker-dismiss" role="button" :tabindex="busy ? -1 : 0" aria-label="Dismiss" :aria-disabled="busy" data-interaction="sheetUniPicker.closeSheet.click.2" @click.stop="!busy && $emit('action','closeSheet')" @keydown.enter.stop.prevent="!busy && $emit('action','closeSheet')" @keydown.space.stop.prevent="!busy && $emit('action','closeSheet')"><SourceIcon name="close" :stroke-width="2.4" /></view>
+        </view>
         <view v-if="modal === 'university'" class="match-picker-search"><view><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="M16.2 16.2 21 21" /></svg></view><input :value="query" placeholder="Search for a university" data-interaction="sheetUniPicker.onUniSearch.change.1" @input="$emit('action','onUniSearch',$event)" /></view>
       </template>
       <view v-if="modal === 'university'" class="match-universities"><view v-for="o in context.uni_chips" :key="o.value" :style="{background:o.bg,color:o.ink}" role="button" tabindex="0" data-interaction="sheetUniPicker.o.pick.click.1" @click="$emit('action','pick',$event,o)" @keydown.enter="$emit('action','pick',$event,o)">{{ o.label }}</view><view v-if="!context.uni_chips?.length" class="match-picker-empty">No universities found.</view></view>
@@ -30,7 +35,24 @@ defineEmits(['action'])
   font-weight: 800;
   letter-spacing: -0.03em;
 }
-.match-picker-heading > view:last-child:not(:first-child) { font-size: 28.625rpx; font-weight: 400; color: var(--cimoa-text-connection-muted); letter-spacing: normal; }
+.match-picker-count { font-size: 28.625rpx; font-weight: 400; color: var(--cimoa-text-connection-muted); letter-spacing: normal; }
+.match-picker-dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 83.969rpx;
+  height: 83.969rpx;
+  min-width: var(--app-touch-target);
+  min-height: var(--app-touch-target);
+  margin: -19.084rpx -7.634rpx -19.084rpx 15.267rpx;
+  border-radius: 50%;
+  background: var(--cimoa-surface-tinted);
+  color: var(--cimoa-text-title);
+  cursor: pointer;
+}
+.match-picker-dismiss[aria-disabled="true"] { opacity: 0.55; cursor: default; }
+.match-picker-dismiss .source-icon { width: 38.168rpx; height: 38.168rpx; }
 .match-picker-search {
   display: flex;
   align-items: center;

@@ -1,0 +1,16 @@
+{
+  "result": "passed",
+  "checks": [
+    "Entry uses non-blocking inline read status; typing is enabled and early Back cancels the delayed write",
+    "Read status persists through the Store after its Loading, without a full-screen save prompt",
+    "Send-button spinner precedes one write, repeated send is ignored and history remains scrollable",
+    "Storage failure leaves data and draft intact; retry succeeds once and clears the error",
+    "Call-button spinner creates one waiting-only session and hangup returns to the same chat",
+    "Photo preview remains unpublished; confirmation shows an in-button spinner and atomically saves one real image",
+    "History Back cancels a pending send; re-entry is usable and normal read/send/call paths never show a save overlay",
+    "Fresh document restores both messages and the IndexedDB photo exactly once without a Saving message prompt"
+  ],
+  "errors": [],
+  "server_pid": 2958,
+  "cleaned_up": true
+}

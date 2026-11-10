@@ -1,4 +1,6 @@
 <script setup>
+import { get_locale } from '@/i18n/index.js'
+
 import { computed, ref } from 'vue'
 import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -16,7 +18,7 @@ const return_context_id = ref('')
 onLoad(options => { return_context_id.value = String(options?.return_context_id || '') })
 const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved coin data is unavailable. Please return and retry.'
+  ? 'Your coin history is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -42,14 +44,14 @@ onHide(() => { navigating.value = false; error.value = '' })
         <view class="history-back" role="button" aria-label="Back" :aria-disabled="navigating" data-interaction="coinHistory.goBack.click.1" @click="navigate()"><SourceIcon name="back" /></view>
         <text>Transactions</text>
       </view>
-      <text v-if="error" class="history-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error" :message="error" @dismiss="error = String()" />
     </template>
 
     <view class="history-content">
       <view v-if="access_error" class="history-access" role="alert">{{ access_error }}</view>
       <template v-else>
         <view class="history-balance">
-          <view><text>Current balance</text><text>{{ store.coin_balance.toLocaleString('en-US') }}</text></view>
+          <view><text>Current balance</text><text>{{ store.coin_balance.toLocaleString(get_locale()) }}</text></view>
           <image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" />
         </view>
         <view class="history-filters" role="tablist">
@@ -61,7 +63,7 @@ onHide(() => { navigating.value = false; error.value = '' })
             <view class="history-row-value" :class="{ positive: item.positive }"><text>{{ item.amount }}</text><SourceIcon name="chevron" /></view>
           </view>
         </view>
-        <view v-else class="history-empty"><image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><text>No coin activity yet</text><text>{{ active_filter === 'all' ? 'Purchases and coin use will appear here.' : `No ${active_filter} records are available.` }}</text></view>
+        <view v-else class="history-empty"><image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><text>No coin activity yet</text><text>{{ active_filter === 'all' ? 'Purchases and coin use will appear here.' : `No ${active_filter} activity is available.` }}</text></view>
       </template>
     </view>
   </SecondaryPageFrame>

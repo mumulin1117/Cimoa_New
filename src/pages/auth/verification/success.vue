@@ -1,13 +1,13 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { computed, onUnmounted, ref } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
-import { auth_destination } from '@/utils/authNavigation.js'
+import { AUTHENTICATED_MAIN_ROUTE, auth_destination } from '@/utils/authNavigation.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import AuthActionLoading from '@/components/AuthActionLoading.vue'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { onboarding_route } from '@/utils/onboardingFlow.js'
-import { relaunch_route } from '@/utils/routeTransition.js'
 const store = use_app_store(), frame = ref(null), error = ref('')
 const context = computed(() => store.local_verification)
 const go = async route => { error.value = ''; try { await frame.value.navigate_forward(auth_destination(route)) } catch (cause) { error.value = cause.message } }
@@ -18,24 +18,24 @@ const hide = () => { active = false; cancel_loading() }
 onHide(hide); onUnmounted(hide)
 const continue_setup = async () => {
   if (!context.value?.verified || is_loading.value) return
-  if (store.session.is_authenticated && (!store.onboarding || store.onboarding.completed)) { try { await relaunch_route('/pages/home/index') } catch (cause) { error.value = cause.message }; return }
+  if (store.session.is_authenticated && (!store.onboarding || store.onboarding.completed)) { try { await frame.value.navigate_relaunch(AUTHENTICATED_MAIN_ROUTE) } catch (cause) { error.value = cause.message }; return }
   const id = context.value.account_id
   const result = store.session.is_authenticated && store.onboarding ? { success: true, data: store.onboarding.completed ? 'home' : store.onboarding.step } : await run_with_loading(() => store.begin_onboarding(id))
   if (!active || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
-  await go(result.data === 'home' ? '/pages/home/index' : onboarding_route(result.data))
+  await go(result.data === 'home' ? AUTHENTICATED_MAIN_ROUTE : onboarding_route(result.data))
 }
 </script>
 <template>
-  <SecondaryPageFrame ref="frame" class="verification-success-page">
+  <SecondaryPageFrame ref="frame" class="verification-success-page" content-motion>
     <view class="verification-success-content">
       <template v-if="context?.verified">
         <view class="verification-success-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg></view>
         <text class="verification-success-heading" role="status">Account code confirmed</text>
         <view class="verification-success-pill"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" class="verification-badge-fill" /><path d="m7.5 12.4 3 3 6-6.4" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg><text>Account confirmation complete</text></view>
       </template>
-      <text v-else class="auth-error-box" role="alert">{{ store.hydration_error || 'Account verification has not been completed for this account.' }}</text>
-      <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
+      <text v-else class="auth-error-box" role="alert">{{ auth_message(store.hydration_error || 'Account verification has not been completed for this account.') }}</text>
+      <text v-if="error" class="auth-error-box" role="alert">{{ auth_message(error) }}</text>
     </view>
     <template #footer><view class="verification-success-footer"><view v-if="context?.verified" class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verSuccess.goObBasic.click.1" @click="continue_setup" @keydown.enter="continue_setup">Continue Profile Setup</view><view v-else class="auth-primary" role="button" tabindex="0" @click="go(context ? '/pages/auth/verification/code' : '/pages/auth/login')" @keydown.enter="go(context ? '/pages/auth/verification/code' : '/pages/auth/login')">{{ context ? 'Enter Code' : 'Log In' }}</view></view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Starting profile setup…" /></template>

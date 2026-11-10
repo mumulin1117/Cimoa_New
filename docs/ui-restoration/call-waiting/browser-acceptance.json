@@ -1,7 +1,7 @@
 {
   "result": "passed",
   "checks": [
-    "Original call background, gradients, header/preview/hangup geometry with approved waiting-only deltas; fixed 393×852 and dot phase",
+    "Current conversation participant avatar is the call background; gradients, header/preview/hangup geometry remain fixed at 393×852 and the selected dot phase",
     "Loading precedes call creation; reload/freeze/resume preserve deadline; small-screen timeout returns once to exact Chat without messages/coins/peer consent",
     "Manual end storage failure remains retryable; retry persists end and returns once",
     "Expired waiting URL never restarts; forged conversation shows no private preview and Back returns Home",
@@ -13,9 +13,9 @@
     "back": {
       "x": 20,
       "y": 58,
-      "width": 43.984375,
-      "height": 43.984375,
-      "bottom": 101.984375
+      "width": 44.015625,
+      "height": 44.015625,
+      "bottom": 102.015625
     },
     "own": {
       "x": 269.015625,
@@ -36,10 +36,10 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 203902,
-    "pixels_above_channel_delta_8": 10879,
-    "mean_absolute_channel_delta": 0.9526574203490664,
-    "max_channel_delta": 183
+    "pixels_different": 195251,
+    "pixels_above_channel_delta_8": 10890,
+    "mean_absolute_channel_delta": 0.6661470092821561,
+    "max_channel_delta": 192
   },
   "cleaned_up": true
 }

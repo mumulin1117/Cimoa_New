@@ -19,7 +19,7 @@ const escape=x=>String(x??'').replaceAll('&','&amp;').replaceAll('<','&lt;').rep
 function reference(origin,pop=false){
   let root;walk_html(source.html,node=>{if(node.tag==='sc-if'&&attribute(node,'value')==='{{ isHome }}')root=node})
   const goals=id=>data.users.find(x=>x.user_id===id).goal_ids.map(id=>data.goals.find(x=>x.item_id===id))
-  const values={hasFreeMatches:true,noFreeMatches:false,freeMatchesLeft:'3',newUser:false,hasConnections:true,anyGoalPop:pop,popIsMaya:pop,popIsLiam:false,popIsJordan:false,amCard:false,goalsMaya:goals('user_chloe'),goalsLiam:goals('user_liam'),goalsJordan:goals('user_lina')}
+  const values={hasFreeMatches:true,noFreeMatches:false,freeMatchesLeft:'3',newUser:false,hasConnections:true,anyGoalPop:pop,popIsMaya:pop,popIsLiam:false,popIsJordan:false,amCard:false,goalsMaya:goals('user_chloe'),goalsLiam:goals('user_liam'),goalsJordan:goals('user_grace')}
   const resources=JSON.parse(fs.readFileSync('docs/circa-source-audit.json')).resources
   const fill=(text,scope)=>text.replace(/{{\s*([\w.]+)\s*}}/g,(_,key)=>escape(key.split('.').reduce((x,k)=>x?.[k],scope)))
   function render(node,scope=values){
@@ -35,8 +35,8 @@ function reference(origin,pop=false){
     }).join('')
     return `<${node.tag} data-source-line="${node.loc.start.line}"${attrs}>${children()}${node.tag==='img'?'':`</${node.tag}>`}`
   }
-  let content=root.children.map(x=>render(x)).join('').replace('CIRCA','Cimoa').replace('Berkeley','HKUST').replaceAll('Jordan Ellis','Lina').replace('Lina, 20','Lina, 21').replace('UCLA','HKU').replaceAll('/head/jordan-av.png','/head/maya-full.png')
-  for(const [old,id]of [['🙋📖☕','user_chloe'],['🏃🎸🍜','user_liam'],['💬🗣️✈️','user_lina']])content=content.replace(old,goals(id).slice(0,3).map(x=>x.emoji).join(''))
+  let content=root.children.map(x=>render(x)).join('').replace('CIRCA','Cimoa').replace('Berkeley','HKUST').replaceAll('Jordan Ellis','Grace Miller').replace('Grace Miller, 20','Grace Miller, 21').replace('UCLA','HKUST').replaceAll('/static/assets/head/jordan-av.png','/static/assets/people/avatar-05.jpg')
+  for(const [old,id]of [['🙋📖☕','user_chloe'],['🏃🎸🍜','user_liam'],['💬🗣️✈️','user_grace']])content=content.replace(old,goals(id).slice(0,3).map(x=>x.emoji).join(''))
   const tab=contract.source.tab_component.replaceAll(/onClick="[^"]*"/g,'').replaceAll(/{{\s*(\w+)\s*}}/g,(_,key)=>key==='homeBg'?'linear-gradient(120deg,#1ec8f5 0%,#4a7bf7 38%,#a855f7 68%,#f81ce5 100%)':key==='homeInk'?'#fff':key.endsWith('Bg')?'transparent':'#0b1b3a')
   return `<!doctype html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;color:#0b1b3a;background:linear-gradient(168deg,#e4f4fb 0%,#eaf0fd 44%,#f2ecfb 100%);-webkit-font-smoothing:antialiased}::-webkit-scrollbar{display:none}</style></head><body>${content}<div style="position:absolute;left:20px;right:20px;bottom:28px;height:62px">${tab}</div></body></html>`
 }
@@ -58,13 +58,13 @@ try{
   const box=selector=>page.locator(selector).first().evaluate(e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom}})
   await open('/pages/home/index');await page.locator('.connection').first().waitFor();await freeze()
   report.geometry={header:await box('.home-header'),card:await box('.connection'),avatar:await box('.connection-avatar'),tabbar:await box('.tabbar')}
-  assert.deepEqual(await page.locator('.connection-name').allTextContents(),['Chloe Lin, 21','Liam Park, 22','Lina, 21'])
+  assert.deepEqual(await page.locator('.connection-name').allTextContents(),['Chloe Lin, 21','Liam Park, 22','Grace Miller, 21'])
   assert.ok(close_to(report.geometry.card.width,353));assert.ok(close_to(report.geometry.avatar.width,78));assert.ok(close_to(report.geometry.tabbar.height,62))
   for(const [key,selector]of [['profile','.home-profile'],['title','.home-title'],['card','.connection'],['avatar','.connection-avatar'],['status','.connection-status']]){const actual=await box(selector);for(const property of ['x','y','width','height'])assert.ok(close_to(actual[property],report.reference_geometry[key][property]),`${key}.${property}: ${actual[property]} vs ${report.reference_geometry[key][property]}`)}
   await page.screenshot({path:path.join(output,'actual-browser.png')});report.comparison=await write_comparison(browser,output,path.join(output,'reference.png'),path.join(output,'actual-browser.png'))
   check('Default source geometry, canonical profiles, original card groups and no invented message/unread UI')
   const before=await saved(),panel=page.getByRole('dialog',{name:'Connection goals'})
-  for(const id of ['user_chloe','user_liam','user_lina']){
+  for(const id of ['user_chloe','user_liam','user_grace']){
     for(let i=0;i<2;i++){await page.locator(`#connection-${id} .goals-tag`).click();await panel.waitFor();await page.locator('.goal-label').first().click();assert.equal(await panel.isVisible(),true);assert.ok((await box('.goals-panel')).bottom<=report.geometry.tabbar.y);if(id==='user_chloe'){await freeze();await page.screenshot({path:path.join(output,'actual-browser-goals.png')})}await page.locator('.goals-mask').click({position:{x:2,y:2}});await panel.waitFor({state:'hidden'})}
   }
   fs.mkdirSync(path.join(output,'goals'),{recursive:true});report.goals_comparison=await write_comparison(browser,path.join(output,'goals'),path.join(output,'reference-goals.png'),path.join(output,'actual-browser-goals.png'))
@@ -79,7 +79,7 @@ try{
   check('Two main-Tab cycles preserve root depth and never replay an authentication skeleton')
   await load('home_empty');await page.screenshot({path:path.join(output,'actual-browser-empty.png')});await click('home.exploreDiscover.click.1');await page.locator('.discover-header').waitFor();await page.getByRole('button',{name:'Home',exact:true}).click();await page.locator('.home-empty').waitFor();assert.equal(await page.locator('.connection').count(),0)
   check('Real empty Home offers source CTAs without fabricated contacts and Explore replaces Discover')
-  await load('request_accepted');assert.equal(await page.locator('#connection-user_lina .connection-status').innerText(),'Connected');await page.reload();await page.locator('#connection-user_lina').waitFor();assert.equal(await page.locator('#connection-user_lina .connection-status').innerText(),'Connected')
+  await load('request_accepted');assert.equal(await page.locator('#connection-user_grace .connection-status').innerText(),'Connected');await page.reload();await page.locator('#connection-user_grace').waitFor();assert.equal(await page.locator('#connection-user_grace .connection-status').innerText(),'Connected')
   await load('blocked');assert.equal(await page.locator('#connection-user_chloe').count(),0);check('Accepted requests aggregate into one connected card; block filtering and refresh use the same facts')
   for(const status of ['searching','paused','found','waiting']){const fixture=await load(`match_${status}`),bytes=await saved();assert.equal(await page.locator('.match-status').getAttribute('data-target'),`/pages/auto-match/${status}?match_id=match_liam`);await page.reload();await page.locator('.match-status').waitFor();assert.equal(await saved(),bytes);assert.equal(JSON.parse(bytes).data.match_sessions[0].expires_at,fixture.match_sessions[0].expires_at);await freeze();await page.locator('.match-status').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(output,`actual-browser-match-${status}.png`)})}
   check('Four matching status cards retain exact routes, candidate and persisted deadlines after refresh')
@@ -98,7 +98,7 @@ try{
   check('Exhausted quota persists and UTC midnight restores three free uses without rewriting history')
   await load('default',data=>{data.match_sessions[0].expires_at=Date.now()+8000});await page.locator('#connection-user_liam .goals-tag').press('Enter');await panel.waitFor();const pending_bytes=await saved();await page.waitForFunction(()=>!document.querySelector('#connection-user_liam'));await panel.waitFor({state:'hidden'});assert.equal(await saved(),pending_bytes)
   check('Keyboard goals activation works and derived candidate expiry clears both card and Popover without writing')
-  const logged_out=create_scenario('default');logged_out.session={account_id:null,current_user_id:null,expires_at:null};await page.evaluate(data=>localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data})),logged_out);await open('/pages/auth/login');await page.locator('.login-page input').first().fill('cimoa@gmail.com');await page.locator('.login-page input').nth(1).fill('12341234');await click('login.loginNow.click.1');await page.locator('.main-skeleton').waitFor();assert.equal(await page.locator('.tabbar').count(),1);await page.locator('.main-skeleton').waitFor({state:'hidden'})
+  const logged_out=create_scenario('default');logged_out.session={account_id:null,current_user_id:null,expires_at:null};await page.evaluate(data=>localStorage.setItem('cimoa_app_state_v2',JSON.stringify({type:'object',data})),logged_out);await open('/pages/auth/login');await page.locator('.login-page input').first().fill('cimoa@connect.edu');await page.locator('.login-page input').nth(1).fill('12341234');await click('login.loginNow.click.1');await page.locator('.main-skeleton').waitFor();assert.equal(await page.locator('.tabbar').count(),1);await page.locator('.main-skeleton').waitFor({state:'hidden'})
   for(const name of ['Discover','Events']){await page.getByRole('button',{name,exact:true}).click();await page.locator('.main-skeleton').waitFor();await page.locator('.main-skeleton').waitFor({state:'hidden'})}await page.getByRole('button',{name:'Home',exact:true}).click();await page.locator('.home-title').waitFor();assert.equal(await page.locator('.main-skeleton').count(),0);await page.reload();await page.locator('.home-title').waitFor();assert.equal(await page.locator('.main-skeleton').count(),0)
   check('Successful real fixture login grants one skeleton per Tab; Tab return and refresh grant none and retain the fixed bar')
   // The source returnHome uses root("home"), not a second Home pushed/replaced in the stack.

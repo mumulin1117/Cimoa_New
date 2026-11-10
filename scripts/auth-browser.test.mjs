@@ -79,7 +79,7 @@ try {
   }
   if (phase === 'login') {
     const loginButton = () => page.locator('[data-interaction="login.loginNow.click.1"]')
-    const fill = async (password = '12341234') => { await page.locator('.login-page input').first().fill('cimoa@gmail.com'); await page.locator('.login-page input').last().fill(password) }
+    const fill = async (password = '12341234') => { await page.locator('.login-page input').first().fill('cimoa@connect.edu'); await page.locator('.login-page input').last().fill(password) }
     await page.getByRole('checkbox').click()
     await page.getByRole('button', { name: 'Log In', exact: true }).dblclick()
     await page.locator('.login-page').waitFor()

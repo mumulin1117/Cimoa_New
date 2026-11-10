@@ -44,7 +44,7 @@ test('logout/relogin clears transient text and cannot revive a previous form und
   const f = fixture(), id = open(f.store)
   f.store.edit_introduction_form(id, { text: 'Do not reveal after logout' })
   f.store.logout(); assert.equal(f.store.introduction_forms.length, 0)
-  await f.store.login('cimoa@gmail.com', '12341234')
+  await f.store.login('cimoa@connect.edu', '12341234')
   assert.ok(f.store.introduction_context('user_zane', id).error)
   assert.equal(f.store.edit_introduction_form(id, { text: 'Should fail' }).success, false)
 })
@@ -66,7 +66,7 @@ test('actual recipient acceptance changes the sender deck/profile primary from g
   f.store.data.accounts.push({ ...clone_data(f.store.data.accounts[0]), account_id: 'account_zane_test', user_id: 'user_zane', email: 'zane@campus.test' })
   f.store.logout(); assert.ok((await f.store.login('zane@campus.test', '12341234')).success)
   const accepted = f.store.accept_request(request_id, 'zane-explicit-accept'); assert.ok(accepted.success)
-  f.store.logout(); await f.store.login('cimoa@gmail.com', '12341234')
+  f.store.logout(); await f.store.login('cimoa@connect.edu', '12341234')
   const primary = f.store.introduction_context('user_zane').primary
   assert.equal(primary.label, 'Chat'); assert.ok(!primary.disabled); assert.equal(primary.destination, `/pages/messages/chat?conversation_id=${accepted.data}`)
   assert.equal(f.store.coin_balance, 250); assert.equal(f.reload().introduction_context('user_zane').primary.destination, primary.destination)

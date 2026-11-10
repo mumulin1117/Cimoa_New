@@ -26,17 +26,32 @@
   "content": {
     "title": "Stay in the loop",
     "copy": "Get notified when someone accepts your introduction, when an Auto Match is ready, or when an event is about to start.",
-    "primary": "Enable Notifications",
-    "secondary": "Not Now"
+    "primary": "Continue",
+    "secondary": "Cancel"
   },
   "interactions": [
     "obNotif.enableNotifs.click.1",
     "obNotif.skipNotifs.click.1"
   ],
+  "conditional_interactions": [
+    {
+      "interaction_id": "obNotif.openSettings.click.1",
+      "source_screen": "Onboarding / Notifications / Pre-Permission; user-authorized real-permission failure closure",
+      "trigger": "Click or keyboard activation when actual notification status is denied",
+      "preconditions": "Valid onboarding context; no permission request or persistence operation in progress",
+      "visible_feedback": "Open Settings appears only for a real denied status; request failure remains readable",
+      "success_result": "The trusted native adapter opens this app's system settings",
+      "failure_result": "Stay on Notifications with a truthful settings error; do not change permission or onboarding state",
+      "persistence": "none",
+      "sync_scope": "Read the real notification status again on foreground return",
+      "acceptance": "With a denied OS status, open Settings once; without a host, verify an explicit error and zero writes"
+    }
+  ],
   "approved_deltas": [
     "Use the real top and bottom safe-area values instead of the prototype's fixed canvas insets.",
-    "Enable Notifications only opens the dedicated permission page; it does not claim authorization before the operating system responds.",
-    "Not Now shows the required 400-600ms custom Loading before one Store persistence transaction.",
+    "2026-10-26 user request: custom permission buttons are Continue / Cancel. Continue directly invokes the existing system notification request from this pre-prompt, without a second custom permission page or a fabricated grant.",
+    "Cancel makes no system request. It shows the required 400-600ms custom Loading before persisting only the onboarding notification choice; an actual denied/unavailable status is preserved, otherwise the choice is skipped.",
+    "A real denied notification status exposes the conditional Open Settings action; system-owned permission dialog text remains unchanged.",
     "Persistence and access failures render an explicit in-page error and do not navigate."
   ]
 }

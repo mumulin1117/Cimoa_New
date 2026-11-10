@@ -11,11 +11,11 @@ const start = async () => {
 }
 </script>
 <template>
-  <ProfileEditorFrame ref="frame" class="profile-reverify-page" title="Re-verify university" source="reverify" :busy="is_loading" loading-label="Checking verification availability…" :error="error" :access-error="access_error" @back="back" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="profile-reverify-page" title="Re-verify university" source="reverify" :busy="is_loading" loading-label="Checking verification availability…" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover">
     <view class="reverify-body">
       <text class="reverify-introduction">Needed if your university email changed, your last verification expired, or your account needs a status review.</text>
       <view class="reverify-pending"><text>While this is pending</text><text>Your existing conversations stay visible. Discover, Auto Match, and new connection requests are temporarily restricted until verification finishes.</text></view>
-      <text class="reverify-note">University verification is currently unavailable. Your saved student status will not change. Account code confirmation does not verify university enrollment.</text>
+      <text class="reverify-note">University verification is currently unavailable. Your student status will not change. Account code confirmation does not verify university enrollment.</text>
     </view>
     <template #footer><view v-if="!access_error" class="reverify-footer"><view class="editor-save" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="reverify.goVerEmail.click.1" @click="start" @keydown.enter="start">Start Re-verification</view></view></template>
   </ProfileEditorFrame>

@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-24",
+  "scope": "Auto Match terminal-result navigation recovery only; not complete-app acceptance",
+  "status": "implemented_and_regression_passed",
+  "reported_issue": "Match skipped Back and Return Home remain on the result with Navigation is already in progress feedback.",
+  "finding": "The shared callback-only navigation flag could remain locked indefinitely when the platform router continuation did not settle. Controlled lost-callback cases reproduce this failure class; the exact original simulator trigger is not independently established.",
+  "return_ownership": "Both terminal-result Back and Return Home retain the source-defined clear-stack return to /pages/home/index. They must not pop to the ended Found result.",
+  "implementation": {
+    "transactions": "Each operation owns its Promise, callbacks and watchdog. Identical in-flight intents share one platform call; competing intents remain exclusive. Stale callbacks and timers cannot settle or unlock a newer transaction.",
+    "arrival": "Recover missing callbacks only when the real page stack proves the complete destination including entity query, a new page instance and the expected stack depth. Back requires the exact prior target instance. Page mount/show and the next invocation reconcile actual arrival.",
+    "failure": "An 8-second watchdog ends a callback-less, unarrived operation as a genuine failure and releases its lock for explicit retry. It does not fake arrival, retry automatically or add an artificial navigation wait.",
+    "cleanup": "Clear transaction timers on settlement. Presentation cleanup exceptions cannot strand an already-completed navigation.",
+    "entity_replace": "Only genuinely identical normalized path-and-query locations skip replacement; a different match sharing the same page path is not treated as unchanged.",
+    "feedback": "Retain the existing branded Toast and use neutral page-opening feedback instead of exposing the internal lock diagnostic. Navigation success still requires a platform outcome or actual arrival evidence."
+  },
+  "changed_files": [
+    "src/config/navigation.js",
+    "src/utils/routeTransition.js",
+    "src/components/PageTransition.vue",
+    "src/utils/toast.js",
+    "scripts/navigation-lock.test.mjs",
+    "scripts/match-return-browser.test.mjs",
+    "scripts/lib/match-return-regression.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift",
+    "docs/ui-restoration/match-return-2026-10-24/acceptance.json"
+  ],
+  "generated_outputs": ["dist/build/h5/", "ios/cimoaNeapo/Resources/H5/", "ios/cimoaNeapo/Resources/theme.json", "ios/cimoaNeapo/Resources/build-manifest.json"],
+  "unchanged": ["two convention documents", "source HTML prototype", "page layout and visual design", "original page-transition durations", "400–600ms write waits", "600ms skeleton rule", "three-second photo carousel", "Auto Match state machine and admission/retry charging", "existing account, profile, relationships, messages and coin data", "unrelated pre-existing worktree changes"],
+  "verification": {
+    "unit": {"passed": 431, "failed": 0, "navigation_lock_cases": 16, "log": "artifacts/match-return/unit-tests.log"},
+    "browser": {"passed": true, "cases": 13, "checks": 103, "errors": 0, "warnings": 0, "report": "artifacts/match-return/browser-report.json"},
+    "wkwebview": {"passed": true, "device": "iPhone 17 Pro simulator, iOS 26.5", "test": "EventCoverTests.testMatchTerminalReturn()", "isolated_cases": 8, "checks": 59, "actual_host_business_storage_unchanged": true, "report": "artifacts/match-return/wkwebview-report.json", "log": "artifacts/match-return/xcodebuild-final.log", "result_bundle": "artifacts/match-return/MatchReturnFinal.xcresult"},
+    "coverage": ["Found skip and skip confirmation", "terminal-result Back and Return Home", "real nine-second search-to-Found follow", "stale route following", "refresh and history restoration", "rapid repeated actions", "lost callback after actual destination arrival", "failed and missing callbacks release for retry", "exact entity query and stack validation", "old callback and timer isolation", "same-admission retry does not charge again", "navigation leaves exact persisted business bytes unchanged", "subsequent Entry and Back remain usable"],
+    "required_commands": {"sequence": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"], "passed": true, "convention_warnings": 0, "h5_files_packaged": 440, "log": "artifacts/match-return/build-h5.log"},
+    "native_manifest_matches_packaged_h5": true,
+    "warnings": "No convention or browser warnings. Existing Xcode AppIntents metadata warning and simulator WebKit/Accessibility/process-suspension diagnostics remain in the native log; the focused test passed.",
+    "limits": "Normal cases run unchanged compiled H5. Lost-callback diagnostic cases wrap the actual router only in isolated test contexts and deliberately leave its returned Promise unsettled after real arrival; wrappers are restored. Browser contexts and native non-persistent data stores do not replace the real host account. This is not complete-app or visual pixel acceptance.",
+    "preview_server_started": false,
+    "test_processes_cleaned_up": true
+  }
+}

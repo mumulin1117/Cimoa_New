@@ -1,13 +1,13 @@
 {
   "phase": "event-report",
-  "result": "passed",
-  "server_pid": 74770,
-  "checks": [
-    "Event detail opens the seven source reasons in a fixed safe-area frame with explicit local-only scope",
-    "Event report persistence failure creates no report and leaves attendance unchanged",
-    "Saved event report restores after refresh, keeps attendance/count unchanged and returns to its detail owner",
-    "Event group entry carries its validated origin through refresh; Back restores the same group without a write",
-    "Invalid event identifiers expose no report controls and cannot create a forged report"
-  ],
-  "errors": []
+  "result": "failed",
+  "server_pid": 42594,
+  "checks": [],
+  "errors": [],
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 7\n\n    at file:///Users/linqian/Documents/Cimoa_New/scripts/settings-safety-browser.test.mjs:590:12",
+  "visible_failure": {
+    "route": "#/pages/events/report?event_id=event_picnic",
+    "text": "Sunset Picnic\nSU\nHOSTED BY\nHKUST Student Union\nToday · 5:30 PM\nCentral Lawn\n3 of 20 going\nView participants ›\nBring a snack, meet someone new, and watch the sunset together.\nSchedule\n5:30 PM\nMeet & mingle\nGrab a spot on the lawn and say hi\n6:00 PM\nIcebreaker games\nSmall groups of 4–5, mixed faculties\n6:35 PM\nSunset\nGolden hour over Clear Water Bay\nGood to know\n🆓\nFree to join\n🧺\nBring a picnic mat\n🗣️\nEnglish & Cantonese\n♿\nStep-free access\n🌧️\nMoves indoors if it rains\nJoin Event\nReport event\nReports are private. Reporting an event does not change your attendance.\nMisleading event information\nUnsafe activity\nHarassment or discrimination\nInappropriate content\nSpam or scam\nUnderage safety concern\nOther\nSubmit report",
+    "loading": false
+  }
 }

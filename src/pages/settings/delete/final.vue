@@ -24,7 +24,7 @@ const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 let active = true
 const account_scope = use_account_scope(store, () => { if (store.last_deleted_account?.account_id !== account_id) { cancel_loading(); password.value = ''; dialog_open.value = false; shown.value = false } })
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -60,14 +60,14 @@ const confirm_delete = async () => {
 
 <template>
   <SecondaryPageFrame ref="frame" class="event-page delete-final-page" :scroll-locked="dialog_open || is_loading">
-    <template #header><EventPageHeader title="Confirm deletion" back-interaction="delFinal.goBack.click.1" :busy="is_loading" @back="back" /><text v-if="error" class="event-page-error" role="alert">{{ error }}</text></template>
+    <template #header><EventPageHeader title="Confirm deletion" back-interaction="delFinal.goBack.click.1" :busy="is_loading" @back="back" /><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /></template>
     <view v-if="access_error" class="delete-page-body"><view class="editor-access" role="alert"><text>{{ access_error }}</text><view class="editor-outline" role="button" @click="recover">Return to account entry</view></view></view>
     <view v-else class="delete-page-body">
       <text class="delete-page-title">Delete your account permanently?</text>
       <text class="delete-page-copy">This removes your access to Cimoa and your remaining coin balance. It cannot be undone.</text>
       <text class="delete-final-reason">Optional reason: {{ reason }}</text>
       <view class="delete-password-block"><text class="delete-password-label">Confirm your password to continue</text><view class="delete-password-box"><input v-model="password" class="delete-password-input" aria-label="Password" placeholder="Password" :password="!shown" :maxlength="128" :disabled="is_loading" autocomplete="current-password" data-interaction="delFinal.onPw.change.1" /><view class="delete-password-toggle" role="button" :aria-disabled="is_loading" :aria-label="shown ? 'Hide password' : 'Show password'" @click="!is_loading && (shown = !shown)">{{ shown ? 'Hide' : 'Show' }}</view></view></view>
-      <text class="delete-page-disclosure">This removes your account and its saved private records. This action cannot be undone.</text>
+      <text class="delete-page-disclosure">This removes your account and its private data. This action cannot be undone.</text>
     </view>
     <template #footer><view v-if="!access_error" class="delete-page-footer"><view class="delete-page-action delete-page-action--secondary" role="button" :aria-disabled="is_loading" data-interaction="delFinal.keepAccount.click.1" @click="!is_loading && keep_account()">Keep My Account</view><view class="delete-page-action delete-page-action--danger" role="button" :aria-disabled="is_loading" data-interaction="delFinal.openDeleteConfirm.click.1" @click="open_confirmation">Delete Account</view></view></template>
     <template #overlays><DeleteAccountConfirmDialog :open="dialog_open" :busy="is_loading" :error="dialog_error" @close="dialog_open = false" @confirm="confirm_delete" /><ProfileActionLoading :visible="is_loading" label="Deleting account…" /></template>

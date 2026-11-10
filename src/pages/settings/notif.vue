@@ -9,6 +9,7 @@ import { relaunch_route } from '@/utils/routeTransition.js'
 import { startup_destination } from '@/utils/authNavigation.js'
 import ProfileEditorFrame from '@/components/ProfileEditorFrame.vue'
 import SettingsSwitch from '@/components/SettingsSwitch.vue'
+import { show_toast } from '@/utils/toast.js'
 
 const store = use_app_store()
 const frame = ref(null)
@@ -22,7 +23,7 @@ let generation = 0
 
 const account_scope = use_account_scope(store, () => { generation += 1; reading.value = false; cancel_loading() })
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -65,7 +66,8 @@ const persist = async action => {
   error.value = ''
   const result = await run_with_loading(action)
   if (!active || result.reason === 'cancelled') return
-  if (!result.success) error.value = result.message || 'Notification preferences could not be saved.'
+  if (!result.success) error.value = result.message || 'Notification preferences couldn’t be updated. Please try again.'
+  else show_toast('Notification preferences updated', { tone: 'success' })
 }
 const toggle_master = async () => {
   if (is_loading.value || reading.value || access_error.value) return
@@ -91,7 +93,7 @@ const open_settings = async () => { error.value = ''; try { await open_app_setti
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="settings-notifications-page" title="Notifications" source="setNotif" :busy="is_loading" loading-label="Saving notifications…" :error="error" :access-error="access_error" @back="back" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="settings-notifications-page" title="Notifications" source="setNotif" :busy="is_loading" loading-label="Updating notification preferences…" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover">
     <view v-if="system_copy" class="notification-system" :class="`notification-system--${system_status}`" role="status">
       <text>{{ reading ? 'Checking system notification permission…' : system_copy }}</text>
       <view role="button" tabindex="0" data-interaction="setNotif.openSettings.click.1" @click="open_settings" @keydown.enter="open_settings">Open Settings</view>

@@ -1,0 +1,1 @@
+import{h as e,d as l,aa as a}from"./index-JJyv0oIi.js";const i={__name:"EventActionLoading",props:{visible:Boolean,label:{type:String,default:"Updating your event…"}},setup:i=>(s,n)=>(e(),l(a,{visible:i.visible,label:i.label,scope:"event"},null,8,["visible","label"]))};export{i as _};

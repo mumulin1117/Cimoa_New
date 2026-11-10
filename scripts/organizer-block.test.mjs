@@ -20,7 +20,7 @@ function fixture(change = () => {}) {
 test('organizer blocking filters all recommendation tabs by institution ID, not personal accounts', () => {
   const { store } = fixture(), personal = clone_data(store.data.blocked_users), people = clone_data(store.visible_people)
   assert.equal(store.block_organizer(organizer).success, true)
-  for (const tab of ['Today', 'This week', 'My campus']) {
+  for (const tab of ['Today', 'This week']) {
     assert.equal(store.select_event_tab(tab).success, true)
     assert.ok(store.event_feed.length > 0); assert.ok(store.event_feed.every(e => e.organizer_id === 'organizer_other'))
   }

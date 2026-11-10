@@ -1,0 +1,81 @@
+{
+  "task": "Self-contained cimoaNeapo iOS project delivery",
+  "date": "2026-10-24",
+  "status": "independent_release_archive_verified_without_distribution_signing",
+  "source_changes": [
+    "ios/cimoaNeapo/cimoaNeapo.xcodeproj/project.pbxproj",
+    "ios/cimoaNeapo/README.md",
+    "scripts/archive-ios.mjs",
+    "scripts/lib/iosStandalone.mjs",
+    "scripts/ios-standalone.test.mjs",
+    "docs/ios-standalone-2026-10-24.json"
+  ],
+  "outputs": {
+    "project_folder": "artifacts/cimoaNeapo-standalone",
+    "xcode_project": "artifacts/cimoaNeapo-standalone/cimoaNeapo.xcodeproj",
+    "zip": "artifacts/cimoaNeapo-ios.zip",
+    "unsigned_device_archive": "artifacts/ios-standalone-2026-10-24/cimoaNeapo-unsigned.xcarchive",
+    "archive_report": "artifacts/ios-standalone-2026-10-24/relocated-archive-report.json",
+    "archive_log": "artifacts/ios-standalone-2026-10-24/archive.log",
+    "unit_test_log": "artifacts/ios-standalone-2026-10-24/unit-tests.log",
+    "h5_build_log": "artifacts/ios-standalone-2026-10-24/build-h5.log"
+  },
+  "implementation": {
+    "sources_resources_and_config_groups_match_disk": true,
+    "h5_folder_is_physical_and_preserves_nested_web_paths": true,
+    "prototype_html_not_loaded_or_packaged": true,
+    "original_repository_test_target_preserved": true,
+    "repository_dependent_tests_excluded_from_export_only": true,
+    "existing_export_folder_overwrite_refused": true,
+    "original_signing_configuration_not_changed_by_this_task": true,
+    "development_and_interaction_conventions_not_changed_by_this_task": true,
+    "unrelated_existing_worktree_and_staged_changes_preserved": true
+  },
+  "checks": {
+    "mandatory_order": [
+      { "command": "corepack pnpm check:conventions", "passed": true, "warnings": 0 },
+      { "command": "git diff --check", "passed": true },
+      { "command": "corepack pnpm build:h5", "passed": true }
+    ],
+    "unit_tests": { "passed": 448, "failed": 0, "skipped": 0, "includes_standalone_tests": 9 },
+    "export_command": { "command": "corepack pnpm archive:ios", "passed": true },
+    "zip": {
+      "entries": 493,
+      "physical_files": 461,
+      "production_targets": 1,
+      "project_file_references_inside_export": 10,
+      "h5_files_and_sha256_verified": 441,
+      "symbolic_links": 0,
+      "external_or_traversal_paths": 0,
+      "tests_build_derived_data_xcuserdata_node_modules_entries": 0
+    },
+    "relocated_archive": {
+      "passed": true,
+      "copied_outside_original_repository": true,
+      "configuration": "Release",
+      "destination": "generic/platform=iOS",
+      "architecture": "arm64",
+      "h5_files_and_sha256_verified": 441,
+      "theme_matches_export": true,
+      "compiled_app_icon_catalog_present": true,
+      "compiled_launch_storyboard_present": true,
+      "test_bundle_in_app": false,
+      "signing_allowed": false,
+      "warning": "Xcode skipped AppIntents metadata extraction because this app does not depend on AppIntents.framework; archive succeeded."
+    }
+  },
+  "cleanup": {
+    "task_temporary_export_archive_and_zip_audit_directories_removed": true,
+    "task_background_processes_remaining": 0,
+    "unrelated_project_processes_and_existing_build_cache_untouched": true,
+    "git_staging_commit_or_push_performed": false
+  },
+  "release_boundaries": [
+    "The independent folder contains all custom application build inputs; Apple platform SDKs and Xcode remain required.",
+    "Xcode internal file registration is retained; it does not link to files outside the delivered directory.",
+    "Bundle identifier remains the previously authorized development value com.cimoa.neapo.dev.",
+    "Formal Bundle ID, Apple Developer Team and distribution signing must be configured before exporting or uploading an App Store IPA.",
+    "No distributable IPA was generated, no upload was performed and no App Store review acceptance is claimed.",
+    "Existing product and production-service acceptance boundaries remain unchanged."
+  ]
+}

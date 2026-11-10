@@ -1,5 +1,5 @@
 export function discover_destination(store, kind, id) {
-  if (store.hydration_status !== 'ready') throw new Error('Saved data is unavailable. Please retry loading it.')
+  if (store.hydration_status !== 'ready') throw new Error('Your information is unavailable. Please try again.')
   if (!store.session.is_authenticated) throw new Error('Your session has expired. Please sign in again.')
   if (kind === 'profile') return '/pages/profile/index'
   if (kind === 'preferences') return '/pages/auto-match/preferences'
@@ -29,6 +29,6 @@ export function discover_destination(store, kind, id) {
 export const DISCOVER_DEFERRED_ROUTES = Object.freeze([
 ])
 export function require_discover_destination_ready(url) {
-  if (DISCOVER_DEFERRED_ROUTES.includes(url.split('?')[0])) throw new Error('This destination has not been restored yet. Your requests and coins have not changed.')
+  if (DISCOVER_DEFERRED_ROUTES.includes(url.split('?')[0])) throw new Error('This page is currently unavailable. Your requests and coins have not changed.')
   return url
 }

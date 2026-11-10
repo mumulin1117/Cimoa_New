@@ -1,0 +1,31 @@
+{
+  "task": "Discover staggered deck and first-round icebreaker continuity",
+  "date": "2026-11-02",
+  "status": "in_progress",
+  "visual_acceptance": "pending",
+  "source": "CIRCA All Screens (interactive).html",
+  "authorization": "User approved a scoped extension of content-motion to select/text/voice only; no photo-to-avatar relay.",
+  "preserved": ["real routes and return ownership", "240ms body transition", "180ms return", "one-third swipe threshold", "260ms swipe exit", "300ms rebound", "600ms first-entry skeleton", "10-coin introductions", "400–600ms write loading", "Voice preview before payment", "current Discover entity on warm return"],
+  "changes": [
+    "Straight front card, staggered rear cards constrained by measured available content bounds.",
+    "Rear translation, angle, scale and theme shadow interpolate with the same drag progress.",
+    "Send touch feedback runs concurrently with real navigation, not with a new delay.",
+    "Stable icebreaker headers/footers, body-only cRise, one-shot person/question theme edge cue.",
+    "Identity-only presentation receipts expire, match exact account/entity/question/target and never persist business data."
+  ],
+  "interaction_ids": ["photo.browse.drag.1", "photo.sayHi.click.1", "ibSelect.goBack.click.1", "ibSelect.q.pick.click.1", "ibSelect.pickText.click.1", "ibSelect.pickVoice.click.1", "ibSelect.answerGo.click.1"],
+  "verification": {
+    "unit": { "status": "passed", "tests": 116, "command": "node --test scripts/discover-fan-motion.test.mjs scripts/discover-swipe.test.mjs scripts/icebreaker-continuity.test.mjs scripts/discover-entrance.test.mjs scripts/discover-cursor.test.mjs scripts/discover-request.test.mjs scripts/introduction-forms.test.mjs scripts/introduction-payment.test.mjs scripts/touch-gestures.test.mjs scripts/touch-policy.test.mjs scripts/touch-write-lifecycle.test.mjs scripts/navigation-lock.test.mjs" },
+    "browser": { "status": "passed", "cases": 5, "assertions": 164, "screenshots": 25, "business_writes": 0, "microphone_requests": 0, "page_errors": 0, "unexpected_warnings": 0, "expected_diagnostic_warnings": 18, "warning_reason": "Existing uni statistics fetches were blocked by the isolated offline runner.", "report": "../artifacts/discover-flow-motion-2026-11-02/browser-report.json", "existing_entrance_regression": "7 isolated cases passed" },
+    "wkwebview": { "status": "partial", "debug_build": "passed", "install": "passed: upgrade without uninstall or data deletion", "launch": "passed; final package shows Home", "device": "iPhone 17 Pro", "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D", "bundle_id": "com.cimoa.neapo.dev", "screenshot": "../artifacts/discover-flow-motion-2026-11-02/wkwebview-final-home.png", "earlier_deck_observation": "../artifacts/discover-flow-motion-2026-11-02/wkwebview-current-install.png (earlier build before the reduced-motion edge-light fix; not final-package flow acceptance)", "remaining": "Physical/native touch flow, keyboard and actual background cancellation remain unverified; GUI control could not reliably bind the intended Simulator window." },
+    "check_conventions": "passed; no warnings",
+    "diff_check": "passed",
+    "build_h5": "passed; resources copied into the existing iOS host",
+    "resource_integrity": { "dist_index_sha256": "bc69886671b4f1db6e68c5c61bc71d3b58fff69308500cc5bec69d61e622b8de", "dist_files": 442, "host_resource_mismatches": 0, "built_app_resource_mismatches": 0 },
+    "processes": "No preview server started; isolated browser contexts closed."
+  },
+  "changed_files": [
+    "DEVELOPMENT_CONVENTIONS.md", "INTERACTION_CONVENTIONS.md", "src/App.vue", "src/config/discoverDeck.js", "src/config/theme.json", "src/utils/discoverSwipe.js", "src/components/DiscoverProfileCard.vue", "src/pages/discover/index.vue", "src/pages/discover/icebreaker/select.vue", "src/pages/discover/icebreaker/text.vue", "src/pages/discover/icebreaker/voice.vue", "src/pages/discover/icebreaker/icebreaker.css", "src/utils/icebreakerMotion.js", "src/composables/useIcebreakerMotion.js", "scripts/discover-fan-motion.test.mjs", "scripts/discover-swipe.test.mjs", "scripts/icebreaker-continuity.test.mjs", "scripts/touch-gestures.test.mjs", "scripts/discover-flow-motion-browser.test.mjs", "docs/discover-flow-motion-2026-11-02.json", "dist/build/h5 (generated)", "ios/cimoaNeapo/Resources/H5 (generated)"
+  ],
+  "limitations": ["Do not infer whole-project or pixel-level acceptance from build success.", "Native verification used the existing iPhone 17 Pro installation without deleting account data.", "Unrelated pre-existing tracked, untracked and staged changes were preserved; this task did not stage, commit or push them."]
+}

@@ -1,11 +1,13 @@
 <script setup>
-import { computed, nextTick, ref, watch, onUnmounted } from 'vue'
+import { computed, ref, watch, onUnmounted } from 'vue'
 import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store, make_operation_id } from '@/stores/store.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import { use_account_scope } from '@/composables/useAccountScope.js'
 import { use_event_media } from '@/composables/useEventMedia.js'
 import { use_visual_viewport } from '@/composables/useEventViewport.js'
+import { use_chat_scroll } from '@/composables/useChatScroll.js'
+import { use_avatar_relay } from '@/composables/useAvatarRelay.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import SourceIcon from '@/components/SourceIcon.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
@@ -16,6 +18,8 @@ import EventActionLoading from '@/components/EventActionLoading.vue'
 import SafetyActionsSheet from '@/components/SafetyActionsSheet.vue'
 import ConnectionIcon from '@/components/ConnectionIcon.vue'
 import ChatImageConfirmDialog from '@/components/ChatImageConfirmDialog.vue'
+import ChatActionLoading from '@/components/ChatActionLoading.vue'
+import ChatVoiceConfirmDialog from '@/components/ChatVoiceConfirmDialog.vue'
 
 const store = use_app_store()
 const { height: viewport_height, keyboard_open } = use_visual_viewport()
@@ -23,45 +27,47 @@ const frame = ref(null)
 const conversation_id = ref('')
 const draft = ref('')
 const sheet = ref('')
-const scroll_target = ref('')
 const error = ref('')
 const active = ref(true)
 const was_available = ref(false)
 const photo_id = ref('')
+const request_kind = ref('')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
-const { draft: media, recording, busy: media_busy, seconds, clear: clear_media, photo, start: start_recording, stop: stop_recording } = use_event_media(error)
-const account_scope = use_account_scope(store, () => { cancel_loading(); clear_media(); draft.value = ''; sheet.value = ''; photo_id.value = '' })
+const { is_loading: is_reading, run_with_loading: read_with_loading, cancel_loading: cancel_read } = use_write_loading()
+const sending = computed(() => is_loading.value && request_kind.value === 'send')
+const { draft: media, recording, busy: media_busy, processing: media_processing, seconds, clear: clear_media, photo, start: start_recording, stop: stop_recording } = use_event_media(error)
+const account_scope = use_account_scope(store, () => { cancel_loading(); cancel_read(); clear_media(); draft.value = ''; sheet.value = ''; photo_id.value = '' })
 
 const conversation = computed(() => account_scope.is_current() ? store.direct_conversation(conversation_id.value) : null)
 const participant = computed(() => conversation.value?.participant || null)
+const chat_avatar = ref(null)
 const participant_first_name = computed(() => participant.value?.user_name?.trim().split(/\s+/)[0] || 'student')
 const muted = computed(() => participant.value ? store.is_direct_muted(participant.value.user_id) : false)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || !account_scope.is_current()
     ? 'Your session has expired. Please sign in again.'
     : !conversation.value
       ? 'This conversation is unavailable. It may have ended or the account may be blocked.'
       : '')
 const locked = computed(() => !!sheet.value || is_loading.value || media_busy.value)
+const avatar_transition = use_avatar_relay({
+  element: chat_avatar,
+  identity: () => ({ user_id: participant.value?.user_id, conversation_id: conversation_id.value, avatar_src: participant.value?.avatar_url, auth_context: store.auth_context }),
+  available: () => active.value && account_scope.is_current() && !!participant.value && !access_error.value,
+})
 const photo_src = computed(() => conversation.value?.messages.find(row => row.message_id === photo_id.value && row.kind === 'image')?.media?.media_url || '')
-watch(access_error, value => { if (value) { if (!(sheet.value === 'block' && is_loading.value)) cancel_loading(); clear_media(); sheet.value = ''; photo_id.value = '' } })
+watch(access_error, value => { if (value) { if (!(sheet.value === 'block' && is_loading.value)) cancel_loading(); cancel_read(); clear_media(); sheet.value = ''; photo_id.value = '' } })
 
 onLoad(options => {
   conversation_id.value = String(options?.conversation_id || '')
   was_available.value = !!store.direct_conversation(conversation_id.value)
 })
-const leave = () => { active.value = false; sheet.value = ''; cancel_loading(); clear_media() }
+const leave = () => { active.value = false; sheet.value = ''; cancel_loading(); cancel_read(); clear_media() }
 onHide(leave)
 onUnmounted(leave)
 
-const scroll_last = async () => {
-  scroll_target.value = ''
-  await nextTick()
-  if (active.value && conversation.value) scroll_target.value = conversation.value.messages.at(-1)?.message_id || ''
-}
-watch(() => conversation.value?.messages.at(-1)?.message_id, scroll_last, { immediate: true })
-watch(viewport_height, scroll_last)
+const { scroll_target, on_scroll, follow_last: scroll_last } = use_chat_scroll({ frame, last_id: () => conversation.value?.messages.at(-1)?.message_id, target_id: () => `chat-tail-${conversation_id.value}`, available: () => active.value && !access_error.value, viewport_height })
 onShow(async () => {
   active.value = true
   error.value = ''
@@ -72,14 +78,14 @@ onShow(async () => {
   }
   const row = store.current_conversations.find(item => item.conversation_id === conversation_id.value)
   if (row?.unread_count) {
-    const result = await run_with_loading(() => store.mark_read(conversation_id.value))
+    const result = await read_with_loading(scope => account_scope.is_current() && scope.is_current() ? store.mark_read(conversation_id.value) : { success: false, reason: 'cancelled' })
     if (active.value && !result.success && result.reason !== 'cancelled') error.value = result.message
   }
   scroll_last()
 })
 
 const close_sheet = () => { if (!is_loading.value) { sheet.value = ''; error.value = ''; clear_media() } }
-const back = async () => { if (locked.value) return; try { await frame.value.navigate_back('/pages/home/index') } catch (cause) { error.value = cause.message } }
+const back = async () => { if (locked.value) return; avatar_transition.prepare_back(); try { await frame.value.navigate_back('/pages/home/index') } catch (cause) { avatar_transition.cancel(); error.value = cause.message } }
 const open_profile = async () => {
   if (is_loading.value || media_busy.value || access_error.value) return
   sheet.value = ''
@@ -89,6 +95,7 @@ const start_call = async () => {
   if (locked.value || access_error.value) return
   if (conversation.value.call_blocker) { error.value = conversation.value.call_blocker; return }
   error.value = ''
+  request_kind.value = 'call'
   const result = await run_with_loading(() => store.start_waiting_call(conversation_id.value, make_operation_id()))
   if (!active.value || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
@@ -102,6 +109,7 @@ const open_report = async () => {
 const toggle_mute = async () => {
   if (is_loading.value || access_error.value) return
   error.value = ''
+  request_kind.value = 'mute'
   const result = await run_with_loading(() => store.set_direct_muted(participant.value.user_id, !muted.value))
   if (!active.value || result.reason === 'cancelled') return
   if (!result.success) error.value = result.message
@@ -109,6 +117,7 @@ const toggle_mute = async () => {
 const confirm_block = async () => {
   if (is_loading.value || access_error.value) return
   error.value = ''
+  request_kind.value = 'block'
   const result = await run_with_loading(() => store.block_user(participant.value.user_id))
   if (!active.value || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
@@ -121,11 +130,12 @@ const send = async (with_media = false) => {
   const body = with_media ? '' : draft.value
   error.value = store.direct_message_error(conversation_id.value, body, payload)
   if (error.value) return
+  request_kind.value = 'send'
   const result = await run_with_loading(scope => store.send_direct_message(conversation_id.value, body, payload, make_operation_id('direct_send'), scope))
   if (!active.value || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
   if (with_media) { sheet.value = ''; clear_media() } else draft.value = ''
-  await scroll_last()
+  await scroll_last(true)
 }
 const pick_photo = async () => {
   if (locked.value || access_error.value) return
@@ -135,16 +145,16 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
 </script>
 
 <template>
-  <SecondaryPageFrame ref="frame" class="direct-chat-page" :class="{ 'direct-chat-page--keyboard': keyboard_open }" :style="{ height: viewport_height, '--app-safe-bottom': keyboard_open ? '0px' : undefined }" :scroll-locked="locked" :scroll-into-view="scroll_target">
+  <SecondaryPageFrame ref="frame" class="direct-chat-page" :class="{ 'direct-chat-page--keyboard': keyboard_open }" :style="{ height: viewport_height, '--app-safe-bottom': keyboard_open ? '0px' : undefined }" :scroll-locked="!!sheet" :scroll-into-view="scroll_target" @scroll="on_scroll" @resize="scroll_last()">
     <template #header>
       <view class="chat-header">
         <view class="chat-round" role="button" tabindex="0" aria-label="Back" data-interaction="chat.goBack.click.1" @click="back" @keydown.enter="back"><view class="chat-icon"><SourceIcon name="back" /></view></view>
         <template v-if="participant">
           <view class="chat-person" role="button" tabindex="0" :aria-label="`View ${participant.user_name} profile`" data-interaction="chat.viewProfile.click.1" @click="open_profile" @keydown.enter="open_profile">
-            <view class="chat-avatar"><UserAvatar :src="participant.avatar_url" :name="participant.user_name" /><view class="chat-online-dot" /></view>
+            <view ref="chat_avatar" class="chat-avatar"><UserAvatar :src="participant.avatar_url" :name="participant.user_name" /><view class="chat-online-dot" /></view>
             <view class="chat-heading"><text>{{ participant_first_name }}</text><view class="chat-connection-status"><view class="chat-status-dot" /><text>Connected{{ muted ? ' · Muted' : '' }}</text></view></view>
           </view>
-          <view class="chat-round chat-call" role="button" tabindex="0" aria-label="Start video call" :aria-disabled="locked || !conversation.can_call" data-interaction="chat.startCall.click.1" @click="start_call" @keydown.enter="start_call"><view class="chat-icon"><ConnectionIcon name="video" /></view></view>
+          <view class="chat-round chat-call" role="button" tabindex="0" aria-label="Start video call" :aria-disabled="locked || !conversation.can_call" :aria-busy="is_loading && request_kind === 'call'" data-interaction="chat.startCall.click.1" @click="start_call" @keydown.enter="start_call"><ChatActionLoading :visible="is_loading && request_kind === 'call'" label="Starting call" /><view v-show="!is_loading || request_kind !== 'call'" class="chat-icon"><ConnectionIcon name="video" /></view></view>
           <view class="chat-round" role="button" tabindex="0" aria-label="Safety actions" data-interaction="chat.openSafety.click.1" @click="!locked && (sheet = 'safety'); error = ''" @keydown.enter="!locked && (sheet = 'safety'); error = ''"><view class="chat-icon"><ConnectionIcon name="more" /></view></view>
         </template>
       </view>
@@ -152,6 +162,7 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
 
     <view v-if="access_error" class="chat-state" role="alert">{{ access_error }}</view>
     <view v-else class="chat-messages">
+      <ChatActionLoading class="chat-read-progress" :visible="is_reading" label="Updating read status" />
       <view v-if="!conversation.messages.length" class="chat-state" role="status">No messages yet. Start the conversation when you’re ready.</view>
       <template v-for="(message,index) in conversation.messages" :key="message.message_id">
       <text v-if="!index || message.day_label !== conversation.messages[index - 1].day_label" class="chat-day">{{ message.day_label }}, {{ message.time_label }}</text>
@@ -159,46 +170,44 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
         <view v-if="!message.mine" class="chat-message-avatar"><UserAvatar :src="participant.avatar_url" :name="participant.user_name" /></view>
         <view class="chat-message-main">
           <view class="chat-bubble">
-            <text v-if="message.kind === 'text'">{{ message.body }}</text>
+            <text v-if="message.kind === 'text'" data-i18n="verbatim">{{ message.body }}</text>
             <view v-else-if="message.kind === 'image'" class="chat-image" role="button" tabindex="0" aria-label="View shared photo" data-interaction="chat.image.open.click.1" @click="!locked && (photo_id = message.message_id, sheet = 'image')" @keydown.enter="!locked && (photo_id = message.message_id, sheet = 'image')"><ProfilePhoto :src="message.media?.media_url || ''" name="Shared photo" portrait @ready="message.message_id === conversation.messages.at(-1)?.message_id && scroll_last()" /></view>
-            <EventAudio v-else :src="message.media?.media_url || ''" :duration="message.media?.duration_ms" interaction="chat.media.play.click.1" />
+            <EventAudio v-else :src="message.media?.media_url || ''" :duration="message.media?.duration_ms" :disabled="sheet === 'voice'" interaction="chat.media.play.click.1" />
           </view>
         </view>
       </view>
       </template>
+      <view :id="`chat-tail-${conversation_id}`" class="chat-tail" aria-hidden="true" />
     </view>
 
     <template #footer>
-      <text v-if="error && !sheet" class="chat-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error && !sheet" :message="error" @dismiss="error = String()" />
       <view v-if="!access_error" class="chat-composer">
         <view class="chat-round chat-photo-button" role="button" tabindex="0" aria-label="Send photo" :aria-disabled="locked" data-interaction="chat.sendPhoto.click.1" @click="pick_photo" @keydown.enter="pick_photo"><view class="chat-icon"><ConnectionIcon name="photo" /></view></view>
         <view class="chat-input"><input v-model="draft" :disabled="locked" :maxlength="2000" :placeholder="`Message ${participant_first_name}`" aria-label="Message" data-interaction="chat.onDraft.change.1" @confirm="send(false)" /><view class="chat-mic" role="button" tabindex="0" aria-label="Record voice message" :aria-disabled="locked" data-interaction="chat.sendVoiceMsg.click.1" @click="open_voice" @keydown.enter="open_voice"><view><ConnectionIcon name="mic" /></view></view></view>
-        <view class="chat-send" role="button" tabindex="0" aria-label="Send message" :aria-disabled="locked || !draft.trim()" data-interaction="chat.send.click.1" @click="send(false)" @keydown.enter="send(false)"><view class="chat-icon"><ConnectionIcon name="send" /></view></view>
+        <view class="chat-send" role="button" tabindex="0" aria-label="Send message" :aria-disabled="locked || !draft.trim()" :aria-busy="sending" data-interaction="chat.send.click.1" @click="send(false)" @keydown.enter="send(false)"><ChatActionLoading :visible="sending && !sheet" label="Sending message" /><view v-show="!sending || !!sheet" class="chat-icon"><ConnectionIcon name="send" /></view></view>
       </view>
     </template>
 
     <template #overlays>
       <ChatImageConfirmDialog :open="sheet === 'image' && !!photo_src" :src="photo_src" @close="close_sheet" />
       <SafetyActionsSheet :open="['safety', 'block'].includes(sheet)" :mode="sheet === 'block' ? 'block' : 'menu'" :user-name="participant?.user_name" :muted="muted" :busy="is_loading" :error="error" @close="close_sheet" @view-profile="open_profile" @toggle-mute="toggle_mute" @report="open_report" @open-block="sheet = 'block'; error = ''" @confirm-block="confirm_block" />
-      <EventConfirmDialog :open="['media', 'voice'].includes(sheet)" :busy="is_loading" :label="sheet === 'voice' ? 'Voice message' : 'Send photo?'" close-interaction="chat.media.close.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="close_sheet">
-        <text class="event-dialog-title">{{ sheet === 'voice' ? 'Voice message' : 'Send photo?' }}</text>
+      <ChatVoiceConfirmDialog :open="sheet === 'voice'" :participant="participant" :recording="recording" :busy="media_busy" :processing="media_processing" :sending="sending" :seconds="seconds" :media="media" :error="error" @close="close_sheet" @record="recording ? stop_recording() : start_recording()" @send="send(true)" />
+      <EventConfirmDialog :open="sheet === 'media'" :busy="is_loading" label="Send photo?" close-interaction="chat.media.close.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="close_sheet">
+        <text class="event-dialog-title">Send photo?</text>
         <view v-if="media?.kind === 'image'" class="chat-media-preview"><ProfilePhoto :src="media.url" name="Photo preview" portrait /></view>
-        <template v-if="sheet === 'voice'">
-          <text class="event-dialog-copy">{{ recording ? `Recording · ${seconds}s / 120s` : 'Record up to two minutes. Review it before sending.' }}</text>
-          <EventAudio v-if="media?.kind === 'audio'" :key="media.url" :src="media.url" :duration="media.duration_ms" interaction="chat.media.preview.click.1" />
-          <view class="event-dialog-secondary" role="button" tabindex="0" :aria-disabled="media_busy || is_loading" data-interaction="chat.media.record.click.1" @click="!is_loading && (recording ? stop_recording() : start_recording())" @keydown.enter="!is_loading && (recording ? stop_recording() : start_recording())">{{ media_busy ? 'Opening microphone…' : recording ? 'Stop recording' : media ? 'Record again' : 'Start recording' }}</view>
-        </template>
         <text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text>
-        <view v-if="media" class="event-dialog-primary" role="button" tabindex="0" :aria-disabled="is_loading || media_busy" data-interaction="chat.media.send.click.1" @click="send(true)" @keydown.enter="send(true)">Send {{ media.kind === 'image' ? 'photo' : 'voice message' }}</view>
+        <view v-if="media" class="event-dialog-primary chat-media-send" role="button" tabindex="0" :aria-disabled="is_loading || media_busy" :aria-busy="sending" data-interaction="chat.media.send.click.1" @click="send(true)" @keydown.enter="send(true)"><ChatActionLoading :visible="sending" :label="media.kind === 'image' ? 'Sending photo' : 'Sending voice message'" /><text>Send {{ media.kind === 'image' ? 'photo' : 'voice message' }}</text></view>
         <view class="event-dialog-secondary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="chat.media.close.click.2" @click="close_sheet" @keydown.enter="close_sheet">Cancel</view>
       </EventConfirmDialog>
-      <EventActionLoading :visible="is_loading" :label="sheet === 'block' ? 'Blocking account…' : sheet === 'safety' ? 'Saving notification preference…' : 'Saving message…'" />
+      <EventActionLoading :visible="is_loading && ['block', 'mute'].includes(request_kind)" :label="request_kind === 'block' ? 'Blocking account…' : 'Updating notification preferences…'" />
     </template>
   </SecondaryPageFrame>
 </template>
 
 <style scoped>
 .direct-chat-page { background: var(--cimoa-page-gradient); }
+.chat-tail { height: 1.908rpx; }
 .chat-header {
   display: flex;
   flex: none;
@@ -270,7 +279,9 @@ const open_voice = () => { if (!locked.value && !access_error.value) { error.val
 }
 .chat-status-dot { width: 17.176rpx; height: 17.176rpx; border-radius: 50%; background: var(--cimoa-status-connection-indicator); }
 .chat-call .chat-icon { width: 64.885rpx; height: 64.885rpx; }
-.chat-messages { display: flex; flex-direction: column; gap: 34.351rpx; padding: 30.534rpx 34.351rpx; }
+.chat-messages { position: relative; display: flex; flex-direction: column; gap: 34.351rpx; padding: 30.534rpx 34.351rpx; }
+.chat-read-progress { position: absolute; top: 7.634rpx; right: 34.351rpx; --chat-loading-size: 24.809rpx; color: var(--cimoa-text-secondary); }
+.chat-media-send { display: flex; align-items: center; justify-content: center; gap: 15.267rpx; }
 .chat-day { color: var(--cimoa-text-connection-muted); font-size: 27.672rpx; text-align: center; }
 .chat-message { display: flex; align-items: center; gap: 19.084rpx; justify-content: flex-start; }
 .chat-message--mine { justify-content: flex-end; }

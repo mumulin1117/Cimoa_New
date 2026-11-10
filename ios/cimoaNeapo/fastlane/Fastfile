@@ -1,0 +1,251 @@
+require "xcodeproj"
+
+default_platform(:ios)
+
+username = ENV["FASTLANE_USER"].to_s.strip
+asc_key_id = ENV["ASC_KEY_ID"].to_s.strip
+asc_issuer_id = ENV["ASC_ISSUER_ID"].to_s.strip
+asc_key_content = ENV["ASC_KEY_CONTENT"]
+asc_key_path = ENV["ASC_KEY_PATH"].to_s.strip
+asc_key_path = "AuthKey_#{asc_key_id}.p8" if asc_key_path.empty?
+
+bundle_id = ENV["BUNDLE_ID"].to_s.strip
+export_method = ENV["EXPORT_METHOD"].to_s.strip
+match_type = {
+  "ad-hoc" => "adhoc",
+  "app-store" => "appstore"
+}[export_method]
+
+app_name = ENV["APP_NAME"].to_s.strip
+pgy_api_key = ENV["pgy_api_key"].to_s.strip
+project_root = File.expand_path("..", __dir__)
+
+platform :ios do
+  before_all do
+    setup_circle_ci if is_ci
+  end
+
+  lane :release do
+    validate_release_configuration
+    authenticate_app_store_connect
+
+    UI.important "export_method = #{export_method}"
+    UI.important "match_type = #{match_type}"
+
+    match(
+      git_branch: username,
+      type: match_type,
+      app_identifier: [bundle_id],
+      force_for_new_devices: match_type == "adhoc",
+      readonly: false
+    )
+
+    team_id = ENV["sigh_#{bundle_id}_#{match_type}_team-id"].to_s.strip
+    profile_name = ENV["sigh_#{bundle_id}_#{match_type}_profile-name"].to_s.strip
+    profiles = lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+
+    UI.user_error!("match did not provide a development team ID") if team_id.empty?
+    UI.user_error!("match did not provide a provisioning profile name") if profile_name.empty?
+    unless profiles.is_a?(Hash) && profiles[bundle_id].to_s == profile_name
+      UI.user_error!("match did not provide the expected provisioning profile mapping for #{bundle_id}")
+    end
+
+    project_path = ENV["XCODE_PROJECT_PATH"].to_s.strip
+    project_path = File.expand_path(project_path, project_root) unless project_path.empty?
+    if project_path.empty?
+      ignored_path_segments = ["/Pods/", "/Carthage/", "/vendor/", "/build/", "/DerivedData/", "/.build/"]
+      project_paths = Dir[File.join(project_root, "**", "*.xcodeproj")].select do |path|
+        File.directory?(path) && ignored_path_segments.none? { |segment| path.include?(segment) }
+      end.sort
+      app_project_paths = project_paths.select do |candidate|
+        begin
+          Xcodeproj::Project.open(candidate).targets.any? do |target|
+            target.product_type == "com.apple.product-type.application"
+          end
+        rescue StandardError => error
+          UI.verbose "Skipping unreadable Xcode project #{candidate}: #{error.message}"
+          false
+        end
+      end
+
+      if app_project_paths.one?
+        project_path = app_project_paths.first
+      elsif app_project_paths.empty?
+        UI.user_error!("No Xcode project containing an application target was found under #{project_root}")
+      else
+        relative_paths = app_project_paths.map { |path| path.delete_prefix("#{project_root}/") }
+        UI.user_error!("Multiple application projects found: #{relative_paths.join(', ')}. Set XCODE_PROJECT_PATH.")
+      end
+    end
+    unless File.directory?(project_path)
+      UI.user_error!("Set XCODE_PROJECT_PATH to the app's .xcodeproj (repository root: #{project_root})")
+    end
+
+    project = Xcodeproj::Project.open(project_path)
+    application_targets = project.targets.select do |target|
+      target.product_type == "com.apple.product-type.application"
+    end
+    app_target = ENV["APP_TARGET"].to_s.strip
+    app_target = application_targets.first.name if app_target.empty? && application_targets.one?
+    application_target_names = application_targets.map(&:name)
+    unless application_target_names.include?(app_target)
+      UI.user_error!("Set APP_TARGET to one of: #{application_target_names.join(', ')}")
+    end
+
+    workspace_path = ENV["XCODE_WORKSPACE_PATH"].to_s.strip
+    workspace_path = File.expand_path(workspace_path, project_root) unless workspace_path.empty?
+    if workspace_path.empty?
+      workspace_paths = Dir[File.join(File.dirname(project_path), "*.xcworkspace")].select do |path|
+        File.directory?(path)
+      end.sort
+      workspace_path = workspace_paths.first if workspace_paths.one?
+      if workspace_paths.length > 1
+        relative_paths = workspace_paths.map { |path| path.delete_prefix("#{project_root}/") }
+        UI.user_error!("Multiple Xcode workspaces found: #{relative_paths.join(', ')}. Set XCODE_WORKSPACE_PATH.")
+      end
+    elsif !File.directory?(workspace_path)
+      UI.user_error!("XCODE_WORKSPACE_PATH does not point to an .xcworkspace: #{workspace_path}")
+    end
+
+    scheme = ENV["XCODE_SCHEME"].to_s.strip
+    scheme_containers = [project_path]
+    scheme_containers << workspace_path unless workspace_path.empty?
+    shared_scheme_names = scheme_containers.flat_map do |container|
+      Dir[File.join(container, "xcshareddata", "xcschemes", "*.xcscheme")]
+    end.map { |path| File.basename(path, ".xcscheme") }.uniq.sort
+    scheme = app_target if scheme.empty? && shared_scheme_names.include?(app_target)
+    scheme = shared_scheme_names.first if scheme.empty? && shared_scheme_names.one?
+    unless shared_scheme_names.include?(scheme)
+      UI.user_error!("Set XCODE_SCHEME to one of the shared schemes: #{shared_scheme_names.join(', ')}")
+    end
+
+    UI.important "Signing project = #{project_path}"
+    UI.important "Signing target = #{app_target}"
+    UI.important "Build scheme = #{scheme}"
+    UI.important "Build workspace = #{workspace_path}" unless workspace_path.empty?
+
+    update_code_signing_settings(
+      path: project_path,
+      use_automatic_signing: false,
+      team_id: team_id,
+      targets: [app_target],
+      build_configurations: ["Release"],
+      code_sign_identity: "Apple Distribution",
+      profile_name: profile_name,
+      bundle_identifier: bundle_id
+    )
+
+    build_container = workspace_path.empty? ? { project: project_path } : { workspace: workspace_path }
+    gym(
+      **build_container,
+      scheme: scheme,
+      configuration: "Release",
+      export_method: export_method,
+      export_options: {
+        signingStyle: "manual",
+        teamID: team_id,
+        provisioningProfiles: profiles
+      },
+      output_directory: File.join(project_root, "build"),
+      buildlog_path: File.join(project_root, "build"),
+      clean: true,
+      silent: true
+    )
+
+    deliver(
+      skip_metadata: true,
+      skip_screenshots: true,
+      submit_for_review: false,
+      run_precheck_before_submit: false
+    ) if export_method == "app-store"
+
+    pgyer(api_key: pgy_api_key) if export_method == "ad-hoc"
+  end
+
+  # Usage: bundle exec fastlane ios create_app name:"Pacel"
+  desc "Create the app on Apple Developer and App Store Connect"
+  lane :create_app do |options|
+    name = options[:name].to_s.strip
+    name = app_name if name.empty?
+    sku = options[:sku].to_s.strip
+    sku = bundle_id if sku.empty?
+    language = options[:language].to_s.strip
+    language = ENV.fetch("APP_LANGUAGE", "ja").to_s.strip if language.empty? # ja, en-US, ko, fr-FR, de-DE
+
+    UI.user_error!("FASTLANE_USER is required") if username.empty?
+    UI.user_error!("BUNDLE_ID is required") if bundle_id.empty?
+    UI.user_error!("App name is required. Pass name: or set APP_NAME") if name.empty?
+
+    produce(
+      username: username,
+      app_identifier: bundle_id,
+      # app_name: name,
+      # sku: sku,
+      # language: language,
+      skip_itc: true,
+      skip_devcenter: false,
+      enable_services: {
+        push_notification: "on",
+        sign_in_with_apple: "on"
+      }
+    )
+  end
+
+  # Usage: bundle exec fastlane ios add_devices devices_file:/path/to/devices.txt
+  # DEVICES_FILE uses tab-separated columns:
+  # Device ID<TAB>Device Name<TAB>Device Platform
+  # Device Platform is optional and accepts ios or mac.
+  desc "Register multiple devices from an Apple device file"
+  lane :add_devices do |options|
+    devices_file = options[:devices_file].to_s.strip
+    devices_file = ENV["DEVICES_FILE"].to_s.strip if devices_file.empty?
+    UI.user_error!("Pass devices_file: or set DEVICES_FILE") if devices_file.empty?
+    UI.user_error!("Devices file not found: #{devices_file}") unless File.file?(devices_file)
+
+    authenticate_app_store_connect
+    register_devices(devices_file: devices_file)
+  end
+
+  private_lane :authenticate_app_store_connect do
+    required_values = {
+      "ASC_KEY_ID" => asc_key_id,
+      "ASC_ISSUER_ID" => asc_issuer_id
+    }
+    missing_names = required_values.select { |_, value| value.empty? }.keys
+    UI.user_error!("Missing required environment variables: #{missing_names.join(", ")}") unless missing_names.empty?
+
+    if asc_key_content.to_s.empty?
+      UI.user_error!("App Store Connect API key file is not configured") unless File.file?(asc_key_path)
+      app_store_connect_api_key(
+        key_id: asc_key_id,
+        issuer_id: asc_issuer_id,
+        key_filepath: asc_key_path,
+        in_house: false
+      )
+    else
+      app_store_connect_api_key(
+        key_id: asc_key_id,
+        issuer_id: asc_issuer_id,
+        key_content: asc_key_content,
+        in_house: false
+      )
+    end
+  end
+
+  private_lane :validate_release_configuration do
+    required_values = {
+      "FASTLANE_USER" => username,
+      "BUNDLE_ID" => bundle_id
+    }
+    missing_names = required_values.select { |_, value| value.empty? }.keys
+    UI.user_error!("Missing required environment variables: #{missing_names.join(", ")}") unless missing_names.empty?
+
+    unless ["ad-hoc", "app-store"].include?(export_method)
+      UI.user_error!("EXPORT_METHOD must be 'ad-hoc' or 'app-store'")
+    end
+
+    if export_method == "ad-hoc" && pgy_api_key.empty?
+      UI.user_error!("pgy_api_key is required for ad-hoc distribution")
+    end
+  end
+end

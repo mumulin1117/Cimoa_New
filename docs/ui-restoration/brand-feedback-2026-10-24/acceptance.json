@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-24",
+  "scope": "Unified business Loading, branded Toast, and release-appropriate feedback copy",
+  "result": "Auth, App, Events, Profile and Coins share one top-centered translucent gradient-edged card. Private chat retains inline feedback using the same bespoke animated mark. No legacy centered business spinner remains.",
+  "changed_files": {
+    "components": [
+      "src/components/AutoMatchHelpConfirmDialog.vue",
+      "src/components/DeleteAccountConfirmDialog.vue",
+      "src/components/ProfileBioConfirmDialog.vue",
+      "src/components/ActionLoading.vue",
+      "src/components/BrandProgressMark.vue",
+      "src/components/BrandToastHost.vue",
+      "src/components/AuthActionLoading.vue",
+      "src/components/AppLoading.vue",
+      "src/components/EventActionLoading.vue",
+      "src/components/ProfileActionLoading.vue",
+      "src/components/CoinActionLoading.vue",
+      "src/components/ChatActionLoading.vue"
+    ],
+    "pages": [
+      "src/pages/auto-match/connected.vue",
+      "src/pages/auto-match/expired.vue",
+      "src/pages/auto-match/found.vue",
+      "src/pages/auto-match/history.vue",
+      "src/pages/auto-match/index.vue",
+      "src/pages/auto-match/no-match.vue",
+      "src/pages/auto-match/passed.vue",
+      "src/pages/auto-match/paused.vue",
+      "src/pages/auto-match/preferences.vue",
+      "src/pages/auto-match/searching.vue",
+      "src/pages/auto-match/waiting.vue",
+      "src/pages/coins/cancelled.vue",
+      "src/pages/coins/failed.vue",
+      "src/pages/coins/help.vue",
+      "src/pages/coins/history.vue",
+      "src/pages/coins/index.vue",
+      "src/pages/coins/purchase-detail.vue",
+      "src/pages/coins/purchasing.vue",
+      "src/pages/coins/spend-detail.vue",
+      "src/pages/coins/success.vue",
+      "src/pages/discover/profile.vue",
+      "src/pages/discover/icebreaker/preview.vue",
+      "src/pages/discover/icebreaker/voice.vue",
+      "src/pages/events/group.vue",
+      "src/pages/events/report.vue",
+      "src/pages/messages/index.vue",
+      "src/pages/messages/chat.vue",
+      "src/pages/messages/call/waiting.vue",
+      "src/pages/profile/edit.vue",
+      "src/pages/profile/prefs.vue",
+      "src/pages/profile/preview.vue",
+      "src/pages/profile/reverify.vue",
+      "src/pages/profile/verification.vue",
+      "src/pages/safety/report-detail.vue",
+      "src/pages/safety/report-user.vue",
+      "src/pages/safety/reports.vue",
+      "src/pages/settings/blocked.vue",
+      "src/pages/settings/index.vue",
+      "src/pages/settings/lang.vue",
+      "src/pages/settings/legal.vue",
+      "src/pages/settings/notif.vue",
+      "src/pages/settings/perm.vue",
+      "src/pages/settings/privacy.vue",
+      "src/pages/settings/support.vue",
+      "src/pages/settings/delete/final.vue",
+      "src/pages/settings/delete/info.vue",
+      "src/pages/settings/delete/reason.vue",
+      "src/pages/settings/delete/success.vue"
+    ],
+    "stores": [
+      "src/stores/autoMatching.js",
+      "src/stores/directMessaging.js",
+      "src/stores/discoverFlow.js",
+      "src/stores/eventMessaging.js",
+      "src/stores/homeFeed.js",
+      "src/stores/introductionForms.js",
+      "src/stores/migration.js",
+      "src/stores/onboarding.js",
+      "src/stores/profileEditing.js",
+      "src/stores/selectors.js",
+      "src/stores/store.js",
+      "src/stores/transactions.js"
+    ],
+    "utils": [
+      "src/utils/authNavigation.js",
+      "src/utils/coinHistory.js",
+      "src/utils/discoverNavigation.js",
+      "src/utils/eventsNavigation.js",
+      "src/utils/homeNavigation.js",
+      "src/utils/hostBridge.js",
+      "src/utils/mediaRepository.js",
+      "src/utils/nativePermissions.js",
+      "src/utils/profileNavigation.js",
+      "src/utils/routeTransition.js",
+      "src/utils/writeOperation.js",
+      "src/utils/authFeedback.js",
+      "src/utils/authNotice.js",
+      "src/utils/toast.js",
+      "src/utils/legalDocuments.js"
+    ],
+    "composables": [
+      "src/composables/useAccountScope.js",
+      "src/composables/useEventMedia.js",
+      "src/composables/useEventPage.js",
+      "src/composables/useProfileEditor.js",
+      "src/composables/useAutoMatchPage.js"
+    ],
+    "config": [
+      "src/config/navigation.js"
+    ],
+    "tests": [
+      "scripts/release-feedback-copy.test.mjs",
+      "scripts/runtime-feedback-copy.test.mjs",
+      "scripts/brand-loading.test.mjs",
+      "scripts/brand-loading-browser.test.mjs",
+      "scripts/lib/brand-loading-regression.mjs",
+      "scripts/auth-feedback.test.mjs",
+      "scripts/event-filter-loading.test.mjs",
+      "scripts/toast.test.mjs",
+      "scripts/navigation.test.mjs",
+      "scripts/permissions.test.mjs",
+      "scripts/legal-documents.test.mjs",
+      "scripts/lib/voice-answer-header-regression.mjs",
+      "scripts/lib/toast-regression.mjs",
+      "scripts/lib/chat-feedback-regression.mjs",
+      "scripts/lib/display-copy-cases.mjs",
+      "scripts/settings-safety-browser.test.mjs",
+      "ios/cimoaNeapo/Tests/EventCoverTests.swift"
+    ]
+  },
+  "preserved": [
+    "Both convention documents unchanged by this task",
+    "400–600ms writes, default 500ms; skeleton600ms and carousel3000ms unchanged",
+    "Store-only entity ownership, validation, operation tokens, cancellation, atomic failure and account isolation",
+    "No fake delivery, review, support ticket, identity verification, live call or payment completion",
+    "Existing theme tokens, rpx, safe areas, route transitions and all pre-existing worktree changes",
+    "No stage, commit, push or destructive cleanup"
+  ],
+  "design": {
+    "position": "Top center after actual safe-area top",
+    "card": "Light translucent surface, cyan-blue-violet-pink fine border, rounded card and soft shadow",
+    "progress": "Two colored orbit segments with opposing dots and a breathing center, distinct from header logo",
+    "normal_toast": "Auto-dismiss, accessible status icon and manual close retained",
+    "busy": "Controlled by current action; no dismiss until settled, real pointer blocker, owner-aware route cleanup",
+    "accessibility": "Status/live/busy semantics; reduced motion static mark; background animation pause",
+    "inline_chat": "No full-screen obstruction for private message sends, read status or starting calls"
+  },
+  "copy_examples": {
+    "group_text": "Sending your message…",
+    "group_photo": "Sending your photo…",
+    "group_voice": "Sending your voice message…",
+    "match_pause": "Pausing your search…",
+    "match_resume": "Resuming your search…",
+    "profile": "Updating your profile…",
+    "success": "Profile updated",
+    "storage": "Your device doesn’t have enough space. Free up some space and try again."
+  },
+  "copy_boundaries": "Hidden technical exceptions and internal fields, not actual failure facts. Matching quota is not device storage quota. Introduction unavailability retains no-coins-deducted; support retains unsent/unavailable. Legitimate recording controls and safety instructions remain.",
+  "verification": {
+    "status": "Passed targeted final browser/media and iPhone 17 Pro WKWebView regression",
+    "unit": {
+      "passed": 373,
+      "failed": 0,
+      "log": "artifacts/brand-loading/unit-test.log"
+    },
+    "browser": {
+      "passed": true,
+      "scenarios": 13,
+      "assertions": 254,
+      "viewports": ["320x568", "393x852", "440x956"],
+      "errors": 0,
+      "warnings": 0,
+      "screenshots": 14,
+      "cleaned_up": true,
+      "media": "Real file upload and synthesized AudioContext stream with real MediaRecorder; actual decoding, Store, IndexedDB, single commit, photo reload and track cleanup pass. No physical microphone requested.",
+      "report": "artifacts/brand-loading/browser-report.json",
+      "preview_server_started": false
+    },
+    "wkwebview": {
+      "passed": true,
+      "executed_tests": 1,
+      "assertions": 143,
+      "log": "artifacts/brand-loading/xcodebuild-final.log",
+      "selected_test": "EventCoverTests.testBrandLoading()",
+      "isolated_fixtures": 8,
+      "device": "iPhone 17 Pro simulator",
+      "report": "artifacts/brand-loading/wkwebview-report.json",
+      "actual_host_business_data_unchanged": true
+    },
+    "required_commands": {
+      "sequence": [
+        "corepack pnpm check:conventions",
+        "git diff --check",
+        "corepack pnpm build:h5"
+      ],
+      "passed": true,
+      "h5_files_packaged": 438,
+      "ios_built_manifest_matches": true
+    },
+    "untested": [
+      "Physical camera and microphone authorization, actual remote delivery/moderation/payments and whole-app acceptance are not claimed by this targeted regression."
+    ],
+    "warnings": [
+      "No convention/browser warnings. Xcode emitted its existing AppIntents metadata-skipped warning and simulator WebKit/Accessibility diagnostics."
+    ],
+    "recovered_test_issue": "uni-input replaces its native input when disabled changes; regression checks now requery the current live node rather than holding a detached input."
+  },
+  "artifacts": [
+    "artifacts/brand-loading/group-wkwebview-loading.png",
+    "artifacts/brand-loading/profile-wkwebview-loading.png",
+    "artifacts/brand-loading/match_pause-wkwebview-loading.png"
+  ],
+  "full_page_status": "Unchanged; this targeted feedback task does not mark entire pages or the app verified."
+}

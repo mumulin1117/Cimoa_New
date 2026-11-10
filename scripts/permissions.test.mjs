@@ -8,7 +8,7 @@ test('ordinary browser permission reads/request only real API results and report
   assert.equal(await notification_permission(true, env), 'denied')
   env.Notification.requestPermission = async () => 'granted'; assert.equal(await notification_permission(true, env), 'granted')
   env.Notification.requestPermission = async () => 'fake'; await assert.rejects(notification_permission(true, env), /unknown/)
-  await assert.rejects(open_app_settings(), /unavailable in this browser/)
+  await assert.rejects(open_app_settings(), /App settings cannot be opened here\. Manage permissions in your browser or device settings/)
 })
 test('native permission uses correlated bridge whitelist and rejects unavailable host response', async () => {
   const methods = [], env = { window: { webkit: { messageHandlers: { CimoaHost: {} } }, CimoaNativeBridge: { request: async method => { methods.push(method); return { status: 'denied' } } } } }

@@ -1,0 +1,33 @@
+/* Non-editable content is app UI, not a browser document. Do not disable the
+   WebView's gesture recognizers or prevent touchmove: real scrolling stays native. */
+:root { --app-touch-target: calc(84rpx * var(--app-touch-scale, 1)); }
+:where(html, body, #app, uni-app) { -webkit-user-select: none; user-select: none; }
+:where(*) { -webkit-touch-callout: none; }
+:where(img, image, uni-image, svg, a) { -webkit-user-drag: none; }
+:where([role='button'], [role='link'], [role='checkbox'], [role='radio'], [role='switch'], button, a[href]) { touch-action: manipulation; }
+:where([contenteditable]:not([contenteditable='false'])) { -webkit-user-select: text; user-select: text; }
+:where([contenteditable]:not([contenteditable='false']), [contenteditable]:not([contenteditable='false']) *) { -webkit-touch-callout: default; }
+:where([contenteditable='false']) { -webkit-user-select: none; user-select: none; }
+:where(input, textarea, uni-input, uni-textarea, [data-cimoa-editable-input], .uni-input-input, .uni-textarea-textarea) {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+  touch-action: auto;
+}
+/* Enlarge actual controls, never invisible overlapping pseudo hit regions.
+   Keep the SVG/image's original dimensions inside these important controls. */
+:where(.flow-back, .ice-back, .connection-round, .event-page-round, .event-group-control, .event-group-send, .chat-round, .chat-mic, .chat-send, .voice-close, .voice-play, .voice-record, .agreement-close, .brand-toast-close, .profile-voice-play, .request-audio-play, .request-audio-wave, .event-audio-button, .dialog__cancel, .dialog__confirm, .auth-back, .editor-back, .onboarding-back, .received-more) {
+  min-width: var(--app-touch-target);
+  min-height: var(--app-touch-target);
+}
+:where(.home-profile, .home-match, .discover-tool, .profile-tool, .expanded-round, .waiting-call-round, .accepted-close, .intro-sheet-close, .field-close, .coin-back, .help-back, .spend-back, .history-back, .purchase-back, .failed-back, .success-back, .detail-back, .cancelled-back, .cimoa-button, .composer__send, .composer__safety, .back-button, .chat-header__call) {
+  min-width: var(--app-touch-target);
+  min-height: var(--app-touch-target);
+}
+:where(.auth-show, .auth-link, .voice-cancel, .voice-rerecord) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--app-touch-target);
+  min-height: var(--app-touch-target);
+}

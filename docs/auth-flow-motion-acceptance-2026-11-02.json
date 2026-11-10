@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-02",
+  "status": "in_progress",
+  "visual_acceptance": "pending",
+  "scope": "Authorized startup, return, keyboard, auth-step and touch feedback continuity; not a whole-app acceptance",
+  "implemented": [
+    "Cold Welcome root is statically ready before native cover exit. Visible child entrance starts on the trusted reveal event, not behind an opaque cover.",
+    "EULA waits for the actual cover acknowledgment and finite Welcome animations. No extra fixed delay, email claim or consent action is introduced.",
+    "Native progress closes from its real presentation state during the existing 240ms handoff; it does not pretend to reach 100 percent.",
+    "Auth and onboarding headers and footer controls stay stable; only the scroll content uses the existing 240ms cRise with 8pt-equivalent rpx travel.",
+    "Back keeps opacity at or above .94 and uses 4pt-equivalent rpx travel within the original 180ms. Cached sources do not restart their entrance.",
+    "Validated auth navigation closes the keyboard and waits for measured visualViewport stability. No-keyboard navigation does not add a delay. The 1200ms observation bound is not a business wait or proof of keyboard closure.",
+    "A short viewport during an already-blurred keyboard exit is not learned as the closed baseline. Timeout or changed geometry leaves a recoverable page.",
+    "Pending keyboard and return work settles on page hide, background, refocus or disposal; real dispatched navigation remains owned by the existing route controller.",
+    "Auth frame busy/inert protection merges repeated navigation and prevents a second submit while the keyboard closes.",
+    "True adjacent onboarding steps interpolate their source-authored progress in temporary account-scoped UI memory. No step count, Store schema or persisted draft is changed.",
+    "Auth touch feedback uses existing data-touch-state, .985 scale, 120/180ms and existing cancellation. Reduced motion removes translation and press scaling."
+  ],
+  "changed_source_files": [
+    "DEVELOPMENT_CONVENTIONS.md",
+    "INTERACTION_CONVENTIONS.md",
+    "src/config/navigation.js",
+    "src/App.vue",
+    "src/components/PageTransition.vue",
+    "src/components/SecondaryPageFrame.vue",
+    "src/components/AuthPageFrame.vue",
+    "src/components/OnboardingFrame.vue",
+    "src/utils/pageReturn.js",
+    "src/utils/authKeyboard.js",
+    "src/utils/authStepMotion.js",
+    "src/utils/startupHandoff.js",
+    "src/pages/auth/auth.css",
+    "src/pages/auth/welcome.vue",
+    "src/pages/auth/login.vue",
+    "src/pages/auth/reset/new.vue",
+    "src/pages/auth/verification/success.vue",
+    "src/pages/auth/verification/unsupported.vue",
+    "src/pages/onboarding/complete.vue",
+    "src/composables/useOnboarding.js",
+    "ios/cimoaNeapo/Sources/WebViewController.swift",
+    "scripts/package-ios.mjs"
+  ],
+  "test_files": [
+    "scripts/auth-startup-continuity.test.mjs",
+    "scripts/auth-keyboard.test.mjs",
+    "scripts/auth-step-motion.test.mjs",
+    "scripts/page-return.test.mjs",
+    "scripts/auth-flow-motion-browser.test.mjs",
+    "scripts/startup-handoff.test.mjs",
+    "scripts/startup-story.test.mjs",
+    "scripts/auth-discover-entry.test.mjs"
+  ],
+  "browser": {
+    "new_motion": { "passed": true, "isolated_cases": 4, "checks": 34, "page_errors": 0, "warnings": 0, "report": "artifacts/auth-flow-motion-2026-11-02/browser-report.json" },
+    "startup_regression": { "passed": true, "isolated_cases": 15, "page_errors": 0, "warnings": 0, "report": "artifacts/startup-story/browser-report.json" },
+    "first_use_guide_regression": { "passed": true, "groups": 9, "page_errors": 0, "existing_warnings": 26, "warning_reason": "Existing uni statistics external traffic blocked in isolated tests", "report": "artifacts/auto-match-guide-2026-11-02/browser-report.json" },
+    "native_cover_stub_is_not_wkwebview_acceptance": true,
+    "preview_server_started": false,
+    "contexts_and_browsers_closed": true
+  },
+  "unit": {
+    "targeted_passed": 196,
+    "bounded_full_regression": { "files": 82, "tests": 669, "passed": 667, "failed": 2, "log": "artifacts/auth-flow-motion-2026-11-02/unit-regression.log" },
+    "pre_existing_failures": [
+      "Missing ios/cimoaNeapo/Tests/EventCoverTests.swift",
+      "Missing ios/cimoaNeapo/Tests/HostTests.swift; existing staged deletion preserved"
+    ],
+    "task_regressions": 0
+  },
+  "wkwebview": {
+    "build": "passed",
+    "project": "ios/cimoaNeapo/cimoaNeapo.xcodeproj",
+    "scheme": "cimoaNeapo",
+    "configuration": "Debug, iphonesimulator, CODE_SIGNING_ALLOWED=NO",
+    "derived_data": "/private/tmp/cimoa-auth-motion-20261102",
+    "device": "iPhone 17 Pro, iOS 26.5",
+    "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "bundle": "com.cimoa.neapo.dev",
+    "install": "passed; upgrade preserved existing app data",
+    "launch": "passed, existing authenticated session restored Home",
+    "observed_navigation": "Home to current Profile rendered successfully",
+    "artifacts": ["artifacts/auth-flow-motion-2026-11-02/wkwebview-startup.mp4", "artifacts/auth-flow-motion-2026-11-02/wkwebview-relaunch.mp4", "artifacts/auth-flow-motion-2026-11-02/wkwebview-home.png", "artifacts/auth-flow-motion-2026-11-02/wkwebview-profile.png"],
+    "bundled_h5_files": 443,
+    "bundle_source_hash_differences": 0,
+    "h5_index_sha256": "f31d403afcfe728fda33f604ad18e46ca7a4b40debb0684fb71575875f924ddc",
+    "pending": ["Native software-keyboard close and cancellation in auth", "Guest Welcome and first EULA handoff", "Auth back, background and reduced-motion visual acceptance", "Investigate black system launch frames reproduced before the native brand cover in both post-install and repeated launch recordings; not declared accepted"],
+    "black_frame_investigation": {
+      "system_observation": "At 14:51:06.512 the simulator SpringBoard SplashBoard log reports that snapshot generation for com.cimoa.neapo.dev was rejected due to the app being denylisted. This is a simulator launch-snapshot condition, not an App Store review decision.",
+      "resource_checks": "Source and compiled Info names agree; storyboardc initial controller is correct; assetutil confirms opaque LaunchBackground, LaunchBrand and the light LaunchBackgroundColor; ibtool validation returned zero with no diagnostics.",
+      "handoff_boundary": "The black frames precede visible native Cover. The changed handoff only runs after valid finishLaunch readiness and only closes the progress light. This does not establish the root cause of the earlier frames.",
+      "root_cause": "unconfirmed; keep production startup visual acceptance pending",
+      "safety": "No launch cache, installed-account storage, system protection, Bundle Identifier, user-owned storyboard, Info or project setting was changed to hide the issue."
+    },
+    "limitation": "The user switched Simulator to a different project's iPhone 17 window during inspection. UI actions stopped; no logout, storage reset, consent acceptance or new account was used to force the test."
+  },
+  "mandatory_checks": { "check_conventions": "passed; no warnings", "git_diff_check": "passed", "build_h5": "passed; 443 generated H5 resources refreshed in the native host" },
+  "preserved": ["Splash 1800ms", "handoff 240ms", "write Loading 400–600ms", "Tab skeleton 600ms", "existing account, relationships, chat, media and coins", "user's pre-existing modified and staged files"],
+  "git": { "commit": "not performed; native auth visual acceptance is still pending", "push": "not performed", "workspace": "Pre-existing dirty tree preserved; no unrelated source or signing changes made by this task" },
+  "cleanup": { "preview_server": "never started", "native_recording": "bounded capture; stopped through SIGINT", "test_browser": "closed", "final_process_audit": "No task-owned dev server, build, browser or recording process remained in the bounded process audit" }
+}

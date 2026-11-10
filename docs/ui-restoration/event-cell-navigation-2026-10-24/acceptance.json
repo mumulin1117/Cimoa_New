@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-24",
+  "scope": "Main Events list cell navigation; targeted regression, not whole-page visual acceptance",
+  "source_contract": "source-contract.json",
+  "changed_files": [
+    "src/pages/events/index.vue",
+    "docs/cimoa-events-interactions.md",
+    "docs/ui-restoration/events/interactions.json",
+    "docs/ui-restoration/events/source-contract.json",
+    "docs/ui-restoration/event-cell-navigation-2026-10-24/source-contract.json",
+    "docs/ui-restoration/event-cell-navigation-2026-10-24/acceptance.json",
+    "scripts/event-cell-navigation.test.mjs",
+    "scripts/event-cell-navigation-browser.test.mjs",
+    "scripts/lib/event-cell-navigation-regression.mjs",
+    "scripts/event-state-ux-browser.test.mjs",
+    "scripts/lib/event-state-ux-regression.mjs",
+    "scripts/lib/events-browser.mjs",
+    "scripts/lib/event-data-regression.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift"
+  ],
+  "result": "Every first/subsequent main Events cell region except the existing Join/Joined primary opens its exact event detail, including date/location, participant row, blank regions, joined footer and failed-cover area. Visible layout/copy stays unchanged. Existing detail-page participants, group and attendance actions remain available.",
+  "verification": {
+    "all_unit_tests": { "passed": 335, "failed": 0, "selection": "Scripts importing node:test, excluding browser/native orchestration helpers", "log": "artifacts/event-cell-navigation/unit-test.log" },
+    "browser": { "passed": true, "scenarios": 5, "assertions": 363, "viewport": "393x852", "page_errors": 0, "warnings": 0, "preview_server_started": false, "browsers_closed": true, "report": "artifacts/event-cell-navigation/browser-report.json" },
+    "existing_state_browser": { "passed": true, "scenarios": 6, "assertions": 52, "report": "artifacts/event-state-ux/browser-report.json" },
+    "existing_data_browser": { "passed": true, "runner_checks": 13, "shared_assertions": 11, "page_errors": 0, "warnings": 0, "preview_server_started": false, "report": "artifacts/event-data/browser-report.json" },
+    "wkwebview": { "passed": true, "selected_test": "EventCoverTests.testEventCellNavigation()", "executed_tests": 1, "isolated_scenarios": 5, "assertions": 363, "device": "iPhone 17 Pro simulator", "actual_host_business_data_unchanged": true, "report": "artifacts/event-cell-navigation/wkwebview-report.json", "log": "artifacts/event-cell-navigation/xcodebuild-final.log", "screenshot": "artifacts/event-cell-navigation/first_and_later_cells-wkwebview.png" },
+    "required_commands": { "sequence": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"], "passed": true, "h5_files_packaged": 438, "ios_built_app_manifest_matches": true },
+    "recovered_findings": ["The first keyboard regression exposed uni-app forwarding incompatibility with the self modifier. Card key handlers now rely on explicit child propagation guards; final browser and WKWebView Enter/Space checks pass.", "The initial broad filename-based test selection included two non-unit orchestration helpers without their required setup. The final explicit node:test suite passes all 335 tests; initial output is retained as artifacts/event-cell-navigation/initial-broad-run.log."],
+    "warnings": "No convention or browser warnings. Simulator emitted existing WebKit/Accessibility runtime diagnostics; the final selected test completed successfully with no new compiler warning.",
+    "process_cleanup": "No task browser, Node, Xcode-test or H5-build process remains; no preview server started"
+  },
+  "preserved": ["Canonical Store/getter entities and event_id identity", "Join eligibility, confirmation, cancel, disabled state, 500ms pre-write Loading and one atomic admission", "List category, card order and actual horizontal scroll position on Back", "600ms skeleton, three-second carousel and page-transition timings", "Both convention documents and all pre-existing worktree changes", "Real host account data via isolated nonpersistent WKWebViews"],
+  "full_page_status": "unchanged; no new verified status or whole-app completion claim",
+  "git": "No staging, commit, push or reset performed"
+}

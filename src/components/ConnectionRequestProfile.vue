@@ -6,7 +6,7 @@ import ConnectionIcon from './ConnectionIcon.vue'
 import ProfilePhoto from './ProfilePhoto.vue'
 const props = defineProps({ userId: String })
 const emit = defineEmits(['gallery'])
-const store = use_app_store(), index = ref(0), error = ref('')
+const store = use_app_store(), index = ref(0)
 const person = computed(() => store.user_by_id(props.userId)), photos = computed(() => store.photos_for_user(props.userId)), photo = computed(() => photos.value[index.value] || photos.value[0]), song = computed(() => store.song_for_user(props.userId))
 const goals = computed(() => store.goals_for_user(props.userId)), interests = computed(() => store.interests_for_user(props.userId))
 const tags = computed(() => person.value ? [person.value.height_cm ? { icon: 'height', label: `${person.value.height_cm} cm` } : null, ...[['university','university'],['major','book'],['mbti','puzzle']].map(([key,icon]) => person.value[key] ? { icon, label: person.value[key] } : null), person.value.country?.length ? { emoji: person.value.country[0] === 'Malaysia' ? '🇲🇾' : '🌏', label: person.value.country.join(', ') } : null, ...[['drinking','🍷'],['smoking','🚭'],['religion','🕊️']].map(([key,emoji]) => person.value[key] ? { emoji, label: person.value[key] } : null), ...[['clubs','people'],['location','location']].map(([key,icon]) => person.value[key] ? { icon, label: person.value[key] } : null)].filter(Boolean) : [])
@@ -16,10 +16,9 @@ const change = delta => { if (photos.value.length > 1) index.value = (index.valu
   <view v-if="person" class="received-content">
     <view class="received-photo-card">
       <view class="received-photo" role="button" tabindex="0" aria-label="Open profile photo" data-interaction="reqReceived.openGallery.click.1" @click="emit('gallery', index)" @keydown.enter="emit('gallery', index)"><ProfilePhoto :src="photo?.media_url || ''" :name="person.user_name" :position="photo?.focal_point || '50% 22%'" /></view>
-      <view v-if="song" class="received-song"><image :src="song.cover_url" mode="aspectFill" /><view><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view role="button" tabindex="0" aria-label="Play profile song" data-interaction="reqReceived.otherSongPlay.click.1" @click="error = 'This profile includes song artwork only. No playable audio was provided.'" @keydown.enter="error = 'This profile includes song artwork only. No playable audio was provided.'"><ConnectionIcon name="song-play" /></view></view>
+      <view v-if="song" class="received-song" aria-label="Favorite song" @click.stop><image :src="song.cover_url" mode="aspectFill" /><view><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view class="received-song-mark" aria-hidden="true"><ConnectionIcon name="song-note" /></view></view>
       <template v-if="photos.length > 1"><view class="received-photo-hit received-photo-hit--prev" role="button" tabindex="0" aria-label="Previous photo" data-interaction="reqReceived.prevPhoto.click.1" @click="change(-1)" @keydown.enter="change(-1)" /><view class="received-photo-hit received-photo-hit--next" role="button" tabindex="0" aria-label="Next photo" data-interaction="reqReceived.nextPhoto.click.1" @click="change(1)" @keydown.enter="change(1)" /><view class="received-dots"><view v-for="(_,i) in photos" :key="i" :class="{ active: index === i }" /></view></template>
     </view>
-    <text v-if="error" class="received-media-error" role="alert">{{ error }}</text>
     <view v-if="tags.length" class="received-card received-tags"><view v-for="tag in tags" :key="tag.label" class="received-chip"><view v-if="tag.icon" class="received-tag-icon"><ConnectionIcon v-if="tag.icon === 'location'" name="location" /><SourceIcon v-else :name="tag.icon" :stroke-width="1.7" /></view><text v-else class="received-emoji">{{ tag.emoji }}</text><text>{{ tag.label }}</text></view></view>
     <view v-if="person.bio" class="received-card received-bio"><text>{{ person.bio }}</text></view>
     <view v-if="goals.length" class="received-card"><view class="received-section"><view><SourceIcon name="people" :stroke-width="1.9" /></view><text>Looking for</text></view><view class="received-chips"><view v-for="goal in goals" :key="goal.item_id" class="received-chip"><text>{{ goal.emoji }}</text><text>{{ goal.label }}</text></view></view></view>
@@ -56,7 +55,7 @@ const change = delta => { if (photos.value.length > 1) index.value = (index.valu
 .received-song text { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .received-song text:first-child { color: var(--cimoa-text-inverse); font-size: 29.58rpx; font-weight: 700; }
 .received-song text:last-child { color: var(--cimoa-text-profile-song-artist); font-size: 24.809rpx; }
-.received-song > view:last-child {
+.received-song-mark {
   display: flex;
   flex: none;
   align-items: center;
@@ -67,7 +66,6 @@ const change = delta => { if (photos.value.length > 1) index.value = (index.valu
   border-radius: 50%;
   background: var(--cimoa-surface-card);
   color: var(--cimoa-brand-purple);
-  cursor: pointer;
 }
 .received-photo-hit {
   position: absolute;
@@ -133,5 +131,4 @@ const change = delta => { if (photos.value.length > 1) index.value = (index.valu
 }
 .received-section--blue > view { color: var(--cimoa-text-profile-interest-icon); background: var(--cimoa-surface-profile-interest-icon); }
 .received-chips { display: flex; flex-wrap: wrap; gap: 15.267rpx; margin-top: 22.901rpx; }
-.received-media-error { display: block; margin-top: 15.267rpx; color: var(--cimoa-status-danger); font-size: 27.672rpx; line-height: 1.4; }
 </style>

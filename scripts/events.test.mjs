@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_seed, clone_data, TEST_USER_ID } from '../src/stores/seed.js'
+import { ensure_account_defaults, session_for } from '../src/stores/accountDefaults.js'
 import { events_destination, event_report_fallback, require_events_destination_ready, EVENTS_DEFERRED_ROUTES } from '../src/utils/eventsNavigation.js'
 
 const now = Date.UTC(2026, 9, 13, 1) // Tuesday 09:00 Hong Kong, deliberately not device-local time.
@@ -13,7 +14,7 @@ const make = transform => {
   configure_store_runtime(store, { clock: () => now, persistence }); assert.equal(store.hydrate().success, true)
   return { store, persistence, writes: () => writes, disk: () => disk }
 }
-test('Events real date/campus filters, source featured ordering and no read-side writes', () => {
+test('Events real date/attendance filters, source featured ordering and no read-side writes', () => {
   const f = make(), before = JSON.stringify(f.store.data)
   assert.deepEqual(f.store.event_feed.slice(0, 3).map(e => e.event_id), ['event_picnic', 'event_mic', 'event_yoga'])
   assert.equal(f.store.event_feed[0].date_label, 'Today · 5:30 PM')
@@ -21,8 +22,59 @@ test('Events real date/campus filters, source featured ordering and no read-side
   assert.equal(JSON.stringify(f.store.data), before); assert.equal(f.writes(), 0)
   assert.equal(f.store.select_event_tab('This week').success, true); assert.equal(f.store.event_feed[0].event_id, 'event_film')
   assert.ok(!f.store.event_feed.some(e => e.event_id === 'event_study'))
-  assert.equal(f.store.select_event_tab('My campus').success, true); assert.equal(f.store.event_feed[0].event_id, 'event_market')
+  assert.equal(f.store.select_event_tab('My campus').success, true); assert.deepEqual(f.store.event_feed, [])
   f.store.data.users[0].university = 'Stanford'; assert.deepEqual(f.store.event_feed, [])
+})
+test('My campus reads only active own attendance and synchronizes join, leave and fresh hydration', () => {
+  const f = make(), { store } = f
+  store.select_event_tab('My campus'); assert.deepEqual(store.event_feed, [])
+  assert.equal(store.join_event('event_picnic').success, true)
+  assert.deepEqual(store.event_feed.map(e => e.event_id), ['event_picnic'])
+  assert.equal(store.event_feed[0].joined, true); assert.equal(store.event_feed[0].conversation_id, 'group_picnic')
+  const restored = use_app_store(createPinia()); configure_store_runtime(restored, { clock: () => now, persistence: f.persistence })
+  const writes = f.writes(); assert.equal(restored.hydrate().success, true)
+  assert.equal(restored.active_event_tab, 'My campus'); assert.deepEqual(restored.event_feed.map(e => e.event_id), ['event_picnic'])
+  assert.equal(f.writes(), writes)
+  assert.equal(restored.leave_event('event_picnic').success, true); assert.deepEqual(restored.event_feed, [])
+  store.hydration_status = 'idle'; assert.equal(store.hydrate().success, true); assert.deepEqual(store.event_feed, [])
+  assert.equal(store.data.memberships.find(m => m.user_id === TEST_USER_ID && m.event_id === 'event_picnic').status, 'left')
+})
+test('My campus retains joined other-campus and blocked-organizer events, with past attendance in My Events only', () => {
+  const { store } = make()
+  store.select_event_tab('My campus'); store.join_event('event_picnic'); store.join_event('event_mic')
+  store.data.events.find(e => e.event_id === 'event_picnic').university = 'HKU'
+  store.data.users.find(u => u.user_id === TEST_USER_ID).university = ''
+  assert.equal(store.block_organizer('organizer_hkust').success, true)
+  const before = clone_data(store.data)
+  assert.deepEqual(store.event_feed.map(e => e.event_id), ['event_mic', 'event_picnic'])
+  assert.equal(store.event_feed.every(e => e.joined && e.conversation_id), true); assert.deepEqual(store.data, before)
+  Object.assign(store.data.events.find(e => e.event_id === 'event_picnic'), { starts_at: now - 7200000, ends_at: now })
+  assert.deepEqual(store.event_feed.map(e => e.event_id), ['event_mic'])
+  assert.deepEqual(store.my_event_groups.sections.find(s => s.label === 'Past').events.map(e => e.event_id), ['event_picnic'])
+})
+test('My campus attendance and filter restore are isolated between accounts', () => {
+  const f = make(data => {
+    data.accounts.push({ ...clone_data(data.accounts[0]), account_id: 'account_chloe', user_id: 'user_chloe', email: 'chloe@campus.edu' })
+    ensure_account_defaults(data, 'user_chloe')
+  }), { store } = f
+  store.select_event_tab('My campus'); store.join_event('event_mic')
+  assert.deepEqual(store.event_feed.map(e => e.event_id), ['event_mic'])
+  store.data.session = session_for(store.data.accounts.find(a => a.account_id === 'account_chloe'), now)
+  assert.equal(store.active_event_tab, 'Today'); store.select_event_tab('My campus')
+  assert.deepEqual(store.event_feed.map(e => e.event_id), ['event_picnic'])
+  store.data.session = session_for(store.data.accounts.find(a => a.user_id === TEST_USER_ID), now)
+  assert.equal(store.active_event_tab, 'My campus'); assert.deepEqual(store.event_feed.map(e => e.event_id), ['event_mic'])
+  assert.equal(store.event_feed.some(e => e.event_id === 'event_picnic'), false)
+})
+test('failed join or cancellation never adds or removes My campus attendance', () => {
+  const f = make(), { store } = f; store.select_event_tab('My campus')
+  configure_store_runtime(store, { persistence: { ...f.persistence, write() { throw Error('Storage full') } } })
+  const before = clone_data(store.data)
+  assert.equal(store.join_event('event_picnic').success, false); assert.deepEqual(store.event_feed, []); assert.deepEqual(store.data, before)
+  configure_store_runtime(store, { persistence: f.persistence }); assert.equal(store.join_event('event_picnic').success, true)
+  configure_store_runtime(store, { persistence: { ...f.persistence, write() { throw Error('Storage full') } } })
+  const joined = clone_data(store.data)
+  assert.equal(store.leave_event('event_picnic').success, false); assert.deepEqual(store.event_feed.map(e => e.event_id), ['event_picnic']); assert.deepEqual(store.data, joined)
 })
 test('Today and Monday-week boundaries use event timezone, with UTC fallback for old saves', () => {
   const f = make(data => { Object.assign(data.events[0], { starts_at: Date.UTC(2026, 9, 12, 17), ends_at: now + 3600000 }) })

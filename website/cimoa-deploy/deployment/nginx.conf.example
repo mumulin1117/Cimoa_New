@@ -1,0 +1,56 @@
+# Example only. Merge into the actual Nginx http configuration.
+# Replace ALL REPLACE_WITH_ paths before validating or loading this file.
+# Upload the CONTENTS of public/ into the document root, not this directory.
+# Ensure the existing http configuration includes Nginx's mime.types file.
+
+server {
+    listen 80;
+    server_name cimoabeam.online;
+    return 301 https://cimoabeam.online$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name cimoabeam.online;
+
+    ssl_certificate /REPLACE_WITH_ABSOLUTE_CERTIFICATE_PATH/fullchain.pem;
+    ssl_certificate_key /REPLACE_WITH_ABSOLUTE_PRIVATE_KEY_PATH/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    root /REPLACE_WITH_ABSOLUTE_PATH_TO_CIMOA_PUBLIC;
+    index index.html;
+    charset utf-8;
+    autoindex off;
+    server_tokens off;
+
+    include /etc/nginx/snippets/cimoa-security-headers.conf;
+    add_header Cache-Control "no-cache" always;
+
+    # This is a static, multi-page site, not an API or a SPA fallback.
+    if ($request_method !~ ^(GET|HEAD)$) {
+        return 405;
+    }
+
+    error_page 404 /404.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location /en/ {
+        error_page 404 /en/404.html;
+        try_files $uri $uri/ =404;
+    }
+
+    # Asset names are not content-hashed. Do not mark them immutable.
+    location /assets/ {
+        include /etc/nginx/snippets/cimoa-security-headers.conf;
+        add_header Cache-Control "public, max-age=86400";
+        try_files $uri =404;
+    }
+
+    # Never expose dotfiles if unrelated files are accidentally uploaded.
+    location ~ /\.(?!well-known/) {
+        deny all;
+    }
+}

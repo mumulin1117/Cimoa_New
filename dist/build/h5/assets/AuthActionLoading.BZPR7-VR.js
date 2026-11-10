@@ -1,0 +1,1 @@
+import{h as a,d as e,w as l,a4 as s,aa as i}from"./index-JJyv0oIi.js";const t={__name:"AuthActionLoading",props:{visible:Boolean,label:{type:String,default:"Signing in…"}},setup:t=>(o,n)=>(a(),e(i,{visible:t.visible,label:t.label,scope:"auth"},{default:l(()=>[s(o.$slots,"default")]),_:3},8,["visible","label"]))};export{t as _};

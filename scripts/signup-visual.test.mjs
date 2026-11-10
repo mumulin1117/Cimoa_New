@@ -6,6 +6,7 @@ import crypto from 'node:crypto'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { read_circa_source } from './lib/circa-source.mjs'
+import { choose_date_of_birth } from './lib/date-picker-driver.mjs'
 
 const require = createRequire(import.meta.url)
 const { chromium } = require(process.env.CIMOA_BROWSER_MODULE || 'playwright')
@@ -108,7 +109,7 @@ async function write_comparison(browser, reference_path, actual_path) {
   return result
 }
 
-const input = (page, label) => page.locator(`uni-input[aria-label="${label}"] input`)
+const input = (page, label) => page.locator(`.signup-page:visible uni-input[aria-label="${label}"] input`)
 const fill = async (page, label, value) => { await input(page, label).fill(value); await page.waitForTimeout(40) }
 const saved = page => page.evaluate(() => localStorage.getItem('cimoa_app_state_v2'))
 const reset_storage_once = context => context.addInitScript(() => {
@@ -117,9 +118,9 @@ const reset_storage_once = context => context.addInitScript(() => {
 })
 async function reach_signup(page, origin, suffix) {
   await page.goto(`${origin}/?signupPixel=${suffix}#/pages/auth/age`); await page.locator('.age-page').waitFor()
-  await fill(page, 'Date of birth', '2000-01-01'); await page.locator('[data-interaction="age.goAgree.click.1"]').click(); await page.locator('.community-page').waitFor()
+  await choose_date_of_birth(page, '2000-01-01'); await page.locator('[data-interaction="age.goAgree.click.1"]').click(); await page.locator('.community-page').waitFor()
   for (const id of ['agree.tTerms.click.1', 'agree.tPrivacy.click.1', 'agree.tGuides.click.1']) await page.locator(`[data-interaction="${id}"]`).click()
-  await page.locator('[data-interaction="agree.goSignup.click.1"]').click(); await page.locator('.signup-page').waitFor()
+  await page.locator('[data-interaction="agree.goSignup.click.1"]').click(); await page.locator('.signup-page:visible').waitFor(); await page.waitForTimeout(300)
 }
 
 let browser
@@ -179,16 +180,16 @@ try {
   const duplicate = await browser.newContext({ viewport: { width: 393, height: 852 } })
   await reset_storage_once(duplicate)
   const duplicate_page = await duplicate.newPage(); duplicate_page.on('pageerror', error => report.errors.push(error.message)); await reach_signup(duplicate_page, origin, 'duplicate')
-  await fill(duplicate_page, 'University email', 'cimoa@gmail.com'); await fill(duplicate_page, 'Password', 'localpass123'); await fill(duplicate_page, 'Confirm password', 'localpass123')
-  const before_duplicate = await saved(duplicate_page); await duplicate_page.locator('[data-interaction="signup.createAccount.click.1"]').click(); await duplicate_page.locator('.loading').waitFor(); assert.equal(await saved(duplicate_page), before_duplicate)
+  await fill(duplicate_page, 'University email', 'cimoa@connect.edu'); await fill(duplicate_page, 'Password', 'localpass123'); await fill(duplicate_page, 'Confirm password', 'localpass123')
+  const before_duplicate = await saved(duplicate_page); await duplicate_page.locator('.signup-page:visible [data-interaction="signup.createAccount.click.1"]').click(); await duplicate_page.locator('.loading').waitFor(); assert.equal(await saved(duplicate_page), before_duplicate)
   await duplicate_page.getByRole('alert').waitFor(); assert.equal(await duplicate_page.getByRole('alert').innerText(), 'This email is already registered. Log in instead.'); assert.equal(await saved(duplicate_page), before_duplicate)
   await duplicate_page.screenshot({ path: path.join(output, 'actual-browser-error.png') }); await fill(duplicate_page, 'University email', 'signup.pixel@campus.edu'); assert.equal(await duplicate_page.getByRole('alert').count(), 0)
-  const primary = duplicate_page.locator('[data-interaction="signup.createAccount.click.1"]'); await primary.evaluate(element => { element.click(); element.click() }); await duplicate_page.locator('.loading').waitFor(); assert.equal(await saved(duplicate_page), before_duplicate)
+  const primary = duplicate_page.locator('.signup-page:visible [data-interaction="signup.createAccount.click.1"]'); await primary.evaluate(element => { element.click(); element.click() }); await duplicate_page.locator('.loading').waitFor(); assert.equal(await saved(duplicate_page), before_duplicate)
   await duplicate_page.locator('.verification-email-page').waitFor(); const committed = await duplicate_page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data)
   const account = committed.accounts.find(row => row.email === 'signup.pixel@campus.edu'); assert.ok(account); assert.equal(account.auth_provider, 'local'); assert.equal(account.verification_status, undefined); assert.equal(JSON.stringify(committed).includes('localpass123'), false); assert.equal(committed.session.current_user_id, null); assert.equal(committed.users.find(row => row.user_id === account.user_id).verification_status, 'pending')
   assert.equal(committed.accounts.filter(row => row.email === 'signup.pixel@campus.edu').length, 1)
   await duplicate_page.goto(`${origin}/?signupPixel=recovery#/pages/auth/signup`); await duplicate_page.locator('.signup-page').waitFor(); assert.equal(await input(duplicate_page, 'Password').inputValue(), ''); assert.equal(await input(duplicate_page, 'Confirm password').inputValue(), ''); assert.equal(await primary.count(), 1)
-  await duplicate_page.locator('[data-interaction="signup.createAccount.click.1"]').filter({ hasText: 'Continue verification' }).waitFor(); await duplicate_page.locator('[data-interaction="signup.createAccount.click.1"]').click(); await duplicate_page.locator('.verification-email-page').waitFor()
+  await duplicate_page.locator('.signup-page:visible [data-interaction="signup.createAccount.click.1"]').filter({ hasText: 'Continue verification' }).waitFor(); await duplicate_page.locator('.signup-page:visible [data-interaction="signup.createAccount.click.1"]').click(); await duplicate_page.locator('.verification-email-page').waitFor()
   check('duplicate email rolls back; one Loading creates one salted account; no plaintext/session/student certification; refresh recovers verification with blank passwords')
   await duplicate.close()
 
@@ -198,8 +199,8 @@ try {
   await fill(failure_page, 'University email', 'failure@campus.edu'); await fill(failure_page, 'Password', 'localpass123'); await fill(failure_page, 'Confirm password', 'localpass123')
   const before_failure = await saved(failure_page)
   await failure_page.evaluate(() => { const original = Storage.prototype.setItem; window.__restoreSignupStorage = () => { Storage.prototype.setItem = original }; Storage.prototype.setItem = function (key, value) { if (key === 'cimoa_app_state_v2') throw new DOMException('Injected signup storage failure', 'QuotaExceededError'); return original.call(this, key, value) } })
-  await failure_page.locator('[data-interaction="signup.createAccount.click.1"]').click(); await failure_page.locator('.loading').waitFor(); await failure_page.getByRole('alert').waitFor()
-  assert.equal(await saved(failure_page), before_failure); assert.equal(await failure_page.locator('.verification-email-page').count(), 0); assert.equal(await input(failure_page, 'Password').inputValue(), 'localpass123'); assert.equal(await failure_page.getByRole('alert').innerText(), 'Injected signup storage failure')
+  await failure_page.locator('.signup-page:visible [data-interaction="signup.createAccount.click.1"]').click(); await failure_page.locator('.loading').waitFor(); await failure_page.getByRole('alert').waitFor()
+  assert.equal(await saved(failure_page), before_failure); assert.equal(await failure_page.locator('.verification-email-page').count(), 0); assert.equal(await input(failure_page, 'Password').inputValue(), 'localpass123'); assert.equal(await failure_page.getByRole('alert').innerText(), 'Your changes couldn’t be completed. Please try again.')
   await failure_page.evaluate(() => window.__restoreSignupStorage()); check('injected persistence failure leaves the Store unchanged, preserves retryable credentials and never opens verification')
   await failure.close()
 

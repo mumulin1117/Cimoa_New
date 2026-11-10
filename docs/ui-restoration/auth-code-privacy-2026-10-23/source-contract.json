@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-23",
+  "scope": "User-authorized incremental presentation change; not a new authentication service or full-page acceptance",
+  "authorization": "Remove registration/reset fixed-code body copy, Show code again and related help; fixed code is internal validation only. User explicitly approved revising INTERACTION_CONVENTIONS.md section 9.2.",
+  "previous_contracts": [
+    "../verification-code/source-contract.json",
+    "../verification-email/source-contract.json",
+    "../reset-code/source-contract.json"
+  ],
+  "precedence": "This contract supersedes only the previous fixed-code disclosure, help and resend presentation requirements. Historical source snapshots and acceptance images remain historical evidence.",
+  "approved_deltas": [
+    "Registration code: remove verification-code-hint and the verification-info help card, including their unused styles. Keep six manual input cells, Change email, Verify Code, Back and correct/incorrect feedback.",
+    "Registration email: replace the promise of a code shown on the next screen with Use your university email to continue.",
+    "Reset code: remove fixed-code description, Show code again, its notice/Toast handler and unused styles. Use neutral 6-digit code placeholder; preserve manual input, Continue and Back.",
+    "Support FAQ: describe entering a reset code, not obtaining a code displayed by the next screen.",
+    "Remove the Store local_verification_code getter and its direct constant import. Keep the configured fixed code and exact-string validator internal. Do not prefill, disclose through accessibility/placeholder/Toast, or add an equivalent reveal control.",
+    "User-entered digits may be reflected in their own input; this is not unsolicited code disclosure. Short-format errors no longer hint at leading zeroes."
+  ],
+  "removed_interaction_ids": ["fpCode.resend.click.1"],
+  "unchanged": [
+    "Internal exact six-digit string validation, including leading zeroes",
+    "Existing Store account/reset ownership, successful verification and password-reset gates",
+    "Brand progress before persistent writes, duplicate guards, cancellation and rollback",
+    "Manual incorrect input remains retryable without mutation; correct input advances through the existing route",
+    "No email delivery, resend, countdown, expiration or student-verification success claim",
+    "Theme tokens, layout components, real safe areas, route transitions and existing user data"
+  ],
+  "evidence_directory": "artifacts/auth-code-privacy",
+  "full_page_status": "unchanged; this incremental regression does not mark the full pages verified"
+}

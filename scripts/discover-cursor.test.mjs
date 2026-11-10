@@ -67,7 +67,7 @@ test('failed logout keeps the cursor; successful logout and same-account relogin
   f.store.remember_discover_card(target); f.fail(true)
   assert.equal(f.store.logout().success, false); assert.equal(current(f.store), target)
   f.fail(false); assert.ok(f.store.logout().success); assert.equal(f.store.discover_cursor, null)
-  assert.ok((await f.store.login('cimoa@gmail.com', '12341234')).success)
+  assert.ok((await f.store.login('cimoa@connect.edu', '12341234')).success)
   assert.equal(current(f.store), 'user_zane')
 })
 test('another auth context, expired session and a fresh app instance cannot expose the previous cursor', () => {

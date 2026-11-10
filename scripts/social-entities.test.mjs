@@ -4,7 +4,7 @@ import fs from 'node:fs'
 import crypto from 'node:crypto'
 import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
-import { create_seed, clone_data, DISCOVER_PROFILE_IDS } from '../src/stores/seed.js'
+import { create_seed, clone_data, DISCOVER_PROFILE_IDS, HOME_REQUEST_ID, HOME_REQUEST_USER_ID } from '../src/stores/seed.js'
 import { AVATAR_PROFILE_IDS } from '../src/stores/peopleCatalog.js'
 import { upgrade_additive_data } from '../src/stores/migration.js'
 import { validate_data } from '../src/stores/selectors.js'
@@ -71,6 +71,16 @@ test('additive upgrade preserves profile edits, all relationships, sessions and 
   const next = upgrade_additive_data(store.data)
   assert.equal(next.users.find(row => row.user_id === 'user_noah').bio, 'Edited portrait profile.')
   assert.equal(next.memberships.some(row => row.user_id === 'user_noah'), false)
+})
+test('additive upgrade moves the legacy fixture invitation to Grace without changing its stable route ID', () => {
+  const old = create_seed(epoch), request = old.requests.find(row => row.request_id === HOME_REQUEST_ID)
+  request.sender_id = 'user_lina'
+  const { store, writes } = fixture(old), upgraded = store.data.requests.find(row => row.request_id === HOME_REQUEST_ID)
+  assert.equal(writes(), 0)
+  assert.equal(upgraded.sender_id, HOME_REQUEST_USER_ID)
+  assert.equal(store.home_connections.find(row => row.kind === 'invite').user_id, HOME_REQUEST_USER_ID)
+  assert.equal(store.user_by_id(HOME_REQUEST_USER_ID).avatar_url, '/static/assets/people/avatar-05.jpg')
+  assert.deepEqual(upgrade_additive_data(store.data), clone_data(store.data))
 })
 test('two real local registrations share requests, friendship, introduction and chat while retaining account isolation across reload', async () => {
   const f = fixture(), { store } = f
@@ -140,7 +150,7 @@ test('device matching retains search/pause/expiry deadlines and only a signed-in
 })
 test('credential work cannot resurrect a session after logout and invalid entity ownership is rejected', async () => {
   const f = fixture(create_seed(epoch)), { store } = f
-  const pending = store.login('cimoa@gmail.com', '12341234')
+  const pending = store.login('cimoa@connect.edu', '12341234')
   assert.equal(store.logout().success, true)
   assert.equal((await pending).success, false); assert.equal(store.session.is_authenticated, false)
   const data = create_seed(epoch)

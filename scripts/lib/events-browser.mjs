@@ -1,16 +1,16 @@
 import assert from 'node:assert/strict'
 import path from 'node:path'
-import fs from 'node:fs'
 import { create_scenario } from '../../src/stores/scenarios.js'
 
 export async function test_events({ page, origin, evidence, check }) {
   const now = Date.UTC(2026, 9, 13, 1)
   await page.clock.setFixedTime(new Date(now))
+  let fixture_generation = 0
   const load = async transform => {
     const data = create_scenario('default', now); transform?.(data)
     await page.evaluate(data => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data })), data)
-    await page.goto(origin + '/#/pages/events/index', { waitUntil: 'networkidle' })
-    await page.reload({ waitUntil: 'networkidle' }); await page.locator('.events-header').waitFor()
+    await page.goto(origin + '/?events-fixture=' + ++fixture_generation + '#/pages/events/index', { waitUntil: 'networkidle' })
+    await page.reload({ waitUntil: 'networkidle' }); await page.locator(data.session.expires_at <= now ? '.welcome-page' : '.events-header').waitFor()
   }
   const storage = () => page.evaluate(() => localStorage.getItem('cimoa_app_state_v2'))
   const data = async () => JSON.parse(await storage()).data
@@ -18,7 +18,7 @@ export async function test_events({ page, origin, evidence, check }) {
   const shot = name => page.screenshot({ path: path.join(evidence, `events-${name}.png`) })
   const entry = id => page.locator(`[data-interaction="${id}"]`).first()
   const picnic = () => page.locator('[data-event-id="event_picnic"]')
-  const settle = () => page.locator('.event-loading').waitFor({ state: 'hidden' })
+  const settle = () => page.locator('.event-loading:visible, .event-filter-loading:visible').waitFor({ state: 'hidden' })
   const open_settled = async () => {
     await page.locator('.event-dialog--open').waitFor()
     await page.locator('.event-dialog:visible .event-dialog-panel').evaluate(el => Promise.all(el.getAnimations().map(animation => animation.finished)))
@@ -34,16 +34,16 @@ export async function test_events({ page, origin, evidence, check }) {
   await shot('default'); check('Events source carousel geometry, 260ms transition, actual participants and local covers', { card, cover, chip, bar })
 
   const before = await storage()
-  for (const [id, target] of [['events.openMe.click.1', '/pages/profile/index'], ['events.openMyEvents.click.1', '/pages/events/upcoming'], ['events.openParticipants.click.1', '/pages/events/participants?event_id=event_picnic']]) {
+  for (const [id, target] of [['events.openMe.click.1', '/pages/profile/index'], ['events.openMyEvents.click.1', '/pages/events/upcoming'], ['events.openParticipants.click.1', '/pages/events/detail?event_id=event_picnic']]) {
     assert.equal(await entry(id).getAttribute('data-target'), target); await entry(id).click()
     if (id === 'events.openMe.click.1') {
       await page.locator('.profile-name').waitFor(); assert.equal(await page.locator('.secondary-page-frame:visible').getAttribute('data-page-depth'), '2')
       await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor()
-    } else { await page.locator(id.includes('openMyEvents') ? '.event-upcoming-page' : '.event-participants-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor() }
+    } else { await page.locator(id.includes('openMyEvents') ? '.event-upcoming-page' : '.event-detail-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor() }
   }
   for(const id of ['events.openEvent.click.1','events.openEvent.click.2']) { await entry(id).click(); await page.locator('.event-detail-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor() }
   assert.equal(await storage(), before)
-  check('Profile/My Events/detail/participants push and pop preserve entities and never autojoin')
+  check('Profile/My Events and all card summaries push and pop the matching detail without autojoining')
 
   await entry('events.evJoinTap.click.1').click(); await open_settled()
   const panel = await rect('.event-dialog:visible .event-dialog-panel')
@@ -57,23 +57,43 @@ export async function test_events({ page, origin, evidence, check }) {
   assert.equal(await picnic().locator('.event-join').textContent(), 'Joined'); assert.match(await picnic().locator('.event-count').textContent(), /4 going · 16 spaces/)
   assert.equal((await data()).memberships.filter(m => m.event_id === 'event_picnic' && m.user_id === 'user_cimoa').length, 1)
   await page.reload({ waitUntil: 'networkidle' }); assert.equal(await picnic().locator('.event-join').textContent(), 'Joined')
-  await entry('events.openGroup.click.1').click(); await page.locator('.event-group-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor()
-  assert.equal(await entry('events.openGroup.click.1').getAttribute('data-target'), '/pages/events/group?event_id=event_picnic&conversation_id=group_picnic')
+  assert.equal(await entry('events.openGroup.click.1').getAttribute('data-target'), '/pages/events/detail?event_id=event_picnic')
+  await entry('events.openGroup.click.1').click(); await page.locator('.event-detail-page').waitFor()
+  await page.locator('[data-interaction="evDetail.openGroup.click.1"]:visible').click(); await page.locator('.event-group-page').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.event-detail-page:visible').waitFor()
+  await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor()
   await shot('joined'); check('join confirmation, 500ms pre-write Loading, unique membership, success and My Events return, group permission and refresh', { panel })
 
-  await entry('events.manageAttendance.click.1').click(); await open_settled(); await shot('cancel-confirm')
+  const before_campus = await storage()
+  await page.getByRole('button', { name: 'My campus', exact: true }).click(); await page.locator('.event-filter-loading').waitFor({ state: 'visible' }); assert.equal(await storage(), before_campus)
+  await settle(); assert.equal(await page.locator('.event-card').count(), 1); assert.equal(await page.locator('.event-card').getAttribute('data-event-id'), 'event_picnic')
+  await page.reload({ waitUntil: 'networkidle' }); await picnic().waitFor()
+  assert.equal(await page.locator('.events-chip--active').textContent(), 'My campus'); assert.equal(await page.locator('.event-card').count(), 1)
+  assert.equal(await picnic().locator('.event-join').textContent(), 'Joined')
+  await shot('my-campus-joined'); check('My campus shows only the account’s joined event and restores the same entity after refresh')
+
+  await entry('events.manageAttendance.click.1').click(); await page.locator('.event-detail-page').waitFor()
+  await page.locator('[data-interaction="evDetail.manageAttendance.click.1"]:visible').click(); await open_settled(); await shot('cancel-confirm')
   const joined_disk = await storage()
   await page.getByRole('button', { name: 'Keep my spot', exact: true }).click(); await page.locator('.event-dialog:visible').waitFor({ state: 'hidden' }); assert.equal(await storage(), joined_disk)
-  await entry('events.manageAttendance.click.1').click(); await page.locator('.event-dialog--open').waitFor()
+  await page.locator('[data-interaction="evDetail.manageAttendance.click.1"]:visible').click(); await page.locator('.event-dialog--open').waitFor()
   await page.getByRole('button', { name: 'Cancel attendance', exact: true }).click(); await page.locator('.event-loading').waitFor({ state: 'visible' }); assert.equal(await storage(), joined_disk)
   await settle(); await page.locator('.event-dialog:visible').waitFor({ state: 'hidden' })
+  await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor()
+  await page.locator('.events-empty').waitFor(); assert.equal(await page.locator('.event-card').count(), 0)
+  await page.reload({ waitUntil: 'networkidle' }); await page.locator('.events-empty').waitFor()
+  assert.equal(await page.locator('.events-chip--active').textContent(), 'My campus'); assert.equal(await page.locator('.event-card').count(), 0)
+  assert.equal((await data()).memberships.find(m => m.event_id === 'event_picnic' && m.user_id === 'user_cimoa').status, 'left')
+  await shot('my-campus-empty')
+  await page.getByRole('button', { name: 'Today', exact: true }).click(); await settle(); await picnic().waitFor()
   assert.equal(await picnic().locator('.event-join').textContent(), 'Join event'); assert.equal(await picnic().locator('.event-manage').count(), 0)
-  await page.reload({ waitUntil: 'networkidle' }); assert.match(await picnic().locator('.event-count').textContent(), /3 going · 17 spaces/)
-  check('keep spot is read-only; cancel restores capacity and group access state through refresh')
+  assert.match(await picnic().locator('.event-count').textContent(), /3 going · 17 spaces/)
+  check('keep spot is read-only; cancellation removes My campus card through refresh and restores recommendation capacity/group access state')
 
-  for (const [label, expected] of [['This week','Rooftop Film Night'], ['My campus','HKUST Night Market'], ['Today','Sunset Picnic']]) {
-    const before_filter = await storage(); await page.getByRole('button', { name: label, exact: true }).click(); await page.locator('.event-loading').waitFor({ state: 'visible' }); assert.equal(await storage(), before_filter)
-    await settle(); assert.equal(await page.locator('.event-title').first().textContent(), expected)
+  for (const [label, expected] of [['This week','Rooftop Film Night'], ['My campus',null], ['Today','Sunset Picnic']]) {
+    const before_filter = await storage(); await page.getByRole('button', { name: label, exact: true }).click(); await page.locator('.event-filter-loading').waitFor({ state: 'visible' }); assert.equal(await storage(), before_filter)
+    await settle()
+    if (expected) assert.equal(await page.locator('.event-title').first().textContent(), expected)
+    else { await page.locator('.events-empty').waitFor(); assert.equal(await page.locator('.event-card').count(), 0) }
     await page.reload({ waitUntil: 'networkidle' }); assert.equal(await page.locator('.events-chip--active').textContent(), label)
   }
   const horizontal = await page.locator('.events-carousel .uni-scroll-view-scrollbar-hidden').evaluate(el => { el.scrollLeft = 321; return el.scrollLeft })
@@ -89,19 +109,19 @@ export async function test_events({ page, origin, evidence, check }) {
   await page.reload({ waitUntil: 'networkidle' }); check('storage failures preserve membership, filter and retryable dialog without false success')
 
   await load(d => { d.events.forEach(e => { e.starts_at = now - 7200000; e.ends_at = now - 1 }) }); await page.locator('.events-empty').waitFor(); await shot('empty')
-  await load(d => { d.events[0].capacity = 3 }); await entry('events.evJoinTap.click.1').click(); assert.match(await page.locator('.events-feedback').textContent(), /full/)
-  await load(d => { d.users[0].verification_status = 'pending' }); await entry('events.evJoinTap.click.1').click(); assert.match(await page.locator('.events-feedback').textContent(), /verification/)
-  await load(d => { d.session.expires_at = now - 1 }); assert.match(await page.locator('.events-state').textContent(), /session/)
+  await load(d => { d.events[0].capacity = 3 }); await picnic().waitFor(); const full_before = await storage(); await entry('events.evJoinTap.click.1').evaluate(node => node.click()); assert.equal(await entry('events.evJoinTap.click.1').getAttribute('aria-disabled'), 'true'); assert.equal(await page.locator('.event-dialog:visible,.event-detail-page:visible').count(), 0); assert.equal(await storage(), full_before)
+  await load(d => { d.users[0].verification_status = 'pending' }); await entry('events.evJoinTap.click.1').click(); assert.match(await page.locator('.brand-toast--error').textContent(), /verification/)
+  await load(d => { d.session.expires_at = now - 1 }); await page.locator('.welcome-page').waitFor(); assert.equal(await page.locator('.event-card:visible').count(), 0)
   check('real empty/ended, capacity and unverified/session errors never open a false success flow')
 
   await load(d => { d.events[0].image_url = '/static/assets/img/test-unavailable.png' })
   await picnic().locator('.profile-photo[data-media-status="error"]').waitFor()
   const photo_before = await storage(); await shot('photo-error')
-  await page.route('**/test-unavailable.png', route => route.fulfill({ contentType: 'image/png', body: fs.readFileSync('static/assets/img/event-picnic.png') }))
-  await picnic().getByRole('button', { name: 'Retry photo', exact: true }).click(); await picnic().locator('.profile-photo[data-media-status="ready"]').waitFor()
-  assert.equal(await storage(), photo_before); await page.unroute('**/test-unavailable.png')
+  await picnic().getByRole('button', { name: 'Retry photo', exact: true }).click(); await page.locator('.event-detail-page').waitFor()
+  assert.match(page.url(), /pages\/events\/detail\?event_id=event_picnic/); assert.equal(await storage(), photo_before)
+  await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.events-header:visible').waitFor()
   await load(d => { d.events[0].image_url = '' }); await picnic().locator('.profile-photo[data-media-status="empty"]').waitFor()
-  check('missing/failed cover is honest; retry loads the same entity photo without navigation or storage writes')
+  check('missing/failed cover is honest; the failed-cover Retry region follows the whole-cell detail action without storage writes')
   await page.evaluate(() => localStorage.setItem('cimoa_app_state_v2', JSON.stringify({ type: 'object', data: { schema_version: 999 } })))
   await page.reload({ waitUntil: 'networkidle' }); const corrupt = await storage(); await shot('read-error')
   await page.getByRole('button', { name: 'Retry', exact: true }).click(); assert.equal(await storage(), corrupt)

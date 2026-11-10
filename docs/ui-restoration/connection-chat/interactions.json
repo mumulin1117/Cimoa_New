@@ -220,7 +220,7 @@
     "source_screen": "chat; source-contract.json",
     "trigger": "click / keyboard activation",
     "preconditions": "authenticated participant with a current mutual Connection and canonical Conversation; no concurrent write",
-    "visible_feedback": "prepare actual captured draft; real play/pause/error",
+    "visible_feedback": "2026-10-24 branded voice studio review card; actual play/pause/time-driven progress and Ready to replay; disabled and paused during send",
     "success_result": "Preview this recording before confirmation; no message is published",
     "failure_result": "Readable error without fake success; cancelled/failed writes keep previous consent, messages and balance intact; retries remain available",
     "persistence": "none; existing entity state is preserved",
@@ -256,7 +256,7 @@
     "source_screen": "chat; source-contract.json",
     "trigger": "click / keyboard activation",
     "preconditions": "authenticated participant with a current mutual Connection and canonical Conversation; no concurrent write",
-    "visible_feedback": "Opening microphone → actual recording → Stop; explicit denied/unavailable error",
+    "visible_feedback": "2026-10-24 branded voice studio: explicit Microphone access → Recording and actual timer → Preparing audio → preview; real denied/unavailable error, no fake waveform",
     "success_result": "Use production recorder; stopping creates a validated draft; record again replaces only the draft, never publishes",
     "failure_result": "Readable error without fake success; cancelled/failed writes keep previous consent, messages and balance intact; retries remain available",
     "persistence": "none; existing entity state is preserved",
@@ -298,6 +298,18 @@
     "persistence": "none; only transient preview ID and reference-counted object URL",
     "sync_scope": "Existing Conversation.Message.media_id and media_files; no page copy",
     "acceptance": "settings-safety-browser safety-actions; native DirectChatSafetyAndMedia; image aspectFit and refresh assertions"
+  },
+  {
+    "interaction_id": "chat.media.dismiss.click.1",
+    "source_screen": "2026-10-24 user-authorized private-chat voice-sheet redesign; source chat.sendVoiceMsg@1268 has no dedicated prototype sheet",
+    "trigger": "tap / Enter / Space; Escape uses the same close path",
+    "preconditions": "Voice message sheet is open; no active message persistence",
+    "visible_feedback": "Top-right X; existing 240ms Sheet exit; restore composer focus; control disabled during sending",
+    "success_result": "Close this sheet in the same conversation; abort pending microphone request, stop capture/playback and release unsent draft media",
+    "failure_result": "During sending ignore close; no pending request, late stream or decoder may recreate the cancelled draft",
+    "persistence": "none; no message or media write on close",
+    "sync_scope": "Current conversation composer only; persisted messages, relationships and coins stay unchanged",
+    "acceptance": "voice-message browser/WK reports: cancel errors and pending requests, stop late tracks, reopen cleanly, preserve business bytes"
   },
   {
     "interaction_id": "chat.image.retry.click.1",

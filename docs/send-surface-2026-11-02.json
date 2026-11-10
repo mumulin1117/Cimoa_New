@@ -1,0 +1,35 @@
+{
+  "task": "Discover Send ↔ Say Hi: point-to-surface / surface-to-point",
+  "date": "2026-11-02",
+  "status": "in_progress",
+  "visual_acceptance": "pending",
+  "follow_up_2026_11_03": { "report": "match-preferences-surface-2026-11-03.json", "discover_regression": "7 cases / 156 assertions passed with explicit rejection of hidden return-not-arrived issues", "shared_fix": "Retain the collapsed real target/source until actual source-page activation, not the early platform Back callback", "current_h5_index_sha256": "955e108d3933a232cb95e91c9da6aaf2cfacefcba17b4ffc8a991d0a701b0441", "note": "Original metrics below remain historical; the linked current report and regenerated browser artifact contain the latest checks." },
+  "authorization": "User explicitly requested expansion from the Send button into Say Hi, and contraction back to the same source; scoped convention updates replace this direct link's previous cRise.",
+  "scope": {
+    "source": "/pages/discover/index",
+    "target": "/pages/discover/icebreaker/select?user_id=<current person>",
+    "return": "Real retained source page and the same Send button, not a hard-coded Home Tab.",
+    "interaction_ids": ["photo.sayHi.click.1", "ibSelect.goBack.click.1"],
+    "entry_ms": 240,
+    "return_ms": 180,
+    "entry_easing": "cubic-bezier(.2,.8,.25,1)",
+    "return_easing": "cubic-bezier(.4,0,1,1)",
+    "geometry": "Measured Send center; clip circle from zero to a radius covering every viewport corner; reverse on return. Real text is never scaled.",
+    "ownership": "Vue Teleport temporarily presents the same real source/target frames outside keep-alive. No screenshot, clone, iframe, manual cache-tree move or second business instance.",
+    "business_changes": "none"
+  },
+  "preserved": ["final page layout and copy", "real route stack", "same Discover cursor", "manual question selection and unsent answers", "10-coin introduction confirmation and atomic ledger", "Voice preview", "400–600ms write waiting", "600ms first-entry skeleton", "keyboard handoff and cancellation", "Waiting for reply / Chat / View request semantics"],
+  "verification": {
+    "unit": { "status": "passed", "tests": 176, "targeted_files": ["send-surface.test.mjs", "send-surface-navigation.test.mjs", "send-surface-geometry.test.mjs", "icebreaker-continuity.test.mjs", "page-return.test.mjs", "auth-keyboard.test.mjs", "navigation-lock.test.mjs", "introduction-forms.test.mjs", "introduction-payment.test.mjs", "discover-request.test.mjs", "discover-cursor.test.mjs", "discover-fan-motion.test.mjs", "discover-swipe.test.mjs", "touch-gestures.test.mjs", "touch-policy.test.mjs", "touch-write-lifecycle.test.mjs"] },
+    "browser": { "status": "passed", "cases": 7, "assertions": 148, "screenshots": 17, "page_errors": 0, "unexpected_warnings": 0, "business_submissions": 0, "microphone_requests": 0, "expected_diagnostic_warnings": 16, "warning_reason": "Existing uni statistics fetches were deliberately blocked by the isolated runner.", "report": "../artifacts/send-surface-2026-11-02/browser-report.json", "prior_flow_regression": "5 cases / 168 assertions passed with the scoped Select exception and unchanged text/voice behavior" },
+    "preview": { "file": "../artifacts/send-surface-2026-11-02/send-say-hi-roundtrip-393x852.webm", "report": "../artifacts/send-surface-2026-11-02/preview-report.json", "capture": "36 actual Chrome frames; no animation pausing in this recording; re-encoded for viewing, not a native frame-rate benchmark." },
+    "wkwebview": { "status": "partial", "debug_build": "passed", "upgrade_install": "passed", "launch": "passed; actual Home screenshot captured", "screenshot": "../artifacts/send-surface-2026-11-02/wkwebview-final-launch.png", "device": "iPhone 17 Pro", "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D", "bundle_id": "com.cimoa.neapo.dev", "gui_blocker": "Mac locked; user asked to unlock manually. No attempt to bypass the lock. Native Send/Back touch, real background and keyboard acceptance remain pending.", "data_policy": "Upgraded existing app only; no uninstall, account reset, real microphone or purchase." },
+    "check_conventions": "passed; no warnings",
+    "diff_check": "passed",
+    "build_h5": "passed; copied into the existing iOS project",
+    "resource_integrity": { "dist_files": 443, "ios_packaged_files": 444, "dist_index_sha256": "a5b2aaccd8294474a49fe37ae04e04885c964cc8ea2f67f2fcea9a311dab0d5f", "host_code_mismatches": 0, "built_app_code_mismatches": 0 },
+    "processes": "No preview server started; browser contexts and recording contexts closed."
+  },
+  "changed_files": ["DEVELOPMENT_CONVENTIONS.md", "INTERACTION_CONVENTIONS.md", "src/App.vue", "src/config/navigation.js", "src/components/PageTransition.vue", "src/components/SecondaryPageFrame.vue", "src/components/SendSurfaceHost.vue", "src/composables/useSendSurface.js", "src/utils/sendSurface.js", "src/utils/sendSurfaceHost.js", "src/utils/sendSurfaceGeometry.js", "src/pages/discover/index.vue", "src/pages/discover/icebreaker/select.vue", "src/pages/discover/icebreaker/icebreaker.css", "scripts/send-surface.test.mjs", "scripts/send-surface-navigation.test.mjs", "scripts/send-surface-geometry.test.mjs", "scripts/send-surface-browser.test.mjs", "scripts/icebreaker-continuity.test.mjs", "scripts/discover-flow-motion-browser.test.mjs", "docs/send-surface-2026-11-02.json", "dist/build/h5 (generated)", "ios/cimoaNeapo/Resources/H5 (generated)"],
+  "limitations": ["No origin is invented for a direct deep link, an invalid source or a cancelled association; the real safe return remains available and the missing effect is not accepted as completed.", "Reduced motion uses only fade while retaining navigation and timing.", "Browser diagnostic interruptions are not actual iOS background or keyboard acceptance.", "Pre-existing dirty and staged user changes remain untouched; no staging, commit or push performed."]
+}

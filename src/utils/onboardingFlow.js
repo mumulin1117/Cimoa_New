@@ -30,6 +30,6 @@ export function onboarding_error(step, value, now) {
   if (step === 'interests' && (!Array.isArray(value.interest_ids) || new Set(value.interest_ids).size < 3 || value.interest_ids.some(id => !ONBOARDING_INTEREST_IDS.includes(id)))) return 'Choose at least three interests.'
   if (step === 'goal' && (!Array.isArray(value.goal_ids) || !value.goal_ids.length || value.goal_ids.some(id => !ONBOARDING_GOALS.some(row => row.item_id === id)))) return 'Choose at least one connection goal.'
   if (step === 'ice' && (!Array.isArray(value.questions) || value.questions.length !== 3 || new Set(value.questions.map(q => String(q).trim())).size !== 3 || value.questions.some(q => question_error(q)))) return 'Choose three different, safe questions (up to 160 characters each).'
-  if (step === 'notif' && !['granted', 'denied', 'unavailable', 'skipped'].includes(value.notification_permission)) return 'Check notification permission or choose Not Now.'
+  if (step === 'notif' && !['granted', 'denied', 'unavailable', 'skipped'].includes(value.notification_permission)) return 'Check notification permission or choose Cancel.'
   return ''
 }

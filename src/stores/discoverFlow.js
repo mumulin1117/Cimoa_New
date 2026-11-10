@@ -7,7 +7,7 @@ import { direct_conversation } from './directMessaging.js'
 // A tap never grants consent, creates a conversation or restarts an old request.
 export function introduction_context(data, target, draft_id = null, now = Date.now(), hydration_status = 'ready') {
   const empty = error => ({ error, user: null, questions: [], question: null, draft: null, audio: null, primary: null, blocker: error, completed_request_id: null, balance: null })
-  if (hydration_status !== 'ready') return empty('Saved data is unavailable. Please retry loading it.')
+  if (hydration_status !== 'ready') return empty('Your information is unavailable. Please try again.')
   if (!authenticated(data, now)) return empty('Your session has expired. Please sign in again.')
   const owner = owner_id(data), user = user_by_id(data, target)
   if (!user || owner === target) return empty('This profile is unavailable.')
@@ -27,6 +27,6 @@ export function introduction_context(data, target, draft_id = null, now = Date.n
     const match = data.match_sessions.find(row => row.match_id === relation.match_id), incoming = match.owner_user_id !== owner
     primary = { kind: 'match', label: 'View match', destination: incoming ? `/pages/connections/received?match_id=${encodeURIComponent(match.match_id)}` : `/pages/auto-match/${relation.match_status}?match_id=${encodeURIComponent(match.match_id)}`, error: '' }
   } else primary = { kind: 'introduction', label: 'Send shot', destination: blocker ? '' : `/pages/discover/icebreaker/select?user_id=${encodeURIComponent(target)}`, error: blocker }
-  const error = draft_id && (!draft || !question) ? 'This introduction draft is unavailable. Choose a question again.' : ''
+  const error = draft_id && (!draft || !question) ? 'This introduction is unavailable. Choose a question again.' : ''
   return clone_data({ error, user, questions, question, draft: draft || null, audio, primary, blocker, completed_request_id: completed?.request_id || null, balance: balance(data) })
 }

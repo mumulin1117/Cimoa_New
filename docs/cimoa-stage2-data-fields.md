@@ -76,7 +76,7 @@
 | settings | owner_user_id, notifications, privacy, language | ID/object/object/en-US | setNotif, setPrivacy, setLang | users | local_storage_metadata | update_settings |
 | permissions | owner_user_id, camera, microphone, photos, notifications, location | ID/unknown或granted或denied或unavailable | perm*, setPerm | 真实设备权限 | derived | refresh_permissions |
 | blocked_users | block_id, owner_user_id, user_id, created_at | ID/ID/ID/number | blockedList, safety | users | local_storage_metadata | block_user, unblock_user |
-| reports | report_id, owner_user_id, target_type, target_id, reason, description, status, created_at | ID/ID/user或event/ID/string/string/local_saved或submitted或resolved/number | safetyReport, evReport, reportsSubmitted | users/events | local_storage_metadata | submit_report |
+| reports（旧版本只读兼容） | report_id, owner_user_id, target_type, target_id, context_id, reason, description, status, created_at | ID/ID/user或event或group/ID/nullable ID/string/string/local_saved/number | reportsSubmitted（仅展示遗留记录） | users/events/conversations；group 的 target_id=conversation_id、context_id=该群 event_id | legacy_local_metadata | 新提交只校验实体、原因、会话与报名归属，不新增记录；允许重复提交；不自动退群、不改消息或金币 |
 | drafts | draft_id, owner_user_id, kind, target_id, payload, updated_at | ID/ID/string/nullable ID/object/number | editAll, ibText, support, onboarding | users/events | local_storage_metadata | save_draft, discard_draft |
 | auth_flow | owner_user_id, step, email, verification_request_id, agreements, profile_draft | nullable ID/string/string/nullable ID/object/object | signup, ver*, fp*, ob* | accounts | local_storage_metadata | save_auth_draft, apply_verification |
 | support_requests | support_id, owner_user_id, body, status, external_ticket_id | ID/ID/string/draft或submitted/nullable ID | setSupport | users | local_storage_metadata | submit_support |
@@ -119,7 +119,7 @@ Discover 本页补充（2026-10-13）：`discover_person` 为只读 getter，从
 | start_match / transition_match / boost_match | 学生认证有效；同账号仅一个活动队列；UTC 免费额度或费用与队列一次提交；优先截止时间 now+900000 | 服务不可用不入池；接受对方事件须可信适配器；重复 operation_id 不重复消费；无页面计时假接受 |
 | join_event / leave_event / update_event_preferences | 活动未结束、未满且未重复；报名与群聊权限同源；时间/容量从实体派生 | 失败人数不变；退出仅当前成员；低交互收藏仍处理写失败 |
 | begin_purchase / settle_purchase / apply_refund | 请求绑定账号、套餐；仅可信回调确认 product_id/receipt_id 才增加一次；退款引用原有效扣款并补一次 | 缺 handler 等完整 8000ms；取消/失败/超时无金币；迟到/重复/错账号回调拒绝 |
-| block_user / unblock_user / submit_report | 当前 owner 范围；举报真实实体，可选屏蔽同事务；本地状态只能 local_saved | 失败无半条举报/屏蔽；不造客服处理进度；解除不创建关系 |
+| block_user / unblock_user / submit_report | 当前 owner 范围；举报必须指向真实实体；普通举报不写入业务状态，可重复提交；举报并拉黑时仅拉黑与关系清理同事务 | 失败不显示成功反馈且无半条屏蔽；不新增举报历史；解除不创建关系 |
 | save_draft / save_auth_draft / update_settings | owner 与当前会话绑定；仅可读自己草稿/安全记录/账本；隐私 getter 按访问者过滤 | 切换账号不可显示旧账号内容；不保存密码、验证码或媒体本体 |
 | create_account / reset_password / apply_verification / submit_support | 真实服务成功结果通过适配器返回；测试通过独立注入适配器覆盖 | 未配置明确 unavailable；无“邮件已发送/客服已接单”假反馈 |
 

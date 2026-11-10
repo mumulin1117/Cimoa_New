@@ -35,7 +35,7 @@ onHide(() => { navigating.value = false })
       <view class="spend-failed-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 7v7M12 17.5v.5" /></svg></view>
       <text class="spend-failed-title">We couldn’t complete that</text>
       <text class="spend-failed-copy">{{ access_error || ('No coins were deducted. Your balance is ' + store.coin_balance + '.') }}</text>
-      <text v-if="error" class="flow-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error" :message="error" @dismiss="error = String()" />
       <text v-if="access_error" class="flow-error" role="alert">{{ access_error }}</text>
     </view>
     <template #footer>

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { createPinia, setActivePinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_scenario } from '../src/stores/scenarios.js'
+import { HOME_REQUEST_USER_ID } from '../src/stores/seed.js'
 import { home_destination, require_home_destination_ready } from '../src/utils/homeNavigation.js'
 const make = (scenario = 'default') => {
   setActivePinia(createPinia()); const store = use_app_store(); const now = Date.now(), data = create_scenario(scenario, now)
@@ -15,7 +16,7 @@ test('Home destinations use canonical entity IDs, have no write or balance effec
   assert.equal(home_destination(store, 'discover'), '/pages/discover/index')
   assert.equal(home_destination(store, 'card', 'user_chloe'), '/pages/messages/chat?conversation_id=conversation_chloe')
   assert.equal(home_destination(store, 'card', 'user_liam'), '/pages/auto-match/found?match_id=match_liam')
-  assert.equal(home_destination(store, 'card', 'user_lina'), '/pages/connections/received?request_id=request_lina')
+  assert.equal(home_destination(store, 'card', HOME_REQUEST_USER_ID), '/pages/connections/received?request_id=request_lina')
   assert.equal(JSON.stringify(store.data), before)
 })
 test('restored dependencies navigate to their exact entity routes without writes', () => {
@@ -24,13 +25,13 @@ test('restored dependencies navigate to their exact entity routes without writes
   assert.equal(require_home_destination_ready(home_destination(store, 'match')), '/pages/auto-match/index')
   assert.equal(require_home_destination_ready(home_destination(store, 'card', 'user_chloe')), '/pages/messages/chat?conversation_id=conversation_chloe')
   assert.equal(require_home_destination_ready(home_destination(store, 'card', 'user_liam')), '/pages/auto-match/found?match_id=match_liam')
-  assert.equal(require_home_destination_ready(home_destination(store, 'card', 'user_lina')), '/pages/connections/received?request_id=request_lina')
+  assert.equal(require_home_destination_ready(home_destination(store, 'card', HOME_REQUEST_USER_ID)), '/pages/connections/received?request_id=request_lina')
   assert.equal(require_home_destination_ready(home_destination(store, 'profile')), '/pages/profile/index')
   assert.equal(require_home_destination_ready(home_destination(store, 'discover')), '/pages/discover/index')
   assert.equal(JSON.stringify(store.data), before)
 })
 test('Home rejects blocked, expired, declined, one-way and logged-out navigation', () => {
-  for (const [scenario, id] of [['blocked','user_chloe'], ['match_expired','user_liam'], ['request_declined','user_lina'], ['one_way','user_chloe']]) assert.throws(() => home_destination(make(scenario), 'card', id), /no longer/)
+  for (const [scenario, id] of [['blocked','user_chloe'], ['match_expired','user_liam'], ['request_declined',HOME_REQUEST_USER_ID], ['one_way','user_chloe']]) assert.throws(() => home_destination(make(scenario), 'card', id), /no longer/)
   assert.throws(() => home_destination(make('session_expired'), 'profile'), /session/)
 })
 test('Home status cards derive current candidate, exact route and deadlines without mutations', () => {

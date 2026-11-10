@@ -177,6 +177,7 @@
       "delta": "When the real keyboard reduces visualViewport height, keep the six-digit input region visible in the only scroll region and fold the fixed footer until the keyboard closes."
     }
   ],
+  "current_presentation_contract": "../auth-code-privacy-2026-10-23/source-contract.json",
   "implementation_baseline": {
     "captured_at": "2026-10-16",
     "files": [

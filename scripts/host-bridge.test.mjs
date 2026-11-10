@@ -15,3 +15,15 @@ test('absent host, real rejection and full timeout never fabricate a result', as
   const pending = create_host_bridge({ send: () => new Promise(() => {}), timers: { setTimeout(fn, ms) { callback=fn; duration=ms; return 1 }, clearTimeout() {} } }).request('getEnvironment')
   assert.equal(duration, 8000); callback(); await assert.rejects(pending, /did not respond/)
 })
+test('versioned purchase RPC forwards structured params without changing legacy envelopes', async () => {
+  const sent = [], bridge = create_host_bridge({ send: payload => { sent.push(payload); return Promise.resolve({ version: 1, request_id: payload.request_id, success: true, result: { accepted: true } }) } })
+  const purchase = { request_id: 'purchase_1', package_id: 'pkg_60', owner_user_id: 'user_cimoa', product_id: 'rblzerghvsqyxkgp' }
+  await bridge.request('startPurchase', purchase)
+  assert.deepEqual(sent[0].params, purchase)
+  assert.notEqual(sent[0].request_id, purchase.request_id)
+  await bridge.request('getSafeArea')
+  assert.equal(Object.hasOwn(sent[1], 'params'), false)
+  await assert.rejects(bridge.request('startPurchase', []), /incomplete/)
+  await assert.rejects(bridge.request('startPurchase', null), /incomplete/)
+  assert.equal(sent.length, 2)
+})

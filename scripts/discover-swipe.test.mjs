@@ -1,9 +1,10 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { DISCOVER_DECK } from '../src/config/discoverDeck.js'
-import { swipe_commits, swipe_progress, deck_card_style, bind_card_pointer_events } from '../src/utils/discoverSwipe.js'
+import { swipe_commits, swipe_progress, deck_card_style, deck_layer_geometry, bind_card_pointer_events } from '../src/utils/discoverSwipe.js'
 
-const style = (depth, x = 0, options = {}) => deck_card_style({ depth, x, y: 0, width: 353, height: 528, dragging: false, settling: false, resetting: false, duration: DISCOVER_DECK.exit_ms, ...options })
+const space = { left: 20, right: 20, top: 0, bottom: 14 }
+const style = (depth, x = 0, options = {}) => deck_card_style({ depth, x, y: 0, width: 353, height: 528, space, dragging: false, settling: false, resetting: false, duration: DISCOVER_DECK.exit_ms, ...options })
 test('either direction commits only at one third of measured width, not a short high-speed flick', () => {
   for (const width of [280, 320, 353, 361, 400]) for (const direction of [-1, 1]) {
     for (const ratio of [0, .01, .1, .24, .32]) assert.equal(swipe_commits(direction * width * ratio, width), false)
@@ -16,10 +17,14 @@ test('either direction commits only at one third of measured width, not a short 
 })
 test('three staggered layers use opposite rotations and stable stacking with no changed text or color', () => {
   assert.match(style(0).transform, /translate3d\(0%,0%,0\) rotate\(0deg\)/)
-  assert.match(style(1).transform, /rotate\(-2.4deg\) scale\(0.96\)/)
-  assert.match(style(2).transform, /rotate\(2.2deg\) scale\(0.92\)/)
+  const layers = deck_layer_geometry({ width: 353, height: 528, space })
+  assert.ok(layers[1].angle < -2.4 && layers[2].angle > 2.2)
+  assert.ok(layers[1].x < 0 && layers[2].x > 0)
+  assert.ok(style(1).transform.includes(`rotate(${layers[1].angle}deg) scale(0.95)`))
+  assert.ok(style(2).transform.includes(`rotate(${layers[2].angle}deg) scale(0.91)`))
   assert.deepEqual([0, 1, 2].map(depth => style(depth).zIndex), [3, 2, 1])
-  assert.deepEqual(Object.keys(style(0)).sort(), ['transform', 'transition', 'zIndex'])
+  assert.deepEqual(Object.keys(style(0)).sort(), ['--deck-fan-angle', '--deck-shadow-duration', '--deck-shadow-strength', 'transform', 'transition', 'zIndex'])
+  assert.deepEqual([0, 1, 2].map(depth => style(depth)['--deck-shadow-strength']), [1, .64, .36])
 })
 test('incoming and rear layers interpolate continuously and meet exact next-role transforms at release threshold', () => {
   assert.equal(swipe_progress(0, 353), 0); assert.ok(Math.abs(swipe_progress(353 / 6, 353) - .5) < 1e-12); assert.equal(swipe_progress(10000, 353), 1)

@@ -6,7 +6,7 @@
 
 ## 本地能力边界
 
-- 举报只保存到当前设备，状态固定为 `local_saved`；界面明确没有发送给审核团队。缺少客服服务时只保存草稿并显示投递失败。
+- 举报提交在校验后返回来源页，仅显示统一品牌反馈，不新增举报历史；允许对同一对象重复举报。若同时选择拉黑，仅拉黑关系与既有关系清理结果持久化。客服能力仍按实际可用状态反馈。
 - 拉黑原子移除双方关系、待处理请求、当前 Auto Match 候选、私聊会话和私聊消息；解除拉黑只移除 block 记录，不恢复上述数据。
 - 权限页读取系统或浏览器真实状态；普通浏览器的宿主设置入口明确失败。通知请求使用真实系统结果。
 - 法律页是本地构建的信息说明，不声称已有发布主体、隐私联系人或生产服务条款。
@@ -37,10 +37,13 @@
 | `setPerm.p.openSettings.click.1` / Permissions | 点击；真实状态读取完成 | 状态徽标；WKWebView 打开系统设置 | 浏览器/宿主失败显示明确错误 | none；系统权限；前后台恢复后重新读取 |
 | `setLang.o.pick.click.1` / Language | 点击 | English 保持选中 | 繁中未实现时明确不可用，不伪切换 | none；全局 locale；刷新仍为 en-US |
 | `blockedList.b.unblock.click.1`, `unblockOpen.confirmUnblock.click.1` / Blocked | 点击、确认；目标仍被当前账号拉黑 | 自定义 Sheet + 400–600ms Loading；成功移除 block | 取消/写失败保持拉黑 | local metadata；所有人物/聊天/活动筛选；解除后不恢复关系/消息 |
-| `safetyReport.submitReport.click.1`, `evReport.submitEvReport.click.1` / Report | 点击；真实目标、原因有效且不能举报自己 | 400–600ms Loading；显示“saved locally”结果 | 失败保留理由/描述且无半记录 | local metadata；Submitted Reports；刷新可查看同一 report_id |
+| `safetyReport.submitReport.click.1`, `evReport.submitEvReport.click.1` / Report | 点击；真实目标、原因有效且不能举报自己 | 400–600ms 品牌 Loading；返回来源页并显示 `Thank you for sharing your concern. We’ll review it as soon as possible.` | 失败保留理由/描述；不显示成功反馈 | 不新增举报记录；同一对象可重复提交；勾选拉黑时仅持久化拉黑事务 |
 | `settings.openDelInfo.click.1` → `delFinal.confirmDelete.click.1` / Delete | 逐层点击；密码正确 | 自定义危险确认、Loading；清除本地账号私有实体并进入成功页 | 密码/存储失败保持账号和会话 | local metadata + IndexedDB cleanup；所有受保护页；旧凭据不可再登录 |
 | `coinStore.p.pick.click.1`, `coinStore.continuePurchase.click.1` / Coin Center | 选择、继续；套餐存在且无 pending 购买 | 选择不写；确认后 Loading、创建 pending 并进入 purchasing | 写失败余额不变 | local metadata；购买状态/历史；重复触发只产生一个 request_id |
-| `coinApple.appleConfirm.click.1` / Purchasing | 原生回调；请求、账号、套餐匹配 | 保持请求态到完整超时；可信成功才入账 | 无 handler/缺 product/失败/取消/超时均落对应状态且余额不变 | purchase request + verified ledger；Profile/Settings/History；重复或迟到回调不入账 |
+| `coinApple.appleConfirm.click.1` / Purchasing | 原生回调；请求、账号、商品、receipt 匹配 | 八秒仅限制宿主应答，已受理保持 pending；原生验签并二次核对、Store 原子落账后 ACK/finish | 未受理超时或真实失败不加币；退出不假取消苹果付款 | purchase request + verified ledger；Profile/Settings/History；迟到有效交易可恢复，每 transaction ID 仅入账一次 |
+| `coinPurchasing.reviewInterrupted.click.1` / Purchasing | 点击；当前账号请求为 interrupted 且 native 标记可释放 | 打开品牌确认弹窗，明确原付款仍可能完成、新购买为另一笔付款 | 不可释放/待批准时不修改状态 | none；同一 request_id；正常 Apple pending 无此入口 |
+| `purchaseRecovery.close.click.1`, `purchaseRecovery.keepChecking.click.1` / Purchase recovery dialog | 关闭/继续核对；尚未提交 | 关闭弹层，继续保留原请求 | Loading 期间禁用重复操作 | none；Purchasing；取消不取消苹果交易、不扣币 |
+| `purchaseRecovery.release.click.1` / Purchase recovery dialog | 明确确认；当前账号同请求仍可释放 | 单次 400–600ms Loading 后原生释放等待、H5 同步 Request released；允许另开一笔购买 | 原生或 H5 写失败可刷新重试，不假称支付取消 | native journal + purchase metadata；恢复页/历史/余额；中途退出后可修复释放状态，原交易迟到仍幂等交付 |
 | `coinHistory.h.pick.click.1`, `coinHistory.t.go.click.1` / History | 点击筛选/流水 | 过滤当前账号同一账本，详情传 transaction_id | 非法 ID 显示可返回错误态 | none；余额/详情；空、长列表、刷新和返回一致 |
 | `fpEmail.goFpCode.click.1` / Reset email | 点击；登出且本设备存在 active local/fixture 账号 | Loading 后创建 reset_id，明确展示本地固定码规则 | 未找到/写失败保留邮箱 | local auth_flow；reset pages；其他账号不可复用 reset_id |
 | `fpCode.goFpNew.click.1` / Reset code | 点击；reset_id 匹配且代码精确为字符串 `009789` | Loading 后标记该 reset 已验证 | 任意其他格式失败且不写 | local auth_flow；new password page；刷新恢复验证状态 |

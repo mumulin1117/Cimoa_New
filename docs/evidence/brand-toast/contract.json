@@ -1,0 +1,12 @@
+{
+  "interaction_id": "toast.dismiss.click.1",
+  "source_screen": "Global brand Toast; 2026-10-22 user-specified presentation, not an original HTML screen",
+  "trigger": "Close icon click or Enter / Space keyboard activation; bounded automatic dismissal",
+  "preconditions": "An active Toast exists; callbacks carry the current notification ID",
+  "visible_feedback": "Soft exit animation; reduced-motion preference removes motion; does not steal focus or block outside gestures",
+  "success_result": "Only the matching Toast closes; its timer is cancelled; source transient error may clear so the same action can be retried",
+  "failure_result": "Old ID or stale timeout is ignored; a newer Toast and all business state remain unchanged",
+  "persistence": "none; toast lifecycle is not a report, preference, message, purchase or authentication write",
+  "sync_scope": "One global presentation host across all routes; success navigation and app background clear stale feedback",
+  "acceptance": "scripts/toast.test.mjs; scripts/toast-browser.test.mjs; scripts/lib/toast-regression.mjs in iPhone 17 Pro EventCoverTests; no full-app verified claim"
+}

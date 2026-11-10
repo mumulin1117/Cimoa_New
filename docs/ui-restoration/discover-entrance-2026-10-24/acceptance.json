@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-24",
+  "scope": "Discover first-entry presentation only; not whole-page or whole-app acceptance",
+  "status": "verified",
+  "source": {
+    "screen": "34 Discover / Profile / Photo",
+    "file": "CIRCA All Screens (interactive).html",
+    "locked_layout": "docs/ui-restoration/discover-request-deck/source-contract.json",
+    "authority": "User explicitly requested same-geometry three-card placeholders, parallel first-photo decode, gentle rear-card fan and one edge sweep, immediate touch takeover and no replay on warm returns.",
+    "conventions": "Both convention files read in full and unchanged by this task. The requested deck-internal motion does not replace cRise or introduce staggered list/page fly-ins."
+  },
+  "changed_files": [
+    "src/pages/discover/index.vue",
+    "src/components/MainTabFrame.vue",
+    "src/components/DiscoverProfileCard.vue",
+    "src/components/ProfilePhoto.vue",
+    "src/utils/discoverEntrance.js",
+    "src/utils/imagePreparation.js",
+    "src/config/discoverDeck.js",
+    "src/config/theme.json",
+    "scripts/discover-entrance.test.mjs",
+    "scripts/discover-entrance-browser.test.mjs",
+    "scripts/lib/discover-entrance-regression.mjs",
+    "scripts/content-loading-browser.test.mjs",
+    "scripts/lib/content-loading-regression.mjs",
+    "scripts/lib/discover-cursor-regression.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift",
+    "docs/ui-restoration/discover-entrance-2026-10-24/acceptance.json"
+  ],
+  "generated_outputs": [
+    "dist/build/h5/",
+    "ios/cimoaNeapo/Resources/H5/",
+    "ios/cimoaNeapo/Resources/theme.json",
+    "ios/cimoaNeapo/Resources/build-manifest.json"
+  ],
+  "implementation": {
+    "skeleton": "Discover opts into eager content in MainTabFrame. Its three real card nodes remain mounted throughout the original 600ms skeleton; actual name/tag geometry is masked in place instead of substituting a differently sized skeleton layout.",
+    "media": "Each real card acquires its existing media-cache lease, loads and decodes during the skeleton, then reveals the real pixels. A six-image bounded in-memory decoded pool avoids placeholder/fade replay on warm Tab remounts. No storage or business entities are added.",
+    "motion": "Rear-card inner faces fan subtly for 560ms; one theme-gradient edge sweep lasts 800ms; photo opacity fades for 240ms. They run after readiness without extending the content timer or locking any gesture. Root transforms stay owned by existing drag/rebound/exit behavior.",
+    "takeover": "The first accepted pointerdown consumes and cancels decoration, but retains the existing pointer and gesture state. Touch before a slow photo becomes ready prevents a later decorative replay.",
+    "failure": "Slow resources keep the light photo-area placeholder while the 600ms content timer ends normally. Actual errors offer Retry photo; retry re-enters media loading and does not replay the failed entrance.",
+    "lifecycle": "Identity includes auth scope, user ID and photo URL. Source changes, stale async results, hide/unmount, timer cancellation and reduced-motion changes are guarded. Reduce Motion disables fan/sweep and leaves the photo fade only."
+  },
+  "preserved": [
+    "Original layout, visible copy, cRise, header, fixed Tabbar, safe-area ownership and no vertical card browsing",
+    "600ms skeleton, existing write delay and three-second detail carousel",
+    "Same Store-selected current person; no automatic swipe, likes, matches, requests or coin changes",
+    "One-third swipe threshold and existing rebound/navigation/return ownership",
+    "No new Loading Toast, service, production test hook or physical permission request",
+    "All pre-existing worktree changes preserved; no staging, commit, push or reset"
+  ],
+  "verification": {
+    "unit": { "passed": 389, "failed": 0, "new_tests": 11, "log": "artifacts/discover-entrance/unit-tests.log" },
+    "compatibility": {
+      "passed": true,
+      "log": "artifacts/discover-entrance/content-loading-compatibility.log",
+      "coverage": "Existing Home/Discover/Events one-shot skeletons, detail loading/Back/cache, real CDP pull refresh, unchanged Discover cursor and actual logout/login renewal remain correct. Old test drivers now wait for the real skeleton state instead of assuming card mount means loading finished."
+    },
+    "browser": {
+      "passed": true,
+      "cases": 7,
+      "assertions": 433,
+      "viewports": ["320x568", "393x852", "440x956"],
+      "coverage": ["same three-card DOM and name/tag bounds", "real parallel photo decode", "one fan/sweep", "immediate touch takeover", "20% rebound and 34% one-person advance", "warm Tab and profile Back without placeholder/fade/decode replay", "slow image", "failed image and Retry", "reduced motion", "zero business writes and zero Toasts"],
+      "errors": 0,
+      "warnings": 0,
+      "report": "artifacts/discover-entrance/browser-report.json"
+    },
+    "wkwebview": {
+      "passed": true,
+      "device": "iPhone 17 Pro simulator, iOS 26.5",
+      "test": "EventCoverTests.testDiscoverEntrance()",
+      "isolated_cases": 2,
+      "assertions": 115,
+      "actual_host_business_data_unchanged": true,
+      "report": "artifacts/discover-entrance/wkwebview-report.json",
+      "log": "artifacts/discover-entrance/xcodebuild-retry.log",
+      "initial_infrastructure_failure": "The first XCTest host was killed before establishing its test connection; test-without-building retry of the same binary passed. No functional failure or source workaround was involved.",
+      "limits": "Native tests exercise actual WKWebView rendering, safe areas, supplied image decode and scoped pointer listeners using diagnostic DOM pointer events, not physical finger input. Slow/failure and reduced-motion injections are additionally covered in Chrome."
+    },
+    "required_commands": {
+      "sequence": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"],
+      "passed": true,
+      "h5_files_packaged": 439,
+      "ios_built_manifest_matches": true,
+      "build_log": "artifacts/discover-entrance/build-h5.log"
+    },
+    "warnings": "No convention or browser warnings; existing Xcode AppIntents metadata-skipped warning and simulator WebKit/Accessibility diagnostics remain in native logs.",
+    "preview_server_started": false,
+    "test_processes_cleaned_up": true
+  },
+  "screenshots": [
+    "artifacts/discover-entrance/first-393x852-skeleton.png",
+    "artifacts/discover-entrance/first-393x852-entrance.png",
+    "artifacts/discover-entrance/first-wkwebview.png",
+    "artifacts/discover-entrance/interrupt-wkwebview.png"
+  ]
+}

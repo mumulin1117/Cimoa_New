@@ -28,7 +28,7 @@ const person = async id => {
       </view>
       <view v-if="!people.length" class="event-page-state">{{ query.trim() ? 'No participants match your search.' : 'No visible participants yet.' }}</view>
     </view>
-    <template #footer><text v-if="error" class="event-page-error" role="alert">{{ error }}</text></template>
+    <template #footer><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /></template>
   </SecondaryPageFrame>
 </template>
 

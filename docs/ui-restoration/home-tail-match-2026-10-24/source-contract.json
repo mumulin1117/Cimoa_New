@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-24",
+  "scope": "User-authorized Home populated-list CTA addition, not full-page visual acceptance",
+  "user_source": "/Users/linqian/Desktop/Simulator Screenshot - iPhone 17 Pro - 2026-10-24 at 09.49.37.png",
+  "approved_delta": "When the canonical Home people/chat list is nonempty, append one Start Auto Match button at the end of its scroll content, below any existing active-match status card. Reuse the screenshot's existing Home empty-state home-primary / lightning styling. Do not add Explore People to the populated list.",
+  "interaction_id": "home.startAutoMatch.click.3",
+  "interaction_contract": "../home/interactions.json",
+  "implementation": "src/pages/home/index.vue reuses cards, target('match') and navigate('match') without a new Store field or action",
+  "unchanged": ["Empty-state layout and its two actions", "Fixed Header and Tabbar, single content scroll and safe-area ownership", "Active-match status card and recovery", "Business data, coins, daily quota and match sessions", "Existing Loading, skeleton, carousel and navigation timing", "Both convention documents"],
+  "evidence_directory": "artifacts/home-tail-match",
+  "full_page_status": "unchanged; this incremental addition does not mark Home or the app verified"
+}

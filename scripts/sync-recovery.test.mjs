@@ -28,7 +28,7 @@ test('same-account reauthentication with identical expiry cannot publish a delay
   const f = fixture(), { store } = f, session = clone_data(store.data.session); let release
   configure_store_runtime(store, { inspect_media: () => new Promise(resolve => { release = resolve }) })
   const pending = store.send_direct_message('conversation_chloe', '', { kind: 'image', blob: new Blob(['image'], { type: 'image/png' }) }, 'old_direct')
-  store.logout(); assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, true); assert.deepEqual(store.data.session, session)
+  store.logout(); assert.equal((await store.login('cimoa@connect.edu', '12341234')).success, true); assert.deepEqual(store.data.session, session)
   const before = clone_data(store.data), count = f.writes(); release({ duration_ms: 0 })
   assert.equal((await pending).success, false); assert.deepEqual(store.data, before); assert.equal(f.writes(), count); assert.equal(f.blobs.size, 0)
 })
@@ -47,7 +47,7 @@ for (const kind of ['save_media', 'save_profile_photos', 'send_introduction', 'c
     send_introduction: () => store.send_introduction({ user_id: 'user_liam', question_id: 'user_liam_q_0', kind: 'voice', audio_id: 'owned_audio', operation_id: 'old_intro' }),
     complete_coin_spend: () => store.complete_coin_spend(store.current_drafts.find(d => d.kind === 'coin_spend').draft_id), discard_media: () => store.discard_media('owned_audio'),
   }
-  const pending = actions[kind](); assert.equal(typeof release, 'function'); store.logout(); assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, true)
+  const pending = actions[kind](); assert.equal(typeof release, 'function'); store.logout(); assert.equal((await store.login('cimoa@connect.edu', '12341234')).success, true)
   const before = clone_data(store.data), count = f.writes(), ids = [...f.blobs.keys()]; release({ duration_ms: 0 })
   assert.equal((await pending).success, false); assert.deepEqual(store.data, before); assert.equal(f.writes(), count); assert.deepEqual([...f.blobs.keys()], ids)
 })

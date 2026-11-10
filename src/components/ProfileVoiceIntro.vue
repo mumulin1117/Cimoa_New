@@ -2,6 +2,7 @@
 import EventAudio from './EventAudio.vue'
 import SourceIcon from './SourceIcon.vue'
 import ProfilePhoto from './ProfilePhoto.vue'
+import BrandProgressMark from './BrandProgressMark.vue'
 
 defineProps({
   intro: { type: Object, required: true },
@@ -22,7 +23,7 @@ defineProps({
             <text v-else-if="pending" class="profile-voice-status" aria-live="polite">Loading audio…</text>
             <text v-else class="profile-voice-transcript" :title="intro.transcript">{{ intro.transcript || `${Math.ceil((intro.duration_ms || 0) / 1000)}s` }}</text>
           </view>
-          <view class="profile-voice-play event-audio-button" role="button" tabindex="0" :aria-label="playing ? 'Pause voice message' : 'Play voice message'" :aria-description="`${Math.ceil((intro.duration_ms || 0) / 1000)}s voice introduction`" :aria-disabled="pending" data-interaction="expanded.voiceIntroPlay.click.1" @click.stop="toggle" @keydown.enter.stop="toggle" @keydown.space.stop.prevent="toggle"><view class="profile-voice-play-icon"><SourceIcon :name="playing ? 'pause' : 'play'" /></view></view>
+          <view class="profile-voice-play event-audio-button" role="button" tabindex="0" :aria-label="pending ? 'Loading voice introduction' : playing ? 'Pause voice message' : 'Play voice message'" :aria-description="`${Math.ceil((intro.duration_ms || 0) / 1000)}s voice introduction`" :aria-disabled="pending" :aria-busy="pending" data-interaction="expanded.voiceIntroPlay.click.1" @click.stop="toggle" @keydown.enter.stop="toggle" @keydown.space.stop.prevent="toggle"><view class="profile-voice-play-icon"><BrandProgressMark v-if="pending" /><SourceIcon v-else :name="playing ? 'pause' : 'play'" /></view></view>
         </view>
       </template>
     </EventAudio>
@@ -40,6 +41,6 @@ defineProps({
 .profile-voice-transcript, .profile-voice-status { margin-top: 3.817rpx; color: var(--cimoa-text-profile-song-artist); font-size: 24.809rpx; }
 .profile-voice-copy .profile-voice-status { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; white-space: normal; line-height: 1.15; font-size: 20.992rpx; }
 .profile-voice-play { flex: none; display: flex; align-items: center; justify-content: center; width: 83.969rpx; height: 83.969rpx; padding: 0; border-radius: 50%; color: var(--cimoa-text-settings-purple); background: var(--cimoa-surface-card); cursor: pointer; }
-.profile-voice-play[aria-disabled="true"] { opacity: 0.6; }
+.profile-voice-play[aria-disabled="true"] { cursor: default; }
 .profile-voice-play-icon { width: 38.168rpx; height: 38.168rpx; }
 </style>

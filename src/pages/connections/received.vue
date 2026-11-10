@@ -33,9 +33,12 @@ const resolve = async () => {
   if (result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
   navigating.value = true
-  try { await frame.value.navigate_replace(`/pages/connections/${next === 'accept' ? 'accepted' : 'declined'}?${match_id.value ? `match_id=${encodeURIComponent(match_id.value)}` : `request_id=${encodeURIComponent(request_id.value)}`}`) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
+  try {
+    if (next === 'decline') await frame.value.navigate_relaunch('/pages/home/index')
+    else await frame.value.navigate_replace(`/pages/connections/accepted?${match_id.value ? `match_id=${encodeURIComponent(match_id.value)}` : `request_id=${encodeURIComponent(request_id.value)}`}`)
+  } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
-const not_now = async () => { if (is_loading.value || navigating.value || sheet.value) return; try { await frame.value.navigate_relaunch('/pages/home/index') } catch (cause) { error.value = cause.message } }
+const return_home = async () => { if (is_loading.value || navigating.value || sheet.value) return; try { await frame.value.navigate_relaunch('/pages/home/index') } catch (cause) { error.value = cause.message } }
 const choose = value => { if (!is_loading.value && !navigating.value && !access_error.value) { sheet.value = ''; decision.value = value } }
 const report = async () => { if (is_loading.value || !person.value) return; sheet.value = ''; try { await frame.value.navigate_forward(`/pages/safety/report-user?target_user_id=${encodeURIComponent(person.value.user_id)}&context_id=${encodeURIComponent(request_id.value || match_id.value)}`) } catch (cause) { error.value = cause.message } }
 const block = async () => {
@@ -44,7 +47,7 @@ const block = async () => {
   const result = await run_with_loading(() => store.block_user(id))
   if (result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
-  sheet.value = ''; await not_now()
+  sheet.value = ''; await return_home()
 }
 onHide(() => { decision.value = ''; sheet.value = ''; navigating.value = false; cancel_loading() }); onUnmounted(cancel_loading)
 </script>
@@ -57,16 +60,15 @@ onHide(() => { decision.value = ''; sheet.value = ''; navigating.value = false; 
       <view v-if="!access_error" class="received-footer">
         <view class="received-fade" />
         <view class="received-answer-card"><scroll-view scroll-y class="received-answer-scroll"><text class="received-question">{{ request.kind === 'match' ? 'Auto Match' : request.question }}</text><text v-if="request.kind === 'match'" class="connection-answer">You both found a match. Choose whether you would like to connect.</text><text v-else-if="request.kind === 'text'" class="connection-answer">{{ request.text }}</text><RequestAudioPlayer v-else-if="request.audio" :src="request.audio.media_url" :duration="request.audio.duration_ms" /><text v-else class="connection-answer" role="alert">This voice recording is unavailable. Please try again.</text></scroll-view></view>
-        <text v-if="error && !sheet" class="received-error" role="alert">{{ error }}</text>
-        <view class="received-actions"><view class="connection-secondary" role="button" tabindex="0" :aria-disabled="is_loading || navigating" data-interaction="reqReceived.notNow.click.1" @click="not_now" @keydown.enter="not_now">Not Now</view><view class="connection-primary" role="button" tabindex="0" :aria-disabled="is_loading || navigating" data-interaction="reqReceived.accept.click.1" @click="choose('accept')" @keydown.enter="choose('accept')">Accept</view></view>
+        <view class="received-actions"><view class="connection-secondary" role="button" tabindex="0" :aria-disabled="is_loading || navigating" data-interaction="reqReceived.notNow.click.1" @click="choose('decline')" @keydown.enter="choose('decline')">Decline</view><view class="connection-primary" role="button" tabindex="0" :aria-disabled="is_loading || navigating" data-interaction="reqReceived.accept.click.1" @click="choose('accept')" @keydown.enter="choose('accept')">Accept</view></view>
       </view>
-      <text v-else-if="error" class="connection-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error && !sheet" :message="error" @dismiss="error = String()" />
     </template>
     <template #overlays>
       <SafetyActionsMiniSheet :open="['safety','block'].includes(sheet)" :mode="sheet === 'block' ? 'block' : 'menu'" :user-name="person?.user_name" :busy="is_loading" :error="error" @close="!is_loading && (sheet = '')" @report="report" @open-block="sheet = 'block'" @confirm-block="block"><template #actions><view class="received-decline" role="button" tabindex="0" data-interaction="reqReceived.openDecline.click.1" @click="choose('decline')" @keydown.enter="choose('decline')">Decline introduction</view></template></SafetyActionsMiniSheet>
       <EventConfirmDialog :open="sheet === 'gallery'" :label="`${person?.user_name || 'Profile'} photo gallery`" close-interaction="reqReceived.gallery.close.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="sheet = ''"><text class="event-dialog-title">Photo {{ gallery_index + 1 }} of {{ photos.length }}</text><view class="received-gallery"><ProfilePhoto :src="gallery_photo?.media_url || ''" :name="person?.user_name || 'Profile'" :position="gallery_photo?.focal_point || '50% 22%'" /></view><view class="event-dialog-secondary" role="button" tabindex="0" data-interaction="reqReceived.gallery.close.click.2" @click="sheet = ''" @keydown.enter="sheet = ''">Close</view></EventConfirmDialog>
       <ConfirmDialog :visible="decision === 'accept'" title="Accept this introduction?" :message="`You and ${person?.user_name || 'this student'} will be connected and chat will unlock.`" confirm-label="Accept" @cancel="decision = ''" @confirm="resolve" />
-      <ConfirmDialog :visible="decision === 'decline'" title="Close this request?" message="No reason is shared, and no connection will be created." confirm-label="Close Request" danger @cancel="decision = ''" @confirm="resolve" />
+      <ConfirmDialog :visible="decision === 'decline'" title="Decline this invitation?" message="No reason is shared, and no connection will be created." confirm-label="Decline" danger @cancel="decision = ''" @confirm="resolve" />
       <EventActionLoading :visible="is_loading" :label="pending_action === 'accept' ? 'Creating your connection…' : pending_action === 'block' ? 'Blocking account…' : 'Closing the request…'" />
     </template>
   </SecondaryPageFrame>

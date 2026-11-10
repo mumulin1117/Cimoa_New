@@ -3,6 +3,7 @@ import { authenticated, ensure, owner_id } from './selectors.js'
 import { transact, get_runtime, failure, make_id } from './transactions.js'
 import { onboarding_error, ONBOARDING_GOALS } from '../utils/onboardingFlow.js'
 import { auth_context_key } from './accountDefaults.js'
+import { auth_message } from '../utils/authFeedback.js'
 
 export const profile_context = (data, now) => {
   if (!authenticated(data, now)) return null
@@ -65,8 +66,8 @@ const validate_edit = (store, patch, photos, expected_account_id) => {
   ensure(photos.every(row => row && (row.blob instanceof Blob || owned.has(row.photo_id))), 'Choose a valid profile photo.')
 }
 export const profile_edit_actions = {
-  profile_edit_validation_error(patch, photos, expected_account_id) { try { validate_edit(this, patch, photos, expected_account_id); return '' } catch (error) { return error.message } },
-  profile_validation_error(section, patch) { try { validate_profile_patch(section, patch); return '' } catch (error) { return error.message } },
+  profile_edit_validation_error(patch, photos, expected_account_id) { try { validate_edit(this, patch, photos, expected_account_id); return '' } catch (error) { return auth_message(error.message, 'Your profile details couldn’t be checked. Please try again.') } },
+  profile_validation_error(section, patch) { try { validate_profile_patch(section, patch); return '' } catch (error) { return auth_message(error.message, 'Your profile details couldn’t be checked. Please try again.') } },
   save_profile_section(section, patch, expected_account_id) {
     return transact(this, null, (data) => {
       ensure(data.session.account_id === expected_account_id, 'The account changed. Please reopen the editor.')
@@ -74,7 +75,7 @@ export const profile_edit_actions = {
     })
   },
   async save_profile_edit(patch, photos, expected_account_id, { is_current = () => true, expected_context = auth_context_key(this.data), audio } = {}) {
-    if (profile_saves.has(this)) return failure('busy', 'Your profile is already being saved.')
+    if (profile_saves.has(this)) return failure('busy', 'Your profile is already being updated. Please wait.')
     profile_saves.add(this)
     const rt = get_runtime(this), created = [], owner = owner_id(this.data)
     try {
@@ -88,7 +89,7 @@ export const profile_edit_actions = {
           if (row.blob) {
             const blob = row.blob
             ensure(blob instanceof Blob && blob.type.startsWith('image/') && blob.size > 0 && blob.size <= 20 * 1024 * 1024, 'Choose a valid image up to 20 MB.')
-            await rt.inspect_media(blob, 'image'); ensure(current(), 'Photo save was cancelled or the account changed.')
+            await rt.inspect_media(blob, 'image'); ensure(current(), 'The photo update was cancelled or your account changed.')
             const media_id = make_id('media'); await rt.media.put(media_id, blob)
             created.push({ media_id, owner_user_id: owner, kind: 'image', mime: blob.type, byte_size: blob.size, duration_ms: 0, media_url: `indexeddb://${media_id}` })
           } else {
@@ -97,7 +98,7 @@ export const profile_edit_actions = {
             if (old.media_url.startsWith('indexeddb://')) {
               const meta = this.data.media_files.find(m => m.media_url === old.media_url && m.owner_user_id === owner)
               const blob = meta && await rt.media.get(meta.media_id)
-              ensure(blob instanceof Blob && blob.size === meta.byte_size, 'A saved photo is unavailable. Replace it before saving.')
+              ensure(blob instanceof Blob && blob.size === meta.byte_size, 'A profile photo is unavailable. Replace it before continuing.')
               await rt.inspect_media(blob, 'image')
             }
           }
@@ -109,25 +110,25 @@ export const profile_edit_actions = {
         ensure(blob instanceof Blob && blob.type.startsWith('audio/') && blob.size > 0 && blob.size <= 20 * 1024 * 1024, 'Choose a valid voice bio up to 20 MB.')
         const info = await rt.inspect_media(blob, 'audio')
         ensure(Number.isFinite(info.duration_ms) && info.duration_ms > 0 && info.duration_ms <= 30000, 'Record a voice bio of up to 30 seconds.')
-        ensure(current(), 'Voice bio save was cancelled or the account changed.')
+        ensure(current(), 'The voice bio update was cancelled or your account changed.')
         const media_id = make_id('media'); await rt.media.put(media_id, blob)
         audio_media = { media_id, owner_user_id: owner, kind: 'audio', mime: blob.type, byte_size: blob.size, duration_ms: info.duration_ms, media_url: `indexeddb://${media_id}` }
         created.push(audio_media)
       }
-      ensure(current(), 'Profile save was cancelled or the account changed.')
+      ensure(current(), 'The profile update was cancelled or your account changed.')
       const result = transact(this, null, data => {
         ensure(data.session.account_id === expected_account_id && auth_context_key(data) === expected_context, 'The account changed. Please reopen the editor.')
         const user = data.users.find(row => row.user_id === owner)
         data.media_files.push(...created)
         if (photos !== null) {
-          ensure(JSON.stringify(data.profile_photos.filter(row => row.user_id === owner).sort((a,b) => a.position-b.position)) === JSON.stringify(original), 'Your photos changed. Reopen the editor before saving.')
+          ensure(JSON.stringify(data.profile_photos.filter(row => row.user_id === owner).sort((a,b) => a.position-b.position)) === JSON.stringify(original), 'Your photos changed. Reopen the editor and try again.')
           let index = 0
           const rows = photos.map((row, position) => ({ photo_id: row.photo_id || make_id('photo'), user_id: owner, position, media_url: row.blob ? created[index++].media_url : original.find(p => p.photo_id === row.photo_id).media_url }))
           data.profile_photos = [...data.profile_photos.filter(row => row.user_id !== owner), ...rows]
           user.photo_ids = rows.map(row => row.photo_id); user.avatar_url = rows[0].media_url
         }
         if (audio !== undefined) {
-          ensure(user.bio_audio_id === audio_before, 'Your voice bio changed. Reopen the editor before saving.')
+          ensure(user.bio_audio_id === audio_before, 'Your voice bio changed. Reopen the editor and try again.')
           user.bio_audio_id = audio_media?.media_id || null
         }
         write_patch(data, 'all', patch)
@@ -136,7 +137,7 @@ export const profile_edit_actions = {
       throw new Error(result.message)
     } catch (error) {
       await Promise.all(created.map(row => rt.media.delete(row.media_id).catch(() => {})))
-      return failure('profile_save_failed', error.message)
+      return failure('profile_save_failed', auth_message(error.message, 'Your profile couldn’t be updated. Please try again.'))
     } finally { profile_saves.delete(this) }
   },
 }

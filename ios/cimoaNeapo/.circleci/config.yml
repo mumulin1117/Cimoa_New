@@ -1,0 +1,94 @@
+# .circleci/config.yml
+version: 2.1
+
+orbs:
+  macos: circleci/macos@2.5.4
+
+jobs:
+  build-and-upload:
+    macos:
+      xcode: "26.6.0"
+
+    resource_class: m4pro.medium
+
+    environment:
+      # Bundler 安装路径，方便缓存
+      BUNDLE_PATH: vendor/bundle
+      FL_OUTPUT_DIR: build
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+
+      # Fastfile 会自动识别唯一的 App 工程、Target、共享 Scheme 和同级 Workspace。
+      # 只有仓库包含多个候选项时，才在 CircleCI 环境变量中设置：
+      # XCODE_PROJECT_PATH、XCODE_WORKSPACE_PATH、APP_TARGET、XCODE_SCHEME
+
+      # 以下敏感变量不要写在 config.yml 中。
+      # 请在 CircleCI -> Project Settings -> Environment Variables 中配置：
+      # ASC_KEY_ID
+      # ASC_ISSUER_ID
+      # ASC_KEY_CONTENT
+      # MATCH_PASSWORD（如果 Fastfile 使用 match）
+
+    steps:
+      - checkout
+
+      - run:
+          name: Setup environment
+          command: |
+            mkdir -p "$FL_OUTPUT_DIR"
+            xcodebuild -version
+
+      # CircleCI 的 Xcode 镜像已经预装多个 Ruby 版本，直接切换即可，
+      # 不再通过 Homebrew 安装 rbenv / ruby-build 并重新编译 Ruby。
+      - macos/switch-ruby:
+          version: "3.3"
+
+      - run:
+          name: Check Ruby
+          command: |
+            ruby -v
+            gem -v
+
+      - restore_cache:
+          keys:
+            - v2-bundle-{{ checksum "Gemfile.lock" }}
+            - v2-bundle-
+
+      - run:
+          name: Install Bundler & Gems
+          command: |
+            if [ -f Gemfile.lock ]; then
+              BUNDLER_VERSION=$(awk '/BUNDLED WITH/{getline; gsub(/^[ \t]+/, ""); print; exit}' Gemfile.lock)
+            fi
+
+            if [ -n "$BUNDLER_VERSION" ]; then
+              echo "Using Bundler $BUNDLER_VERSION"
+              gem install bundler -v "$BUNDLER_VERSION" --no-document
+            else
+              echo "Gemfile.lock does not specify Bundler version, installing Bundler"
+              gem install bundler --no-document
+            fi
+
+            bundle check || bundle install
+
+      - save_cache:
+          paths:
+            - vendor/bundle
+          key: v2-bundle-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Run Fastlane
+          command: |
+            bundle exec fastlane ios release
+
+      - store_artifacts:
+          path: build
+
+workflows:
+  build-and-upload:
+    jobs:
+      - build-and-upload:
+          filters:
+            branches:
+              only:
+                - main

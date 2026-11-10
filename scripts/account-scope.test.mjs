@@ -14,6 +14,6 @@ test('page scope cancels synchronously on logout and never revives after same-ac
   assert.equal(page.is_current(), true)
   store.update_settings('privacy', { show_online: false }); assert.equal(page.is_current(), true)
   store.logout(); assert.equal(page.is_current(), false); assert.equal(invalidations, 1)
-  await store.login('cimoa@gmail.com', '12341234'); assert.equal(store.session.account_id, page.account_id); assert.equal(page.is_current(), false)
+  await store.login('cimoa@connect.edu', '12341234'); assert.equal(store.session.account_id, page.account_id); assert.equal(page.is_current(), false)
   assert.notEqual(store.auth_context, page.auth_context); scope.stop()
 })

@@ -1,10 +1,10 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { computed, onUnmounted, ref } from 'vue'
 import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { is_source_supported_university_email } from '@/utils/localAuth.js'
 import { auth_destination } from '@/utils/authNavigation.js'
-import { relaunch_route } from '@/utils/routeTransition.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import AuthPageFrame from '@/components/AuthPageFrame.vue'
 import AuthActionLoading from '@/components/AuthActionLoading.vue'
@@ -31,7 +31,7 @@ const back = async () => {
 const contact_support = () => {
   if (is_loading.value) return
   const result = store.submit_support()
-  error.value = result.message || 'Support delivery is currently unavailable. Please try again later.'
+  error.value = result.message || 'Support is unavailable right now. Please try again later.'
 }
 const request_logout = () => {
   if (is_loading.value) return
@@ -44,7 +44,7 @@ const confirm_logout = async () => {
   if (!active || result.reason === 'cancelled') return
   if (!result.success) { dialog_error.value = result.message; return }
   confirm_open.value = false
-  try { await relaunch_route(auth_destination('/pages/auth/welcome')) } catch (cause) { error.value = cause.message }
+  try { await frame.value.navigate_relaunch(auth_destination('/pages/auth/welcome')) } catch (cause) { error.value = cause.message }
 }
 </script>
 
@@ -53,8 +53,8 @@ const confirm_logout = async () => {
     <view v-if="is_current_flow" class="unsupported-hero">
       <view class="unsupported-emblem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2.5" y="5" width="19" height="14" rx="3" /><path d="m3 7 9 6 9-6" /></svg></view>
       <text class="unsupported-title">That university isn’t supported yet</text>
-      <text class="unsupported-description">Try another university email to continue. Support delivery isn’t available yet.</text>
-      <text v-if="error" class="auth-error-box unsupported-error" role="alert">{{ error }}</text>
+      <text class="unsupported-description">Try another university email to continue.</text>
+      <text v-if="error" class="auth-error-box unsupported-error" role="alert">{{ auth_message(error) }}</text>
     </view>
     <view v-else class="unsupported-invalid">
       <text class="auth-error-box" role="alert">This university-email check is no longer available. Return to your current verification step.</text>
@@ -65,7 +65,7 @@ const confirm_logout = async () => {
       <view v-if="is_current_flow" class="unsupported-logout" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verUnsupported.logOut.click.1" @click="request_logout" @keydown.enter="request_logout">Log Out</view>
     </template>
     <template #overlays>
-      <LogoutConfirmDialog :open="confirm_open" :busy="is_loading" :error="dialog_error" @close="!is_loading && (confirm_open = false)" @confirm="confirm_logout" />
+      <LogoutConfirmDialog :open="confirm_open" :busy="is_loading" :error="dialog_error && auth_message(dialog_error)" @close="!is_loading && (confirm_open = false)" @confirm="confirm_logout" />
       <AuthActionLoading :visible="is_loading" label="Logging out…" />
     </template>
   </AuthPageFrame>

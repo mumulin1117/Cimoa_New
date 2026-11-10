@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-26",
+  "scope": "Custom permission pre-prompts use Continue / Cancel; Continue invokes the existing capability adapter, never a fabricated grant.",
+  "source_files": [
+    "src/components/IntroductionConfirmDialog.vue",
+    "src/components/MediaPermissionPage.vue",
+    "src/composables/useNotificationPermission.js",
+    "src/pages/permissions/camera.vue",
+    "src/pages/permissions/photos.vue",
+    "src/pages/permissions/notif.vue",
+    "src/pages/onboarding/notif.vue",
+    "src/utils/onboardingFlow.js"
+  ],
+  "test_files": [
+    "scripts/permission-actions.test.mjs",
+    "scripts/permission-actions-browser.test.mjs",
+    "scripts/onboarding-notif-visual.test.mjs",
+    "scripts/permission-notif-visual.test.mjs",
+    "scripts/permission-camera-visual.test.mjs",
+    "scripts/onboarding-photos-visual.test.mjs",
+    "scripts/registration-browser.test.mjs"
+  ],
+  "source_contract_files": [
+    "docs/ui-restoration/onboarding-notifications/source-contract.json",
+    "docs/ui-restoration/permission-notifications/source-contract.json",
+    "docs/ui-restoration/permission-camera/source-contract.json",
+    "docs/ui-restoration/onboarding-photos/source-contract.json"
+  ],
+  "behavior": [
+    "The shared microphone dialog covers voice introductions and profile voice bio; its purpose title remains unchanged.",
+    "Microphone Continue reaches the existing real media adapter; Cancel closes or returns without a request.",
+    "Camera and photo Continue open the existing picker/capture capability. Cancel returns once without selecting media, writing data, or claiming an OS denial.",
+    "Both notification routes share one request flow. Onboarding Continue directly requests system permission instead of opening a second pre-prompt.",
+    "Notification Cancel saves only the existing skipped setup choice through the Store and required write Loading. Actual denied/unavailable states remain factual; no system request is made.",
+    "Busy guards, lifecycle and account result checks remain active. System-owned Apple dialog labels are not modified."
+  ],
+  "conventions": {
+    "DEVELOPMENT_CONVENTIONS.md": "fully read; unchanged",
+    "INTERACTION_CONVENTIONS.md": "fully read; unchanged",
+    "key_rules": ["existing theme and layouts", "Store-only writes", "400-600ms business write Loading", "real capability results", "touch-safe busy guards", "lifecycle cancellation"]
+  },
+  "mandatory_gates_in_order": [
+    { "command": "corepack pnpm check:conventions", "result": "passed", "warnings": 0 },
+    { "command": "git diff --check", "result": "passed" },
+    { "command": "corepack pnpm build:h5", "result": "passed", "ios_bundled_h5_files": 441 }
+  ],
+  "verification": {
+    "targeted_unit_tests": { "passed": 32, "failed": 0, "new_task_tests": 19 },
+    "browser": { "result": "passed", "scenario_groups": 6, "page_errors": 0, "report": "artifacts/permission-actions-2026-10-26/browser-report.json", "screenshot": "artifacts/permission-actions-2026-10-26/voice-permission.png", "method": "isolated touch-enabled Chromium; production H5 served by route fulfillment; controlled permission responses; no dev server" },
+    "browser_warnings": { "blocked_existing_uni_statistics": 16, "existing_uni_picker_user_activation_warning": 2, "note": "Both real picker events completed; external network was deliberately blocked. Warnings are preserved in the browser report, not hidden." },
+    "broader_unit_suite": { "tests": 560, "passed": 558, "failed": 2, "log": "artifacts/permission-actions-2026-10-26/unit-tests.log", "failures": ["scripts/feedback-global.test.mjs: missing ios/cimoaNeapo/Tests/EventCoverTests.swift", "scripts/touch-targets.test.mjs: missing ios/cimoaNeapo/Tests/HostTests.swift"], "boundary": "The native test files were already absent; HostTests.swift is staged for deletion. No user deletion was restored and no assertion was weakened." },
+    "updated_legacy_tests": "5 syntax checks passed; 4 source contracts parsed. Historical server-based visual tests were not rerun or relabeled as newly accepted.",
+    "ios": "Production bundled H5 updated by postbuild; no new native OS permission dialog or full-app WKWebView acceptance claimed."
+  },
+  "cleanup": { "preview_server_started": false, "isolated_browser_closed": true, "physical_microphone_requested": false, "actual_user_browser_storage_accessed": false, "task_test_or_build_processes_remaining": false },
+  "workspace": "Existing unrelated modifications and staged changes preserved; no git add, commit, push, or deletion restoration performed."
+}

@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-26",
+  "scope": "Formal, neutral app-facing copy; audit of BundleHTTPServer without changing the loading architecture.",
+  "bundle_transport": {
+    "decision": "Retained; no native transport or origin migration was requested or performed.",
+    "implementation": "ios/cimoaNeapo/Sources/BundleHTTPServer.swift:4",
+    "purpose": "Serves packaged H5 assets to WKWebView from the app process at http://127.0.0.1:18765. It is not the account, messaging, payment or moderation backend and is not a Vite preview server.",
+    "boundary": "Loopback listener, GET/HEAD only, bundle-root path validation, Host/Origin checks, MIME whitelist, audio byte ranges, bounded connections and timeouts. Loopback is not authentication; this does not claim absolute isolation from all processes on the device.",
+    "dependencies": [
+      "WebViewController starts the server before loading index.html.",
+      "Navigation, native bridge, purchases and media-capture permission guards trust the existing origin.",
+      "Account metadata and IndexedDB media are origin-scoped; changing the origin requires a tested data migration rather than erasing or reseeding accounts."
+    ],
+    "removal": "A file URL, custom scheme or deployed HTTPS frontend could be evaluated as a separate architectural change. Direct deletion would break current references and loading. Resource resolution, modules, secure capabilities, persistence migration and native bridge trust require complete regression before a replacement can ship.",
+    "references": [
+      "https://www.w3.org/TR/secure-contexts/",
+      "https://developer.apple.com/documentation/webkit/wkwebview/loadfileurl(_:allowingreadaccessto:)"
+    ]
+  },
+  "source_files": [
+    "src/utils/legalDocuments.js",
+    "src/utils/toast.js",
+    "src/pages/settings/support.vue",
+    "src/pages/coins/help.vue",
+    "src/pages/auth/verification/unsupported.vue",
+    "src/components/PhotoActionsConfirmDialog.vue",
+    "src/stores/store.js",
+    "src/stores/introductionForms.js",
+    "src/stores/discoverFlow.js",
+    "src/stores/coinSelectors.js",
+    "src/stores/directMessaging.js",
+    "src/stores/eventMessaging.js"
+  ],
+  "test_files": [
+    "scripts/formal-copy.test.mjs",
+    "scripts/formal-copy-browser.test.mjs",
+    "scripts/legal-documents.test.mjs",
+    "scripts/registration-browser.test.mjs",
+    "scripts/community-visual.test.mjs",
+    "scripts/settings-safety-browser.test.mjs",
+    "scripts/display-copy-browser.test.mjs",
+    "scripts/lib/display-copy-cases.mjs",
+    "scripts/release-feedback-copy.test.mjs"
+  ],
+  "copy_changes": [
+    "Canonical privacy and terms use neutral information-use, retention, permission and deletion language rather than browser/app storage mode explanations. Welcome, registration, Settings and Sheets still consume one canonical source.",
+    "Support uses Send message and Sending your message; failed delivery clearly keeps the message unsent and editable. It does not create a ticket or success response.",
+    "Login inspection errors no longer expose test-state terminology; introduction errors no longer describe internal drafts; missing coin metadata is Unavailable rather than Not recorded.",
+    "Media cleanup failures retain actionable privacy and storage instructions instead of implying successful removal.",
+    "Toast/auth presentation rejects legacy development-mode captions without replacing denial, unavailable payment, unconfirmed delivery or storage-space errors with success."
+  ],
+  "preserved": [
+    "Business logic, account IDs, fixed-code validation, stored profiles, relationships, conversations, media, balances, internal local_saved/fixture identifiers and storage keys.",
+    "Theme, layouts, existing Loading durations, atomic persistence, cancellation and busy guards.",
+    "Real permission, purchase verification, unavailable delivery, reporting and human-review boundaries.",
+    "Normal product content such as Robotics Demo Day, local phrase and local emergency services is not a development-mode label.",
+    "Consent revision identifiers are unchanged for wording-only updates; no new data purpose, permission or service was added and existing consent was not silently rewritten.",
+    "Both convention files were read completely and left untouched by this task; pre-existing modifications remain."
+  ],
+  "mandatory_gates_in_order": [
+    { "command": "corepack pnpm check:conventions", "result": "passed", "warnings": 0 },
+    { "command": "git diff --check", "result": "passed" },
+    { "command": "corepack pnpm build:h5", "result": "passed", "ios_packaged_h5_files": 441 }
+  ],
+  "verification": {
+    "targeted_unit_tests": { "passed": 34, "failed": 0 },
+    "browser": { "passed": true, "pages": 29, "checks": 31, "page_errors": 0, "report": "artifacts/formal-copy-2026-10-26/browser-report.json", "method": "isolated touch-enabled Chromium, production H5 fulfilled from files, no preview server" },
+    "browser_warnings": { "count": 2, "description": "Existing uni statistics requests were deliberately blocked; the two retry warnings are preserved in the browser report. No application warning or page error was added." },
+    "broader_unit_suite": { "tests": 564, "passed": 562, "failed": 2, "log": "artifacts/formal-copy-2026-10-26/unit-tests.log", "remaining_failures": ["scripts/feedback-global.test.mjs requires missing ios/cimoaNeapo/Tests/EventCoverTests.swift", "scripts/touch-targets.test.mjs requires missing ios/cimoaNeapo/Tests/HostTests.swift"], "boundary": "These files were already absent, with HostTests.swift staged for deletion. User changes were preserved, not restored or bypassed." },
+    "native": "Main iOS project bundled H5 updated by postbuild. No new native permission, payment, WKWebView runtime or full-app production acceptance is claimed.",
+    "legal_boundary": "Wording cleanup is not certification of publication readiness. No legal operator, hosting location, review service, delivery provider or cloud processing was invented."
+  },
+  "cleanup": { "preview_server_started": false, "isolated_browser_closed": true, "real_user_browser_storage_accessed": false, "physical_microphone_or_purchase_requested": false },
+  "workspace": "Only task-scoped wording, regression tests and evidence were edited. Unrelated modifications and staged deletions were preserved. No git stage, commit, push, signing change, archive overwrite or data reset was performed."
+}

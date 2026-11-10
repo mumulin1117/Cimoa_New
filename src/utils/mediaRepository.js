@@ -50,7 +50,7 @@ export function create_media_cache(repository = media_repository, url_api = glob
       if (!cache.has(id)) {
         if (!pending.has(id)) pending.set(id, (async () => {
           const blob = await repository.get(id)
-          if (!(blob instanceof Blob) || !blob.size) throw new Error('Saved media is unavailable. Please select it again.')
+          if (!(blob instanceof Blob) || !blob.size) throw new Error('This media is unavailable. Please select it again.')
           cache.set(id, { url: url_api.createObjectURL(blob), refs: 0, idle_at: clock() })
         })().finally(() => pending.delete(id)))
         await pending.get(id)

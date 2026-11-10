@@ -1,5 +1,8 @@
+import { read_permissions } from './mediaCapabilities.js'
+import { auth_message } from './authFeedback.js'
+
 export const open_app_settings = async () => {
-  if (!globalThis.window?.webkit?.messageHandlers?.CimoaHost) throw new Error('Native Settings are unavailable in this browser. Manage app permissions in your browser or device settings, then retry.')
+  if (!globalThis.window?.webkit?.messageHandlers?.CimoaHost) throw new Error('App settings cannot be opened here. Manage permissions in your browser or device settings, then try again.')
   const result = await window.CimoaNativeBridge.request('openSettings')
   if (result.opened !== true) throw new Error('Settings could not be opened. Please open the device Settings app manually.')
   return result
@@ -44,7 +47,6 @@ export const request_media_permission = async (kind, env = globalThis) => {
   } catch (error) {
     if (error.name === 'NotAllowedError') throw new Error(`${kind === 'camera' ? 'Camera' : 'Microphone'} permission was denied.`)
     if (error.name === 'NotFoundError') throw new Error(`No ${kind} device was found.`)
-    throw new Error(error.message || `${kind === 'camera' ? 'Camera' : 'Microphone'} access could not be opened.`)
+    throw new Error(auth_message(error.message, `${kind === 'camera' ? 'Camera' : 'Microphone'} access couldn’t be opened. Please try again.`))
   } finally { stream?.getTracks().forEach(track => track.stop()) }
 }
-import { read_permissions } from './mediaCapabilities.js'

@@ -1,6 +1,8 @@
 <script setup>
+import { get_locale } from '@/i18n/index.js'
+
 import { computed, onUnmounted, ref } from 'vue'
-import { onHide, onLoad } from '@dcloudio/uni-app'
+import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store, make_operation_id } from '@/stores/store.js'
 import { use_account_scope } from '@/composables/useAccountScope.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
@@ -10,6 +12,7 @@ import CoinActionLoading from '@/components/CoinActionLoading.vue'
 import { COIN_ROUTES, require_coin_route_ready } from '@/utils/coinNavigation.js'
 import { coin_center_route } from '@/utils/coinReturnContext.js'
 import { watch_purchase } from '@/utils/iapBridge.js'
+import { create_purchase_page_scope } from '@/utils/nativePurchases.js'
 
 const store = use_app_store(), frame = ref(null), request_id = ref(''), navigating = ref(false), error = ref('')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
@@ -18,8 +21,9 @@ onLoad(options => { request_id.value = String(options?.purchase_request_id || ''
 const request = computed(() => store.purchase_by_id(request_id.value))
 const pack = computed(() => store.coin_package_by_id(request.value?.package_id))
 const account_scope = use_account_scope(store, cancel_loading)
+const entry_scope = create_purchase_page_scope(account_scope.is_current)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved purchase data is unavailable. Please return and retry.'
+  ? 'Your purchase details are unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !request_id.value || !request.value
@@ -30,8 +34,8 @@ const access_error = computed(() => store.hydration_status !== 'ready'
           ? 'The package for this purchase is unavailable. No coins were added.'
           : '')
 const result_copy = computed(() => request.value?.status === 'timeout'
-  ? 'The App Store did not respond in time. No coins were added and your balance is unchanged.'
-  : 'No coins were added and your balance is unchanged. If the App Store shows a charge, support can check it for you.')
+  ? 'The App Store did not confirm acceptance in time. No coins have been added for this request. If Apple later completes it, Cimoa will check and add the verified coins once.'
+  : 'No coins have been added for this request. Check your Apple purchase history before trying again. Any purchase that later completes will be checked when you return.')
 
 const replace = async route => {
   if (navigating.value || is_loading.value) return
@@ -40,12 +44,19 @@ const replace = async route => {
   catch (cause) { error.value = cause.message }
   finally { navigating.value = false }
 }
-const retry = () => {
-  if (navigating.value || is_loading.value || access_error.value) return
+const retry = async () => {
+  if (!entry_scope.is_current() || navigating.value || is_loading.value || access_error.value) return
   const pending = store.current_purchase_requests.find(item => item.status === 'pending')
   if (pending) { replace(`${COIN_ROUTES.purchasing}?purchase_request_id=${encodeURIComponent(pending.request_id)}`); return }
+  const token = entry_scope.capture()
+  navigating.value = true
+  const catalog = await store.load_purchase_catalog()
+  if (!entry_scope.is_current(token)) return
+  navigating.value = false
+  if (!catalog.success || !pack.value?.available) { error.value = 'This coin package is currently unavailable. Please return to the coin store.'; return }
   error.value = ''
-  run_with_loading(() => store.begin_purchase(pack.value.package_id, make_operation_id('purchase-retry'), request.value?.return_context_id || null)).then(result => {
+  run_with_loading(() => entry_scope.guard(token, () => store.begin_purchase(pack.value.package_id, make_operation_id('purchase-retry'), request.value?.return_context_id || null))).then(result => {
+    if (!entry_scope.is_current(token)) return
     if (result.reason === 'cancelled') return
     if (!result.success) { error.value = result.message; return }
     const created = store.purchase_by_id(result.data)
@@ -65,8 +76,10 @@ const back_to_store = async () => {
   navigating.value = true
   try { await frame.value.navigate_back(coin_center_route(store, request.value?.return_context_id)) } catch (cause) { error.value = cause.message } finally { navigating.value = false }
 }
-onHide(() => { navigating.value = false; cancel_loading() })
-onUnmounted(cancel_loading)
+const leave = () => { entry_scope.hide(); navigating.value = false; cancel_loading() }
+onShow(entry_scope.show)
+onHide(leave)
+onUnmounted(leave)
 </script>
 
 <template>
@@ -76,7 +89,7 @@ onUnmounted(cancel_loading)
         <view class="failed-back" role="button" aria-label="Back to Coin Store" :aria-disabled="navigating || is_loading" data-interaction="coinFailed.backToStore.click.1" @click="back_to_store"><SourceIcon name="back" /></view>
         <text>Coins</text>
       </view>
-      <text v-if="error" class="failed-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error" :message="error" @dismiss="error = String()" />
     </template>
 
     <view class="failed-content">
@@ -86,7 +99,7 @@ onUnmounted(cancel_loading)
         <text class="failed-title">Purchase couldn’t be completed</text>
         <text class="failed-copy">{{ result_copy }}</text>
         <view class="failed-reference">
-          <text>{{ pack.coins.toLocaleString('en-US') }} Coins · {{ pack.price }}</text>
+          <text>{{ (request.coins || pack.coins).toLocaleString(get_locale()) }} Coins · {{ request.display_price || 'Price unavailable' }}</text>
           <text>Request {{ request.request_id }}</text>
         </view>
       </template>
@@ -99,7 +112,7 @@ onUnmounted(cancel_loading)
         <view class="failed-cancel" role="button" :aria-disabled="navigating || is_loading" data-interaction="coinFailed.backToStore.click.1" @click="back_to_store">Cancel</view>
       </view>
     </template>
-    <template #overlays><CoinActionLoading :visible="is_loading" label="Creating a new purchase request…" /></template>
+    <template #overlays><CoinActionLoading :visible="is_loading" label="Preparing purchase…" /></template>
   </SecondaryPageFrame>
 </template>
 

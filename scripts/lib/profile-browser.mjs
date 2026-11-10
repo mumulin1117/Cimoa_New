@@ -39,7 +39,7 @@ export async function test_profile({ page, origin, evidence, check }) {
   const before = await storage()
   for (const [id, target] of [['profile.openAppSettings.click.1','/pages/settings/index'], ['profile.openEditBasic.click.1','/pages/profile/edit'], ['profile.openStore.click.1','/pages/coins/index'], ['profile.openProfilePreview.click.1','/pages/profile/preview']]) {
     assert.equal(await entry(id).getAttribute('data-target'), target); await entry(id).click()
-    if (PROFILE_DEFERRED_ROUTES.includes(target)) assert.match(await profile.locator('.profile-feedback').textContent(), /not been restored/)
+    if (PROFILE_DEFERRED_ROUTES.includes(target)) assert.match(await page.locator('.brand-toast--error').textContent(), /not been restored/)
     else { await page.locator(target === '/pages/profile/preview' ? '.preview-name:visible' : target === '/pages/coins/index' ? '.coin-title:visible' : '.editor-title:visible').waitFor(); await page.getByRole('button', { name: 'Back', exact: true }).click(); await page.locator('.profile-title:visible').waitFor() }
     assert.equal(await profile.getAttribute('data-page-depth'), '1'); assert.equal(await storage(), before)
     assert.equal(await page.locator('uni-toast, uni-modal, .app-loading:visible').count(), 0)
@@ -131,7 +131,7 @@ export async function test_profile({ page, origin, evidence, check }) {
 
   await load(d => { d.session.expires_at = now - 1 }); assert.match(await profile.locator('.profile-state').textContent(), /session has expired/)
   assert.equal(await profile.locator('.profile-avatar, .profile-interests, .profile-balance').count(), 0)
-  await entry('profile.openAppSettings.click.1').click(); assert.match(await profile.locator('.profile-feedback').textContent(), /session/)
+  await entry('profile.openAppSettings.click.1').click(); assert.match(await page.locator('.brand-toast--error').textContent(), /session/)
   check('expired session hides current-user business data and blocks child navigation')
   await page.evaluate(() => localStorage.setItem('cimoa_app_state_v2', '{corrupt'))
   await page.reload({ waitUntil: 'networkidle' }); await entry('profile.retry.click.1').click(); assert.equal(await storage(), '{corrupt')

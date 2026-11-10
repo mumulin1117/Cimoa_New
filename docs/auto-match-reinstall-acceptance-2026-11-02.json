@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-02",
+  "request": "Show Auto Match guidance again after deleting and reinstalling the app and logging in",
+  "status": "implemented_browser_verified_native_smoke",
+  "rules": {
+    "show": "An authenticated, prepared account without its own completed/skipped guide receipt in the current installation receives guidance, including after a clean reinstall.",
+    "retain": "Completion/Skip survives ordinary logout/login, refresh, process recreation and application updates within the same retained app data.",
+    "history": "Existing matching history is not equivalent to having seen the guide and is not modified to make the guide eligible.",
+    "prepared_test_account": "The original prepared account can enter guidance after real login without inserting onboarding_status or removing its default matching history. Local registration still requires verified account and complete profile.",
+    "cancellation": "Beginning guidance snapshots existing owned matching IDs in transient Store presentation state. Only a new owned matching ID interrupts the current unfinished guide; old status changes and other users' sessions do not.",
+    "unchanged": "Existing UI, touch cancellation, 600ms skeleton, 500ms completion write, matching, quota, coins and social entities remain unchanged. Guidance never starts matching.",
+    "storage": "Reuse existing Settings.auto_match_guide via atomic Store persistence in WKWebView app storage. No installation tracking ID, Keychain, new permission, backend or second business persistence source is introduced.",
+    "boundary": "iOS Offload App with retained documents or restoring a backup is not the tested data-clearing reinstall boundary. No account recovery after deleting app data is introduced."
+  },
+  "changed_files": [
+    "src/stores/autoMatchGuide.js",
+    "scripts/auto-match-guide.test.mjs",
+    "scripts/auto-match-guide-browser.test.mjs",
+    "docs/auto-match-first-use-contract-2026-11-02.json",
+    "docs/auto-match-reinstall-acceptance-2026-11-02.json"
+  ],
+  "convention_files": "Read completely; no modifications required or made this turn",
+  "unit": { "guide": "32/32 passed", "auth_account_scope_write_regression": "30/30 passed" },
+  "browser": {
+    "groups": 12,
+    "passed": true,
+    "screenshots": 13,
+    "page_errors": 0,
+    "existing_warnings": 36,
+    "warning_reason": "Three existing uni statistics warning forms after external telemetry requests were blocked in isolated contexts; no new application or Vue warning",
+    "report": "artifacts/auto-match-reinstall-2026-11-02/browser-report.json",
+    "empty_storage_case": "Production hydrate with no injected seed override, then Splash -> first EULA -> Welcome -> manual account login -> guide. A previous completed browser installation remains isolated.",
+    "same_install_case": "Completed and skipped outcomes tested through real Settings logout confirmation and manual login; no repeat guide and matching/social entities remain unchanged.",
+    "actual_user_storage_accessed": false,
+    "preview_server_started": false,
+    "contexts_closed": true
+  },
+  "wkwebview": {
+    "project": "ios/cimoaNeapo/cimoaNeapo.xcodeproj",
+    "build": "Debug iphonesimulator passed; CODE_SIGNING_ALLOWED=NO",
+    "derived_data": "/private/tmp/cimoa-guide-reinstall-20261102",
+    "device": "iPhone 17 Pro, iOS 26.5",
+    "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "bundle": "com.cimoa.neapo.dev",
+    "install_and_launch": "passed; existing app data preserved",
+    "observed": "Existing authenticated prepared account with no guide receipt visibly opens Quick Start 1/4 on Home without clearing matching history or changing profile data.",
+    "screenshot": "artifacts/auto-match-reinstall-2026-11-02/wkwebview-current-install-guide.png",
+    "bundled_h5_files": 443,
+    "resource_hash_differences": 0,
+    "h5_index_sha256": "5924d8ac3743b92ab4222e31ab658feccd1d633c2f4f035f6f6986e79114048f",
+    "limits": "No real installed-user uninstall, account deletion, storage clearing, logout, receipt write or guide Skip/Finish was performed. Actual iOS uninstall/reinstall and the complete native touch flow remain unverified. Earlier startup black-frame and auth keyboard pending items are not declared fixed by this change."
+  },
+  "required_gates": { "check_conventions": "passed, no warnings", "git_diff_check": "passed", "build_h5": "passed, native H5 resources updated" },
+  "git": "No commit or push; preserve the pre-existing dirty worktree and staged native-test deletions. No native source, project setting or signing configuration changed this turn.",
+  "cleanup": "No dev server started; browser contexts closed; bounded build commands exited. Native app intentionally remains running for the user."
+}

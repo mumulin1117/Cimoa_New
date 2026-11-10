@@ -13,7 +13,7 @@
   "route": "/pages/messages/call/waiting?conversation_id=:conversation_id&call_id=:call_id",
   "return_owner": "Exact conversation; invalid conversation fallback Home",
   "fixed_regions": [
-    "Full-screen static profile photo",
+    "Full-screen current conversation participant avatar",
     "Top safe header",
     "Own profile preview",
     "Bottom safe waiting status and hangup"
@@ -21,7 +21,7 @@
   "scroll_regions": [],
   "approved_deltas": [
     "User-confirmed waiting-only simulation, no connected state, elapsed call clock or secure lock.",
-    "Static profile photos replace camera/video; no camera/microphone access is requested.",
+    "The current conversation participant avatar is the full-screen background; the participant gallery is only a missing-avatar fallback. Static imagery replaces camera/video, so no camera/microphone access is requested.",
     "One centered hangup replaces unavailable connected-call mic/camera/switch/speaker controls.",
     "Waiting dots every 450ms; absolute 8–12s deadline; refresh/background does not restart.",
     "Report/Block reuse the source flag and shared safety dialogs; no fake service delivery.",

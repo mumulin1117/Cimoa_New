@@ -1,0 +1,15 @@
+{
+  "scope": "Startup handoff, auth and onboarding continuity",
+  "authorization_date": "2026-11-02",
+  "status": "in_progress",
+  "visual_acceptance": "pending",
+  "preserved_timing_ms": { "splash": 1800, "handoff": 240, "write_min": 400, "write_max": 600, "skeleton": 600, "page": 240, "back": 180 },
+  "contracts": [
+    { "interaction": "startup.welcome", "source": "Splash and Welcome", "precondition": "Cold guest entry", "trigger": "Actual target render readiness", "feedback": "Welcome reveal overlaps native cover exit", "success": "EULA after cover and finite entrance finish", "failure": "Photo Retry without startup deadlock", "persistence": "Existing session and consent only", "synchronization": "Attempt and origin guards retained", "cancellation": "Background and stale attempt cannot replay" },
+    { "interaction": "auth.navigation", "source": "AuthPageFrame and OnboardingFrame", "precondition": "Real valid navigation", "trigger": "Existing page action", "feedback": "Content-only cRise; stable chrome", "success": "Existing destination and real stack", "failure": "Current frame becomes usable", "persistence": "No new business writes", "synchronization": "True Store progress only", "cancellation": "Hide, background and unmount settle pending work" },
+    { "interaction": "auth.keyboard", "source": "Editable auth and onboarding pages", "precondition": "Successful validation with keyboard", "trigger": "Navigation request", "feedback": "Keep current layout while keyboard closes", "success": "Navigate after measured viewport stability", "failure": "Bounded cancellation restores controls", "persistence": "Input remains existing draft", "synchronization": "Duplicate navigation merged", "cancellation": "New focus or hidden page invalidates pending navigation" },
+    { "interaction": "page.return", "source": "Existing PageTransition returns", "precondition": "Actual source stack exists", "trigger": "Back", "feedback": "Visible foreground retained through return", "success": "Cached source restored without entrance replay", "failure": "No transparent or locked page", "persistence": "No data or scroll reset", "synchronization": "Existing route controller remains authoritative", "cancellation": "Pending timer settles without navigation after hide" }
+  ],
+  "verification": { "unit": "196 targeted tests passed; full bounded regression 667/669, two pre-existing missing native test files", "browser": "34 new motion checks, 15 startup scenarios and 9 guide groups passed", "wkwebview": "Built, installed, launched; existing session restored Home and Profile opened. Auth keyboard and guest EULA acceptance pending", "mandatory_checks": "Passed; see acceptance record for final results" },
+  "acceptance_record": "docs/auth-flow-motion-acceptance-2026-11-02.json"
+}

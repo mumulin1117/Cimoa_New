@@ -4,9 +4,11 @@ import { default_persistence, STATE_KEY } from '../utils/statePersistence.js'
 import { media_repository } from '../utils/mediaRepository.js'
 import { inspect_media } from '../utils/mediaCapabilities.js'
 import { auth_context_key } from './accountDefaults.js'
+import { auth_message } from '../utils/authFeedback.js'
+import { verify_native_purchase, load_purchase_products } from '../utils/nativePurchases.js'
 
 const runtimes = new WeakMap()
-export const get_runtime = (store) => runtimes.get(store) || { persistence: default_persistence, media: media_repository, inspect_media, clock: Date.now, services: {} }
+export const get_runtime = (store) => runtimes.get(store) || { persistence: default_persistence, media: media_repository, inspect_media, clock: Date.now, services: { verify_purchase: verify_native_purchase, purchase_products: load_purchase_products } }
 export const configure_store_runtime = (store, options) => runtimes.set(store, { ...get_runtime(store), ...options })
 export const make_id = (prefix = 'op') => `${prefix}_${globalThis.crypto?.randomUUID?.() || `${Date.now()}_${Math.random().toString(36).slice(2)}`}`
 export const failure = (reason, message) => ({ success: false, reason, message })
@@ -16,7 +18,7 @@ export const require_target = (data, target) => select.ensure(target !== select.
 export const require_student = (data) => select.ensure(select.social_eligible(data), 'Complete account verification and profile setup first.')
 
 export function transact(store, operation, mutation, options = {}) {
-  if (store.hydration_status !== 'ready') return failure('storage_not_ready', 'Saved data is unavailable. Please retry loading it.')
+  if (store.hydration_status !== 'ready') return failure('storage_not_ready', 'Your information is unavailable. Please try again.')
   try {
     const data = clone_data(store.data)
     const now = get_runtime(store).clock()
@@ -25,10 +27,10 @@ export function transact(store, operation, mutation, options = {}) {
     if (options.expected_context !== undefined) select.ensure(options.expected_context === auth_context_key(data), 'Your session changed. Reopen this page and retry.')
     if (options.is_current) select.ensure(options.is_current(), 'This operation was cancelled. No changes were made.')
     if (operation) {
-      select.ensure(typeof operation.id === 'string' && operation.id.length > 0, 'An operation ID is required.')
+      select.ensure(typeof operation.id === 'string' && operation.id.length > 0, 'This request is incomplete. Please return and try again.')
       const existing = data.operation_receipts.find((row) => row.owner_user_id === select.owner_id(data) && row.operation_id === operation.id)
       if (existing) {
-        select.ensure(existing.fingerprint === operation.fingerprint, 'This operation ID was already used for another request.')
+        select.ensure(existing.fingerprint === operation.fingerprint, 'This request has changed. Please return and try again.')
         return { success: true, data: clone_data(existing.result), repeated: true }
       }
     }
@@ -41,13 +43,16 @@ export function transact(store, operation, mutation, options = {}) {
     if (auth_context_key(store.data) !== auth_context_key(data)) {
       store.introduction_forms = []
       store.discover_cursor = null
+      store.auto_match_guide_session = null
+      store.discover_guide_session = null
     }
     store.data = data
     store.clock_ms = now
+    if (store.discover_guide_session && !store.discover_guide.started) store.discover_guide_session = null
     store.last_error = ''
     return { success: true, data: result }
   } catch (error) {
-    store.last_error = error.message || 'Unable to save changes. Please retry.'
+    store.last_error = auth_message(error.message, 'Your changes couldn’t be completed. Please try again.')
     return failure('operation_failed', store.last_error)
   }
 }

@@ -1,0 +1,31 @@
+{
+  "task": "Home Start Auto Match / lightning ↔ Auto Match entry: point-to-surface",
+  "date": "2026-11-02",
+  "status": "in_progress",
+  "visual_acceptance": "pending",
+  "scope": {
+    "source": "/pages/home/index",
+    "target": "/pages/auto-match/index",
+    "interaction_ids": ["home.startAutoMatch.click.1", "home.startAutoMatch.click.2", "home.startAutoMatch.click.3", "amEntry.goBack.click.1"],
+    "enter_ms": 240,
+    "return_ms": 180,
+    "origin": "The exact clicked header lightning, empty-state CTA or populated-list tail CTA; never a generic first matching button.",
+    "ownership": "The existing configurable Send surface engine, independent Vue Teleport destinations and the same real Home/entry frames. No screenshot, clone, duplicate business page, manual cache-tree move or second matching state.",
+    "nested": "Preferences/history keep the source association without replay; actual matching routes and unrelated navigation clear it.",
+    "business_changes": "none"
+  },
+  "preserved": ["real route ownership and navigation lock", "Home canonical cards and original scroll", "600ms first-entry skeleton consumption", "400–600ms writes", "quota and coin ledger", "matching session state and deadlines", "existing Join action", "first-use guide", "iPhone touch cancellation", "reduced-motion opacity-only mode"],
+  "verification": {
+    "unit": { "status": "passed", "tests": 244, "scope": "Combined final Home/Discover/Preferences engines, real page wiring, independent hosts/composables, scroll/actual arrival ownership, Home CTA/guide, return locks, keyboard and touch cancellation." },
+    "browser": { "status": "passed", "cases": 7, "assertions": 213, "screenshots": 22, "page_errors": 0, "unexpected_warnings": 0, "expected_diagnostic_warnings": 18, "business_writes": 0, "report": "../artifacts/auto-match-surface-2026-11-02/browser-report.json", "fixed_issue": "Teleport scroll reset is fixed with same-node restoration. A further audit found platform Back acknowledged before actual history arrival; the presentation now retains its collapsed target and real source until exact source activation. Strict browser assertions reject all hidden issues on normal returns.", "warning_reason": "Existing uni statistics requests deliberately blocked by the isolated runner." },
+    "preview": { "file": "../artifacts/auto-match-surface-2026-11-02/home-auto-match-buttons-roundtrip-393x852.webm", "report": "../artifacts/auto-match-surface-2026-11-02/preview-report.json", "capture": "63 actual unpaused Chrome CDP frames, 3.643s, both tail CTA and header lightning roundtrips; re-encoded only for viewing, not a native frame-rate benchmark." },
+    "regressions": { "discover_surface": "7 cases / 156 assertions passed on final H5", "first_use_guide": "12 grouped checks passed on final H5", "brand_microinteractions": "9 grouped checks passed on isolated final H5 rerun; concurrent sampling failure recorded in the 2026-11-03 Preferences report", "page_errors": 0, "expected_statistic_warnings": { "discover": 16, "guide": 36, "brand": 12 }, "unexpected_warnings": 0 },
+    "wkwebview": { "status": "partial", "device": "iPhone 17 Pro", "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D", "bundle_id": "com.cimoa.neapo.dev", "debug_build": "passed on final H5", "upgrade_install": "passed on final H5", "launch": "passed; final Home screenshot captured", "screenshot": "../artifacts/auto-match-surface-2026-11-02/wkwebview-final-launch.png", "touch_acceptance": "pending; Mac is locked, computer-use cannot operate the simulator. User asked to unlock manually; no attempt to bypass the lock.", "data_policy": "Upgrade only, no uninstall/reset, no real account fixture edits, no purchase or microphone access." },
+    "final_gates": { "check_conventions": "passed; no warnings", "diff_check": "passed", "build_h5": "passed after actual-arrival and Preferences fixes" },
+    "resource_integrity": { "dist_files": 443, "ios_packaged_files": 444, "dist_index_sha256": "955e108d3933a232cb95e91c9da6aaf2cfacefcba17b4ffc8a991d0a701b0441", "host_mismatches": 0, "built_app_mismatches": 0 },
+    "processes": "No preview server; final bounded builds/tests complete, all task-owned browsers closed and no runner/build/watch process remains. Delivered simulator app remains running."
+  },
+  "native_follow_up_2026_11_03": { "normal_touch": "passed for Home tail CTA and top lightning, including nested Preferences and original Home return; actual native recording in match-preferences-surface-2026-11-03.json", "limitations": "Earlier locked-Mac observation above is historical. Normal touch is now tested; native interruption, keyboard and complete visual acceptance remain pending." },
+  "changed_files": ["DEVELOPMENT_CONVENTIONS.md", "INTERACTION_CONVENTIONS.md", "docs/cimoa-home-interactions.md", "docs/ui-restoration/home/interactions.json", "src/App.vue", "src/pages/home/index.vue", "src/pages/auto-match/index.vue", "src/utils/sendSurface.js", "src/utils/sendSurfaceHost.js", "src/composables/useSendSurface.js", "src/components/SendSurfaceHost.vue", "scripts/auto-match-surface.test.mjs", "scripts/surface-host-composable.test.mjs", "scripts/auto-match-surface-wiring.test.mjs", "scripts/auto-match-surface-browser.test.mjs", "scripts/send-surface.test.mjs", "scripts/send-surface-browser.test.mjs", "scripts/brand-microinteractions-browser.test.mjs", "docs/auto-match-surface-2026-11-02.json", "dist/build/h5 (generated)", "ios/cimoaNeapo/Resources/H5 (generated)"],
+  "limitations": ["Browser lifecycle injection is not native background or keyboard acceptance.", "The existing large dirty worktree and staged user changes are preserved; no staging, commit or push.", "No preview server, watch or daemon started. All isolated browser contexts close after their bounded runs.", "A missing/stale origin uses safe ordinary navigation; an interrupted return cannot become a late pop or fly toward another button."]
+}

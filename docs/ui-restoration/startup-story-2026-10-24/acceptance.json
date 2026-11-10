@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-24",
+  "scope": "Encounter arc, campus reveal, consent handoff and completed-authentication Discover entry; not whole-app acceptance",
+  "status": "verified",
+  "source": {
+    "authority": "User explicitly requested the encounter-arc to campus-unfold experience, unchanged launch/handoff/skeleton timings, manual consent after the true native cover exit, no warm replay and Reduced Motion fade only.",
+    "layout_locks": ["docs/ui-restoration/splash/source-contract.json", "docs/ui-restoration/welcome/source-contract.json"],
+    "conventions": "AGENTS.md and both convention files read completely. Both convention files remain unchanged by this task; only the source-lock approved deltas record the explicit user request. No global Push/Pop or staggered controls were introduced."
+  },
+  "changed_files": [
+    "src/pages/auth/splash.vue",
+    "src/pages/auth/welcome.vue",
+    "src/components/CimoaBrand.vue",
+    "src/components/PageTransition.vue",
+    "src/components/SecondaryPageFrame.vue",
+    "src/utils/startupCampus.js",
+    "src/utils/startupHandoff.js",
+    "src/config/navigation.js",
+    "src/utils/authNavigation.js",
+    "src/composables/useOnboarding.js",
+    "src/pages/auth/verification/success.vue",
+    "src/pages/onboarding/complete.vue",
+    "scripts/package-ios.mjs",
+    "ios/cimoaNeapo/Sources/WebViewController.swift",
+    "scripts/auth-discover-entry.test.mjs",
+    "scripts/registration.test.mjs",
+    "scripts/social-entities.test.mjs",
+    "scripts/ux-entry-flow.test.mjs",
+    "scripts/startup-browser.test.mjs",
+    "scripts/startup-handoff.test.mjs",
+    "scripts/startup-story.test.mjs",
+    "scripts/startup-story-browser.test.mjs",
+    "scripts/lib/startup-story-regression.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift",
+    "docs/ui-restoration/splash/source-contract.json",
+    "docs/ui-restoration/welcome/source-contract.json",
+    "docs/ui-restoration/startup-story-2026-10-24/acceptance.json"
+  ],
+  "generated_outputs": [
+    "dist/build/h5/",
+    "ios/cimoaNeapo/Resources/H5/",
+    "ios/cimoaNeapo/Resources/theme.json",
+    "ios/cimoaNeapo/Resources/build-manifest.json"
+  ],
+  "implementation": {
+    "launch": "One-shot 1200ms cyan/pink lights follow the existing Logo arc in H5 and UIKit. Keep the original 1800ms route timer and colorful 1500ms progress cycle. Background motion pauses, obsolete native attempts are rejected and duplicate finishLaunch callers share actual fade completion.",
+    "photo": "The shared presentation-only preloader starts during Splash, deduplicates genuine Image load/decode, times out a stalled resource after 10s and invalidates cancelled results. The photo fades in its original region; a single faint theme arc expands during the existing 240ms handoff. Neither photo availability nor decoration gates navigation.",
+    "consent": "Welcome presents first EULA after fonts, finite cRise and two paint frames; a native session additionally awaits the actual cover fade-end acknowledgment. No implicit agreement. Existing manual acceptance, checkbox synchronization and 500ms write feedback remain intact.",
+    "routing": "AUTHENTICATED_MAIN_ROUTE is Discover for complete login, registration and session recovery. Pending verification and every incomplete profile step retain priority. No Store business entity or account credential is migrated.",
+    "restoration": "Visible current pages resume a cancelled presentation through a cleaned-up visibility listener with active/disposed guards. Already-consumed campus decoration does not replay on Login Back, Tab returns or logout after direct session restoration. Reduced Motion hides traveling lights/halo and uses a position-stable fade.",
+    "discover": "Reuse the existing real three-card 600ms skeleton, parallel image decode, photo fade and touch-interruptible fan/sweep. No additional timer, Loading Toast, automatic person change or business success signal."
+  },
+  "preserved": [
+    "Existing visual layout, theme.json color authority, uni-app components, rpx, measured safe-area ownership and cRise for ordinary pages",
+    "1800ms Splash, 240ms handoff, 600ms content skeleton, existing 400–600ms write delays and three-second profile carousel",
+    "Manual EULA consent and fixed-code internal validation; no verification code disclosure",
+    "All actual accounts, profiles, requests, connections, messages, event participation and coin data",
+    "Independent built Vue/uni-app H5 bundled in WKWebView; no prototype embedding or live loading",
+    "All pre-existing dirty worktree changes; no staging, commit, push or reset"
+  ],
+  "verification": {
+    "unit": { "passed": 404, "failed": 0, "log": "artifacts/startup-story/unit-tests.log" },
+    "browser": {
+      "passed": true,
+      "cases": 14,
+      "assertions": 244,
+      "viewports": ["320x568", "393x852", "440x956"],
+      "errors": 0,
+      "warnings": 0,
+      "report": "artifacts/startup-story/browser-report.json",
+      "coverage": ["parallel real photo decoding", "unchanged image region", "first EULA and explicit consent/checkbox linkage", "native-delay acknowledgment", "slow photo", "image failure and Retry", "Reduced Motion", "warm Login Back", "visibility interruption and restoration", "session restore and logout", "pending verification/onboarding restoration", "manual login with duplicate-submit protection", "corrupt storage Retry"]
+    },
+    "discover_compatibility": {
+      "passed": true,
+      "cases": 7,
+      "assertions": 433,
+      "errors": 0,
+      "warnings": 0,
+      "report": "artifacts/discover-entrance/browser-report.json"
+    },
+    "wkwebview": {
+      "passed": true,
+      "device": "iPhone 17 Pro simulator, iOS 26.5",
+      "tests": ["EventCoverTests.testNativeStartupHandoff()", "EventCoverTests.testStartupStoryRoutes()"],
+      "isolated_cases": 6,
+      "assertions": 76,
+      "report": "artifacts/startup-story/wkwebview-report.json",
+      "native_cover_report": "artifacts/startup-story/native-handoff-report.json",
+      "result_bundle": "artifacts/startup-story/StartupStoryVerified.xcresult",
+      "log": "artifacts/startup-story/xcodebuild-verified.log",
+      "actual_host_business_data_unchanged": true,
+      "native_cover": "Real progress and arc movement sampled; current-attempt reveal once, two concurrent finishLaunch replies held until the real 240ms cover fade completes, no early acknowledgment and no remaining cover animations.",
+      "final_app": "Latest manifest-matched build reopened on iPhone 17 Pro, actual startup-to-Welcome recorded without resetting any account or consent data."
+    },
+    "required_commands": {
+      "sequence": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"],
+      "passed": true,
+      "convention_warnings": 0,
+      "h5_files_packaged": 440,
+      "ios_built_manifest_matches": true,
+      "build_log": "artifacts/startup-story/build-h5.log"
+    },
+    "limitations": [
+      "Browser native-delay instrumentation exercises the real bridge client with an explicitly diagnostic handler. Actual native cover timing is independently verified in the production UIKit host.",
+      "Guest/account routing is also tested in nonPersistent WKWebViews; these never overwrite the actual host account data.",
+      "Slow/failing photos and visibility changes are diagnostic injections, not claims of a physical network outage or OS background gesture. They retain real rendering, image decoding and existing uni lifecycle handling.",
+      "This is scoped startup and authentication-entry verification, not App Store readiness or complete-app acceptance."
+    ],
+    "warnings": "No convention warnings. Existing Xcode AppIntents metadata-skipped warning and simulator WebKit/Accessibility diagnostics remain in native logs.",
+    "initial_findings": [
+      "Fixed a presentation lifecycle gap found in review: a current visible page now resumes a handoff cancelled by document hiding, with active/disposed guards and listener cleanup.",
+      "Fixed unused cold-entry eligibility after direct session restoration, so a subsequent logout Welcome cannot replay the cold campus expansion.",
+      "Corrected test sampling only: measure photo bounds relative to its intentional cRise transform, reacquire the current image after Retry replaces it, and do not require first EULA to reopen after a second warm hide has closed the overlay under the existing contract. These corrections retain the real first-restoration EULA and decoded-pixel assertions."
+    ],
+    "preview_server_started": false,
+    "test_and_recording_processes_cleaned_up": true,
+    "optional_browser_recording": "Playwright preview capture was unavailable because its FFmpeg binary is not installed; no dependency was installed, and the complete regression report was not overwritten. A real simulator recording was produced instead."
+  },
+  "preview": "artifacts/startup-story/startup-campus-native.mov",
+  "screenshots": [
+    "artifacts/startup-story/accepted-393x852-splash.png",
+    "artifacts/startup-story/accepted-393x852-result.png",
+    "artifacts/startup-story/guest-wkwebview.png",
+    "artifacts/startup-story/background-wkwebview.png",
+    "artifacts/startup-story/final-simulator.png"
+  ]
+}

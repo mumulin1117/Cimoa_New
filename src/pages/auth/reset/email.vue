@@ -1,4 +1,5 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { onUnmounted, ref } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -18,7 +19,7 @@ const back = async () => { if (is_loading.value) return; try { await frame.value
 const next = async () => {
   if (is_loading.value) return
   error.value = ''
-  if (store.hydration_status !== 'ready') { error.value = store.hydration_error || 'Saved account data is unavailable.'; return }
+  if (store.hydration_status !== 'ready') { error.value = store.hydration_error || 'Your account information is unavailable. Please try again.'; return }
   if (store.session.is_authenticated) { error.value = 'Log out before resetting a password.'; return }
   if (!valid_email(email.value)) { error.value = 'Enter a valid email address.'; return }
   try { auth_destination('/pages/auth/reset/code') } catch (cause) { error.value = cause.message; return }
@@ -34,7 +35,7 @@ const next = async () => {
     <text class="auth-heading">Reset your password</text>
     <text class="auth-description">Enter the email address associated with your account.</text>
     <view class="auth-field"><text class="auth-label">Email</text><view class="auth-input-box"><input v-model="email" class="auth-input" aria-label="Reset email" placeholder="you@university.edu" :maxlength="254" :disabled="is_loading" autocomplete="username" data-interaction="fpEmail.onEmail.change.1" /></view></view>
-    <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
+    <text v-if="error" class="auth-error-box" role="alert">{{ auth_message(error) }}</text>
     <template #footer><view class="auth-primary" role="button" :aria-disabled="is_loading" data-interaction="fpEmail.goFpCode.click.1" @click="next">Continue</view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Checking account…" /></template>
   </AuthPageFrame>

@@ -1,10 +1,11 @@
 import { computed, onUnmounted, ref } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
-import { auth_destination } from '@/utils/authNavigation.js'
+import { AUTHENTICATED_MAIN_ROUTE, auth_destination } from '@/utils/authNavigation.js'
 import { onboarding_route } from '@/utils/onboardingFlow.js'
-import { relaunch_route } from '@/utils/routeTransition.js'
 import { use_write_loading } from './useWriteLoading.js'
+import { auth_message } from '@/utils/authFeedback.js'
+import { show_toast } from '@/utils/toast.js'
 export function use_onboarding(step, frame) {
   const store = use_app_store(), error = ref(''), context = computed(() => store.onboarding), catalog = computed(() => store.onboarding_catalog)
   const allowed = computed(() => context.value && !context.value.completed && catalog.value.steps.indexOf(step) <= catalog.value.steps.indexOf(context.value.step))
@@ -14,9 +15,10 @@ export function use_onboarding(step, frame) {
   onShow(() => { active = true; store.tick() })
   const leave = () => { active = false; cancel_loading() }
   onHide(leave); onUnmounted(leave)
-  const go = async target => { try { await frame.value.navigate_forward(auth_destination(target)) } catch (cause) { error.value = cause.message } }
-  const recover = async () => { try { await relaunch_route(context.value?.completed ? '/pages/home/index' : context.value ? onboarding_route(context.value.step) : '/pages/auth/login') } catch (cause) { error.value = cause.message } }
-  const back = async () => { const index = catalog.value.steps.indexOf(step); try { await frame.value.navigate_back(index > 0 ? onboarding_route(catalog.value.steps[index - 1]) : '/pages/auth/verification/success') } catch (cause) { error.value = cause.message } }
+  const navigation_failed = cause => show_toast(auth_message(cause.message, 'This page couldn’t be opened. Please try again.'), { tone: 'error' })
+  const go = async target => { try { await frame.value.navigate_forward(auth_destination(target)) } catch (cause) { navigation_failed(cause) } }
+  const recover = async () => { try { await frame.value.navigate_relaunch(context.value?.completed ? AUTHENTICATED_MAIN_ROUTE : context.value ? onboarding_route(context.value.step) : '/pages/auth/login') } catch (cause) { navigation_failed(cause) } }
+  const back = async () => { const index = catalog.value.steps.indexOf(step); try { await frame.value.navigate_back(index > 0 ? onboarding_route(catalog.value.steps[index - 1]) : '/pages/auth/verification/success') } catch (cause) { navigation_failed(cause) } }
   const save = async patch => {
     if (is_loading.value || !allowed.value) return
     error.value = ''
@@ -26,7 +28,7 @@ export function use_onboarding(step, frame) {
       return store.save_onboarding_step(step, patch, id, scope)
     })
     if (!active || result.reason === 'cancelled') return
-    if (!result.success) { error.value = result.message; return }
+    if (!result.success) { error.value = auth_message(result.message); return }
     await go(onboarding_route(result.data))
   }
   return { store, context, catalog, allowed, access_error, error, is_loading, run_with_loading, cancel_loading, back, go, save, recover }

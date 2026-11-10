@@ -1,1 +1,0 @@
-const a=a=>Number.isFinite(a)?new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",year:"numeric"}).format(new Date(a)):"Date unavailable",e=a=>"local_saved"===a?"Saved":"Unavailable";export{a,e as r};

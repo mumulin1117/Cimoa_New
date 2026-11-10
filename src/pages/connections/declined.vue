@@ -13,7 +13,7 @@ const discover = async () => { try { await frame.value.navigate_relaunch('/pages
   <SecondaryPageFrame ref="frame" class="connection-declined-page">
     <view v-if="access_error" class="connection-unavailable" role="alert">{{ access_error }}</view>
     <view v-else class="declined-content"><view class="declined-icon"><view><ConnectionIcon name="closed" /></view></view><text class="declined-title">Request closed</text><text class="declined-copy">No connection was created and no reason is passed on. There are plenty of other students to meet.</text></view>
-    <template #footer><text v-if="error" class="connection-error" role="alert">{{ error }}</text><view class="connection-footer"><view class="connection-primary" role="button" tabindex="0" data-interaction="reqDeclined.backToDiscover.click.1" @click="discover" @keydown.enter="discover">Back to Discover</view><view class="connection-secondary" role="button" tabindex="0" data-interaction="reqDeclined.backToDiscover.click.2" @click="discover" @keydown.enter="discover">View Other People</view></view></template>
+    <template #footer><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /><view class="connection-footer"><view class="connection-primary" role="button" tabindex="0" data-interaction="reqDeclined.backToDiscover.click.1" @click="discover" @keydown.enter="discover">Back to Discover</view><view class="connection-secondary" role="button" tabindex="0" data-interaction="reqDeclined.backToDiscover.click.2" @click="discover" @keydown.enter="discover">View Other People</view></view></template>
   </SecondaryPageFrame>
 </template>
 <style scoped>

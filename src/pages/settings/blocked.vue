@@ -23,7 +23,7 @@ let active = true
 
 const account_scope = use_account_scope(store, () => { cancel_loading(); target_id.value = null; target_kind.value = 'user'; dialog_error.value = '' })
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -52,7 +52,7 @@ const confirm_unblock = async () => {
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="settings-blocked-page" title="Blocked accounts" source="blockedList" :busy="is_loading" :loading-label="target_kind === 'organizer' ? 'Unblocking organizer…' : 'Unblocking account…'" :error="error" :access-error="access_error" @back="back" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="settings-blocked-page" title="Blocked accounts" source="blockedList" :busy="is_loading" :loading-label="target_kind === 'organizer' ? 'Unblocking organizer…' : 'Unblocking account…'" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover">
     <view v-if="blocked.length" class="settings-page-stack blocked-stack">
       <view v-for="user in blocked" :key="user.user_id" class="blocked-card">
         <view class="blocked-avatar"><ProfilePhoto :src="user.avatar_url" :name="user.user_name" portrait /></view>
@@ -74,7 +74,7 @@ const confirm_unblock = async () => {
     <template #overlays>
       <EventConfirmDialog :open="!!target" :busy="is_loading" :label="target ? `Unblock ${target_name}?` : 'Unblock account'" close-interaction="unblockOpen.closeUnblock.click.1" style="--event-dialog-bottom: var(--app-safe-bottom);" @close="close_unblock">
         <text class="event-dialog-title">Unblock {{ target_name }}?</text>
-        <text class="event-dialog-copy">{{ target_kind === 'organizer' ? 'Events from this organizer can be recommended again. Your event attendance and group chats will not change.' : 'This does not restore your previous connection, chat history, pending request, or Auto Match record.' }}</text>
+        <text class="event-dialog-copy">{{ target_kind === 'organizer' ? 'Events from this organizer can be recommended again. Your event attendance and group chats will not change.' : 'This does not restore your previous connection, chat history, pending request, or Auto Match history.' }}</text>
         <text v-if="dialog_error" class="event-dialog-error" role="alert">{{ dialog_error }}</text>
         <view class="event-dialog-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="unblockOpen.confirmUnblock.click.1" @click="confirm_unblock" @keydown.enter="confirm_unblock">Unblock</view>
         <view class="event-dialog-secondary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="unblockOpen.closeUnblock.click.2" @click="close_unblock" @keydown.enter="close_unblock">Cancel</view>

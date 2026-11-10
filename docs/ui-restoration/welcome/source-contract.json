@@ -151,6 +151,11 @@
       "id": "welcome-media-error",
       "source": "INTERACTION_CONVENTIONS.md 12",
       "delta": "Expose real local-image loading and failure states with retry; do not change the default loaded composition."
+    },
+    {
+      "id": "campus-unfold-consent-handoff-2026-10-24",
+      "source": "User request 2026-10-24: encounter arc to campus unfold",
+      "delta": "Keep the final campus photo geometry, copy, footer, manual consent and common cRise. Prepare/decode the photo during Splash, softly reveal its real pixels in place and expand one faint theme arc halo during the existing 240ms handoff. First EULA waits for painted Welcome and, in the native host, the genuine cover fade-end acknowledgment. Photo failure retains Retry without holding startup or EULA. Warm returns do not replay; Reduced Motion keeps an original-position fade only. Evidence: docs/ui-restoration/startup-story-2026-10-24/acceptance.json."
     }
   ],
   "implementation_files": [

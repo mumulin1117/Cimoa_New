@@ -988,9 +988,17 @@
     "evGroup.sendPhoto.click.1",
     "evGroup.onGroupDraft.change.1",
     "evGroup.recordGroupVoice.click.1",
-    "evGroup.sendGroup.click.1"
+    "evGroup.sendGroup.click.1",
+    "eventGroup.media.record.click.1",
+    "eventGroup.media.voicePreview.click.1",
+    "eventGroup.media.send.click.1",
+    "eventGroup.media.dismiss.click.1",
+    "eventGroup.media.close.click.1",
+    "eventGroup.media.close.click.2"
   ],
   "approved_deltas": [
+    "2026-10-24 user override: group voice uses the same ChatVoiceConfirmDialog studio/review/send UI as private chat, with the current event cover/title and its own interaction prefix. Retain membership-scoped send_event_message, 500ms write wait and media cleanup. Voice sends are inline branded progress; text/photo progress stays unchanged. See ../group-voice-2026-10-24/acceptance.json.",
+    "2026-10-24 user override: More directly opens Report group chat with the Event report layout; old group options entries are removed from runtime; see ../group-chat-report-2026-10-24/source-contract.json",
     "Real safe area, fixed shared page skeleton, rpx responsive conversion and source cRise",
     "Canonical user profiles, actual counts/relationships/event times instead of fake prototype totals",
     "Explicit error/empty/expired state; local-only reports do not claim delivery",

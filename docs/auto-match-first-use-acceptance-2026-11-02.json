@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-02",
+  "scope": "User-requested first-use Auto Match teaching overlay, not a new matching engine or full-project release acceptance",
+  "status": "implemented_browser_verified_native_pending",
+  "contract": "docs/auto-match-first-use-contract-2026-11-02.json",
+  "experience": {
+    "entry": "Home after successful authentication, required account verification and completed profile, after the existing first content skeleton and actual cRise",
+    "steps": ["Home lightning -> Show me how", "Match Preferences -> Next", "Join the pool cost and deliberate start -> Next", "Mutual consent, pause and leave -> Got it"],
+    "visuals": "Theme-only translucent rounded coach card, rounded SVG spotlight, cyan/blue/purple/pink arc and glow, four-step progress, existing 240ms cRise and 180ms dismissal",
+    "persistence": "Only a successful Got it or Skip stores Settings.auto_match_guide for the current account after the existing 500ms custom Loading. Steps and route handoff are transient. No startup write or migration reset.",
+    "cancellation": "Hide, background, page switch, session change and unmount cancel pending work; real animation completion gates moving controls; reduced motion keeps fade only",
+    "not_interrupted": "Users who already own matching history, incomplete/invalid sessions, and accounts with an existing completed/skipped guide receipt",
+    "business_boundary": "No automatic Join, search, preference edit, connection, message, quota or coin mutation. The original Join control remains an explicit later user action."
+  },
+  "changed_files": [
+    "src/components/AutoMatchGuide.vue",
+    "src/utils/autoMatchGuideLayout.js",
+    "src/composables/useAutoMatchGuide.js",
+    "src/stores/autoMatchGuide.js",
+    "src/stores/store.js",
+    "src/stores/selectors.js",
+    "src/stores/transactions.js",
+    "src/pages/home/index.vue",
+    "src/pages/auto-match/index.vue",
+    "src/config/theme.json",
+    "scripts/auto-match-guide.test.mjs",
+    "scripts/auto-match-guide-browser.test.mjs",
+    "docs/auto-match-first-use-contract-2026-11-02.json",
+    "docs/auto-match-first-use-acceptance-2026-11-02.json"
+  ],
+  "generated_outputs": ["dist/build/h5", "ios/cimoaNeapo/Resources/H5"],
+  "conventions": {"files_modified_this_task": false, "followed": ["Vue 3 script setup and uni-app views", "rpx geometry; theme.json colors and shadows", "Pinia-only canonical data and atomic account-scoped writes", "No navigation Loading or new route", "Existing 400–600ms write controller, default 500ms", "Existing skeleton and page timing", "Touch cancellation, busy guards, minimum 44pt controls and reduced motion"]},
+  "checks": {
+    "required_commands_in_order": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"],
+    "required_gates": "passed",
+    "new_convention_warnings": 0,
+    "targeted_tests": {"passed": 79, "failed": 0, "guide_store_and_layout_tests": 26},
+    "bounded_unit_suite": {
+      "files": 79,
+      "total": 638,
+      "passed": 636,
+      "failed": 2,
+      "log": "artifacts/auto-match-guide-2026-11-02/unit-tests.log",
+      "known_failures": ["event-covers.test.mjs expects pre-existing missing ios/cimoaNeapo/Tests/EventCoverTests.swift", "touch-targets.test.mjs expects pre-existing deleted ios/cimoaNeapo/Tests/HostTests.swift"],
+      "boundary": "Browser/visual scripts and auto-match-background.test.mjs / connection-pages.test.mjs excluded from the bounded unit command; missing user files not restored and no assertions weakened"
+    },
+    "browser": {
+      "report": "artifacts/auto-match-guide-2026-11-02/browser-report.json",
+      "final_runs": 2,
+      "groups_passed_per_run": 9,
+      "page_errors": 0,
+      "warnings": 26,
+      "warning_boundary": "All warnings are the existing uni statistics requests deliberately blocked by isolated route.fulfill fixtures; zero new warning category",
+      "preview_server_started": false,
+      "real_user_storage_accessed": false,
+      "viewports": ["320x568", "393x852", "430x932"],
+      "safe_areas_pt": {"top": 62, "bottom": 34},
+      "screenshots": 12,
+      "completion": {"writes": 1, "elapsed_ms": 549.3},
+      "coverage": ["Real login -> Home -> existing skeleton -> guide", "Next and Back with correct real stack", "Pointer cancellation without advance", "All four Skip positions and refresh suppression", "Got it repeat taps and refresh suppression", "Original Join after guide consumes one actual free attempt only then", "Background and route cancellation reject late writes", "Storage failure retains readable error and supports retry", "Stable animation landing before controls enable", "Theme geometry, safe areas, scroll body, 44pt and reduced motion", "Experienced account no forced guide"],
+      "h5_index_sha256": "7501c43917004a62dca92ec1d9d5e255df26e6150a5b4095875090f78b6c9487",
+      "intermediate_fixes": ["Available/busy changes can resume a deferred Home presentation", "Rounded spotlight removes rectangular bright corners", "Actual animation completion and focus precede enabling moving controls; no added fixed wait"],
+      "cleanup": "Isolated Chrome and all contexts closed after both final runs"
+    },
+    "ios": {
+      "project": "ios/cimoaNeapo/cimoaNeapo.xcodeproj",
+      "scheme": "cimoaNeapo",
+      "build": "passed: Debug iphonesimulator, CODE_SIGNING_ALLOWED=NO",
+      "xcode": "26.6 (17F113)",
+      "device": "iPhone 17 Pro / iOS 26.5",
+      "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "bundle_id": "com.cimoa.neapo.dev",
+      "built_app": "/private/tmp/cimoa-guide-20261102/Build/Products/Debug-iphonesimulator/cimoaNeapo.app",
+      "source_dist_and_native_bundle_comparison": {"files_compared": 442, "mismatches": 0},
+      "first_use_touch_flow": "pending: did not reset the existing account, delete history, bypass setup, create an account or accept legal terms to force the walkthrough. Computer-use subsequently reported user-changed Simulator state; stopped UI input instead of claiming native acceptance.",
+      "installed_final_build_this_task": false,
+      "boundary": "Existing running simulator data and app preserved; the project and newly built native app contain the updated H5. Browser lifecycle injection is not proof of iOS background behavior."
+    },
+    "git": "No staging, commits, push, reset or restore. Existing unrelated changes preserved; this feature is not marked verified without native acceptance."
+  }
+}

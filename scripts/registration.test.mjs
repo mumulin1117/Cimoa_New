@@ -37,7 +37,7 @@ test('email corrections are scoped, unique and forbidden after account verificat
   const { store } = fixture()
   const { data } = await store.register_local_account({ email: 'new@campus.edu', password: 'localpass123', confirmation: 'localpass123', date_of_birth: '2000-01-01', agreements: { terms: true, privacy: true, community: true } })
   const before = clone_data(store.data)
-  for (const [email, id] of [['bad', data.account_id], ['cimoa@gmail.com', data.account_id], ['other@campus.edu', 'wrong']]) assert.equal(store.change_registration_email(email, id).success, false)
+  for (const [email, id] of [['bad', data.account_id], ['cimoa@connect.edu', data.account_id], ['other@campus.edu', 'wrong']]) assert.equal(store.change_registration_email(email, id).success, false)
   assert.deepEqual(clone_data(store.data), before)
   assert.equal(store.change_registration_email(' CORRECT@Campus.edu ', data.account_id).success, true)
   assert.equal(store.local_verification.email, 'correct@campus.edu')

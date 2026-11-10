@@ -29,45 +29,84 @@ export function inspect_media(blob, kind) {
     .catch(inspect_element)
   return inspect_element()
 }
-export async function create_recorder({ devices = globalThis.navigator?.mediaDevices, Recorder = globalThis.MediaRecorder, clock = Date.now, signal, timers = globalThis, request_timeout = 15000 } = {}) {
+export async function create_recorder({ devices = globalThis.navigator?.mediaDevices, Recorder = globalThis.MediaRecorder, clock = Date.now, signal, timers = globalThis, request_timeout = 15000, stop_timeout = 8000 } = {}) {
   if (!devices?.getUserMedia || !Recorder) throw new Error('Voice recording is currently unavailable.')
+  const media_error = (name, message) => Object.assign(new Error(message), { name })
+  const stop_stream = value => (value?.getTracks?.() || []).forEach(track => { try { track.stop() } catch {} })
   let stream
   try {
     stream = await new Promise((resolve, reject) => {
       let settled = false, timer
       const cleanup = () => { timers.clearTimeout(timer); signal?.removeEventListener('abort', abort) }
       const fail = error => { if (!settled) { settled = true; cleanup(); reject(error) } }
-      const abort = () => fail(Object.assign(new Error('Microphone access was cancelled.'), { name: 'AbortError' }))
+      const abort = () => fail(media_error('AbortError', 'Microphone access was cancelled.'))
       if (signal?.aborted) { abort(); return }
       signal?.addEventListener('abort', abort, { once: true })
-      timer = timers.setTimeout(() => fail(Object.assign(new Error('The microphone did not respond. Check your audio input and try again.'), { name: 'TimeoutError' })), request_timeout)
-      Promise.resolve().then(() => devices.getUserMedia({ audio: true })).then(value => {
-        if (settled) { value.getTracks().forEach(track => track.stop()); return }
-        settled = true; cleanup(); resolve(value)
-      }, fail)
+      timer = timers.setTimeout(() => fail(media_error('TimeoutError', 'The microphone did not respond. Check your audio input and try again.')), request_timeout)
+      // Invoke the capability inside the original click stack. Do not defer the
+      // permission request behind a timer, native bridge round trip or microtask.
+      try {
+        Promise.resolve(devices.getUserMedia({ audio: true })).then(value => {
+          if (settled) { stop_stream(value); return }
+          settled = true; cleanup(); resolve(value)
+        }, fail)
+      } catch (error) { fail(error) }
     })
-    if (signal?.aborted) { stream.getTracks().forEach(track => track.stop()); throw Object.assign(new Error('Microphone access was cancelled.'), { name: 'AbortError' }) }
+    if (signal?.aborted) { stop_stream(stream); throw media_error('AbortError', 'Microphone access was cancelled.') }
   } catch (error) {
-    throw new Error(['AbortError', 'TimeoutError'].includes(error.name) ? error.message : error.name === 'NotAllowedError' ? 'Microphone permission was denied.' : error.name === 'NotFoundError' ? 'No microphone was found.' : 'The microphone could not be opened.')
+    const name = error?.name || 'NotReadableError'
+    throw media_error(name, ['AbortError', 'TimeoutError'].includes(name) ? error.message : ['NotAllowedError', 'SecurityError'].includes(name) ? 'Microphone permission was denied.' : name === 'NotFoundError' ? 'No microphone was found.' : 'The microphone could not be opened.')
   }
-  const tracks = () => stream.getTracks().forEach((track) => track.stop())
+  const audio_tracks = stream?.getAudioTracks?.() || stream?.getTracks?.().filter(track => track.kind !== 'video') || []
+  if (!audio_tracks.some(track => track.readyState !== 'ended')) { stop_stream(stream); throw media_error('NotFoundError', 'No microphone was found.') }
+  let released = false
+  const tracks = () => { if (!released) { released = true; stop_stream(stream) } }
   let recorder
-  try { recorder = new Recorder(stream) } catch { tracks(); throw new Error('Voice recording could not be started.') }
-  let chunks = [], started_at = 0, disposed = false, completion = null
-  recorder.ondataavailable = (event) => { if (event.data.size) chunks.push(event.data) }
-  const reject_pending = (message) => { if (completion) { completion.reject(new Error(message)); completion = null } }
-  recorder.onerror = () => { tracks(); reject_pending('Voice recording failed. Please try again.') }
-  recorder.onstop = () => {
-    tracks()
-    if (disposed) { reject_pending('Recording was cancelled.'); return }
-    const blob = new Blob(chunks, { type: recorder.mimeType || chunks[0]?.type || 'audio/webm' })
-    if (!blob.size) { reject_pending('No audio was recorded.'); return }
-    completion?.resolve({ blob, duration_ms: Math.max(0, clock() - started_at) }); completion = null; chunks = []
+  try {
+    const mime = typeof Recorder.isTypeSupported === 'function' ? ['audio/mp4;codecs=mp4a.40.2', 'audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus'].find(type => Recorder.isTypeSupported(type)) : ''
+    recorder = mime ? new Recorder(stream, { mimeType: mime }) : new Recorder(stream)
+  } catch { tracks(); throw new Error('Voice recording could not be started.') }
+  let chunks = [], started_at = 0, started = false, disposed = false, completion = null, stop_timer, failure
+  const detach = () => { recorder.ondataavailable = recorder.onerror = recorder.onstop = null; signal?.removeEventListener('abort', abort_recording) }
+  const finish_pending = (error, result) => {
+    timers.clearTimeout(stop_timer); stop_timer = undefined
+    const pending = completion; completion = null
+    if (pending) error ? pending.reject(error) : pending.resolve(result)
   }
+  const fail_recording = error => {
+    failure = error; chunks = []; tracks(); detach(); finish_pending(error)
+    try { if (recorder.state !== 'inactive') recorder.stop() } catch {}
+  }
+  const abort_recording = () => fail_recording(media_error('AbortError', 'Recording was cancelled.'))
+  recorder.ondataavailable = event => { if (!disposed && !failure && event.data instanceof Blob && event.data.size) chunks.push(event.data) }
+  recorder.onerror = () => fail_recording(new Error('Voice recording failed. Please try again.'))
+  recorder.onstop = () => {
+    tracks(); detach()
+    if (disposed || failure) { finish_pending(failure || media_error('AbortError', 'Recording was cancelled.')); chunks = []; return }
+    const type = recorder.mimeType || chunks.find(chunk => chunk.type)?.type || ''
+    const blob = new Blob(chunks, { type }); chunks = []
+    if (!blob.size || !type.startsWith('audio/')) { finish_pending(new Error('No playable audio was recorded. Please try again.')); return }
+    finish_pending(null, { blob, duration_ms: Math.max(0, clock() - started_at) })
+  }
+  signal?.addEventListener('abort', abort_recording, { once: true })
+  if (signal?.aborted) { abort_recording(); throw failure }
   return {
-    start() { if (disposed || recorder.state !== 'inactive') throw new Error('Recording is already active.'); chunks = []; started_at = clock(); recorder.start() },
-    stop() { if (disposed || recorder.state === 'inactive' || completion) return Promise.reject(new Error('Recording is not active.')); return new Promise((resolve, reject) => { completion = { resolve, reject }; recorder.stop() }) },
-    dispose() { if (disposed) return; disposed = true; if (recorder.state !== 'inactive') recorder.stop(); tracks(); reject_pending('Recording was cancelled.'); chunks = [] },
+    start() {
+      if (failure) throw failure
+      if (disposed || started || recorder.state !== 'inactive') throw new Error('Start a new recording to try again.')
+      chunks = []; started_at = clock(); started = true
+      try { recorder.start() } catch { const error = new Error('Voice recording could not be started.'); fail_recording(error); throw error }
+    },
+    stop() {
+      if (failure) return Promise.reject(failure)
+      if (disposed || recorder.state === 'inactive' || completion) return Promise.reject(new Error('Recording is not active.'))
+      return new Promise((resolve, reject) => {
+        completion = { resolve, reject }
+        stop_timer = timers.setTimeout(() => fail_recording(media_error('TimeoutError', 'Your audio could not be completed. Please try again.')), stop_timeout)
+        try { recorder.stop() } catch { fail_recording(new Error('Your audio could not be completed. Please try again.')) }
+      })
+    },
+    dispose() { if (disposed) return; disposed = true; fail_recording(media_error('AbortError', 'Recording was cancelled.')) },
   }
 }
 export const choose_images = (count = 6) => new Promise((resolve, reject) => {

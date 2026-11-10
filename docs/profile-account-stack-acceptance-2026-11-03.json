@@ -1,0 +1,100 @@
+{
+  "status": "in_progress",
+  "implementation": "complete",
+  "visual_acceptance": "pending",
+  "scope": "User-approved iOS-style Push/Pop for own/other Profile, Settings, Safety and Coins, with existing special presentations retained.",
+  "changed_files_this_task": [
+    "DEVELOPMENT_CONVENTIONS.md",
+    "INTERACTION_CONVENTIONS.md",
+    "src/utils/stackSurfaceRoutes.js",
+    "src/composables/useProfileEditor.js",
+    "scripts/stack-surface.test.mjs",
+    "scripts/stack-surface-browser.test.mjs",
+    "scripts/profile-stack-return.test.mjs",
+    "scripts/match-preferences-surface-browser.test.mjs",
+    "docs/profile-account-stack-contract-2026-11-03.json",
+    "docs/profile-account-stack-acceptance-2026-11-03.json",
+    "dist/build/h5 and ios/cimoaNeapo/Resources/H5 generated bundle"
+  ],
+  "key_conventions": [
+    "Existing uni-app real frames, shared stack controller and theme; no layout or business-data copy",
+    "Explicit approved route edges rather than a global prefix animation",
+    "240ms Push and 180ms Pop; source moves and returns together with actual target",
+    "Nested original instance, complete queries, stable account context, scroll and ordinary drafts",
+    "No navigation Loading, new business write or extra waiting; existing media and security cleanup retained",
+    "Busy/inert, cancellation, reduced-motion opacity and exact real return stack",
+    "Exit, deletion and payment replace/reLaunch semantics unchanged"
+  ],
+  "repairs": [
+    "Profile editor return cancellation no longer becomes a successful return with a late success Toast",
+    "Preferences regression taps the exposed sheet backdrop rather than its occluded center on 320pt screens; no forced click or production UI change"
+  ],
+  "required_checks": {
+    "corepack pnpm check:conventions": "passed without warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; 447 H5 files packaged",
+    "unit_tests": "192 passed, including controller, composable, wiring, scoped styles, Profile return cancellation, Profile editing, Settings/Safety, Coins, touch gestures and retained special surfaces"
+  },
+  "browser": {
+    "new_scope": {
+      "cases": 8,
+      "assertions": 819,
+      "screenshots": 100,
+      "page_errors": 0,
+      "expected_statistics_warnings": 16,
+      "unexpected_warnings": 0,
+      "reports": [
+        "artifacts/stack-surface-2026-11-03/browser-report-account-profile.json",
+        "artifacts/stack-surface-2026-11-03/browser-report-account-settings.json",
+        "artifacts/stack-surface-2026-11-03/browser-report-account-coins.json",
+        "artifacts/stack-surface-2026-11-03/browser-report-account-person.json",
+        "artifacts/stack-surface-2026-11-03/browser-report-account-chat.json",
+        "artifacts/stack-surface-2026-11-03/browser-report-account-exit.json"
+      ]
+    },
+    "regressions": {
+      "events_and_participant_to_profile": { "cases": 3, "assertions": 161, "page_errors": 0, "expected_statistics_warnings": 6 },
+      "startup_and_authentication": { "cases": 4, "checks": 40, "page_errors": 0, "warnings": 0 },
+      "discover_send_point_surface": { "cases": 7, "assertions": 156, "page_errors": 0, "expected_statistics_warnings": 16 },
+      "preferences_bottom_surface": { "cases": 10, "assertions": 154, "page_errors": 0, "expected_statistics_warnings": 22 }
+    },
+    "coverage": [
+      "Home → Profile → all editor categories, preview and verification/reverification → exact parents",
+      "Unsubmitted song changes survive editor child returns without writing the Store",
+      "Settings → notifications/privacy/permissions/language/blocked/legal → exact Settings instance",
+      "Settings → reports → report detail → support and deletion info → reason without deleting",
+      "Coins → history → starting-credit/spend detail → help → Privacy with FAQ/filter retention",
+      "Browser without StoreKit cannot manufacture a purchase",
+      "Discover → person → report → original person/card without a warm skeleton",
+      "Chat → person → original Chat retains unsubmitted text",
+      "Actual isolated-fixture logout clears protected routes and presentation locks but preserves entities",
+      "Events participant → person → original participants query, then real Detail and Events parents",
+      "320x568, 393x852, 430x932 and reduced motion; real original frames and 44pt Back targets"
+    ],
+    "environment": "Disposable touch-enabled Chrome contexts, disk request fulfillment, no preview listener and no installed user-data access",
+    "warning_explanation": "uni统计 network warnings are expected because the isolated browser deliberately aborts external statistics requests; no unexpected warnings or uncaught errors",
+    "limitations": "Browser geometry and injected lifecycle checks do not establish actual WKWebView touch latency, OS keyboard or native background acceptance."
+  },
+  "h5_index_sha256": "060475ff559bac3d901290f696b523f2573b7e2b8bc222103d9a6f7dc379a6fc",
+  "ios": {
+    "project": "ios/cimoaNeapo/cimoaNeapo.xcodeproj",
+    "device": "iPhone 17 Pro",
+    "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "bundle_identifier": "com.cimoa.neapo.dev",
+    "build": "passed; Xcode simulator build exit 0; final H5 index SHA matches dist, project resources and compiled simulator app",
+    "installed_and_launched": true,
+    "launch_pid": 22896,
+    "existing_user_data_preserved": true,
+    "manual_visual_acceptance": "pending; user previously requested build first and will review later",
+    "pending": ["Actual WKWebView touch and forward/back feel", "Actual software keyboard handoff", "Native background interruption and resume"]
+  },
+  "workspace": {
+    "preexisting_dirty_tree_preserved": true,
+    "preexisting_staged_storyboard_and_test_deletion_untouched": true,
+    "task_build_or_test_processes_remaining": false,
+    "test_browser_contexts_closed": true,
+    "preview_server_started": false,
+    "commit_or_push_performed": false,
+    "reason": "Native visual acceptance remains pending; no unrelated preexisting changes are staged as part of this task."
+  }
+}

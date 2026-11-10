@@ -176,7 +176,8 @@
     "Actual recording/decoded duration replaces hardcoded playing 00:12; missing capability fails",
     "Connected Chat/incoming View request remain active; outgoing pending CTA is grey, disabled Waiting for reply; Home retains canonical request access",
     "Saved drafts are account-scoped; Loading before writes; no automatic consent or reply",
-    "2026-10-20: question entry and text/mode editing are UI-only; no Saving/autosave; explicit confirm/Get Coins/recording Review publishes the draft"
+    "2026-10-20: question entry and text/mode editing are UI-only; no Saving/autosave; explicit confirm/Get Coins/recording Review publishes the draft",
+    "2026-10-23 user-requested typography refinement, text page only at 393px: header 20/600/26, secondary name 14/500/20, question 18/600/26, writing title 22/600/28, input 17/400/26, counter 12/400/18, send 16/600/22, voice switch 14/500/20 (size/weight/line-height); vertically centered header, normal English input wrapping and auto-height CTA with 60px minimum. Preserve original copy, avatar, theme, 300-character limit, safe areas, navigation and 10-coin confirmation/send flow; select/voice/preview variants unchanged. Current screenshots and regression evidence: artifacts/answer-typography/. This incremental change does not by itself mark the full page verified."
   ],
   "states": [
     "default",

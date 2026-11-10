@@ -161,12 +161,13 @@
     "evReport.submitEvReport.click.1"
   ],
   "approved_deltas": [
+    "2026-10-24: reuse this exact report page for group chats through explicit target_type=group plus verified event/conversation IDs; keep default event behavior and styles unchanged",
     "Real safe area, fixed shared page skeleton, rpx responsive conversion and source cRise",
     "Canonical user profiles, actual counts/relationships/event times instead of fake prototype totals",
-    "Explicit error/empty/expired state; local-only reports do not claim delivery",
+    "Explicit error/empty/expired state; successful validation returns to the true source with one neutral brand acknowledgement",
     "Media capture/preview/menu are user-authorized supplements; no fabricated peer messages",
     "No source screenshot yet: visual_acceptance stays pending",
-    "Keep the explicit device-only report disclosure and saved status; do not claim moderation delivery",
+    "Do not add report history or a result page; allow repeated reports and do not claim moderation delivery",
     "Validated group origin survives refresh and falls back to detail only when group access has ended"
   ],
   "acceptance": {
@@ -176,7 +177,7 @@
   },
   "parameters": [
     "event_id",
-    "report_id",
+    "target_type",
     "origin_conversation_id"
   ]
 }

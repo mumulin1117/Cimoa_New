@@ -7,8 +7,9 @@ import { open_app_settings } from '@/utils/nativePermissions.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import AuthActionLoading from '@/components/AuthActionLoading.vue'
+import { auth_message } from '@/utils/authFeedback.js'
 
-const store = use_app_store(), frame = ref(null), error = ref(''), declined = ref(false), selecting = ref(false), fallback = ref('/pages/onboarding/photos')
+const store = use_app_store(), frame = ref(null), error = ref(''), selecting = ref(false), navigating = ref(false), fallback = ref('/pages/onboarding/photos')
 const context = computed(() => store.onboarding)
 const allowed_fallbacks = new Set(['/pages/onboarding/photos', '/pages/profile/edit', '/pages/messages/chat', '/pages/events/group'])
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
@@ -18,13 +19,21 @@ onLoad(options => {
   const requested = typeof options?.fallback === 'string' ? decodeURIComponent(options.fallback) : ''
   if (allowed_fallbacks.has(requested)) fallback.value = requested
 })
-const hide = () => { active = false; generation++; selecting.value = false; cancel_loading() }
+const hide = () => { active = false; generation++; selecting.value = false; navigating.value = false; cancel_loading() }
 onShow(() => { active = true }); onHide(hide); onUnmounted(hide)
-const back = async () => { try { await frame.value.navigate_back(fallback.value) } catch (cause) { error.value = cause.message } }
+const back = async () => {
+  if (!active || navigating.value) return
+  navigating.value = true
+  const token = generation
+  try { await frame.value.navigate_back(fallback.value) }
+  catch (cause) { if (active && token === generation) error.value = cause.message }
+  finally { if (token === generation) navigating.value = false }
+}
+const cancel = () => { if (!is_loading.value && !selecting.value) return back() }
 const settings = async () => { try { await open_app_settings() } catch (cause) { error.value = cause.message } }
 const choose = async () => {
-  if (is_loading.value || selecting.value) return
-  error.value = ''; declined.value = false
+  if (!active || is_loading.value || selecting.value || navigating.value) return
+  error.value = ''
   if (!context.value || context.value.completed) { error.value = 'Complete account verification and return to profile setup before taking a photo.'; return }
   if (store.current_photos.length >= 3) { error.value = 'Your three photo slots are full. Return to Photos and choose a photo to replace.'; return }
   selecting.value = true
@@ -47,14 +56,14 @@ const choose = async () => {
       <view class="permission-camera-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="2.5" y="6.5" width="19" height="13.5" rx="3" /><circle cx="12" cy="13.2" r="3.6" /><path d="M8.5 6.5 10 4h4l1.5 2.5" /></svg></view>
       <text class="permission-camera-title">Take a profile photo</text>
       <text class="permission-camera-copy">The camera is used only while you take a photo. Cimoa does not record in the background.</text>
-      <view v-if="declined || error" class="auth-card permission-camera-error">
-        <text class="permission-camera-error-title">{{ declined && !error ? 'Access is off' : 'Photo was not added' }}</text>
-        <text class="permission-camera-copy permission-camera-error-copy" role="alert">{{ error || 'Without it you can’t add a photo here. You can turn camera access on in Settings, or return and use your photo library.' }}</text>
+      <view v-if="error" class="auth-card permission-camera-error">
+        <text class="permission-camera-error-title">Photo was not added</text>
+        <text class="permission-camera-copy permission-camera-error-copy" role="alert">{{ auth_message(error) }}</text>
         <view class="permission-camera-settings" role="button" tabindex="0" data-interaction="permCamera.openSettings.click.1" @click="settings" @keydown.enter="settings">Open Settings</view>
       </view>
     </view>
-    <template #footer><view class="permission-camera-footer"><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading || selecting" data-interaction="permCamera.allowPhotos.click.1" @click="choose" @keydown.enter="choose">{{ selecting ? 'Opening Camera…' : 'Allow Camera' }}</view><view class="auth-secondary" role="button" tabindex="0" :aria-disabled="is_loading || selecting" data-interaction="permCamera.denyPhotos.click.1" @click="!is_loading && !selecting && (declined = true)" @keydown.enter="!is_loading && !selecting && (declined = true)">Not Now</view></view></template>
-    <template #overlays><AuthActionLoading :visible="is_loading" label="Saving captured photo…" /></template>
+    <template #footer><view class="permission-camera-footer"><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading || selecting || navigating" :aria-busy="is_loading || selecting" data-interaction="permCamera.allowPhotos.click.1" @click="choose" @keydown.enter="choose" @keydown.space.prevent="choose">Continue</view><view class="auth-secondary" role="button" tabindex="0" :aria-disabled="is_loading || selecting || navigating" data-interaction="permCamera.denyPhotos.click.1" @click="cancel" @keydown.enter="cancel" @keydown.space.prevent="cancel">Cancel</view></view></template>
+    <template #overlays><AuthActionLoading :visible="is_loading" label="Adding your photo…" /></template>
   </SecondaryPageFrame>
 </template>
 

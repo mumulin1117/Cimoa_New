@@ -18,7 +18,7 @@ const report = computed(() => store.report_by_id(report_id.value))
 const subject = computed(() => store.report_subject(report.value))
 const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !report.value
@@ -40,7 +40,7 @@ const support = async () => {
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="safety-report-detail-page" title="Report detail" source="reportDetail" :error="error" :access-error="access_error" action-label="Contact Support" action-interaction="reportDetail.openSetSupport.click.1" @back="back" @recover="recover" @save="support">
+  <ProfileEditorFrame ref="frame" class="safety-report-detail-page" title="Report detail" source="reportDetail" :error="error" @dismiss-error="error = String()" :access-error="access_error" action-label="Contact Support" action-interaction="reportDetail.openSetSupport.click.1" @back="back" @recover="recover" @save="support">
     <template v-if="report">
       <view class="report-detail-card">
         <view class="report-detail-row"><text>Subject</text><text>{{ subject?.name || 'Unavailable subject' }}</text></view>
@@ -50,8 +50,8 @@ const support = async () => {
         <view class="report-detail-row"><text>Reference</text><text class="report-detail-reference">{{ report.report_id }}</text></view>
       </view>
       <text class="report-detail-heading">Your description</text>
-      <text class="report-detail-description">{{ report.description || 'No additional description was saved.' }}</text>
-      <text class="report-detail-note">This record contains the details you provided. A saved report does not indicate a moderation decision.</text>
+      <text class="report-detail-description">{{ report.description || 'No additional description provided.' }}</text>
+      <text class="report-detail-note">This report contains the details you provided. Delivery and moderation have not been confirmed.</text>
     </template>
   </ProfileEditorFrame>
 </template>

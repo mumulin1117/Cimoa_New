@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-23",
+  "status": "incremental_regression_passed; not whole-app acceptance",
+  "scope": "Flow and state consistency only, following the user's decision not to revise conventions",
+  "source_contract": "source-contract.json",
+  "production_files": {
+    "match_options": ["src/stores/matchPresentation.js", "src/pages/auto-match/no-match.vue"],
+    "chat_reading_position": ["src/utils/chatScroll.js", "src/composables/useChatScroll.js", "src/components/SecondaryPageFrame.vue", "src/pages/messages/chat.vue", "src/pages/events/group.vue"],
+    "event_entries_and_booking_state": ["src/stores/eventSelectors.js", "src/pages/events/index.vue", "src/pages/events/detail.vue"],
+    "onboarding_keyboard_and_session_guard": ["src/components/OnboardingFrame.vue", "src/components/MainTabFrame.vue"]
+  },
+  "test_files": [
+    "scripts/ux-state.test.mjs",
+    "scripts/ux-state-browser.test.mjs",
+    "scripts/lib/ux-state-regression.mjs",
+    "scripts/chat-reading.test.mjs",
+    "scripts/chat-reading-browser.test.mjs",
+    "scripts/lib/chat-reading-regression.mjs",
+    "scripts/event-state-ux.test.mjs",
+    "scripts/event-state-ux-browser.test.mjs",
+    "scripts/lib/event-state-ux-regression.mjs",
+    "scripts/event-pages-browser.test.mjs",
+    "scripts/ux-entry-flow.test.mjs",
+    "scripts/ux-entry-flow-browser.test.mjs",
+    "scripts/lib/ux-entry-flow-regression.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift"
+  ],
+  "documentation_files": ["docs/ui-restoration/flow-state-2026-10-23/source-contract.json", "docs/ui-restoration/flow-state-2026-10-23/acceptance.json"],
+  "generated_outputs": ["dist/build/h5", "ios/cimoaNeapo/Resources/H5", "ios/cimoaNeapo/Resources/build-manifest.json", "ios/cimoaNeapo/Resources/theme.json", "artifacts/flow-state-ux", "artifacts/ux-state", "artifacts/chat-reading", "artifacts/event-state-ux", "artifacts/ux-entry-flow"],
+  "verification": {
+    "required_commands": { "sequence": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"], "passed": true, "h5_files_packaged": 438, "ios_built_app_manifest_matches": true },
+    "unit_tests": { "passed": 324, "failed": 0, "log": "artifacts/flow-state-ux/unit-test.log" },
+    "browser": {
+      "scenarios": 21,
+      "page_errors": 0,
+      "warnings": 0,
+      "preview_server_started": false,
+      "browsers_closed": true,
+      "reports": ["artifacts/ux-state/browser-report.json", "artifacts/chat-reading/browser-report.json", "artifacts/event-state-ux/browser-report.json", "artifacts/ux-entry-flow/browser-report.json"]
+    },
+    "wkwebview": {
+      "device": "iPhone 17 Pro simulator",
+      "selected_tests_passed": 4,
+      "failed": 0,
+      "isolated_scenarios": 19,
+      "actual_host_business_data_unchanged": true,
+      "data_store": "nonPersistent, separate from the actual host",
+      "log": "artifacts/flow-state-ux/xcodebuild-final.log",
+      "result_bundle": "artifacts/flow-state-ux/FlowStateUX-Final.xcresult",
+      "reports": ["artifacts/ux-state/wkwebview-report.json", "artifacts/chat-reading/wkwebview-report.json", "artifacts/event-state-ux/wkwebview-report.json", "artifacts/ux-entry-flow/wkwebview-report.json"],
+      "media_boundary": "The ephemeral WK fixture repeatedly failed to store its PNG Blob with UnknownError: Error preparing Blob/File data to be stored in object store. Chat reading tests use a narrowly scoped reading_photo adapter to decode the actual bundled PNG; canonical Store metadata and all other IDB operations are unchanged. Probe errors and adapter reads remain in the report. This is not native Blob persistence acceptance.",
+      "indexeddb_blob_restore_verified": false,
+      "system_keyboard_tested": false
+    },
+    "warnings": "No convention or browser warnings. Final incremental Xcode build had no warning lines; earlier test builds emitted the existing AppIntents metadata-skipped warning. Simulator AX/WebKit/ExtensionKit diagnostics remain in logs."
+  },
+  "preserved": ["Both convention documents unchanged by this task", "400–600ms business-write Loading", "600ms first skeleton", "Three-second carousel", "Existing cRise and native navigation policy", "Store ownership and action validation", "Existing account, relationship, message, attendance, quota and coin data", "Prototype HTML SHA-256 remains 6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060"],
+  "deferred_by_user": ["Nine-step onboarding progress change", "New press and page-motion effects", "Voice/touch carousel pause", "Optional native haptics"],
+  "not_claimed": ["Physical system keyboard acceptance", "Native IndexedDB Blob refresh/recovery acceptance", "Whole-app pixel-perfect completion or verified status"],
+  "worktree": "Pre-existing uncommitted work is preserved. No git add, commit, push, reset or unrelated cleanup was performed. Final process check found no remaining task build, browser-test, preview or Xcode-test commands."
+}

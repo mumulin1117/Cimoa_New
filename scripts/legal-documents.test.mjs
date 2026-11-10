@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import { createPinia } from 'pinia'
 import { use_app_store } from '../src/stores/store.js'
-import { terms_document, privacy_document, community_document } from '../src/utils/legalDocuments.js'
+import { terms_document, privacy_document, community_document, eula_document } from '../src/utils/legalDocuments.js'
 import { community_rules, registration_agreements } from '../src/utils/registrationCatalog.js'
 
 const documents = [terms_document, privacy_document, community_document]
@@ -32,16 +32,30 @@ test('registration Store returns the same canonical content but no mutable refer
 test('Guidelines cover campus social UGC safety without inventing moderation or contact services', () => {
   const text = JSON.stringify(community_document)
   for (const phrase of ['at least 18', 'university student', 'consent', 'Child sexual abuse', 'non-consensual intimate', 'AI-generated', 'Privacy', 'Auto Match', 'mutual connection', 'anonymous chat roulette', 'Events', 'scams', 'Reporting', 'Blocking']) assert.ok(text.includes(phrase), phrase)
-  assert.match(text, /saved report does not indicate human review/)
+  assert.match(text, /A report does not indicate human review/)
   assert.match(text, /do not guarantee human review or a response time/)
   assert.match(text, /not a service-wide moderation decision/)
   assert.doesNotMatch(text, /@|within 24 hours|Apple.approved|end-to-end encrypted/i)
   assert.equal(community_rules.length, 6, 'Keep source overview geometry unchanged')
 })
 test('formal legal copy removes environment labels without inventing server processing', () => {
-  for (const doc of documents) assert.doesNotMatch(JSON.stringify(doc), /local (?:draft|data|account|build|demo)|this build|development and testing/i)
+  for (const doc of [...documents, eula_document]) assert.doesNotMatch(JSON.stringify(doc), /\bdemo\b|local (?:draft|data|account|build|demo|social|mode)|this build|development and testing|app storage|on this device|uploaded to a Cimoa server|no verification email is sent/i)
   const privacy = JSON.stringify(privacy_document)
-  for (const phrase of ['app storage', 'rather than uploaded to a Cimoa server', 'not delivered to a remote person', 'does not transmit it to a moderation or support team', 'no verification email is sent', 'no cloud recovery']) assert.ok(privacy.includes(phrase), phrase)
+  for (const phrase of ['within the app', 'does not confirm delivery, reading or a response', 'does not confirm delivery to a moderation or support team', 'do not establish email ownership or university enrollment', 'synchronization across devices are not provided']) assert.ok(privacy.includes(phrase), phrase)
+  assert.doesNotMatch(privacy, /009789|email (?:has been|was) sent|university enrollment (?:has been|was) verified|cloud synchronization is available/i)
+  assert.match(JSON.stringify(terms_document), /Account code confirmation is not proof of email ownership or university enrollment/)
+})
+test('formal document language preserves support and report boundaries without persistence captions', () => {
+  for (const doc of [...documents, eula_document]) assert.doesNotMatch(JSON.stringify(doc), /\bsav(?:ing|ed)\b|\bdrafts?\b|\b(?:account|conversation|participation|private|safety) records?\b/i)
+  const privacy = JSON.stringify(privacy_document)
+  for (const phrase of ['Reports and support messages contain the subject, category, description and relevant context you provide', 'does not confirm delivery to a moderation or support team, create a support ticket or indicate human review', 'preparing a message does not contact a person']) assert.ok(privacy.includes(phrase), phrase)
+  assert.match(privacy, /If a request cannot be completed, Cimoa shows an error rather than confirming delivery or success\./)
+  assert.match(privacy, /Available coin purchases are processed by Apple\./)
+  assert.match(privacy, /Store prices and currency are shown before purchase; coins are added only after Apple confirms the transaction\./)
+  assert.match(privacy, /A payment awaiting approval may complete after you leave the purchase page\./)
+  assert.match(JSON.stringify(terms_document), /A prepared support message is not a support ticket/)
+  assert.match(JSON.stringify(terms_document), /reporting a concern does not guarantee human review/)
+  assert.match(JSON.stringify(community_document), /Do not record, screenshot or redistribute intimate or private material without permission/)
 })
 test('standalone documents and Sheet share the read-only renderer; no inline content copies remain', () => {
   for (const file of ['src/pages/legal/terms.vue', 'src/pages/legal/privacy.vue', 'src/components/AgreementSheet.vue']) {

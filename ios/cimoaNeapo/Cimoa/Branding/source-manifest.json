@@ -1,0 +1,19 @@
+{
+  "app_icon": {
+    "source": "AppIcon-source.png",
+    "sha256": "1506cd73d83f44c3274ce232e3eb204b33ca51a4bccf8770cd789f28adff43f0",
+    "width": 1024,
+    "height": 1024,
+    "transformation": "Remove redundant alpha channel; assert identical decoded visible pixels. No crop, redraw or pre-rounded corners."
+  },
+  "launch_reference": {
+    "source": "Launch-reference.png",
+    "sha256": "8e65c7cd66c7c3c9e93a60860e1e727b28dd7a6209bcbf08c597d5beec268368",
+    "width": 786,
+    "height": 1598,
+    "approved_brand": "Cimoa",
+    "implementation": "Theme-derived vector background and brand image in the existing launch storyboard; static native launch only."
+  },
+  "theme_source": "src/config/theme.json",
+  "generator": "scripts/generate-ios-branding.swift"
+}

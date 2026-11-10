@@ -1,0 +1,96 @@
+{
+  "status": "in_progress",
+  "implementation": "complete",
+  "visual_acceptance": "pending",
+  "scope": "User-approved iOS-style Push/Pop for login/registration/profile setup and Events secondary pages only",
+  "changed_files": [
+    "DEVELOPMENT_CONVENTIONS.md",
+    "INTERACTION_CONVENTIONS.md",
+    "src/App.vue",
+    "src/config/navigation.js",
+    "src/components/PageTransition.vue",
+    "src/components/SecondaryPageFrame.vue",
+    "src/components/MainTabFrame.vue",
+    "src/composables/useStackSurface.js",
+    "src/utils/stackSurface.js",
+    "src/utils/stackSurfaceRoutes.js",
+    "src/utils/frameScope.js",
+    "src/pages/events/group.vue",
+    "scripts/stack-surface.test.mjs",
+    "scripts/stack-surface-wiring.test.mjs",
+    "scripts/stack-surface-composable.test.mjs",
+    "scripts/frame-scope.test.mjs",
+    "scripts/stack-surface-browser.test.mjs",
+    "scripts/auth-flow-motion-browser.test.mjs",
+    "scripts/touch-gestures.test.mjs",
+    "scripts/group-voice.test.mjs",
+    "docs/auth-events-stack-contract-2026-11-03.json",
+    "docs/auth-events-stack-acceptance-2026-11-03.json",
+    "dist/build/h5 generated assets and ios/cimoaNeapo/Resources/H5 packaged assets"
+  ],
+  "key_conventions": [
+    "Vue script setup and uni-app frames; rpx layout unchanged",
+    "Real Vue instances and real route stack, no snapshots or duplicate business pages",
+    "Nested exact page identity, complete route queries and account/guest-flow isolation",
+    "240ms Push and 180ms Pop; no additional navigation Loading or business wait",
+    "Shared keyboard stability coordinator, busy/inert, cancellation and bounded completion",
+    "Reduced motion uses opacity only",
+    "Existing special transitions, skeleton consumption, business actions and password clearing retained",
+    "Scoped-style markers inherited through Vue-bound attributes on the actual Teleport frame"
+  ],
+  "repairs": [
+    "Group chat to report and Back retains unsent text; media and pending writes still cancel on hide; invalid access or destruction clears text",
+    "Preserved original frame public element and parent attributes despite the temporary Teleport root",
+    "Restored parent scoped CSS, including the Cold Welcome static frame and authentication page-specific styling",
+    "Early platform Back acknowledgments cannot release the visible source before actual activation",
+    "Nested child navigation cannot overwrite the parent's return association"
+  ],
+  "required_checks": {
+    "corepack pnpm check:conventions": "passed without warnings",
+    "git diff --check": "passed",
+    "corepack pnpm build:h5": "passed; 447 H5 files packaged",
+    "unit_tests": "260 passed"
+  },
+  "browser": {
+    "new_motion": { "report": "artifacts/stack-surface-2026-11-03/browser-report.json", "cases": 8, "assertions": 319, "screenshots": 39, "page_errors": 0, "expected_statistics_warnings": 18 },
+    "startup_and_auth": { "report": "artifacts/auth-flow-motion-2026-11-02/browser-report.json", "cases": 4, "checks": 40, "page_errors": 0, "warnings": 0 },
+    "existing_send_surface": { "report": "artifacts/send-surface-2026-11-02/browser-report.json", "cases": 7, "assertions": 156, "page_errors": 0, "expected_statistics_warnings": 16 },
+    "existing_preferences_surface": { "report": "artifacts/match-preferences-surface-2026-11-03/browser-report.json", "cases": 10, "assertions": 154, "page_errors": 0, "expected_statistics_warnings": 22 },
+    "coverage": [
+      "Welcome/login/reset nested Push/Pop and actual page instances",
+      "Age/community/signup/manual verification/success/profile setup route chain",
+      "Events/detail/participants/group/report and all corresponding returns",
+      "Preserved scroll, email, group text draft and security clearing of passwords",
+      "Navigation rejection, rapid trusted touch, background and resize cancellation",
+      "320x568, 393x852 and 430x932; 44pt Back and reduced motion",
+      "Strict Cold Welcome static frame, EULA timing and original registration progress",
+      "Original Discover point surface and full-screen preferences transition"
+    ],
+    "no_preview_server": true,
+    "isolated_contexts_only": true,
+    "actual_installed_user_storage_accessed": false,
+    "unexpected_warnings": 0,
+    "limitations": "Chrome emulated touch and injected lifecycle failures do not establish native touch latency, real keyboard, safety regions or OS background acceptance"
+  },
+  "ios": {
+    "project": "ios/cimoaNeapo/cimoaNeapo.xcodeproj",
+    "device": "iPhone 17 Pro",
+    "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+    "bundle_identifier": "com.cimoa.neapo.dev",
+    "xcodebuild": "passed; final H5 hash matches source bundle, packaged project and built simulator app",
+    "installed_and_launched": true,
+    "existing_user_data_preserved": true,
+    "manual_motion_acceptance": "deferred by user on 2026-11-03: finish building first; user will review later",
+    "pending": ["Actual WKWebView forward/back touch feel", "Real software keyboard handoff", "Native background interruption and resume"],
+    "not_claimed_verified": true
+  },
+  "h5_index_sha256": "9c5aba750cb24e9e06456ef7ecb2532b85889e7a51dc99907f15e5c348f21be4",
+  "workspace": {
+    "task_processes_remaining": false,
+    "test_browsers_closed": true,
+    "preexisting_dirty_tree_preserved": true,
+    "preexisting_staged_storyboard_and_test_deletion_untouched": true,
+    "commit_or_push_performed": false,
+    "reason": "Native acceptance is deferred and existing cross-task changes were not staged with this task"
+  }
+}

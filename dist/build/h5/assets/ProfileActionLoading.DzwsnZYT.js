@@ -1,0 +1,1 @@
+import{h as e,d as l,aa as i}from"./index-JJyv0oIi.js";const a={__name:"ProfileActionLoading",props:{visible:Boolean,label:{type:String,default:"Updating your profile…"}},setup:a=>(o,s)=>(e(),l(i,{visible:a.visible,label:a.label,scope:"profile"},null,8,["visible","label"]))};export{a as _};

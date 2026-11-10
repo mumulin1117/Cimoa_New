@@ -15,14 +15,15 @@ import { route_depth } from '@/utils/routeTransition.js'
 
 const store = use_app_store(), frame = ref(null), conversation_id = ref(''), call_id = ref('')
 const dots = ref(''), error = ref(''), ending = ref(false), sheet = ref(''), active = ref(false)
+const loading_label = ref('Ending call…')
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 let waiting = null
 const conversation = computed(() => store.direct_conversation(conversation_id.value))
 const call = computed(() => store.waiting_call(call_id.value))
 const participant = computed(() => conversation.value?.participant)
-const photo = computed(() => store.photos_for_user(participant.value?.user_id)[0]?.media_url || participant.value?.avatar_url || '')
+const photo = computed(() => participant.value?.avatar_url || store.photos_for_user(participant.value?.user_id)[0]?.media_url || '')
 const own_photo = computed(() => store.current_photos[0]?.media_url || store.current_user.avatar_url || '')
-const access_error = computed(() => store.hydration_status !== 'ready' ? 'Saved data is unavailable. Return and retry.'
+const access_error = computed(() => store.hydration_status !== 'ready' ? 'Your data is unavailable. Return and retry.'
   : !store.session.is_authenticated ? 'Your session has expired. Please sign in again.'
     : !conversation.value ? 'This conversation is unavailable, so the call cannot be started.'
       : conversation.value.call_blocker || (!call.value || call.value.conversation_id !== conversation_id.value ? 'This call is no longer available. Return to the conversation to try again.' : ''))
@@ -54,6 +55,7 @@ const end_call = async () => {
   if (ending.value || is_loading.value) return
   if (access_error.value || call.value?.status !== 'waiting') { await return_to_chat(); return }
   dispose(); error.value = ''
+  loading_label.value = 'Ending call…'
   const result = await run_with_loading(() => store.end_waiting_call(call_id.value))
   if (!active.value || result.reason === 'cancelled') return
   if (result.success) await return_to_chat()
@@ -62,6 +64,7 @@ const end_call = async () => {
 const report = async () => {
   if (is_loading.value || ending.value || access_error.value) return
   ending.value = true; dispose(); error.value = ''
+  loading_label.value = 'Ending call…'
   const result = await run_with_loading(() => store.end_waiting_call(call_id.value))
   if (!active.value || result.reason === 'cancelled') return
   if (!result.success) { ending.value = false; error.value = result.message; resume(); return }
@@ -72,6 +75,7 @@ const report = async () => {
 const block = async () => {
   if (is_loading.value || ending.value || access_error.value) return
   dispose(); error.value = ''
+  loading_label.value = 'Blocking account…'
   const target = participant.value.user_id
   const result = await run_with_loading(() => store.block_user(target))
   if (!active.value || result.reason === 'cancelled') return
@@ -100,7 +104,7 @@ const block = async () => {
       <view class="waiting-call-spacer" /><BottomSafeArea />
     </PageTransition>
     <SafetyActionsMiniSheet :open="!!sheet" :mode="sheet === 'block' ? 'block' : 'menu'" :user-name="participant?.user_name" :busy="is_loading || ending" :error="error" @close="!is_loading && (sheet = '')" @report="report" @open-block="sheet = 'block'; error = ''" @confirm-block="block" />
-    <EventActionLoading :visible="is_loading" label="Ending call…" />
+    <EventActionLoading :visible="is_loading" :label="loading_label" />
   </view>
 </template>
 

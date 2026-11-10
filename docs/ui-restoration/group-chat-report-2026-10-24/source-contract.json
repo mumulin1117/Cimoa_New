@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-24",
+  "user_request": "Event group chat详情页面的更多按钮点击，直接弹出举报Group chat页面，样式和举报Event页面一样",
+  "scope": "Direct group-chat report entry and canonical report target, not whole-page acceptance",
+  "implementation": "Reuse src/pages/events/report.vue and all its existing styles; group mode changes title, context-aware copy, reasons and target only. Do not clone the UI or add a second report Store.",
+  "entry": "evGroup.openGroupMenu.click.1 now calls group-report navigation directly; old menu mute/participants/detail/manage/report/close entries are retired. Existing detail-page participant and attendance actions and Store notification preferences remain intact.",
+  "route": "/pages/events/report?event_id=<event_id>&target_type=group&origin_conversation_id=<conversation_id>",
+  "data": {
+    "target_type": "group",
+    "target_id": "canonical group conversation_id",
+    "context_id": "the same conversation's event_id",
+    "permission": "Authenticated current account and currently joined exact event/group at entry and submission",
+    "history": "Use the same reports collection and report_subject getter; hydrate safely after leaving the event; never relabel an old event report as a group report",
+    "side_effects": "No attendance, group access, messages, relations, coins or notification changes",
+    "delivery": "Persisted concern only; no claim of remote delivery or moderation"
+  },
+  "interaction_contracts": [
+    {
+      "interaction_id": "evReport.r.pick.click.1",
+      "source_screen": "Shared Event report layout, group mode authorized on 2026-10-24",
+      "trigger": "Click or Enter on a group chat reason",
+      "preconditions": "Current accessible group and current account; no submission active",
+      "visible_feedback": "Existing selected-radio theme and enabled Submit report; no Loading",
+      "success_result": "Select exactly one reason from the Store group_report_reasons catalog",
+      "failure_result": "Invalid, changed or inaccessible group cannot submit",
+      "persistence": "none; reason is an unsent UI selection",
+      "sync_scope": "Current report form only",
+      "acceptance": "Browser/WKWebView reason selection leaves persisted bytes unchanged"
+    },
+    {
+      "interaction_id": "evReport.submitEvReport.click.1",
+      "source_screen": "Shared Event report layout, group mode authorized on 2026-10-24",
+      "trigger": "Submit report click or Enter after choosing a reason",
+      "preconditions": "Valid group reason, exact group/event membership, same authenticated account and no prior submitted form or active write",
+      "visible_feedback": "Existing 500ms report Loading, then Thank you for sharing your concern or a truthful failure",
+      "success_result": "One group report with target_id=conversation_id and context_id=event_id; existing event reports remain separate",
+      "failure_result": "Rollback with selected reason retained; no group, seat, message or balance changes",
+      "persistence": "No new report record; validation leaves persisted state unchanged and repeated submission is allowed",
+      "sync_scope": "Report page, Settings report history and report detail through the canonical report_subject getter",
+      "acceptance": "Node atomicity/identity tests and browser/WKWebView repeated-submit, failure, refresh and history checks"
+    },
+    {
+      "interaction_id": "evReport.goBack.click.1",
+      "source_screen": "Shared Event report layout, group mode authorized on 2026-10-24",
+      "trigger": "Header Back",
+      "preconditions": "No report write active",
+      "visible_feedback": "Existing page leave animation without navigation Loading",
+      "success_result": "Pop to the actual origin group; on refreshed standalone entry use verified group fallback, then event detail if access ended",
+      "failure_result": "Keep the current page readable and show an actionable error",
+      "persistence": "none",
+      "sync_scope": "Original event_id and conversation_id; no attendance change",
+      "acceptance": "Read-only open/cancel and correct submitted/refresh Back checks"
+    },
+    {
+      "interaction_id": "evReport.goBack.click.2",
+      "source_screen": "Shared Event report success layout, group mode authorized on 2026-10-24",
+      "trigger": "Return to group chat after a persisted report",
+      "preconditions": "A report belonging to the current account has been persisted; no write active",
+      "visible_feedback": "Existing page leave animation without navigation Loading",
+      "success_result": "Return to the real group origin or verified fallback without creating another report",
+      "failure_result": "Keep the current page readable and show an actionable error",
+      "persistence": "none",
+      "sync_scope": "Exact event_id and conversation_id validation; attendance and all persisted data unchanged",
+      "acceptance": "Submitted and refresh-restored report can return to the accessible group without another write"
+    }
+  ],
+  "unchanged": ["Default Report event appearance and behavior", "Both convention documents", "Report delivery boundary", "Existing Loading, safe areas and page transition timing"],
+  "evidence_directory": "artifacts/group-chat-report",
+  "full_page_status": "No new verified status or whole-app completion claim"
+}

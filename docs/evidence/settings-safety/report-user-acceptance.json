@@ -1,13 +1,13 @@
 {
   "phase": "report-user",
-  "result": "passed",
-  "server_pid": 93428,
-  "checks": [
-    "Chat Safety opens the source report reasons with explicit local-only scope and optional block",
-    "Report persistence failure creates neither report nor block and keeps the form retryable",
-    "Successful local report and block are atomic, filter the chat, and restore the same report result after refresh",
-    "Back falls to the conversation list after block and Discover filters the blocked account",
-    "Standalone block confirmation waits for Loading, removes the chat, and never creates a report"
-  ],
-  "errors": []
+  "result": "failed",
+  "server_pid": 42278,
+  "checks": [],
+  "errors": [],
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    accounts: [\n      {\n        account_id: 'account_cimoa',\n        auth_provider: 'fixture',\n...\n          'user_chloe',\n+         'user_cimoa'\n        ],\n        sender_id: 'user_chloe',\n        sent_at: 1793692519105\n      }\n    ],\n...\n    ],\n+   revision: 1,\n-   revision: 0,\n    schema_version: 2,\n    session: {\n      account_id: 'account_cimoa',\n      current_user_id: 'user_cimoa',\n      expires_at: 1796284579105\n...\n    support_requests: [],\n+   updated_at: 1793692580023,\n-   updated_at: 1793692579105,\n    users: [\n      {\n        age: 22,\n        avatar_url: '/static/assets/head/me.png',\n        bio: 'Always looking for good coffee, new photo spots, and people to explore campus with.',\n\n    at file:///Users/linqian/Documents/Cimoa_New/scripts/settings-safety-browser.test.mjs:517:12",
+  "visible_failure": {
+    "route": "#/pages/messages/chat?conversation_id=conversation_chloe",
+    "text": "Chloe\nConnected\nToday, 3:51 PM\nHey! Your photowalk answer made me smile.\nWe should find a new spot on campus.\nThe garden near the library is underrated.\nTomorrow after class?\nI’m in ✨\nMessage Chloe\nChloe Lin\nView Profile\nMute Notifications\nReport\nBlock\nCancel",
+    "loading": false
+  }
 }

@@ -26,18 +26,18 @@ let active = true
 
 const topics = ['Safety concern', 'Account or profile', 'Technical issue', 'Purchase question', 'Other']
 const faqs = [
-  ['How can I contact support?', 'Open the support form to describe your concern. Support delivery is currently unavailable; you can save a draft and keep your details for later.'],
-  ['Where are my reports saved?', 'Open Submitted Reports in Settings to review your report history. A saved record is not a moderation decision.'],
-  ['How do I reset my password?', 'Choose Forgot password on the login screen, enter your account email and use the reset code shown in the next step.'],
-  ['Can Cimoa change iOS permissions?', 'No. Cimoa can read the current status and open iOS Settings through its host, but only you can grant or deny system permissions.'],
+  ['How can I contact support?', 'Choose a topic in the support form and describe your concern. If your message cannot be sent, it remains available for you to edit and try again.'],
+  ['Where can I view my reports?', 'Open Submitted Reports in Settings to review your report history and the available delivery status.'],
+  ['How do I reset my password?', 'Choose Forgot password on the login screen, enter your account email, then enter your reset code to choose a new password.'],
+  ['Can Cimoa change iOS permissions?', 'No. Cimoa can check the current status and open iOS Settings, but only you can grant or deny system permissions.'],
   ['What happens when I block someone?', 'Blocking removes the current connection, requests, Auto Match candidate, private chat and its messages. Unblocking does not restore them.'],
-  ['How do coin purchases work?', 'Coin purchases require a confirmed App Store transaction. Purchases are currently unavailable, and failed or cancelled attempts do not change your balance.'],
-  ['How can I keep a support note?', 'Open the form below, choose a topic and describe your concern. Save your draft to keep these details.'],
+  ['How do coin purchases work?', 'Choose a package in Coins & Purchases to check current App Store pricing and availability. Coins are added only after verification. Failed or cancelled attempts do not change your balance.'],
+  ['What should I include in my message?', 'Choose the topic that best matches your concern. Describe what happened, what you expected and any steps that may help us understand the issue. Do not include your password or payment details.'],
 ]
 const draft_target = computed(() => context_type.value === 'report' && context_id.value ? `report:${context_id.value}` : 'general')
 const account_scope = use_account_scope(store, () => { cancel_loading(); topic.value = ''; description.value = ''; form_open.value = false; draft_id.value = '' })
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -51,7 +51,7 @@ const restore_draft = () => {
   topic.value = topics.includes(row.payload?.topic) ? row.payload.topic : ''
   description.value = String(row.payload?.description || '')
   form_open.value = true
-  delivery_notice.value = 'Your draft is saved. It has not been sent.'
+  delivery_notice.value = 'Continue editing your message. It has not been sent.'
 }
 onLoad(options => {
   context_type.value = options?.context_type === 'report' ? 'report' : 'general'
@@ -68,7 +68,7 @@ const back = async () => { if (is_loading.value) return; try { await frame.value
 const toggle_faq = index => { if (!is_loading.value) open_faq.value = open_faq.value === index ? -1 : index }
 const open_form = () => { if (is_loading.value || access_error.value) return; error.value = ''; delivery_notice.value = ''; form_open.value = true }
 const save_draft = async () => {
-  if (!active || is_loading.value || access_error.value || !ready.value) { if (!ready.value) error.value = 'Choose a topic and add a description before saving your draft.'; return }
+  if (!active || is_loading.value || access_error.value || !ready.value) { if (!ready.value) error.value = 'Choose a topic and add a description to continue.'; return }
   error.value = ''; delivery_notice.value = ''
   let saved_id = ''
   const result = await run_with_loading(() => {
@@ -81,15 +81,15 @@ const save_draft = async () => {
   if (!active || result.reason === 'cancelled') return
   if (saved_id) {
     draft_id.value = saved_id
-    delivery_notice.value = 'Draft saved. Support delivery is currently unavailable. Please try again later.'
+    delivery_notice.value = 'Your message has not been sent. It is still available to edit. Please try again later.'
     return
   }
-  error.value = result.message || 'This support draft could not be saved.'
+  error.value = result.message || 'Your message couldn’t be prepared. Please try again.'
 }
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="settings-support-page" title="Help and support" source="setSupport" :busy="is_loading" loading-label="Saving support draft…" :error="error" :access-error="access_error" @back="back" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="settings-support-page" title="Help and support" source="setSupport" :busy="is_loading" loading-label="Sending your message…" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover">
     <template v-if="!form_open">
       <view class="support-faqs">
         <view v-for="(item, index) in faqs" :key="item[0]" class="support-faq">
@@ -100,14 +100,14 @@ const save_draft = async () => {
       <view class="support-primary" role="button" tabindex="0" data-interaction="setSupport.openSupportForm.click.1" @click="open_form" @keydown.enter="open_form">Contact Support</view>
     </template>
     <template v-else>
-      <text class="support-form-note">Describe your concern below. You can save a draft while support delivery is unavailable.</text>
+      <text class="support-form-note">Choose a topic and tell us how we can help. Do not include your password or payment details.</text>
       <text class="editor-label">Topic</text>
       <view class="support-topics" role="radiogroup" aria-label="Support topic"><view v-for="item in topics" :key="item" class="support-topic" :class="{ selected: topic === item }" role="radio" tabindex="0" :aria-checked="topic === item" @click="topic = item; error = ''; delivery_notice = ''" @keydown.enter="topic = item; error = ''; delivery_notice = ''">{{ item }}</view></view>
       <text class="editor-label">Description</text>
       <textarea v-model="description" class="support-description" aria-label="Support description" placeholder="Describe what happened and what you expected" :maxlength="2000" :disabled="is_loading" @input="delivery_notice = ''" />
       <text class="support-attachment-note">Screenshot attachments are currently unavailable.</text>
-      <text v-if="delivery_notice" class="support-delivery" role="status">{{ delivery_notice }}<text v-if="draft_id" class="support-draft-id">Draft: {{ draft_id }}</text></text>
-      <view class="support-primary" role="button" tabindex="0" :aria-disabled="!ready || is_loading" data-interaction="setSupport.submitDraft.click.1" @click="save_draft" @keydown.enter="save_draft">Save draft</view>
+      <text v-if="delivery_notice" class="support-delivery" role="status">{{ delivery_notice }}</text>
+      <view class="support-primary" role="button" tabindex="0" :aria-disabled="!ready || is_loading" data-interaction="setSupport.submitDraft.click.1" @click="save_draft" @keydown.enter="save_draft">Send message</view>
       <view class="support-secondary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="setSupport.closeSupportForm.click.1" @click="!is_loading && (form_open = false)" @keydown.enter="!is_loading && (form_open = false)">Back to help topics</view>
     </template>
   </ProfileEditorFrame>

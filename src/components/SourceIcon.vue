@@ -45,6 +45,7 @@ defineProps({ name: { type: String, required: true }, strokeWidth: { type: Numbe
       <template v-if="name === 'send'"><path d="M22 2 11 13M22 2 15 22l-4-9-9-4z" /></template>
       <template v-if="name === 'play'"><path d="m7 4 13 8-13 8z" fill="currentColor" stroke="none" /></template>
       <template v-if="name === 'pause'"><path d="M8 5v14M16 5v14" stroke-width="4" /></template>
+      <template v-if="name === 'music'"><path d="M9 18V6.5L19 4v11.5M9 9l10-2.5" /><circle cx="6.5" cy="18" r="2.5" /><circle cx="16.5" cy="15.5" r="2.5" /></template>
     </svg>
   </view>
 </template>

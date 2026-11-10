@@ -1,4 +1,5 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { computed, ref } from 'vue'
 import { onHide } from '@dcloudio/uni-app'
 import { use_onboarding } from '@/composables/useOnboarding.js'
@@ -30,7 +31,7 @@ onHide(() => { selected_id.value = '' })
       <text v-if="slot.photo && slot.position === 0" class="photo-primary">Primary</text>
     </view></view>
     <template #hint><text class="photos-hint">{{ photos.length >= 2 ? 'Tap a photo to replace, reorder, delete, or set it as your primary.' : 'Add at least 2 photos to continue' }}</text></template>
-    <template #overlays><PhotoActionsConfirmDialog :open="!!selected" :busy="is_loading" :position="selected?.position ?? 0" :count="photos.length" :error="error" @close="selected_id = ''" @replace="replace" @action="edit" /></template>
+    <template #overlays><PhotoActionsConfirmDialog :open="!!selected" :busy="is_loading" :position="selected?.position ?? 0" :count="photos.length" :error="error && auth_message(error)" @close="selected_id = ''" @replace="replace" @action="edit" /></template>
   </OnboardingFrame>
 </template>
 <style>

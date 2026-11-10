@@ -19,7 +19,7 @@ const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 let active = true
 const account_scope = use_account_scope(store, () => { cancel_loading(); selected.value = '' })
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -39,13 +39,13 @@ const save_and_continue = async () => {
   error.value = ''
   const result = await run_with_loading(() => store.save_draft('delete-account', draft_target, { reason: selected.value }))
   if (!active || result.reason === 'cancelled') return
-  if (!result.success) { error.value = result.message || 'The deletion reason could not be saved.'; return }
+  if (!result.success) { error.value = result.message || 'Your selection couldn’t be applied. Please try again.'; return }
   try { await frame.value.navigate_forward('/pages/settings/delete/final') } catch (cause) { error.value = cause.message }
 }
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="delete-reason-page" title="Before you go" source="delReason" :busy="is_loading" loading-label="Saving deletion reason…" :error="error" :access-error="access_error" action-label="Continue" action-interaction="delReason.openDelFinal.click.1" @back="back" @save="save_and_continue" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="delete-reason-page" title="Before you go" source="delReason" :busy="is_loading" loading-label="Preparing the next step…" :error="error" @dismiss-error="error = String()" :access-error="access_error" action-label="Continue" action-interaction="delReason.openDelFinal.click.1" @back="back" @save="save_and_continue" @recover="recover">
     <text class="delete-reason-intro">Optional — tell us why. You can continue without choosing one.</text>
     <view class="delete-reason-list" role="radiogroup" aria-label="Account deletion reason"><view v-for="option in options" :key="option" class="delete-reason-choice" :class="{ selected: selected === option }" role="radio" tabindex="0" :aria-checked="selected === option" :aria-disabled="is_loading" data-interaction="delReason.r.pick.click.1" @click="!is_loading && (selected = option)" @keydown.enter="!is_loading && (selected = option)">{{ option }}</view></view>
   </ProfileEditorFrame>

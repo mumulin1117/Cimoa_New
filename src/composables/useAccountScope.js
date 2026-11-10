@@ -10,7 +10,7 @@ export function use_account_scope(store, invalidate = () => {}) {
     if (captured.value === null && store.hydration_status === 'ready') captured.value = store.auth_context
   }, { flush: 'sync' })
   const access_error = computed(() => store.hydration_status !== 'ready'
-    ? 'Saved data is unavailable. Please return and retry.'
+    ? 'Your information is unavailable. Please return and retry.'
     : !store.session.is_authenticated || store.auth_context !== captured.value
       ? 'Your session has expired or the account changed. Reopen this page after logging in.'
       : '')

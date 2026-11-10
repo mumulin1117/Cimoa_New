@@ -1,4 +1,5 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { auth_destination } from '@/utils/authNavigation.js'
@@ -10,4 +11,4 @@ onLoad(async options => {
   try { await replace_route(auth_destination(target)) } catch (cause) { error.value = cause.message }
 })
 </script>
-<template><AuthPageFrame title="Cimoa" @back="replace_route('/pages/auth/welcome')"><text v-if="error" role="alert">{{ error }}</text></AuthPageFrame></template>
+<template><AuthPageFrame title="Cimoa" @back="replace_route('/pages/auth/welcome')"><text v-if="error" role="alert">{{ auth_message(error) }}</text></AuthPageFrame></template>

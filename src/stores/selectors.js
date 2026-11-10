@@ -71,8 +71,8 @@ export function validate_data(data) {
   const tables = { users: 'user_id', accounts: 'account_id', goals: 'item_id', interests: 'item_id', icebreakers: 'question_id', profile_photos: 'photo_id', songs: 'song_id', media_files: 'media_id', relationships: 'relationship_id', requests: 'request_id', match_sessions: 'match_id', events: 'event_id', organizers: 'organizer_id', memberships: 'membership_id', conversations: 'conversation_id', messages: 'message_id', coin_packages: 'package_id', coin_transactions: 'transaction_id', purchase_requests: 'request_id', blocked_users: 'block_id', reports: 'report_id', drafts: 'draft_id', support_requests: 'support_id' }
   const has = (table, id) => data[table].some((row) => row[tables[table]] === id)
   const unique = (rows, key) => new Set(rows.map(key)).size === rows.length
-  ensure(data.schema_version === 2 && Number.isInteger(data.revision) && data.revision >= 0, 'Saved data version is invalid.')
-  for (const [table, key] of Object.entries(tables)) ensure(Array.isArray(data[table]) && data[table].every((row) => typeof row[key] === 'string' && row[key]) && unique(data[table], (row) => row[key]), `Invalid ${table} identifiers.`)
+  ensure(data.schema_version === 2 && Number.isInteger(data.revision) && data.revision >= 0, 'Your information couldn’t be read. Please return and try again.')
+  for (const [table, key] of Object.entries(tables)) ensure(Array.isArray(data[table]) && data[table].every((row) => typeof row[key] === 'string' && row[key]) && unique(data[table], (row) => row[key]), 'Some information couldn’t be read. Please return and try again.')
   ensure(unique(data.accounts, (row) => row.email.toLowerCase()), 'Duplicate account email.')
   ensure(unique(data.accounts, row => row.user_id), 'Duplicate account identity.')
   for (const row of data.accounts) ensure(has('users', row.user_id) && typeof row.email === 'string' && row.email === row.email.trim().toLowerCase() && ['active', 'deleted'].includes(row.status), 'Invalid account.')
@@ -91,7 +91,7 @@ export function validate_data(data) {
   if (owner_id(data)) ensure(data.accounts.some((row) => row.account_id === data.session.account_id && row.user_id === owner_id(data)) && Number.isFinite(data.session.expires_at), 'Invalid session.')
   for (const row of data.users) {
     ensure(typeof row.user_name === 'string' && row.user_name && (row.age === null || Number.isInteger(row.age) && row.age >= 18), 'Invalid profile.')
-    for (const [field, table] of [['goal_ids', 'goals'], ['interest_ids', 'interests'], ['photo_ids', 'profile_photos'], ['icebreaker_ids', 'icebreakers']]) ensure(Array.isArray(row[field]) && new Set(row[field]).size === row[field].length && row[field].every((id) => has(table, id)), `Invalid ${field}.`)
+    for (const [field, table] of [['goal_ids', 'goals'], ['interest_ids', 'interests'], ['photo_ids', 'profile_photos'], ['icebreaker_ids', 'icebreakers']]) ensure(Array.isArray(row[field]) && new Set(row[field]).size === row[field].length && row[field].every((id) => has(table, id)), 'Your profile details couldn’t be read. Please return and try again.')
     ensure(row.photo_ids.every(id => data.profile_photos.some(photo => photo.photo_id === id && photo.user_id === row.user_id)) && row.icebreaker_ids.every(id => data.icebreakers.some(question => question.question_id === id && question.user_id === row.user_id)), 'Profile media or questions belong to another user.')
     ensure(!row.song_id || has('songs', row.song_id), 'Invalid song.')
     if (row.bio_audio_id != null) ensure(data.media_files.some(m => m.media_id === row.bio_audio_id && m.owner_user_id === row.user_id && m.kind === 'audio' && Number.isFinite(m.duration_ms) && m.duration_ms > 0 && m.duration_ms <= 30000), 'Invalid profile voice bio.')
@@ -113,7 +113,12 @@ export function validate_data(data) {
   for (const row of data.requests) ensure(Number.isFinite(row.created_at) && (row.resolved_at == null || Number.isFinite(row.resolved_at) && row.resolved_at >= row.created_at) && (row.question_text === undefined || typeof row.question_text === 'string' && row.question_text.trim()) && (row.kind !== 'text' || row.text.length <= 300 && !row.audio_id), 'Invalid introduction content or time.')
   for (const row of data.match_sessions) ensure(has('users', row.owner_user_id) && (!row.candidate_id || has('users', row.candidate_id)) && ['searching', 'paused', 'found', 'waiting', 'connected', 'passed', 'expired', 'no_match', 'left'].includes(row.status) && (row.status !== 'connected' || row.self_accepted && row.peer_accepted), 'Invalid match.')
   for (const row of data.match_sessions) ensure((row.queue_position == null || Number.isInteger(row.queue_position) && row.queue_position > 0) && (row.estimated_wait_seconds == null || Number.isFinite(row.estimated_wait_seconds) && row.estimated_wait_seconds >= 0), 'Invalid queue details.')
-  for (const row of data.match_sessions.filter(row => row.engine === 'device')) ensure(Number.isFinite(row.search_ready_at) && (row.status === 'paused' || row.candidate_id === null || Number.isFinite(row.expires_at)), 'Invalid device matching deadline.')
+  for (const row of data.match_sessions.filter(row => row.engine === 'device')) {
+    // Paused attempts can clear the candidate timer when preferences change.
+    // Ending that attempt must not require a countdown that will never run again.
+    const needs_candidate_deadline = !!row.candidate_id && ['searching', 'found', 'waiting'].includes(row.status)
+    ensure(Number.isFinite(row.search_ready_at) && (row.expires_at == null || Number.isFinite(row.expires_at)) && (!needs_candidate_deadline || Number.isFinite(row.expires_at)), 'Invalid device matching deadline.')
+  }
   for (const row of data.match_sessions) ensure((row.search_remaining_ms == null || Number.isFinite(row.search_remaining_ms) && row.search_remaining_ms >= 0) && (row.priority_until == null || Number.isFinite(row.priority_until)) && (row.search_revision == null || Number.isInteger(row.search_revision) && row.search_revision >= 0) && (row.last_event_sequence == null || Number.isInteger(row.last_event_sequence) && row.last_event_sequence >= 0), 'Invalid matching recovery state.')
   for (const row of data.match_sessions) {
     ensure((row.standard_search_ready_at==null||Number.isFinite(row.standard_search_ready_at))&&(row.standard_search_remaining_ms==null||Number.isFinite(row.standard_search_remaining_ms)&&row.standard_search_remaining_ms>=0),'Invalid standard matching deadline.')
@@ -154,14 +159,21 @@ export function validate_data(data) {
   for (const row of data.purchase_requests) ensure(has('users', row.owner_user_id) && has('coin_packages', row.package_id) && ['pending', 'success', 'failure', 'cancelled', 'timeout'].includes(row.status), 'Invalid purchase.')
   for (const table of ['settings', 'event_preferences', 'match_preferences', 'blocked_users', 'reports', 'drafts', 'support_requests', 'operation_receipts']) for (const row of data[table]) ensure(has('users', row.owner_user_id), 'Invalid account scope.')
   for (const row of data.settings) {
-    ensure(row.language === undefined || row.language === 'en-US', 'Invalid language setting.')
+    if (row.auto_match_guide !== undefined) ensure(row.auto_match_guide && row.auto_match_guide.revision === 1 && ['completed', 'skipped'].includes(row.auto_match_guide.outcome) && Number.isFinite(row.auto_match_guide.completed_at) && row.auto_match_guide.completed_at > 0, 'Invalid first-use guide preference.')
+    if (row.discover_guide !== undefined) ensure(row.discover_guide && row.discover_guide.revision === 1 && ['completed', 'skipped'].includes(row.discover_guide.outcome) && Number.isFinite(row.discover_guide.completed_at) && row.discover_guide.completed_at > 0, 'Invalid Discover guide preference.')
+    ensure(row.language === undefined || ['en-US', 'fr-FR'].includes(row.language), 'Invalid language setting.')
     if (row.notifications) ensure(Object.values(row.notifications).every(value => typeof value === 'boolean'), 'Invalid notification setting.')
     if (row.privacy) ensure(Object.values(row.privacy).every(value => typeof value === 'boolean'), 'Invalid privacy setting.')
     if (row.muted_direct_user_ids !== undefined) ensure(Array.isArray(row.muted_direct_user_ids) && unique(row.muted_direct_user_ids, id => id) && row.muted_direct_user_ids.every(id => has('users', id) && id !== row.owner_user_id), 'Invalid direct notification preference.')
   }
   for (const row of data.blocked_users) ensure(has('users', row.user_id) && row.user_id !== row.owner_user_id, 'Invalid block.')
   ensure(unique(data.blocked_users, (row) => `${row.owner_user_id}:${row.user_id}`), 'Duplicate block.')
-  for (const row of data.reports) ensure(['user', 'event'].includes(row.target_type) && typeof row.reason === 'string' && row.reason && row.status === 'local_saved' && (row.target_type === 'user' ? has('users', row.target_id) && row.target_id !== row.owner_user_id : has('events', row.target_id)), 'Invalid report.')
+  for (const row of data.reports) {
+    const target_exists = row.target_type === 'user' ? has('users', row.target_id) && row.target_id !== row.owner_user_id
+      : row.target_type === 'group' ? data.conversations.some(conversation => conversation.conversation_id === row.target_id && conversation.kind === 'group' && conversation.event_id === row.context_id)
+        : has('events', row.target_id)
+    ensure(['user', 'event', 'group'].includes(row.target_type) && typeof row.reason === 'string' && row.reason && row.status === 'local_saved' && target_exists, 'Invalid report.')
+  }
   ensure(unique(data.operation_receipts, (row) => `${row.owner_user_id}:${row.operation_id}`), 'Duplicate operation.')
   return true
 }

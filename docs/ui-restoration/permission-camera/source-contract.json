@@ -27,8 +27,8 @@
   "approved_deltas": [
     { "id": "camera-safe-area-skeleton", "source": "DEVELOPMENT_CONVENTIONS.md sections 2 and 15", "delta": "The 172px source content offset is measured below the real top safe area; the footer is measured above the real bottom safe area." },
     { "id": "camera-truthful-copy", "source": "User-authorized local-only scope", "delta": "The source claims camera use for video calls, but calls are waiting-state simulations. Copy is limited to real profile-photo capture and explicit no-background-recording behavior." },
-    { "id": "camera-real-media", "source": "DEVELOPMENT_CONVENTIONS.md data and interaction rules", "delta": "Allow Camera opens the device camera picker and persists the returned image through the onboarding Store after Loading instead of incrementing a fake photo count." },
-    { "id": "camera-decline", "source": "Source permDenied state", "delta": "Not Now reveals the source denied card without mutating Store state; Settings failure is explicit in an ordinary browser." }
+    { "id": "camera-real-media", "source": "DEVELOPMENT_CONVENTIONS.md data and interaction rules; 2026-10-26 user permission-button request", "delta": "Continue opens the actual device camera capture/permission path and persists only a returned valid image through the onboarding Store after Loading, instead of incrementing a fake photo count. Custom buttons are Continue / Cancel; system-owned dialog labels are unchanged." },
+    { "id": "camera-decline", "source": "2026-10-26 user permission-button request and real-permission boundary", "delta": "Cancel returns to the originating page without invoking the picker/system request, changing Store state, or fabricating denied status. A real capture/permission failure can show the contextual error card; Settings failure remains explicit without a host." }
   ],
   "planned_capture": {
     "reference_png": "docs/ui-restoration/permission-camera/reference.png",

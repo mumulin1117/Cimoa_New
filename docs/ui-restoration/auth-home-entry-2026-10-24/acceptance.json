@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-24",
+  "scope": "Completed authentication defaults to Home; this record does not declare complete-app acceptance.",
+  "status": "implemented_and_scoped_regression_passed",
+  "authorization": "User requested that login and registration enter Home first, then confirmed to continue.",
+  "previous_default": "/pages/discover/index",
+  "current_default": "/pages/home/index",
+  "implementation": {
+    "single_source": "src/utils/authNavigation.js exports AUTHENTICATED_MAIN_ROUTE for successful login, completed onboarding, verification-success recovery and valid cold-session restoration.",
+    "priority": ["Hydration failure remains retryable without exposing protected pages.", "Guests or expired sessions go to Welcome.", "Required verification remains ahead of the main destination.", "Incomplete onboarding resumes its own current step.", "Only completed authenticated accounts enter Home."],
+    "preserved": ["Home / Discover / Events Tab order", "normal detail and Tab return ownership", "relaunch clears authentication/setup history", "500ms business-write feedback", "600ms once-per-Tab content skeletons", "Discover first-entry deck presentation and current-card state", "existing account/profile/relationship/chat/event/media/coin data", "original startup and welcome timing"],
+    "conventions": "No changes to DEVELOPMENT_CONVENTIONS.md or INTERACTION_CONVENTIONS.md; both were read completely. Pages continue to use existing Store actions and route-transition helpers.",
+    "source_contract": "The Splash source contract appends the new Home decision after the historical Discover override. Historical acceptance results are not rewritten."
+  },
+  "changed_files": [
+    "src/utils/authNavigation.js",
+    "scripts/auth-discover-entry.test.mjs",
+    "scripts/startup-story.test.mjs",
+    "scripts/ux-entry-flow.test.mjs",
+    "scripts/social-entities.test.mjs",
+    "scripts/registration.test.mjs",
+    "scripts/startup-browser.test.mjs",
+    "scripts/lib/startup-story-regression.mjs",
+    "scripts/lib/test-account-regression.mjs",
+    "scripts/startup-story-browser.test.mjs",
+    "scripts/test-account-browser.test.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift",
+    "docs/ui-restoration/splash/source-contract.json",
+    "docs/ui-restoration/auth-home-entry-2026-10-24/acceptance.json"
+  ],
+  "generated_outputs": ["dist/build/h5/", "ios/cimoaNeapo/Resources/H5/", "ios/cimoaNeapo/Resources/build-manifest.json"],
+  "verification": {
+    "unit": {"passed": 439, "failed": 0, "concurrency": 1, "log": "artifacts/auth-home/unit-tests-final.log"},
+    "browser": {"passed": true, "cases": 6, "checks": 97, "errors": 0, "warnings": 0, "report": "artifacts/startup-story/browser-report.json"},
+    "canonical_account_browser": {"passed": true, "cases": 4, "checks": 117, "errors": 0, "warnings": 0, "report": "artifacts/test-account/browser-report.json"},
+    "wkwebview": {"passed": true, "cases": 8, "checks": 140, "device": "iPhone 17 Pro simulator, iOS 26.5", "actual_host_business_storage_unchanged": true, "report": "artifacts/startup-story/wkwebview-report.json", "log": "artifacts/auth-home/xcodebuild-persistent.log", "result_bundle": "artifacts/auth-home/AuthHomePersistent.xcresult"},
+    "registration_completion": "Fixture account was registered and passed verification and each prerequisite onboarding action through the Store. Valid image Blobs were restored to the fixture repository, then the actual Complete CTA performed its unchanged image decoding/integrity checks and one delayed metadata commit before entering Home. No setup requirement was bypassed.",
+    "native_media_isolation": "Only the completion case uses a UUID-backed persistent WKWebsiteDataStore, separate from the default production account container. It verifies real IndexedDB photo reads and is removed after its WKWebView is released; successful removal is logged. Other cases remain non-persistent.",
+    "diagnostic_history": "The initial native completion fixture failed while writing photo Blobs into its non-persistent test data store, before the production Complete action ran; WebKit exposed no useful transaction detail. The same real-media checks succeeded with the independent persistent store. No production media adapter was replaced and no Blob check was skipped. One agent full-unit attempt also hit the existing IAP 7999ms boundary assertion; no IAP code was changed. The final complete serial suite passed all 439 assertions.",
+    "required_commands": {"passed": true, "sequence": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"], "convention_warnings": 0, "h5_files_packaged": 441, "log": "artifacts/auth-home/build-h5.log"},
+    "warnings": "No convention or browser warnings. Xcode logs include the existing skipped AppIntents metadata extraction and simulator WebKit diagnostics.",
+    "limits": "This is authentication destination and account-state regression, not external authentication-service, physical keyboard, or system background acceptance. The background test deliberately injects document visibility events.",
+    "preview_server_started": false,
+    "actual_user_data_replaced": false
+  },
+  "screenshots": {"browser_registration_home": "artifacts/startup-story/complete-393x852-result.png", "wkwebview_login_home": "artifacts/startup-story/login-wkwebview.png", "wkwebview_registration_home": "artifacts/startup-story/complete-wkwebview.png"},
+  "git": "Unrelated pre-existing changes are preserved. No staging, commit, push or reset performed."
+}

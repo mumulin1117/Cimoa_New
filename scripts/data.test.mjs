@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
-import { create_seed, TEST_USER_ID, clone_data, DISCOVER_PROFILE_IDS } from '../src/stores/seed.js'
+import { create_seed, TEST_USER_ID, clone_data, DISCOVER_PROFILE_IDS, HOME_REQUEST_USER_ID } from '../src/stores/seed.js'
 import { validate_data, home_cards, utc_date_key } from '../src/stores/selectors.js'
 import { SCENARIOS, create_scenario, create_source_scenario } from '../src/stores/scenarios.js'
 import { STATE_KEY, LEGACY_KEY } from '../src/utils/statePersistence.js'
@@ -13,6 +13,7 @@ import { create_write_operation } from '../src/utils/writeOperation.js'
 import { create_waiting_call } from '../src/utils/waitingCall.js'
 import { create_purchase_bridge } from '../src/utils/iapBridge.js'
 import { fake_clock } from './lib/fake-clock.mjs'
+import { ACTIVE_COIN_PACKAGES } from '../src/stores/coinPackages.js'
 
 const now = Date.UTC(2026, 9, 13, 23, 59, 50)
 function fixture(name = 'default', overrides = {}) {
@@ -29,9 +30,9 @@ test('source fixtures and independent UI scenarios have valid references and can
   const inventory = JSON.parse(fs.readFileSync('docs/cimoa-page-inventory.json'))
   for (const page of inventory) assert.equal(validate_data(create_source_scenario(page.source_query, now).data), true, page.source_query)
   const { store } = fixture()
-  assert.deepEqual(store.home_connections.map((row) => [row.user.user_name, row.user.university, row.kind]), [['Chloe Lin', 'HKUST', 'connected'], ['Liam Park', 'Stanford', 'auto_match'], ['Lina', 'HKU', 'invite']])
+  assert.deepEqual(store.home_connections.map((row) => [row.user.user_name, row.user.university, row.kind]), [['Chloe Lin', 'HKUST', 'connected'], ['Liam Park', 'Stanford', 'auto_match'], ['Grace Miller', 'HKUST', 'invite']])
   assert.equal(store.coin_balance, 260); assert.equal(store.free_matches_remaining, 3)
-  assert.equal(store.can_chat('user_lina'), false); assert.equal(store.can_chat('user_liam'), false)
+  assert.equal(store.can_chat(HOME_REQUEST_USER_ID), false); assert.equal(store.can_chat('user_liam'), false)
   const multi = fixture('three_chats').store
   assert.equal(multi.current_conversations.length, 3)
   assert.ok(multi.current_conversations.every((row) => row.messages.length >= 3 && row.messages.length <= 6))
@@ -51,12 +52,12 @@ test('Discover deck is Store-backed with six complete profiles, three photos and
 test('fixture login validates identity; logout/deletion and expired sessions hide private data', async () => {
   const { store } = fixture()
   assert.equal(store.logout().success, true); assert.equal(store.current_conversations.length, 0)
-  assert.equal((await store.login('cimoa@gmail.com', 'wrong')).success, false)
-  assert.equal((await store.login(' Cimoa@gmail.com ', '12341234')).success, true)
-  assert.equal(store.create_account({ email: 'cimoa@gmail.com' }).reason, 'email_exists')
+  assert.equal((await store.login('cimoa@connect.edu', 'wrong')).success, false)
+  assert.equal((await store.login(' Cimoa@connect.edu ', '12341234')).success, true)
+  assert.equal(store.create_account({ email: 'cimoa@connect.edu' }).reason, 'email_exists')
   assert.equal((await store.delete_account('wrong')).success, false)
   assert.equal((await store.delete_account('12341234')).success, true)
-  assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, false)
+  assert.equal((await store.login('cimoa@connect.edu', '12341234')).success, false)
   assert.equal(fixture('session_expired').store.home_connections.length, 0)
 })
 test('text costs 10 coins; zero balance fails and retries never double charge', async () => {
@@ -75,8 +76,8 @@ test('request acceptance is directional, atomic and synchronizes Home and chat',
   const { store } = fixture()
   assert.equal(store.cancel_request('request_lina').success, false)
   const result = store.accept_request('request_lina'); assert.equal(result.success, true)
-  assert.equal(store.can_chat('user_lina'), true)
-  assert.equal(store.home_connections.find((row) => row.user_id === 'user_lina').conversation_id, result.data)
+  assert.equal(store.can_chat(HOME_REQUEST_USER_ID), true)
+  assert.equal(store.home_connections.find((row) => row.user_id === HOME_REQUEST_USER_ID).conversation_id, result.data)
   assert.equal(store.accept_request('request_lina').success, false)
   assert.equal(fixture().store.decline_request('request_lina').success, true)
 })
@@ -167,23 +168,46 @@ test('blocking removes the old connection/private chat and filters shared surfac
   assert.equal(store.data.conversations.some((row) => row.kind === 'direct' && row.participant_ids.includes('user_chloe')), false)
   assert.equal(store.unblock_user('user_chloe').success, true); assert.equal(store.can_chat('user_chloe'), false); assert.equal(store.current_conversations.length, 0)
   assert.equal(store.submit_report({ target_type: 'user', target_id: TEST_USER_ID, reason: 'Spam' }).success, false)
-  assert.equal(store.submit_report({ target_type: 'event', target_id: 'event_picnic', reason: 'Incorrect information' }).success, true); assert.equal(store.current_reports[0].status, 'local_saved')
+  const report_before = clone_data(store.data)
+  assert.equal(store.submit_report({ target_type: 'event', target_id: 'event_picnic', reason: 'Incorrect information' }).success, true)
+  assert.equal(store.submit_report({ target_type: 'event', target_id: 'event_picnic', reason: 'Incorrect information' }).success, true)
+  assert.deepEqual(store.data, report_before); assert.equal(store.current_reports.length, 0)
 })
-test('purchase callbacks enforce package, owner, receipt, full timeout, retry and refund idempotence', async () => {
-  const { store } = fixture('default', { services: { verify_purchase: async () => true, verify_refund: async () => true } })
-  store.data.coin_packages[0].product_id = 'test.cimoa.60'
-  const id = store.begin_purchase('pkg_60', 'purchase-1').data
-  const receipt = { status: 'success', product_id: 'test.cimoa.60', owner_user_id: TEST_USER_ID, package_id: 'pkg_60', receipt_id: 'test-receipt' }
+test('purchase callbacks enforce product/account/receipt identity and verified recovery without duplicate credits', async () => {
+  const verify_purchase = async result => ({ ...result, verified: true, transaction_id: result.receipt_id })
+  const { store } = fixture('default', { services: { verify_purchase, verify_refund: async () => true } })
+  const pack = ACTIVE_COIN_PACKAGES.find(row => row.package_id === 'pkg_60')
+  store.purchase_products = [{ package_id: pack.package_id, product_id: pack.product_id, display_price: '$0.99', currency_code: 'USD' }]
+  const begun = store.begin_purchase(pack.package_id, 'purchase-1'); assert.ok(begun.success)
+  const id = begun.data, receipt = { request_id: id, status: 'success', product_id: pack.product_id, owner_user_id: TEST_USER_ID, package_id: pack.package_id, receipt_id: 'test-receipt', transaction_id: 'test-receipt' }
   assert.equal((await store.settle_purchase(id, { ...receipt, owner_user_id: 'wrong' })).success, false); assert.equal(store.coin_balance, 260)
+  assert.equal((await store.settle_purchase(id, { ...receipt, product_id: 'unconfigured.product' })).success, false); assert.equal(store.coin_balance, 260)
+  assert.equal((await store.settle_purchase(id, { ...receipt, receipt_id: '' })).success, false); assert.equal(store.coin_balance, 260)
   assert.equal((await store.settle_purchase(id, receipt)).success, true); assert.equal(store.coin_balance, 320)
-  assert.equal((await store.settle_purchase(id, receipt)).success, false); assert.equal(store.coin_balance, 320)
-  for (const status of ['failure', 'cancelled', 'timeout']) { const request = store.begin_purchase('pkg_60', `purchase-${status}`).data; assert.equal((await store.settle_purchase(request, { status })).success, true); assert.equal((await store.settle_purchase(request, receipt)).success, false); assert.equal(store.coin_balance, 320) }
-  assert.equal((await store.apply_refund('txn_seed_1', { event_id: 'refund-1' })).success, true); assert.equal(store.coin_balance, 340)
+  const replay = await store.settle_purchase(id, receipt)
+  assert.equal(replay.success, true); assert.equal(replay.repeated, true); assert.equal(store.coin_balance, 320)
+  let balance = 320
+  for (const status of ['failure', 'cancelled', 'timeout']) {
+    const next = store.begin_purchase(pack.package_id, `purchase-${status}`); assert.ok(next.success)
+    const request_id = next.data, terminal = { ...receipt, request_id, status, native_final: status === 'cancelled' }
+    assert.equal((await store.settle_purchase(request_id, terminal)).success, true); assert.equal(store.coin_balance, balance)
+    assert.equal((await store.settle_purchase(request_id, { ...receipt, request_id })).success, false); assert.equal(store.coin_balance, balance)
+    const recovered_receipt = { ...receipt, request_id, receipt_id: `recovered-${status}`, transaction_id: `recovered-${status}` }
+    configure_store_runtime(store, { services: { verify_purchase: async () => true, verify_refund: async () => true } })
+    assert.equal((await store.settle_purchase(request_id, recovered_receipt)).success, false); assert.equal(store.coin_balance, balance)
+    configure_store_runtime(store, { services: { verify_purchase, verify_refund: async () => true } })
+    assert.equal((await store.settle_purchase(request_id, recovered_receipt)).success, true); balance += pack.coins
+    const repeated = await store.settle_purchase(request_id, recovered_receipt)
+    assert.equal(repeated.success, true); assert.equal(repeated.repeated, true); assert.equal(store.coin_balance, balance)
+  }
+  assert.equal((await store.apply_refund('txn_seed_1', { event_id: 'refund-1' })).success, true); assert.equal(store.coin_balance, balance + 20)
   assert.equal((await store.apply_refund('txn_seed_1', { event_id: 'refund-1' })).repeated, true); assert.equal((await store.apply_refund('txn_seed_1', { event_id: 'refund-2' })).success, false)
-  const clock = fake_clock(), bridge = create_purchase_bridge({ timers: clock, send() {} }), payload = { request_id: 'host-1', package_id: 'pkg_60', owner_user_id: TEST_USER_ID, product_id: 'test.cimoa.60' }
+  const clock = fake_clock(), bridge = create_purchase_bridge({ timers: clock, clock: clock.now, send() {} }), payload = { request_id: 'host-1', package_id: pack.package_id, owner_user_id: TEST_USER_ID, product_id: pack.product_id }
   let settled = false; const promise = bridge.request(payload).then((result) => { settled = true; return result })
   assert.equal(bridge.resolve('host-1', { ...receipt, product_id: 'wrong' }), false)
-  await clock.advance(7999); assert.equal(settled, false); await clock.advance(1); assert.equal((await promise).status, 'timeout'); assert.equal(bridge.resolve('host-1', receipt), false); assert.equal(clock.pending(), 0)
+  await clock.advance(7999); assert.equal(settled, false); await clock.advance(1); assert.equal((await promise).status, 'timeout')
+  assert.equal(bridge.resolve('host-1', { ...receipt, request_id: 'host-1' }), true)
+  assert.equal((await bridge.request(payload, { dispatch: false })).receipt_id, receipt.receipt_id); assert.equal(clock.pending(), 0)
 })
 test('missing services and audio fail honestly without business changes', async () => {
   const { store } = fixture('default', { services: { matching_available: false } }); const before = clone_data(store.data)

@@ -1,4 +1,6 @@
 <script setup>
+import { get_locale } from '@/i18n/index.js'
+
 import { computed, ref } from 'vue'
 import { onHide } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -34,7 +36,7 @@ onHide(() => { navigation_error.value = '' })
           <text class="profile-title">My profile</text>
           <view class="profile-tool" role="button" tabindex="0" aria-label="Open settings" :aria-disabled="navigating" data-interaction="profile.openAppSettings.click.1" :data-target="target('settings')" @click="navigate('settings')" @keydown.enter="navigate('settings')" @keydown.space.prevent="navigate('settings')"><view class="profile-settings-icon"><SourceIcon name="settings" /></view></view>
         </view>
-        <text v-if="navigation_error" class="profile-feedback" role="alert">{{ navigation_error }}</text>
+        <FeedbackToast v-if="navigation_error" :message="navigation_error" @dismiss="navigation_error = String()" />
       </view>
     </template>
     <view class="profile-content">
@@ -54,7 +56,7 @@ onHide(() => { navigation_error.value = '' })
         </view>
         <view class="profile-card profile-about"><text class="profile-section-title">About me</text><text v-if="user.bio" class="profile-bio" :style="bio_style(user.bio_font)">{{ user.bio }}</text><text v-else class="profile-empty">No introduction yet.</text></view>
         <view class="profile-card"><text class="profile-section-title">Interests</text><view v-if="store.current_interests.length" class="profile-interests"><view v-for="interest in store.current_interests" :key="interest.item_id" class="profile-interest"><view class="interest-icon">{{ interest.emoji }}</view><text class="interest-label">{{ interest.label }}</text></view></view><text v-else class="profile-empty">No interests selected yet.</text></view>
-        <view class="profile-card profile-link" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="profile.openStore.click.1" :data-target="target('coins')" @click="navigate('coins')" @keydown.enter="navigate('coins')" @keydown.space.prevent="navigate('coins')"><image class="profile-coin" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><text class="profile-balance">{{ store.coin_balance.toLocaleString('en-US') }} coins</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
+        <view class="profile-card profile-link" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="profile.openStore.click.1" :data-target="target('coins')" @click="navigate('coins')" @keydown.enter="navigate('coins')" @keydown.space.prevent="navigate('coins')"><image class="profile-coin" src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><text class="profile-balance">{{ store.coin_balance.toLocaleString(get_locale()) }} coins</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
         <view class="profile-card profile-link" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="profile.openVerification.click.1" :data-target="target('verification')" @click="navigate('verification')" @keydown.enter="navigate('verification')" @keydown.space.prevent="navigate('verification')"><view class="profile-preview-icon"><view><SourceIcon :name="user.verified ? 'verified' : 'shield'" /></view></view><text class="profile-preview-label">University verification · {{ user.verified ? 'Active' : 'Pending' }}</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
         <view class="profile-card profile-link" role="button" tabindex="0" :aria-disabled="navigating" data-interaction="profile.openProfilePreview.click.1" :data-target="target('preview')" @click="navigate('preview')" @keydown.enter="navigate('preview')" @keydown.space.prevent="navigate('preview')"><view class="profile-preview-icon"><view><SourceIcon name="person" :stroke-width="1.9" /></view></view><text class="profile-preview-label">Preview my profile</text><view class="profile-chevron"><SourceIcon name="chevron" /></view></view>
       </template>

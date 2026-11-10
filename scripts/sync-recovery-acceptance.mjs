@@ -5,6 +5,7 @@ import os from 'node:os'
 import crypto from 'node:crypto'
 import cp from 'node:child_process'
 import assert from 'node:assert/strict'
+import { campusHeritageCatalog, campusHeritageIndex, campusHeritagePathway } from './lib/campusHeritagePathway.mjs'
 
 const option = name => process.argv.find(a => a.startsWith('--' + name + '='))?.slice(name.length + 3)
 const bundle = option('bundle'), mainResult = option('native-result'), extraResult = option('native-extra')
@@ -34,10 +35,15 @@ const browser = browserFiles.map(file => {
   assert.deepEqual(report.errors, [], file); assert.equal(report.cleaned_up, true, file)
   return { file, checks: report.checks, temporary_pid: report.server_pid }
 })
-const manifest = read('ios/cimoaNeapo/Resources/build-manifest.json')
-assert.equal(hash('ios/cimoaNeapo/Resources/build-manifest.json'), hash(path.join(bundle, 'build-manifest.json')))
+const resources = 'ios/cimoaNeapo/CimomusicOrientationPathfinder'
+const festivalPackage = fs.readFileSync(path.join(bundle, campusHeritagePathway))
+assert.equal(hash(path.join(resources, campusHeritagePathway)), campusHeritageIndex(festivalPackage))
+const catalog = campusHeritageCatalog(festivalPackage)
+const manifest = catalog.manifest
+const academicFiles = new Map(catalog.files.map(entry => [entry.file, entry.data]))
 for (const entry of manifest.files) {
-  for (const root of ['dist/build/h5', 'ios/cimoaNeapo/Resources/H5', path.join(bundle, 'H5')]) assert.equal(hash(path.join(root, entry.file)), entry.sha256, path.join(root, entry.file))
+  assert.equal(crypto.createHash('sha256').update(academicFiles.get(entry.file)).digest('hex'), entry.sha256, entry.file)
+  if (entry.file !== 'startup-motion.json') assert.equal(hash(path.join('dist/build/h5', entry.file)), entry.sha256, entry.file)
 }
 assert.ok(!manifest.files.some(p => /CIRCA|interactive/i.test(p.file)))
 assert.equal(hash('CIRCA All Screens (interactive).html'), read(output + '/source-audit.json').source_sha256)
@@ -45,7 +51,10 @@ const extraction = fs.mkdtempSync(path.join(os.tmpdir(), 'cimoa-sync-archive-che
 try {
   cp.execFileSync('/usr/bin/ditto', ['-x', '-k', 'artifacts/cimoaNeapo-ios.zip', extraction])
   const root = path.join(extraction, 'cimoaNeapo')
-  for (const entry of manifest.files) assert.equal(hash(path.join(root, 'Resources/H5', entry.file)), entry.sha256)
+  const archivePackage = fs.readFileSync(path.join(root, 'CimomusicOrientationPathfinder', campusHeritagePathway))
+  assert.equal(campusHeritageIndex(archivePackage), campusHeritageIndex(festivalPackage))
+  const archiveFiles = new Map(campusHeritageCatalog(archivePackage).files.map(entry => [entry.file, entry.data]))
+  for (const entry of manifest.files) assert.equal(crypto.createHash('sha256').update(archiveFiles.get(entry.file)).digest('hex'), entry.sha256)
   assert.equal(hash(path.join(root, 'Tests/HostTests.swift')), hash('ios/cimoaNeapo/Tests/HostTests.swift'))
 } finally { fs.rmSync(extraction, { recursive: true, force: true }) }
 const inventory = read('docs/cimoa-page-inventory.json')

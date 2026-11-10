@@ -1,4 +1,6 @@
 <script setup>
+import { get_locale } from '@/i18n/index.js'
+
 import { computed, ref } from 'vue'
 import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -18,20 +20,20 @@ const transaction = computed(() => detail.value?.transaction)
 const refund = computed(() => detail.value?.mode === 'refund')
 const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved coin data is unavailable. Please return and retry.'
+  ? 'Your coin history is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !transaction_id.value || !transaction.value
-      ? 'This coin activity record is unavailable.'
+      ? 'This transaction is unavailable.'
       : !refund.value && (transaction.value.kind !== 'spend' || transaction.value.amount >= 0)
-        ? 'This record is not a completed coin spend.'
+        ? 'This transaction is not a completed coin spend.'
         : '')
 const detail_rows = computed(() => access_error.value ? [] : [
   ['Feature', detail.value.feature_label],
-  [refund.value ? 'Coins returned' : 'Coins used', Math.abs(transaction.value.amount).toLocaleString('en-US')],
+  [refund.value ? 'Coins returned' : 'Coins used', Math.abs(transaction.value.amount).toLocaleString(get_locale())],
   ['Date', format_coin_date(transaction.value.created_at)],
   ['Transaction ID', transaction.value.transaction_id],
-  ['Status', transaction.value.fixture ? 'Recorded' : 'Completed'],
+  ['Status', transaction.value.fixture ? 'Coin activity' : 'Completed'],
 ])
 const navigate = async route => {
   if (navigating.value || route && access_error.value) return
@@ -52,7 +54,7 @@ onHide(() => { navigating.value = false; error.value = '' })
         <view class="spend-back" role="button" aria-label="Back" :aria-disabled="navigating" data-interaction="coinSpendDetail.goBack.click.1" @click="navigate()"><SourceIcon name="back" /></view>
         <text>{{ refund ? 'Coin refund' : 'Coin use' }}</text>
       </view>
-      <text v-if="error" class="spend-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error" :message="error" @dismiss="error = String()" />
     </template>
 
     <view class="spend-content">
@@ -60,13 +62,13 @@ onHide(() => { navigating.value = false; error.value = '' })
       <template v-else>
         <view class="spend-hero">
           <view class="spend-icon"><SourceIcon name="lightning" /></view>
-          <text>{{ refund ? '+' : '−' }}{{ Math.abs(transaction.amount).toLocaleString('en-US') }} Coins</text>
-          <text>{{ refund ? 'Returned coins' : transaction.fixture ? 'Recorded coin activity' : 'Completed coin activity' }}</text>
+          <text>{{ refund ? '+' : '−' }}{{ Math.abs(transaction.amount).toLocaleString(get_locale()) }} Coins</text>
+          <text>{{ refund ? 'Returned coins' : transaction.fixture ? 'Coin activity' : 'Completed coin activity' }}</text>
         </view>
         <view class="spend-card">
           <view v-for="row in detail_rows" :key="row[0]" class="spend-row"><text>{{ row[0] }}</text><text>{{ row[1] }}</text></view>
         </view>
-        <view class="spend-note"><SourceIcon name="shield" /><text>{{ transaction.fixture ? 'This entry has no saved feature reference. It is not evidence that a named feature was used.' : refund ? 'Returned coins reference the original coin activity. They are not a new App Store purchase.' : 'Coin activity is recorded only after the linked feature completes.' }}</text></view>
+        <view class="spend-note"><SourceIcon name="shield" /><text>{{ transaction.fixture ? 'Feature details are unavailable for this activity.' : refund ? 'Returned coins reference the original coin activity. They are not a new App Store purchase.' : 'Coin activity appears only after the linked feature completes.' }}</text></view>
         <view class="spend-support" role="button" :aria-disabled="navigating" data-interaction="coinSpendDetail.openSupport.click.1" @click="navigate(COIN_ROUTES.help)"><SourceIcon name="support" /><text>Coin activity support</text><SourceIcon name="chevron" /></view>
       </template>
     </view>

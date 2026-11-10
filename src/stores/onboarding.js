@@ -5,6 +5,7 @@ import { local_verification_context } from '../utils/localVerification.js'
 import { age_from_date } from '../utils/localAuth.js'
 import { ONBOARDING_FLOW, ONBOARDING_GOALS, onboarding_error } from '../utils/onboardingFlow.js'
 import { ensure_account_defaults, session_for } from './accountDefaults.js'
+import { auth_message } from '../utils/authFeedback.js'
 
 export function onboarding_context(data, now) {
   if (!authenticated(data, now)) return null
@@ -52,7 +53,7 @@ export const onboarding_actions = {
       throw new Error(result.message)
     } catch (error) {
       await Promise.all(created.map(row => rt.media.delete(row.media_id).catch(() => {})))
-      return failure('photo_failed', error.message)
+      return failure('photo_failed', auth_message(error.message, 'Your photos couldn’t be added. Please try again.'))
     }
   },
   edit_onboarding_photo(photo_id, action, expected_account_id) {
@@ -95,7 +96,7 @@ export const onboarding_actions = {
           const meta = this.data.media_files.find(row => row.media_url === photo.media_url && row.owner_user_id === context.user.user_id && row.kind === 'image')
           ensure(meta, 'Select your own photos to continue.')
           const blob = await rt.media.get(meta.media_id)
-          ensure(blob instanceof Blob && blob.size === meta.byte_size && blob.type === meta.mime, 'Saved photo unavailable. Please select it again.')
+          ensure(blob instanceof Blob && blob.size === meta.byte_size && blob.type === meta.mime, 'This photo is unavailable. Please select it again.')
           await rt.inspect_media(blob, 'image')
         }
       }
@@ -130,6 +131,6 @@ export const onboarding_actions = {
         user.onboarding_status = 'in_progress'
         return next
       }, { expected_owner: context.user.user_id })
-    } catch (error) { return failure('onboarding_failed', error.message) }
+    } catch (error) { return failure('onboarding_failed', auth_message(error.message, 'Your profile couldn’t be updated. Please try again.')) }
   },
 }

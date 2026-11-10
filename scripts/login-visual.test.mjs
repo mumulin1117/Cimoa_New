@@ -131,6 +131,9 @@ try {
   const page = await visual.newPage(); page.on('pageerror', error => report.errors.push(error.message))
   await page.goto(`${origin}/?loginPixel=default#/pages/auth/login`); await page.locator('.login-page').waitFor(); await set_safe_area(page, 54, 0)
   report.geometry = await freeze_login(page)
+  const password_box = await page.locator('.login-page .auth-input-box').nth(1).boundingBox()
+  const toggle_box = await page.locator('.login-page .auth-show').boundingBox()
+  assert.ok(close(toggle_box.y + toggle_box.height / 2, password_box.y + password_box.height / 2, .5)); assert.ok(toggle_box.height >= 44)
   assert.deepEqual(report.geometry.viewport, { width: 393, height: 852 }); assert.deepEqual(report.geometry.safe, [54, 0])
   assert.ok(close(report.geometry.header.x, 20)); assert.ok(close(report.geometry.header.y, 58)); assert.ok(close(report.geometry.header.height, 48))
   assert.ok(close(report.geometry.back.width, 46)); assert.ok(close(report.geometry.back.height, 46)); assert.ok(close(report.geometry.heading.y, 122))
@@ -167,7 +170,7 @@ try {
   assert.equal(await flow_page.getByRole('button', { name: 'Continue with Apple', exact: true }).count(), 0)
   await flow_page.getByRole('button', { name: 'Show password' }).click(); assert.equal(await flow_page.locator('.login-page input').last().getAttribute('type'), 'text')
   await flow_page.getByRole('button', { name: 'Hide password' }).click(); assert.equal(await flow_page.locator('.login-page input').last().getAttribute('type'), 'password')
-  await flow_page.locator('[data-interaction="login.goFpEmail.click.1"]').click(); await flow_page.locator('.reset-email-page').waitFor(); await flow_page.getByRole('button', { name: 'Back', exact: true }).click(); await flow_page.locator('.login-page').waitFor()
+  await flow_page.locator('[data-interaction="login.goFpEmail.click.1"]').click(); await flow_page.locator('.reset-email-page').waitFor(); await flow_page.getByRole('button', { name: 'Back', exact: true }).click(); await flow_page.locator('.login-page:visible').waitFor(); await flow_page.waitForTimeout(260)
   assert.equal(await saved(), null)
   check('Apple entry is absent, password privacy is real, and Forgot password returns to Login without a guest-state write')
 

@@ -63,7 +63,7 @@ try {
   recipient.accounts.push({ ...clone_data(recipient.accounts[0]), account_id: 'account_zane_test', user_id: 'user_zane', email: 'zane@campus.test' })
   await install(await reauthenticate(recipient, 'zane@campus.test')); await open(`/pages/connections/received?request_id=${request.request_id}`)
   await page.locator('.connection-received-page').waitFor(); await click('reqReceived.accept.click.1'); await page.locator('.dialog__confirm:visible').click(); await page.locator('.connection-accepted-page').waitFor()
-  const accepted = JSON.parse(await bytes()).data, sender = await reauthenticate(accepted, 'cimoa@gmail.com')
+  const accepted = JSON.parse(await bytes()).data, sender = await reauthenticate(accepted, 'cimoa@connect.edu')
   const connection = sender.conversations.find(c => c.kind === 'direct' && c.participant_ids.includes('user_zane') && c.participant_ids.includes('user_cimoa'))
   assert.ok(connection); assert.equal(sender.requests.find(r => r.request_id === request.request_id).status, 'accepted')
   await install(sender); await open('/pages/discover/index'); await page.getByRole('button', { name: 'Chat', exact: true }).waitFor(); await click('photo.sayHi.click.1')

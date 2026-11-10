@@ -5,6 +5,7 @@ import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_seed, clone_data } from '../src/stores/seed.js'
 import { STATE_KEY } from '../src/utils/statePersistence.js'
 import { signup_error, age_from_date, is_source_supported_university_email } from '../src/utils/localAuth.js'
+import { valid_local_code } from '../src/utils/localVerification.js'
 const now = Date.UTC(2026, 9, 13)
 function fixture(saved = null) {
   const disk = new Map(saved ? [[STATE_KEY, saved]] : []), store = use_app_store(createPinia())
@@ -19,7 +20,7 @@ test('fresh install is a guest without writes; valid existing session and creden
   const guest = fixture()
   assert.equal(guest.store.session.is_authenticated, false); assert.equal(guest.writes(), 0)
   assert.equal(guest.store.home_connections.length, 0)
-  assert.equal((await guest.store.login('cimoa@gmail.com', '12341234')).success, true)
+  assert.equal((await guest.store.login('cimoa@connect.edu', '12341234')).success, true)
   const restored = fixture(guest.disk.get(STATE_KEY))
   assert.equal(restored.store.session.is_authenticated, true); assert.equal(restored.writes(), 0)
   assert.deepEqual(restored.store.data.session, guest.store.data.session)
@@ -30,8 +31,8 @@ test('local registration checks valid dates, exact 18th birthday, password, agre
   assert.equal(signup_error(form(), now), '')
   for (const patch of [{ email: 'no-address' }, { password: 'short' }, { password: 'abcdefgh', confirmation: 'abcdefgh' }, { confirmation: 'different' }, { date_of_birth: '2008-10-14' }, { agreements: { terms: true, privacy: false, community: true } }]) assert.ok(signup_error({ ...form(), ...patch }, now))
 })
-test('source university-domain branch is deterministic and does not treat the bundled Gmail account as student verification', () => {
-  for (const email of ['student@campus.edu', 'student@connect.hkust.hk', 'student@college.ac.uk', 'STUDENT@CAMPUS.EDU']) assert.equal(is_source_supported_university_email(email), true)
+test('source university-domain branch accepts the test university address and rejects personal email domains', () => {
+  for (const email of ['cimoa@connect.edu', ' CIMOA@CONNECT.EDU ', 'student@campus.edu', 'student@connect.hkust.hk', 'student@college.ac.uk', 'STUDENT@CAMPUS.EDU']) assert.equal(is_source_supported_university_email(email), true)
   for (const email of ['cimoa@gmail.com', 'student@example.com', 'student@education.example', '', null]) assert.equal(is_source_supported_university_email(email), false)
 })
 test('registration saves salted credentials with no fake certification, session or coins and supports local login', async () => {
@@ -67,8 +68,8 @@ test('deleted emails remain reserved and missing-code verification fails', async
   const data = create_seed(now); data.session = { account_id: null, current_user_id: null, expires_at: null }
   data.accounts[0].status = 'deleted'; data.users[0].deleted = true
   const { store } = fixture(data)
-  assert.equal((await store.register_local_account(form('cimoa@gmail.com'))).reason, 'email_exists')
-  assert.equal(store.apply_verification().success, false); assert.equal(store.begin_password_reset('cimoa@gmail.com').success, false)
+  assert.equal((await store.register_local_account(form('cimoa@connect.edu'))).reason, 'email_exists')
+  assert.equal(store.apply_verification().success, false); assert.equal(store.begin_password_reset('cimoa@connect.edu').success, false)
 })
 test('fixed local code is exact, preserves leading zeroes, never promotes student identity, and is idempotent', async () => {
   const { store, disk, writes } = fixture()
@@ -77,7 +78,9 @@ test('fixed local code is exact, preserves leading zeroes, never promotes studen
   for (const code of [null, undefined, 9789, '9789', '000000', '123456', '0097890', ' 009789', '009789 ', '００９７８９', {}, ['009789']]) {
     assert.equal(store.apply_verification(code, account).success, false); assert.deepEqual(clone_data(store.data), before)
   }
-  assert.equal(writes(), count); assert.equal(store.local_verification_code, '009789')
+  assert.equal(writes(), count)
+  assert.equal('local_verification_code' in store, false)
+  assert.equal(valid_local_code('009789'), true)
   assert.equal(store.apply_verification('009789', account).success, true)
   assert.equal(store.local_verification.verified, true); assert.equal(store.session.is_authenticated, false)
   assert.deepEqual(store.data.users, before.users); assert.deepEqual(store.data.relationships, before.relationships); assert.deepEqual(store.data.coin_transactions, before.coin_transactions)
@@ -115,13 +118,13 @@ test('failed verification persistence rolls back completely; old snapshots have 
 })
 test('cancelled credential verification never commits a session', async () => {
   const { store, writes } = fixture(), before = clone_data(store.data)
-  const result = await store.login('cimoa@gmail.com', '12341234', { is_current: () => false })
+  const result = await store.login('cimoa@connect.edu', '12341234', { is_current: () => false })
   assert.equal(result.reason, 'cancelled'); assert.deepEqual(clone_data(store.data), before); assert.equal(writes(), 0)
 })
 test('source login test states inspect real local data without writes or fabricated verification', async () => {
   const fixtureState = fixture(), fixtureBefore = clone_data(fixtureState.store.data)
   const wrong = await fixtureState.store.inspect_login_test_state('wrong_password')
-  assert.equal(wrong.success, true); assert.equal(wrong.data.email, 'cimoa@gmail.com')
+  assert.equal(wrong.success, true); assert.equal(wrong.data.email, 'cimoa@connect.edu')
   assert.equal(wrong.data.message, 'Incorrect password. Try again or reset it.')
   assert.equal(fixtureState.writes(), 0); assert.deepEqual(clone_data(fixtureState.store.data), fixtureBefore)
   const missing = await fixtureState.store.inspect_login_test_state('unverified_account')

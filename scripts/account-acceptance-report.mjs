@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import cp from 'node:child_process'
 import crypto from 'node:crypto'
 import assert from 'node:assert/strict'
+import { campusHeritageCatalog, campusHeritagePathway } from './lib/campusHeritagePathway.mjs'
 
 const option = name => process.argv.find(arg => arg.startsWith('--' + name + '='))?.split('=').slice(1).join('=')
 const base = option('base'), native_path = option('native-result'), bundle = option('bundle')
@@ -13,9 +14,13 @@ const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).d
 const native = read(native_path), unit = read('docs/evidence/account-flows/unit-results.json')
 assert.equal(native.failedTests, 0); assert.equal(native.passedTests, 5); assert.equal(native.skippedTests, 0)
 assert.equal(unit.result, 'passed'); assert.equal(unit.tests, 154)
-const manifest = read('ios/cimoaNeapo/Resources/build-manifest.json')
-for (const entry of manifest.files) assert.equal(hash(bundle + '/H5/' + entry.file), entry.sha256, entry.file)
-assert.equal(hash('ios/cimoaNeapo/Resources/build-manifest.json'), hash(bundle + '/build-manifest.json'))
+const resources = 'ios/cimoaNeapo/CimomusicOrientationPathfinder'
+const festivalPackage = fs.readFileSync(bundle + '/' + campusHeritagePathway)
+assert.equal(hash(resources + '/' + campusHeritagePathway), hash(bundle + '/' + campusHeritagePathway))
+const catalog = campusHeritageCatalog(festivalPackage)
+const manifest = catalog.manifest
+const academicFiles = new Map(catalog.files.map(entry => [entry.file, entry.data]))
+for (const entry of manifest.files) assert.equal(crypto.createHash('sha256').update(academicFiles.get(entry.file)).digest('hex'), entry.sha256, entry.file)
 const prototype = hash('CIRCA All Screens (interactive).html')
 assert.equal(prototype, '6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060')
 const changes = git(['diff', '--name-only', 'HEAD']), preserved = changes.filter(p => p.startsWith('docs/evidence/registration/') && p.endsWith('.png'))

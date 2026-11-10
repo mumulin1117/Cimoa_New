@@ -1,0 +1,67 @@
+const section = (title, copy) => [title, copy]
+
+export const legal_fr = Object.freeze({
+  eula: {
+    title: 'Contrat de licence utilisateur final', updated: 'En vigueur le 20 octobre 2026',
+    intro: 'Bienvenue sur Cimoa. Commencez par une meilleure question, trouvez les bonnes personnes et créez des liens réfléchis sur le campus. En choisissant Accepter et continuer, vous acceptez ce contrat et les Conditions d’utilisation, reconnaissez la Politique de confidentialité et acceptez les Règles de la communauté.',
+    sections: [
+      section('1. À qui s’adresse Cimoa', 'Cimoa est destiné aux étudiants universitaires âgés de 18 ans ou plus. Fournissez des informations exactes et n’usurpez pas l’identité d’une autre personne. Un profil, une suggestion ou une connexion ne garantit pas l’identité de quelqu’un.'),
+      section('2. Votre autorisation d’utiliser Cimoa', 'Vous pouvez utiliser Cimoa à titre personnel et légal sur les appareils que vous possédez ou contrôlez, sous réserve de ce contrat et des règles applicables de l’App Store. Ne revendez pas l’accès, ne contournez pas la sécurité et ne collectez pas de profils en masse.'),
+      section('3. Votre profil et votre contenu', 'Vous restez responsable des photos, textes, présentations vocales, messages et contenus d’événements que vous partagez. Publiez uniquement ce que vous possédez ou êtes autorisé à utiliser, et ne divulguez pas les informations privées ni l’identité d’une autre personne.'),
+      section('4. Tolérance zéro pour les abus', 'Les contenus choquants et les comportements abusifs sont interdits, notamment la pornographie, les images intimes non consenties, les contenus d’abus sexuels sur mineurs, les menaces, la haine, la violence, le harcèlement, l’exploitation, les escroqueries et le spam.'),
+      section('5. Connexions et consentement', 'Une carte, une suggestion, une participation à un événement ou une dépense de pièces ne vaut pas consentement. Respectez les limites et les refus. Utilisez Signaler et Bloquer en cas de contenu préoccupant ou de contact indésirable.'),
+      section('6. Événements et sécurité personnelle', 'Vérifiez l’organisateur, le lieu, les horaires et les coûts avant de vous déplacer. Privilégiez un lieu public et prévenez une personne de confiance. Cimoa n’est pas un service d’urgence.'),
+      section('7. Achats facultatifs et disponibilité', 'La consultation des profils et des événements est gratuite. Les présentations écrites et vocales coûtent chacune 10 pièces. Les pièces n’ont aucune valeur monétaire et ne garantissent ni connexion ni réponse. Seule une transaction confirmée modifie le solde.'),
+      section('8. Confidentialité et vos choix', 'Consultez la Politique de confidentialité. Vous pouvez gérer votre visibilité et vos autorisations, bloquer des contacts et supprimer votre compte dans les Réglages. Accepter ce contrat n’accorde aucune autorisation système.'),
+      section('9. Fin d’utilisation et conditions applicables', 'Vous pouvez cesser d’utiliser Cimoa à tout moment. La suppression du compte et le blocage produisent les effets décrits dans les documents associés. Ce contrat ne supprime aucun droit impératif du consommateur.'),
+    ],
+    footer: 'Lisez les Conditions d’utilisation, la Politique de confidentialité et les Règles de la communauté. Si vous n’acceptez pas, choisissez Pas maintenant.',
+  },
+  terms: {
+    title: 'Conditions d’utilisation', updated: 'Mise à jour le 26 octobre 2026',
+    intro: 'Ces conditions expliquent comment utiliser Cimoa pour créer des liens, converser et participer à des événements sur le campus. Lisez-les avec la Politique de confidentialité, le Contrat de licence et les Règles de la communauté.',
+    sections: [
+      section('1. Admissibilité et informations exactes', 'Cimoa est réservé aux étudiants universitaires âgés de 18 ans ou plus. Fournissez des informations exactes. La confirmation du code ne prouve ni la propriété de l’e-mail ni l’inscription universitaire.'),
+      section('2. Votre compte', 'Gardez votre mot de passe et l’accès à votre compte privés. N’usurpez pas d’identité, ne partagez pas vos identifiants et ne tentez pas d’accéder au compte d’une autre personne.'),
+      section('3. Conduite dans la communauté', 'Soyez respectueux. Le harcèlement, les menaces, l’usurpation d’identité, la pression, l’exploitation et les contenus illégaux ou dangereux sont interdits. Un signalement ne constitue ni une décision de modération ni une réponse d’urgence.'),
+      section('4. Contenu et disponibilité des fonctions', 'Vous êtes responsable du contenu ajouté et devez disposer des droits nécessaires. Certaines fonctions peuvent être indisponibles si une autorisation, un média ou un service manque ; fiez-vous au résultat réellement affiché.'),
+      section('5. Pièces et achats', 'Les présentations écrites et vocales coûtent chacune 10 pièces. Les pièces n’ont aucune valeur monétaire et ne garantissent aucune connexion. Un achat n’ajoute des pièces qu’après confirmation par Apple.'),
+      section('6. Événements et sécurité personnelle', 'Vérifiez l’organisateur, le lieu, l’heure, l’accessibilité et les coûts. Cimoa ne garantit ni la présence réelle ni la sécurité et n’est pas un service d’urgence.'),
+      section('7. Blocage et suppression du compte', 'Le blocage supprime la connexion privée, les demandes, la rencontre et la conversation actuelles ; le déblocage ne les restaure pas. La suppression du compte retire les données privées et est irréversible.'),
+      section('8. Disponibilité et vos droits', 'La disponibilité du service peut varier. Un appel n’est établi qu’après réponse. Ces conditions ne suppriment aucun droit impératif du consommateur et ne remplacent pas les règles de licence de l’App Store.'),
+    ], footer: 'Consultez aussi la Politique de confidentialité et les Règles de la communauté. Aide et assistance présente les options actuellement disponibles.',
+  },
+  privacy: {
+    title: 'Politique de confidentialité', updated: 'Mise à jour le 26 octobre 2026',
+    intro: 'Cette politique explique les informations traitées par Cimoa, leur utilisation et leur conservation, ainsi que les choix de confidentialité à votre disposition.',
+    sections: [
+      section('1. Informations du compte et activité', 'Cimoa conserve les informations que vous fournissez dans l’app, notamment l’e-mail, les données de vérification du mot de passe, la date de naissance, le profil, les préférences, les conversations, les événements, les éléments de sécurité, les pièces et les messages d’assistance.'),
+      section('2. Photos, audio et autres médias', 'Cimoa utilise les photos et les sons que vous choisissez ou créez pour les profils, présentations et messages. Les autorisations appareil photo, microphone et photothèque sont demandées uniquement lorsque nécessaire.'),
+      section('3. Visibilité du profil', 'Vos réglages contrôlent les champs visibles dans Découvrir, Auto Match et les événements. Votre e-mail et votre date de naissance ne sont pas affichés sur les cartes publiques.'),
+      section('4. Messages et connexions', 'Une connexion mutuelle est nécessaire pour discuter en privé. Cimoa conserve l’historique utile aux fonctions de discussion. Bloquer une personne supprime la relation privée actuelle, ses demandes, la rencontre et la conversation.'),
+      section('5. Signalements et assistance', 'Les signalements et messages d’assistance contiennent les informations et le contexte que vous fournissez. Leur préparation ne confirme ni livraison, ni examen humain, ni création d’un ticket. Ils ne remplacent pas les services d’urgence.'),
+      section('6. Confirmation du compte et autorisations', 'Les codes complètent les étapes de confirmation mais ne prouvent ni la propriété de l’e-mail ni l’inscription universitaire. Les autorisations sont contrôlées par le système d’exploitation.'),
+      section('7. Achats et disponibilité du service', 'Les achats de pièces disponibles sont traités par Apple. Les pièces sont ajoutées uniquement après confirmation de la transaction. Si une demande ne peut pas aboutir, Cimoa affiche une erreur au lieu d’annoncer un succès.'),
+      section('8. Conservation et suppression du compte', 'Les informations restent disponibles jusqu’à leur modification ou suppression. La suppression du compte retire ses données privées et lance le nettoyage des médias. Le contenu supprimé n’est pas récupérable.'),
+      section('9. Vos contrôles', 'Utilisez les Réglages pour gérer la visibilité, les autorisations, les comptes bloqués et la suppression du compte. Aide et assistance présente les options disponibles.'),
+    ], footer: 'Vérifiez régulièrement vos réglages de confidentialité et vos autorisations, et ne partagez pas votre mot de passe ni des informations sensibles inutiles.',
+  },
+  community: {
+    title: 'Règles de la communauté', updated: 'Mise à jour le 20 octobre 2026',
+    intro: 'Cimoa favorise des rencontres réfléchies sur le campus, jamais l’attention non désirée. Ces règles s’appliquent à tous les profils, médias, présentations, messages, rencontres et groupes. Les contenus choquants et les comportements abusifs ne sont pas tolérés.',
+    sections: [
+      section('1. Adultes et identités authentiques', 'Vous devez avoir au moins 18 ans et être étudiant universitaire. Donnez des informations exactes et n’usurpez pas l’identité d’une personne ou d’un établissement.'),
+      section('2. Respect, limites et consentement', 'Le harcèlement, la traque, l’intimidation, les menaces, la haine et la discrimination sont interdits. Ne faites pression sur personne et respectez le refus, le silence et le blocage.'),
+      section('3. Contenu sexuel et protection des mineurs', 'La pornographie, la sollicitation sexuelle, les images intimes non consenties et tout contenu d’abus ou d’exploitation sexuelle de mineurs sont strictement interdits.'),
+      section('4. Violence, exploitation et activités illégales', 'N’encouragez ni violence, terrorisme, automutilation, défis dangereux, exploitation ou activités illégales. En cas de danger immédiat, contactez les services compétents.'),
+      section('5. Confidentialité, médias et propriété', 'Partagez uniquement du contenu autorisé. Ne divulguez pas les messages privés, documents, coordonnées, adresse ou position précise d’une autre personne sans son consentement.'),
+      section('6. Présentations, Découvrir et Auto Match', 'Utilisez les questions brise-glace avec respect. Une carte ou une suggestion ne crée pas de connexion. Les discussions privées exigent une connexion mutuelle.'),
+      section('7. Messages, voix et appels', 'Les mêmes règles s’appliquent aux textes, photos, voix et appels. N’envoyez pas de médias abusifs, de spam, de liens malveillants ou de demandes d’argent.'),
+      section('8. Événements et groupes', 'Gardez les informations d’événements exactes. N’organisez pas de rassemblements illégaux ou dangereux et ne harcelez pas les participants. Une inscription n’autorise pas le contact privé.'),
+      section('9. Pas d’escroquerie, de spam ni de pression payante', 'La fraude, le phishing, la publicité non sollicitée, les demandes massives et les demandes de mots de passe, codes ou informations financières sont interdits.'),
+      section('10. Signaler une préoccupation', 'Utilisez Signaler depuis le profil, le menu de sécurité ou la page d’un événement. Choisissez le bon motif et évitez les données privées inutiles. Un signalement ne confirme ni examen humain ni suppression.'),
+      section('11. Blocage et contrôle des organisateurs', 'Utilisez Bloquer pour les contacts indésirables. Le blocage supprime la relation privée actuelle et filtre la personne. Bloquer un organisateur masque ses recommandations sans retirer les événements déjà rejoints.'),
+      section('12. Sécurité et assistance', 'Respectez ces règles partout dans Cimoa. Les outils de sécurité ne garantissent aucun délai de réponse. En cas de danger immédiat, contactez la sécurité du campus ou les services d’urgence.'),
+    ], footer: 'Respectez le consentement, protégez les informations personnelles et veillez les uns sur les autres.',
+  },
+})

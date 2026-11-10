@@ -61,8 +61,8 @@ test('scoped logout is atomic, clears entry drafts only and relogin restores edi
   assert.equal(store.session.is_authenticated, false); assert.equal(store.auth_draft.email, ''); assert.deepEqual(store.auth_draft.profile_draft, {})
   for (const key of ['users','accounts','profile_photos','media_files','icebreakers','relationships','coin_transactions','settings']) assert.deepEqual(clone_data(store.data[key]), before[key])
   store.hydration_status = 'idle'; store.hydrate(); assert.equal(store.session.is_authenticated, false)
-  const logged_out = clone_data(store.data); assert.equal((await store.login('cimoa@gmail.com','wrong')).success, false); assert.deepEqual(clone_data(store.data), logged_out)
-  assert.equal((await store.login('cimoa@gmail.com','12341234')).success, true); assert.equal(store.current_user.user_name,'Returning Morgan'); assert.equal(store.profile_editor.questions[2],'Your campus tradition?')
+  const logged_out = clone_data(store.data); assert.equal((await store.login('cimoa@connect.edu','wrong')).success, false); assert.deepEqual(clone_data(store.data), logged_out)
+  assert.equal((await store.login('cimoa@connect.edu','12341234')).success, true); assert.equal(store.current_user.user_name,'Returning Morgan'); assert.equal(store.profile_editor.questions[2],'Your campus tradition?')
   assert.equal(store.profile_editor.account_id,id); assert.equal(store.coin_balance,260)
 })
 test('preflight rejects invalid photo drafts without writes, including foreign replacement IDs', async () => {
@@ -94,12 +94,12 @@ test('async photo decoding cannot publish across same-account reauthentication; 
   let release; configure_store_runtime(store, { inspect_media: () => new Promise(resolve => { release = resolve }) })
   const pending = store.save_profile_edit({ bio: 'Must not be published' }, [{ blob }], id)
   assert.equal((await store.save_profile_edit({ bio: 'Duplicate' }, null, id)).reason, 'busy')
-  store.logout(); await store.login('cimoa@gmail.com', '12341234'); const before = clone_data(store.data)
+  store.logout(); await store.login('cimoa@connect.edu', '12341234'); const before = clone_data(store.data)
   release({ duration_ms: 0 }); assert.equal((await pending).success, false); assert.deepEqual(clone_data(store.data), before); assert.equal(blobs.size, 0)
 })
 test('verification read model masks private email and never invents a verification timestamp', () => {
   const { store } = fixture(), v = store.profile_verification
-  assert.equal(v.masked_email, 'ci•••@gmail.com'); assert.equal(v.verified_at, null); assert.equal(v.verified, true)
+  assert.equal(v.masked_email, 'ci•••@connect.edu'); assert.equal(v.verified_at, null); assert.equal(v.verified, true)
   store.data.users[0].verification_status = 'pending'; assert.equal(store.profile_verification.verified, false)
   assert.equal('credential_hash' in store.profile_verification, false); store.logout(); assert.equal(store.profile_verification, null)
 })

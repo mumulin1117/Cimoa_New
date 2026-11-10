@@ -21,8 +21,23 @@ defineProps({ user: Object, question: String, variant: String, university: Strin
 .ice-person-subtitle { display: block; margin-top: 3.817rpx; color: var(--cimoa-text-secondary); font-size: 28.626rpx; }
 .ice-person--text { padding: 34.351rpx; }
 .ice-person--text .ice-person-avatar { width: 106.87rpx; height: 106.87rpx; }
-.ice-person--text .ice-person-name { font-size: 36.26rpx; font-weight: 700; letter-spacing: normal; }
-.ice-person-question { display: block; margin-top: 5.725rpx; font-size: 43.893rpx; font-weight: 800; letter-spacing: -0.02em; text-wrap: pretty; }
+.ice-person--text .ice-person-name {
+  font-size: 26.718rpx;
+  font-weight: 500;
+  line-height: 38.168rpx;
+  letter-spacing: normal;
+  color: var(--cimoa-text-secondary);
+}
+.ice-person--text .ice-person-question {
+  display: block;
+  margin-top: 7.634rpx;
+  font-size: 34.351rpx;
+  font-weight: 600;
+  line-height: 49.618rpx;
+  letter-spacing: -0.015em;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
 .ice-person-badge { position: absolute; right: -3.817rpx; bottom: -3.817rpx; width: 38.168rpx; height: 38.168rpx; border-radius: 50%; background: var(--cimoa-surface-card); }
 .ice-person--voice { align-items: flex-start; padding: 0; border-radius: 0; background: var(--cimoa-surface-transparent); box-shadow: none; }
 .ice-person--voice .ice-person-copy { padding-top: 3.817rpx; }

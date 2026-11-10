@@ -21,7 +21,7 @@ const back = async () => {
 
 <template>
   <SecondaryPageFrame ref="frame" class="event-page legal-privacy-page">
-    <template #header><EventPageHeader :title="privacy_document.title" back-interaction="isLegalDoc.goBack.click.1" @back="back" /><text v-if="error" class="event-page-error" role="alert">{{ error }}</text></template>
+    <template #header><EventPageHeader :title="privacy_document.title" back-interaction="isLegalDoc.goBack.click.1" @back="back" /><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /></template>
     <LegalDocumentContent class="legal-document-body" :document="privacy_document" />
   </SecondaryPageFrame>
 </template>

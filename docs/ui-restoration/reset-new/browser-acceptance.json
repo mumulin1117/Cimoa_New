@@ -1,7 +1,7 @@
 {
   "phase": "reset-new-pixel-restoration",
   "result": "passed",
-  "server_pid": 25256,
+  "server_pid": 77674,
   "reference": {
     "kind": "source-derived locked reference with approved signed-out completion and safe-area deltas",
     "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
@@ -129,9 +129,9 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 60528,
-    "pixels_above_channel_delta_8": 7554,
-    "mean_absolute_channel_delta": 0.6582199942658495,
+    "pixels_different": 38124,
+    "pixels_above_channel_delta_8": 7688,
+    "mean_absolute_channel_delta": 0.6631418067352376,
     "max_channel_delta": 183
   },
   "checks": [

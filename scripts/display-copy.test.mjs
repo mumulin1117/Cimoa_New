@@ -15,17 +15,19 @@ test('runtime copy has no development-mode phrases; internal identifiers and rea
     assert.doesNotMatch(source, bad, file)
   }
   assert.equal(LOCAL_VERIFICATION_CODE, '009789')
-  assert.equal(report_status_label('local_saved'), 'Saved')
+  assert.equal(report_status_label('local_saved'), 'Not delivered')
   const store = fs.readFileSync('src/stores/store.js', 'utf8')
-  assert.match(store, /register_local_account/); assert.match(store, /status: 'local_saved'/)
+  assert.match(store, /register_local_account/); assert.match(fs.readFileSync('src/stores/selectors.js', 'utf8'), /status === 'local_saved'/)
   assert.match(fs.readFileSync('src/stores/seed.js', 'utf8'), /Robotics Demo Day/)
   const login = fs.readFileSync('src/pages/auth/login.vue', 'utf8')
   assert.match(login, /show_test_states = import.meta.env.DEV/); assert.match(login, /v-if="show_test_states" class="auth-test-states"/)
 })
 test('both Report entry buttons use the requested label with unchanged interaction IDs', () => {
   const user = fs.readFileSync('src/pages/safety/report-user.vue', 'utf8'), event = fs.readFileSync('src/pages/events/report.vue', 'utf8')
-  assert.match(user, /:action-label="submitted_id \? '' : 'Submit report'"/)
+  assert.match(user, /action-label="Submit report"/)
   assert.match(event, /data-interaction="evReport.submitEvReport.click.1"[^>]*>Submit report</)
   assert.match(user, /safetyReport.submitReport.click.1/)
-  for (const source of [user, event]) { assert.match(source, /run_with_loading/); assert.match(source, /store.submit_report/); assert.match(source, /Report saved/); assert.doesNotMatch(source, /Under Review|Report submitted successfully/) }
+  for (const source of [user, event]) { assert.match(source, /run_with_loading/); assert.match(source, /store.submit_report/); assert.doesNotMatch(source, /Under Review|Report submitted successfully/) }
+  assert.match(user, /return_after_report/); assert.doesNotMatch(user, /class="report-saved"/)
+  assert.match(event, /return_after_report/); assert.doesNotMatch(event, /class="event-report-saved"/)
 })

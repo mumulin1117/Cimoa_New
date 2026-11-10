@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { createPinia, setActivePinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_scenario } from '../src/stores/scenarios.js'
+import { HOME_REQUEST_USER_ID } from '../src/stores/seed.js'
 import { discover_destination, require_discover_destination_ready, DISCOVER_DEFERRED_ROUTES } from '../src/utils/discoverNavigation.js'
 
 const make = (name = 'default', transform) => {
@@ -54,13 +55,13 @@ test('entry and submit share verification, relationship and pending-request elig
     assert.equal(result.success, false); assert.match(result.message, pattern); assert.equal(JSON.stringify(store.data), before)
   }
   const pending = make('default', data => { data.users[1].discoverable = false; data.users[2].discoverable = false })
-  assert.throws(() => discover_destination(pending, 'icebreaker', 'user_lina'), /already pending/)
+  assert.throws(() => discover_destination(pending, 'icebreaker', HOME_REQUEST_USER_ID), /already pending/)
   assert.throws(() => discover_destination(make('blocked'), 'detail', 'user_chloe'), /no longer/)
 })
 test('a visible profile opened from another real entry can start its own eligible icebreaker', () => {
   const store = make('default', data => { data.requests.find(row => row.request_id === 'request_lina').status = 'declined' })
   assert.equal(store.discover_person.user_id, 'user_zane')
-  assert.equal(discover_destination(store, 'icebreaker', 'user_lina'), '/pages/discover/icebreaker/select?user_id=user_lina')
+  assert.equal(discover_destination(store, 'icebreaker', HOME_REQUEST_USER_ID), `/pages/discover/icebreaker/select?user_id=${HOME_REQUEST_USER_ID}`)
 })
 test('Store changes and rehydration preserve the same canonical profile and photo', () => {
   const store = make(), persisted = structuredClone(JSON.parse(JSON.stringify(store.data)))

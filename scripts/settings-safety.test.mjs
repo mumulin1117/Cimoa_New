@@ -22,7 +22,7 @@ test('pending password verification cannot delete a replacement login to the sam
   crypto.subtle.digest = (...args) => ++calls === 1 ? new Promise(resolve => { release = async () => resolve(await original(...args)) }) : original(...args)
   try {
     const pending = store.delete_account('12341234', 'Privacy concerns')
-    store.logout(); assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, true)
+    store.logout(); assert.equal((await store.login('cimoa@connect.edu', '12341234')).success, true)
     const before = clone_data(store.data); await release(); assert.equal((await pending).success, false); assert.deepEqual(clone_data(store.data), before)
   } finally { crypto.subtle.digest = original }
 })
@@ -107,22 +107,25 @@ test('direct media publishes its Blob and metadata atomically and compensates fa
   assert.equal(result.success, false); assert.deepEqual(failed.store.data, before); assert.deepEqual([...failed.blobs.keys()], before_blobs)
 })
 
-test('reports are local records with the correct target and optional blocking is one atomic write', () => {
+test('reports create no history and optional blocking is the only atomic write', () => {
   const { store } = fixture()
+  const ordinary_before = clone_data(store.data)
+  assert.equal(store.submit_report({ target_type: 'user', target_id: 'user_chloe', reason: 'Harassment', description: 'Repeated contact.', context_id: 'conversation_chloe' }).success, true)
+  assert.deepEqual(store.data, ordinary_before)
   const result = store.submit_report({ target_type: 'user', target_id: 'user_chloe', reason: 'Harassment', description: 'Repeated contact.', context_id: 'conversation_chloe', also_block: true })
   assert.equal(result.success, true)
-  const report = store.report_by_id(result.data)
-  assert.deepEqual([report.target_type, report.target_id, report.status], ['user', 'user_chloe', 'local_saved'])
+  assert.equal(result.data, null)
+  assert.equal(store.current_reports.length, 0)
   assert.equal(store.blocked_user_ids.includes('user_chloe'), true)
   const failed = fixture({ fail_write: true }), before = clone_data(failed.store.data)
-  assert.equal(failed.store.submit_report({ target_type: 'event', target_id: 'event_picnic', reason: 'Incorrect information' }).success, false)
+  assert.equal(failed.store.submit_report({ target_type: 'event', target_id: 'event_picnic', reason: 'Incorrect information' }).success, true)
   assert.deepEqual(failed.store.data, before)
 })
 
 test('fixed-code password reset migrates only the selected credential and preserves account readiness', async () => {
   const { store } = fixture({ guest: true })
   const before_users = clone_data(store.data.users), before_coins = clone_data(store.data.coin_transactions)
-  const started = store.begin_password_reset(' Cimoa@gmail.com ')
+  const started = store.begin_password_reset(' Cimoa@connect.edu ')
   assert.equal(started.success, true)
   const id = started.data.reset_id, snapshot = clone_data(store.data)
   for (const code of ['9789', '000000', 9789, ' 009789']) assert.equal(store.verify_password_reset_code(code, id).success, false)
@@ -131,10 +134,10 @@ test('fixed-code password reset migrates only the selected credential and preser
   assert.equal((await store.finish_password_reset('short', 'short', id)).success, false)
   assert.equal((await store.finish_password_reset('newlocal123', 'newlocal123', id)).success, true)
   assert.deepEqual(store.data.users, before_users); assert.deepEqual(store.data.coin_transactions, before_coins)
-  const migrated = store.data.accounts.find(row => row.email === 'cimoa@gmail.com')
+  const migrated = store.data.accounts.find(row => row.email === 'cimoa@connect.edu')
   assert.equal(migrated.auth_provider, 'local'); assert.equal(migrated.local_verification.status, 'verified'); assert.equal(Number.isFinite(migrated.onboarding.completed_at), true)
-  assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, false)
-  assert.equal((await store.login('cimoa@gmail.com', 'newlocal123')).success, true)
+  assert.equal((await store.login('cimoa@connect.edu', '12341234')).success, false)
+  assert.equal((await store.login('cimoa@connect.edu', 'newlocal123')).success, true)
   assert.equal(store.onboarding.completed, true)
 })
 
@@ -152,5 +155,5 @@ test('account deletion verifies the password, removes private local entities, an
   assert.equal(store.data.accounts[0].status, 'deleted'); assert.equal(store.data.users[0].deleted, true)
   assert.equal(store.data.relationships.some(row => [row.from_user_id, row.to_user_id].includes(TEST_USER_ID)), false)
   assert.equal(store.data.coin_transactions.some(row => row.owner_user_id === TEST_USER_ID), false)
-  assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, false)
+  assert.equal((await store.login('cimoa@connect.edu', '12341234')).success, false)
 })

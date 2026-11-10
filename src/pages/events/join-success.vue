@@ -15,7 +15,7 @@ const open_event = () => previous_event_is_detail(event_id.value) ? back() : go(
       <view class="event-success-icon"><ConnectionIcon name="sent" /></view>
       <text class="event-page-title">You’re going</text><text class="event-success-name">{{ event.title }}</text><text class="event-success-description">{{ event.date_label }} · {{ event.location }}</text>
     </view>
-    <template #footer><text v-if="error" class="event-page-error" role="alert">{{ error }}</text><view class="event-page-footer">
+    <template #footer><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /><view class="event-page-footer">
       <view v-if="access_error" class="event-page-secondary" role="button" tabindex="0" @click="back()" @keydown.enter="back()">Back to events</view>
       <template v-else><view class="event-page-primary" role="button" tabindex="0" data-interaction="evJoinSuccess.openJoined.click.1" @click="open_event" @keydown.enter="open_event">Open Event</view><view class="event-page-secondary" role="button" tabindex="0" data-interaction="evJoinSuccess.openMyEvents.click.1" @click="go('upcoming', event_id, true)" @keydown.enter="go('upcoming', event_id, true)">View My Events</view></template>
     </view></template>

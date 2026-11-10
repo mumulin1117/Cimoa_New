@@ -13,7 +13,7 @@ const require = createRequire(import.meta.url), { chromium } = require(process.e
 const output = path.resolve('docs/ui-restoration/onboarding-complete'), key = 'cimoa_app_state_v2', contract = JSON.parse(fs.readFileSync(path.join(output, 'source-contract.json'), 'utf8'))
 const report = { phase: 'onboarding-complete-pixel-restoration', result: 'failed', server_pid: process.pid, reference: {}, geometry: {}, comparison: {}, checks: [], errors: [] }, check = name => { report.checks.push(name); console.log(`PASS ${name}`) }
 const store = use_app_store(createPinia()); configure_store_runtime(store, { persistence: { read: () => null, write: () => {} }, clock: () => Date.now() }); assert.equal(store.hydrate().success, true)
-assert.equal((await store.login('cimoa@gmail.com', '12341234')).success, true)
+assert.equal((await store.login('cimoa@connect.edu', '12341234')).success, true)
 const account = store.data.accounts.find(row => row.account_id === store.data.session.account_id), user = store.data.users.find(row => row.user_id === store.data.session.current_user_id)
 account.auth_provider = 'local'; account.local_verification = { method: 'fixed_code', status: 'verified', verified_at: Date.now() }; account.onboarding = { step: 'complete', completed_steps: ['basic', 'uni', 'major', 'photos', 'about', 'interests', 'goal', 'ice', 'notif'], completed_at: Date.now() }; user.onboarding_status = 'complete'
 const completed_state = clone_data(store.data), blocked_state = clone_data(store.data); blocked_state.session = { account_id: null, current_user_id: null, expires_at: null }

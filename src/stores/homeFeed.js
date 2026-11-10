@@ -15,7 +15,7 @@ function empty_feed(status, error_message = '') {
 // Read-only composition of canonical entities. No persisted feed, navigation,
 // timers, synthetic contacts, automatic consent or message-read side effects.
 export function home_feed(data, now = Date.now(), hydration_status = 'ready', hydration_error = '') {
-  if (hydration_status === 'error') return empty_feed('error', hydration_error || 'Saved data could not be loaded. Please retry.')
+  if (hydration_status === 'error') return empty_feed('error', hydration_error || 'Your connections couldn’t be loaded. Please try again.')
   if (hydration_status !== 'ready') return empty_feed('loading')
   const owner = owner_id(data)
   if (!authenticated(data, now) || !data.users.some(row => row.user_id === owner && !row.deleted)) return empty_feed('session_expired', 'Please sign in again to view your connections.')

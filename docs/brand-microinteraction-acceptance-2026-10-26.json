@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-26",
+  "scope": "Six explicitly authorized presentation-only interactions; not an App Store or whole-project release acceptance",
+  "status": "implemented_browser_verified_native_touch_pending",
+  "contracts": "docs/brand-microinteraction-contracts-2026-10-26.json",
+  "conventions": ["DEVELOPMENT_CONVENTIONS.md section 11.4", "INTERACTION_CONVENTIONS.md section 1.5"],
+  "effects": [
+    "Home person-card 0.985 press, localized theme glow and cancellation-safe release",
+    "Auto Match lightning acknowledgement and entry halo within existing navigation time",
+    "Shared main-Tab gradient seat timeline across page replacement and rapid follow-up touches",
+    "Connected Home card avatar relay to chat Header and back to the same scrolled source",
+    "Goals Popover expansion from the measured tapped tag after viewport correction",
+    "Once-only Home edge light and status fade after a real persisted connection acceptance"
+  ],
+  "preserved": [
+    "Original page layout, text and cRise timing",
+    "400–600ms write waits, 600ms skeleton and three-second carousel rules",
+    "Existing navigation submission guards, pointercancel, lostpointercapture, scroll and background cancellation",
+    "Store-derived relationship, conversation, matching, quota and coin rules",
+    "No early match, connection, delivery, online, read or payment success implication",
+    "No native swipe-back enablement, additional haptic setting or automatic account mutation"
+  ],
+  "changed_source_files": [
+    "DEVELOPMENT_CONVENTIONS.md",
+    "INTERACTION_CONVENTIONS.md",
+    "src/App.vue",
+    "src/config/navigation.js",
+    "src/config/theme.json",
+    "src/components/CustomTabBar.vue",
+    "src/components/ConnectionGoalsPopover.vue",
+    "src/components/AvatarRelayHost.vue",
+    "src/components/MatchIgnitionHost.vue",
+    "src/composables/useAvatarRelay.js",
+    "src/pages/home/index.vue",
+    "src/pages/auto-match/index.vue",
+    "src/pages/messages/chat.vue",
+    "src/utils/routeTransition.js",
+    "src/utils/touchPolicy.js",
+    "src/utils/tabMotion.js",
+    "src/utils/avatarRelay.js",
+    "src/utils/avatarRelayHost.js",
+    "src/utils/matchIgnition.js",
+    "src/utils/matchIgnitionHost.js",
+    "src/utils/connectionVisuals.js"
+  ],
+  "test_files": [
+    "scripts/brand-microinteractions.test.mjs",
+    "scripts/brand-microinteractions-browser.test.mjs",
+    "scripts/tab-motion.test.mjs",
+    "scripts/tab-motion-browser.test.mjs",
+    "scripts/avatar-relay.test.mjs",
+    "scripts/avatar-relay-browser.test.mjs",
+    "scripts/goals-anchor-motion.test.mjs",
+    "scripts/home-tail-match.test.mjs"
+  ],
+  "verification": {
+    "required_gates": {
+      "commands_in_order": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"],
+      "result": "passed",
+      "new_convention_warnings": 0
+    },
+    "targeted_unit_suite": {"tests": 91, "passed": 91, "failed": 0},
+    "bounded_unit_suite": {
+      "files": 78,
+      "tests": 612,
+      "passed": 610,
+      "failed": 2,
+      "log": "artifacts/brand-microinteractions-2026-10-26/unit-tests.log",
+      "known_failures": [
+        "event-covers.test.mjs cannot read the pre-existing missing ios/cimoaNeapo/Tests/EventCoverTests.swift",
+        "touch-targets.test.mjs cannot read the pre-existing deleted ios/cimoaNeapo/Tests/HostTests.swift"
+      ],
+      "boundary": "Did not restore user-deleted files or weaken tests; excluded browser/visual suites and two separately run integration scripts from this bounded unit run"
+    },
+    "browser": {
+      "brand_groups": 8,
+      "avatar_groups": 8,
+      "tab_groups": 7,
+      "passed": 23,
+      "page_errors": 0,
+      "reports": [
+        "artifacts/brand-microinteractions-2026-10-26/browser-report.json",
+        "artifacts/avatar-relay-2026-10-26/browser-report.json",
+        "artifacts/tab-motion-2026-10-26/browser-report.json"
+      ],
+      "avatar_scroll_top_before_after": [806, 806],
+      "avatar_landing_error_pt": {"forward": 1.27, "back": 0.76},
+      "coverage": "Real CDP touch press/hold/release/movement/cancel, background, rapid Tabs, real isolated request acceptance, no replay on refresh, nested Profile return, bad media, 320pt and Reduce Motion",
+      "notes": [
+        "External uni statistics requests are deliberately blocked by the isolated static fixture and are recorded as warnings, not hidden business failures",
+        "An intermediate Tab browser run missed its in-flight-sampling assertion; old failing Events trace was unavailable. Test diagnostics now persist traces before asserting and prevent stale sampler generations; two serial final-build reruns passed without weakening the intermediate-position requirement. No production defect was reproduced."
+      ]
+    },
+    "ios": {
+      "project": "ios/cimoaNeapo/cimoaNeapo.xcodeproj",
+      "scheme": "cimoaNeapo",
+      "configuration": "Debug iphonesimulator CODE_SIGNING_ALLOWED=NO",
+      "device": "iPhone 17 Pro",
+      "runtime": "iOS 26.5",
+      "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "bundle_id": "com.cimoa.neapo.dev",
+      "build_install_launch": "passed",
+      "launch_pid": 44246,
+      "h5_dist_source_and_app_hash_comparison": {"files_compared": 440, "mismatches": 0},
+      "screenshot": "artifacts/brand-microinteractions-2026-10-26/wkwebview-installed.png",
+      "touch_acceptance": "pending: computer-use window coordinates returned windowNotFoundAtPosition and timeouts with same-named simulator windows. Stopped further coordinates to avoid another project; did not bypass onboarding, agree to legal terms, reset data or claim six-effect WKWebView acceptance."
+    },
+    "cleanup": "No preview server started. Isolated Chrome contexts closed. Final scoped pgrep found no remaining test/browser/vite/xcodebuild process. Simulator app intentionally left installed and running.",
+    "git": "No stage, commit, push, reset or restore. Existing unrelated changes and deletions preserved. H5 dist and iOS bundled H5 are expected generated outputs."
+  }
+}

@@ -3,6 +3,8 @@ import { authenticated, owner_id, ensure, can_open_conversation, messages_for, u
 import { transact, get_runtime, make_id, operation, failure } from './transactions.js'
 import { connection_for } from './connectionEntities.js'
 import { auth_context_key } from './accountDefaults.js'
+import { auth_message } from '../utils/authFeedback.js'
+import { get_locale, t } from '../i18n/index.js'
 
 export function direct_conversation(data, conversation_id, now) {
   const conversation = data.conversations.find(row => row.conversation_id === conversation_id && row.kind === 'direct')
@@ -26,8 +28,8 @@ export function direct_conversation(data, conversation_id, now) {
     messages: messages.map(row => ({
       ...clone_data(row),
       mine: row.sender_id === owner_id(data),
-      time_label: new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' }).format(row.sent_at),
-      day_label: new Date(row.sent_at).toDateString() === new Date(now).toDateString() ? 'Today' : new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(row.sent_at),
+      time_label: new Intl.DateTimeFormat(get_locale(), { hour: 'numeric', minute: '2-digit' }).format(row.sent_at),
+      day_label: new Date(row.sent_at).toDateString() === new Date(now).toDateString() ? t('Today') : new Intl.DateTimeFormat(get_locale(), { month: 'short', day: 'numeric', year: 'numeric' }).format(row.sent_at),
       media: clone_data(data.media_files.find(media => media.media_id === row.media_id) || null),
     })),
   }
@@ -46,10 +48,10 @@ function validate(store, conversation_id, body, media, now) {
 const sending = new WeakSet()
 export const direct_message_actions = {
   direct_message_error(conversation_id, body, media = null) {
-    try { validate(this, conversation_id, body, media, get_runtime(this).clock()); return '' } catch (error) { return error.message }
+    try { validate(this, conversation_id, body, media, get_runtime(this).clock()); return '' } catch (error) { return auth_message(error.message, 'Your message couldn’t be prepared. Please try again.') }
   },
   async send_direct_message(conversation_id, body, media = null, operation_id = make_id(), { is_current = () => true } = {}) {
-    if (sending.has(this)) return failure('busy', 'A message is already being saved.')
+    if (sending.has(this)) return failure('busy', 'A message is already being sent. Please wait.')
     sending.add(this)
     const rt = get_runtime(this), owner = owner_id(this.data)
     const expected_context = auth_context_key(this.data)
@@ -63,14 +65,14 @@ export const direct_message_actions = {
         const decoded = await rt.inspect_media(media.blob, media.kind)
         const duration_ms = media.kind === 'audio' ? decoded.duration_ms : 0
         ensure(media.kind !== 'audio' || Number.isFinite(duration_ms) && duration_ms > 0 && duration_ms <= 120000, 'The recording cannot be decoded or is longer than two minutes.')
-        ensure(globalThis.crypto?.subtle, 'Secure media hashing is unavailable.')
+        ensure(globalThis.crypto?.subtle, 'Secure media processing is unavailable. Please try again.')
         fingerprint = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await media.blob.arrayBuffer())), byte => byte.toString(16).padStart(2, '0')).join('')
-        ensure(is_current() && auth_context_key(this.data) === expected_context, 'Message save was cancelled because your session changed.')
+        ensure(is_current() && auth_context_key(this.data) === expected_context, 'Sending was cancelled because your session changed.')
         created = make_id('media')
         await rt.media.put(created, media.blob)
         metadata = { media_id: created, owner_user_id: owner, kind: media.kind, media_url: `indexeddb://${created}`, mime: media.blob.type, byte_size: media.blob.size, duration_ms }
       }
-      ensure(is_current() && auth_context_key(this.data) === expected_context, 'Message save was cancelled because your session changed.')
+      ensure(is_current() && auth_context_key(this.data) === expected_context, 'Sending was cancelled because your session changed.')
       const result = transact(this, operation(operation_id, 'direct-message', [conversation_id, body, fingerprint]), (data, now) => {
         const current = direct_conversation(data, conversation_id, now)
         ensure(is_current() && current && data.session.expires_at === session_expires_at && current.connection_id === connection_id, 'This conversation is no longer available.')
@@ -81,9 +83,9 @@ export const direct_message_actions = {
       }, { expected_owner: owner, expected_context, is_current })
       published = result.success && !result.repeated
       return result
-    } catch (error) { return failure('message_failed', error.message) }
+    } catch (error) { return failure('message_failed', auth_message(error.message, 'Your message couldn’t be sent. Please try again.')) }
     finally {
-      if (created && !published) { try { await rt.media.delete(created) } catch { this.last_error = 'Message was not published; temporary media cleanup failed. Retry storage when available.' } }
+      if (created && !published) { try { await rt.media.delete(created) } catch { this.last_error = 'Your message wasn’t sent, and its attachment couldn’t be removed. Check available storage and try again.' } }
       sending.delete(this)
     }
   },

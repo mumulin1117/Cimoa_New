@@ -1,0 +1,198 @@
+{
+  "date": "2026-10-24",
+  "scope": "Native/H5 purchases, permission-page return, microphone lifecycle, and APNs registration boundary",
+  "status": "implemented_and_verified_with_external_release_dependencies",
+  "conventions": {
+    "authorization": "User explicitly authorized changing both conventions for the StoreKit handshake and recovery model.",
+    "files": ["DEVELOPMENT_CONVENTIONS.md", "INTERACTION_CONVENTIONS.md"],
+    "host_acknowledgement_timeout_ms": 8000,
+    "accepted_apple_transaction_timeout": null,
+    "write_loading_ms": 500,
+    "rules": [
+      "Use existing Pinia actions, branded Loading and ConfirmDialog components.",
+      "Only StoreKit-verified, account/product/request-bound transactions may credit the H5 ledger.",
+      "Persist the H5 ledger and purchase result atomically before acknowledging and finishing the native transaction.",
+      "Interrupted payment recovery does not repurchase automatically; leaving a page is not Apple payment cancellation.",
+      "Unavailable products, missing signing and absent push delivery services must not be represented as working production services."
+    ]
+  },
+  "implementation": {
+    "purchases": [
+      "Eight supplied Product IDs replace the six purchasable prototype packages; historical packages and ledgers remain readable.",
+      "Runtime availability, price and currency come from StoreKit, not the supplied reference USD amounts.",
+      "Versioned whitelist bridge supports catalogue, start, status, verification, pending recovery, acknowledgement and explicit interrupted-request release.",
+      "Native request/token reservation is durable before the accepted response; a repeated request cannot start another purchase.",
+      "Transaction.updates and unfinished transactions recover across startup, foreground and account changes.",
+      "Transaction ID replay is idempotent; late verified success can reconcile the original request, never another account.",
+      "Native delivery journals are not signature proof; revoked or unverified transactions do not deliver coins.",
+      "The old one-way purchase protocol remains fail-closed because its eight-second payment deadline is incompatible with real StoreKit."
+    ],
+    "permissions_and_media": [
+      "Permission-page requesting lock is released before taking the navigation lock; grants return once and navigation failure leaves Back usable.",
+      "Hide, unmount and account-change generations suppress stale permission completions.",
+      "WKWebView media capture validates the trusted main frame and calls real Apple device authorization APIs; existing denial is not overridden.",
+      "Recorder startup invokes getUserMedia in the initiating call stack, validates live tracks and preserves actual supported media MIME types.",
+      "Late streams, recorder failure, stop failure, cancellation and unmount release tracks and settle pending promises."
+    ],
+    "notifications": [
+      "Notification consent continues to use the real Apple authorization API.",
+      "APNs registration and AppDelegate success/failure callbacks are implemented behind an explicit configuration flag.",
+      "Device tokens are not exposed to H5, logged or persisted; no provider or remote delivery is fabricated.",
+      "APNs registration is currently disabled because formal signing, entitlement and provider integration have not been supplied."
+    ]
+  },
+  "products": [
+    {"coins": 60, "reference_usd": "0.99", "product_id": "rblzerghvsqyxkgp"},
+    {"coins": 120, "reference_usd": "1.99", "product_id": "mznhzilrvvtggvdi"},
+    {"coins": 300, "reference_usd": "3.99", "product_id": "vjsbdvylaviugals"},
+    {"coins": 380, "reference_usd": "4.99", "product_id": "vbadxyfeihvigwiu"},
+    {"coins": 800, "reference_usd": "9.99", "product_id": "ypznugdetqagwzja"},
+    {"coins": 1600, "reference_usd": "19.99", "product_id": "dcbyodummketgliq"},
+    {"coins": 3200, "reference_usd": "49.99", "product_id": "cuxjyntanjgosesh"},
+    {"coins": 6800, "reference_usd": "99.99", "product_id": "gmuduvxnpwzfitwu"}
+  ],
+  "verification": {
+    "mandatory_commands": [
+      {"command": "corepack pnpm check:conventions", "exit_code": 0, "warnings": 0},
+      {"command": "git diff --check", "exit_code": 0},
+      {"command": "corepack pnpm build:h5", "exit_code": 0, "bundled_h5_files": 438}
+    ],
+    "unit_tests": {
+      "files": 67,
+      "passed": 496,
+      "failed": 0,
+      "skipped": 0,
+      "log": "artifacts/native-bridge-repair-2026-10-24/unit-tests.log",
+      "selection": "scripts/*.test.mjs excluding browser/visual suites and the two external integration drivers auto-match-background.test.mjs and connection-pages.test.mjs",
+      "not_claimed": "This unit run is not a complete browser visual regression."
+    },
+    "native_tests": {
+      "device": "iPhone 17 Pro",
+      "device_id": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D",
+      "runtime": "iOS 26.5",
+      "passed": 13,
+      "failed": 0,
+      "selected_suites": [
+        "NativePurchaseCoordinatorTests (11 tests)",
+        "HostTests.testNativeRequestReplyAndFailureBoundaries",
+        "HostTests.testDirectChatRealMicrophoneAndCleanup"
+      ],
+      "result_bundle": "artifacts/native-bridge-repair-2026-10-24/microphone-verified.xcresult",
+      "log": "artifacts/native-bridge-repair-2026-10-24/native-tests.log"
+    },
+    "real_microphone": {
+      "passed": true,
+      "recorded_duration_ms": 2134.7708333333335,
+      "send_and_play_after_refresh": true,
+      "test_blob_removed": true,
+      "snapshot_restored": true,
+      "recording_bytes_exported": false,
+      "original_denied_permission_restored": true,
+      "evidence": "docs/ui-restoration/connection-chat/wkwebview-real-microphone.json",
+      "notes": "Earlier attempts exposed an obsolete icon-control test locator, not a final recorder failure. The final test checks the visible recording state and completes a short recording."
+    },
+    "independent_project": {
+      "directory": "artifacts/cimoaNeapo-bridge-repaired",
+      "zip": "artifacts/cimoaNeapo-ios.zip",
+      "validated_project_references": 14,
+      "validated_h5_sha256_files": 438,
+      "app_targets": 1,
+      "tests_exported": false,
+      "symlinks_or_external_source_paths": false,
+      "native_sources_and_eight_product_mapping_match": true,
+      "isolated_unsigned_device_archive": "artifacts/native-bridge-repair-2026-10-24/cimoaNeapo-unsigned.xcarchive",
+      "archive_exit_code": 0,
+      "isolated_temporary_copy_removed": true,
+      "log": "artifacts/native-bridge-repair-2026-10-24/isolated-archive.log",
+      "not_an_uploadable_signed_ipa": true
+    },
+    "warnings": [
+      "Xcode emits the standard AppIntents metadata-extraction-skipped warning because this app does not depend on AppIntents.framework.",
+      "The simulator logs WebRTC/CoreAudio and WebKit process-assertion advisories; the final real record/send/reload/play test passes. No private system entitlement was added to silence these logs."
+    ],
+    "process_cleanup": "All task-owned build/test commands exited. No dev server or watch process was started. Temporary export/archive directories and microphone test media were cleaned; unrelated simulator processes were left untouched."
+  },
+  "external_dependencies_not_verified": [
+    "Formal Bundle Identifier and Apple Team ID are still missing; the project retains the approved com.cimoa.neapo.dev development identifier without a configured team.",
+    "App Store Connect ownership, product availability and Sandbox/TestFlight purchase success/cancellation/pending/relaunch delivery still require the correctly signed app and actual store configuration.",
+    "No actual Apple purchase was initiated by this task, and automated recovery tests are not evidence of a real payment.",
+    "APNs entitlement, provider API, account/device registration and remote notification delivery are not configured or accepted.",
+    "No signed IPA export, App Store upload, full physical-device matrix or complete visual page acceptance is claimed.",
+    "Cross-device purchase-account reconciliation without the original protected account-token mapping requires a separately supplied authoritative account service; it is not guessed."
+  ],
+  "task_files": {
+    "native": [
+      "ios/cimoaNeapo/Sources/NativePurchaseCoordinator.swift",
+      "ios/cimoaNeapo/Sources/PurchaseHostBridge.swift",
+      "ios/cimoaNeapo/Sources/PushRegistrationCoordinator.swift",
+      "ios/cimoaNeapo/Sources/WebViewController.swift",
+      "ios/cimoaNeapo/Sources/AppDelegate.swift",
+      "ios/cimoaNeapo/Config/Info.plist",
+      "ios/cimoaNeapo/Tests/NativePurchaseCoordinatorTests.swift",
+      "ios/cimoaNeapo/Tests/HostTests.swift",
+      "ios/cimoaNeapo/cimoaNeapo.xcodeproj/project.pbxproj",
+      "ios/cimoaNeapo/README.md"
+    ],
+    "h5": [
+      "src/App.vue",
+      "src/components/MediaPermissionPage.vue",
+      "src/components/PurchaseRecoveryConfirmDialog.vue",
+      "src/stores/coinPackages.js",
+      "src/stores/coinSelectors.js",
+      "src/stores/seed.js",
+      "src/stores/store.js",
+      "src/stores/transactions.js",
+      "src/utils/coinHistory.js",
+      "src/utils/hostBridge.js",
+      "src/utils/iapBridge.js",
+      "src/utils/legalDocuments.js",
+      "src/utils/mediaCapabilities.js",
+      "src/utils/mediaPermissionFlow.js",
+      "src/utils/nativePurchases.js",
+      "src/utils/purchaseLoadingHost.js",
+      "src/pages/coins/index.vue",
+      "src/pages/coins/purchasing.vue",
+      "src/pages/coins/failed.vue",
+      "src/pages/coins/cancelled.vue",
+      "src/pages/coins/success.vue",
+      "src/pages/coins/purchase-detail.vue",
+      "src/pages/coins/help.vue"
+    ],
+    "tests_and_packaging": [
+      "scripts/package-ios.mjs",
+      "scripts/host-bridge.test.mjs",
+      "scripts/media-permission-flow.test.mjs",
+      "scripts/recorder-lifecycle.test.mjs",
+      "scripts/iap-native-recovery.test.mjs",
+      "scripts/coins-state.test.mjs",
+      "scripts/data.test.mjs",
+      "scripts/introduction-payment.test.mjs",
+      "scripts/discover-request.test.mjs",
+      "scripts/release-feedback-copy.test.mjs",
+      "scripts/legal-documents.test.mjs"
+    ],
+    "contracts_and_evidence": [
+      "DEVELOPMENT_CONVENTIONS.md",
+      "INTERACTION_CONVENTIONS.md",
+      "docs/ios-wkwebview-host-integration.md",
+      "docs/cimoa-safety-settings-coins-contract.md",
+      "docs/ui-restoration/connection-chat/wkwebview-real-microphone.json",
+      "docs/native-bridge-repair-2026-10-24.json"
+    ],
+    "generated": [
+      "dist/build/h5",
+      "ios/cimoaNeapo/Resources/H5",
+      "ios/cimoaNeapo/Resources/build-manifest.json",
+      "ios/cimoaNeapo/Resources/iap-products.json",
+      "artifacts/cimoaNeapo-bridge-repaired",
+      "artifacts/cimoaNeapo-ios.zip",
+      "artifacts/native-bridge-repair-2026-10-24"
+    ]
+  },
+  "worktree": {
+    "preexisting_changes_preserved": true,
+    "staged_user_changes_preserved": true,
+    "git_add_commit_push_or_reset_performed": false,
+    "note": "This workspace already contains substantial changes from earlier tasks. This report lists the files touched by this bridge task; it does not claim that all existing working-tree changes originated here or that the working tree is clean."
+  }
+}

@@ -1,4 +1,6 @@
 <script setup>
+import { get_locale } from '@/i18n/index.js'
+
 import { computed, ref } from 'vue'
 import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -15,7 +17,7 @@ const request = computed(() => store.purchase_by_id(request_id.value))
 const pack = computed(() => store.coin_package_by_id(request.value?.package_id))
 const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved purchase data is unavailable. Please return and retry.'
+  ? 'Your purchase details are unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !request_id.value || !request.value
@@ -44,17 +46,17 @@ onHide(() => { navigating.value = false })
         <view class="cancelled-back" role="button" aria-label="Close" :aria-disabled="navigating" data-interaction="coinCancelled.goBack.click.1" @click="navigate_store(true)"><SourceIcon name="back" /></view>
         <text>Coins</text>
       </view>
-      <text v-if="error" class="cancelled-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error" :message="error" @dismiss="error = String()" />
     </template>
 
     <view class="cancelled-content">
       <view v-if="access_error" class="cancelled-access" role="alert">{{ access_error }}</view>
       <template v-else>
         <view class="cancelled-icon"><SourceIcon name="blocked" /></view>
-        <text class="cancelled-title">Purchase cancelled</text>
-        <text class="cancelled-copy">Nothing was charged and your balance is unchanged.</text>
+        <text class="cancelled-title">{{ request.phase === 'abandoned' ? 'Request released' : 'Purchase cancelled' }}</text>
+        <text class="cancelled-copy">{{ request.phase === 'abandoned' ? 'The interrupted request was released. The original Apple purchase may still complete; any verified coins will be added to the account that started it.' : 'No coins were added and your balance is unchanged.' }}</text>
         <view class="cancelled-reference">
-          <text>{{ pack.coins.toLocaleString('en-US') }} Coins · {{ pack.price }}</text>
+          <text>{{ (request.coins || pack.coins).toLocaleString(get_locale()) }} Coins · {{ request.display_price || 'Price unavailable' }}</text>
           <text>Cancelled request {{ request.request_id }}</text>
         </view>
       </template>

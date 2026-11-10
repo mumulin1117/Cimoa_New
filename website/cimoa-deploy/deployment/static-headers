@@ -1,0 +1,60 @@
+# Cloudflare Pages example ONLY: copy this file to public/_headers before upload.
+# This filename alone is not automatically applied by Pages or other hosts.
+# Security rules apply globally; cache rules do not overlap asset paths.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/assets/*
+  Cache-Control: public, max-age=86400
+
+/
+  Cache-Control: no-cache
+
+/en
+  Cache-Control: no-cache
+
+/en/
+  Cache-Control: no-cache
+
+/*.html
+  Cache-Control: no-cache
+
+/about
+  Cache-Control: no-cache
+
+/privacy
+  Cache-Control: no-cache
+
+/terms
+  Cache-Control: no-cache
+
+/support
+  Cache-Control: no-cache
+
+/safety
+  Cache-Control: no-cache
+
+/404
+  Cache-Control: no-cache
+
+/en/about
+  Cache-Control: no-cache
+
+/en/privacy
+  Cache-Control: no-cache
+
+/en/terms
+  Cache-Control: no-cache
+
+/en/support
+  Cache-Control: no-cache
+
+/en/safety
+  Cache-Control: no-cache
+
+/en/404
+  Cache-Control: no-cache

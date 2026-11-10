@@ -1,4 +1,5 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { ref } from 'vue'
 import { onHide } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -38,10 +39,10 @@ const next = async () => {
     <text class="auth-heading">Are you 18 or older?</text>
     <text class="auth-description">Cimoa is available only to university students aged 18 or older. Your date of birth stays private — other students only see your age.</text>
     <view class="auth-field"><text class="auth-label">Date of birth</text><view class="auth-input-box" role="button" tabindex="0" aria-label="Date of birth" aria-haspopup="dialog" :aria-expanded="picker_open" :aria-disabled="is_loading" data-interaction="age.openDatePicker.click.1" @click="open_picker" @keydown.enter="open_picker" @keydown.space.prevent="open_picker"><text class="auth-input age-date-value" :class="{ 'age-date-placeholder': !dob }" :data-date-value="dob" data-placeholder="YYYY-MM-DD">{{ dob || 'YYYY-MM-DD' }}</text></view></view>
-    <view v-if="under" class="auth-card age-under" role="alert"><text class="age-title">Cimoa isn’t available yet</text><text class="age-under-copy">You need to be 18 or older to create an account. Nothing has been saved.</text><view class="age-close" role="button" tabindex="0" data-interaction="age.closeUnder.click.1" @click="back" @keydown.enter="back">Close</view></view>
-    <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
+    <view v-if="under" class="auth-card age-under" role="alert"><text class="age-title">Cimoa isn’t available yet</text><text class="age-under-copy">You need to be 18 or older to create an account.</text><view class="age-close" role="button" tabindex="0" data-interaction="age.closeUnder.click.1" @click="back" @keydown.enter="back">Close</view></view>
+    <text v-if="error" class="auth-error-box" role="alert">{{ auth_message(error) }}</text>
     <template #footer><view class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="age.goAgree.click.1" @click="next" @keydown.enter="next">Continue</view><view class="auth-secondary" role="button" tabindex="0" data-interaction="age.underage.click.1" @click="show_underage" @keydown.enter="show_underage">I’m under 18</view></template>
-    <template #overlays><DateOfBirthPickerConfirmDialog :open="picker_open" :value="dob" :now="store.clock_ms" :busy="is_loading" @confirm="select_date" @close="picker_open = false" /><AuthActionLoading :visible="is_loading" label="Saving age check…" /></template>
+    <template #overlays><DateOfBirthPickerConfirmDialog :open="picker_open" :value="dob" :now="store.clock_ms" :busy="is_loading" @confirm="select_date" @close="picker_open = false" /><AuthActionLoading :visible="is_loading" label="Checking your age…" /></template>
   </AuthPageFrame>
 </template>
 <style>

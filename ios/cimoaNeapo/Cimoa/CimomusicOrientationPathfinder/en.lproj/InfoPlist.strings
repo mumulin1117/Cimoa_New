@@ -1,0 +1,4 @@
+"CFBundleDisplayName" = "Cimoa";
+"NSCameraUsageDescription" = "Use the camera only when you choose to take a profile or chat photo.";
+"NSMicrophoneUsageDescription" = "Record a voice introduction or message only when you choose to start recording.";
+"NSPhotoLibraryUsageDescription" = "Choose only the photos you want to share in Cimoa.";

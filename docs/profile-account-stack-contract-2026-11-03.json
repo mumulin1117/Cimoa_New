@@ -1,0 +1,39 @@
+{
+  "status": "in_progress",
+  "visual_acceptance": "pending",
+  "authority": "User explicitly requested own Profile Push/Pop and approved synchronizing other-person Profile, Settings, Safety and Coins in the same implementation.",
+  "conventions": ["DEVELOPMENT_CONVENTIONS.md 11.12", "INTERACTION_CONVENTIONS.md 1.8"],
+  "implementation": "Existing real-frame stack_surface controller and shared uni-app frames; explicit source/destination allowlists in stackSurfaceRoutes.js; no copied DOM, bitmap page, alternate business instance or persistent motion state.",
+  "targets": [
+    "Own Profile, Edit, Basic, Goals, Interests, Icebreakers, Preferences, Preview, Verification and Reverification",
+    "Discover other-person Profile",
+    "Settings and existing subordinate pages, including deletion entry and result pages",
+    "Safety report-user, report history and report detail",
+    "Coin Center, history, purchase/spend detail, help, purchasing/processing and result pages",
+    "Independent Terms and Privacy documents opened from Settings or Coins"
+  ],
+  "source_only_entries": [
+    "Home, Discover and Events main tabs",
+    "Existing real-frame chat/call, connection, introduction and Auto Match entry points to the approved destinations"
+  ],
+  "excluded_presentations": [
+    "Discover Send to Say Hi and Home Auto Match point-to-surface",
+    "Auto Match preferences full-screen bottom-up transition",
+    "Tab transitions, startup, first-use guidance, system prompts and Sheets",
+    "Guest authentication to independent legal/permission pages",
+    "Internal navigation within other source-only modules and new system edge-swipe gestures"
+  ],
+  "timing": { "push_ms": 240, "pop_ms": 180, "source_parallax": 0.3, "reduced_motion": "opacity only" },
+  "invariants": [
+    "Use the exact original route, instance, query parameters and stable session context",
+    "Nested returns restore actual parents, scroll and unsubmitted ordinary input without business writes",
+    "Media/recording still stop on hide; passwords and invalid-account input retain existing safety clearing",
+    "Do not replay warm skeletons or reset Discover card position",
+    "No navigation Loading, additional business delay, implicit purchase, debit, message or report",
+    "Logout, deletion, block invalidation and purchase/coin result replace/reLaunch keep existing semantics",
+    "Busy/inert, duplicate prevention and bounded background/resize/identity/removal cancellation use the existing controller",
+    "400–600ms writes, 600ms skeletons, three-second carousel and native permissions unchanged"
+  ],
+  "repair": "useProfileEditor.back propagates cancellation instead of reporting success and emitting a late success Toast; an already committed write is not rolled back by presentation cancellation.",
+  "acceptance_boundary": "Touch-enabled browser geometry and builds do not verify actual WKWebView frame rate, keyboard or background touch behavior. Native visual acceptance remains pending until separately checked."
+}

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-23",
+  "scope": "Incremental flow and state consistency repairs, not full-page or whole-app acceptance",
+  "authorization": "User selected flow/state fixes only. Do not revise either conventions document or introduce the proposed press effects, motion variants, nine-step progress, carousel pauses or haptics.",
+  "source": "CIRCA All Screens (interactive).html",
+  "source_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
+  "approved_deltas": [
+    "Auto Match options reuse the source no-result layout, but the Store derives truthful searching/paused/no-result text and return labels from the same match_id. Returning to an active search performs no business write; a true no-result retry retains its existing admission and charging policy.",
+    "Private and event conversations share a transient near-bottom reading policy. Initial entry follows the conversation tail; incoming messages, keyboard viewport changes, image readiness and warm returns follow only while the reader is near the bottom. A successful own send explicitly reveals the actual tail, including a long last message. No message or reading offset is duplicated in business storage.",
+    "All activity-card participant rows open the participants of their own event_id and stop parent-card navigation. Existing interaction ID and destination validation are reused.",
+    "The Store derives ended/full join labels and disabled states for both event cards and details. Disabled entry does not open confirmation or write; action-level eligibility and capacity revalidation remain. Joined event chat and management entries remain accessible.",
+    "Onboarding Continue remains reachable above the keyboard through the existing visual-viewport and single safe-area owners; keyboard closing restores normal spacing. No progress counts or step order are changed.",
+    "Main Tabs suppress content and route to the existing authentication/setup destination when authentication expires, including while the page remains visible. The redirect is guarded against duplicate navigation and preserves a retry on navigation failure."
+  ],
+  "unchanged": [
+    "400–600ms business-write Loading, default 500ms; 600ms first skeleton; three-second photo carousel",
+    "Existing cRise/page/back motion and disabled native back-forward gestures",
+    "Account, request, connection, conversation, event attendance, quota and coin entity ownership",
+    "Discover browsing position and My campus as current-user attendance",
+    "All theme tokens, prototype page structure and existing media resources",
+    "No new native capability, fake peer acceptance, delivery, moderation or payment success"
+  ],
+  "evidence_directories": ["artifacts/ux-state", "artifacts/chat-reading", "artifacts/event-state-ux", "artifacts/ux-entry-flow", "artifacts/flow-state-ux"],
+  "full_page_status": "unchanged; no page is marked verified by this incremental change"
+}

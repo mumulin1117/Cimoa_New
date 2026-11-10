@@ -1,4 +1,5 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { computed, ref } from 'vue'
 import { onHide } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -43,9 +44,9 @@ const next = async () => {
         <view class="community-box" :class="{ selected: agreed[row.key] }"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg></view><text>{{ row.label }}</text>
       </view><view class="community-read" role="button" tabindex="0" :aria-label="`Read ${row.title}`" :aria-disabled="is_loading" :data-interaction="read_interactions[row.key]" @click.stop="read(row)" @keydown.enter.stop="read(row)" @keydown.space.stop.prevent="read(row)">Read</view>
     </view>
-    <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
+    <text v-if="error" class="auth-error-box" role="alert">{{ auth_message(error) }}</text>
     <template #footer><view class="auth-primary" :class="{ 'is-disabled': !ready }" role="button" tabindex="0" :aria-disabled="!ready || is_loading" data-interaction="agree.goSignup.click.1" @click="next" @keydown.enter="next">Continue</view></template>
-    <template #overlays><AgreementSheet :open="!!document" :document="document" @close="document = null" /><AuthActionLoading :visible="is_loading" label="Saving agreements…" /></template>
+    <template #overlays><AgreementSheet :open="!!document" :document="document" @close="document = null" /><AuthActionLoading :visible="is_loading" label="Confirming your agreements…" /></template>
   </AuthPageFrame>
 </template>
 <style>

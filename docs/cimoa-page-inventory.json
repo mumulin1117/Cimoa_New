@@ -4193,6 +4193,8 @@
     "allowed_origin_routes": [
       "/pages/auto-match/index",
       "/pages/discover/index",
+      "/pages/auto-match/searching",
+      "/pages/auto-match/paused",
       "/pages/auto-match/no-match"
     ],
     "required_parameters": [],
@@ -6890,9 +6892,9 @@
     ],
     "return_owner": "pop origin_route（允许来源：/pages/events/index、/pages/events/upcoming）；无历史实例时 replace /pages/events/index，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
+    "fixed_regions": "覆盖封面的 SecondaryPageHeader（接管顶部安全区）; 底部 CTA",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
-    "top_safe_area_owner": "TopSafeArea",
+    "top_safe_area_owner": "SecondaryPageFrame overlay-header；封面从页面顶部延伸，Header 单独消费顶部安全区",
     "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "evDetail.goBack.click.1",
@@ -7054,9 +7056,9 @@
     ],
     "return_owner": "pop origin_route（允许来源：/pages/events/index、/pages/events/upcoming）；无历史实例时 replace /pages/events/index，不创建伪造实体",
     "completion_navigation": "成功留在本流程；返回 pop 当前层并恢复 origin_route 实例与实体参数",
-    "fixed_regions": "TopSafeArea; SecondaryPageHeader; 底部 CTA",
+    "fixed_regions": "覆盖封面的 SecondaryPageHeader（接管顶部安全区）; 底部 CTA",
     "scroll_region": "固定区域之间唯一 scroll-view；flex:1; min-height:0",
-    "top_safe_area_owner": "TopSafeArea",
+    "top_safe_area_owner": "SecondaryPageFrame overlay-header；封面从页面顶部延伸，Header 单独消费顶部安全区",
     "bottom_safe_area_owner": "BottomSafeArea",
     "interaction_ids": [
       "evDetail.goBack.click.1",

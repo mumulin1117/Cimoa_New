@@ -814,6 +814,7 @@
     "sheetEvCancel.cancelAttendance.click.1"
   ],
   "approved_deltas": [
+    "2026-10-24 user override: all main Events card regions except the unchanged primary Join/Joined button open the same event detail; see ../event-cell-navigation-2026-10-24/source-contract.json",
     "Real safe area, fixed shared page skeleton, rpx responsive conversion and source cRise",
     "Canonical user profiles, actual counts/relationships/event times instead of fake prototype totals",
     "Explicit error/empty/expired state; local-only reports do not claim delivery",

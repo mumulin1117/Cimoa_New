@@ -18,7 +18,7 @@ const choose = (question, own = false) => {
 const save = () => { const patch = { questions: [...questions.value] }; error.value = store.profile_validation_error('ice', patch); if (!error.value) submit(() => store.save_profile_section('ice', patch, account_id)) }
 </script>
 <template>
-  <ProfileEditorFrame ref="frame" class="profile-ice-page" title="Icebreakers" source="editIce" save :busy="is_loading" :error="error" :access-error="access_error" @back="back" @recover="recover" @save="save">
+  <ProfileEditorFrame ref="frame" class="profile-ice-page" title="Icebreakers" source="editIce" save :busy="is_loading" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover" @save="save">
     <text class="ice-count">{{ questions.length }}/3 · keep exactly three</text>
     <view class="chosen-list"><view v-for="(question, index) in questions" :key="question" class="chosen-question"><view class="question-number">{{ index + 1 }}</view><text>{{ question }}</text><view class="question-remove" role="button" :aria-label="`Remove question ${index + 1}`" data-interaction="editIce.q.drop.click.1" @click="remove(index)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18" /></svg></view></view></view>
     <text class="ice-label">Question library</text>

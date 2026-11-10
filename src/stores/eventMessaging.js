@@ -2,6 +2,8 @@ import { clone_data } from './seed.js'
 import { authenticated, owner_id, ensure, joined, messages_for, user_by_id } from './selectors.js'
 import { transact, get_runtime, make_id, operation, failure } from './transactions.js'
 import { auth_context_key } from './accountDefaults.js'
+import { auth_message } from '../utils/authFeedback.js'
+import { get_locale } from '../i18n/index.js'
 const admission_key = (data, event_id) => {
   const row = data.memberships.find(row => row.event_id === event_id && row.user_id === owner_id(data) && row.status === 'joined')
   return row ? row.admission_id || `${row.membership_id}:${row.joined_at}` : null
@@ -15,7 +17,7 @@ export function event_group(data, event_id, conversation_id, now) {
   const messages = messages_for(data, conversation_id)
   return { event_id, conversation_id, muted, access_key: access_key(data, event_id), unread_count: messages.filter(row => row.sender_id !== owner_id(data) && !row.read_by.includes(owner_id(data))).length, messages: messages.map(row => ({ ...clone_data(row),
     sender: clone_data(user_by_id(data, row.sender_id)), mine: row.sender_id === owner_id(data),
-    time_label: new Intl.DateTimeFormat('en-US', { timeZone: event.time_zone || 'UTC', hour: 'numeric', minute: '2-digit' }).format(row.sent_at),
+    time_label: new Intl.DateTimeFormat(get_locale(), { timeZone: event.time_zone || 'UTC', hour: 'numeric', minute: '2-digit' }).format(row.sent_at),
     media: clone_data(data.media_files.find(media => media.media_id === row.media_id) || null),
   })) }
 }
@@ -30,9 +32,9 @@ function validate(store, event_id, conversation_id, body, media, now) {
 }
 const sending = new WeakSet()
 export const event_message_actions = {
-  event_message_error(event_id, conversation_id, body, media = null) { try { validate(this, event_id, conversation_id, body, media, get_runtime(this).clock()); return '' } catch (error) { return error.message } },
+  event_message_error(event_id, conversation_id, body, media = null) { try { validate(this, event_id, conversation_id, body, media, get_runtime(this).clock()); return '' } catch (error) { return auth_message(error.message, 'Your message couldn’t be prepared. Please try again.') } },
   async send_event_message(event_id, conversation_id, body, media = null, operation_id = make_id(), { is_current = () => true } = {}) {
-    if (sending.has(this)) return failure('busy', 'A message is already being saved.')
+    if (sending.has(this)) return failure('busy', 'A message is already being sent. Please wait.')
     sending.add(this)
     const rt = get_runtime(this), owner = owner_id(this.data), expected_access = access_key(this.data, event_id); let created = null, published = false
     const check_access = data => ensure(is_current() && access_key(data, event_id) === expected_access, 'Your session or attendance changed. Reopen this group and retry.')
@@ -43,7 +45,7 @@ export const event_message_actions = {
         const decoded = await rt.inspect_media(media.blob, media.kind)
         const duration_ms = media.kind === 'audio' ? decoded.duration_ms : 0
         ensure(media.kind !== 'audio' || Number.isFinite(duration_ms) && duration_ms > 0 && duration_ms <= 120000, 'The recording cannot be decoded or is longer than two minutes.')
-        ensure(globalThis.crypto?.subtle, 'Secure media hashing is unavailable.')
+        ensure(globalThis.crypto?.subtle, 'Secure media processing is unavailable. Please try again.')
         fingerprint = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await media.blob.arrayBuffer())), byte => byte.toString(16).padStart(2, '0')).join('')
         check_access(this.data)
         created = make_id('media'); await rt.media.put(created, media.blob)
@@ -58,9 +60,9 @@ export const event_message_actions = {
       }, { expected_owner: owner })
       published = result.success && !result.repeated
       return result
-    } catch (error) { return failure('message_failed', error.message) }
+    } catch (error) { return failure('message_failed', auth_message(error.message, 'Your message couldn’t be sent. Please try again.')) }
     finally {
-      if (created && !published) { try { await rt.media.delete(created) } catch { this.last_error = 'Message was not published; temporary media cleanup failed. Retry storage when available.' } }
+      if (created && !published) { try { await rt.media.delete(created) } catch { this.last_error = 'Your message wasn’t sent, and its attachment couldn’t be removed. Check available storage and try again.' } }
       sending.delete(this)
     }
   },

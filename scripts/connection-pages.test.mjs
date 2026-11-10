@@ -68,7 +68,7 @@ try {
   let document_id = 0
   const open = target_route => page.goto(`${server.origin}/?connectionPage=${phase}-${document_id++}#${target_route}`)
   const freeze = async (top = 54, bottom = 0) => { await set_safe_area(page, top, bottom); await page.evaluate(async () => { await document.fonts.ready; for (const animation of document.getAnimations()) if (animation.effect.getComputedTiming().iterations !== Infinity) animation.finish(); await Promise.all([...document.images].map(image => image.decode().catch(() => {}))); await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))) }) }
-  await open(route); await page.locator(`.connection-${phase}-page${phase === 'chat' ? ',.direct-chat-page' : ''}`).waitFor(); if (phase === 'chat') await page.locator('.event-loading:visible').waitFor({ state: 'hidden' }); await freeze()
+  await open(route); await page.locator(`.connection-${phase}-page${phase === 'chat' ? ',.direct-chat-page' : ''}`).waitFor(); if (phase === 'chat') await page.locator('.chat-read-progress').waitFor({ state: 'hidden' }); await freeze()
   report.geometry = await page.evaluate(() => {
     const box = selector => { const element = document.querySelector(selector); if (!element) return null; const r = element.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height, bottom: r.bottom } }
     return { header: box('.connection-header,.chat-header'), footer: box('.connection-footer,.chat-composer'), hero: box('.sent-check,.accepted-content,.declined-content'), question: box('.sent-question'), answer: box('.sent-answer'), photo: box('.received-photo-card'), text: document.querySelector('uni-page-body').innerText }
@@ -86,17 +86,19 @@ try {
     const saved = () => page.evaluate(() => JSON.parse(localStorage.getItem('cimoa_app_state_v2')).data)
     await page.locator('[data-interaction="reqReceived.openGallery.click.1"]').click(); const gallery = page.getByRole('dialog', { name: 'Lina photo gallery' }); await gallery.waitFor(); await gallery.locator('.profile-photo[data-media-status="ready"]').waitFor(); const mask = await gallery.locator('..').boundingBox(); assert.ok(close_to(mask.height, 852)); await gallery.getByRole('button', { name: 'Close', exact: true }).click(); await gallery.waitFor({ state: 'hidden' })
     check('Photo gallery owns the full viewport overlay outside the scrolling/clipped profile body')
-    await page.locator('[data-interaction="reqReceived.notNow.click.1"]').click(); await page.locator('.home-header').waitFor(); assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending')
-    check('Not Now preserves the same pending request and returns Home without a write')
-    await open(route); await page.locator('[data-interaction="reqReceived.openReqMenu.click.1"]').click(); await page.locator('[data-interaction="reqReceived.openDecline.click.1"]').click(); await page.locator('.dialog__cancel').click(); assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending')
+    await page.locator('[data-interaction="reqReceived.notNow.click.1"]').click(); await page.locator('.dialog__cancel').click(); assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending')
+    await page.locator('[data-interaction="reqReceived.notNow.click.1"]').click(); await page.locator('.dialog__confirm').click(); await page.locator('.home-header').waitFor()
+    assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'declined'); assert.equal(await page.locator('[data-interaction="home.openJordan.click.1"]').count(), 0)
+    check('Decline cancellation keeps the invitation; confirmation closes it and removes the Home Invite')
+    await page.evaluate(({ key, fixture }) => localStorage.setItem(key, JSON.stringify({ type: 'object', data: fixture })), { key: STATE_KEY, fixture: data }); await open(route)
     const before_failure = await saved(); await page.evaluate(() => { window.__connectionWrite = Storage.prototype.setItem; Storage.prototype.setItem = function(key,value) { if (key === 'cimoa_app_state_v2') throw Error('Storage full'); return window.__connectionWrite.call(this,key,value) } })
-    await page.locator('[data-interaction="reqReceived.accept.click.1"]').click(); await page.locator('.dialog__confirm').click(); await page.locator('.event-loading:visible').waitFor(); await page.locator('.event-loading:visible').waitFor({ state: 'hidden' }); assert.match(await page.getByRole('alert').innerText(), /Storage full/); assert.deepEqual(await saved(), before_failure)
+    await page.locator('[data-interaction="reqReceived.accept.click.1"]').click(); await page.locator('.dialog__confirm').click(); await page.locator('.event-loading:visible').waitFor(); await page.locator('.event-loading:visible').waitFor({ state: 'hidden' }); assert.match(await page.getByRole('alert').innerText(), /doesn’t have enough space/); assert.deepEqual(await saved(), before_failure)
     await page.evaluate(() => { Storage.prototype.setItem = window.__connectionWrite; delete window.__connectionWrite }); check('Accept storage failure preserves the complete pending request, consent, messages and balance; retry stays available')
     await page.locator('[data-interaction="reqReceived.accept.click.1"]').click(); await page.getByRole('dialog').getByRole('button', { name: 'Accept', exact: true }).click()
-    assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending'); assert.ok(await page.locator('.event-loading:visible').count())
+    await page.locator('.event-loading').waitFor({ state: 'visible' }); assert.equal((await saved()).requests.find(row => row.request_id === 'request_pixel').status, 'pending')
     await page.locator('[data-interaction="reqAccepted.startChat.click.1"]').waitFor(); const accepted = await saved()
     assert.equal(accepted.requests.find(row => row.request_id === 'request_pixel').status, 'accepted'); assert.equal(accepted.conversations.filter(row => row.kind === 'direct' && row.participant_ids.includes('user_lina')).length, 1)
-    check('Decline cancellation keeps pending; Accept writes after business Loading and creates one real conversation')
+    check('Accept writes after business Loading and creates one real conversation')
   }
   if (phase === 'accepted') {
     assert.ok(close_to(report.geometry.hero.y, 150)); assert.match(report.geometry.text, /View Lina’s Profile/); assert.match(report.geometry.text, /YOU BOTH LIKE/)
@@ -113,7 +115,7 @@ try {
   if (phase === 'chat') {
     assert.ok(close_to(report.geometry.header.y, 56)); assert.ok(close_to(report.geometry.header.height, 64)); assert.ok(close_to(report.geometry.footer.height, 56)); assert.ok(close_to(report.geometry.footer.bottom, 818)); assert.equal(await page.locator('.chat-message').count(), 5)
     assert.ok(!report.geometry.text.includes('stored locally')); assert.equal(await page.locator('.chat-time').count(), 0)
-    const message = page.locator('uni-input[aria-label="Message"] input'); await message.fill('See you at the library after class.'); await page.locator('[data-interaction="chat.send.click.1"]').click(); assert.ok(await page.locator('.event-loading:visible').count())
+    const message = page.locator('uni-input[aria-label="Message"] input'); await message.fill('See you at the library after class.'); await page.locator('[data-interaction="chat.send.click.1"]').click(); assert.ok(await page.locator('.chat-send .chat-action-loading:visible').count())
     await page.waitForFunction(() => document.querySelector('.chat-messages').textContent.includes('See you at the library after class.')); await page.waitForFunction(() => document.querySelector('uni-input[aria-label="Message"] input').value === '')
     await page.reload(); await page.locator('.chat-composer').waitFor(); assert.match(await page.locator('.chat-messages').innerText(), /See you at the library after class/)
     await page.locator('[data-interaction="chat.viewProfile.click.1"]').click(); await page.locator('.expanded-profile-page').waitFor(); await page.locator('[data-interaction="expanded.sayHi.click.1"]').click(); await page.locator('.chat-composer').waitFor(); assert.ok(page.url().includes('conversation_chloe'))

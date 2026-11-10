@@ -17,10 +17,10 @@ const edit = () => go('/pages/profile/edit')
 </script>
 <template>
   <SecondaryPageFrame ref="frame" class="profile-preview-page">
-    <template #header><view class="preview-header"><view class="preview-tool" role="button" aria-label="Back" data-interaction="profilePreview.goBack.click.1" @click="back"><SourceIcon name="back" /></view><view v-if="!access_error" class="preview-name"><text>{{ user.user_name }}{{ user.age ? `, ${user.age}` : '' }}</text><view v-if="user.verified" class="preview-verified" role="img" aria-label="Verified student"><SourceIcon name="verified" /></view></view><view v-if="!access_error" class="preview-tool" role="button" aria-label="Edit Profile" data-interaction="profilePreview.openEditBasic.click.1" @click="edit"><SourceIcon name="edit" /></view></view><text v-if="error" class="editor-error" role="alert">{{ error }}</text></template>
+    <template #header><view class="preview-header"><view class="preview-tool" role="button" aria-label="Back" data-interaction="profilePreview.goBack.click.1" @click="back"><SourceIcon name="back" /></view><view v-if="!access_error" class="preview-name"><text>{{ user.user_name }}{{ user.age ? `, ${user.age}` : '' }}</text><view v-if="user.verified" class="preview-verified" role="img" aria-label="Verified student"><SourceIcon name="verified" /></view></view><view v-if="!access_error" class="preview-tool" role="button" aria-label="Edit Profile" data-interaction="profilePreview.openEditBasic.click.1" @click="edit"><SourceIcon name="edit" /></view></view><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /></template>
     <view class="preview-body"><view v-if="access_error" class="editor-access" role="alert"><text>{{ access_error }}</text><view class="editor-outline" role="button" @click="recover">Return to account entry</view></view><template v-else>
       <view class="preview-photo"><ProfilePhoto :src="photos[photo_index]?.media_url || ''" :name="user.user_name" /><view v-if="photos.length > 1" class="photo-navigation"><view role="button" aria-label="Previous photo" data-interaction="profilePreview.prevPhoto.click.1" @click="turn_photo(-1)" /><view role="button" aria-label="Next photo" data-interaction="profilePreview.nextPhoto.click.1" @click="turn_photo(1)" /></view><view class="photo-dots" aria-label="Profile photo position"><view v-for="(photo, index) in photos" :key="photo.photo_id" :class="{ active: photo_index === index }" :aria-current="photo_index === index ? 'true' : undefined" /></view>
-        <view v-if="song" class="preview-song"><image :src="song.cover_url" mode="aspectFill" /><view class="song-labels"><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view class="song-play" role="button" :aria-label="`Play ${song.title}`" data-interaction="profilePreview.eaSongPlay.click.1" @click="error = 'No playable audio is configured for this song.'"><svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z" fill="currentColor" /></svg></view></view>
+        <view v-if="song" class="preview-song" aria-label="Favorite song"><image :src="song.cover_url" mode="aspectFill" /><view class="song-labels"><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view class="song-mark" aria-hidden="true"><SourceIcon name="music" /></view></view>
       </view>
       <view class="preview-card preview-tags"><view v-for="tag in tags" :key="tag.key" class="preview-tag"><view v-if="tag.icon" class="tag-icon"><SourceIcon :name="tag.icon" :stroke-width="1.7" /></view><text v-else class="tag-emoji">{{ tag.emoji }}</text><text>{{ tag.label }}</text></view><text v-if="!tags.length" class="editor-copy">No details shared yet.</text></view>
       <view class="preview-card"><EventAudio v-if="audio" :src="audio.media_url" :duration="audio.duration_ms" interaction="profilePreview.evTogglePlay.click.1" /><text v-if="user.bio" class="editor-bio" :style="bio_style(user.bio_font)">{{ user.bio }}</text><text v-else class="editor-copy">No introduction yet.</text></view>
@@ -103,7 +103,7 @@ const edit = () => go('/pages/profile/edit')
   font-weight: 700;
 }
 .song-labels text + text { font-size: 24.809rpx; font-weight: 400; color: var(--cimoa-text-profile-song-artist); }
-.song-play {
+.song-mark {
   flex: none;
   width: 83.969rpx;
   height: 83.969rpx;
@@ -112,7 +112,6 @@ const edit = () => go('/pages/profile/edit')
   background: var(--cimoa-surface-card);
   color: var(--cimoa-brand-purple);
 }
-.song-play svg { width: 100%; height: 100%; }
 .preview-card { margin-top: 30.534rpx; padding: 34.351rpx; border-radius: 45.802rpx; background: var(--cimoa-surface-card); box-shadow: var(--cimoa-shadow-auth-input); }
 .preview-photo + .preview-card { margin-top: 38.168rpx; }
 .preview-tags { display: flex; flex-wrap: wrap; gap: 15.267rpx; }

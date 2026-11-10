@@ -3,6 +3,7 @@ import { computed, onUnmounted, ref, watch } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { create_audio_playback } from '@/utils/audioPlayback.js'
 import IcebreakerIcon from './IcebreakerIcon.vue'
+import BrandProgressMark from './BrandProgressMark.vue'
 const props = defineProps({ src: String, duration: Number, voice: Boolean, interaction: String })
 const error = ref(''), playing = ref(false), pending = ref(false), seconds = ref(0)
 const mmss = value => `${Math.floor(value / 60)}:${String(Math.floor(value % 60)).padStart(2, '0')}`
@@ -29,7 +30,7 @@ watch(() => props.src, () => { dispose(); prepare() }, { immediate: true }); onS
 </script>
 <template><view class="ice-audio" :class="{ 'ice-audio--voice': voice }" :data-playing="playing">
   <template v-if="voice"><view class="ice-wave-space" /><text class="ice-audio-length">{{ length }}</text></template>
-  <view class="ice-audio-play" role="button" tabindex="0" :aria-label="playing ? 'Pause voice message' : 'Play voice message'" :aria-disabled="pending" :data-interaction="interaction" @click="toggle" @keydown.enter="toggle"><view><IcebreakerIcon :name="playing ? 'pause' : 'play'" /></view></view>
+  <view class="ice-audio-play" role="button" tabindex="0" :aria-label="pending ? 'Loading voice message' : playing ? 'Pause voice message' : 'Play voice message'" :aria-disabled="pending" :aria-busy="pending" :data-interaction="interaction" @click="toggle" @keydown.enter="toggle"><view :class="{ 'ice-audio-progress': pending }"><BrandProgressMark v-if="pending" /><IcebreakerIcon v-else :name="playing ? 'pause' : 'play'" /></view></view>
   <view v-if="!voice" class="ice-audio-details"><view class="ice-audio-track"><view :style="{ width: progress }" /></view><view class="ice-audio-labels"><text>{{ pending ? 'Loading audio…' : playing ? 'Playing' : seconds ? 'Paused' : 'Ready to play' }}</text><text>{{ length }}</text></view></view>
   <text v-if="error" class="ice-audio-error" role="alert">{{ error }}</text>
 </view></template>
@@ -37,6 +38,7 @@ watch(() => props.src, () => { dispose(); prepare() }, { immediate: true }); onS
 .ice-audio { display: flex; align-items: center; gap: 34.351rpx; width: 100%; }
 .ice-audio-play { display: flex; align-items: center; justify-content: center; flex: none; width: 122.137rpx; height: 122.137rpx; border-radius: 50%; color: var(--cimoa-text-inverse); background: var(--cimoa-gradient-primary); cursor: pointer; }
 .ice-audio-play > view { width: 57.252rpx; height: 57.252rpx; }
+.ice-audio-play > .ice-audio-progress { padding: 5.725rpx; border-radius: 50%; background: var(--cimoa-surface-card); }
 .ice-audio-details { flex: 1; min-width: 0; }
 .ice-audio-track { height: 15.267rpx; border-radius: 7.634rpx; background: var(--cimoa-surface-ice-track); overflow: hidden; }
 .ice-audio-track > view { height: 100%; border-radius: inherit; background: var(--cimoa-gradient-primary); transition: width 300ms ease; }

@@ -14,8 +14,8 @@ try {
   const context = await context_for(browser, key, create_scenario('default', Date.now())), page = await context.newPage(); page.setDefaultTimeout(10000)
   page.on('pageerror', e => report.errors.push(e.message))
   for (const test of [
-    { name: 'user', route: '/pages/safety/report-user?target_user_id=user_lina', reason: 'Harassment', target_type: 'user', target_id: 'user_lina', interaction: 'safetyReport.submitReport.click.1', saved: '.report-saved' },
-    { name: 'event', route: '/pages/events/report?event_id=event_picnic', reason: 'Unsafe activity', target_type: 'event', target_id: 'event_picnic', interaction: 'evReport.submitEvReport.click.1', saved: '.event-report-saved' },
+    { name: 'user', route: '/pages/safety/report-user?target_user_id=user_lina', reason: 'Harassment', target_type: 'user', target_id: 'user_lina', interaction: 'safetyReport.submitReport.click.1', destination: '.messages-page' },
+    { name: 'event', route: '/pages/events/report?event_id=event_picnic', reason: 'Unsafe activity', target_type: 'event', target_id: 'event_picnic', interaction: 'evReport.submitEvReport.click.1', destination: '.event-detail-page' },
   ]) {
     await page.goto(server.origin + '/#' + test.route); const button = page.getByRole('button', { name: 'Submit report', exact: true }); await button.waitFor(); await set_safe_area(page, 62, 34)
     assert.equal(await button.getAttribute('data-interaction'), test.interaction); assert.equal(await button.getAttribute('aria-disabled'), 'true')
@@ -24,11 +24,18 @@ try {
     await page.getByRole('radio', { name: test.reason, exact: true }).click(); assert.equal(await button.getAttribute('aria-disabled'), 'false')
     await page.screenshot({ path: path.join(folder, `${test.name}-ready.png`) })
     await button.click(); assert.equal(await button.getAttribute('aria-disabled'), 'true'); assert.equal(await page.evaluate(key => localStorage.getItem(key), key), before)
-    await button.evaluate(e => e.click()); await page.locator(test.saved).waitFor()
-    const reports = await page.evaluate(key => JSON.parse(localStorage.getItem(key)).data.reports, key), saved = reports.filter(r => r.target_type === test.target_type && r.target_id === test.target_id)
-    assert.equal(saved.length, 1); assert.equal(saved[0].status, 'local_saved'); assert.equal(saved[0].reason, test.reason); assert.equal(await button.count(), 0)
-    await page.reload(); await page.locator(test.saved).waitFor(); assert.equal(await button.count(), 0)
-    report.checks.push(`${test.name}: exact Submit report label/interaction; reason required; duplicate lock; Loading before Store write; same target/local_saved record and refresh recovery`); console.log('PASS ' + report.checks.at(-1))
+    await button.evaluate(e => e.click()); await page.locator(test.destination).waitFor()
+    await page.locator('.brand-toast--info').waitFor()
+    assert.equal(await page.evaluate(key => localStorage.getItem(key), key), before)
+    assert.equal(await page.locator('.report-saved,.event-report-saved').count(), 0)
+    assert.equal(await button.count(), 0)
+    assert.match(await page.locator('.brand-toast-message:visible').innerText(), /Thank you for sharing your concern.*review it as soon as possible/s)
+    await page.goto(server.origin + '/#' + test.route)
+    const repeat = page.getByRole('button', { name: 'Submit report', exact: true })
+    await page.getByRole('radio', { name: test.reason, exact: true }).click()
+    await repeat.click(); await page.locator(test.destination).waitFor(); await page.locator('.brand-toast--info').waitFor()
+    assert.equal(await page.evaluate(key => localStorage.getItem(key), key), before)
+    report.checks.push(`${test.name}: exact Submit report label/interaction; reason required; duplicate lock; branded Loading; source return; no report record; repeat allowed`); console.log('PASS ' + report.checks.at(-1))
   }
   assert.deepEqual(report.errors, []); report.result = 'passed'
 } catch (error) { report.failure = error.stack; console.error(error); process.exitCode = 1 }

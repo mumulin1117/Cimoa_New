@@ -1,5 +1,17 @@
 [
   {
+    "interaction_id": "home.startAutoMatch.click.3",
+    "source_screen": "2026-10-24 user screenshot; reuse Home empty-state primary CTA at the end of a populated Home list",
+    "trigger": "click / Enter",
+    "preconditions": "Home ready with nonempty canonical home_feed.cards; authenticated current account; no concurrent navigation",
+    "visible_feedback": "2026-11-02: real page expands from the actual tail CTA center in 240ms and contracts to the same CTA in 180ms; no stacked ignition/cRise or write Loading; existing CTA design unchanged",
+    "success_result": "push /pages/auto-match/index; existing active-match entry remains intact; Back restores Home list and position",
+    "failure_result": "retain Home and its entities, show existing brand error feedback, release navigation lock for retry",
+    "persistence": "none; opening Auto Match neither joins the pool nor consumes quota or coins",
+    "sync_scope": "canonical Home cards / active match / Auto Match / quota / coin ledger; read only",
+    "acceptance": "One populated-list CTA after cards and optional match status; empty state unchanged; small/large viewport, scroll reachability, duplicate activation, Enter, navigation Back and byte-for-byte persistence checked by home-tail-match regression"
+  },
+  {
     "interaction_id": "home.openMe.click.1",
     "source_screen": "Home 214–358 / offline TabBar / canonical dynamic entity state",
     "trigger": "click / keyboard activation",
@@ -16,7 +28,7 @@
     "source_screen": "Home 214–358 / offline TabBar / canonical dynamic entity state",
     "trigger": "click / keyboard activation",
     "preconditions": "authenticated current account and live visible entity from home_feed; no concurrent navigation",
-    "visible_feedback": "source cRise or controlled anchored Popover; English failure, no navigation Loading",
+    "visible_feedback": "2026-11-02: 240ms point-to-page from the actual header lightning and 180ms return to that same button, replacing ignition/cRise; English failure, no navigation Loading",
     "success_result": "push Auto Match entry without consuming quota/coins",
     "failure_result": "stay in readable Home without creating a request, consent, conversation, match, debit or quota use; revalidate stale ID",
     "persistence": "none; read-only aggregation and transient UI; destination writes remain in existing actions",
@@ -28,7 +40,7 @@
     "source_screen": "Home 214–358 / offline TabBar / canonical dynamic entity state",
     "trigger": "click / keyboard activation",
     "preconditions": "authenticated current account and live visible entity from home_feed; no concurrent navigation",
-    "visible_feedback": "source cRise or controlled anchored Popover; English failure, no navigation Loading",
+    "visible_feedback": "2026-11-02: 240ms point-to-page from the actual empty-state Start Auto Match and 180ms return to that same CTA, replacing ignition/cRise; English failure, no navigation Loading",
     "success_result": "empty-state Auto Match entry without creating a contact",
     "failure_result": "stay in readable Home without creating a request, consent, conversation, match, debit or quota use; revalidate stale ID",
     "persistence": "none; read-only aggregation and transient UI; destination writes remain in existing actions",

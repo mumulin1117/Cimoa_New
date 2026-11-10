@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-24",
+  "scope": "Finish global Loading / Toast brand unification without flattening content, media or persistent states into blocking Toasts",
+  "result": "All existing business Loading and transient Toasts retain their single shared branded host. Previously plain media/content pending states now reuse BrandProgressMark at the original location. Received introductions have one feedback source; call blocking uses the correct operation caption.",
+  "changed_files": [
+    "src/components/ProfilePhoto.vue",
+    "src/components/EventAudio.vue",
+    "src/components/IcebreakerAudio.vue",
+    "src/components/RequestAudioPlayer.vue",
+    "src/components/ProfileVoiceIntro.vue",
+    "src/components/FlowStatePanel.vue",
+    "src/components/SystemStatePage.vue",
+    "src/pages/home/index.vue",
+    "src/pages/discover/index.vue",
+    "src/pages/events/index.vue",
+    "src/pages/auth/welcome.vue",
+    "src/pages/messages/call/waiting.vue",
+    "src/pages/connections/received.vue",
+    "scripts/check-conventions.mjs",
+    "scripts/lib/feedback-style-contract.mjs",
+    "scripts/feedback-global.test.mjs",
+    "scripts/feedback-global-browser.test.mjs",
+    "scripts/lib/feedback-global-regression.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift",
+    "docs/ui-restoration/feedback-global-2026-10-24/acceptance.json"
+  ],
+  "generated_outputs": [
+    "dist/build/h5/",
+    "ios/cimoaNeapo/Resources/H5/",
+    "ios/cimoaNeapo/Resources/build-manifest.json"
+  ],
+  "coverage": {
+    "existing_business": "App/Auth/Event/Profile/Coin wrappers → ActionLoading → one BrandToastHost; private chat keeps inline brand progress",
+    "new_media": [
+      "Profile photos and small covers",
+      "Event/group audio",
+      "Icebreaker review audio",
+      "Received voice introductions",
+      "Expanded-profile voice bar"
+    ],
+    "new_content": [
+      "Home/Discover/Events hydration fallback",
+      "Welcome campus photo",
+      "Persistent system Loading panel"
+    ],
+    "toast": "Success/info/warning/error retain the top-centered translucent card, gradient fine edge, correct state icon, auto-dismiss and manual close",
+    "no_legacy": "Source and native-host audit found no remaining native/default Toast or business spinner; convention checks now reject common native APIs, default vendor tags and legacy skins",
+    "deduplication": "One received-introduction Toast for error && !sheet; Sheet errors remain persistent within their context",
+    "caption": "Waiting-call block shows Blocking account…; ending/reporting keeps Ending call…"
+  },
+  "preserved": [
+    "Both convention documents unchanged",
+    "All pre-existing worktree edits preserved; no staging/commit/push/reset",
+    "400–600ms write delay (default500),600ms skeleton and3s carousel unchanged",
+    "Header/Tabbar/safe-area ownership and warm card cursor retained",
+    "Dedicated skeleton/refresh/filter/startup/matching/coin state designs retain their roles",
+    "Photo Retry, audio failure, permissions, atomic rollback and Store/media ownership unchanged",
+    "No new Discover entrance design, fake delivery/review/payment, service or physical microphone request"
+  ],
+  "verification": {
+    "status": "Passed: complete global feedback checks, browser media/content cases and selected WKWebView regression",
+    "unit": {
+      "passed": 378,
+      "failed": 0,
+      "log": "artifacts/feedback-global/unit-test.log"
+    },
+    "browser": {
+      "global": {
+        "passed": true,
+        "scenarios": 15,
+        "assertions": 180,
+        "errors": 0,
+        "warnings": 0,
+        "screenshots": 10,
+        "report": "artifacts/feedback-global/browser-report.json"
+      },
+      "business": {
+        "passed": true,
+        "scenarios": 13,
+        "assertions": 254,
+        "errors": 0,
+        "warnings": 0,
+        "report": "artifacts/brand-loading/browser-report.json"
+      },
+      "viewports": [
+        "320x568",
+        "393x852",
+        "440x956"
+      ],
+      "real_media": "Real supplied MP3 decoding and IndexedDB/media paths; controlled resource-read delay only. No extra application delay or production testing hook.",
+      "preview_server_started": false,
+      "cleaned_up": true
+    },
+    "wkwebview": {
+      "passed": true,
+      "executed_tests": 2,
+      "isolated_fixtures": 11,
+      "assertions": 195,
+      "actual_host_business_data_unchanged": true,
+      "log": "artifacts/feedback-global/xcodebuild-complete.log",
+      "device": "iPhone 17 Pro simulator",
+      "selected_tests": [
+        "EventCoverTests.testBrandLoading()",
+        "EventCoverTests.testGlobalFeedbackStyles()"
+      ],
+      "report_files": [
+        "artifacts/brand-loading/wkwebview-report.json",
+        "artifacts/feedback-global/wkwebview-report.json"
+      ]
+    },
+    "required_commands": {
+      "sequence": [
+        "corepack pnpm check:conventions",
+        "git diff --check",
+        "corepack pnpm build:h5"
+      ],
+      "passed": true,
+      "h5_files_packaged": 439,
+      "ios_built_manifest_matches": true,
+      "preview_or_test_processes_left_running": false
+    },
+    "warnings": "No convention/browser warnings. Existing Xcode AppIntents metadata-skipped warning and simulator WebKit/Accessibility diagnostics.",
+    "recovered_test_issues": [
+      "The built Toast controller is internal; tests map the actual exported show_toast wrapper from the exact build rather than requiring a production test export.",
+      "The native test loader previously removed every 'export ' substring, corrupting toast_export = ''. It now strips only anchored function-export declarations; a regression protects explicit arguments."
+    ],
+    "limits": [
+      "New delayed media pending states are exercised in the browser; native selected tests cover shared style, four Toast tones, system Loading and guarded business operations, not physical camera/microphone/photo permissions.",
+      "Broad whole-app acceptance is not claimed by this targeted feedback regression."
+    ]
+  },
+  "screenshots": [
+    "artifacts/feedback-global/profile_voice-393x852.png",
+    "artifacts/feedback-global/system-wkwebview.png",
+    "artifacts/brand-loading/group-wkwebview-loading.png"
+  ]
+}

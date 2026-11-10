@@ -1,9 +1,9 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { computed, onUnmounted, ref } from 'vue'
 import { onHide, onLoad, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
 import { password_error } from '@/utils/localAuth.js'
-import { relaunch_route } from '@/utils/routeTransition.js'
 import { use_write_loading } from '@/composables/useWriteLoading.js'
 import AuthPageFrame from '@/components/AuthPageFrame.vue'
 import AuthActionLoading from '@/components/AuthActionLoading.vue'
@@ -14,7 +14,7 @@ let active = true
 onLoad(options => { reset_id.value = String(options?.reset_id || '') })
 const reset = computed(() => store.auth_draft.password_reset || null)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved account data is unavailable. Please return and retry.'
+  ? 'Your account information is unavailable. Please go back and try again.'
   : store.session.is_authenticated
     ? 'Log out before resetting a password.'
     : !reset_id.value || reset.value?.reset_id !== reset_id.value || !reset.value?.verified_at
@@ -45,13 +45,13 @@ const finish = async () => {
   if (!active || result.reason === 'cancelled') return
   if (!result.success) { error.value = result.message; return }
   password.value = ''; confirmation.value = ''; shown.value = false
-  try { await relaunch_route('/pages/auth/login') } catch (cause) { error.value = cause.message }
+  try { await frame.value.navigate_relaunch('/pages/auth/login') } catch (cause) { error.value = cause.message }
 }
 </script>
 
 <template>
   <AuthPageFrame ref="frame" class="reset-new-page" title="Reset password" back-interaction="fpNew.goBack.click.1" :busy="is_loading" @back="back">
-    <view v-if="access_error" class="auth-error-box" role="alert">{{ access_error }}</view>
+    <view v-if="access_error" class="auth-error-box" role="alert">{{ auth_message(access_error) }}</view>
     <template v-else>
       <text class="auth-heading">Choose a new password</text>
       <view class="auth-field">
@@ -64,7 +64,7 @@ const finish = async () => {
         <view class="auth-input-box"><input v-model="confirmation" class="auth-input" aria-label="Confirm new password" placeholder="Repeat it" :password="!shown" :maxlength="128" :disabled="is_loading" autocomplete="new-password" data-interaction="fpNew.onPw2.change.1" @confirm="finish" /></view>
         <text v-if="confirmation && password !== confirmation" class="reset-password-hint is-error">Passwords don’t match yet</text>
       </view>
-      <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
+      <text v-if="error" class="auth-error-box" role="alert">{{ auth_message(error) }}</text>
     </template>
     <template #footer><view v-if="!access_error" class="auth-primary" role="button" :aria-disabled="is_loading" data-interaction="fpNew.finishReset.click.1" @click="finish">Update password</view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Updating your password…" /></template>

@@ -1,0 +1,28 @@
+{
+  "task": "Match Preferences full-page bottom rise / downward dismissal",
+  "date": "2026-11-03",
+  "status": "in_progress",
+  "visual_acceptance": "pending",
+  "authorization": "User explicitly authorized both convention revisions: retain the full real page, routes, 240ms/180ms and existing save logic; do not convert to a half-height Sheet.",
+  "scope": {
+    "target": "/pages/auto-match/preferences",
+    "sources": ["/pages/auto-match/index", "/pages/auto-match/searching", "/pages/auto-match/paused", "/pages/auto-match/no-match", "/pages/discover/index"],
+    "enter": "translateY(100%) to translateY(0), 240ms",
+    "return": "translateY(0) to translateY(100%), 180ms, one actual pop after contraction; retain the underlay until the exact original source is confirmed active",
+    "reduced_motion": "opacity only; same real route and durations",
+    "ownership": "The existing configurable surface engine and real Vue Teleports; no copied business page, page screenshot, clone or manual keep-alive tree manipulation.",
+    "business_changes": "none; Save still uses the existing Store action and write Loading"
+  },
+  "preserved": ["final source UI and layout", "single scroll region / original source offset", "Header / Save / physical safe-area ownership", "uncommitted selections on save failure", "cancel without saving", "400–600ms write Loading", "university and interest sub-Sheets", "live matching session and deadline-derived time", "quota and coin ledger", "Discover cursor and skeleton consumption", "Home / Discover point transition isolation", "touch cancellation / rapid-click prevention"],
+  "verification": {
+    "unit": { "status": "passed", "tests": 244 },
+    "browser": { "status": "passed", "cases": 10, "assertions": 154, "screenshots": 24, "page_errors": 0, "unexpected_warnings": 0, "expected_statistic_warnings": 22, "report": "../artifacts/match-preferences-surface-2026-11-03/browser-report.json", "fixed_issue": "At 320pt the X touch area was smaller than 44pt. Button and header now consume the existing shared touch minimum; the icon size is unchanged, and actual browser measurement passes." },
+    "regressions": { "home_point": "7 cases / 213 assertions passed, including no hidden presentation issue on either paused or unpaused Back", "discover_point": "7 cases / 156 assertions passed", "first_use_guide": "12 grouped checks passed", "brand_feedback": "9 grouped checks passed on isolated rerun; one concurrent run sampled the 120ms press transition before its terminal matrix and failed its fixed 150ms assertion", "expected_statistic_warnings": { "home": 18, "discover": 16, "guide": 36, "brand": 12 }, "unexpected_warnings": 0 },
+    "wkwebview": { "status": "partial", "debug_build": "passed", "upgrade_install": "passed", "launch": "passed on final H5", "device": "iPhone 17 Pro", "udid": "D9B138D2-1B08-4646-B8D0-8A2242AECD7D", "bundle_id": "com.cimoa.neapo.dev", "native_touch_smoke": "passed: actual CUA clicks Discover filter → preferences → X → same Zane card, and Home tail CTA/lightning → entry → preferences → X → entry → original Home; quota remained visibly unchanged and no error Toast appeared", "final_recording": "../artifacts/match-preferences-surface-2026-11-03/wkwebview-home-preferences-roundtrip.mov", "final_home_screenshot": "../artifacts/match-preferences-surface-2026-11-03/wkwebview-returned-home.png", "remaining": "Native Save/failure injection, searching/paused/no-match sources, physical keyboard/background interruption and small-device touch are not claimed as fully accepted. No actual matching, payment, microphone or user-data reset was performed." },
+    "gates": { "check_conventions": "passed; no warnings", "diff_check": "passed", "build_h5": "passed; packaged into the existing iOS host" },
+    "resource_integrity": { "dist_index_sha256": "955e108d3933a232cb95e91c9da6aaf2cfacefcba17b4ffc8a991d0a701b0441", "dist_files": 443, "host_packaged_files": 444, "host_mismatches": 0, "built_app_mismatches": 0 },
+    "processes": "No preview server or watch. Isolated browser runners/builds/recording completed; recording PID 12842 stopped normally and wrote its video. Delivered Cimoa simulator app remains running."
+  },
+  "changed_files": ["DEVELOPMENT_CONVENTIONS.md", "INTERACTION_CONVENTIONS.md", "src/App.vue", "src/utils/sendSurface.js", "src/utils/sendSurfaceHost.js", "src/composables/useSendSurface.js", "src/composables/useAutoMatchPage.js", "src/pages/auto-match/index.vue", "src/pages/auto-match/preferences.vue", "src/pages/auto-match/searching.vue", "src/pages/auto-match/paused.vue", "src/pages/auto-match/no-match.vue", "src/pages/discover/index.vue", "docs/cimoa-page-inventory.json", "docs/ui-restoration/auto-match-preferences/interactions.json", "scripts/match-preferences-surface.test.mjs", "scripts/match-preferences-surface-wiring.test.mjs", "scripts/match-preferences-surface-browser.test.mjs", "scripts/surface-host-composable.test.mjs", "scripts/auto-match-surface.test.mjs", "scripts/auto-match-surface-browser.test.mjs", "scripts/send-surface-browser.test.mjs", "docs/match-preferences-surface-2026-11-03.json", "dist/build/h5 (generated)", "ios/cimoaNeapo/Resources/H5 (generated)"],
+  "limitations": ["Browser emulation/lifecycle injection does not prove WKWebView keyboard or actual iOS background acceptance; native normal click smoke is recorded separately.", "An existing Auto Match entry Back control remains smaller than 44pt at 320pt; it is outside this target-page X fix and is recorded for a future shared hit-area pass.", "No actual purchase, microphone or user-data fixture mutation; existing worktree and staged changes are preserved.", "No staging, local commit or push before the remaining visual/native acceptance."]
+}

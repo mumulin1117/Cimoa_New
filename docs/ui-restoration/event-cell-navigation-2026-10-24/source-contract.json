@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-24",
+  "scope": "Main Events list card navigation only; not full-page visual acceptance",
+  "user_request": "Event 数据列表页面，除开点击Join按钮效果不变，点击cell其他任何地方都是进入活动详情页面",
+  "source": "CIRCA All Screens (interactive).html route=events, with the explicit user navigation override above",
+  "interaction_id": "events.cell.open.click.1",
+  "interaction_contract": "../events/interactions.json",
+  "navigation": {
+    "destination": "/pages/events/detail?event_id=<selected canonical event_id>",
+    "regions": ["cover including media-error area", "title", "date", "location", "participant avatars and counts", "card padding and blank areas", "joined-card Event group chat text", "joined-card Manage text"],
+    "join_exception": "Primary Join/Joined button keeps existing stop-propagation, eligibility guards, confirmation, cancellation, 500ms write Loading, atomic join and success navigation. Disabled full/ended buttons do not navigate or write.",
+    "back": "Existing MainTabFrame stack restores the original list category, card order and horizontal position",
+    "keyboard": "Enter/Space on the card; Join retains its own handler without bubbling; no duplicate child tab stops"
+  },
+  "supersedes": {
+    "events.openParticipants.click.1": "Main-list row now delegates to detail, not participants",
+    "events.openGroup.click.1": "Main-list text now delegates to detail, not group",
+    "events.manageAttendance.click.1": "Main-list text now delegates to detail, not the cancel sheet",
+    "events.m.open.click.1": "Original subsequent-card-only handler is replaced by events.cell.open.click.1 on every card"
+  },
+  "unchanged": ["All visible text, card layout, imagery, theme tokens and sizing", "Actual detail-page participant/group/attendance actions", "Event Store, memberships, messages, coins and persistence schema", "Loading/skeleton/carousel/page-transition timings", "Both convention documents", "Separate My Events page"],
+  "evidence_directory": "artifacts/event-cell-navigation",
+  "full_page_status": "unchanged; this targeted navigation fix does not mark Events or the whole app verified"
+}

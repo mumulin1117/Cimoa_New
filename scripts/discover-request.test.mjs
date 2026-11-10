@@ -5,9 +5,13 @@ import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_seed } from '../src/stores/seed.js'
 import { discover_destination } from '../src/utils/discoverNavigation.js'
 import { coin_source_route, coin_center_route } from '../src/utils/coinReturnContext.js'
+import { ACTIVE_COIN_PACKAGES } from '../src/stores/coinPackages.js'
 const make = change => {
   setActivePinia(createPinia()); const store = use_app_store(), data = create_seed(); change?.(data)
-  configure_store_runtime(store, { persistence: { read: () => data, write() {} } }); store.hydrate(); return store
+  configure_store_runtime(store, { persistence: { read: () => data, write() {} } }); store.hydrate()
+  const pack = ACTIVE_COIN_PACKAGES.find(row => row.package_id === 'pkg_60')
+  store.purchase_products = [{ package_id: pack.package_id, product_id: pack.product_id, display_price: '$0.99', currency_code: 'USD' }]
+  return store
 }
 test('deck/profile next action is one canonical read-only decision for unconnected, pending and connected', async () => {
   const store = make(), original = JSON.stringify(store.data), context = store.introduction_context('user_zane')

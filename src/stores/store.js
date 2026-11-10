@@ -7,15 +7,17 @@ import { apply_priority } from './matchState.js'
 import { match_presentation } from './matchPresentation.js'
 import { migrate_legacy, upgrade_additive_data } from './migration.js'
 import { normalize_email, valid_email, password_error, signup_error, age_from_date, create_local_credential, verify_local_credential } from '../utils/localAuth.js'
-import { LOCAL_VERIFICATION_CODE } from '../config/local-auth.js'
 import { APP_CONSENT_REVISION, empty_app_consent, has_app_consent } from '../utils/appConsent.js'
 import { community_rules, registration_agreements } from '../utils/registrationCatalog.js'
 import { onboarding_context, onboarding_actions } from './onboarding.js'
 import { profile_context, profile_edit_actions } from './profileEditing.js'
 import { profile_preference_groups } from './profilePreferences.js'
 import { coin_ledger_detail } from './coinSelectors.js'
+import { available_coin_packages, configured_coin_package } from './coinPackages.js'
+import { load_purchase_products, purchase_payload } from '../utils/nativePurchases.js'
 import { ONBOARDING_FLOW, ONBOARDING_GOALS, ONBOARDING_INTEREST_IDS, onboarding_catalog } from '../utils/onboardingFlow.js'
 import { local_verification_context, valid_local_code } from '../utils/localVerification.js'
+import { auth_message } from '../utils/authFeedback.js'
 import * as s from './selectors.js'
 import * as ev from './eventSelectors.js'
 import { event_group, event_message_actions } from './eventMessaging.js'
@@ -23,11 +25,14 @@ import { direct_conversation, direct_message_actions } from './directMessaging.j
 import { waiting_call, waiting_call_actions } from './waitingCalls.js'
 import { connection_for, connection_request } from './connectionEntities.js'
 import { home_feed } from './homeFeed.js'
+import { auto_match_guide_context, auto_match_guide_actions } from './autoMatchGuide.js'
+import { discover_guide_context, discover_guide_actions } from './discoverGuide.js'
 import { introduction_context } from './discoverFlow.js'
 import { introduction_form_actions, introduction_form_data } from './introductionForms.js'
 import { discover_cursor_actions, discover_cursor_index } from './discoverCursor.js'
 import { STATE_KEY, LEGACY_KEY } from '../utils/statePersistence.js'
-import { get_runtime, transact, operation, make_id, failure, unavailable, require_target, require_student, password_hash, add_transaction, connect_users, disconnect_for_block } from './transactions.js'
+import { get_locale, set_locale, SUPPORTED_LOCALES } from '../i18n/index.js'
+import { get_runtime, transact, operation, make_id, failure, unavailable, require_auth, require_target, require_student, password_hash, add_transaction, connect_users, disconnect_for_block } from './transactions.js'
 export { configure_store_runtime, make_id as make_operation_id } from './transactions.js'
 const own = (data, rows) => rows.filter((row) => row.owner_user_id === s.owner_id(data))
 const require_owned = (data, rows, key, id) => {
@@ -35,7 +40,20 @@ const require_owned = (data, rows, key, id) => {
   s.ensure(row, 'This item is unavailable.')
   return row
 }
+const validate_report = (data, now, { target_type, target_id, reason, context_id = null }) => {
+  require_auth(data, now)
+  s.ensure(['user', 'event', 'group'].includes(target_type) && typeof reason === 'string' && reason.trim(), 'Choose a report reason.')
+  if (target_type === 'user') require_target(data, target_id)
+  else if (target_type === 'group') {
+    s.ensure(event_group(data, context_id, target_id, now), 'This event group is unavailable. Join the event to continue.')
+    s.ensure(ev.GROUP_REPORT_REASONS.includes(reason), 'Choose a group chat report reason.')
+  } else s.ensure(data.events.some((row) => row.event_id === target_id), 'Event unavailable.')
+}
 const ready = (state) => state.hydration_status === 'ready' && s.authenticated(state.data, state.clock_ms)
+const legacy_unconfigured_purchase = (data, id) => {
+  const row = data.purchase_requests.find(entry => entry.request_id === id && entry.owner_user_id === s.owner_id(data)), pack = row && data.coin_packages.find(entry => entry.package_id === row.package_id)
+  return !!(row && pack && ['pending', 'timeout'].includes(row.status) && row.product_id == null && pack.product_id == null && row.accepted_at == null && (row.phase == null || row.phase === 'awaiting_host'))
+}
 const profile = (data, id) => {
   const user = s.user_by_id(data, id)
   if (!user) return null
@@ -46,12 +64,14 @@ const check_media = async (store, id, kind) => {
   const row = require_owned(store.data, store.data.media_files, 'media_id', id)
   s.ensure(!kind || row.kind === kind, 'Incorrect media type.')
   const blob = await get_runtime(store).media.get(id)
-  s.ensure(blob instanceof Blob && blob.size === row.byte_size && blob.type === row.mime, 'Saved media is unavailable. Please select it again.')
+  s.ensure(blob instanceof Blob && blob.size === row.byte_size && blob.type === row.mime, 'This media is unavailable. Please select it again.')
   return row
 }
 export const use_app_store = defineStore('app', {
-  state: () => ({ data: create_seed(), introduction_forms: [], discover_cursor: null, hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
+  state: () => ({ data: create_seed(), auto_match_guide_session: null, discover_guide_session: null, introduction_forms: [], discover_cursor: null, purchase_products: [], purchase_catalog_status: 'idle', purchase_catalog_error: '', hydration_status: 'idle', hydration_error: '', last_error: '', clock_ms: Date.now() }),
   getters: {
+    auto_match_guide: state => auto_match_guide_context(state.data, state.clock_ms, state.hydration_status, state.auto_match_guide_session),
+    discover_guide(state) { return discover_guide_context(state.data, state.clock_ms, state.hydration_status, state.discover_guide_session, this.discover_people[this.discover_card_index]?.user_id || '') },
     has_app_consent: state => state.hydration_status === 'ready' && has_app_consent(state.data),
     waiting_call: state => id => state.hydration_status === 'ready' ? waiting_call(state.data, id, state.clock_ms) : null,
     match_presentation: state => (id='',draft=null,query='') => match_presentation(state.data,id,state.clock_ms,state.hydration_status,draft,query),
@@ -73,7 +93,6 @@ export const use_app_store = defineStore('app', {
     },
     onboarding_catalog: state => ({ ...clone_data(onboarding_catalog), steps: [...ONBOARDING_FLOW], goals: clone_data(ONBOARDING_GOALS), interests: ONBOARDING_INTEREST_IDS.map(id => state.data.interests.find(row => row.item_id === id)).filter(Boolean).map(clone_data) }),
     local_verification: state => state.hydration_status === 'ready' ? local_verification_context(state.data, state.clock_ms) : null,
-    local_verification_code: () => LOCAL_VERIFICATION_CODE,
     last_deleted_account: state => state.hydration_status === 'ready' && !s.authenticated(state.data, state.clock_ms) ? clone_data(state.data.accounts.find(row => row.account_id === state.data.auth_flow.deleted_account_id && row.status === 'deleted' && Number.isFinite(row.deleted_at)) || null) : null,
     requires_local_verification() { return this.session.is_authenticated && this.data.accounts.find(row => row.account_id === this.data.session.account_id)?.auth_provider === 'local' && !this.local_verification?.verified },
     session: (state) => ({ ...state.data.session, is_authenticated: ready(state) }),
@@ -103,7 +122,7 @@ export const use_app_store = defineStore('app', {
       return this.discover_people[0] || null
     },
     discover_card_index() { return discover_cursor_index(this.discover_cursor, this.auth_context, this.discover_people.map(person => person.user_id)) },
-    introduction_blocker: (state) => (id) => state.hydration_status === 'ready' ? s.introduction_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
+    introduction_blocker: (state) => (id) => state.hydration_status === 'ready' ? s.introduction_blocker(state.data, id, state.clock_ms) : 'Your information is unavailable. Please try again.',
     introduction_context: state => (id, draft_id = null) => introduction_context(introduction_form_data(state), id, draft_id, state.clock_ms, state.hydration_status),
     social_eligible: state => ready(state) && s.social_eligible(state.data),
     relationship_state: state => id => ready(state) ? clone_data(s.relationship_state(state.data, id, state.clock_ms)) : null,
@@ -143,15 +162,21 @@ export const use_app_store = defineStore('app', {
     coin_transactions: (state) => ready(state) ? clone_data(own(state.data, state.data.coin_transactions)) : [],
     coin_transaction_by_id: (state) => (id) => ready(state) ? clone_data(own(state.data, state.data.coin_transactions).find((row) => row.transaction_id === id) || null) : null,
     coin_ledger_detail: state => id => ready(state) ? coin_ledger_detail(state.data, id, state.clock_ms) : null,
-    coin_packages: (state) => clone_data(state.data.coin_packages),
-    coin_package_by_id: (state) => (id) => clone_data(state.data.coin_packages.find((row) => row.package_id === id) || null),
+    coin_packages: (state) => available_coin_packages(state.purchase_products),
+    coin_package_by_id: (state) => (id) => clone_data(available_coin_packages(state.purchase_products).find(row => row.package_id === id) || state.data.coin_packages.find(row => row.package_id === id) || null),
     current_purchase_requests: (state) => ready(state) ? clone_data(own(state.data, state.data.purchase_requests)) : [],
     purchase_by_id: (state) => (id) => ready(state) ? clone_data(own(state.data, state.data.purchase_requests).find((row) => row.request_id === id) || null) : null,
+    purchase_is_legacy_unconfigured: state => id => ready(state) && legacy_unconfigured_purchase(state.data, id),
     current_reports: (state) => ready(state) ? clone_data(own(state.data, state.data.reports)) : [],
     report_by_id: (state) => (id) => ready(state) ? clone_data(own(state.data, state.data.reports).find((row) => row.report_id === id) || null) : null,
     report_subject: (state) => (report) => {
       if (!ready(state) || !report) return null
       if (report.target_type === 'user') { const user = state.data.users.find((row) => row.user_id === report.target_id); return user ? { id: user.user_id, name: user.user_name, kind: 'user' } : null }
+      if (report.target_type === 'group') {
+        const conversation = state.data.conversations.find(row => row.conversation_id === report.target_id && row.kind === 'group' && row.event_id === report.context_id)
+        const event = conversation && state.data.events.find(row => row.event_id === conversation.event_id)
+        return event ? { id: conversation.conversation_id, name: `${event.title} · Group chat`, kind: 'group' } : null
+      }
       const event = state.data.events.find((row) => row.event_id === report.target_id)
       return event ? { id: event.event_id, name: event.title, kind: 'event' } : null
     },
@@ -173,12 +198,13 @@ export const use_app_store = defineStore('app', {
     events: (state) => ready(state) ? state.data.events.map(event => ev.event_card(state.data, event, state.clock_ms)) : [],
     event_tabs: () => ev.EVENT_TABS,
     event_report_reasons: () => ev.EVENT_REPORT_REASONS,
+    group_report_reasons: () => ev.GROUP_REPORT_REASONS,
     active_event_tab: (state) => ready(state) ? ev.active_event_tab(state.data) : 'Today',
     event_feed: (state) => ready(state) ? ev.event_feed(state.data, state.clock_ms) : [],
     event_by_id() { return id => clone_data(this.events.find(row => row.event_id === id) || null) },
     event_detail: state => id => ready(state) ? ev.event_detail(state.data, id, state.clock_ms) : null,
     event_group: state => (event_id, conversation_id) => ready(state) ? event_group(state.data, event_id, conversation_id, state.clock_ms) : null,
-    event_join_blocker: (state) => id => state.hydration_status === 'ready' ? ev.event_join_blocker(state.data, id, state.clock_ms) : 'Saved data is unavailable. Please retry loading it.',
+    event_join_blocker: (state) => id => state.hydration_status === 'ready' ? ev.event_join_blocker(state.data, id, state.clock_ms) : 'Your information is unavailable. Please try again.',
     event_participants: (state) => (id) => ready(state) ? s.visible_members(state.data, id).map((row) => profile(state.data, row.user_id)) : [],
     event_people() { return (id, query = '') => this.event_participants(id).filter(user => [user.user_name, user.university, user.major].join(' ').toLowerCase().includes(query.trim().toLowerCase())).map(user => ({ ...user, meta: [user.university, user.major].filter(Boolean).join(' · '), relationship_label: user.user_id === this.session.current_user_id ? 'You' : this.can_chat(user.user_id) ? 'Connected' : 'Not connected' })) },
     my_events() { return this.events.filter((row) => row.joined) },
@@ -190,6 +216,8 @@ export const use_app_store = defineStore('app', {
     posts: () => [], comments_for_post: () => () => [],
   },
   actions: {
+    ...auto_match_guide_actions,
+    ...discover_guide_actions,
     ...discover_cursor_actions,
     ...introduction_form_actions,
     ...event_message_actions,
@@ -197,18 +225,32 @@ export const use_app_store = defineStore('app', {
     ...waiting_call_actions,
     ...profile_edit_actions,
     ...onboarding_actions,
-    tick() { this.clock_ms = get_runtime(this).clock() },
+    tick() {
+      this.clock_ms = get_runtime(this).clock()
+      if (this.discover_guide_session && !this.discover_guide.started) this.discover_guide_session = null
+    },
+    refresh_home_feed(expected_context) {
+      try {
+        const now = get_runtime(this).clock()
+        if (this.hydration_status !== 'ready' || !s.authenticated(this.data, now) || expected_context !== this.auth_context) return failure('session_changed', 'Your session has changed. Please sign in again.')
+        // Refresh the projection only: no hydrate, transaction, persistence or deck reconciliation.
+        const feed = home_feed(this.data, now, this.hydration_status, this.hydration_error)
+        this.clock_ms = now
+        return { success: true, data: feed }
+      } catch { return failure('refresh_failed', 'Couldn’t refresh your connections. Please try again.') }
+    },
     set_app_consent(accepted, revision = APP_CONSENT_REVISION) {
       if (typeof accepted !== 'boolean' || revision !== APP_CONSENT_REVISION) return failure('invalid_consent', 'This agreement has changed. Please reopen it and try again.')
       if (this.hydration_status === 'ready' && (accepted ? this.has_app_consent : this.data.app_consent?.revision === null)) return { success: true, repeated: true }
       const result = transact(this, null, (data, now) => {
         data.app_consent = accepted ? { revision, accepted_at: now } : empty_app_consent()
       }, { public: true })
-      if (!result.success) return failure('consent_save_failed', 'Your agreement could not be saved. Please try again.')
+      if (!result.success) return failure('consent_save_failed', 'Your agreement couldn’t be updated. Please try again.')
       return result
     },
     hydrate() {
       if (this.hydration_status === 'ready') return { success: true }
+      this.discover_guide_session = null
       this.hydration_status = 'loading'
       try {
         const rt = get_runtime(this), current = rt.persistence.read(STATE_KEY)
@@ -217,7 +259,7 @@ export const use_app_store = defineStore('app', {
         this.data = data; this.clock_ms = rt.clock(); this.hydration_status = 'ready'; this.hydration_error = ''
         return { success: true }
       } catch {
-        this.hydration_status = 'error'; this.hydration_error = 'Saved data could not be loaded. Your data has not been changed. Please retry.'
+        this.hydration_status = 'error'; this.hydration_error = 'Your information couldn’t be loaded. Nothing has changed. Please try again.'
         return failure('storage_read_failed', this.hydration_error)
       }
     },
@@ -241,22 +283,22 @@ export const use_app_store = defineStore('app', {
       } catch { return unavailable('Secure authentication') }
     },
     async inspect_login_test_state(kind) {
-      if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Saved data is unavailable. Please retry loading it.')
+      if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Your information is unavailable. Please try again.')
       if (kind === 'wrong_password') {
         const account = this.data.accounts.find(row => row.status === 'active' && row.auth_provider === 'fixture')
         if (!account) return failure('test_state_unavailable', 'The requested account is unavailable. No changes were made.')
         try {
           const deliberately_wrong = await password_hash('\0cimoa-source-wrong-password')
-          if (deliberately_wrong === account.credential_hash) return failure('test_state_unavailable', 'The wrong-password test state is unavailable. No changes were made.')
+          if (deliberately_wrong === account.credential_hash) return failure('test_state_unavailable', 'This sign-in option is unavailable. Please try again.')
           return { success: true, data: { email: account.email, message: 'Incorrect password. Try again or reset it.' } }
-        } catch { return unavailable('Secure authentication test state') }
+        } catch { return unavailable('Secure authentication') }
       }
       if (kind === 'unverified_account') {
         const context = local_verification_context(this.data, get_runtime(this).clock())
         if (!context || context.verified) return failure('test_state_unavailable', 'No account awaiting confirmation is available. No changes were made.')
         return { success: true, data: { email: context.email, message: 'This account still needs university verification.' } }
       }
-      return failure('invalid_test_state', 'This login test state is unavailable. No changes were made.')
+      return failure('invalid_test_state', 'This sign-in option is unavailable. Please try again.')
     },
     logout(expected_account_id) {
       return transact(this, null, (data, now) => {
@@ -309,7 +351,7 @@ export const use_app_store = defineStore('app', {
       }, { expected_owner: owner })
       if (!result.success) return result
       const cleanup = await Promise.allSettled(media_ids.map((id) => get_runtime(this).media.delete(id)))
-      return { ...result, data: { ...result.data, cleanup_warning: cleanup.some((row) => row.status === 'rejected') ? 'Some media could not be removed. Clear app data before sharing this device.' : '' } }
+      return { ...result, data: { ...result.data, cleanup_warning: cleanup.some((row) => row.status === 'rejected') ? 'Some media couldn’t be removed. To protect your privacy, clear the app’s storage.' : '' } }
     },
     async register_local_account(input, { is_current = () => true } = {}) {
       const expected_context = auth_context_key(this.data)
@@ -390,7 +432,7 @@ export const use_app_store = defineStore('app', {
     },
     apply_verification(code, expected_account_id) {
       if (!valid_local_code(code)) return failure('invalid_code', 'That code is incorrect. Enter the six-digit account verification code.')
-      if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Saved data is unavailable. Please retry loading it.')
+      if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Your information is unavailable. Please try again.')
       const context = local_verification_context(this.data, get_runtime(this).clock())
       if (!context || context.account_id !== expected_account_id) return failure('account_changed', 'Log in to the same account and try again.')
       if (context.verified) return { success: true, repeated: true, data: context }
@@ -421,7 +463,7 @@ export const use_app_store = defineStore('app', {
     },
     save_draft(kind, target_id, payload) {
       return transact(this, null, (data, now) => {
-        s.ensure(typeof kind === 'string' && kind && payload && typeof payload === 'object' && !/"(?:password|pw|code|credential_hash)"|data:[^;]+;base64/.test(JSON.stringify(payload)), 'This draft contains unsupported data.')
+        s.ensure(typeof kind === 'string' && kind && payload && typeof payload === 'object' && !/"(?:password|pw|code|credential_hash)"|data:[^;]+;base64/.test(JSON.stringify(payload)), 'This content couldn’t be updated. Check your information and try again.')
         let row = own(data, data.drafts).find((entry) => entry.kind === kind && entry.target_id === target_id)
         if (!row) { row = { draft_id: make_id('draft'), owner_user_id: s.owner_id(data), kind, target_id }; data.drafts.push(row) }
         Object.assign(row, { payload: clone_data(payload), updated_at: now }); return row.draft_id
@@ -442,7 +484,7 @@ export const use_app_store = defineStore('app', {
     update_introduction_draft(id, patch) {
       return transact(this, null, (data, now) => {
         const draft = require_owned(data, data.drafts, 'draft_id', id)
-        s.ensure(draft.kind === 'introduction' && !draft.payload.completed_request_id, 'This introduction draft is unavailable.')
+        s.ensure(draft.kind === 'introduction' && !draft.payload.completed_request_id, 'This introduction is unavailable.')
         const blocker = s.introduction_blocker(data, draft.target_id, now); s.ensure(!blocker, blocker)
         s.ensure(data.users.find(row => row.user_id === draft.target_id)?.icebreaker_ids.includes(draft.payload.question_id), 'Choose one of this person’s current questions.')
         s.ensure(patch && Object.keys(patch).every(key => ['text','mode'].includes(key)), 'Unsupported introduction field.')
@@ -479,21 +521,21 @@ export const use_app_store = defineStore('app', {
       const scope_current = () => is_current() && auth_context_key(this.data) === expected_context
       let wrote_blob = false, published = false
       try {
-        if (!scope_current()) return failure('cancelled', 'Media save was cancelled.')
+        if (!scope_current()) return failure('cancelled', 'Adding media was cancelled.')
         s.ensure(this.session.is_authenticated, 'Please log in again.')
         s.ensure(['image', 'audio'].includes(kind) && blob instanceof Blob && blob.size > 0 && blob.size <= 20 * 1024 * 1024 && blob.type.startsWith(`${kind}/`), 'Choose a supported file smaller than 20 MB.')
         const decoded = await rt.inspect_media(blob, kind)
-        if (!scope_current()) return failure('cancelled', 'Media save was cancelled.')
+        if (!scope_current()) return failure('cancelled', 'Adding media was cancelled.')
         duration_ms = decoded.duration_ms
         s.ensure(kind !== 'audio' || Number.isFinite(duration_ms) && duration_ms > 0, 'Record a playable voice note first.')
         await rt.media.put(media_id, blob)
         wrote_blob = true
-        if (!scope_current()) return failure('cancelled', 'Media save was cancelled.')
+        if (!scope_current()) return failure('cancelled', 'Adding media was cancelled.')
         const result = transact(this, null, (data, now) => {
           const row = { media_id, owner_user_id: owner, kind, media_url: `indexeddb://${media_id}`, mime: blob.type, duration_ms, byte_size: blob.size }
           if (introduction_draft_id) {
             const draft = require_owned(data, data.drafts, 'draft_id', introduction_draft_id)
-            s.ensure(kind === 'audio' && draft.kind === 'introduction' && !draft.payload.completed_request_id, 'This introduction draft is unavailable.')
+            s.ensure(kind === 'audio' && draft.kind === 'introduction' && !draft.payload.completed_request_id, 'This introduction is unavailable.')
             const blocker = s.introduction_blocker(data, draft.target_id, now); s.ensure(!blocker, blocker)
             s.ensure(data.users.find(row => row.user_id === draft.target_id)?.icebreaker_ids.includes(draft.payload.question_id), 'Choose one of this person’s current questions.')
             draft.payload.audio_id = media_id; draft.payload.mode = 'voice'; draft.updated_at = now
@@ -502,7 +544,7 @@ export const use_app_store = defineStore('app', {
         }, { expected_owner: owner, expected_context })
         published = result.success
         return result
-      } catch (error) { return failure('media_failed', error.message || 'Media could not be saved.') }
+      } catch (error) { return failure('media_failed', auth_message(error.message, 'Your media couldn’t be added. Please try again.')) }
       finally { if (wrote_blob && !published) { try { await rt.media.delete(media_id) } catch { this.last_error = 'Media was not published; temporary media cleanup failed. Retry storage when available.' } } }
     },
     async discard_media(id, { is_current = () => true } = {}) {
@@ -530,7 +572,7 @@ export const use_app_store = defineStore('app', {
         }, { expected_owner: owner, expected_context })
         if (!result.success) await restore_blob()
         return result
-      } catch (error) { return failure('media_failed', error.message || 'The recording could not be discarded.') }
+      } catch (error) { return failure('media_failed', auth_message(error.message, 'The recording couldn’t be discarded. Please try again.')) }
     },
     async save_profile_photos(media_ids) {
       const expected_context = auth_context_key(this.data)
@@ -544,14 +586,14 @@ export const use_app_store = defineStore('app', {
           user.photo_ids = media.map((row, position) => { const photo_id = make_id('photo'); data.profile_photos.push({ photo_id, user_id: owner, media_url: row.media_url, position }); return photo_id })
           user.avatar_url = media[0].media_url
         }, { expected_owner: owner, expected_context })
-      } catch (error) { return failure('media_failed', error.message) }
+      } catch (error) { return failure('media_failed', auth_message(error.message, 'Your photos couldn’t be updated. Please try again.')) }
     },
     async send_introduction({ user_id, question_id, kind = 'text', text = '', audio_id = null, operation_id, draft_id = null }, { is_current = () => true } = {}) {
       const expected_context = auth_context_key(this.data)
       const owner = s.owner_id(this.data)
       const scope_current = () => is_current() && auth_context_key(this.data) === expected_context
       if (!scope_current()) return failure('cancelled', 'Introduction was cancelled.')
-      try { if (kind === 'voice') await check_media(this, audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
+      try { if (kind === 'voice') await check_media(this, audio_id, 'audio') } catch (error) { return failure('media_unavailable', auth_message(error.message, 'This recording is unavailable. Please record it again.')) }
       if (!scope_current()) return failure('cancelled', 'Introduction was cancelled.')
       return transact(this, operation(operation_id, 'introduction', [user_id, question_id, kind, text, audio_id, draft_id]), (data, now) => {
         const blocker = s.introduction_blocker(data, user_id, now)
@@ -564,7 +606,7 @@ export const use_app_store = defineStore('app', {
         data.requests.push({ request_id, sender_id: owner, recipient_id: user_id, question_id, question_text: data.icebreakers.find(row => row.question_id === question_id).text, kind, text: text.trim(), audio_id: kind === 'voice' ? audio_id : null, status: 'pending', created_at: now, resolved_at: null })
         if (draft_id) {
           const draft = require_owned(data, data.drafts, 'draft_id', draft_id)
-          s.ensure(draft.kind === 'introduction' && draft.target_id === user_id && draft.payload.question_id === question_id, 'This introduction draft is unavailable.')
+          s.ensure(draft.kind === 'introduction' && draft.target_id === user_id && draft.payload.question_id === question_id, 'This introduction is unavailable.')
           draft.payload.completed_request_id = request_id
         }
         return request_id
@@ -574,7 +616,7 @@ export const use_app_store = defineStore('app', {
     prepare_introduction_spend(draft_id, kind) {
       return transact(this, null, (data, now) => {
         const intro = require_owned(data, data.drafts, 'draft_id', draft_id), payload = intro.payload
-        s.ensure(intro.kind === 'introduction' && !payload.completed_request_id, 'This introduction draft is unavailable.')
+        s.ensure(intro.kind === 'introduction' && !payload.completed_request_id, 'This introduction is unavailable.')
         s.ensure(['text', 'voice'].includes(kind) && payload.mode === kind, 'The introduction changed. Review it again before sending.')
         const blocker = s.introduction_blocker(data, intro.target_id, now); s.ensure(!blocker, blocker)
         s.ensure(data.users.find(row => row.user_id === intro.target_id)?.icebreaker_ids.includes(payload.question_id), 'Choose one of this person’s current questions.')
@@ -598,7 +640,7 @@ export const use_app_store = defineStore('app', {
       const payload = clone_data(context.payload || {})
       if (!['text_introduction', 'voice_introduction', 'priority_match'].includes(payload.kind)) return failure('operation_invalid', 'This coin operation is invalid. No coins were deducted.')
       if (!scope_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
-      try { if (payload.kind === 'voice_introduction') await check_media(this, payload.audio_id, 'audio') } catch (error) { return failure('media_unavailable', error.message) }
+      try { if (payload.kind === 'voice_introduction') await check_media(this, payload.audio_id, 'audio') } catch (error) { return failure('media_unavailable', auth_message(error.message, 'This recording is unavailable. Please record it again.')) }
       if (!scope_current()) return failure('cancelled', 'The operation was cancelled. No coins were deducted.')
       return transact(this, operation(payload.operation_id, 'coin-spend', [context_id, payload]), (data, now) => {
         const current = require_owned(data, data.drafts, 'draft_id', context_id)
@@ -606,7 +648,7 @@ export const use_app_store = defineStore('app', {
         if (['text_introduction', 'voice_introduction'].includes(payload.kind)) {
           const kind = payload.kind === 'voice_introduction' ? 'voice' : 'text'
           const intro = require_owned(data, data.drafts, 'draft_id', payload.introduction_draft_id)
-          s.ensure(intro.kind === 'introduction' && intro.target_id === payload.user_id && intro.payload.question_id === payload.question_id && !intro.payload.completed_request_id, 'This introduction draft is unavailable. No coins were deducted.')
+          s.ensure(intro.kind === 'introduction' && intro.target_id === payload.user_id && intro.payload.question_id === payload.question_id && !intro.payload.completed_request_id, 'This introduction is unavailable. No coins were deducted.')
           s.ensure(intro.payload.mode === kind, 'The introduction changed. Review it again before sending.')
           if (payload.draft_audio_id) s.ensure(intro.payload.audio_id === payload.audio_id && payload.draft_audio_id === payload.audio_id, 'The recording changed. Review it again before sending.')
           const blocker = s.introduction_blocker(data, payload.user_id, now)
@@ -614,7 +656,7 @@ export const use_app_store = defineStore('app', {
           s.ensure(data.users.find(row => row.user_id === payload.user_id)?.icebreaker_ids.includes(payload.question_id), 'Choose one of this person’s current questions.')
           if (kind === 'voice') {
             s.ensure(s.privacy_for(data, payload.user_id).allow_voice !== false, 'This person is not accepting voice introductions.')
-            s.ensure(data.media_files.some((row) => row.media_id === payload.audio_id && row.owner_user_id === owner && row.kind === 'audio'), 'Saved media is unavailable. Please record it again.')
+            s.ensure(data.media_files.some((row) => row.media_id === payload.audio_id && row.owner_user_id === owner && row.kind === 'audio'), 'This recording is unavailable. Please record it again.')
           } else s.ensure(typeof payload.text === 'string' && payload.text.trim() && payload.text.length <= 300 && intro.payload.text?.trim() === payload.text, 'The answer changed. Review it again before sending.')
           const request_id = make_id('request')
           add_transaction(data, -10, `${kind}:${request_id}`, 'spend', request_id, now)
@@ -684,7 +726,7 @@ export const use_app_store = defineStore('app', {
     async send_message(conversation_id, body, operation_id = make_id(), media_id = null) {
       const owner = s.owner_id(this.data)
       let media
-      try { if (media_id) media = await check_media(this, media_id) } catch (error) { return failure('media_unavailable', error.message) }
+      try { if (media_id) media = await check_media(this, media_id) } catch (error) { return failure('media_unavailable', auth_message(error.message, 'This attachment is unavailable. Please select it again.')) }
       return transact(this, operation(operation_id, 'message', [conversation_id, body, media_id]), (data, now) => {
         s.ensure(s.can_open_conversation(data, data.conversations.find((row) => row.conversation_id === conversation_id)), 'This conversation is unavailable.')
         s.ensure(media || typeof body === 'string' && body.trim(), 'Write a message first.')
@@ -720,23 +762,62 @@ export const use_app_store = defineStore('app', {
       })
     },
     submit_report({ target_type, target_id, reason, description = '', context_id = null, also_block = false }) {
-      return transact(this, null, (data, now) => {
-        s.ensure(['user', 'event'].includes(target_type) && typeof reason === 'string' && reason.trim(), 'Choose a report reason.')
-        if (target_type === 'user') require_target(data, target_id)
-        else s.ensure(data.events.some((row) => row.event_id === target_id), 'Event unavailable.')
-        const report_id = make_id('report'); data.reports.push({ report_id, owner_user_id: s.owner_id(data), target_type, target_id, reason, description, context_id, status: 'local_saved', created_at: now })
-        if (also_block) { s.ensure(target_type === 'user' && !s.blocked(data, target_id), 'Only an unblocked user can be blocked.'); data.blocked_users.push({ block_id: make_id('block'), owner_user_id: s.owner_id(data), user_id: target_id, created_at: now }); disconnect_for_block(data, target_id, now) }
-        return report_id
+      const input = { target_type, target_id, reason, description, context_id }
+      if (also_block) return transact(this, null, (data, now) => {
+        validate_report(data, now, input)
+        s.ensure(target_type === 'user' && !s.blocked(data, target_id), 'Only an unblocked user can be blocked.')
+        data.blocked_users.push({ block_id: make_id('block'), owner_user_id: s.owner_id(data), user_id: target_id, created_at: now })
+        disconnect_for_block(data, target_id, now)
+        return null
       })
+      if (this.hydration_status !== 'ready') return failure('storage_not_ready', 'Your information is unavailable. Please try again.')
+      try {
+        validate_report(clone_data(this.data), get_runtime(this).clock(), input)
+        this.last_error = ''
+        return { success: true, data: null }
+      } catch (error) {
+        this.last_error = auth_message(error.message, 'Your report couldn’t be completed. Please try again.')
+        return failure('operation_failed', this.last_error)
+      }
     },
     report_user(id, reason) { return this.submit_report({ target_type: 'user', target_id: id, reason }) },
     update_settings(group, patch) { return transact(this, null, (data) => { const row = data.settings.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(['notifications', 'privacy'].includes(group) && Object.keys(patch).every((key) => key in row[group] && typeof patch[key] === 'boolean'), 'Invalid setting.'); Object.assign(row[group], patch) }) },
     set_privacy_visibility(value) { return transact(this, null, (data) => { const row = data.settings.find((entry) => entry.owner_user_id === s.owner_id(data)); s.ensure(['discover', 'auto_match', 'hidden'].includes(value), 'Choose a valid profile visibility.'); row.privacy.discover_visible = value === 'discover'; row.privacy.auto_match_visible = value !== 'hidden' }) },
-    set_language(value) { return value === 'en-US' ? { success: true, repeated: true, data: 'en-US' } : failure('language_unavailable', 'Traditional Chinese is currently unavailable. English remains selected.') },
+    set_language(value) {
+      if (!SUPPORTED_LOCALES.includes(value)) return failure('language_unavailable', 'This language is not available.')
+      const previous_locale = get_locale()
+      try { set_locale(value, { persist: true }) }
+      catch { return failure('language_save_failed', 'Your language preference couldn’t be updated. Please try again.') }
+      const result = transact(this, null, data => {
+        const row = data.settings.find(entry => entry.owner_user_id === s.owner_id(data))
+        s.ensure(row, 'Language settings are unavailable.')
+        row.language = value
+        return value
+      })
+      if (!result.success) {
+        try { set_locale(previous_locale, { persist: true }) }
+        catch { set_locale(previous_locale) }
+        return result
+      }
+      return result
+    },
     toggle_setting(key) { const map = { notifications_enabled: ['notifications', 'master'], show_online_status: ['privacy', 'show_online'] }; const path = map[key]; return path ? this.update_settings(path[0], { [path[1]]: !this.current_settings[path[0]][path[1]] }) : unavailable('Location permission settings') },
+    async load_purchase_catalog() {
+      if (this.purchase_catalog_status === 'loading') return failure('busy', 'Coin packages are being loaded.')
+      this.purchase_catalog_status = 'loading'; this.purchase_catalog_error = ''
+      try {
+        const products = await load_purchase_products(get_runtime(this).services.purchase_products)
+        this.purchase_products = products; this.purchase_catalog_status = 'ready'
+        return { success: true, data: clone_data(products) }
+      } catch {
+        this.purchase_products = []; this.purchase_catalog_status = 'error'; this.purchase_catalog_error = 'Coin packages are unavailable right now. Please try again later.'
+        return failure('products_unavailable', this.purchase_catalog_error)
+      }
+    },
     begin_purchase(package_id, operation_id, return_context_id = null) {
       return transact(this, operation(operation_id, 'purchase', return_context_id ? [package_id, return_context_id] : package_id), (data, now) => {
-        s.ensure(data.coin_packages.some(row => row.package_id === package_id) && !own(data, data.purchase_requests).some(row => row.status === 'pending'), 'A purchase is already pending or this package is unavailable.')
+        const pack = configured_coin_package(package_id), product = pack && this.purchase_products.find(row => row.package_id === package_id && row.product_id === pack.product_id && typeof row.display_price === 'string' && !!row.display_price.trim())
+        s.ensure(pack && product && !own(data, data.purchase_requests).some(row => row.status === 'pending'), 'A purchase is already pending or this package is unavailable.')
         if (return_context_id) {
           const draft = require_owned(data, data.drafts, 'draft_id', return_context_id)
           const context = draft.kind === 'introduction' ? introduction_context(data, draft.target_id, return_context_id, now) : null
@@ -744,31 +825,79 @@ export const use_app_store = defineStore('app', {
           const match=draft.kind === 'match_return' && (draft.payload.kind==='match_entry'||draft.payload.kind==='match_priority'&&data.match_sessions.some(m=>m.match_id===draft.payload.match_id&&m.owner_user_id===s.owner_id(data)))
           s.ensure(intro||match, 'This purchase return context is unavailable.')
         }
+        const snapshot = { ...pack, price: product.display_price, currency_code: product.currency_code || '' }, existing = data.coin_packages.find(row => row.package_id === package_id)
+        if (existing) Object.assign(existing, snapshot); else data.coin_packages.push(snapshot)
         const request_id = make_id('purchase')
-        data.purchase_requests.push({ request_id, owner_user_id: s.owner_id(data), package_id, status: 'pending', created_at: now, receipt_id: null, ...(return_context_id ? { return_context_id } : {}) })
+        data.purchase_requests.push({ request_id, owner_user_id: s.owner_id(data), package_id, product_id: pack.product_id, coins: pack.coins, display_price: product.display_price, currency_code: product.currency_code || '', status: 'pending', phase: 'awaiting_host', accepted_at: null, created_at: now, receipt_id: null, ...(return_context_id ? { return_context_id } : {}) })
         return request_id
       })
     },
-    expire_purchases() { return transact(this, null, (data, now) => { for (const row of own(data, data.purchase_requests)) if (row.status === 'pending' && now - row.created_at >= 8000) row.status = 'timeout' }) },
-    async settle_purchase(id, result, { is_current = () => true, expected_context = auth_context_key(this.data), received_at } = {}) {
-      const owner = s.owner_id(this.data), before = this.data.purchase_requests.find((row) => row.request_id === id && row.owner_user_id === owner)
-      if (!before || before.status !== 'pending') return failure('stale_callback', 'This purchase request is no longer pending.')
-      if (result.status === 'success') {
-        let valid = false
-        try { valid = !!await get_runtime(this).services.verify_purchase?.({ ...result, request_id: id, owner_user_id: owner, package_id: before.package_id }) } catch { /* Untrusted receipt never changes coins. */ }
-        if (!valid) result = { status: 'failure' }
-      }
+    note_purchase_state(id, result, { is_current = () => true, expected_context = auth_context_key(this.data) } = {}) {
+      const before = this.purchase_by_id(id)
+      if (!before || !['pending', 'timeout'].includes(before.status)) return failure('stale_callback', 'This purchase request is no longer pending.')
+      const payload = purchase_payload(before, this.coin_package_by_id(before.package_id))
+      if (!['request_id', 'package_id', 'owner_user_id', 'product_id'].every(key => payload[key] === result?.[key])) return failure('purchase_mismatch', 'The purchase details do not match. Please reopen the coin store.')
+      const recovery_state = result.recovery_state || '', phase = recovery_state === 'interrupted' ? 'interrupted' : recovery_state === 'abandoned' ? 'abandoned' : result.status === 'accepted' ? 'accepted' : 'pending'
+      if (before.phase === phase && before.recovery_state === recovery_state && before.can_abandon_interrupted === (result.can_abandon_interrupted === true)) return { success: true, repeated: true, data: { status: before.status } }
       return transact(this, null, (data, now) => {
         s.ensure(is_current() && auth_context_key(data) === expected_context, 'The account changed. Reopen the purchase to continue.')
         const row = require_owned(data, data.purchase_requests, 'request_id', id)
-        s.ensure(row.status === 'pending' && ['success', 'failure', 'cancelled', 'timeout'].includes(result.status), 'This purchase callback is no longer valid.')
+        s.ensure(['pending', 'timeout'].includes(row.status), 'This purchase is already completed.')
+        Object.assign(row, { status: 'pending', phase, recovery_state, can_abandon_interrupted: result.can_abandon_interrupted === true, accepted_at: row.accepted_at || now })
+        if (phase === 'abandoned') row.status = 'cancelled'
+        return { status: row.status }
+      })
+    },
+    expire_purchases() { return transact(this, null, (data, now) => { for (const row of own(data, data.purchase_requests)) if (row.status === 'pending' && !row.accepted_at && (!row.phase || row.phase === 'awaiting_host') && now - row.created_at >= 8000) row.status = 'timeout' }) },
+    expire_unconfigured_purchase(id, { is_current = () => true, expected_context = auth_context_key(this.data) } = {}) {
+      return transact(this, null, (data, now) => {
+        s.ensure(is_current() && auth_context_key(data) === expected_context, 'The account changed. Reopen the purchase to continue.')
+        s.ensure(legacy_unconfigured_purchase(data, id), 'This purchase must be checked with the App Store.')
+        const row = require_owned(data, data.purchase_requests, 'request_id', id)
+        s.ensure(row.status === 'pending' && Number.isFinite(row.created_at) && now - row.created_at >= 8000, 'The purchase is still being checked.')
+        row.status = 'timeout'
+        return { status: row.status }
+      })
+    },
+    async settle_purchase(id, result, { is_current = () => true, expected_context = auth_context_key(this.data), received_at, allow_recovery = false } = {}) {
+      const owner = s.owner_id(this.data), before = this.data.purchase_requests.find(row => row.request_id === id && row.owner_user_id === owner)
+      if (!before && !(allow_recovery && result?.status === 'success')) return failure('stale_callback', 'This purchase request is unavailable.')
+      let verified = null
+      if (result?.status === 'success') {
+        try { verified = await get_runtime(this).services.verify_purchase?.(result) } catch {}
+        if (!verified || verified.verified !== true || !['request_id', 'package_id', 'owner_user_id', 'product_id'].every(key => verified[key] === result[key]) || verified.request_id !== id || verified.owner_user_id !== owner || !verified.receipt_id || verified.receipt_id !== result.receipt_id || verified.transaction_id && verified.transaction_id !== verified.receipt_id) return failure('verification_pending', 'Your purchase is awaiting confirmation. Please reopen the coin store to check again.')
+        if (!is_current() || this.auth_context !== expected_context) return failure('session_changed', 'The account changed. Reopen the purchase to continue.')
+        const prior = this.data.purchase_requests.find(row => row.receipt_id === verified.receipt_id)
+        if (prior) return prior.request_id === id && prior.owner_user_id === owner && prior.status === 'success' ? { success: true, repeated: true, data: { status: 'success', receipt_id: verified.receipt_id } } : failure('duplicate_receipt', 'This payment belongs to another purchase.')
+      }
+      return transact(this, null, (data, now) => {
+        s.ensure(is_current() && auth_context_key(data) === expected_context, 'The account changed. Reopen the purchase to continue.')
+        let row = data.purchase_requests.find(entry => entry.request_id === id && entry.owner_user_id === owner)
+        const pack = configured_coin_package(verified?.package_id || row?.package_id)
+        if (!row && allow_recovery && verified) {
+          s.ensure(pack && verified.product_id === pack.product_id, 'The purchased product is unavailable. Please contact support.')
+          const catalog = data.coin_packages.find(entry => entry.package_id === pack.package_id)
+          if (!catalog) data.coin_packages.push({ ...pack })
+          row = { request_id: id, owner_user_id: owner, package_id: pack.package_id, product_id: pack.product_id, coins: pack.coins, display_price: verified.display_price || '', status: 'pending', phase: 'accepted', accepted_at: now, created_at: Number.isFinite(verified.purchased_at) && verified.purchased_at <= now ? verified.purchased_at : now, receipt_id: null }
+          data.purchase_requests.push(row)
+        }
+        s.ensure(row && ['success', 'failure', 'cancelled', 'timeout'].includes(result?.status), 'This purchase result is no longer valid. Please reopen the purchase.')
+        const expected = purchase_payload(row, data.coin_packages.find(entry => entry.package_id === row.package_id))
+        s.ensure(['request_id', 'package_id', 'owner_user_id', 'product_id'].every(key => expected[key] === result[key]), 'Purchase details do not match.')
         const delivered_at = received_at ?? now
-        s.ensure(Number.isFinite(delivered_at) && delivered_at >= row.created_at && delivered_at <= now, 'The purchase callback time is invalid.')
-        if (result.status === 'success' && delivered_at - row.created_at >= 8000) { row.status = 'timeout'; return { status: row.status } }
-        if (result.status === 'success') {
-          const pack = data.coin_packages.find((entry) => entry.package_id === row.package_id)
-          s.ensure(pack.product_id && result.product_id === pack.product_id && result.package_id === row.package_id && result.owner_user_id === owner && result.receipt_id && !data.purchase_requests.some((entry) => entry.receipt_id === result.receipt_id), 'Purchase details do not match.')
-          add_transaction(data, pack.coins, `purchase:${id}`, 'purchase', id, now); row.receipt_id = result.receipt_id
+        s.ensure(Number.isFinite(delivered_at) && delivered_at <= now && (verified || delivered_at >= row.created_at), 'The purchase result couldn’t be confirmed. Please try again.')
+        if (verified) {
+          s.ensure(pack && verified.product_id === pack.product_id, 'Purchase details do not match.')
+          const prior = data.purchase_requests.find(entry => entry.receipt_id === verified.receipt_id)
+          if (prior) { s.ensure(prior.request_id === id && prior.owner_user_id === owner && prior.status === 'success', 'This payment belongs to another purchase.'); return { status: 'success', repeated: true, receipt_id: verified.receipt_id } }
+          s.ensure(row.status !== 'success', 'This purchase is already complete.')
+          const entry = add_transaction(data, pack.coins, `purchase:${verified.receipt_id}`, 'purchase', id, now)
+          Object.assign(entry, { receipt_id: verified.receipt_id, product_id: pack.product_id, display_price: verified.display_price || row.display_price || '' })
+          Object.assign(row, { receipt_id: verified.receipt_id, phase: 'completed', verified_at: now, display_price: verified.display_price || row.display_price || '', coins: pack.coins, product_id: pack.product_id })
+        } else {
+          s.ensure(row.status === 'pending' || row.status === 'timeout' && result.native_final === true, 'This purchase result is no longer pending.')
+          s.ensure(result.status !== 'timeout' || !row.accepted_at, 'Your purchase is still awaiting the App Store. It has not been cancelled.')
+          s.ensure(result.status !== 'cancelled' || result.recovery_state === 'cancelled' || result.recovery_state === 'abandoned' || result.native_final === true, 'Only the App Store can cancel an accepted purchase.')
         }
         row.status = result.status; return { status: row.status }
       }, { expected_owner: owner })
@@ -781,7 +910,7 @@ export const use_app_store = defineStore('app', {
       return transact(this, operation(event.event_id, 'refund', id), (data, now) => { const row = require_owned(data, data.coin_transactions, 'transaction_id', id); s.ensure(row.amount < 0 && row.status === 'completed', 'This transaction cannot be refunded.'); add_transaction(data, -row.amount, `refund:${id}`, 'refund', id, now) }, { expected_owner: owner })
     },
     spend_coins() { return failure('unsupported_action', 'Use a valid introduction or matching request to spend coins.') },
-    complete_purchase() { return failure('unverified_purchase', 'A verified purchase callback is required.') },
+    complete_purchase() { return failure('unverified_purchase', 'The purchase must be confirmed before coins can be added.') },
     set_match_status() { return unavailable('Verified matching events') },
     toggle_relationship() { return failure('question_required', 'Choose a question and send a real introduction first.') },
     toggle_post_reaction() { return failure('unsupported_action', 'Posts are not part of Cimoa.') },

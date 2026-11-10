@@ -1,4 +1,5 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { computed, ref, onUnmounted } from 'vue'
 import { onHide, onShow } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -26,11 +27,11 @@ const verify = async () => {
   error.value = ''; store.tick()
   if (!context.value) { error.value = 'Log in or create an account first.'; return }
   if (context.value.verified) { await go('/pages/auth/verification/success'); return }
-  if (!/^[0-9]{6}$/.test(code.value)) { error.value = 'Enter exactly six digits, including the leading zeroes.'; return }
+  if (!/^[0-9]{6}$/.test(code.value)) { error.value = 'Enter a six-digit verification code.'; return }
   const account_id = context.value.account_id, value = code.value
   const result = await run_with_loading(() => store.apply_verification(value, account_id))
   if (!active || result.reason === 'cancelled') return
-  if (!result.success) { error.value = result.message || 'Account verification could not be saved. Please retry.'; return }
+  if (!result.success) { error.value = result.message || 'Couldn’t confirm your code. Please try again.'; return }
   code.value = ''; await go('/pages/auth/verification/success')
 }
 </script>
@@ -45,12 +46,10 @@ const verify = async () => {
         <input v-model="code_model" class="verification-input" type="text" inputmode="numeric" aria-label="Six-digit account verification code" :disabled="is_loading" @input="error = ''" @confirm="verify" />
       </view>
       <text v-else class="verification-saved" role="status">Account code confirmed.</text>
-      <text v-if="error" class="auth-error-box" role="alert">{{ error }}</text>
-      <text class="verification-code-hint">Code: {{ store.local_verification_code }}</text>
+      <text v-if="error" class="auth-error-box" role="alert">{{ auth_message(error) }}</text>
       <view class="auth-link verification-change" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verCode.changeEmail.click.1" @click="go('/pages/auth/verification/email')" @keydown.enter="go('/pages/auth/verification/email')">Change email</view>
-      <view class="verification-info"><SourceIcon name="verification-university" /><view class="verification-info-copy"><text class="verification-info-title">Account verification</text><text>Account confirmation and student verification are separate steps.</text></view></view>
     </template>
-    <text v-else class="auth-error-box" role="alert">{{ store.hydration_error || 'Log in or create an account first. No verification has been saved.' }}</text>
+    <text v-else class="auth-error-box" role="alert">{{ auth_message(store.hydration_error || 'Log in or create an account before confirming your code.') }}</text>
     <template #footer><view v-if="context" class="auth-primary verification-submit" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="verCode.goVerSuccess.click.1" @click="verify" @keydown.enter="verify"><text>{{ context.verified ? 'Continue' : 'Verify Code' }}</text><SourceIcon name="arrow-right" :stroke-width="2.4" /></view><view v-else class="auth-primary" role="button" tabindex="0" @click="go('/pages/auth/login')" @keydown.enter="go('/pages/auth/login')">Log In</view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Checking code…" /></template>
   </AuthPageFrame>
@@ -88,35 +87,7 @@ const verify = async () => {
   font-weight: 800;
 }
 .verification-input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; }
-.verification-code-hint {
-  display: block;
-  margin-top: 34.351rpx;
-  color: var(--cimoa-text-auth-muted);
-  font-size: 30.534rpx;
-  line-height: 1.4;
-  text-align: center;
-}
 .verification-change { text-align: center; margin-top: 11.45rpx; text-decoration: underline; }
-.verification-info {
-  display: flex;
-  align-items: center;
-  gap: 30.534rpx;
-  margin-top: 41.985rpx;
-  padding: 34.351rpx;
-  border-radius: 45.802rpx;
-  background: var(--cimoa-surface-card);
-  box-shadow: var(--cimoa-shadow-card);
-}
-.verification-info > .source-icon { flex: none; width: 87.786rpx; height: 87.786rpx; }
-.verification-info-copy {
-  min-width: 0;
-  padding-left: 30.534rpx;
-  border-left: 1px solid var(--cimoa-surface-border);
-  color: var(--cimoa-text-secondary);
-  font-size: 28.626rpx;
-  line-height: 1.4;
-}
-.verification-info-title { display: block; margin-bottom: 7.634rpx; color: var(--cimoa-text-title); font-size: 36.26rpx; font-weight: 800; }
 .verification-submit { gap: 15.267rpx; }
 .verification-submit .source-icon { width: 34.351rpx; height: 34.351rpx; }
 .verification-saved { display: block; margin-top: 41.985rpx; color: var(--cimoa-status-success); font-size: 32.443rpx; text-align: center; }

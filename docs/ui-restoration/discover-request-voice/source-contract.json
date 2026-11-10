@@ -349,5 +349,11 @@
       "fragment": "    <sc-if value=\"{{ sheetVoiceDiscard }}\" hint-placeholder-val=\"{{ false }}\">\n      <div data-screen-label=\"Discover / Icebreaker / Discard Recording\" style=\"position:absolute;inset:0;z-index:55\">\n        <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"position:absolute;inset:0;background:rgba(8,16,31,0.42);backdrop-filter:blur(2px)\"></div>\n        <div style=\"position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:32px 32px 0 0;padding:26px 22px 34px;box-shadow:0 -14px 40px rgba(8,16,31,0.22);animation:cRise 240ms ease both;box-sizing:border-box\">\n          <div style=\"width:44px;height:5px;border-radius:3px;background:#dfe5ee;margin:0 auto 18px\"></div>\n          <div style=\"font-size:24px;font-weight:800;letter-spacing:-0.03em\">Discard this recording?</div>\n          <div style=\"font-size:16px;color:#5b6b85;margin-top:8px\">You’ll lose what you’ve recorded so far.</div>\n          <div sc-camel-on-click=\"{{ cancelRec }}\" style=\"height:58px;border-radius:29px;background:#fff;border:1.5px solid #e2e8f0;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:20px\"><div style=\"font-size:18px;font-weight:700;color:#dc2626\">Discard</div></div>\n          <div sc-camel-on-click=\"{{ closeSheet }}\" style=\"height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer\"><div style=\"font-size:18px;font-weight:600;color:#6b7a93\">Keep Recording</div></div>\n        </div>\n      </div>\n    </sc-if>"
     }
   ],
-  "current_input_contract": "../introduction-composer-2026-10-20/source-contract.json"
+  "current_input_contract": "../introduction-composer-2026-10-20/source-contract.json",
+  "user_header_override_2026_10_24": {
+    "title": "Your answer",
+    "right_menu": "removed, including its click binding; source snapshot and historical interaction ID retained for traceability only",
+    "scope": "Voice answer page only; retain voice typography, Back, recording, text switch and existing Voice preview actions",
+    "evidence": "artifacts/voice-answer-header"
+  }
 }

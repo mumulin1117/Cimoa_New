@@ -1,0 +1,74 @@
+[
+  {
+    "interaction_id": "home.card.press.visual.1",
+    "source_screen": "Home contact cards; user-authorized visual addition on 2026-10-26",
+    "trigger": "Primary pointer down, hold, up; existing card click remains its only navigation trigger",
+    "preconditions": "Visible, enabled Home contact from the canonical home_feed getter",
+    "visible_feedback": "120ms light pressure to 0.985, smaller theme shadow, localized cyan/blue/purple/pink glow; 180ms release in parallel with immediate navigation",
+    "success_result": "Existing current-user card destination opens once; visual feedback creates no relationship or message",
+    "failure_result": "Movement, pointercancel, lostpointercapture, multiple fingers, background, route hide or disabled state cancel feedback without a ghost click; navigation errors retain the real source",
+    "persistence": "none; only shared transient touch presentation",
+    "sync_scope": "Home contact card; reused global touch policy; no Store writes",
+    "acceptance": "Touch, hold, cancel, vertically drag then release, repeat tap, inspect localized glow and 0.985 scale; Reduce Motion removes spatial scale"
+  },
+  {
+    "interaction_id": "home.autoMatch.ignition.visual.1",
+    "source_screen": "Existing home.startAutoMatch.click.1/.2/.3 and Auto Match entry",
+    "trigger": "A valid existing click or keyboard activation in parallel with normal navigation",
+    "preconditions": "Canonical Home destination validation succeeds; source flash is measured; current account context is valid",
+    "visible_feedback": "Short independent arc/points gather around the lightning and a soft entry halo; total visual window at most 240ms, no added navigation delay",
+    "success_result": "The existing Auto Match entry opens with no match_session, quota or coin mutation",
+    "failure_result": "Invalid bounds safely omit optional feedback; route failure, account change, background and resize clear the visual cue",
+    "persistence": "none; short in-memory visual cue",
+    "sync_scope": "Home source, global viewport visual host, actual Auto Match entry; no refresh animation reuse",
+    "acceptance": "Activate header and CTA entries, inspect source/arrival feedback and complete removal; compare entire persisted business state before and after"
+  },
+  {
+    "interaction_id": "mainTabs.lightSeat.visual.1",
+    "source_screen": "Home, Discover, Events CustomTabBar",
+    "trigger": "Existing successful main-Tab switch request",
+    "preconditions": "A different valid main Tab; no active navigation submission",
+    "visible_feedback": "260ms shared absolute light-seat timeline survives page replacement; destination icon gently scales; icon contrast follows actual seat position while aria-current follows actual route",
+    "success_result": "Correct main route, stack depth one, unchanged Tabbar/safe area, independently consumed first-entry skeleton",
+    "failure_result": "Navigation failure clears the plan and restores the real source; repeated target shares pending navigation, competing requests remain locked; same Tab does nothing",
+    "persistence": "none; shared in-memory presentation, not a selected business Tab record",
+    "sync_scope": "All three Tabbar instances through switch_tab_route; App lifecycle and auth-context cleanup",
+    "acceptance": "Capture positions before and after actual route replacement; verify same revision and monotonic motion; rapid taps, failure, warm return, reduced motion, stack and storage remain correct"
+  },
+  {
+    "interaction_id": "home.chat.avatarRelay.visual.1",
+    "source_screen": "Existing Home connected-card entry and its private conversation Header",
+    "trigger": "Valid connected-card navigation, measured Header arrival, then original-source return",
+    "preconditions": "Decoded real source avatar; same auth_context/user_id/conversation_id/avatar; original Home page identity remains in the real stack; true Header and return anchors are measurable",
+    "visible_feedback": "Noninteractive global avatar relay within the existing 240ms entry and 180ms return; only target fade for Reduce Motion",
+    "success_result": "Correct conversation and original scrolled Home card; nested same-person Profile retains source without replaying forward",
+    "failure_result": "Missing/late media, invalid page identity, missing card, different entity, resize, background, unrelated route or failed navigation cancel only the presentation; real pages stay usable",
+    "persistence": "none; short-lived reference to the decoded source image and its existing media ownership",
+    "sync_scope": "Original Home page instance, matching chat Header, same-person nested Profile, global aria-hidden pointer-transparent host",
+    "acceptance": "Use a scrolled connected card; observe forward/back relay, compare measured landing rectangles, correct conversation, retained scroll and no writes; test broken media, cancellation, reduced motion and nested return"
+  },
+  {
+    "interaction_id": "home.goals.anchorExpand.visual.1",
+    "source_screen": "Existing Home goals-tag and ConnectionGoalsPopover",
+    "trigger": "Existing goal-tag open/close, outside click or scroll dismissal",
+    "preconditions": "The tapped current user exists in canonical Home cards and a valid card/tag anchor can be measured",
+    "visible_feedback": "Existing anchored panel at 180ms total; 0.94 micro-scale from the actual tag-centered transform origin after edge correction; close returns to that anchor without staggered rows",
+    "success_result": "Complete goals from Store are readable in the unchanged Popover layout; no card navigation",
+    "failure_result": "Unavailable measurement, background, resize, hide and unmount cancel pending frames/timers and release the mask; repeated open cannot be closed by a stale callback",
+    "persistence": "none",
+    "sync_scope": "Tapped user's goals, card anchor, tag bounds and current scroll viewport; no business write",
+    "acceptance": "Compare origin with actual tag center, first/repeated opening, outside close, scrolling, long text, 320pt bounds and reduced-motion opacity-only presentation"
+  },
+  {
+    "interaction_id": "home.connection.lightsOn.visual.1",
+    "source_screen": "Home connected-card status and edge following a real consent action",
+    "trigger": "Successful persisted request acceptance or verified matching acceptance creates a previously absent canonical Connection",
+    "preconditions": "Same account context, valid source_request_id/source_match_id, actual conversation; no repeated action receipt; Home content is ready",
+    "visible_feedback": "Status gently fades and a narrow theme edge glint passes once for that connection generation; Reduce Motion uses a short fade only",
+    "success_result": "Real connected status and chat permission remain entirely Store-derived",
+    "failure_result": "Failed write, denied/unverified event, decline, cancel, old seed/hydrate relation and ordinary read/refresh never enqueue a cue; hidden/cancelled visuals cannot alter business results",
+    "persistence": "none; account/connection-specific presentation receipt consumed in process memory",
+    "sync_scope": "App action-result observer and current Home cards; no separate relationship state",
+    "acceptance": "Accept a real pending request in an isolated fixture, return Home and observe once; refresh, return and replay do not flash; failure and verified-event tests enforce truthful feedback"
+  }
+]

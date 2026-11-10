@@ -1,5 +1,5 @@
 <script setup>
-import AppLoading from './AppLoading.vue'
-defineProps({ visible: Boolean, label: { type: String, default: 'Saving your profile…' } })
+import ActionLoading from './ActionLoading.vue'
+defineProps({ visible: Boolean, label: { type: String, default: 'Updating your profile…' } })
 </script>
-<template><AppLoading :visible="visible" :label="label" /></template>
+<template><ActionLoading :visible="visible" :label="label" scope="profile" /></template>

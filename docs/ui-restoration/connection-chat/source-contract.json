@@ -257,6 +257,7 @@
     "chat.media.preview.click.1",
     "chat.media.close.click.1",
     "chat.media.close.click.2",
+    "chat.media.dismiss.click.1",
     "chat.media.record.click.1",
     "chat.media.send.click.1",
     "chat.image.open.click.1",
@@ -264,6 +265,7 @@
     "chat.image.retry.click.1"
   ],
   "approved_deltas": [
+    "2026-10-24 user-requested private voice composer redesign: floating blue/lavender studio sheet, current recipient, real capture timer, clear stop control, time-driven preview, re-record and inline sending. Reuse existing media/Store flow, no chat coin charge. Details and evidence in ../voice-message-2026-10-24/acceptance.json.",
     "Cimoa branding and unified actual participant IDs",
     "Real system safe areas; one scroll container and fixed footer",
     "No invented online, music or voice success",

@@ -1,4 +1,6 @@
 <script setup>
+import { get_locale } from '@/i18n/index.js'
+
 import { computed, ref } from 'vue'
 import { onHide, onLoad } from '@dcloudio/uni-app'
 import { use_app_store } from '@/stores/store.js'
@@ -15,16 +17,16 @@ const request = computed(() => store.purchase_by_id(request_id.value))
 const center_route = computed(() => coin_center_route(store, request.value?.return_context_id))
 const pack = computed(() => store.coin_package_by_id(request.value?.package_id))
 const transaction = computed(() => store.coin_transactions.find(item => item.kind === 'purchase' && item.related_id === request_id.value && item.status === 'completed') || null)
-const verified = computed(() => !!request.value && request.value.status === 'success' && !!request.value.receipt_id && !!pack.value?.product_id && !!transaction.value && transaction.value.amount === pack.value.coins)
+const verified = computed(() => !!request.value && request.value.status === 'success' && !!request.value.receipt_id && !!(request.value.product_id || pack.value?.product_id) && !!transaction.value && transaction.value.amount === (request.value.coins || pack.value?.coins))
 const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved purchase data is unavailable. Please return and retry.'
+  ? 'Your purchase details are unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : !request_id.value || !request.value
-      ? 'A verified purchase request is required. No coins were added.'
+      ? 'This purchase couldn’t be verified. No coins were added.'
       : !verified.value
-        ? 'This request has no verified StoreKit success and cannot be shown as a purchase. No coins were added by this page.'
+        ? 'This purchase hasn’t been confirmed by the App Store. No coins were added.'
         : '')
 const navigate = async route => {
   if (navigating.value) return
@@ -44,16 +46,16 @@ onHide(() => { navigating.value = false; error.value = '' })
         <view class="success-back" role="button" aria-label="Back to Coin Store" :aria-disabled="navigating" data-interaction="coinSuccess.backToStore.click.1" @click="navigate(center_route)"><SourceIcon name="back" /></view>
         <text>Coins</text>
       </view>
-      <text v-if="error" class="success-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error" :message="error" @dismiss="error = String()" />
     </template>
 
     <view class="success-content">
-      <view v-if="access_error" class="success-access" role="alert"><SourceIcon name="shield" /><view><text>Purchase success unavailable</text><text>{{ access_error }}</text><text>StoreKit product IDs and receipt verification must be configured before a successful purchase can exist.</text></view></view>
+      <view v-if="access_error" class="success-access" role="alert"><SourceIcon name="shield" /><view><text>Purchase details unavailable</text><text>{{ access_error }}</text><text>Purchases require confirmation from the App Store.</text></view></view>
       <template v-else>
         <view class="success-icon"><SourceIcon name="check" /></view>
         <text class="success-title">Coins added</text>
-        <text class="success-copy">Your verified purchase added {{ transaction.amount.toLocaleString('en-US') }} coins.</text>
-        <view class="success-balance"><text>New balance</text><text>{{ store.coin_balance.toLocaleString('en-US') }}</text></view>
+        <text class="success-copy">Your verified purchase added {{ transaction.amount.toLocaleString(get_locale()) }} coins.</text>
+        <view class="success-balance"><text>New balance</text><text>{{ store.coin_balance.toLocaleString(get_locale()) }}</text></view>
       </template>
     </view>
 

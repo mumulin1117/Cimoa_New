@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-24",
+  "scope": "User-authorized redesign of the private-chat voice composer only; not complete-page or complete-app acceptance",
+  "status": "implemented_and_scoped_regression_passed",
+  "source": {
+    "entry": "HTML prototype chat.sendVoiceMsg@1268",
+    "handler": "Source handler@5830 only shows a next-phase hint; no dedicated private-chat voice sheet is supplied.",
+    "authorization": "2026-10-24 user explicitly requested a Cimoa-themed design and implementation for the voice-message modal flow.",
+    "scope_boundary": "Do not import Discover introduction coin charges into private chat. Group-chat layout is unchanged. Both convention documents and the source HTML remain unchanged."
+  },
+  "design": {
+    "container": "Inset floating sheet with rounded corners, soft white/blue/lavender surface, fine violet edge and blurred scrim; retain the existing controlled 240ms Sheet transition.",
+    "identity": "Current conversation recipient avatar and name, clear Voice message heading, close X and reachable Cancel.",
+    "capture": "Gradient microphone control, decorative concentric orbit, actual elapsed/maximum duration, explicit Stop control. Only a genuine active recording animates the outer orbit; no fake waveform or amplitude claim.",
+    "states": ["idle", "requesting", "recording", "processing", "preview", "sending", "error"],
+    "review": "Replace the capture studio in place with a real play/pause card, decoded duration and playback-time-driven progress; re-record and Send voice message remain separate intentional actions.",
+    "feedback": "Keep inline branded send progress and the established 400–600ms write delay; no extra navigation or loading Toast. Capability and send failures stay visible in context and remain retryable.",
+    "accessibility": "English semantics and stable interaction IDs; Enter/Space activation, native KeyboardEvent-based Tab containment, Escape close and focus restoration; reduced motion disables decorative pulse and sheet movement.",
+    "safety": "Sheet bottom consumes the measured safe area once; fixed header/footer with a scrollable middle supports short screens. Opening the recorder pauses existing conversation audio; sending pauses and disables preview."
+  },
+  "behavior_preserved": ["current conversation ID and relationship/block checks", "user-initiated microphone access only", "real MediaRecorder output and media decoding", "120-second capture limit", "review before sending", "temporary Blob and object-URL cleanup", "cancel pending access and stop late tracks", "cancel/leave/account-change cleanup", "existing Pinia send action and atomic IndexedDB/metadata publication", "failed persistence compensation with retryable draft", "duplicate-send prevention", "media refresh recovery", "no chat coin charge"],
+  "changed_files": [
+    "src/components/ChatVoiceConfirmDialog.vue",
+    "src/components/EventAudio.vue",
+    "src/pages/messages/chat.vue",
+    "src/composables/useEventMedia.js",
+    "src/config/theme.json",
+    "scripts/feedback-global.test.mjs",
+    "scripts/voice-message.test.mjs",
+    "scripts/voice-message-browser.test.mjs",
+    "scripts/lib/voice-message-regression.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift",
+    "docs/ui-restoration/connection-chat/source-contract.json",
+    "docs/ui-restoration/connection-chat/interactions.json",
+    "docs/ui-restoration/voice-message-2026-10-24/acceptance.json"
+  ],
+  "generated_outputs": ["dist/build/h5/", "ios/cimoaNeapo/Resources/H5/", "ios/cimoaNeapo/Resources/theme.json", "ios/cimoaNeapo/Resources/build-manifest.json"],
+  "verification": {
+    "unit": {"passed": 436, "failed": 0, "new_voice_contracts": 5, "log": "artifacts/voice-message/unit-tests.log"},
+    "browser": {"passed": true, "cases": 12, "checks": 205, "repeated_preview_checks": 42, "errors": 0, "warnings": 0, "viewports": ["320x568", "393x852", "440x956"], "report": "artifacts/voice-message/browser-report.json", "repeats": ["artifacts/voice-message/preview-repeat-1.json", "artifacts/voice-message/preview-repeat-2.json"]},
+    "browser_coverage": ["idle and preview on short screens", "reduced motion", "real keyboard focus loop/Escape/source focus", "mask close and reopen", "denied/missing microphone", "cancel pending access and stop late stream", "generated audio through the unchanged real recorder/decoder/player", "time-based play/pause progress", "cancel and re-record without persistence", "send failure and Blob compensation", "retry and repeated send produce one message", "IndexedDB refresh recovery", "opening recorder pauses existing message audio"],
+    "wkwebview": {"passed": true, "isolated_cases": 3, "checks": 34, "actual_host_business_storage_unchanged": true, "device": "iPhone 17 Pro simulator, iOS 26.5", "test": "EventCoverTests.testVoiceMessageSheet()", "report": "artifacts/voice-message/wkwebview-report.json", "log": "artifacts/voice-message/xcodebuild-verified.log", "result_bundle": "artifacts/voice-message/VoiceMessageVerified.xcresult"},
+    "required_commands": {"sequence": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"], "passed": true, "convention_warnings": 0, "h5_files_packaged": 440, "log": "artifacts/voice-message/build-h5.log"},
+    "warnings": "No convention or browser warnings. Existing Xcode AppIntents metadata and simulator WebKit/Accessibility diagnostics may appear in native logs.",
+    "diagnostic_history": "The keyboard check exposed uni-view normalization dropping shiftKey and converting target to a non-DOM object; a scoped native listener fixes focus containment with paired cleanup. An intermediate native run unexpectedly entered preview before the denied-case open check and failed; its exact external trigger was not established. Capability adapters were then locked to denial/missing-device from initialization and the final serial run passed without changing production media behavior.",
+    "limits": "Browser success paths use a generated AudioContext stream, not a physical microphone; the real production MediaRecorder, decoder, player and Store remain in use. Native scope is layout/safe-area and deliberately denied/missing-device responses, not physical microphone permission, recording or playback acceptance. Test data stores are isolated and do not replace the actual account. No autoplay relaxation or production test hooks are added.",
+    "preview_server_started": false,
+    "physical_microphone_requested_by_test": false,
+    "test_processes_cleaned_up": true
+  },
+  "screenshots": {"browser_idle": "artifacts/voice-message/idle-standard-browser.png", "browser_preview": "artifacts/voice-message/preview-browser.png", "browser_preview_small": "artifacts/voice-message/preview-small-browser.png", "wkwebview_idle": "artifacts/voice-message/idle-standard-wkwebview.png"},
+  "git": "Preserved all unrelated pre-existing changes; no staging, commit, push or reset performed."
+}

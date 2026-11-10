@@ -44,10 +44,9 @@
   "permission_content": {
     "title": "Choose photos from your library",
     "copy": "Cimoa only sees the photos you pick for your profile. Nothing else is read.",
-    "declined_title": "Access is off",
-    "declined_copy": "Without it you can’t add that kind of content here. You can turn it on in Settings, or use another method.",
-    "primary": "Allow Photo Access",
-    "secondary": "Not Now"
+    "error_title": "Photos were not added",
+    "primary": "Continue",
+    "secondary": "Cancel"
   },
   "interactions": [
     "obPhotos.goBack.click.1",
@@ -73,6 +72,11 @@
       "id": "photos-real-media-persistence",
       "source": "DEVELOPMENT_CONVENTIONS.md sections 5, 9.2 and 12.3",
       "delta": "The browser or WKWebView chooser must return real image blobs. Cimoa decodes and stores selected media in IndexedDB, shows custom Loading before the Store transaction, and reports cancellation, permission, decode and persistence failures without fake success."
+    },
+    {
+      "id": "photos-permission-continue-cancel",
+      "source": "2026-10-26 user permission-button request",
+      "delta": "Custom permission buttons are Continue / Cancel. Continue invokes the existing system photo-selection path, which may present a system picker without broad-library authorization. Cancel returns to Photos with no picker/system request, media write or fabricated denied state. Only real picker/permission/decode failures expose the contextual error and Settings actions; system-owned dialog labels are unchanged."
     },
     {
       "id": "photos-action-closure",

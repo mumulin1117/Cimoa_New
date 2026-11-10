@@ -1,7 +1,8 @@
 <script setup>
+import { auth_message } from '@/utils/authFeedback.js'
 import { ref } from 'vue'
 import { use_onboarding } from '@/composables/useOnboarding.js'
-import { relaunch_route } from '@/utils/routeTransition.js'
+import { AUTHENTICATED_MAIN_ROUTE } from '@/utils/authNavigation.js'
 import { prepare_main_tab_skeleton } from '@/utils/mainTabSkeleton.js'
 import SecondaryPageFrame from '@/components/SecondaryPageFrame.vue'
 import AuthActionLoading from '@/components/AuthActionLoading.vue'
@@ -15,15 +16,15 @@ const enter = async () => {
     const result = await run_with_loading(scope => store.save_onboarding_step('complete', {}, id, scope))
     if (result.reason === 'cancelled') return
     if (!result.success) { error.value = result.message; return }
-    prepare_main_tab_skeleton()
+    prepare_main_tab_skeleton(store.auth_context)
   }
-  try { await relaunch_route('/pages/home/index') } catch (cause) { error.value = cause.message }
+  try { await frame.value.navigate_relaunch(AUTHENTICATED_MAIN_ROUTE) } catch (cause) { error.value = cause.message }
 }
 </script>
 <template>
-  <SecondaryPageFrame ref="frame" class="onboarding-complete-page">
+  <SecondaryPageFrame ref="frame" class="onboarding-complete-page" content-motion>
     <view class="notice-content"><view class="notice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg></view><text class="notice-title">Your profile is ready</text><text class="notice-copy">Say hi to someone, join the matching pool, or find an event happening this week.</text>
-      <text v-if="error || (access_error && !context?.completed)" class="auth-error-box" role="alert">{{ error || access_error }}</text>
+      <text v-if="error || (access_error && !context?.completed)" class="auth-error-box" role="alert">{{ auth_message(error || access_error) }}</text>
     </view>
     <template #footer><view class="notice-footer"><view v-if="!access_error || context?.completed" class="auth-primary" role="button" tabindex="0" :aria-disabled="is_loading" data-interaction="obComplete.enterApp.click.1" @click="enter" @keydown.enter="enter">Explore Cimoa</view><view v-else class="auth-primary" role="button" tabindex="0" @click="recover" @keydown.enter="recover">Continue account setup</view></view></template>
     <template #overlays><AuthActionLoading :visible="is_loading" label="Finishing your profile…" /></template>

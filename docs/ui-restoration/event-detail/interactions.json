@@ -15,13 +15,13 @@
     "interaction_id": "evDetail.openEventMore.click.1",
     "source_screen": "route=evDetail",
     "trigger": "click / keyboard activation",
-    "preconditions": "ready authenticated owner; exact event identity; group requires current active membership and matching conversation",
-    "visible_feedback": "source navigation or controlled sheet, no navigation Loading",
-    "success_result": "Exact canonical event/user/group context; relevant membership, report, message or preference is atomically saved; real Back origin restored",
-    "failure_result": "Readable error with no partial message, Blob, seat or relationship change; no fabricated remote success",
-    "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
-    "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",
-    "acceptance": "scripts/events.test.mjs; scripts/event-pages.test.mjs; browser per-page evidence; native event regression; visual evidence remains pending"
+    "preconditions": "ready authenticated owner; current event exists; no active business write or navigation",
+    "visible_feedback": "Direct cRise navigation to Report event; no three-option menu and no navigation Loading (2026-10-22 user override)",
+    "success_result": "/pages/events/report?event_id=<current event_id>; report Back pops exactly once to the same event detail",
+    "failure_result": "Existing guard/navigation error remains readable on the source; no report, attendance or organizer preference is changed",
+    "persistence": "none; opening, selecting a reason and cancelling do not save a report",
+    "sync_scope": "Canonical event identity and existing report page; actual submit remains its own Store operation",
+    "acceptance": "scripts/lib/event-report-navigation.mjs shared by event-cover-browser.test.mjs and EventCoverTests.swift: double click, Enter, exact event, one push, no menu/Loading, selectable reasons and read-only Back"
   },
   {
     "interaction_id": "evDetail.openParticipantsList.click.1",

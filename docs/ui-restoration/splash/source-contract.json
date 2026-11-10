@@ -101,6 +101,31 @@
       "id": "splash-error-state",
       "source": "INTERACTION_CONVENTIONS.md 12",
       "delta": "Hydration or navigation failure exposes an English Retry state without overwriting stored data."
+    },
+    {
+      "id": "splash-dynamic-loading-2026-10-23",
+      "source": "User request 2026-10-23",
+      "delta": "Replace the static native colored fill and faint H5 cPulse with an opaque theme-gradient indeterminate fill anchored at the left, scaleX 0.2 to 2.1 and back over MOTION.splash_progress; preserve the source 150x4 track, 64x4 fill base, brand and safe-area layout. The source motion and capture fields remain historical evidence, not the new animation baseline."
+    },
+    {
+      "id": "splash-native-painted-handoff-2026-10-23",
+      "source": "User request 2026-10-23",
+      "delta": "Retain the matching native animated cover while H5 performs the existing startup routing. Release it with a themed crossfade only after the trusted current document's destination, or recoverable Splash error, has painted. Keep stored accounts, consent, session routing and Retry behavior unchanged. New focused evidence is in artifacts/startup-motion."
+    },
+    {
+      "id": "encounter-arc-campus-unfold-2026-10-24",
+      "source": "User request 2026-10-24: encounter arc to campus unfold",
+      "delta": "Two theme cyan/pink lights meet along the existing logo arc once in 1200ms, within the unchanged 1800ms Splash. Preserve the colored progress, full-screen continue target, geometry and Retry. Prepare and decode the campus photo in parallel, never await it for startup routing. The matching native cover dispatches a current-attempt reveal event and acknowledges finishLaunch only after its real 240ms opacity handoff ends. Reduced Motion disables arc travel and keeps the fade. Evidence: docs/ui-restoration/startup-story-2026-10-24/acceptance.json."
+    },
+    {
+      "id": "authenticated-discover-default-2026-10-24",
+      "source": "User request 2026-10-24: authentication completes into Discover",
+      "delta": "Supersedes the completed-session Home destination in splash-session-routing: completed authenticated accounts restore Discover. Unverified accounts and unfinished onboarding still resume their exact required steps; guests reach Welcome. Do not alter the Home/Discover/Events Tab order or any account, relationship, message or coin entity."
+    },
+    {
+      "id": "authenticated-home-default-2026-10-24",
+      "source": "User request 2026-10-24: app login and registration enter Home first; confirmed to continue",
+      "delta": "Supersedes authenticated-discover-default-2026-10-24. Completed login, registration onboarding and valid cold-session restoration use the unified Home destination. Verification and unfinished onboarding retain priority. Preserve single-use skeleton eligibility, Discover deck state, normal page return ownership and all business entities. Scoped evidence: docs/ui-restoration/auth-home-entry-2026-10-24/acceptance.json."
     }
   ],
   "implementation_files": [

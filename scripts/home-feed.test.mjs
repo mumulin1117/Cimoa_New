@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
 import { create_scenario } from '../src/stores/scenarios.js'
-import { clone_data } from '../src/stores/seed.js'
+import { clone_data, HOME_REQUEST_USER_ID } from '../src/stores/seed.js'
 import { home_feed, home_cards } from '../src/stores/homeFeed.js'
 import { home_destination } from '../src/utils/homeNavigation.js'
 const epoch = Date.UTC(2026,9,17,12)
@@ -18,10 +18,10 @@ function fixture(scenario = 'default', change = () => {}) {
 const row = (store,id) => store.home_feed.cards.find(card => card.user_id === id)
 test('one canonical read projection provides source card order, IDs, goals, statistics and routes without writes', () => {
   const f=fixture(),{store}=f,before=JSON.stringify(store.data),feed=store.home_feed
-  assert.deepEqual(feed.cards.map(x=>[x.user.user_name,x.user.university,x.kind]),[['Chloe Lin','HKUST','connected'],['Liam Park','Stanford','auto_match'],['Lina','HKU','invite']])
+  assert.deepEqual(feed.cards.map(x=>[x.user.user_name,x.user.university,x.kind]),[['Chloe Lin','HKUST','connected'],['Liam Park','Stanford','auto_match'],['Grace Miller','HKUST','invite']])
   assert.equal(feed.cards[0].connection_id,store.connection_by_user('user_chloe').connection_id)
   assert.equal(feed.cards[0].conversation_id,store.direct_conversation('conversation_chloe').conversation_id)
-  assert.deepEqual(feed.cards[2].goals,store.goals_for_user('user_lina'))
+  assert.deepEqual(feed.cards[2].goals,store.goals_for_user(HOME_REQUEST_USER_ID))
   assert.equal(feed.counts.total,3);assert.equal(feed.counts.connected,1);assert.equal(feed.counts.incoming_requests,1);assert.equal(feed.counts.match_candidates,1)
   assert.equal(feed.counts.unread_messages,store.unread_count)
   assert.strictEqual(store.home_connections,feed.cards);assert.strictEqual(store.home_match_card,feed.match_card)
@@ -41,13 +41,13 @@ test('request outranks candidate, explicit acceptance outranks requests, and old
   assert.equal((await store.send_introduction({user_id:'user_liam',question_id:'user_liam_q_0',text:'A campus coffee walk?',operation_id:'home-intro'})).success,true)
   assert.equal(row(store,'user_liam').kind,'sent');assert.equal(row(store,'user_liam').request_id,store.sent_requests[0].request_id)
   const accepted=store.accept_request('request_lina','home-accept');assert.equal(accepted.success,true)
-  assert.equal(row(store,'user_lina').kind,'connected');assert.equal(row(store,'user_lina').conversation_id,accepted.data)
-  assert.equal(store.home_feed.cards.filter(x=>x.user_id==='user_lina').length,1);assert.equal(store.home_feed.counts.incoming_requests,0)
+  assert.equal(row(store,HOME_REQUEST_USER_ID).kind,'connected');assert.equal(row(store,HOME_REQUEST_USER_ID).conversation_id,accepted.data)
+  assert.equal(store.home_feed.cards.filter(x=>x.user_id===HOME_REQUEST_USER_ID).length,1);assert.equal(store.home_feed.counts.incoming_requests,0)
 })
 test('failed decisions leave the exact feed unchanged; successful decisions survive a new hydration', () => {
   const f=fixture(),before=clone_data(f.store.home_feed)
   f.fail(true);assert.equal(f.store.accept_request('request_lina','home-fail').success,false);assert.deepEqual(f.store.home_feed,before);assert.equal(f.writes,0)
-  f.fail(false);assert.equal(f.store.decline_request('request_lina','home-decline').success,true);assert.equal(row(f.store,'user_lina'),undefined)
+  f.fail(false);assert.equal(f.store.decline_request('request_lina','home-decline').success,true);assert.equal(row(f.store,HOME_REQUEST_USER_ID),undefined)
   const after=clone_data(f.store.home_feed);f.reload();assert.deepEqual(f.store.home_feed,after)
 })
 test('unread/preview and activity follow the real Conversation, and merely reading Home marks nothing read', async () => {
@@ -63,8 +63,8 @@ test('both directions of block filter every Home state; unblocking never resurre
   const f=fixture(),{store}=f
   assert.equal(store.block_user('user_chloe').success,true);assert.equal(row(store,'user_chloe'),undefined)
   assert.equal(store.unblock_user('user_chloe').success,true);assert.equal(row(store,'user_chloe'),undefined)
-  const other=fixture('default',data=>data.blocked_users.push({block_id:'peer_block',owner_user_id:'user_lina',user_id:'user_cimoa',created_at:epoch})).store
-  assert.equal(row(other,'user_lina'),undefined);assert.equal(other.home_feed.counts.incoming_requests,0)
+  const other=fixture('default',data=>data.blocked_users.push({block_id:'peer_block',owner_user_id:HOME_REQUEST_USER_ID,user_id:'user_cimoa',created_at:epoch})).store
+  assert.equal(row(other,HOME_REQUEST_USER_ID),undefined);assert.equal(other.home_feed.counts.incoming_requests,0)
 })
 test('a valid Connection without a Conversation stays truthful and never manufactures a chat during navigation', () => {
   const f=fixture('default',data=>{data.conversations=data.conversations.filter(x=>x.conversation_id!=='conversation_chloe');data.messages=data.messages.filter(x=>x.conversation_id!=='conversation_chloe')})

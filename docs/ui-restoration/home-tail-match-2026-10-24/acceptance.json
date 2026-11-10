@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-24",
+  "scope": "Home populated-list Start Auto Match CTA; incremental regression, not full-page acceptance",
+  "source_contract": "source-contract.json",
+  "changed_files": ["src/pages/home/index.vue", "docs/ui-restoration/home/interactions.json", "docs/ui-restoration/home-tail-match-2026-10-24/source-contract.json", "docs/ui-restoration/home-tail-match-2026-10-24/acceptance.json", "scripts/home-tail-match.test.mjs", "scripts/home-tail-match-browser.test.mjs", "scripts/lib/home-tail-match-regression.mjs", "ios/cimoaNeapo/Tests/EventCoverTests.swift"],
+  "result": "One same-style primary CTA follows the canonical nonempty list and optional active-match status. Empty-state actions remain unchanged. Existing target('match') / navigate('match') opens the entry only, with duplicate-navigation protection and no business writes.",
+  "verification": {
+    "home_unit_tests": { "passed": 23, "failed": 0 },
+    "all_unit_tests": { "passed": 329, "failed": 0, "log": "artifacts/home-tail-match/unit-test.log" },
+    "browser": { "passed": true, "scenarios": 12, "layouts": 30, "viewports": ["393x852", "320x568", "440x956"], "page_errors": 0, "warnings": 0, "preview_server_started": false, "browsers_closed": true, "report": "artifacts/home-tail-match/browser-report.json" },
+    "wkwebview": { "passed": true, "selected_test": "EventCoverTests.testHomeTailAutoMatch()", "executed_tests": 1, "isolated_scenarios": 5, "device": "iPhone 17 Pro simulator", "actual_host_business_data_unchanged": true, "empty_and_populated_primary_style_equal": true, "report": "artifacts/home-tail-match/wkwebview-report.json", "log": "artifacts/home-tail-match/xcodebuild.log", "screenshot": "artifacts/home-tail-match/three_chats-wkwebview.png" },
+    "required_commands": { "sequence": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"], "passed": true, "h5_files_packaged": 438, "ios_built_app_manifest_matches": true },
+    "warnings": "No convention or browser warnings. Xcode emitted only the existing AppIntents metadata-extraction-skipped warning; no new source warning was introduced.",
+    "process_cleanup": "No task browser, preview server, Xcode-test or H5-build command remains running"
+  },
+  "preserved": ["Store/getter data model and canonical entities", "Quota, coins, requests, connections, messages and active matching", "Original empty state", "Fixed Header and Tabbar, existing safe-area ownership", "400–600ms write Loading, 600ms skeleton, three-second carousel and cRise timing", "Both convention documents and all pre-existing worktree changes"],
+  "full_page_status": "unchanged; no new verified status or whole-app completion claim",
+  "git": "No staging, commit, push or reset performed"
+}

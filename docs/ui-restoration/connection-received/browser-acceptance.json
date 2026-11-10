@@ -3,9 +3,9 @@
   "result": "passed",
   "checks": [
     "Photo gallery owns the full viewport overlay outside the scrolling/clipped profile body",
-    "Not Now preserves the same pending request and returns Home without a write",
+    "Decline cancellation keeps the invitation; confirmation closes it and removes the Home Invite",
     "Accept storage failure preserves the complete pending request, consent, messages and balance; retry stays available",
-    "Decline cancellation keeps pending; Accept writes after business Loading and creates one real conversation",
+    "Accept writes after business Loading and creates one real conversation",
     "Narrow iPhone width with real safe-area budget has no horizontal clipping",
     "Long names/300-character answers keep both decisions visible; forged request ID exposes no private content and Back restores Home"
   ],
@@ -28,7 +28,7 @@
       "height": 470.65625,
       "bottom": 588.640625
     },
-    "text": "Lina, 21\nGood Luck, Babe!\nChappell Roan\n165 cm\nHKU\nPsychology\nINFJ\n🇲🇾\nMalaysia\n🍷\nNever\n🚭\nNever\n🕊️\nChristian\nPsychology Society\nPok Fu Lam\nPsych student who loves long walks, podcasts, and trying every dessert place in Kennedy Town.\nLooking for\n🤝\nNew friends\n📚\nStudy buddy\n☕\nCoffee chats\n🗣️\nLanguage exchange\n🎉\nCampus events\nInterests\n📷\nPhotography\n☕\nCoffee\n🎵\nLive Music\nHow would you spend your ideal weekend?\nA long walk and coffee by the sea.\nNot Now\nAccept"
+    "text": "Lina, 21\nGood Luck, Babe!\nChappell Roan\n165 cm\nHKU\nPsychology\nINFJ\n🇲🇾\nMalaysia\n🍷\nNever\n🚭\nNever\n🕊️\nChristian\nPsychology Society\nPok Fu Lam\nPsych student who loves long walks, podcasts, and trying every dessert place in Kennedy Town.\nLooking for\n🤝\nNew friends\n📚\nStudy buddy\n☕\nCoffee chats\n🗣️\nLanguage exchange\n🎉\nCampus events\nInterests\n📷\nPhotography\n☕\nCoffee\n🎵\nLive Music\nHow would you spend your ideal weekend?\nA long walk and coffee by the sea.\nDecline\nAccept"
   },
   "errors": [],
   "reference": "Offline HTML AST, original inline styles, no prototype script/runtime",
@@ -36,10 +36,10 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 196955,
-    "pixels_above_channel_delta_8": 28516,
-    "mean_absolute_channel_delta": 1.8575235339091376,
-    "max_channel_delta": 219
+    "pixels_different": 197240,
+    "pixels_above_channel_delta_8": 28851,
+    "mean_absolute_channel_delta": 2.0455887359782103,
+    "max_channel_delta": 244
   },
   "cleaned_up": true
 }

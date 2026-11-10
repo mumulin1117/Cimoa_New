@@ -1,0 +1,45 @@
+Cimoa official website URLs
+
+Production domain supplied by the operator:
+https://cimoabeam.online
+
+Homepage / Marketing URL:
+https://cimoabeam.online/
+
+About:
+https://cimoabeam.online/about.html
+
+Support URL:
+https://cimoabeam.online/support.html
+
+Privacy Policy URL:
+https://cimoabeam.online/privacy.html
+
+Terms of Use URL:
+https://cimoabeam.online/terms.html
+
+Community Safety URL:
+https://cimoabeam.online/safety.html
+
+English homepage:
+https://cimoabeam.online/en/
+
+English About:
+https://cimoabeam.online/en/about.html
+
+English Support:
+https://cimoabeam.online/en/support.html
+
+English Privacy Policy:
+https://cimoabeam.online/en/privacy.html
+
+English Terms of Use:
+https://cimoabeam.online/en/terms.html
+
+English Community Safety:
+https://cimoabeam.online/en/safety.html
+
+Operator-supplied contact:
+CimoaTeam@gmail.com
+
+These are deployment destinations, not a record of successful publication, mailbox verification or App Store approval. No App Store product URL has been supplied. Some static hosts normalize .html URLs; verify the final redirect and canonical behavior after deployment.

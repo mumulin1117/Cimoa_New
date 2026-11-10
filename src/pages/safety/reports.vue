@@ -15,7 +15,7 @@ const navigating = ref(false)
 const account_id = store.session.account_id
 const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -35,7 +35,7 @@ const open_report = async row => {
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="safety-reports-page" title="Your reports" source="reportsSubmitted" :error="error" :access-error="access_error" @back="back" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="safety-reports-page" title="Your reports" source="reportsSubmitted" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover">
     <text class="reports-local-note">View your report history and the details you provided.</text>
     <view v-if="rows.length" class="reports-list">
       <view v-for="row in rows" :key="row.report_id" class="report-row" role="button" tabindex="0" :aria-label="`${row.subject?.name || 'Unavailable subject'}, ${row.reason}, ${row.status_label}`" data-interaction="reportsSubmitted.r.open.click.1" @click="open_report(row)" @keydown.enter="open_report(row)">
@@ -43,7 +43,7 @@ const open_report = async row => {
         <view class="report-row-bottom"><text>{{ row.reason }} · {{ row.when }}</text><view class="report-chevron"><SourceIcon name="chevron" /></view></view>
       </view>
     </view>
-    <view v-else class="settings-page-empty" role="status"><text class="settings-page-empty-title">No reports submitted</text><text class="settings-page-empty-copy">Your saved reports will appear here.</text></view>
+    <view v-else class="settings-page-empty" role="status"><text class="settings-page-empty-title">No reports yet</text><text class="settings-page-empty-copy">Your report history will appear here.</text></view>
   </ProfileEditorFrame>
 </template>
 

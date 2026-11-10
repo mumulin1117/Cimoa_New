@@ -1,0 +1,12 @@
+{
+  "interaction_id": "home.refresh.pull.1",
+  "source_screen": "Home / People you’ve met; 2026-10-22 user-authorized loading presentation, preserving HTML content and navigation",
+  "trigger": "Pull downward at the top of the Home list and release beyond the scroll-view refresher threshold",
+  "preconditions": "Authenticated, ready or empty Home projection; initial content skeleton finished; no refresh already pending",
+  "visible_feedback": "2026-10-23 approved Encounter Orbit: cyan/pink particles converge with actual pull progress, crossed light trails form, threshold settles gently, active particles follow the trails; no title Logo reuse. Pull to refresh / Release to refresh / Refreshing your connections; reduced motion is static; existing content, Header and Tabbar remain available",
+  "success_result": "After 600ms, Store reads the current canonical Home projection and runtime clock without a transaction or persistence write",
+  "failure_result": "Original list stays visible, neutral failure Toast permits retry; stale-account reads fail; navigation and cancellation settle the pending promise",
+  "persistence": "none; no hydrate, reseed, request/relationship/message/membership/coin mutation or Discover cursor reconciliation",
+  "sync_scope": "Current account session; all cards remain derived from shared entities; cold/auth skeleton and per-entity caches are process-lifetime presentation state only",
+  "acceptance": "content-loading.test.mjs, content-loading-browser.test.mjs and isolated iPhone 17 Pro WKWebView EventCoverTests/testContentLoadingAndRefresh; no full-app verified claim"
+}

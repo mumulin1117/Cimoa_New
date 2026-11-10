@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-24",
+  "scope": "Voice answer title and removal of the top-right More entry only",
+  "result": "The recording page shows Your answer and Back only. Shared header styling, Voice preview, recording, permissions, question identity, text switch, fee confirmation and media handling remain unchanged.",
+  "changed_files": [
+    "src/pages/discover/icebreaker/voice.vue",
+    "docs/ui-restoration/discover-request-voice/source-contract.json",
+    "docs/ui-restoration/discover-request-voice/interactions.json",
+    "docs/ui-restoration/voice-answer-header-2026-10-24/acceptance.json",
+    "scripts/voice-answer-header.test.mjs",
+    "scripts/voice-answer-header-browser.test.mjs",
+    "scripts/lib/voice-answer-header-regression.mjs",
+    "scripts/discover-request-extra-browser.test.mjs",
+    "ios/cimoaNeapo/Tests/EventCoverTests.swift"
+  ],
+  "verification": {
+    "all_unit_tests": { "passed": 338, "failed": 0, "log": "artifacts/voice-answer-header/unit-test.log" },
+    "browser": { "passed": true, "viewports": ["393x852", "320x568", "440x956"], "report": "artifacts/voice-answer-header/browser-report.json", "errors": 0, "warnings": 0, "preview_server_started": false, "browsers_closed": true },
+    "wkwebview": { "passed": true, "test": "EventCoverTests.testVoiceAnswerHeader()", "executed_tests": 1, "device": "iPhone 17 Pro simulator", "actual_host_business_data_unchanged": true, "report": "artifacts/voice-answer-header/wkwebview-report.json" },
+    "flow_scope": "Selected question -> Voice -> cancel microphone pre-prompt -> Text -> Voice -> actual Back -> Voice; no storage changes. This targeted run did not request the microphone, record audio or send a paid introduction.",
+    "legacy_extra_script": "Old More-dependent tests now use existing preview Delete/Re-record controls; syntax and whitespace checked only. The legacy server-based script was not executed in this task.",
+    "required_commands": ["corepack pnpm check:conventions", "git diff --check", "corepack pnpm build:h5"],
+    "required_commands_passed": true,
+    "h5_files_packaged": 438,
+    "warnings": "No convention or browser warning; Xcode retains the existing AppIntents metadata-extraction-skipped warning only."
+  },
+  "conventions": "Both convention documents unchanged; existing Store, safe areas, navigation and Loading timings reused",
+  "full_page_status": "Unchanged; targeted header correction does not mark the full page or app verified",
+  "git": "No staging, commit, push or reset performed"
+}

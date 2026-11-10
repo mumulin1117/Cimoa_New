@@ -18,7 +18,7 @@ let generation = 0
 
 const account_scope = use_account_scope(store, () => { generation += 1; reading.value = false })
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -54,7 +54,7 @@ const open_settings = async () => {
 </script>
 
 <template>
-  <ProfileEditorFrame ref="frame" class="settings-permissions-page" title="Permissions" source="setPerm" :busy="false" :error="error" :access-error="access_error" @back="back" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="settings-permissions-page" title="Permissions" source="setPerm" :busy="false" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover">
     <view class="settings-page-stack permissions-stack" :aria-busy="reading">
       <view v-for="row in rows" :key="row.key" class="settings-page-row permission-row" role="button" tabindex="0" data-interaction="setPerm.p.openSettings.click.1" @click="open_settings" @keydown.enter="open_settings">
         <text>{{ row.label }}</text>

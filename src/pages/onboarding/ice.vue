@@ -6,6 +6,7 @@ import { question_error } from '@/utils/onboardingFlow.js'
 import OnboardingFrame from '@/components/OnboardingFrame.vue'
 import IceLibrarySheet from '@/components/IceLibrarySheet.vue'
 import IceCustomSheet from '@/components/IceCustomSheet.vue'
+import { auth_message } from '@/utils/authFeedback.js'
 const frame = ref(null), { context, catalog, error, access_error, is_loading, back, recover, save } = use_onboarding('ice', frame)
 const selected = ref([...(context.value?.profile.questions || [])]), sheet = ref(''), sheet_error = ref(''), sheet_notice = ref(''), custom = ref(''), custom_reset = ref(0)
 const empty_slots = computed(() => 3 - selected.value.length)
@@ -19,7 +20,7 @@ const choose = (question, is_custom = false) => {
   if (existing >= 0) { if (is_custom) { sheet_error.value = 'This question is already selected.'; return }; selected.value = selected.value.filter(item => item !== value); return }
   if (selected.value.length >= 3) { sheet_error.value = 'Three questions is the limit — remove one first.'; return }
   selected.value = [...selected.value, value]
-  if (is_custom) { custom.value = ''; custom_reset.value++; sheet_notice.value = 'Question added · checked automatically' }
+  if (is_custom) { custom.value = ''; custom_reset.value++; sheet_notice.value = 'Question added to your icebreakers' }
 }
 const edit = index => { selected.value = selected.value.filter((_, row) => row !== index); open('library') }
 const remove = index => { error.value = ''; selected.value = selected.value.filter((_, row) => row !== index) }
@@ -33,7 +34,7 @@ onHide(close)
     </view>
     <view class="ice-browse" role="button" tabindex="0" data-interaction="obIce.browseQuestions.click.1" @click="open('library')" @keydown.enter="open('library')">Browse more questions</view><view class="ice-custom" role="button" tabindex="0" data-interaction="obIce.writeOwnQuestion.click.1" @click="open('custom')" @keydown.enter="open('custom')">Write my own</view>
     <template #button-icon><svg class="ice-continue-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></template>
-    <template #overlays><IceLibrarySheet :open="sheet === 'library'" :questions="catalog.questions" :selected="selected" :error="sheet_error" @close="close" @choose="choose" /><IceCustomSheet v-model="custom" :open="sheet === 'custom'" :error="sheet_error" :notice="sheet_notice" :reset-key="custom_reset" @close="close" @add="choose(custom, true)" /></template>
+    <template #overlays><IceLibrarySheet :open="sheet === 'library'" :questions="catalog.questions" :selected="selected" :error="sheet_error && auth_message(sheet_error)" @close="close" @choose="choose" /><IceCustomSheet v-model="custom" :open="sheet === 'custom'" :error="sheet_error && auth_message(sheet_error)" :notice="sheet_notice" :reset-key="custom_reset" @close="close" @add="choose(custom, true)" @dismiss-notice="sheet_notice = String()" /></template>
   </OnboardingFrame>
 </template>
 <style>

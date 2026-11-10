@@ -16,12 +16,12 @@
     "source_screen": "route=evGroup&joined=1",
     "trigger": "click / keyboard activation",
     "preconditions": "ready authenticated owner; exact event identity; group requires current active membership and matching conversation",
-    "visible_feedback": "source navigation or controlled sheet, no navigation Loading",
-    "success_result": "Exact canonical event/user/group context; relevant membership, report, message or preference is atomically saved; real Back origin restored",
+    "visible_feedback": "Direct existing cRise navigation to Report group chat; no intermediary options sheet or navigation Loading",
+    "success_result": "2026-10-24 user override: one /pages/events/report?event_id=<id>&target_type=group&origin_conversation_id=<conversation_id> page using the same Event report layout; Back returns to this exact group",
     "failure_result": "Readable error with no partial message, Blob, seat or relationship change; no fabricated remote success",
-    "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
+    "persistence": "none for opening or Back; explicit report submission alone uses the existing 500ms-before-write Store transaction",
     "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",
-    "acceptance": "scripts/events.test.mjs; scripts/event-pages.test.mjs; browser per-page evidence; native event regression; visual evidence remains pending"
+    "acceptance": "scripts/group-chat-report.test.mjs; scripts/group-chat-report-ui.test.mjs; scripts/group-chat-report-browser.test.mjs; isolated WKWebView testGroupChatReport; artifacts/group-chat-report"
   },
   {
     "interaction_id": "evGroup.sendPhoto.click.1",
@@ -52,12 +52,12 @@
     "source_screen": "route=evGroup&joined=1",
     "trigger": "click / keyboard activation",
     "preconditions": "ready authenticated owner; exact event identity; group requires current active membership and matching conversation",
-    "visible_feedback": "source navigation or controlled sheet, no navigation Loading",
-    "success_result": "Exact canonical event/user/group context; relevant membership, report, message or preference is atomically saved; real Back origin restored",
+    "visible_feedback": "2026-10-24 user override: the same branded voice studio as private chat, with this event cover/title and group-specific interaction IDs; opening has no Loading or write",
+    "success_result": "Open idle capture in the current event/group, pause existing message audio; microphone requested only by explicit Start recording",
     "failure_result": "Readable error with no partial message, Blob, seat or relationship change; no fabricated remote success",
     "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
     "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",
-    "acceptance": "scripts/events.test.mjs; scripts/event-pages.test.mjs; browser per-page evidence; native event regression; visual evidence remains pending"
+    "acceptance": "scripts/group-voice.test.mjs; scripts/group-voice-browser.test.mjs; testGroupVoiceMessageSheet; artifacts/group-voice; full-page acceptance remains unchanged"
   },
   {
     "interaction_id": "evGroup.sendGroup.click.1",
@@ -70,5 +70,77 @@
     "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
     "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",
     "acceptance": "scripts/events.test.mjs; scripts/event-pages.test.mjs; browser per-page evidence; native event regression; visual evidence remains pending"
+  },
+  {
+    "interaction_id": "eventGroup.media.record.click.1",
+    "source_screen": "Event group chat; 2026-10-24 user-authorized shared private/group voice studio",
+    "trigger": "tap / Enter / Space",
+    "preconditions": "Authenticated current event member and exact group conversation; no send, capture request or decode already in progress",
+    "visible_feedback": "Microphone access, actual recording timer and stop control, Preparing audio, then decoded preview; separate real permission/device errors",
+    "success_result": "Start a real capture, stop into validated temporary audio, or re-record by releasing the old draft; maximum 120 seconds",
+    "failure_result": "No message or charge; readable failure; late streams/decodes cannot resurrect a cancelled capture",
+    "persistence": "none; temporary media only until explicit Send",
+    "sync_scope": "Current event/group; no membership, private connection, message or coin mutation",
+    "acceptance": "group voice browser cases: denied, missing, late-cancel, preview, re-record, cancel and access-loss"
+  },
+  {
+    "interaction_id": "eventGroup.media.voicePreview.click.1",
+    "source_screen": "Shared ChatVoiceConfirmDialog review card; separate from group photo-preview and published-message play IDs",
+    "trigger": "tap / Enter / Space",
+    "preconditions": "Current valid group member, valid decoded draft audio, not sending or preparing audio",
+    "visible_feedback": "Real play/pause, playback-time-driven progress, Ready to replay on completion; no fabricated waveform",
+    "success_result": "Listen to the current unsent audio; sending pauses it; re-record/close/hide releases its player",
+    "failure_result": "Readable playback error with original draft preserved; no message or charge",
+    "persistence": "none",
+    "sync_scope": "Current temporary group draft only; opening the studio pauses published group-message audio",
+    "acceptance": "group preview and refresh recovery tests assert real media time, pause stability and no storage writes"
+  },
+  {
+    "interaction_id": "eventGroup.media.send.click.1",
+    "source_screen": "Event media confirmation; shared voice studio for audio only",
+    "trigger": "tap / Enter / Space",
+    "preconditions": "Current member of the same event/group, readable media and no concurrent capture/decode/send",
+    "visible_feedback": "Voice uses the same inline branded send progress as private chat; photo retains its existing branded feedback; preserve the established 500ms-before-write wait",
+    "success_result": "Exactly one send_event_message commits the owned Blob and canonical group message, closes the sheet and follows the newest message",
+    "failure_result": "Keep draft and preview for retry; compensate failed Blob publication; no duplicate message, partial metadata or coin change",
+    "persistence": "Existing Pinia action; Blob in IndexedDB and metadata in the versioned business store; recheck account and membership generation during async publication",
+    "sync_scope": "Current event/group message history, preview and unread state; unrelated private conversations unchanged",
+    "acceptance": "group voice send-retry and refresh tests verify delay, duplicate lock, compensation, exact conversation, Blob recovery and unchanged coins"
+  },
+  {
+    "interaction_id": "eventGroup.media.dismiss.click.1",
+    "source_screen": "Shared voice studio top-right X",
+    "trigger": "tap / Enter / Space; Escape follows the same close path",
+    "preconditions": "Voice sheet open, not sending; microphone access/decoding may still be pending",
+    "visible_feedback": "Existing 240ms Sheet exit; restore composer focus; release interaction lock only after released",
+    "success_result": "Abort pending access, stop capture/playback, release draft media and stay in the exact group; reopen cleanly",
+    "failure_result": "Ignore close during sending; late completion cannot reopen or publish a cancelled draft",
+    "persistence": "none",
+    "sync_scope": "Current group composer only",
+    "acceptance": "group idle reopen, permission failure, late cancellation and keyboard tests; no business writes"
+  },
+  {
+    "interaction_id": "eventGroup.media.close.click.1",
+    "source_screen": "Controlled group media Sheet backdrop",
+    "trigger": "tap outside the panel",
+    "preconditions": "Media sheet open and no active send",
+    "visible_feedback": "Controlled Sheet exit; no navigation or Loading",
+    "success_result": "Same cleanup and released-lock behavior as the voice close X; remain in this group",
+    "failure_result": "Sending blocks dismissal; no persistence or late media resurrection",
+    "persistence": "none",
+    "sync_scope": "Current temporary group media state",
+    "acceptance": "group close/reopen tests and existing photo-preview close regression"
+  },
+  {
+    "interaction_id": "eventGroup.media.close.click.2",
+    "source_screen": "Shared voice studio Cancel; existing photo Cancel/Close retained",
+    "trigger": "tap / Enter / Space",
+    "preconditions": "Media sheet open and no active send; pending microphone/decoding remains cancellable",
+    "visible_feedback": "Controlled Sheet exit and focus restoration; released unlock",
+    "success_result": "Discard only unsent temporary media, stop tracks/player and preserve existing group messages and membership",
+    "failure_result": "No action during sending; late asynchronous results cannot publish or restore the cancelled draft",
+    "persistence": "none",
+    "sync_scope": "Current group composer; no relationship, membership or coin change",
+    "acceptance": "group cancel, re-record cancellation, pending permission and media cleanup cases"
   }
 ]

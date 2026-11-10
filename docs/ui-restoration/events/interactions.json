@@ -1,5 +1,17 @@
 [
   {
+    "interaction_id": "events.cell.open.click.1",
+    "source_screen": "route=events; 2026-10-24 user override for all activity cells",
+    "trigger": "Click anywhere outside the primary Join/Joined button; Enter or Space on the card",
+    "preconditions": "Ready authenticated owner; exact canonical event_id; no navigation or write already running",
+    "visible_feedback": "Existing page transition directly to activity detail; no navigation Loading or sheet",
+    "success_result": "Exactly one /pages/events/detail?event_id entry for the selected card; Back restores the same category, card order and horizontal position",
+    "failure_result": "Readable error while staying on the list; no partial navigation or attendance change",
+    "persistence": "none; read-only events_destination and existing MainTabFrame navigation; Join retains its confirmation and 500ms-before-write flow",
+    "sync_scope": "Same canonical event entity across Events, detail, participants, My Events and group; no new business state",
+    "acceptance": "scripts/event-cell-navigation.test.mjs; scripts/event-cell-navigation-browser.test.mjs; isolated WKWebView testEventCellNavigation; artifacts/event-cell-navigation"
+  },
+  {
     "interaction_id": "events.openMe.click.1",
     "source_screen": "route=events",
     "trigger": "click / keyboard activation",
@@ -86,10 +98,10 @@
   {
     "interaction_id": "events.openParticipants.click.1",
     "source_screen": "route=events",
-    "trigger": "click / keyboard activation",
+    "trigger": "Click on the participant row delegates to events.cell.open.click.1; card keyboard activation uses the same detail destination",
     "preconditions": "ready authenticated owner; exact event identity; group requires current active membership and matching conversation",
     "visible_feedback": "source navigation or controlled sheet, no navigation Loading",
-    "success_result": "Exact canonical event/user/group context; relevant membership, report, message or preference is atomically saved; real Back origin restored",
+    "success_result": "2026-10-24 override: open /pages/events/detail?event_id for this card, not the participant list; participants remain accessible from detail",
     "failure_result": "Readable error with no partial message, Blob, seat or relationship change; no fabricated remote success",
     "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
     "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",
@@ -110,10 +122,10 @@
   {
     "interaction_id": "events.openGroup.click.1",
     "source_screen": "route=events",
-    "trigger": "click / keyboard activation",
+    "trigger": "Click on the joined-card group text delegates to events.cell.open.click.1",
     "preconditions": "ready authenticated owner; exact event identity; group requires current active membership and matching conversation",
     "visible_feedback": "source navigation or controlled sheet, no navigation Loading",
-    "success_result": "Exact canonical event/user/group context; relevant membership, report, message or preference is atomically saved; real Back origin restored",
+    "success_result": "2026-10-24 override: open /pages/events/detail?event_id for this card; actual group chat remains accessible from detail",
     "failure_result": "Readable error with no partial message, Blob, seat or relationship change; no fabricated remote success",
     "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
     "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",
@@ -122,10 +134,10 @@
   {
     "interaction_id": "events.manageAttendance.click.1",
     "source_screen": "route=events",
-    "trigger": "click / keyboard activation",
+    "trigger": "Click on the joined-card Manage text delegates to events.cell.open.click.1",
     "preconditions": "ready authenticated owner; exact event identity; group requires current active membership and matching conversation",
     "visible_feedback": "source navigation or controlled sheet, no navigation Loading",
-    "success_result": "Exact canonical event/user/group context; relevant membership, report, message or preference is atomically saved; real Back origin restored",
+    "success_result": "2026-10-24 override: open /pages/events/detail?event_id for this card; attendance confirmation remains accessible from detail",
     "failure_result": "Readable error with no partial message, Blob, seat or relationship change; no fabricated remote success",
     "persistence": "Store transaction and IndexedDB through utils only; read/navigation/selection do not persist",
     "sync_scope": "Events / detail / participants / My Events / group / reports / profile and blocked-user visibility",

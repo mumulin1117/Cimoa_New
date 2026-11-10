@@ -1,4 +1,6 @@
 <script setup>
+import { get_locale } from '@/i18n/index.js'
+
 import { computed, ref } from 'vue'
 import { use_profile_editor } from '@/composables/useProfileEditor.js'
 import ProfileEditorFrame from '@/components/ProfileEditorFrame.vue'
@@ -8,12 +10,12 @@ const verification = computed(() => store.profile_verification)
 const rows = computed(() => verification.value ? [
   ['University', verification.value.university || 'Not provided'],
   ['Account email', verification.value.masked_email],
-  ['Verified on', verification.value.verified_at ? new Date(verification.value.verified_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : 'Not recorded'],
+  ['Verified on', verification.value.verified_at ? new Date(verification.value.verified_at).toLocaleDateString(get_locale(), { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : 'Unavailable'],
   ['Status', verification.value.verified ? 'Active' : ({ pending: 'Pending', expired: 'Expired', required: 'Required' })[verification.value.status] || 'Unavailable'],
 ] : [])
 </script>
 <template>
-  <ProfileEditorFrame ref="frame" class="profile-verification-page" title="University verification" source="verified" :error="error" :access-error="access_error" @back="back" @recover="recover">
+  <ProfileEditorFrame ref="frame" class="profile-verification-page" title="University verification" source="verified" :error="error" @dismiss-error="error = String()" :access-error="access_error" @back="back" @recover="recover">
     <template v-if="verification">
       <view class="verification-summary"><view class="verification-badge"><view><SourceIcon :name="verification.verified ? 'check' : 'shield'" :stroke-width="2.6" /></view></view><text>{{ verification.verified ? 'Verified student' : 'Student verification pending' }}</text></view>
       <view class="verification-details"><view v-for="[label, value] in rows" :key="label" class="verification-row"><text>{{ label }}</text><text>{{ value }}</text></view></view>

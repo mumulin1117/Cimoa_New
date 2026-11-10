@@ -2,14 +2,17 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createPinia } from 'pinia'
 import { use_app_store, configure_store_runtime } from '../src/stores/store.js'
-import { create_seed, clone_data } from '../src/stores/seed.js'
+import { create_seed, clone_data, HOME_REQUEST_USER_ID } from '../src/stores/seed.js'
 import { coin_source_route } from '../src/utils/coinReturnContext.js'
+import { ACTIVE_COIN_PACKAGES } from '../src/stores/coinPackages.js'
 
 const fixture = () => {
   let disk = create_seed()
   const store = use_app_store(createPinia())
   const persistence = { read: () => clone_data(disk), write: (_, data) => { disk = clone_data(data) } }
   configure_store_runtime(store, { persistence }); store.hydrate()
+  const pack = ACTIVE_COIN_PACKAGES.find(row => row.package_id === 'pkg_60')
+  store.purchase_products = [{ package_id: pack.package_id, product_id: pack.product_id, display_price: '$0.99', currency_code: 'USD' }]
   const draft = store.prepare_introduction('user_zane', store.questions_for_user('user_zane')[0].question_id, 'text').data
   store.update_introduction_draft(draft, { text: 'Coffee and a campus walk after class?' })
   return { store, draft, persistence, reload: () => { const other = use_app_store(createPinia()); configure_store_runtime(other, { persistence }); other.hydrate(); return other } }
@@ -73,7 +76,7 @@ test('existing free requests remain free after hydration; received invitations a
   configure_store_runtime(store, { persistence: { read: () => snapshot, write() {} } }); store.hydrate()
   assert.equal(store.coin_transactions.length, before); assert.equal(store.coin_balance, 260)
   assert.equal(store.introduction_context('user_zane').primary.disabled, true)
-  assert.equal(store.introduction_context('user_lina').primary.label, 'View request'); assert.ok(!store.introduction_context('user_lina').primary.disabled)
+  assert.equal(store.introduction_context(HOME_REQUEST_USER_ID).primary.label, 'View request'); assert.ok(!store.introduction_context(HOME_REQUEST_USER_ID).primary.disabled)
   assert.equal(store.introduction_context('user_chloe').primary.label, 'Chat'); assert.ok(!store.introduction_context('user_chloe').primary.disabled)
   assert.ok(reload())
 })

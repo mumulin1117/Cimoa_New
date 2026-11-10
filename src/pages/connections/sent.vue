@@ -33,7 +33,7 @@ const back = async () => { try { await frame.value.navigate_back('/pages/discove
       <view class="sent-status"><view><ConnectionIcon name="clock" /></view><text>{{ status_label }}</text></view>
       <text v-if="request.status === 'pending'" class="sent-note">Chat and video calls unlock once {{ first_name }} accepts.</text>
     </view>
-    <template #footer><text v-if="error" class="connection-error" role="alert">{{ error }}</text><view class="connection-footer"><view class="connection-primary" role="button" tabindex="0" data-interaction="reqSent.doneSent.click.1" @click="done" @keydown.enter="done">Done</view></view></template>
+    <template #footer><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /><view class="connection-footer"><view class="connection-primary" role="button" tabindex="0" data-interaction="reqSent.doneSent.click.1" @click="done" @keydown.enter="done">Done</view></view></template>
   </SecondaryPageFrame>
 </template>
 <style scoped>

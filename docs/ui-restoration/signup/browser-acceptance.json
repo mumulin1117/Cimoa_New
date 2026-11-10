@@ -1,7 +1,7 @@
 {
   "phase": "signup-pixel-restoration",
   "result": "passed",
-  "server_pid": 64130,
+  "server_pid": 87616,
   "reference": {
     "kind": "source-derived locked reference with approved safe-area, truthful-local-registration and password-security deltas",
     "source_file_sha256": "6c49411c6868b476ff46cedaa9828ee2ccbfe89d5eaa7ea1f739feb2c8018060",
@@ -114,7 +114,7 @@
         "Confirm password"
       ],
       "hint": "At least 8 characters with a number",
-      "note": "Your university email is only used for this local account. It is never shown on your profile.",
+      "note": "Your university email is used for account access and is never shown on your profile.",
       "primary": "Create Account",
       "secondary": "Already have an account? Log in"
     },
@@ -154,17 +154,17 @@
   "comparison": {
     "width": 393,
     "height": 852,
-    "pixels_different": 60165,
-    "pixels_above_channel_delta_8": 12976,
-    "mean_absolute_channel_delta": 1.2606761220418354,
-    "max_channel_delta": 146
+    "pixels_different": 50347,
+    "pixels_above_channel_delta_8": 12894,
+    "mean_absolute_channel_delta": 1.2745358921979715,
+    "max_channel_delta": 181
   },
   "checks": [
     "393x852 empty default restores locked source geometry, exact controls, approved truthful note, disabled CTA and finished cRise frame",
     "reference, actual, overlay and absolute diff were generated from one hash-locked default state",
     "short, missing-number and mismatch hints are truthful; keyboard Show/Hide controls both real password fields",
     "Apple entry is absent; editing keeps the form usable; 320x568 scrolling and keyboard-height reduction keep the focused field visible",
-    "duplicate email rolls back; one Loading creates one salted local account; no plaintext/session/student certification; refresh recovers verification with blank passwords",
+    "duplicate email rolls back; one Loading creates one salted account; no plaintext/session/student certification; refresh recovers verification with blank passwords",
     "injected persistence failure leaves the Store unchanged, preserves retryable credentials and never opens verification",
     "Login round-trip restores Signup and direct-entry Back falls back to Community without a guest-state write"
   ],

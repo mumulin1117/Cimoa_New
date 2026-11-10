@@ -32,8 +32,8 @@
     "copy": "Introductions, Auto Match results, and event reminders. Nothing promotional.",
     "denied_title": "Access is off",
     "settings": "Open Settings",
-    "primary": "Allow Notifications",
-    "secondary": "Don’t Allow"
+    "primary": "Continue",
+    "secondary": "Cancel"
   },
   "interactions": [
     "permNotif.openSettings.click.1",
@@ -44,6 +44,7 @@
     "Use real operating-system notification status and real safe-area values.",
     "Do not persist granted until the operating system returns granted.",
     "Unsupported, denied, host-failure and persistence-failure states show truthful contextual text.",
-    "Allow and Don't Allow persist through one Store transaction after the required custom Loading."
+    "2026-10-26 user request: the custom buttons are Continue / Cancel. Continue directly calls the actual system notification request; system-owned dialog labels are unchanged.",
+    "Cancel makes no system request and never fabricates an OS denial. After the required custom Loading it persists only the onboarding choice, preserving an actual denied/unavailable status or otherwise marking setup skipped."
   ]
 }

@@ -13,6 +13,10 @@ import EventActionLoading from '@/components/EventActionLoading.vue'
 import SafetyActionsMiniSheet from '@/components/SafetyActionsMiniSheet.vue'
 import ProfileVoiceIntro from '@/components/ProfileVoiceIntro.vue'
 import { create_profile_photo_carousel } from '@/utils/profilePhotoCarousel.js'
+import { use_entity_skeleton } from '@/composables/useEntitySkeleton.js'
+import { use_discover_guide } from '@/composables/useDiscoverGuide.js'
+import ContentSkeleton from '@/components/ContentSkeleton.vue'
+import DiscoverGuide from '@/components/DiscoverGuide.vue'
 
 const store = use_app_store()
 const frame = ref(null)
@@ -24,6 +28,7 @@ const error = ref('')
 const active = ref(true)
 const document_visible = ref(typeof document === 'undefined' || document.visibilityState !== 'hidden')
 const navigating = ref(false)
+const guide_presented = ref(false)
 const was_available = ref(false)
 const { is_loading, run_with_loading, cancel_loading } = use_write_loading()
 const account_scope = use_account_scope(store, () => { cancel_loading(); sheet.value = ''; photo_index.value = 0 })
@@ -32,19 +37,19 @@ const photos = computed(() => store.photos_for_user(user_id.value))
 const goals = computed(() => store.goals_for_user(user_id.value))
 const interests = computed(() => store.interests_for_user(user_id.value))
 const questions = computed(() => store.questions_for_user(user_id.value))
-const song = computed(() => store.song_for_user(user_id.value))
 const conversation = computed(() => store.current_conversations.find((row) => row.participant_id === user_id.value) || null)
 const photo = computed(() => photos.value[photo_index.value] || null)
 const is_self = computed(() => user_id.value === store.session.current_user_id)
 const request_context = computed(() => store.introduction_context(user_id.value))
 const primary_label = computed(() => is_self.value ? 'This is you' : request_context.value.primary?.label || 'Send shot')
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved data is unavailable. Please return and retry.'
+  ? 'Your data is unavailable. Please return and retry.'
   : !store.session.is_authenticated || !account_scope.is_current()
     ? 'Your session has expired. Please sign in again.'
     : !user_id.value || !person.value
       ? 'This profile is unavailable. It may be hidden, deleted or blocked.'
       : '')
+const skeleton = use_entity_skeleton('profile', user_id, computed(() => !access_error.value && !is_self.value))
 const details = computed(() => person.value ? [
   person.value.height_cm ? { icon: 'height', label: `${person.value.height_cm} cm` } : null,
   person.value.university ? { icon: 'university', label: person.value.university } : null,
@@ -57,6 +62,13 @@ const details = computed(() => person.value ? [
   person.value.clubs ? { icon: 'people', label: person.value.clubs } : null,
   person.value.location ? { icon: 'location', label: person.value.location } : null,
 ].filter(Boolean) : [])
+const { open: guide_open, step: guide_step, busy: guide_busy, error: guide_error, is_loading: guide_loading, next_disabled: guide_next_disabled, next: guide_next, back: guide_back, skip: guide_skip, target_user_id: guide_user_id, mode: guide_mode } = use_discover_guide('profile', {
+  ready: computed(() => guide_presented.value && !skeleton.value),
+  user_id: () => user_id.value,
+  available: () => !sheet.value && !is_loading.value && !access_error.value,
+  element: () => frame.value?.$el,
+  return_discover: () => back(),
+})
 
 onLoad(options => {
   user_id.value = String(options?.user_id || '')
@@ -64,12 +76,12 @@ onLoad(options => {
   was_available.value = !!store.user_by_id(user_id.value)
 })
 const carousel = create_profile_photo_carousel({
-  can_advance: () => active.value && document_visible.value && !access_error.value && !sheet.value && !is_loading.value && !navigating.value && photos.value.length > 1,
+  can_advance: () => active.value && document_visible.value && !skeleton.value && !access_error.value && !sheet.value && !is_loading.value && !navigating.value && photos.value.length > 1,
   advance: () => { photo_index.value = (photo_index.value + 1) % photos.value.length },
 })
-const leave = () => { active.value = false; carousel.stop(); navigating.value = false; cancel_loading(); sheet.value = '' }
+const leave = () => { active.value = false; guide_presented.value = false; carousel.stop(); navigating.value = false; cancel_loading(); sheet.value = '' }
 watch(() => photos.value.map(row => row.photo_id || row.media_url).join('|'), () => { photo_index.value = photos.value.length ? photo_index.value % photos.value.length : 0; carousel.restart() })
-watch([active, document_visible, access_error, sheet, is_loading, navigating], () => carousel.restart())
+watch([active, document_visible, access_error, sheet, is_loading, navigating, skeleton], () => carousel.restart())
 const visibility_changed = () => { document_visible.value = document.visibilityState !== 'hidden' }
 onMounted(() => { if (typeof document !== 'undefined') document.addEventListener('visibilitychange', visibility_changed); carousel.restart() })
 onHide(leave)
@@ -86,7 +98,13 @@ onShow(async () => {
 
 const conversation_route = () => discover_destination(store, 'chat', user_id.value)
 const back_fallback = () => conversation.value?.conversation_id === origin_conversation_id.value ? conversation_route() : '/pages/discover/index'
-const back = async () => { if (is_loading.value || sheet.value) return; try { await frame.value.navigate_back(back_fallback()) } catch (cause) { error.value = cause.message } }
+const back = async () => {
+  if (is_loading.value || sheet.value || navigating.value) return false
+  navigating.value = true
+  try { return await frame.value.navigate_back(back_fallback()) }
+  catch (cause) { error.value = cause.message; return false }
+  finally { navigating.value = false }
+}
 const change_photo = delta => {
   if (photos.value.length < 2) return
   photo_index.value = (photo_index.value + delta + photos.value.length) % photos.value.length
@@ -94,9 +112,8 @@ const change_photo = delta => {
   error.value = ''
 }
 const open_gallery = () => { if (photo.value && !is_loading.value) { sheet.value = 'gallery'; error.value = '' } }
-const play_song = () => { error.value = song.value?.audio_id ? 'Audio is currently unavailable for this song.' : 'This profile includes song artwork only. No playable audio was provided.' }
 const say_hi = async () => {
-  if (is_loading.value || navigating.value || sheet.value || access_error.value || is_self.value || request_context.value.primary?.disabled) return
+  if (skeleton.value || is_loading.value || navigating.value || sheet.value || access_error.value || is_self.value || request_context.value.primary?.disabled) return
   navigating.value = true
   error.value = ''
   try {
@@ -128,10 +145,10 @@ const confirm_block = async () => {
 </script>
 
 <template>
-  <SecondaryPageFrame ref="frame" class="expanded-profile-page" :scroll-locked="!!sheet || is_loading">
+  <SecondaryPageFrame ref="frame" class="expanded-profile-page" :scroll-locked="!!sheet || is_loading || guide_open" @presented="guide_presented = true">
     <template #header>
       <view class="expanded-header">
-        <view class="expanded-round" role="button" tabindex="0" aria-label="Back" data-interaction="expanded.collapse.click.1" @click="back" @keydown.enter="back"><view class="expanded-icon"><SourceIcon name="back" /></view></view>
+        <view class="expanded-round" role="button" tabindex="0" aria-label="Back" :aria-disabled="is_loading || navigating || !!sheet" data-interaction="expanded.collapse.click.1" @click="back" @keydown.enter="back"><view class="expanded-icon"><SourceIcon name="back" /></view></view>
         <view v-if="person" class="expanded-heading"><text>{{ person.user_name }}{{ person.age === null ? '' : `, ${person.age}` }}</text><view v-if="person.verified" class="expanded-verified"><SourceIcon name="verified" /></view></view>
         <view v-if="person && !is_self" class="expanded-round" role="button" tabindex="0" aria-label="Safety actions" data-interaction="expanded.openSafetyMini.click.1" @click="sheet = 'safety'; error = ''" @keydown.enter="sheet = 'safety'; error = ''"><view class="expanded-icon"><SourceIcon name="more" /></view></view>
         <view v-else class="expanded-round-placeholder" />
@@ -139,11 +156,11 @@ const confirm_block = async () => {
     </template>
 
     <view v-if="access_error" class="expanded-state" role="alert">{{ access_error }}</view>
+    <ContentSkeleton v-else-if="skeleton" kind="profile" />
     <view v-else class="expanded-content">
       <view class="expanded-photo-card">
         <view class="expanded-photo" role="button" tabindex="0" :aria-label="`Open photo ${photo_index + 1} of ${photos.length}`" :data-interaction="`expanded.openGallery.click.${Math.min(photo_index + 1, 3)}`" @click="open_gallery" @keydown.enter="open_gallery"><ProfilePhoto :src="photo?.media_url || ''" :name="person.user_name" :position="photo?.focal_point || '50% 22%'" /></view>
         <ProfileVoiceIntro v-if="person.voice_intro && active && document_visible" :intro="person.voice_intro" :cover="photos[0]?.media_url || ''" :name="person.user_name" />
-        <view v-else-if="!person.voice_intro && song" class="expanded-song"><image :src="song.cover_url" mode="aspectFill" /><view><text>{{ song.title }}</text><text>{{ song.artist }}</text></view><view class="expanded-song-play" role="button" tabindex="0" aria-label="Play profile song" data-interaction="expanded.otherSongPlay.click.1" @click.stop="play_song" @keydown.enter.stop="play_song"><SourceIcon name="play" /></view></view>
         <view v-if="photos.length > 1" class="expanded-photo-hit expanded-photo-hit--prev" role="button" tabindex="0" aria-label="Previous photo" data-interaction="expanded.prevPhoto.click.1" @click.stop="change_photo(-1)" @keydown.enter.stop="change_photo(-1)" />
         <view v-if="photos.length > 1" class="expanded-photo-hit expanded-photo-hit--next" role="button" tabindex="0" aria-label="Next photo" data-interaction="expanded.nextPhoto.click.1" @click.stop="change_photo(1)" @keydown.enter.stop="change_photo(1)" />
         <view v-if="photos.length > 1" class="expanded-dots"><view v-for="(_, index) in photos" :key="index" :class="{ active: index === photo_index }" /></view>
@@ -157,7 +174,7 @@ const confirm_block = async () => {
     </view>
 
     <template #footer>
-      <view v-if="person" class="expanded-footer"><text v-if="error" class="expanded-error" role="alert">{{ error }}</text><view class="expanded-send" :class="{ 'expanded-send--waiting': request_context.primary?.disabled }" role="button" :tabindex="request_context.primary?.disabled ? -1 : 0" :aria-disabled="is_self || is_loading || navigating || request_context.primary?.disabled" data-interaction="expanded.sayHi.click.1" @click="say_hi" @keydown.enter="say_hi">{{ primary_label }}</view></view>
+      <view v-if="person" class="expanded-footer"><FeedbackToast v-if="error" :message="error" @dismiss="error = String()" /><view class="expanded-send" :class="{ 'expanded-send--waiting': request_context.primary?.disabled }" role="button" :tabindex="skeleton || request_context.primary?.disabled ? -1 : 0" :aria-disabled="skeleton || is_self || is_loading || navigating || request_context.primary?.disabled" data-interaction="expanded.sayHi.click.1" @click="say_hi" @keydown.enter="say_hi">{{ primary_label }}</view></view>
     </template>
 
     <template #overlays>
@@ -169,6 +186,8 @@ const confirm_block = async () => {
         <view class="event-dialog-secondary" role="button" tabindex="0" @click="sheet = ''" @keydown.enter="sheet = ''">Close</view>
       </EventConfirmDialog>
       <EventActionLoading :visible="is_loading" label="Blocking account…" />
+      <DiscoverGuide :open="guide_open" :step="guide_step" :busy="guide_busy" :error="guide_error" :next-disabled="guide_next_disabled" :mode="guide_mode" :target-user-id="guide_user_id" @next="guide_next" @back="guide_back" @skip="guide_skip" />
+      <EventActionLoading :visible="guide_loading" label="Updating your preferences…" />
     </template>
   </SecondaryPageFrame>
 </template>
@@ -219,38 +238,6 @@ const confirm_block = async () => {
   box-shadow: var(--cimoa-shadow-discover-photo);
 }
 .expanded-photo { position: absolute; inset: 0; cursor: pointer; }
-.expanded-song {
-  position: absolute;
-  right: 26.718rpx;
-  bottom: 22.901rpx;
-  left: 26.718rpx;
-  z-index: 4;
-  display: flex;
-  align-items: center;
-  gap: 22.901rpx;
-  padding: 15.267rpx;
-  border-radius: 41.985rpx;
-  color: var(--cimoa-text-inverse);
-  background: var(--cimoa-surface-profile-song);
-  backdrop-filter: blur(26.718rpx);
-}
-.expanded-song image { flex: none; width: 83.969rpx; height: 83.969rpx; border-radius: 22.901rpx; }
-.expanded-song > view:nth-child(2) { flex: 1; min-width: 0; }
-.expanded-song text { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.expanded-song text:first-child { font-size: 29.58rpx; font-weight: 700; }
-.expanded-song text:last-child { margin-top: 3.817rpx; color: var(--cimoa-text-profile-song-artist); font-size: 24.809rpx; }
-.expanded-song-play {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 83.969rpx;
-  height: 83.969rpx;
-  padding: 22.901rpx;
-  border-radius: 50%;
-  background: var(--cimoa-surface-card);
-  color: var(--cimoa-text-settings-purple);
-  cursor: pointer;
-}
 .expanded-photo-hit {
   position: absolute;
   top: 0;

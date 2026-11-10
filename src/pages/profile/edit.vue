@@ -4,6 +4,7 @@ import { onShow, onHide } from '@dcloudio/uni-app'
 import { use_profile_editor } from '@/composables/useProfileEditor.js'
 import { choose_images, inspect_media } from '@/utils/mediaCapabilities.js'
 import { bio_style, PROFILE_FIELDS, profile_value } from '@/utils/profilePresentation.js'
+import { bind_card_pointer_events, create_pointer_gesture } from '@/utils/discoverSwipe.js'
 import ProfileEditorFrame from '@/components/ProfileEditorFrame.vue'
 import ProfileFieldSheet from '@/components/ProfileFieldSheet.vue'
 import ProfileBioConfirmDialog from '@/components/ProfileBioConfirmDialog.vue'
@@ -28,7 +29,7 @@ watch(() => context.value?.user, (next, previous) => {
     if (JSON.stringify(next[key]) !== JSON.stringify(previous[key])) delete changes.value[key]
   }
 })
-const urls = new Set(); let generation = 0, start_x = null
+const urls = new Set(); let generation = 0
 const release = () => { for (const url of urls) URL.revokeObjectURL(url); urls.clear() }
 const prune_urls = () => { const used = new Set([...photos.value.map(p => p.media_url), audio_url.value]); for (const url of urls) if (!used.has(url)) { URL.revokeObjectURL(url); urls.delete(url) } }
 const update_bio = value => {
@@ -37,9 +38,9 @@ const update_bio = value => {
   sheet.value = ''
 }
 const close = () => { sheet.value = ''; field.value = null; selected.value = -1 }
-onHide(() => { generation++; close() })
-onUnmounted(() => { generation++; release() })
-watch(access_error, value => { if (value) { generation++; close(); changes.value = {}; photos.value = []; audio_draft.value = undefined; audio_url.value = ''; release() } })
+onHide(() => { generation++; cancel_question_swipe(); close() })
+onUnmounted(() => { generation++; cancel_question_swipe(); unbind_question?.(); release() })
+watch(access_error, value => { if (value) { generation++; cancel_question_swipe(); close(); changes.value = {}; photos.value = []; audio_draft.value = undefined; audio_url.value = ''; release() } })
 onShow(() => { if (!photo_dirty.value && !access_error.value) photos.value = store.current_photos })
 const pick = async (index = -1) => {
   if (picker_busy.value || is_loading.value || access_error.value) return
@@ -66,30 +67,47 @@ const save = () => {
   const staged_audio = audio_draft.value
   if (!error.value) submit(scope => store.save_profile_edit(patch, rows, account_id, { ...scope, audio: staged_audio }))
 }
-const unavailable_song = () => { error.value = 'No playable audio is configured for this song. Nothing was played or added.' }
-const swipe = event => { if (start_x != null && questions.value.length) { const dx = event.clientX - start_x; if (Math.abs(dx) > 30) question.value = (question.value + (dx < 0 ? 1 : questions.value.length - 1)) % questions.value.length } start_x = null }
+const select_song = (song_id) => { changes.value.song_id = song_id; song_query.value = ''; sheet.value = ''; error.value = '' }
+const ice_preview = ref(null)
+let unbind_question
+const question_gesture = create_pointer_gesture({
+  element: () => ice_preview.value?.$el || ice_preview.value,
+  can_start: () => !is_loading.value && !access_error.value && !sheet.value && questions.value.length > 1,
+  capture: 'horizontal',
+  cancel_vertical: true,
+  end: event => {
+    const dx = event.clientX - event.startX
+    if (event.axis === 'horizontal' && Math.abs(dx) > 30 && questions.value.length > 1 && !is_loading.value && !access_error.value) question.value = (question.value + (dx < 0 ? 1 : questions.value.length - 1)) % questions.value.length
+  },
+})
+const cancel_question_swipe = () => question_gesture.cancel()
+watch(ice_preview, () => {
+  cancel_question_swipe(); unbind_question?.()
+  unbind_question = bind_card_pointer_events(ice_preview.value?.$el || ice_preview.value, question_gesture)
+}, { flush: 'post' })
+watch([is_loading, sheet], ([busy, active_sheet]) => { if (busy || active_sheet) cancel_question_swipe() })
 </script>
 <template>
-  <ProfileEditorFrame ref="frame" class="profile-edit-page" title="Edit profile" source="editAll" save :busy="is_loading" :error="error" :access-error="access_error" :disabled="picker_busy" @back="back" @recover="recover" @save="save">
+  <ProfileEditorFrame ref="frame" class="profile-edit-page" title="Edit profile" source="editAll" save :busy="is_loading" :error="error" @dismiss-error="error = String()" :access-error="access_error" :disabled="picker_busy" @back="back" @recover="recover" @save="save">
     <view class="editor-card score-card"><view><text class="score-title">Your profile score</text><text class="editor-copy">A more complete profile helps Cimoa find you better matches.</text></view><view class="score-ring"><svg viewBox="0 0 76 76"><defs><linearGradient id="profile-score"><stop class="score-start" /><stop offset="0.5" class="score-middle" /><stop offset="1" class="score-end" /></linearGradient></defs><circle cx="38" cy="38" r="32" fill="none" class="score-track" stroke-width="7" /><circle cx="38" cy="38" r="32" fill="none" stroke="url(#profile-score)" stroke-width="7" stroke-linecap="round" :stroke-dasharray="`${score * 2.01} 201`" transform="rotate(-90 38 38)" /></svg><text>{{ score }}%</text></view></view>
     <view class="editor-card editor-row" role="button" data-interaction="profileEdit.basic.click.1" @click="go('/pages/profile/basic')"><text>Basic info</text><view class="editor-icon"><SourceIcon name="chevron" /></view></view>
     <text class="editor-section">Student verification</text><text class="editor-copy">{{ draft.verification_status === 'verified' ? 'Your student status is verified.' : 'Student verification is pending.' }}</text>
     <view class="editor-card editor-row" role="button" data-interaction="editAll.eaVerify.click.1" @click="go('/pages/profile/verification')"><view v-if="draft.verification_status === 'verified'" class="editor-icon"><SourceIcon name="verified" /></view><text>{{ draft.university || 'University not shared' }} · {{ draft.verification_status === 'verified' ? 'Verified' : 'Pending' }}</text><view class="editor-icon"><SourceIcon name="chevron" /></view></view>
     <text class="editor-section">Photos</text><text class="editor-copy">Show your best self. Changes are published when you save.</text>
     <view class="edit-photos"><view v-for="(photo, index) in photos" :key="photo.photo_id || photo.media_url" class="edit-photo" role="button" :aria-label="`Edit photo ${index + 1}`" data-interaction="editAll.eaPhotos.click.1" @click="selected = index"><ProfilePhoto :src="photo.media_url" name="Your profile photo" portrait /><text v-if="index === 0" class="primary-photo">Primary</text><view class="camera-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="6.5" width="19" height="13.5" rx="3" /><circle cx="12" cy="13.2" r="3.6" /></svg></view></view><view v-if="photos.length < 3" class="edit-photo add-photo" role="button" aria-label="Add profile photo" :aria-disabled="picker_busy" data-interaction="profileEdit.photo.add" @click="pick()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg></view></view>
-    <text class="editor-section">Profile song</text><text class="editor-copy">Add a song to your profile.</text><view class="editor-card"><view v-if="song" class="editor-row"><image class="song-cover" :src="song.cover_url" /><view><text>{{ song.title }}</text><text class="editor-copy">{{ song.artist }}</text></view><view class="song-play" role="button" aria-label="Play profile song" data-interaction="editAll.eaSongPlay.click.1" @click="unavailable_song"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m7 4 13 8-13 8z" /></svg></view></view><text v-else class="editor-copy">No profile song selected yet.</text><view class="editor-outline" role="button" data-interaction="editAll.eaOpenSong.click.1" @click="sheet = 'song'; song_query = ''; error = ''">{{ song ? 'Change song' : 'Add song' }}</view><view v-if="song" class="editor-outline remove-song" role="button" data-interaction="editAll.eaSongRemove.click.1" @click="changes.song_id = null">Remove</view></view>
+    <text class="editor-section">Profile song</text><text class="editor-copy">Add a favorite song to your profile.</text><view class="editor-card"><view v-if="song" class="editor-row"><image class="song-cover" :src="song.cover_url" /><view><text>{{ song.title }}</text><text class="editor-copy">{{ song.artist }}</text></view><view class="song-mark" aria-hidden="true"><SourceIcon name="music" /></view></view><text v-else class="editor-copy">No profile song selected yet.</text><view class="editor-outline" role="button" data-interaction="editAll.eaOpenSong.click.1" @click="sheet = 'song'; song_query = ''; error = ''">{{ song ? 'Change song' : 'Add song' }}</view><view v-if="song" class="editor-outline remove-song" role="button" data-interaction="editAll.eaSongRemove.click.1" @click="changes.song_id = null">Remove</view></view>
     <text class="editor-section">Bio</text><text class="editor-copy">Tell people who you are.</text><view class="editor-card"><text class="editor-bio" :style="bio_style(draft.bio_font)">{{ draft.bio || 'No introduction yet.' }}</text><EventAudio v-if="audio" :src="audio.media_url" :duration="audio.duration_ms" interaction="editAll.evTogglePlay.click.1" /><view class="editor-outline" role="button" data-interaction="editAll.eaOpenBio.click.1" @click="sheet = 'bio'"><view class="editor-icon"><SourceIcon name="edit" /></view>Edit bio</view></view>
     <text class="editor-section">Looking for</text><text class="editor-copy">What are you looking for?</text><view class="editor-card"><view class="editor-tags"><text v-for="item in goals" :key="item.item_id" class="editor-tag">{{ item.emoji }} {{ item.label }}</text></view><view class="editor-outline" role="button" data-interaction="editAll.eaGoals.click.1" @click="go('/pages/profile/goals')">{{ goals.length }} selected<view class="editor-icon"><SourceIcon name="chevron" /></view></view></view>
     <text class="editor-section">Matching preferences</text><text class="editor-copy">Shape your Auto Match recommendations without changing your public profile.</text><view class="editor-card editor-row" role="button" data-interaction="editAll.openEditPrefs.click.1" @click="go('/pages/profile/prefs')"><text>Edit preferences</text><view class="editor-icon"><SourceIcon name="chevron" /></view></view>
     <text class="editor-section">Interests</text><text class="editor-copy">What are you interested in?</text><view class="editor-card"><view class="editor-tags"><text v-for="item in interests" :key="item.item_id" class="editor-tag">{{ item.emoji }} {{ item.label }}</text></view><view class="editor-outline" role="button" data-interaction="editAll.eaInterests.click.1" @click="go('/pages/profile/interests')">{{ interests.length }} selected<view class="editor-icon"><SourceIcon name="chevron" /></view></view></view>
-    <text class="editor-section">Icebreakers</text><text class="editor-copy">Choose 3 questions others can answer when they say hi.</text><view class="editor-card"><view class="ice-preview" @pointerdown="start_x = $event.clientX" @pointerup="swipe" @pointercancel="start_x = null">{{ questions[question % questions.length] || 'No questions yet.' }}</view><view class="ice-dots"><view v-for="(q, index) in questions" :key="q" role="button" :aria-label="`Show question ${index + 1}`" :class="{ active: question === index }" data-interaction="editAll.d.go.click.1" @click="question = index" /></view><view class="editor-outline" role="button" data-interaction="editAll.eaIce.click.1" @click="go('/pages/profile/ice')">Edit icebreakers</view></view>
+    <text class="editor-section">Icebreakers</text><text class="editor-copy">Choose 3 questions others can answer when they say hi.</text><view class="editor-card"><view ref="ice_preview" class="ice-preview">{{ questions[question % questions.length] || 'No questions yet.' }}</view><view class="ice-dots"><view v-for="(q, index) in questions" :key="q" role="button" tabindex="0" :aria-label="`Show question ${index + 1}`" :aria-disabled="is_loading || Boolean(access_error)" :class="{ active: question === index }" data-interaction="editAll.d.go.click.1" @click="!is_loading && !access_error && (question = index)" @keydown.enter="!is_loading && !access_error && (question = index)"><view class="ice-dot-mark" /></view></view><view class="editor-outline" role="button" data-interaction="editAll.eaIce.click.1" @click="go('/pages/profile/ice')">Edit icebreakers</view></view>
     <template v-for="row in PROFILE_FIELDS" :key="row.key"><text class="editor-section">{{ row.title }}</text><view class="editor-card editor-row" role="button" :aria-label="`Edit ${row.title}`" :data-interaction="`editAll.${row.action}.click.1`" @click="field = row.key"><text>{{ profile_value(draft, row.key) }}</text><view class="editor-icon"><SourceIcon name="chevron" /></view></view></template>
     <text class="editor-section">Habits</text><text class="editor-copy">Share your drinking and smoking habits.</text><view class="habit-row"><view class="editor-card habit" role="button" aria-label="Edit drinking habits" data-interaction="editAll.eaOpenDrink.click.1" @click="field = 'drinking'"><text>🍷</text>{{ profile_value(draft, 'drinking') }}</view><view class="editor-card habit" role="button" aria-label="Edit smoking habits" data-interaction="editAll.eaOpenSmoke.click.1" @click="field = 'smoking'"><text>🚭</text>{{ profile_value(draft, 'smoking') }}</view></view>
     <template #overlays>
       <ProfileFieldSheet :field="field" :title="title" :value="draft[field]" @close="field = null" @select="changes[field] = $event; field = null" />
       <ProfileBioConfirmDialog :open="sheet === 'bio'" :bio="draft.bio" :font="draft.bio_font" :audio="audio" @close="sheet = ''" @done="update_bio" />
       <PhotoActionsConfirmDialog draft :open="selected >= 0" :position="selected" :count="photos.length" @close="selected = -1" @replace="pick(selected)" @action="photo_action" />
-      <OnboardingSheet :open="sheet === 'song'" label="Add profile song" @close="sheet = ''"><text class="event-dialog-title">Add profile song</text><input v-model="song_query" class="editor-input" aria-label="Search songs" placeholder="Search songs, artists…" data-interaction="editAll.onEaSongQ.change.1" /><view class="editor-chips"><view class="editor-chip" :class="{ selected: song_tab === 'trend' }" role="button" data-interaction="editAll.eaTabTrend.click.1" @click="song_tab = 'trend'">🔥 Trending</view><view class="editor-chip" :class="{ selected: song_tab === 'forYou' }" role="button" data-interaction="editAll.eaTabForYou.click.1" @click="song_tab = 'forYou'">✨ For you</view></view><text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text><view v-for="item in songs" :key="item.song_id" class="editor-card editor-row" role="button" data-interaction="editAll.g.pick.click.1" @click="unavailable_song"><image class="song-cover" :src="item.cover_url" /><view><text>{{ item.title }}</text><text class="editor-copy">{{ item.artist }}</text></view><view class="song-play" role="button" :aria-label="`Play ${item.title}`" data-interaction="editAll.g.play.click.1" @click.stop="unavailable_song"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m7 4 13 8-13 8z" /></svg></view></view><text v-if="!songs.length" class="editor-copy">No songs match your search.</text><view class="editor-outline" role="button" @click="sheet = ''">Close</view></OnboardingSheet>
+      <OnboardingSheet :open="sheet === 'song'" label="Add profile song" @close="sheet = ''"><text class="event-dialog-title">Add profile song</text><input v-model="song_query" class="editor-input" aria-label="Search songs" placeholder="Search songs, artists…" data-interaction="editAll.onEaSongQ.change.1" /><view class="editor-chips"><view class="editor-chip" :class="{ selected: song_tab === 'trend' }" role="button" data-interaction="editAll.eaTabTrend.click.1" @click="song_tab = 'trend'">🔥 Trending</view><view class="editor-chip" :class="{ selected: song_tab === 'forYou' }" role="button" data-interaction="editAll.eaTabForYou.click.1" @click="song_tab = 'forYou'">✨ For you</view></view><text v-if="error" class="event-dialog-error" role="alert">{{ error }}</text><view v-for="item in songs" :key="item.song_id" class="editor-card editor-row" role="button" tabindex="0" :aria-label="`Choose ${item.title} by ${item.artist}`" data-interaction="editAll.g.pick.click.1" @click="select_song(item.song_id)" @keydown.enter="select_song(item.song_id)"><image class="song-cover" :src="item.cover_url" /><view><text>{{ item.title }}</text><text class="editor-copy">{{ item.artist }}</text></view><view class="song-mark" aria-hidden="true"><SourceIcon name="music" /></view></view><text v-if="!songs.length" class="editor-copy">No songs match your search.</text><view class="editor-outline" role="button" @click="sheet = ''">Close</view></OnboardingSheet>
     </template>
   </ProfileEditorFrame>
 </template>
@@ -153,9 +171,9 @@ const swipe = event => { if (start_x != null && questions.value.length) { const 
   color: var(--cimoa-text-inverse);
   background: var(--cimoa-surface-photo-tag);
 }
-.camera-icon svg, .song-play svg { width: 100%; height: 100%; }
+.camera-icon svg { width: 100%; height: 100%; }
 .song-cover { width: 106.87rpx; height: 106.87rpx; border-radius: 26.718rpx; flex: none; }
-.song-play {
+.song-mark {
   width: 83.969rpx;
   height: 83.969rpx;
   padding: 24.809rpx;
@@ -164,7 +182,6 @@ const swipe = event => { if (start_x != null && questions.value.length) { const 
   background: var(--cimoa-surface-tinted);
   margin-left: auto;
   flex: none;
-  cursor: pointer;
 }
 .remove-song { color: var(--cimoa-status-danger); }
 .ice-preview {
@@ -178,9 +195,10 @@ const swipe = event => { if (start_x != null && questions.value.length) { const 
   text-align: center;
   touch-action: pan-y;
 }
-.ice-dots { display: flex; justify-content: center; gap: 13.359rpx; margin-top: 30.534rpx; }
-.ice-dots > view { width: 15.267rpx; height: 15.267rpx; background: var(--cimoa-surface-onboarding-dashed); border-radius: 7.634rpx; cursor: pointer; }
-.ice-dots > .active { width: 41.985rpx; background: var(--cimoa-text-title); }
+.ice-dots { display: flex; justify-content: center; margin-top: 30.534rpx; }
+.ice-dots > view { display: flex; align-items: center; justify-content: center; min-width: 83.969rpx; min-height: 83.969rpx; cursor: pointer; }
+.ice-dot-mark { width: 15.267rpx; height: 15.267rpx; background: var(--cimoa-surface-onboarding-dashed); border-radius: 7.634rpx; }
+.ice-dots > .active > .ice-dot-mark { width: 41.985rpx; background: var(--cimoa-text-title); }
 .habit-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22.901rpx; }
 .habit {
   display: flex;

@@ -11,12 +11,12 @@ import { legal_document_route } from '@/utils/legalNavigation.js'
 
 const faqs = Object.freeze([
   ['What are coins?', 'Coins are a virtual currency inside Cimoa. They have no cash value. Coins are used for text introductions, voice introductions and Priority Match.'],
-  ['How do I get coins?', 'Coin packages use Apple In-App Purchase when available. A purchase must be confirmed before coins are added. Purchases are currently unavailable.'],
+  ['How do I get coins?', 'Choose an available package in the coin store and confirm with Apple. Localized prices are supplied by the App Store. Coins are added only after the purchase is verified.'],
   ['What can coins be used for?', 'Text and voice introductions each cost 10 coins. Priority Match costs 20 coins for 15 minutes.'],
   ['Can coins be transferred?', 'No. Coins stay on your account and cannot be sent to another student, withdrawn, or exchanged for money.'],
   ['Can coins be refunded?', 'Failed coin actions do not keep a debit. App Store refund processing is currently unavailable in Cimoa; manage eligible purchase requests through Apple.'],
-  ['What happens if a purchase fails?', 'No coins are added and your balance is unchanged. You can retry from the coin store or save a support draft.'],
-  ['How do I contact support?', 'Open Help and Support to describe your purchase concern and save a draft. Delivery availability is shown in the form.'],
+  ['What happens if a purchase is pending?', 'Apple may need more time to complete a purchase or approve it. You can leave the page and return later. Cimoa checks unfinished purchases and adds verified coins once, to the account that started the purchase.'],
+  ['How do I contact support?', 'Open Help and Support, choose Purchase question and describe your concern. If your message cannot be sent, it remains available for you to edit and try again.'],
 ])
 const links = Object.freeze([
   { label: 'Terms of Use', icon: 'legal', route: '/pages/legal/terms', interaction: 'coinHelp.openTerms.click.1' },
@@ -29,7 +29,7 @@ const return_context_id = ref('')
 onLoad(options => { return_context_id.value = String(options?.return_context_id || '') })
 const account_scope = use_account_scope(store)
 const access_error = computed(() => store.hydration_status !== 'ready'
-  ? 'Saved coin data is unavailable. Please return and retry.'
+  ? 'Your coin history is unavailable. Please return and retry.'
   : !store.session.is_authenticated || store.session.account_id !== account_id || !account_scope.is_current()
     ? 'Your session has ended or the account changed. Return to account entry.'
     : '')
@@ -53,13 +53,13 @@ onHide(() => { navigating.value = false; error.value = '' })
         <view class="help-back" role="button" aria-label="Back" :aria-disabled="navigating" data-interaction="coinHelp.goBack.click.1" @click="navigate()"><SourceIcon name="back" /></view>
         <text>About coins</text>
       </view>
-      <text v-if="error" class="help-error" role="alert">{{ error }}</text>
+      <FeedbackToast v-if="error" :message="error" @dismiss="error = String()" />
     </template>
 
     <view class="help-content">
       <view v-if="access_error" class="help-access" role="alert">{{ access_error }}</view>
       <template v-else>
-        <view class="help-notice"><image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><view><text>Coins and purchases</text><text>Your balance and history reflect completed transactions. Purchases are currently unavailable.</text></view></view>
+        <view class="help-notice"><image src="/static/assets/coins/home-coin-badge.png" mode="aspectFit" /><view><text>Coins and purchases</text><text>Your balance and history reflect completed transactions. Pending purchases are checked when you return.</text></view></view>
         <view class="help-faqs">
           <view v-for="(item, index) in faqs" :key="item[0]" class="help-faq">
             <view class="help-question" role="button" :aria-expanded="open_faq === index" data-interaction="coinHelp.h.toggle.click.1" :data-faq-index="index" @click="toggle_faq(index)"><text>{{ item[0] }}</text><view class="help-chevron" :class="{ open: open_faq === index }"><SourceIcon name="chevron" /></view></view>

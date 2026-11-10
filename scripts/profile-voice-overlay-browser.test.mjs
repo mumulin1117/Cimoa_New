@@ -36,10 +36,15 @@ try {
   const { photo, voice, cover, play } = report.geometry
   assert.ok(close_to(photo.y, 126) && close_to(photo.width, 353)); assert.ok(close_to(voice.x - photo.x, 14) && close_to(photo.right - voice.right, 14) && close_to(photo.bottom - voice.bottom, 12)); assert.ok(close_to(voice.height, 60) && close_to(cover.width, 44) && close_to(play.width, 44))
   await page.screenshot({ path: path.join(folder, 'actual-browser.png') })
-  const sharp = require('/Users/linqian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp')
-  await sharp('/Users/linqian/Downloads/Discover ／ Profile ／ Expanded.png').extract({ left: 0, top: 0, width: 786, height: 1704 }).resize(393, 852).toFile(path.join(folder, 'reference.png'))
-  report.comparison = await write_comparison(browser, folder, path.join(folder, 'reference.png'), path.join(folder, 'actual-browser.png'))
-  report.comparison_note = 'Supplied Chloe/song design versus approved actual-person voice variant; image/text/safe-area differences are intentional, not a whole-page zero-diff claim.'
+  const reference_source = process.env.CIMOA_EXPANDED_REFERENCE || '/Users/linqian/Downloads/Discover ／ Profile ／ Expanded.png'
+  if (fs.existsSync(reference_source)) {
+    const sharp = require('/Users/linqian/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp')
+    await sharp(reference_source).extract({ left: 0, top: 0, width: 786, height: 1704 }).resize(393, 852).toFile(path.join(folder, 'reference.png'))
+    report.comparison = await write_comparison(browser, folder, path.join(folder, 'reference.png'), path.join(folder, 'actual-browser.png'))
+    report.comparison_note = 'Supplied Chloe/song design versus approved actual-person voice variant; image/text/safe-area differences are intentional, not a whole-page zero-diff claim.'
+  } else {
+    report.comparison_note = `Visual comparison skipped because the optional reference is unavailable: ${reference_source}`
+  }
   check('One voice strip overlays the photo with source 14/12px insets, 60px height and 44px thumbnail/play; no duplicate lower voice card')
   await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now() + 200)))
   const clock_click = id => page.locator(`[data-interaction="${id}"]`).evaluate(e => e.click())
@@ -67,8 +72,8 @@ try {
   const one = structuredClone(seed); const u = one.users.find(u => u.user_id === 'user_zane'); u.photo_ids = u.photo_ids.slice(0, 1); one.profile_photos = one.profile_photos.filter(p => p.user_id !== u.user_id || u.photo_ids.includes(p.photo_id)); await load(one); const single = await source(); await page.waitForTimeout(3100); assert.equal(await source(), single); assert.equal(await page.locator('.expanded-dots').count(), 0)
   const empty = structuredClone(seed); empty.users.find(u => u.user_id === 'user_zane').photo_ids = []; empty.profile_photos = empty.profile_photos.filter(p => p.user_id !== 'user_zane'); await load(empty, 'user_zane', 'empty'); await page.waitForTimeout(3100); assert.equal(await page.locator('.expanded-dots').count(), 0); assert.equal(await page.locator('.expanded-photo .profile-photo').getAttribute('data-media-status'), 'empty'); assert.equal(await page.locator('.profile-voice-play').count(), 1)
   const missing = structuredClone(seed); missing.users.find(u => u.user_id === 'user_zane').voice_intro.audio_url = '/static/assets/missing-intro.mp3'; await load(missing); await click('expanded.voiceIntroPlay.click.1'); await page.locator('.profile-voice-status[role="alert"]').waitFor(); assert.equal(await page.locator('.profile-voice-play').getAttribute('aria-label'), 'Play voice message'); await page.screenshot({ path: path.join(folder, 'audio-error-browser.png') })
-  await load(seed, 'user_chloe'); assert.equal(await page.locator('.profile-voice-intro').count(), 0); assert.equal(await page.locator('.expanded-song').count(), 1)
-  check('Zero/one photo does not rotate; missing audio shows a retryable real error; a profile without voice retains the original song fallback')
+  await load(seed, 'user_chloe'); assert.equal(await page.locator('.profile-voice-intro').count(), 0); assert.equal(await page.locator('.expanded-song').count(), 0)
+  check('Zero/one photo does not rotate; missing real audio shows a retryable error; profiles without voice audio render no media strip')
   const preview = structuredClone(seed), audio_bytes = fs.readFileSync('static/assets/discover/zane/voice-intro.mp3'), id = 'media_overlay_default_regression', duration = seed.users.find(u => u.user_id === 'user_zane').voice_intro.duration_ms
   preview.users.find(u => u.user_id === 'user_cimoa').bio_audio_id = id
   preview.media_files.push({ media_id: id, owner_user_id: 'user_cimoa', kind: 'audio', media_url: `indexeddb://${id}`, mime: 'audio/mpeg', duration_ms: duration, byte_size: audio_bytes.length })

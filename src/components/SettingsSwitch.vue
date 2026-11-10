@@ -17,22 +17,31 @@ const emit = defineEmits(['toggle'])
     @keydown.enter="!disabled && emit('toggle')"
     @keydown.space.prevent="!disabled && emit('toggle')"
   >
-    <view class="settings-switch-dot" />
+    <view class="settings-switch-track"><view class="settings-switch-dot" /></view>
   </view>
 </template>
 
 <style scoped>
 .settings-switch {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 95.42rpx;
+  min-width: var(--app-touch-target, 83.969rpx);
+  min-height: var(--app-touch-target, 83.969rpx);
+  cursor: pointer;
+}
+.settings-switch-track {
   position: relative;
   flex: none;
   width: 95.42rpx;
   height: 57.252rpx;
   border-radius: 28.626rpx;
   background: var(--cimoa-surface-event-handle);
-  cursor: pointer;
   transition: background 160ms ease;
 }
-.settings-switch--on { background: var(--cimoa-gradient-primary); }
+.settings-switch--on .settings-switch-track { background: var(--cimoa-gradient-primary); }
 .settings-switch--disabled { opacity: 0.5; cursor: default; }
 .settings-switch-dot {
   position: absolute;
